@@ -1,0 +1,9 @@
+# Interní / strategické dokumenty — drží se LOKÁLNĚ, nikdy ne na (veřejný) GitHub
+STRATEGY.md
+BUSINESS.md
+PORTFOLIO.md
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini

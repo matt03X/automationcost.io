@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 64" fill="none">
+  <g transform="translate(6,17) scale(0.66)">
+    <path d="M29 11 L15 24 L29 37" stroke="#10b981" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <circle cx="34.5" cy="24" r="3.4" fill="#10b981"></circle>
+  </g>
+  <text x="44" y="41" font-family="'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif" font-weight="700" font-size="26" letter-spacing="-0.9" fill="#0a0e17">Automation<tspan fill="#10b981">Cost</tspan><tspan fill="#9aa3b4" font-weight="500">.io</tspan></text>
+</svg>

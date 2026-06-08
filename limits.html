@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Automation Tool Pricing & Limits 2026 — n8n vs Make vs Zapier | AutomationCost.io</title>
+  <meta name="description" content="Full comparison of ops limits, workflow caps, execution timeouts, and log history for n8n, Make, Pipedream, Zapier, Activepieces, Automatisch and Node-RED.">
+  <link rel="canonical" href="https://automationcost.io/limits.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
+      --border: #1f2d45; --text: #e8edf5; --muted: #6b7a99;
+      --accent: #2f6bff; --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 10px;
+    }
+    body {
+      background: var(--bg);
+      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(47,107,255,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%);
+      background-repeat: no-repeat; background-attachment: fixed;
+      color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ── */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg); }
+    body { padding-top: 100px; }
+    .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+    .nav-bottom::-webkit-scrollbar { display: none; }
+    .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
+    .nav-bottom a:hover { color: var(--text); }
+    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: #10b981; }
+    .logo { display: flex; align-items: center; gap: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.06rem; color: var(--text); letter-spacing: -0.035em; text-decoration: none; }
+    .logo span { color: #10b981; }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
+    .nav-badge { font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--muted); }
+
+    /* ── Layout ── */
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── Hero ── */
+    .hero { padding: 48px 0 32px; }
+    .hero-badge { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--muted); padding: 4px 14px; margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--muted); font-size: 0.95rem; max-width: 640px; }
+
+    /* ── Toolbar ── */
+    .limits-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .lt-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+    .lt-chip { display: inline-flex; align-items: center; gap: 7px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 7px 13px; font-size: 13px; color: var(--text); cursor: pointer; transition: border-color 0.15s, background 0.15s; user-select: none; }
+    .lt-chip:hover { border-color: var(--accent); }
+    .lt-chip input { accent-color: var(--accent); cursor: pointer; margin: 0; }
+    .lt-chip:has(input:checked) { border-color: var(--accent); background: rgba(47,107,255,0.08); }
+    .lt-sort { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    #limits-sort { appearance: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px; font-weight: 600; padding: 7px 28px 7px 12px; cursor: pointer; outline: none; font-family: inherit; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3l3 3 3-3' stroke='%236b7a99' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+    #limits-sort:hover { border-color: var(--accent); }
+    .lt-count { font-size: 12px; color: var(--muted); }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; margin-bottom: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: auto; }
+    th { background: var(--surface2); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface2); }
+    .check { color: var(--green); font-weight: 700; }
+    .cross { color: var(--red); }
+    td.tool-col { font-weight: 700; }
+    .td-tool { display: flex; align-items: center; }
+    .tool-logo { width: 22px; height: 22px; border-radius: 5px; object-fit: contain; vertical-align: middle; margin-right: 8px; background: #fff; padding: 2px; flex-shrink: 0; }
+    .limits-empty { text-align: center; color: var(--muted); padding: 32px; font-size: 14px; }
+
+    /* ── Use cases ── */
+    .section { margin: 48px 0 24px; }
+    .section h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+    .section p { color: var(--muted); font-size: 0.95rem; }
+    .use-cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 48px; }
+    .use-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .use-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+    .use-card p { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+    .use-card .pick { font-size: 13px; }
+    .use-card .pick strong { color: var(--green); }
+
+    /* ── FAQ ── */
+    .faq { margin-bottom: 80px; }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-q { font-weight: 700; font-size: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .faq-q::after { content: "+"; color: var(--muted); font-size: 1.2rem; flex-shrink: 0; }
+    .faq-item.open .faq-q::after { content: "−"; }
+    .faq-a { color: var(--muted); font-size: 14px; line-height: 1.7; display: none; margin-top: 10px; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 64px; }
+    footer a { color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M29 11 L15 24 L29 37" stroke="#10b981" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="34.5" cy="24" r="3.4" fill="#10b981"/>
+      </svg>
+      Automation<span>Cost</span>.io
+    </a>
+    <span class="nav-badge">Updated June 2026 · Real pricing data</span>
+  </div>
+  <nav class="nav-bottom">
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="compare.html">Compare</a>
+    <a href="limits.html" class="active">Pricing & Limits</a>
+    <a href="tools.html">Tools</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-badge">7 tools · verified June 2026</div>
+    <h1>Automation tool <em>pricing & limits</em> compared</h1>
+    <p>The numbers that actually matter — workflow caps, execution timeouts, log history, and free tier limits for every tool.</p>
+  </div>
+
+  <div class="limits-toolbar">
+    <span class="lt-label">I need:</span>
+    <label class="lt-chip"><input type="checkbox" data-filter="selfhost"> Self-hostable</label>
+    <label class="lt-chip"><input type="checkbox" data-filter="ai"> AI nodes</label>
+    <label class="lt-chip"><input type="checkbox" data-filter="free"> Free tier</label>
+    <label class="lt-chip"><input type="checkbox" data-filter="gdpr"> GDPR-friendly</label>
+    <div class="lt-sort">
+      <span class="lt-label">Sort:</span>
+      <select id="limits-sort" onchange="applyLimits()">
+        <option value="default">Default</option>
+        <option value="name">Name A–Z</option>
+        <option value="selfhost">Self-hosted first</option>
+        <option value="free">Free tier first</option>
+      </select>
+    </div>
+    <span class="lt-count" id="limits-count"></span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>Free ops/mo</th>
+          <th>Free workflows</th>
+          <th>Max steps</th>
+          <th>Timeout</th>
+          <th>Log history (free)</th>
+          <th>Self-host</th>
+          <th>AI nodes</th>
+        </tr>
+      </thead>
+      <tbody id="limits-body">
+        <tr data-name="n8n" data-selfhost="1" data-ai="1" data-free="1" data-gdpr="1">
+          <td class="tool-col"><span class="td-tool"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=64" class="tool-logo" alt="n8n" onerror="this.style.display='none'">n8n</span></td>
+          <td><span class="check">Unlimited*</span></td>
+          <td><span class="check">Unlimited*</span></td>
+          <td><span class="check">Unlimited</span></td>
+          <td>No limit*</td>
+          <td>7 days (cloud)</td>
+          <td><span class="check">✓ Free</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr data-name="Make" data-selfhost="0" data-ai="1" data-free="1" data-gdpr="1">
+          <td class="tool-col"><span class="td-tool"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=64" class="tool-logo" alt="Make" onerror="this.style.display='none'">Make</span></td>
+          <td>1,000</td>
+          <td><span class="check">Unlimited</span></td>
+          <td><span class="check">Unlimited</span></td>
+          <td>40 min</td>
+          <td>30 days</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr data-name="Pipedream" data-selfhost="0" data-ai="1" data-free="1" data-gdpr="0">
+          <td class="tool-col"><span class="td-tool"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=64" class="tool-logo" alt="Pipedream" onerror="this.style.display='none'">Pipedream</span></td>
+          <td>100 credits</td>
+          <td>3</td>
+          <td><span class="check">Unlimited</span></td>
+          <td>30 sec (free)</td>
+          <td>24 hours</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr data-name="Zapier" data-selfhost="0" data-ai="1" data-free="1" data-gdpr="0">
+          <td class="tool-col"><span class="td-tool"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=64" class="tool-logo" alt="Zapier" onerror="this.style.display='none'">Zapier</span></td>
+          <td>100 tasks</td>
+          <td>5</td>
+          <td>2 steps only</td>
+          <td>15 min</td>
+          <td>15 min delay</td>
+          <td><span class="cross">✗</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr data-name="Activepieces" data-selfhost="1" data-ai="1" data-free="1" data-gdpr="1">
+          <td class="tool-col"><span class="td-tool"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=64" class="tool-logo" alt="Activepieces" onerror="this.style.display='none'">Activepieces</span></td>
+          <td><span class="check">Unlimited*</span></td>
+          <td><span class="check">Unlimited*</span></td>
+          <td><span class="check">Unlimited</span></td>
+          <td>No limit*</td>
+          <td>7 days (cloud)</td>
+          <td><span class="check">✓ MIT</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr data-name="Automatisch" data-selfhost="1" data-ai="0" data-free="1" data-gdpr="1">
+          <td class="tool-col"><span class="td-tool"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=64" class="tool-logo" alt="Automatisch" onerror="this.style.display='none'">Automatisch</span></td>
+          <td><span class="check">Unlimited*</span></td>
+          <td><span class="check">Unlimited*</span></td>
+          <td><span class="check">Unlimited</span></td>
+          <td>No limit*</td>
+          <td>Full history*</td>
+          <td><span class="check">✓ Free</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+        <tr data-name="Node-RED" data-selfhost="1" data-ai="0" data-free="1" data-gdpr="1">
+          <td class="tool-col"><span class="td-tool"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=64" class="tool-logo" alt="Node-RED" onerror="this.style.display='none'">Node-RED</span></td>
+          <td><span class="check">Unlimited</span></td>
+          <td><span class="check">Unlimited</span></td>
+          <td><span class="check">Unlimited</span></td>
+          <td>No limit</td>
+          <td>Full history</td>
+          <td><span class="check">✓ Free</span></td>
+          <td><span class="cross">✗</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:48px">* When self-hosted. Cloud plans have different limits. Data verified June 2026.</p>
+
+  <div class="section" id="use-cases">
+    <h2>Which tool for your situation?</h2>
+    <p>Skip the comparison paralysis — here's the short answer based on your actual needs.</p>
+  </div>
+
+  <div class="use-cases">
+    <div class="use-card">
+      <h3>I want the cheapest option</h3>
+      <p>Budget is the #1 constraint. You're okay with some setup work.</p>
+      <div class="pick">→ <strong>n8n self-hosted</strong> (~$8/mo VPS) or <strong>Activepieces self-hosted</strong> (MIT, truly free)</div>
+    </div>
+    <div class="use-card">
+      <h3>I want cloud, no setup</h3>
+      <p>Don't want to manage servers. Happy to pay for convenience.</p>
+      <div class="pick">→ <strong>Make</strong> at $9/mo for 10k ops — best cloud value by far</div>
+    </div>
+    <div class="use-card">
+      <h3>I'm a developer</h3>
+      <p>You write code, want full control, and need to run custom scripts inside workflows.</p>
+      <div class="pick">→ <strong>Pipedream</strong> for cloud code steps, or <strong>n8n self-hosted</strong> for unlimited control</div>
+    </div>
+    <div class="use-card">
+      <h3>I need AI / LLM nodes</h3>
+      <p>Building AI workflows — connecting GPT, Claude, or local models into automations.</p>
+      <div class="pick">→ <strong>n8n</strong> has the most mature AI nodes; <strong>Make</strong> and <strong>Pipedream</strong> also support it</div>
+    </div>
+    <div class="use-card">
+      <h3>I need max integrations</h3>
+      <p>You use a lot of obscure apps and need them all connected out of the box.</p>
+      <div class="pick">→ <strong>Zapier</strong> (7,000+ apps) — but you'll pay a premium for it</div>
+    </div>
+    <div class="use-card">
+      <h3>GDPR / EU data control</h3>
+      <p>Data must stay in EU, no US cloud, full control over where it's stored.</p>
+      <div class="pick">→ <strong>Automatisch</strong> (EU-friendly, self-host on Hetzner) or <strong>n8n self-hosted</strong></div>
+    </div>
+    <div class="use-card">
+      <h3>I'm just starting out</h3>
+      <p>New to automation, want to learn without paying upfront or breaking anything.</p>
+      <div class="pick">→ <strong>Make free tier</strong> (1,000 ops, unlimited scenarios) — best free plan for beginners</div>
+    </div>
+    <div class="use-card">
+      <h3>I run a small agency</h3>
+      <p>Managing automations for multiple clients, need team access and separate workspaces.</p>
+      <div class="pick">→ <strong>Make Teams</strong> ($29/mo) or <strong>n8n Cloud Pro</strong> for multi-user workflows</div>
+    </div>
+  </div>
+
+  <div class="section" id="faq">
+    <h2>Frequently asked questions</h2>
+  </div>
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What counts as an "operation" or "task"?</div>
+      <div class="faq-a">Each tool counts usage differently. In <strong>Zapier</strong>, one task = one action step (a 3-step Zap triggered 100 times = 300 tasks). In <strong>Make</strong>, one operation = one module execution. In <strong>n8n</strong>, one execution = one full workflow run regardless of steps. In <strong>Pipedream</strong>, credits are consumed per compute time. Self-hosted tools like n8n, Activepieces, and Automatisch have no operation limits at all.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Is n8n really free to self-host?</div>
+      <div class="faq-a">Yes — n8n's Community Edition is free to self-host with unlimited workflows and executions. You only pay for the server (typically $5–12/mo on DigitalOcean or Hetzner). The catch: n8n uses a "Sustainable Use License" (not MIT), which restricts commercial SaaS use. For running your own automations, it's fully free.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Make vs Zapier — why is Make so much cheaper?</div>
+      <div class="faq-a">Make counts multi-step workflows more efficiently. A 5-step scenario triggered 1,000 times = 5,000 operations in Make at $9/mo. The same in Zapier = 5,000 tasks, which requires the $49/mo Professional plan. For anything beyond simple 2-step automations, Make is 70–80% cheaper than Zapier.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">What's the difference between n8n and Activepieces?</div>
+      <div class="faq-a">Both are open-source and self-hostable, but key differences: n8n has more integrations (~400 vs ~200), more mature AI nodes, and a larger community. Activepieces uses the MIT license (completely unrestricted), while n8n uses Sustainable Use License. Activepieces has a more Zapier-like no-code UI; n8n is more developer-oriented.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">How accurate is this pricing data?</div>
+      <div class="faq-a">All prices were verified directly from each tool's pricing page in June 2026. SaaS pricing changes frequently — we update this page whenever a tool changes its plans. If you spot an error, the source links on each tool go directly to their official pricing pages.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io. All rights reserved.</div>
+  <div>AutomationCost.io · Independent, data-driven comparisons</div>
+  <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
+  <div style="margin-top:6px">Prices verified June 2026 · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+</footer>
+
+<script>
+function toggleFaq(el) { el.parentElement.classList.toggle("open"); }
+
+document.querySelectorAll(".lt-chip input").forEach(cb => {
+  cb.addEventListener("change", applyLimits);
+});
+
+function applyLimits() {
+  const active = Array.from(document.querySelectorAll(".lt-chip input:checked")).map(c => c.dataset.filter);
+  const sort = document.getElementById("limits-sort").value;
+  const tbody = document.getElementById("limits-body");
+  let rows = Array.from(tbody.querySelectorAll("tr"));
+
+  rows.forEach(r => {
+    const show = active.every(f => r.dataset[f] === "1");
+    r.style.display = show ? "" : "none";
+  });
+
+  if (sort !== "default") {
+    const visible = rows.filter(r => r.style.display !== "none");
+    visible.sort((a, b) => {
+      if (sort === "name") return a.dataset.name.localeCompare(b.dataset.name);
+      if (sort === "selfhost") return b.dataset.selfhost - a.dataset.selfhost;
+      if (sort === "free") return b.dataset.free - a.dataset.free;
+      return 0;
+    });
+    visible.forEach(r => tbody.appendChild(r));
+  }
+
+  const count = rows.filter(r => r.style.display !== "none").length;
+  document.getElementById("limits-count").textContent = `${count} tool${count !== 1 ? "s" : ""}`;
+}
+
+applyLimits();
+</script>
+</body>
+</html>

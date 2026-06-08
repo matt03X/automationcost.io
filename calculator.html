@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Find Your Best Automation Tool 2026 — Guided Tool Finder | AutomationCost.io</title>
+  <meta name="description" content="Answer 3 questions about your role, workflow type, and budget — get a personalized match score for n8n, Make, Pipedream, Zapier and more.">
+  <link rel="canonical" href="https://automationcost.io/calculator.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
+      --border: #1f2d45; --text: #e8edf5; --muted: #6b7a99;
+      --accent: #2f6bff; --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 10px;
+    }
+    body {
+      background: var(--bg);
+      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(47,107,255,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%);
+      background-repeat: no-repeat; background-attachment: fixed;
+      color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ── */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg); }
+    body { padding-top: 100px; }
+    .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+    .nav-bottom::-webkit-scrollbar { display: none; }
+    .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
+    .nav-bottom a:hover { color: var(--text); }
+    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: #10b981; }
+    .logo { display: flex; align-items: center; gap: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.06rem; color: var(--text); letter-spacing: -0.035em; text-decoration: none; }
+    .logo span { color: #10b981; }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
+    .nav-badge { font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--muted); }
+
+    /* ── Layout ── */
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px 80px; }
+
+    /* ── Wizard progress ── */
+    .wizard-progress { display: flex; align-items: center; gap: 0; margin-bottom: 40px; padding-top: 36px; }
+    .wp-step { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted); flex-shrink: 0; }
+    .wp-step.active { color: var(--text); }
+    .wp-step.done { color: var(--green); }
+    .wp-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; transition: all 0.2s; }
+    .wp-step.active .wp-dot { border-color: var(--accent); background: var(--accent); color: #fff; }
+    .wp-step.done .wp-dot { border-color: var(--green); background: var(--green); color: #fff; }
+    .wp-line { flex: 1; height: 2px; background: var(--border); margin: 0 8px; min-width: 16px; }
+    .wp-line.done { background: var(--green); }
+
+    /* ── Step containers ── */
+    .step { display: none; }
+    .step.active { display: block; }
+    .step-heading { margin-bottom: 28px; }
+    .step-num { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 6px; }
+    .step-heading h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+    .step-heading p { color: var(--muted); font-size: 0.95rem; }
+
+    /* ── Role chips ── */
+    .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 32px; }
+    .role-card {
+      background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
+      padding: 18px 16px; cursor: pointer; transition: border-color 0.15s, background 0.15s;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+    }
+    .role-card:hover { border-color: var(--accent); }
+    .role-card.selected { border-color: var(--accent); background: rgba(47,107,255,0.08); }
+    .role-icon { font-size: 22px; }
+    .role-name { font-size: 14px; font-weight: 700; }
+    .role-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+    /* ── Workflow stack ── */
+    .wf-stack { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+    .wf-card {
+      background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
+      cursor: pointer; overflow: hidden; transition: border-color 0.18s, box-shadow 0.18s;
+    }
+    .wf-card:hover { border-color: rgba(47,107,255,0.5); box-shadow: 0 4px 24px rgba(47,107,255,0.08); }
+    .wf-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+    .wf-card-header {
+      padding: 18px 22px 16px; display: flex; align-items: flex-start; gap: 14px;
+    }
+    .wf-card-icon { font-size: 26px; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+    .wf-card-title { font-size: 15px; font-weight: 800; margin-bottom: 3px; }
+    .wf-card-sub { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .wf-card-diagram { padding: 0 16px 18px; }
+
+    /* ── Big workflow diagram ── */
+    .wf-stage {
+      background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
+      padding: 24px 20px 20px; margin-bottom: 28px; min-height: 320px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: border-color 0.3s;
+    }
+    .wf-stage.has-selection { border-color: var(--accent); }
+    .wf-stage-hint { color: var(--muted); font-size: 14px; text-align: center; }
+    .wf-stage-title { font-size: 16px; font-weight: 800; margin-bottom: 4px; text-align: center; }
+    .wf-stage-desc { font-size: 13px; color: var(--muted); margin-bottom: 20px; text-align: center; max-width: 480px; }
+    .wf-canvas-wrap { width: 100%; overflow-x: auto; }
+    .wf-big-svg { display: block; margin: 0 auto; }
+
+    /* ── Volume & budget inputs ── */
+    .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+    @media (max-width: 560px) { .inputs-grid { grid-template-columns: 1fr; } }
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+    input[type="number"], input[type="range"] { width: 100%; }
+    input[type="number"] { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 15px; padding: 10px 14px; outline: none; transition: border-color 0.15s; font-family: inherit; }
+    input[type="number"]:focus { border-color: var(--accent); }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 5px; }
+    .toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .toggle-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-size: 13px; padding: 8px 14px; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .toggle-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+    .save-pill { font-size: 10px; background: rgba(16,185,129,0.18); color: var(--green); border-radius: 4px; padding: 1px 5px; margin-left: 4px; font-weight: 700; }
+    .budget-row { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+    .budget-val { font-size: 18px; font-weight: 800; color: var(--text); min-width: 70px; }
+    .budget-note { font-size: 12px; color: var(--muted); }
+
+    /* ── Integration picker ── */
+    .integ-picker { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .section-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
+    .integ-selected { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    .integ-selected:empty { display: none; }
+    .integ-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(47,107,255,0.12); border: 1px solid var(--accent); border-radius: 6px; padding: 4px 8px 4px 10px; font-size: 13px; color: var(--text); font-weight: 600; }
+    .integ-tag button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 15px; line-height: 1; padding: 0; font-family: inherit; }
+    .integ-tag button:hover { color: var(--red); }
+    .integ-search-wrap { position: relative; }
+    #integ-search { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 14px; padding: 10px 14px; outline: none; font-family: inherit; transition: border-color 0.15s; }
+    #integ-search:focus { border-color: var(--accent); }
+    .integ-dropdown { position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 20; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; max-height: 280px; overflow-y: auto; display: none; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+    .integ-dropdown.open { display: block; }
+    .integ-opt { display: flex; align-items: center; gap: 10px; padding: 9px 14px; cursor: pointer; font-size: 14px; border-bottom: 1px solid var(--border); user-select: none; }
+    .integ-opt:last-child { border-bottom: none; }
+    .integ-opt:hover, .integ-opt.highlight { background: var(--surface2); }
+    .integ-opt .integ-cat { font-size: 11px; color: var(--muted); margin-left: auto; }
+    .integ-opt.selected { background: rgba(47,107,255,0.08); }
+    .integ-opt.selected .integ-name { color: var(--accent); }
+    .integ-checkbox { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--border); background: var(--bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background 0.1s, border-color 0.1s; }
+    .integ-opt.selected .integ-checkbox { background: var(--accent); border-color: var(--accent); }
+    .integ-opt.selected .integ-checkbox::after { content: ""; display: block; width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg) translateY(-1px); }
+    .integ-empty-opt { padding: 12px 14px; color: var(--muted); font-size: 13px; text-align: center; }
+    .integ-cat-head { padding: 6px 14px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); background: var(--surface2); position: sticky; top: 0; font-weight: 700; }
+
+    /* ── Nav buttons ── */
+    .step-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 32px; gap: 12px; }
+    .btn-primary { background: var(--accent); border: none; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 700; padding: 13px 28px; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-back { background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-size: 14px; font-weight: 600; padding: 12px 20px; cursor: pointer; font-family: inherit; transition: border-color 0.15s, color 0.15s; }
+    .btn-back:hover { border-color: var(--text); color: var(--text); }
+
+    /* ── Results ── */
+    .results-header { margin-bottom: 24px; }
+    .results-header h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; }
+    .results-header p { color: var(--muted); font-size: 14px; }
+    .profile-summary { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .profile-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--muted); }
+    .profile-chip span { color: var(--text); }
+
+    .result-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      margin-bottom: 12px; overflow: hidden; transition: border-color 0.15s;
+    }
+    .result-card.top-pick { border-color: var(--green); }
+    .result-card.good-fit { border-color: rgba(47,107,255,0.4); }
+
+    .result-header { padding: 18px 22px; display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 14px; }
+    @media (max-width: 600px) { .result-header { grid-template-columns: auto 1fr; } .result-header .result-cost-col, .result-header .result-cta-col { display: none; } }
+    .result-rank { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); min-width: 20px; }
+    .result-rank.top { color: var(--green); }
+    .result-tool-name { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .result-plan { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .tool-logo { width: 22px; height: 22px; border-radius: 5px; object-fit: contain; background: #fff; padding: 2px; flex-shrink: 0; }
+    .tag { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+    .tag-best { background: #0d2a1a; color: var(--green); border: 1px solid var(--green); }
+    .result-cost-col { text-align: right; }
+    .result-cost { font-size: 1.15rem; font-weight: 800; }
+    .result-cost.c-free { color: var(--green); }
+    .result-cost.c-cheap { color: #86efac; }
+    .result-cost.c-mid { color: var(--yellow); }
+    .result-cost.c-exp { color: var(--red); }
+    .result-cost-note { font-size: 11px; color: var(--muted); }
+    .result-cta-col { flex-shrink: 0; }
+    .visit-btn { display: inline-block; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 7px; text-decoration: none; transition: border-color 0.15s; white-space: nowrap; }
+    .visit-btn:hover { border-color: var(--accent); text-decoration: none; }
+    .visit-btn.affiliate { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* ── Match score bar ── */
+    .result-scores { padding: 0 22px 16px; border-top: 1px solid var(--border); display: none; }
+    .result-card.expanded .result-scores { display: block; }
+    .result-expand-btn { background: none; border: none; color: var(--muted); font-size: 12px; cursor: pointer; padding: 0; font-family: inherit; display: flex; align-items: center; gap: 4px; margin-top: 12px; }
+    .result-expand-btn:hover { color: var(--text); }
+
+    .score-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+    .score-label { font-size: 12px; color: var(--muted); width: 120px; flex-shrink: 0; }
+    .score-bar-wrap { flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+    .score-fill { height: 100%; border-radius: 3px; background: var(--accent); }
+    .score-fill.green { background: var(--green); }
+    .score-fill.yellow { background: var(--yellow); }
+    .score-fill.red { background: var(--red); }
+    .score-num { font-size: 12px; font-weight: 700; width: 36px; text-align: right; flex-shrink: 0; }
+
+    .match-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-left: 8px; }
+    .match-badge.great { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+    .match-badge.good { background: rgba(47,107,255,0.15); color: var(--accent); border: 1px solid rgba(47,107,255,0.3); }
+    .match-badge.ok { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
+    .match-badge.poor { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+
+    .why-list { margin-top: 12px; padding: 12px 14px; background: var(--surface2); border-radius: 8px; }
+    .why-item { font-size: 13px; color: var(--muted); display: flex; gap: 8px; margin-bottom: 5px; }
+    .why-item:last-child { margin-bottom: 0; }
+    .why-item.pro { color: var(--text); }
+    .why-item.pro::before { content: "✓"; color: var(--green); flex-shrink: 0; }
+    .why-item.con::before { content: "✗"; color: var(--red); flex-shrink: 0; }
+
+    .restart-btn { display: inline-flex; align-items: center; gap: 6px; background: transparent; border: 1px solid var(--border); color: var(--muted); font-size: 13px; font-weight: 600; padding: 10px 18px; border-radius: 8px; cursor: pointer; font-family: inherit; transition: border-color 0.15s, color 0.15s; margin-top: 24px; }
+    .restart-btn:hover { border-color: var(--text); color: var(--text); }
+
+    .no-results { background: var(--surface); border: 1px solid var(--yellow); border-radius: var(--radius); padding: 16px 20px; font-size: 14px; color: var(--muted); }
+    .no-results strong { color: var(--text); }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 32px; }
+    footer a { color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M29 11 L15 24 L29 37" stroke="#10b981" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="34.5" cy="24" r="3.4" fill="#10b981"/>
+      </svg>
+      Automation<span>Cost</span>.io
+    </a>
+    <span class="nav-badge">Updated June 2026 · Real pricing data</span>
+  </div>
+  <nav class="nav-bottom">
+    <a href="index.html">Home</a>
+    <a href="calculator.html" class="active">Calculator</a>
+    <a href="compare.html">Compare</a>
+    <a href="limits.html">Pricing & Limits</a>
+    <a href="tools.html">Tools</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <!-- Progress bar -->
+  <div class="wizard-progress" id="wizard-progress">
+    <div class="wp-step active" id="wp-1"><div class="wp-dot">1</div><span>Your role</span></div>
+    <div class="wp-line" id="wl-1"></div>
+    <div class="wp-step" id="wp-2"><div class="wp-dot">2</div><span>Workflow type</span></div>
+    <div class="wp-line" id="wl-2"></div>
+    <div class="wp-step" id="wp-3"><div class="wp-dot">3</div><span>Volume & budget</span></div>
+    <div class="wp-line" id="wl-3"></div>
+    <div class="wp-step" id="wp-4"><div class="wp-dot">4</div><span>Results</span></div>
+  </div>
+
+  <!-- ── Step 1: Role ── -->
+  <div class="step active" id="step-1">
+    <div class="step-heading">
+      <div class="step-num">Step 1 of 3</div>
+      <h2>What's your role?</h2>
+      <p>This helps us weight features that matter most to you — AI nodes, no-code UI, code access, compliance, and more.</p>
+    </div>
+    <div class="role-grid">
+      <div class="role-card" data-role="marketing" onclick="selectRole(this)">
+        <div class="role-icon">📣</div>
+        <div class="role-name">Marketing</div>
+        <div class="role-desc">Email sequences, lead flows, social posting, CRM sync</div>
+      </div>
+      <div class="role-card" data-role="operations" onclick="selectRole(this)">
+        <div class="role-icon">⚙️</div>
+        <div class="role-name">Operations</div>
+        <div class="role-desc">Process automation, approvals, reporting, cross-team data sync</div>
+      </div>
+      <div class="role-card" data-role="developer" onclick="selectRole(this)">
+        <div class="role-icon">💻</div>
+        <div class="role-name">Developer</div>
+        <div class="role-desc">APIs, webhooks, custom code steps, backend pipelines</div>
+      </div>
+      <div class="role-card" data-role="finance" onclick="selectRole(this)">
+        <div class="role-icon">💰</div>
+        <div class="role-name">Finance / Accounting</div>
+        <div class="role-desc">Invoice processing, expense sync, payment notifications</div>
+      </div>
+      <div class="role-card" data-role="legal" onclick="selectRole(this)">
+        <div class="role-icon">⚖️</div>
+        <div class="role-name">Legal / Compliance</div>
+        <div class="role-desc">Document flows, GDPR-sensitive data, audit trails</div>
+      </div>
+      <div class="role-card" data-role="hr" onclick="selectRole(this)">
+        <div class="role-icon">👥</div>
+        <div class="role-name">HR / People Ops</div>
+        <div class="role-desc">Onboarding, offboarding, Slack notifications, HRIS sync</div>
+      </div>
+      <div class="role-card" data-role="ecommerce" onclick="selectRole(this)">
+        <div class="role-icon">🛒</div>
+        <div class="role-name">E-commerce</div>
+        <div class="role-desc">Order processing, inventory sync, customer notifications</div>
+      </div>
+      <div class="role-card" data-role="other" onclick="selectRole(this)">
+        <div class="role-icon">🔧</div>
+        <div class="role-name">Other / Mixed</div>
+        <div class="role-desc">Multiple use-cases or not sure yet</div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <span></span>
+      <button class="btn-primary" id="btn-next-1" onclick="goStep(2)" disabled>Next: Workflow type →</button>
+    </div>
+  </div>
+
+  <!-- ── Step 2: Workflow type ── -->
+  <div class="step" id="step-2">
+    <div class="step-heading">
+      <div class="step-num">Step 2 of 3</div>
+      <h2 id="step2-heading">What will you automate?</h2>
+      <p id="step2-sub">Pipelines for your role — pick one.</p>
+    </div>
+
+    <div class="wf-stack" id="wf-stack"></div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(1)">← Back</button>
+      <button class="btn-primary" id="btn-next-2" onclick="goStep(3)" disabled>Next: Volume & budget →</button>
+    </div>
+  </div>
+
+  <!-- ── Step 3: Volume & budget ── -->
+  <div class="step" id="step-3">
+    <div class="step-heading">
+      <div class="step-num">Step 3 of 3</div>
+      <h2>Volume & budget</h2>
+      <p>We'll calculate the exact cost per tool and factor it into your match score.</p>
+    </div>
+
+    <div class="inputs-grid">
+      <div>
+        <label for="ops">Operations / tasks per month</label>
+        <div class="budget-row" style="margin-top:8px">
+          <div class="budget-val" id="ops-display">5,000</div>
+          <input type="range" id="ops" min="0" max="8" step="1" value="4" oninput="updateOpsDisplay()">
+        </div>
+        <div class="hint">ops/mo · Each app action = 1 op. A 3-step workflow triggered 1,000×/mo = 3,000 ops.</div>
+      </div>
+      <div>
+        <label for="workflows">Active workflows</label>
+        <div class="budget-row" style="margin-top:8px">
+          <div class="budget-val" id="wf-display">5</div>
+          <input type="range" id="workflows" min="0" max="7" step="1" value="2" oninput="updateWfDisplay()">
+        </div>
+        <div class="hint">workflows · How many separate automations you run in parallel.</div>
+      </div>
+      <div>
+        <label>Max monthly budget</label>
+        <div class="budget-row">
+          <div class="budget-val" id="budget-display">$50</div>
+          <input type="range" id="budget" min="0" max="300" step="5" value="50" oninput="updateBudget(this.value)">
+        </div>
+        <div class="budget-note" id="budget-note">Tools above this will be marked as over-budget, not hidden</div>
+      </div>
+      <div>
+        <label>Billing cycle</label>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-billing="monthly" onclick="setBilling('monthly',this)">Monthly</button>
+          <button class="toggle-btn" data-billing="annual" onclick="setBilling('annual',this)">Annual <span class="save-pill">save ~20%</span></button>
+        </div>
+      </div>
+      <div>
+        <label>Hosting preference</label>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-host="any" onclick="setHost('any',this)">Any</button>
+          <button class="toggle-btn" data-host="cloud" onclick="setHost('cloud',this)">Cloud only</button>
+          <button class="toggle-btn" data-host="selfhost" onclick="setHost('selfhost',this)">Self-host</button>
+        </div>
+      </div>
+      <div>
+        <label>Need AI / LLM nodes?</label>
+        <div class="toggle-group">
+          <button class="toggle-btn active" data-ai="any" onclick="setAI('any',this)">Don't care</button>
+          <button class="toggle-btn" data-ai="yes" onclick="setAI('yes',this)">Yes, required</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="integ-picker">
+      <div class="section-label">Required integrations <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;">(optional — filters tools that don't support them)</span></div>
+      <div class="integ-selected" id="integ-selected"></div>
+      <div class="integ-search-wrap">
+        <input type="text" id="integ-search" autocomplete="off" placeholder="Search apps — Slack, Notion, Shopify, Stripe…">
+        <div class="integ-dropdown" id="integ-dropdown"></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-back" onclick="goStep(2)">← Back</button>
+      <button class="btn-primary" onclick="goStep(4)">See my recommendations →</button>
+    </div>
+  </div>
+
+  <!-- ── Step 4: Results ── -->
+  <div class="step" id="step-4">
+    <div class="results-header">
+      <h2>Your personalized recommendations</h2>
+      <p>Ranked by match score — a weighted mix of feature fit for your role, workflow type, price vs your budget, and capabilities.</p>
+    </div>
+    <div class="profile-summary" id="profile-summary"></div>
+    <div id="results-list"></div>
+    <div id="no-results-msg" class="no-results" style="display:none">
+      No tool supports <strong>all</strong> your selected integrations with these settings. Try removing one, or note that most platforms support any app via custom HTTP requests.
+    </div>
+    <button class="restart-btn" onclick="goStep(1)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+      Start over
+    </button>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io. All rights reserved.</div>
+  <div>AutomationCost.io · Independent, data-driven comparisons</div>
+  <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
+  <div style="margin-top:6px">Prices verified June 2026 · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+</footer>
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────────
+
+const LOGOS = {
+  "n8n":          "https://www.google.com/s2/favicons?domain=n8n.io&sz=64",
+  "make":         "https://www.google.com/s2/favicons?domain=make.com&sz=64",
+  "pipedream":    "https://www.google.com/s2/favicons?domain=pipedream.com&sz=64",
+  "zapier":       "https://www.google.com/s2/favicons?domain=zapier.com&sz=64",
+  "activepieces": "https://www.google.com/s2/favicons?domain=activepieces.com&sz=64",
+  "automatisch":  "https://www.google.com/s2/favicons?domain=automatisch.io&sz=64",
+  "node-red":     "https://www.google.com/s2/favicons?domain=nodered.org&sz=64",
+};
+
+// Role → which tool dimensions matter most
+// Keys: noCode, codeAccess, aiNodes, selfHost, gdpr, integrations, lowPrice
+const ROLE_WEIGHTS = {
+  marketing:   { noCode:0.30, codeAccess:0.05, aiNodes:0.15, selfHost:0.05, gdpr:0.05, integrations:0.20, lowPrice:0.20 },
+  operations:  { noCode:0.25, codeAccess:0.10, aiNodes:0.10, selfHost:0.10, gdpr:0.10, integrations:0.15, lowPrice:0.20 },
+  developer:   { noCode:0.05, codeAccess:0.35, aiNodes:0.20, selfHost:0.15, gdpr:0.05, integrations:0.10, lowPrice:0.10 },
+  finance:     { noCode:0.20, codeAccess:0.05, aiNodes:0.10, selfHost:0.20, gdpr:0.20, integrations:0.10, lowPrice:0.15 },
+  legal:       { noCode:0.15, codeAccess:0.05, aiNodes:0.05, selfHost:0.30, gdpr:0.30, integrations:0.05, lowPrice:0.10 },
+  hr:          { noCode:0.30, codeAccess:0.05, aiNodes:0.10, selfHost:0.10, gdpr:0.15, integrations:0.15, lowPrice:0.15 },
+  ecommerce:   { noCode:0.20, codeAccess:0.10, aiNodes:0.10, selfHost:0.05, gdpr:0.05, integrations:0.30, lowPrice:0.20 },
+  other:       { noCode:0.15, codeAccess:0.15, aiNodes:0.15, selfHost:0.10, gdpr:0.10, integrations:0.15, lowPrice:0.20 },
+};
+
+// Tool capability scores (0–1) per dimension
+const TOOL_SCORES = {
+  n8n:          { noCode:0.60, codeAccess:0.95, aiNodes:0.98, selfHost:1.00, gdpr:0.90, integrations:0.75 },
+  make:         { noCode:0.95, codeAccess:0.20, aiNodes:0.70, selfHost:0.00, gdpr:0.80, integrations:0.95 },
+  pipedream:    { noCode:0.30, codeAccess:1.00, aiNodes:0.80, selfHost:0.00, gdpr:0.30, integrations:0.90 },
+  zapier:       { noCode:1.00, codeAccess:0.25, aiNodes:0.70, selfHost:0.00, gdpr:0.50, integrations:1.00 },
+  activepieces: { noCode:0.85, codeAccess:0.40, aiNodes:0.65, selfHost:1.00, gdpr:0.90, integrations:0.40 },
+  automatisch:  { noCode:0.80, codeAccess:0.20, aiNodes:0.05, selfHost:1.00, gdpr:1.00, integrations:0.20 },
+  "node-red":   { noCode:0.10, codeAccess:0.90, aiNodes:0.15, selfHost:1.00, gdpr:0.95, integrations:0.50 },
+};
+
+// ── Workflow templates (role-specific, with rich node definitions) ────────────
+// Each node: { id, label, sublabel, icon, color, type: "trigger"|"action"|"condition"|"ai"|"output" }
+// Each edge: { from, to, label, color, animated }
+// Layout: nodes positioned in a DAG on a 700×260 canvas
+
+const WORKFLOWS = [
+  // ── HR ────────────────────────────────────────────────────────────────────
+  {
+    id: "hr-onboarding", roles: ["hr"],
+    title: "Employee onboarding", icon: "👋",
+    subtitle: "New hire added in HRIS → provision accounts → send welcome email → assign Notion checklist → Slack notify manager",
+    defaultOps: 600, defaultWorkflows: 3, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "HRIS trigger", sublabel: "BambooHR / Workday", icon: "🏢", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Create GSuite", sublabel: "Gmail + Drive",      icon: "📧", color: "#2f6bff", type: "action",  x: 190, y: 60  },
+      { id: "c", label: "Create Slack",  sublabel: "Invite to workspace", icon: "💬", color: "#10b981", type: "action",  x: 190, y: 160 },
+      { id: "d", label: "Notion tasks",  sublabel: "30-60-90 checklist",  icon: "📋", color: "#f59e0b", type: "action",  x: 360, y: 60  },
+      { id: "e", label: "Send welcome",  sublabel: "Email from template", icon: "✉️", color: "#f59e0b", type: "action",  x: 360, y: 160 },
+      { id: "f", label: "Notify manager",sublabel: "Slack DM to manager", icon: "🔔", color: "#10b981", type: "output",  x: 530, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "a", to: "c", color: "#6366f1", animated: true },
+      { from: "b", to: "d", color: "#2f6bff", animated: true },
+      { from: "c", to: "e", color: "#10b981", animated: true },
+      { from: "d", to: "f", color: "#f59e0b", animated: true },
+      { from: "e", to: "f", color: "#f59e0b", animated: true },
+    ]
+  },
+  {
+    id: "hr-offboarding", roles: ["hr"],
+    title: "Employee offboarding", icon: "🚪",
+    subtitle: "Termination date set → revoke access → archive accounts → send exit survey → update payroll",
+    defaultOps: 300, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Termination",  sublabel: "HRIS date trigger",    icon: "📅", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Revoke GSuite",sublabel: "Suspend + export",      icon: "🔒", color: "#ef4444", type: "action",    x: 200, y: 60  },
+      { id: "c", label: "Revoke Slack", sublabel: "Deactivate member",     icon: "🔕", color: "#ef4444", type: "action",    x: 200, y: 160 },
+      { id: "d", label: "Exit survey",  sublabel: "Typeform via email",    icon: "📝", color: "#f59e0b", type: "action",    x: 380, y: 60  },
+      { id: "e", label: "Update payroll",sublabel: "Xero / ADP sync",      icon: "💰", color: "#10b981", type: "action",    x: 380, y: 160 },
+      { id: "f", label: "HR log",       sublabel: "Notion / Sheets row",   icon: "📊", color: "#6b7a99", type: "output",    x: 550, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#ef4444", animated: true },
+      { from: "a", to: "c", color: "#ef4444", animated: true },
+      { from: "b", to: "d", color: "#f59e0b", animated: false },
+      { from: "c", to: "e", color: "#10b981", animated: false },
+      { from: "d", to: "f", color: "#6b7a99", animated: false },
+      { from: "e", to: "f", color: "#6b7a99", animated: false },
+    ]
+  },
+  {
+    id: "hr-leave",  roles: ["hr"],
+    title: "Leave request flow", icon: "🏖️",
+    subtitle: "Employee submits leave → check policy → notify manager → approve/reject → update calendar + HRIS",
+    defaultOps: 800, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Leave request", sublabel: "Form / HRIS submit",  icon: "📨", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Check policy",  sublabel: "Days remaining rule", icon: "⚖️",  color: "#f59e0b", type: "condition", x: 200, y: 110 },
+      { id: "c", label: "Manager DM",    sublabel: "Slack approval msg",  icon: "💬", color: "#2f6bff", type: "action",    x: 370, y: 60  },
+      { id: "d", label: "Auto-reject",   sublabel: "Exceeds balance",     icon: "❌", color: "#ef4444", type: "output",    x: 370, y: 180 },
+      { id: "e", label: "Approved →",    sublabel: "GCal + HRIS update",  icon: "✅", color: "#10b981", type: "output",    x: 550, y: 60  },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true, label: "OK" },
+      { from: "b", to: "d", color: "#ef4444", animated: false, label: "Exceeds" },
+      { from: "c", to: "e", color: "#10b981", animated: true, label: "Approved" },
+    ]
+  },
+  {
+    id: "hr-pulse",  roles: ["hr"],
+    title: "Employee pulse survey", icon: "📊",
+    subtitle: "Monthly trigger → send Typeform → collect responses → analyze sentiment → Slack summary to HR",
+    defaultOps: 400, defaultWorkflows: 1, needsNoCode: true, needsAI: true,
+    nodes: [
+      { id: "a", label: "Monthly cron",  sublabel: "1st of month 9am",   icon: "⏰", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Send Typeform", sublabel: "To all active staff", icon: "📝", color: "#2f6bff", type: "action",  x: 200, y: 110 },
+      { id: "c", label: "Wait 5 days",   sublabel: "Collect responses",   icon: "⏳", color: "#6b7a99", type: "action",  x: 360, y: 110 },
+      { id: "d", label: "AI sentiment",  sublabel: "GPT-4 analysis",      icon: "🤖", color: "#a855f7", type: "ai",     x: 510, y: 60  },
+      { id: "e", label: "Slack report",  sublabel: "Summary to #hr-ops",  icon: "📊", color: "#10b981", type: "output", x: 510, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: false },
+      { from: "c", to: "d", color: "#a855f7", animated: true },
+      { from: "c", to: "e", color: "#10b981", animated: false },
+      { from: "d", to: "e", color: "#a855f7", animated: true },
+    ]
+  },
+  // ── Marketing ─────────────────────────────────────────────────────────────
+  {
+    id: "mktg-lead", roles: ["marketing"],
+    title: "Lead nurturing sequence", icon: "📣",
+    subtitle: "Form submit → CRM create → email drip D1/D3/D7 → Slack alert on open → tag hot lead",
+    defaultOps: 6000, defaultWorkflows: 5, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Form submit",  sublabel: "Typeform / HubSpot",  icon: "📨", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "CRM contact",  sublabel: "Create in HubSpot",   icon: "👤", color: "#2f6bff", type: "action",    x: 200, y: 110 },
+      { id: "c", label: "Email D+1",    sublabel: "Welcome sequence",    icon: "✉️", color: "#f59e0b", type: "action",    x: 360, y: 60  },
+      { id: "d", label: "Email D+3",    sublabel: "Case study send",     icon: "✉️", color: "#f59e0b", type: "action",    x: 360, y: 160 },
+      { id: "e", label: "Email opened?",sublabel: "Track engagement",    icon: "👁",  color: "#6b7a99", type: "condition", x: 510, y: 110 },
+      { id: "f", label: "Tag hot lead", sublabel: "Notify sales Slack",  icon: "🔥", color: "#ef4444", type: "output",    x: 640, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "b", to: "d", color: "#2f6bff", animated: true },
+      { from: "c", to: "e", color: "#f59e0b", animated: false },
+      { from: "d", to: "e", color: "#f59e0b", animated: false },
+      { from: "e", to: "f", color: "#ef4444", animated: true, label: "Yes" },
+    ]
+  },
+  {
+    id: "mktg-ai-content", roles: ["marketing"],
+    title: "AI content pipeline", icon: "🤖",
+    subtitle: "Trigger topic → AI draft → human review gate → schedule post → track performance",
+    defaultOps: 2000, defaultWorkflows: 3, needsNoCode: false, needsAI: true,
+    nodes: [
+      { id: "a", label: "Topic trigger", sublabel: "Airtable / webhook",  icon: "💡", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "AI draft",      sublabel: "Claude / GPT-4",      icon: "🤖", color: "#a855f7", type: "ai",     x: 200, y: 110 },
+      { id: "c", label: "Review gate",   sublabel: "Slack approve/reject", icon: "👀", color: "#f59e0b", type: "condition", x: 370, y: 110 },
+      { id: "d", label: "Schedule post", sublabel: "Buffer / LinkedIn",   icon: "📅", color: "#10b981", type: "action",  x: 530, y: 60  },
+      { id: "e", label: "Archive draft", sublabel: "Save to Notion",      icon: "🗃",  color: "#6b7a99", type: "output",  x: 530, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#a855f7", animated: true },
+      { from: "c", to: "d", color: "#10b981", animated: true, label: "Approved" },
+      { from: "c", to: "e", color: "#6b7a99", animated: false, label: "Rejected" },
+    ]
+  },
+  // ── Operations ────────────────────────────────────────────────────────────
+  {
+    id: "ops-approval", roles: ["operations"],
+    title: "Approval workflow", icon: "✅",
+    subtitle: "Request submitted → route to approver → approved/rejected → update system → notify requester",
+    defaultOps: 3000, defaultWorkflows: 4, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Request in",   sublabel: "Form / Jira ticket",  icon: "📨", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Route logic",  sublabel: "By type / amount",    icon: "🔀", color: "#f59e0b", type: "condition", x: 200, y: 110 },
+      { id: "c", label: "Notify manager",sublabel: "Slack + email",      icon: "🔔", color: "#2f6bff", type: "action",    x: 360, y: 60  },
+      { id: "d", label: "Auto-approve", sublabel: "Below threshold",     icon: "⚡", color: "#10b981", type: "action",    x: 360, y: 180 },
+      { id: "e", label: "Update system",sublabel: "Jira / Airtable",     icon: "💾", color: "#10b981", type: "action",    x: 530, y: 110 },
+      { id: "f", label: "Notify done",  sublabel: "Email requester",     icon: "📧", color: "#6b7a99", type: "output",    x: 640, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true, label: "High value" },
+      { from: "b", to: "d", color: "#10b981", animated: true, label: "Low value" },
+      { from: "c", to: "e", color: "#2f6bff", animated: false },
+      { from: "d", to: "e", color: "#10b981", animated: false },
+      { from: "e", to: "f", color: "#6b7a99", animated: true },
+    ]
+  },
+  {
+    id: "ops-data-sync", roles: ["operations"],
+    title: "Cross-tool data sync", icon: "🔄",
+    subtitle: "Change in CRM → transform data → sync to Sheets + Slack + Notion + Jira",
+    defaultOps: 12000, defaultWorkflows: 6, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "CRM update",    sublabel: "HubSpot webhook",    icon: "🏢", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Transform",     sublabel: "Map + filter fields", icon: "⚙️", color: "#f59e0b", type: "action",  x: 200, y: 110 },
+      { id: "c", label: "Google Sheets", sublabel: "Append / update row", icon: "📊", color: "#10b981", type: "output",  x: 380, y: 40  },
+      { id: "d", label: "Notion DB",     sublabel: "Create / update page",icon: "📋", color: "#2f6bff", type: "output",  x: 380, y: 120 },
+      { id: "e", label: "Slack alert",   sublabel: "#ops channel",        icon: "💬", color: "#10b981", type: "output",  x: 380, y: 200 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#10b981", animated: true },
+      { from: "b", to: "d", color: "#2f6bff", animated: true },
+      { from: "b", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+  // ── Developer ─────────────────────────────────────────────────────────────
+  {
+    id: "dev-api-pipeline", roles: ["developer"],
+    title: "API / webhook pipeline", icon: "🔗",
+    subtitle: "Inbound webhook → validate + transform → fan-out to multiple APIs → error handling → DB write",
+    defaultOps: 25000, defaultWorkflows: 8, needsNoCode: false, needsAI: false,
+    nodes: [
+      { id: "a", label: "Webhook in",    sublabel: "POST /hook endpoint",  icon: "🔗", color: "#6366f1", type: "trigger",   x: 30,  y: 110 },
+      { id: "b", label: "Validate",      sublabel: "Schema + auth check",  icon: "🛡",  color: "#f59e0b", type: "condition", x: 180, y: 110 },
+      { id: "c", label: "Transform",     sublabel: "JS code node",         icon: "⚙️", color: "#2f6bff", type: "action",    x: 330, y: 110 },
+      { id: "d", label: "API call A",    sublabel: "Salesforce update",    icon: "📡", color: "#10b981", type: "action",    x: 490, y: 50  },
+      { id: "e", label: "API call B",    sublabel: "Stripe charge",        icon: "💳", color: "#10b981", type: "action",    x: 490, y: 170 },
+      { id: "f", label: "DB write",      sublabel: "PostgreSQL insert",    icon: "🗃",  color: "#6b7a99", type: "output",    x: 620, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true, label: "Valid" },
+      { from: "c", to: "d", color: "#10b981", animated: true },
+      { from: "c", to: "e", color: "#10b981", animated: true },
+      { from: "d", to: "f", color: "#6b7a99", animated: false },
+      { from: "e", to: "f", color: "#6b7a99", animated: false },
+    ]
+  },
+  {
+    id: "dev-monitoring", roles: ["developer"],
+    title: "Error monitoring & alert", icon: "🚨",
+    subtitle: "Sentry alert → classify severity → page on-call / create Jira → update status page → log",
+    defaultOps: 5000, defaultWorkflows: 3, needsNoCode: false, needsAI: true,
+    nodes: [
+      { id: "a", label: "Sentry alert",  sublabel: "Error webhook",        icon: "🚨", color: "#ef4444", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "AI classify",   sublabel: "Critical / warning",   icon: "🤖", color: "#a855f7", type: "ai",        x: 200, y: 110 },
+      { id: "c", label: "Page on-call",  sublabel: "PagerDuty / Slack",    icon: "📟", color: "#ef4444", type: "action",    x: 380, y: 50  },
+      { id: "d", label: "Create Jira",   sublabel: "Bug ticket + priority",icon: "🐛", color: "#2f6bff", type: "action",    x: 380, y: 170 },
+      { id: "e", label: "Status page",   sublabel: "Update Statuspage.io", icon: "🌐", color: "#f59e0b", type: "output",    x: 550, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#ef4444", animated: true },
+      { from: "b", to: "c", color: "#ef4444", animated: true, label: "Critical" },
+      { from: "b", to: "d", color: "#2f6bff", animated: true, label: "Warning" },
+      { from: "c", to: "e", color: "#f59e0b", animated: false },
+      { from: "d", to: "e", color: "#f59e0b", animated: false },
+    ]
+  },
+  // ── Finance ───────────────────────────────────────────────────────────────
+  {
+    id: "fin-invoice", roles: ["finance"],
+    title: "Invoice processing", icon: "🧾",
+    subtitle: "Invoice email → AI extract fields → match PO → update Xero → notify approval",
+    defaultOps: 2000, defaultWorkflows: 3, needsNoCode: false, needsAI: true,
+    nodes: [
+      { id: "a", label: "Email arrives", sublabel: "Gmail / Outlook",      icon: "📨", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "AI extract",    sublabel: "Vendor, amount, date", icon: "🤖", color: "#a855f7", type: "ai",     x: 200, y: 110 },
+      { id: "c", label: "Match PO",      sublabel: "Lookup in Sheets",     icon: "🔍", color: "#f59e0b", type: "condition", x: 370, y: 110 },
+      { id: "d", label: "Update Xero",   sublabel: "Create bill",          icon: "💰", color: "#10b981", type: "action",  x: 530, y: 50  },
+      { id: "e", label: "Flag manual",   sublabel: "No match → Slack",     icon: "⚠️", color: "#ef4444", type: "output",  x: 530, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#a855f7", animated: true },
+      { from: "c", to: "d", color: "#10b981", animated: true, label: "Matched" },
+      { from: "c", to: "e", color: "#ef4444", animated: true, label: "No match" },
+    ]
+  },
+  // ── Legal ─────────────────────────────────────────────────────────────────
+  {
+    id: "legal-contract", roles: ["legal"],
+    title: "Contract review flow", icon: "📝",
+    subtitle: "Contract uploaded → AI risk scan → route to lawyer → sign → audit log",
+    defaultOps: 500, defaultWorkflows: 2, needsNoCode: true, needsAI: true,
+    nodes: [
+      { id: "a", label: "Upload",       sublabel: "Dropbox / Drive",      icon: "📁", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "AI risk scan", sublabel: "Flag risky clauses",   icon: "🤖", color: "#a855f7", type: "ai",        x: 200, y: 110 },
+      { id: "c", label: "Route",        sublabel: "By risk level",        icon: "🔀", color: "#f59e0b", type: "condition", x: 360, y: 110 },
+      { id: "d", label: "Legal review", sublabel: "Notify lawyer + notes",icon: "⚖️",  color: "#2f6bff", type: "action",    x: 510, y: 50  },
+      { id: "e", label: "Auto-proceed", sublabel: "DocuSign send",        icon: "✍️", color: "#10b981", type: "action",    x: 510, y: 180 },
+      { id: "f", label: "Audit log",    sublabel: "Notion row + hash",    icon: "📊", color: "#6b7a99", type: "output",    x: 640, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#a855f7", animated: true },
+      { from: "c", to: "d", color: "#ef4444", animated: true, label: "High risk" },
+      { from: "c", to: "e", color: "#10b981", animated: true, label: "Low risk" },
+      { from: "d", to: "f", color: "#6b7a99", animated: false },
+      { from: "e", to: "f", color: "#6b7a99", animated: false },
+    ]
+  },
+  // ── E-commerce ────────────────────────────────────────────────────────────
+  {
+    id: "ecom-order", roles: ["ecommerce"],
+    title: "Order fulfillment", icon: "📦",
+    subtitle: "New Shopify order → check inventory → fulfill → customer email → update dashboard",
+    defaultOps: 18000, defaultWorkflows: 5, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "New order",     sublabel: "Shopify webhook",     icon: "🛒", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Stock check",   sublabel: "Inventory API",       icon: "📦", color: "#f59e0b", type: "condition", x: 210, y: 110 },
+      { id: "c", label: "Fulfill",       sublabel: "Send to 3PL",         icon: "🚚", color: "#10b981", type: "action",    x: 380, y: 50  },
+      { id: "d", label: "Backorder",     sublabel: "Notify + delay",      icon: "⏳", color: "#ef4444", type: "action",    x: 380, y: 180 },
+      { id: "e", label: "Customer email",sublabel: "Tracking info send",  icon: "📧", color: "#2f6bff", type: "output",    x: 550, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#10b981", animated: true, label: "In stock" },
+      { from: "b", to: "d", color: "#ef4444", animated: true, label: "Out of stock" },
+      { from: "c", to: "e", color: "#2f6bff", animated: true },
+      { from: "d", to: "e", color: "#2f6bff", animated: false },
+    ]
+  },
+  // ── Other / mixed ─────────────────────────────────────────────────────────
+  {
+    id: "other-iot", roles: ["other"],
+    title: "IoT monitoring", icon: "📡",
+    subtitle: "Sensor reading → threshold check → alert on-call → log to DB",
+    defaultOps: 50000, defaultWorkflows: 10, needsNoCode: false, needsAI: false,
+    nodes: [
+      { id: "a", label: "MQTT sensor", sublabel: "Raspberry Pi / edge",  icon: "📡", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Threshold",   sublabel: "Compare rule",         icon: "⚖️",  color: "#f59e0b", type: "condition", x: 220, y: 110 },
+      { id: "c", label: "Alert",       sublabel: "PagerDuty / Telegram", icon: "🚨", color: "#ef4444", type: "action",    x: 400, y: 50  },
+      { id: "d", label: "Log to DB",   sublabel: "InfluxDB / Postgres",  icon: "🗃",  color: "#6b7a99", type: "output",    x: 400, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#ef4444", animated: true, label: "Exceeds" },
+      { from: "b", to: "d", color: "#6b7a99", animated: false, label: "Normal" },
+    ]
+  },
+  {
+    id: "other-generic", roles: ["other"],
+    title: "Generic automation", icon: "⚙️",
+    subtitle: "Trigger event → condition check → branch A or B → notify team",
+    defaultOps: 5000, defaultWorkflows: 4, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Trigger",    sublabel: "Webhook / schedule", icon: "⚡", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Condition",  sublabel: "Filter / route",     icon: "🔀", color: "#f59e0b", type: "condition", x: 230, y: 110 },
+      { id: "c", label: "Branch A",   sublabel: "Action set A",       icon: "✅", color: "#10b981", type: "action",    x: 420, y: 50  },
+      { id: "d", label: "Branch B",   sublabel: "Action set B",       icon: "🔧", color: "#2f6bff", type: "action",    x: 420, y: 180 },
+      { id: "e", label: "Notify",     sublabel: "Slack / email",      icon: "🔔", color: "#6b7a99", type: "output",    x: 580, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#10b981", animated: true },
+      { from: "b", to: "d", color: "#2f6bff", animated: true },
+      { from: "c", to: "e", color: "#6b7a99", animated: false },
+      { from: "d", to: "e", color: "#6b7a99", animated: false },
+    ]
+  },
+
+  // ── HR (extra) ────────────────────────────────────────────────────────────
+  {
+    id: "hr-probation", roles: ["hr"],
+    title: "Probation check-ins", icon: "📅",
+    subtitle: "New hire start date → auto-schedule 30/60/90-day reminders → manager task → HRIS update",
+    defaultOps: 300, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Hire start date", sublabel: "HRIS trigger",       icon: "📅", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Wait 30 days",    sublabel: "Delay node",          icon: "⏳", color: "#6b7a99", type: "action",    x: 200, y: 110 },
+      { id: "c", label: "Manager task",    sublabel: "Notion / ClickUp",    icon: "✅", color: "#2f6bff", type: "action",    x: 360, y: 60  },
+      { id: "d", label: "Slack reminder",  sublabel: "DM to manager",       icon: "💬", color: "#10b981", type: "action",    x: 360, y: 160 },
+      { id: "e", label: "Log to HRIS",     sublabel: "Mark review done",    icon: "📊", color: "#10b981", type: "output",    x: 530, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "b", to: "d", color: "#10b981", animated: true },
+      { from: "c", to: "e", color: "#6b7a99", animated: false },
+      { from: "d", to: "e", color: "#6b7a99", animated: false },
+    ]
+  },
+  {
+    id: "hr-job-posting", roles: ["hr"],
+    title: "Job posting sync", icon: "📢",
+    subtitle: "New role approved in ATS → post to LinkedIn + Indeed + company site → track applicants",
+    defaultOps: 200, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Role approved",  sublabel: "Greenhouse / Lever",  icon: "✅", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Post LinkedIn",  sublabel: "LinkedIn Jobs API",   icon: "💼", color: "#2f6bff", type: "action",  x: 220, y: 50  },
+      { id: "c", label: "Post Indeed",    sublabel: "Indeed API",          icon: "🔍", color: "#2f6bff", type: "action",  x: 220, y: 170 },
+      { id: "d", label: "Update careers", sublabel: "CMS / Notion page",   icon: "🌐", color: "#10b981", type: "action",  x: 390, y: 110 },
+      { id: "e", label: "Slack notify",   sublabel: "#hiring channel",     icon: "🔔", color: "#10b981", type: "output",  x: 550, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "a", to: "c", color: "#6366f1", animated: true },
+      { from: "b", to: "d", color: "#2f6bff", animated: true },
+      { from: "c", to: "d", color: "#2f6bff", animated: true },
+      { from: "d", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "hr-sick-tracking", roles: ["hr"],
+    title: "Sick day tracking", icon: "🤒",
+    subtitle: "Sick day logged → check rolling 12-month total → flag if over limit → manager notify",
+    defaultOps: 400, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Sick day logged", sublabel: "HRIS / form submit",  icon: "📨", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Count total",     sublabel: "Lookup 12-mo history", icon: "🔢", color: "#f59e0b", type: "condition", x: 220, y: 110 },
+      { id: "c", label: "Flag HR",         sublabel: "Slack + email alert",  icon: "⚠️", color: "#ef4444", type: "output",    x: 410, y: 50  },
+      { id: "d", label: "Log only",        sublabel: "Update Sheets row",    icon: "📊", color: "#6b7a99", type: "output",    x: 410, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#ef4444", animated: true, label: "Over limit" },
+      { from: "b", to: "d", color: "#6b7a99", animated: false, label: "Normal" },
+    ]
+  },
+  {
+    id: "hr-benefits", roles: ["hr"],
+    title: "Benefits enrollment", icon: "🎁",
+    subtitle: "Annual window opens → email all staff → form submit → validate → update HRIS → confirm",
+    defaultOps: 500, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Annual cron",    sublabel: "Nov 1st trigger",      icon: "⏰", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Email all staff",sublabel: "Enrollment form link",  icon: "✉️", color: "#2f6bff", type: "action",  x: 210, y: 110 },
+      { id: "c", label: "Form submitted", sublabel: "Typeform / Google",     icon: "📝", color: "#f59e0b", type: "trigger", x: 380, y: 110 },
+      { id: "d", label: "Update HRIS",    sublabel: "BambooHR write",        icon: "💾", color: "#10b981", type: "action",  x: 540, y: 60  },
+      { id: "e", label: "Confirm email",  sublabel: "Send to employee",      icon: "📧", color: "#10b981", type: "output",  x: 540, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: false },
+      { from: "c", to: "d", color: "#f59e0b", animated: true },
+      { from: "c", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+
+  // ── Marketing (extra) ─────────────────────────────────────────────────────
+  {
+    id: "mktg-webinar", roles: ["marketing"],
+    title: "Webinar follow-up", icon: "🎙️",
+    subtitle: "Registration → reminder D-1 → post-event email + recording → CRM tag attended/no-show",
+    defaultOps: 4000, defaultWorkflows: 3, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Registration",   sublabel: "Zoom / Eventbrite",   icon: "📨", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Reminder D-1",   sublabel: "Email + calendar",    icon: "⏰", color: "#2f6bff", type: "action",    x: 210, y: 110 },
+      { id: "c", label: "Attended?",      sublabel: "Check attendance log", icon: "👁",  color: "#f59e0b", type: "condition", x: 390, y: 110 },
+      { id: "d", label: "Send recording", sublabel: "Email + CRM tag",     icon: "🎬", color: "#10b981", type: "output",    x: 560, y: 50  },
+      { id: "e", label: "No-show email",  sublabel: "Re-engage sequence",  icon: "📧", color: "#6b7a99", type: "output",    x: 560, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: false },
+      { from: "c", to: "d", color: "#10b981", animated: true, label: "Attended" },
+      { from: "c", to: "e", color: "#6b7a99", animated: true, label: "No-show" },
+    ]
+  },
+  {
+    id: "mktg-mentions", roles: ["marketing"],
+    title: "Brand mention alerts", icon: "📡",
+    subtitle: "Monitor Twitter/Reddit for brand → filter noise → sentiment check → Slack digest",
+    defaultOps: 8000, defaultWorkflows: 2, needsNoCode: false, needsAI: true,
+    nodes: [
+      { id: "a", label: "Mention detected", sublabel: "Twitter / Reddit API", icon: "📡", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Filter noise",     sublabel: "Keyword rules",        icon: "🔍", color: "#f59e0b", type: "condition", x: 220, y: 110 },
+      { id: "c", label: "AI sentiment",     sublabel: "Positive / negative",  icon: "🤖", color: "#a855f7", type: "ai",        x: 400, y: 110 },
+      { id: "d", label: "Slack digest",     sublabel: "Daily #brand channel", icon: "💬", color: "#10b981", type: "output",    x: 570, y: 50  },
+      { id: "e", label: "Urgent alert",     sublabel: "Negative spike → DM",  icon: "🚨", color: "#ef4444", type: "output",    x: 570, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#a855f7", animated: true, label: "Relevant" },
+      { from: "c", to: "d", color: "#10b981", animated: false },
+      { from: "c", to: "e", color: "#ef4444", animated: true, label: "Negative" },
+    ]
+  },
+  {
+    id: "mktg-utm-report", roles: ["marketing"],
+    title: "Weekly UTM report", icon: "📊",
+    subtitle: "Every Monday → pull GA4 data → format by campaign → Sheets update → Slack summary",
+    defaultOps: 1000, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Weekly cron",    sublabel: "Mon 8am trigger",      icon: "⏰", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Pull GA4",       sublabel: "Sessions / conversions",icon: "📈", color: "#2f6bff", type: "action",  x: 210, y: 110 },
+      { id: "c", label: "Update Sheets",  sublabel: "Append weekly row",     icon: "📊", color: "#10b981", type: "action",  x: 380, y: 110 },
+      { id: "d", label: "Slack summary",  sublabel: "#marketing channel",    icon: "💬", color: "#10b981", type: "output",  x: 550, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "c", to: "d", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "mktg-churn", roles: ["marketing"],
+    title: "Churn warning sequence", icon: "⚠️",
+    subtitle: "Engagement score drops below threshold → CS alert → re-engagement email → CRM tag at-risk",
+    defaultOps: 3000, defaultWorkflows: 2, needsNoCode: true, needsAI: true,
+    nodes: [
+      { id: "a", label: "Score drop",     sublabel: "Daily check / webhook", icon: "📉", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "AI predict",     sublabel: "Churn probability",     icon: "🤖", color: "#a855f7", type: "ai",        x: 210, y: 110 },
+      { id: "c", label: "CS Slack alert", sublabel: "DM to account owner",   icon: "🔔", color: "#ef4444", type: "action",    x: 390, y: 50  },
+      { id: "d", label: "Re-engage email",sublabel: "Personalised template", icon: "✉️", color: "#f59e0b", type: "action",    x: 390, y: 180 },
+      { id: "e", label: "Tag at-risk",    sublabel: "CRM + Sheets flag",     icon: "🏷",  color: "#ef4444", type: "output",    x: 560, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#ef4444", animated: true },
+      { from: "b", to: "d", color: "#f59e0b", animated: true },
+      { from: "c", to: "e", color: "#ef4444", animated: false },
+      { from: "d", to: "e", color: "#f59e0b", animated: false },
+    ]
+  },
+
+  // ── Operations (extra) ────────────────────────────────────────────────────
+  {
+    id: "ops-sla", roles: ["operations"],
+    title: "SLA breach monitoring", icon: "⏱️",
+    subtitle: "Ticket open → check time elapsed → escalate if over SLA → log breach → notify manager",
+    defaultOps: 5000, defaultWorkflows: 3, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Ticket opened",  sublabel: "Jira / Zendesk",       icon: "🎫", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "SLA check",      sublabel: "Time elapsed rule",     icon: "⏱",  color: "#f59e0b", type: "condition", x: 220, y: 110 },
+      { id: "c", label: "Escalate",       sublabel: "Reassign + Slack DM",   icon: "📣", color: "#ef4444", type: "action",    x: 400, y: 50  },
+      { id: "d", label: "Log breach",     sublabel: "Sheets + Jira label",   icon: "📊", color: "#6b7a99", type: "output",    x: 400, y: 180 },
+      { id: "e", label: "Notify manager", sublabel: "Weekly SLA report",     icon: "🔔", color: "#ef4444", type: "output",    x: 570, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#ef4444", animated: true, label: "Breached" },
+      { from: "b", to: "d", color: "#6b7a99", animated: false, label: "On time" },
+      { from: "c", to: "e", color: "#ef4444", animated: true },
+      { from: "d", to: "e", color: "#6b7a99", animated: false },
+    ]
+  },
+  {
+    id: "ops-meeting-notes", roles: ["operations"],
+    title: "Meeting notes pipeline", icon: "📝",
+    subtitle: "Fireflies transcript ready → AI summarise → action items → Notion page + Slack post",
+    defaultOps: 2000, defaultWorkflows: 2, needsNoCode: false, needsAI: true,
+    nodes: [
+      { id: "a", label: "Transcript ready", sublabel: "Fireflies / Otter",  icon: "🎙",  color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "AI summarise",     sublabel: "Key points + actions",icon: "🤖", color: "#a855f7", type: "ai",     x: 210, y: 110 },
+      { id: "c", label: "Notion page",      sublabel: "Create meeting note", icon: "📋", color: "#2f6bff", type: "action",  x: 390, y: 60  },
+      { id: "d", label: "Slack post",       sublabel: "Post to team channel", icon: "💬", color: "#10b981", type: "output",  x: 390, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#a855f7", animated: true },
+      { from: "b", to: "d", color: "#a855f7", animated: true },
+    ]
+  },
+  {
+    id: "ops-incident", roles: ["operations"],
+    title: "Incident reporting", icon: "🚨",
+    subtitle: "Incident form → create Jira ticket → notify stakeholders → post-mortem template → timeline log",
+    defaultOps: 600, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Incident form",   sublabel: "Typeform / Slack cmd",  icon: "📨", color: "#ef4444", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Create Jira",     sublabel: "P1/P2 ticket",          icon: "🐛", color: "#2f6bff", type: "action",  x: 210, y: 110 },
+      { id: "c", label: "Notify #incident",sublabel: "Slack broadcast",        icon: "📣", color: "#ef4444", type: "action",  x: 380, y: 50  },
+      { id: "d", label: "Post-mortem doc", sublabel: "Notion template",        icon: "📝", color: "#f59e0b", type: "action",  x: 380, y: 180 },
+      { id: "e", label: "Timeline log",    sublabel: "Append to Sheets",       icon: "📊", color: "#6b7a99", type: "output",  x: 550, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#ef4444", animated: true },
+      { from: "b", to: "c", color: "#ef4444", animated: true },
+      { from: "b", to: "d", color: "#f59e0b", animated: true },
+      { from: "c", to: "e", color: "#6b7a99", animated: false },
+      { from: "d", to: "e", color: "#6b7a99", animated: false },
+    ]
+  },
+
+  // ── Developer (extra) ─────────────────────────────────────────────────────
+  {
+    id: "dev-cicd", roles: ["developer"],
+    title: "CI/CD failure notify", icon: "🔴",
+    subtitle: "GitHub Actions fail → find commit author → Slack DM + Jira ticket → auto-assign + label",
+    defaultOps: 3000, defaultWorkflows: 2, needsNoCode: false, needsAI: false,
+    nodes: [
+      { id: "a", label: "Actions fail",   sublabel: "GitHub webhook",        icon: "❌", color: "#ef4444", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Get author",     sublabel: "Last commit → user",    icon: "👤", color: "#f59e0b", type: "action",    x: 210, y: 110 },
+      { id: "c", label: "Slack DM",       sublabel: "Direct message author", icon: "💬", color: "#2f6bff", type: "action",    x: 390, y: 50  },
+      { id: "d", label: "Create Jira",    sublabel: "Bug + failed run link", icon: "🐛", color: "#2f6bff", type: "action",    x: 390, y: 180 },
+      { id: "e", label: "Auto-assign",    sublabel: "Assign to author",      icon: "📌", color: "#6b7a99", type: "output",    x: 560, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#ef4444", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "b", to: "d", color: "#2f6bff", animated: true },
+      { from: "c", to: "e", color: "#6b7a99", animated: false },
+      { from: "d", to: "e", color: "#6b7a99", animated: false },
+    ]
+  },
+  {
+    id: "dev-dependency", roles: ["developer"],
+    title: "Dependency vulnerability", icon: "🔒",
+    subtitle: "Snyk / Dependabot alert → classify severity → create Jira + assign → Slack notify team",
+    defaultOps: 1000, defaultWorkflows: 2, needsNoCode: false, needsAI: false,
+    nodes: [
+      { id: "a", label: "Vuln alert",     sublabel: "Snyk / Dependabot",    icon: "🔒", color: "#ef4444", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Severity check", sublabel: "Critical / high / low", icon: "⚖️",  color: "#f59e0b", type: "condition", x: 220, y: 110 },
+      { id: "c", label: "P1 Jira ticket", sublabel: "Immediate fix req",    icon: "🚨", color: "#ef4444", type: "action",    x: 400, y: 50  },
+      { id: "d", label: "Backlog ticket", sublabel: "Low priority",         icon: "🐛", color: "#2f6bff", type: "action",    x: 400, y: 180 },
+      { id: "e", label: "Slack #security",sublabel: "Team notification",    icon: "💬", color: "#10b981", type: "output",    x: 570, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#ef4444", animated: true },
+      { from: "b", to: "c", color: "#ef4444", animated: true, label: "Critical" },
+      { from: "b", to: "d", color: "#2f6bff", animated: false, label: "Low" },
+      { from: "c", to: "e", color: "#10b981", animated: true },
+      { from: "d", to: "e", color: "#10b981", animated: false },
+    ]
+  },
+  {
+    id: "dev-backup", roles: ["developer"],
+    title: "Backup verification", icon: "💾",
+    subtitle: "Nightly cron → check backup exists + size → alert if missing → log status to Sheets",
+    defaultOps: 1000, defaultWorkflows: 1, needsNoCode: false, needsAI: false,
+    nodes: [
+      { id: "a", label: "Nightly cron",  sublabel: "2am scheduled",        icon: "⏰", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Check backup",  sublabel: "S3 / storage API",     icon: "🔍", color: "#f59e0b", type: "condition", x: 220, y: 110 },
+      { id: "c", label: "PagerDuty",     sublabel: "Page on-call eng",     icon: "🚨", color: "#ef4444", type: "output",    x: 400, y: 50  },
+      { id: "d", label: "Log OK",        sublabel: "Sheets + Slack ✓",     icon: "✅", color: "#10b981", type: "output",    x: 400, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#ef4444", animated: true, label: "Missing" },
+      { from: "b", to: "d", color: "#10b981", animated: false, label: "OK" },
+    ]
+  },
+  {
+    id: "dev-feature-flag", roles: ["developer"],
+    title: "Feature flag cleanup", icon: "🚩",
+    subtitle: "Weekly scan → find flags older than 90 days → create Jira reminders → Slack digest",
+    defaultOps: 500, defaultWorkflows: 1, needsNoCode: false, needsAI: false,
+    nodes: [
+      { id: "a", label: "Weekly cron",   sublabel: "Monday 9am",           icon: "⏰", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Scan flags",    sublabel: "LaunchDarkly / Flagsmith",icon:"🚩", color: "#f59e0b", type: "action",  x: 210, y: 110 },
+      { id: "c", label: "Filter old",    sublabel: "Age > 90 days",        icon: "🔍", color: "#f59e0b", type: "condition", x: 390, y: 110 },
+      { id: "d", label: "Jira tickets",  sublabel: "One per stale flag",   icon: "🐛", color: "#2f6bff", type: "action",  x: 560, y: 50  },
+      { id: "e", label: "Slack digest",  sublabel: "#tech-debt channel",   icon: "💬", color: "#10b981", type: "output",  x: 560, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#f59e0b", animated: true },
+      { from: "c", to: "d", color: "#2f6bff", animated: true, label: "Stale" },
+      { from: "c", to: "e", color: "#10b981", animated: false },
+      { from: "d", to: "e", color: "#10b981", animated: false },
+    ]
+  },
+
+  // ── Finance (extra) ───────────────────────────────────────────────────────
+  {
+    id: "fin-expense", roles: ["finance"],
+    title: "Expense report flow", icon: "🧾",
+    subtitle: "Expense submitted → approval routing → approved/rejected → Xero sync → employee confirm",
+    defaultOps: 1500, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Expense submit",  sublabel: "Expensify / Ramp",    icon: "💳", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Amount check",    sublabel: "Over limit route",     icon: "⚖️",  color: "#f59e0b", type: "condition", x: 210, y: 110 },
+      { id: "c", label: "Manager approve", sublabel: "Slack approve button", icon: "👤", color: "#2f6bff", type: "action",    x: 390, y: 50  },
+      { id: "d", label: "Auto-approve",    sublabel: "Under £50",            icon: "⚡", color: "#10b981", type: "action",    x: 390, y: 180 },
+      { id: "e", label: "Xero sync",       sublabel: "Create expense entry", icon: "💰", color: "#10b981", type: "output",    x: 560, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true, label: "Over limit" },
+      { from: "b", to: "d", color: "#10b981", animated: true, label: "Under limit" },
+      { from: "c", to: "e", color: "#10b981", animated: false },
+      { from: "d", to: "e", color: "#10b981", animated: false },
+    ]
+  },
+  {
+    id: "fin-budget-alert", roles: ["finance"],
+    title: "Budget overspend alert", icon: "📉",
+    subtitle: "Daily spend check → compare vs budget → alert CFO if threshold exceeded → log to dashboard",
+    defaultOps: 700, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Daily cron",     sublabel: "9am check",            icon: "⏰", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Pull actuals",   sublabel: "Xero / QuickBooks",    icon: "💰", color: "#2f6bff", type: "action",    x: 210, y: 110 },
+      { id: "c", label: "vs. budget",     sublabel: "Compare Sheets plan",  icon: "⚖️",  color: "#f59e0b", type: "condition", x: 390, y: 110 },
+      { id: "d", label: "Alert CFO",      sublabel: "Slack + email",        icon: "🚨", color: "#ef4444", type: "output",    x: 560, y: 50  },
+      { id: "e", label: "Log dashboard",  sublabel: "Sheets append row",    icon: "📊", color: "#6b7a99", type: "output",    x: 560, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "c", to: "d", color: "#ef4444", animated: true, label: "Over 90%" },
+      { from: "c", to: "e", color: "#6b7a99", animated: false, label: "OK" },
+    ]
+  },
+  {
+    id: "fin-saas-audit", roles: ["finance"],
+    title: "SaaS subscription audit", icon: "💳",
+    subtitle: "Monthly scan of card statements → categorise by vendor → compare vs approved list → flag unknown",
+    defaultOps: 400, defaultWorkflows: 1, needsNoCode: false, needsAI: true,
+    nodes: [
+      { id: "a", label: "Monthly cron",  sublabel: "1st of month",          icon: "⏰", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Pull statements",sublabel: "Ramp / card API",      icon: "💳", color: "#2f6bff", type: "action",    x: 210, y: 110 },
+      { id: "c", label: "AI categorise", sublabel: "Vendor + amount",       icon: "🤖", color: "#a855f7", type: "ai",        x: 390, y: 110 },
+      { id: "d", label: "Flag unknown",  sublabel: "Not in approved list",  icon: "⚠️", color: "#ef4444", type: "output",    x: 560, y: 50  },
+      { id: "e", label: "Sheets report", sublabel: "Full monthly summary",  icon: "📊", color: "#10b981", type: "output",    x: 560, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#a855f7", animated: true },
+      { from: "c", to: "d", color: "#ef4444", animated: true },
+      { from: "c", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "fin-payroll-recon", roles: ["finance"],
+    title: "Payroll reconciliation", icon: "🔢",
+    subtitle: "Monthly payroll run → compare headcount vs HRIS → flag discrepancies → finance review",
+    defaultOps: 300, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Payroll run",   sublabel: "ADP / Sage trigger",   icon: "💰", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Pull HRIS",     sublabel: "Active headcount",     icon: "👥", color: "#2f6bff", type: "action",    x: 210, y: 110 },
+      { id: "c", label: "Diff check",    sublabel: "Payroll vs HRIS count", icon: "🔍", color: "#f59e0b", type: "condition", x: 390, y: 110 },
+      { id: "d", label: "Flag diff",     sublabel: "Slack + Jira ticket",  icon: "⚠️", color: "#ef4444", type: "output",    x: 560, y: 50  },
+      { id: "e", label: "Confirm OK",    sublabel: "Email finance team",   icon: "✅", color: "#10b981", type: "output",    x: 560, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "c", to: "d", color: "#ef4444", animated: true, label: "Mismatch" },
+      { from: "c", to: "e", color: "#10b981", animated: false, label: "Match" },
+    ]
+  },
+
+  // ── Legal (extra) ─────────────────────────────────────────────────────────
+  {
+    id: "legal-nda", roles: ["legal"],
+    title: "NDA expiry tracking", icon: "📄",
+    subtitle: "NDA database scan → find expiring in 30 days → notify legal + counterparty → renew or archive",
+    defaultOps: 200, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Daily cron",    sublabel: "Check NDA database",   icon: "⏰", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Expiry check",  sublabel: "Within 30 days?",      icon: "📅", color: "#f59e0b", type: "condition", x: 220, y: 110 },
+      { id: "c", label: "Notify legal",  sublabel: "Slack + email alert",  icon: "⚖️",  color: "#2f6bff", type: "action",    x: 400, y: 50  },
+      { id: "d", label: "Archive",       sublabel: "Mark expired",         icon: "🗃",  color: "#6b7a99", type: "output",    x: 400, y: 180 },
+      { id: "e", label: "Renew task",    sublabel: "Notion task created",  icon: "✍️", color: "#10b981", type: "output",    x: 570, y: 50  },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true, label: "Expiring" },
+      { from: "b", to: "d", color: "#6b7a99", animated: false, label: "Expired" },
+      { from: "c", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "legal-gdpr", roles: ["legal"],
+    title: "GDPR deletion request", icon: "🔐",
+    subtitle: "Data subject request → verify identity → locate data across systems → delete → confirm + log",
+    defaultOps: 150, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "DSR received",  sublabel: "Form / email",         icon: "📨", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Verify ID",     sublabel: "Manual + email check", icon: "🔍", color: "#f59e0b", type: "condition", x: 210, y: 110 },
+      { id: "c", label: "Locate data",   sublabel: "CRM + DB + Sheets",    icon: "🗺",  color: "#2f6bff", type: "action",    x: 390, y: 110 },
+      { id: "d", label: "Delete + log",  sublabel: "GDPR audit trail",     icon: "🗑",  color: "#ef4444", type: "action",    x: 560, y: 60  },
+      { id: "e", label: "Confirm email", sublabel: "To data subject",      icon: "✉️", color: "#10b981", type: "output",    x: 560, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true, label: "Verified" },
+      { from: "c", to: "d", color: "#ef4444", animated: true },
+      { from: "d", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "legal-policy", roles: ["legal"],
+    title: "Policy update notify", icon: "📋",
+    subtitle: "New policy doc uploaded → email all staff → track acknowledgement → chase non-responses",
+    defaultOps: 300, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Doc uploaded",  sublabel: "Drive / SharePoint",   icon: "📁", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Email all staff",sublabel: "Acknowledge link",     icon: "✉️", color: "#2f6bff", type: "action",    x: 210, y: 110 },
+      { id: "c", label: "Acknowledged?", sublabel: "Track responses",      icon: "👁",  color: "#f59e0b", type: "condition", x: 390, y: 110 },
+      { id: "d", label: "Chase reminder",sublabel: "3-day nudge email",    icon: "🔔", color: "#f59e0b", type: "output",    x: 560, y: 50  },
+      { id: "e", label: "Log complete",  sublabel: "Compliance Sheets row", icon: "✅", color: "#10b981", type: "output",    x: 560, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: false },
+      { from: "c", to: "d", color: "#f59e0b", animated: true, label: "Pending" },
+      { from: "c", to: "e", color: "#10b981", animated: false, label: "Done" },
+    ]
+  },
+
+  // ── E-commerce (extra) ────────────────────────────────────────────────────
+  {
+    id: "ecom-cart", roles: ["ecommerce"],
+    title: "Abandoned cart recovery", icon: "🛒",
+    subtitle: "Cart abandoned → wait 1h → email 1 → wait 24h → email 2 with discount → tag in CRM",
+    defaultOps: 10000, defaultWorkflows: 3, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Cart abandoned", sublabel: "Shopify webhook",      icon: "🛒", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Wait 1 hour",    sublabel: "Delay node",           icon: "⏳", color: "#6b7a99", type: "action",  x: 210, y: 110 },
+      { id: "c", label: "Email 1",        sublabel: "Reminder — no disc.",  icon: "✉️", color: "#f59e0b", type: "action",  x: 380, y: 110 },
+      { id: "d", label: "Wait 24h",       sublabel: "Delay node",           icon: "⏳", color: "#6b7a99", type: "action",  x: 530, y: 110 },
+      { id: "e", label: "Email 2",        sublabel: "10% discount code",    icon: "🏷",  color: "#10b981", type: "output",  x: 660, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#f59e0b", animated: true },
+      { from: "c", to: "d", color: "#6b7a99", animated: false },
+      { from: "d", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "ecom-review", roles: ["ecommerce"],
+    title: "Review request sequence", icon: "⭐",
+    subtitle: "Order delivered → wait 7 days → review request email → Trustpilot / Google link",
+    defaultOps: 6000, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Delivered",      sublabel: "Shipment webhook",     icon: "📦", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Wait 7 days",    sublabel: "Delay node",           icon: "⏳", color: "#6b7a99", type: "action",  x: 210, y: 110 },
+      { id: "c", label: "Review email",   sublabel: "Personalised ask",     icon: "✉️", color: "#2f6bff", type: "action",  x: 380, y: 110 },
+      { id: "d", label: "Trustpilot",     sublabel: "Direct link",          icon: "⭐", color: "#10b981", type: "output",  x: 540, y: 50  },
+      { id: "e", label: "Google Review",  sublabel: "Direct link",          icon: "🔍", color: "#10b981", type: "output",  x: 540, y: 180 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "c", to: "d", color: "#10b981", animated: true },
+      { from: "c", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "ecom-low-stock", roles: ["ecommerce"],
+    title: "Low stock alert", icon: "📦",
+    subtitle: "Inventory check every 6h → below reorder threshold → email buyer + Slack → create PO draft",
+    defaultOps: 4000, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Stock check",   sublabel: "Every 6h cron",        icon: "⏰", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Below thresh?", sublabel: "Inventory API check",  icon: "📦", color: "#f59e0b", type: "condition", x: 220, y: 110 },
+      { id: "c", label: "Email buyer",   sublabel: "Procurement team",     icon: "📧", color: "#ef4444", type: "action",    x: 400, y: 50  },
+      { id: "d", label: "Slack notify",  sublabel: "#ops channel",         icon: "💬", color: "#10b981", type: "action",    x: 400, y: 180 },
+      { id: "e", label: "Draft PO",      sublabel: "Create in Xero / ERP", icon: "📝", color: "#2f6bff", type: "output",    x: 570, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#ef4444", animated: true, label: "Low" },
+      { from: "b", to: "d", color: "#10b981", animated: true, label: "Low" },
+      { from: "c", to: "e", color: "#2f6bff", animated: false },
+      { from: "d", to: "e", color: "#2f6bff", animated: false },
+    ]
+  },
+  {
+    id: "ecom-return", roles: ["ecommerce"],
+    title: "Return processing", icon: "↩️",
+    subtitle: "Return request → approve → send label → item received → update inventory + trigger refund",
+    defaultOps: 3000, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Return request", sublabel: "Form / Shopify",      icon: "↩️", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Auto-approve",   sublabel: "Within policy check", icon: "✅", color: "#10b981", type: "action",    x: 210, y: 110 },
+      { id: "c", label: "Send label",     sublabel: "Royal Mail / UPS",    icon: "🏷",  color: "#2f6bff", type: "action",    x: 380, y: 110 },
+      { id: "d", label: "Item received",  sublabel: "Warehouse scan",      icon: "📦", color: "#f59e0b", type: "trigger",   x: 540, y: 110 },
+      { id: "e", label: "Refund",         sublabel: "Stripe refund + email",icon:"💰", color: "#10b981", type: "output",    x: 660, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#10b981", animated: true },
+      { from: "c", to: "d", color: "#2f6bff", animated: false },
+      { from: "d", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+
+  // ── Other (extra) ─────────────────────────────────────────────────────────
+  {
+    id: "other-scheduled-report", roles: ["other"],
+    title: "Scheduled data report", icon: "📈",
+    subtitle: "Weekly cron → pull data from API → format → send email digest to team",
+    defaultOps: 2000, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Weekly cron",   sublabel: "Monday 8am",           icon: "⏰", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Pull API data", sublabel: "REST / GraphQL",       icon: "📡", color: "#2f6bff", type: "action",  x: 210, y: 110 },
+      { id: "c", label: "Format report", sublabel: "Template + numbers",   icon: "📝", color: "#f59e0b", type: "action",  x: 380, y: 110 },
+      { id: "d", label: "Email digest",  sublabel: "To team distribution", icon: "📧", color: "#10b981", type: "output",  x: 550, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "c", to: "d", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "other-form-router", roles: ["other"],
+    title: "Form-to-anywhere router", icon: "🔀",
+    subtitle: "Typeform / Tally response → route by answer → CRM or Sheets or Slack depending on type",
+    defaultOps: 3000, defaultWorkflows: 3, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Form submit",   sublabel: "Typeform / Tally",     icon: "📝", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Route by type", sublabel: "Answer-based branch",  icon: "🔀", color: "#f59e0b", type: "condition", x: 220, y: 110 },
+      { id: "c", label: "Add to CRM",    sublabel: "HubSpot contact",      icon: "👤", color: "#2f6bff", type: "output",    x: 400, y: 40  },
+      { id: "d", label: "Sheets row",    sublabel: "Append data",          icon: "📊", color: "#10b981", type: "output",    x: 400, y: 120 },
+      { id: "e", label: "Slack alert",   sublabel: "Notify relevant team", icon: "💬", color: "#10b981", type: "output",    x: 400, y: 200 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "b", to: "d", color: "#10b981", animated: true },
+      { from: "b", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+];
+
+// ── Big SVG diagram renderer ──────────────────────────────────────────────────
+const NODE_W = 150, NODE_H = 64;
+const TYPE_LABELS = {
+  trigger: "TRIGGER", action: "ACTION", condition: "CONDITION", ai: "AI", output: "OUTPUT"
+};
+
+const animFrames = {};
+function stopAnims(svgId) {
+  if (animFrames[svgId]) { cancelAnimationFrame(animFrames[svgId]); delete animFrames[svgId]; }
+}
+
+function renderBigDiagram(wf, svgId) {
+  svgId = svgId || "wf-big-svg";
+  stopAnims(svgId);
+  const svg = document.getElementById(svgId);
+
+  // Scale node positions: authored at NODE_W=90 spacing, scale up to actual NODE_W
+  const SCALE = NODE_W / 90;
+  const scaled = wf.nodes.map(n => ({ ...n, x: Math.round(n.x * SCALE), y: n.y }));
+
+  const xs = scaled.map(n => n.x);
+  const ys = scaled.map(n => n.y);
+  const maxX = Math.max(...xs) + NODE_W + 40;
+  const maxY = Math.max(...ys) + NODE_H + 40;
+  const vw = Math.max(900, maxX);
+  const vh = Math.max(260, maxY);
+  svg.setAttribute("viewBox", `0 0 ${vw} ${vh}`);
+  svg.style.width = "100%";
+  svg.style.maxWidth = vw + "px";
+  svg.style.height = vh + "px";
+
+  // Build node map from scaled positions
+  const nodeMap = {};
+  scaled.forEach(n => { nodeMap[n.id] = n; });
+
+  // Build SVG string
+  let defs = `<defs>`;
+
+  // Animated dash patterns per edge color
+  const edgeColors = [...new Set(wf.edges.map(e => e.color))];
+  edgeColors.forEach(c => {
+    const cid = c.replace("#", "c");
+    defs += `<marker id="arr-${cid}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="${c}" opacity="0.9"/>
+    </marker>`;
+  });
+
+  defs += `</defs>`;
+
+  let edgesHTML = `<g class="edges">`;
+  wf.edges.forEach((e, i) => {
+    const src = nodeMap[e.from], dst = nodeMap[e.to];
+    const x1 = src.x + NODE_W, y1 = src.y + NODE_H / 2;
+    const x2 = dst.x,          y2 = dst.y + NODE_H / 2;
+    const mx = (x1 + x2) / 2;
+    const cid = e.color.replace("#", "c");
+
+    const d = `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
+    const strokeW = e.animated ? 2 : 1.5;
+    const opacity = e.animated ? 0.85 : 0.45;
+
+    edgesHTML += `<path class="edge-path${e.animated ? " anim-edge" : ""}" d="${d}" fill="none"
+      stroke="${e.color}" stroke-width="${strokeW}" opacity="${opacity}"
+      marker-end="url(#arr-${cid})"
+      stroke-dasharray="${e.animated ? "6 4" : "none"}"
+      data-eidx="${i}" data-color="${e.color}"/>`;
+
+    if (e.label) {
+      const lx = mx, ly = (y1 + y2) / 2 - 6;
+      edgesHTML += `<rect x="${lx - 22}" y="${ly - 11}" width="44" height="15" rx="4" fill="${e.color}" opacity="0.15"/>`;
+      edgesHTML += `<text x="${lx}" y="${ly}" fill="${e.color}" font-size="9" font-family="system-ui,sans-serif" font-weight="700" text-anchor="middle">${e.label}</text>`;
+    }
+  });
+  edgesHTML += `</g>`;
+
+  let nodesHTML = `<g class="nodes">`;
+  scaled.forEach(n => {
+    const c = n.color;
+    const typeLabel = TYPE_LABELS[n.type] || "";
+    nodesHTML += `
+      <g class="wf-node-g" transform="translate(${n.x},${n.y})">
+        <rect width="${NODE_W}" height="${NODE_H}" rx="9" fill="${c}" opacity="0.13" stroke="${c}" stroke-width="1.5"/>
+        <rect x="0" y="0" width="${NODE_W}" height="5" rx="9" fill="${c}" opacity="0.55"/>
+        <rect x="0" y="5" width="${NODE_W}" height="0" fill="${c}" opacity="0.55"/>
+        <text x="8" y="18" fill="${c}" font-size="8" font-family="system-ui,sans-serif" font-weight="800" letter-spacing="0.07em" opacity="0.85">${typeLabel}</text>
+        <text x="8" y="38" font-size="14" fill="${c}" font-family="system-ui,sans-serif" opacity="0.9">${n.icon}</text>
+        <text x="28" y="38" fill="#e8edf5" font-size="12" font-family="system-ui,sans-serif" font-weight="700">${n.label}</text>
+        <text x="8" y="55" fill="#6b7a99" font-size="9" font-family="system-ui,sans-serif">${n.sublabel}</text>
+      </g>`;
+  });
+  nodesHTML += `</g>`;
+
+  svg.innerHTML = defs + edgesHTML + nodesHTML;
+
+  // Animate dashes
+  const animPaths = svg.querySelectorAll(".anim-edge");
+  let offset = 0;
+  function tick() {
+    offset = (offset - 0.4) % 10;
+    animPaths.forEach(p => p.style.strokeDashoffset = offset);
+    animFrames[svgId] = requestAnimationFrame(tick);
+  }
+  if (animPaths.length) tick();
+}
+
+function getFilteredWorkflows() {
+  const role = selectedRole || "other";
+  return WORKFLOWS.filter(w => w.roles.includes(role));
+}
+
+const INTEGRATIONS = [
+  { name: "Slack",            cat: "Communication", s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Discord",          cat: "Communication", s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Telegram",         cat: "Communication", s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":1 } },
+  { name: "Microsoft Teams",  cat: "Communication", s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "Mattermost",       cat: "Communication", s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Gmail",            cat: "Email",         s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Outlook",          cat: "Email",         s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "Mailchimp",        cat: "Email",         s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "SMTP (any email)", cat: "Email",         s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":1 } },
+  { name: "Google Sheets",    cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Google Drive",     cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Google Calendar",  cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Notion",           cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Airtable",         cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Todoist",          cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Dropbox",          cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Trello",           cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Asana",            cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "ClickUp",          cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Monday.com",       cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Jira",             cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "Linear",           cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "HubSpot",          cat: "CRM & Sales",   s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Salesforce",       cat: "CRM & Sales",   s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Pipedrive",        cat: "CRM & Sales",   s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Stripe",           cat: "Payments",      s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "PayPal",           cat: "Payments",      s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "Xero",             cat: "Payments",      s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Shopify",          cat: "E-commerce",    s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "WooCommerce",      cat: "E-commerce",    s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "WordPress",        cat: "E-commerce",    s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "GitHub",           cat: "Developer",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "GitLab",           cat: "Developer",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "PostgreSQL",       cat: "Developer",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":1 } },
+  { name: "Webhook / HTTP",   cat: "Developer",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":1 } },
+  { name: "MQTT",             cat: "Developer",     s: { n8n:1, make:0, pipedream:0, zapier:0, activepieces:0, automatisch:0, "node-red":1 } },
+  { name: "OpenAI",           cat: "AI",            s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Anthropic Claude", cat: "AI",            s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "YouTube",          cat: "Marketing",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Twitter / X",      cat: "Marketing",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Twilio (SMS)",     cat: "Marketing",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+];
+
+const TOOLS = [
+  { slug: "n8n", name: "n8n", selfHostable: true, aiFeatures: true, integrations: 400,
+    homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: true,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8,  opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
+      { name: "Cloud Starter", monthlyUsd: 20, opsIncluded: 2500,   workflowLimit: 5,        note: "Cloud Starter" },
+      { name: "Cloud Pro",     monthlyUsd: 50, opsIncluded: 10000,  workflowLimit: 15,       note: "Cloud Pro" },
+    ], overage: null },
+  { slug: "make", name: "Make", selfHostable: false, aiFeatures: true, integrations: 1500,
+    homepage: "https://www.make.com", affiliateUrl: "https://www.make.com", hasAffiliate: true,
+    plans: [
+      { name: "Free",  monthlyUsd: 0,  opsIncluded: 1000,  workflowLimit: Infinity, note: "Free tier" },
+      { name: "Core",  monthlyUsd: 9,  opsIncluded: 10000, workflowLimit: Infinity, note: "Core plan" },
+      { name: "Pro",   monthlyUsd: 16, opsIncluded: 10000, workflowLimit: Infinity, note: "Pro plan" },
+      { name: "Teams", monthlyUsd: 29, opsIncluded: 10000, workflowLimit: Infinity, note: "Teams plan" },
+    ], overage: { per: 10000, usd: 9 } },
+  { slug: "pipedream", name: "Pipedream", selfHostable: false, aiFeatures: true, integrations: 2000,
+    homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: true,
+    plans: [
+      { name: "Free",     monthlyUsd: 0,  opsIncluded: 100,  workflowLimit: 3,        note: "Free tier" },
+      { name: "Basic",    monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 20,       note: "Basic plan" },
+      { name: "Advanced", monthlyUsd: 49, opsIncluded: 5000, workflowLimit: Infinity, note: "Advanced plan" },
+    ], overage: { per: 1000, usd: 10 } },
+  { slug: "zapier", name: "Zapier", selfHostable: false, aiFeatures: true, integrations: 7000,
+    homepage: "https://zapier.com", affiliateUrl: "https://zapier.com", hasAffiliate: false,
+    plans: [
+      { name: "Free",         monthlyUsd: 0,  opsIncluded: 100,  workflowLimit: 5,        note: "Free tier" },
+      { name: "Starter",      monthlyUsd: 20, opsIncluded: 750,  workflowLimit: 20,       note: "Starter plan" },
+      { name: "Professional", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity, note: "Professional plan" },
+      { name: "Team",         monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity, note: "Team plan" },
+    ], overage: { per: 1000, usd: 25 } },
+  { slug: "activepieces", name: "Activepieces", selfHostable: true, aiFeatures: true, integrations: 200,
+    homepage: "https://www.activepieces.com", affiliateUrl: "https://www.activepieces.com", hasAffiliate: false,
+    plans: [
+      { name: "Self-hosted",   monthlyUsd: 8,  opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
+      { name: "Cloud Starter", monthlyUsd: 10, opsIncluded: 5000,     workflowLimit: Infinity, note: "Cloud Starter" },
+      { name: "Cloud Pro",     monthlyUsd: 25, opsIncluded: 15000,    workflowLimit: Infinity, note: "Cloud Pro" },
+    ], overage: null },
+  { slug: "automatisch", name: "Automatisch", selfHostable: true, aiFeatures: false, integrations: 50,
+    homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8,  opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
+      { name: "Cloud",       monthlyUsd: 20, opsIncluded: Infinity, workflowLimit: Infinity, note: "Cloud plan" },
+    ], overage: null },
+  { slug: "node-red", name: "Node-RED", selfHostable: true, aiFeatures: false, integrations: 1000,
+    homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
+    ], overage: null },
+];
+
+// Role-specific pros/cons text
+const TOOL_WHY = {
+  n8n: {
+    marketing:   { pros: ["Best AI nodes for content pipelines", "Visual canvas, decent for non-devs"], cons: ["Cloud plan workflow limit (5 on Starter)", "Steeper initial setup vs Make"] },
+    operations:  { pros: ["Unlimited workflows self-hosted", "Strong data transformation"], cons: ["Requires more technical setup", "Cloud limits can be tight"] },
+    developer:   { pros: ["Full JS/Python code nodes", "Best-in-class AI agent support", "Self-hosted = unlimited"], cons: ["Sustainable Use License restricts SaaS resale"] },
+    finance:     { pros: ["Self-host keeps data on your server", "Good audit trail in logs"], cons: ["Not built for accounting-specific compliance"] },
+    legal:       { pros: ["Self-hosted = full data sovereignty", "GDPR-friendly by design"], cons: ["Sustainable Use License has restrictions"] },
+    hr:          { pros: ["All major HRIS integrations", "Self-hostable for data privacy"], cons: ["Setup needs a technical person"] },
+    ecommerce:   { pros: ["Shopify, Stripe, WooCommerce integrations", "Unlimited ops self-hosted"], cons: ["Smaller integration library than Zapier/Make"] },
+    other:       { pros: ["Best all-round tool for technical users", "Community is huge"], cons: ["Overkill if you just need simple zaps"] },
+  },
+  make: {
+    marketing:   { pros: ["Most intuitive visual canvas", "Best price per op in cloud", "1,500+ app library"], cons: ["No self-hosting", "No native code steps"] },
+    operations:  { pros: ["Unlimited scenarios on paid", "Complex branching logic built-in"], cons: ["No self-host option", "EU data only (Prague HQ)"] },
+    developer:   { pros: ["1,500+ integrations", "Good HTTP/webhook module"], cons: ["No code steps inside scenarios", "No self-hosting"] },
+    finance:     { pros: ["Xero, QuickBooks, Stripe integrations", "Affordable for low-volume"], cons: ["No self-host for data sovereignty"] },
+    legal:       { pros: ["EU company — EU data processing", "Simple, low error risk"], cons: ["No self-hosting", "No full audit log export"] },
+    hr:          { pros: ["Easy visual flows for non-devs", "All HRIS integrations present"], cons: ["Cloud-only", "No code customisation"] },
+    ecommerce:   { pros: ["Best price for high-op e-commerce", "Shopify/WooCommerce native"], cons: ["No self-hosting"] },
+    other:       { pros: ["Best bang-for-buck cloud option", "Easiest to start"], cons: ["No self-host, no code steps"] },
+  },
+  pipedream: {
+    marketing:   { pros: ["2,000+ integrations", "npm packages available"], cons: ["Not beginner-friendly", "Expensive per op vs Make", "US-only cloud"] },
+    operations:  { pros: ["Full Node.js code in any step", "Best for complex API flows"], cons: ["Not for non-technical users", "Most expensive at scale"] },
+    developer:   { pros: ["Run full Node.js or Python anywhere", "npm support, 2,000+ integrations"], cons: ["No self-hosting", "US-only"] },
+    finance:     { pros: ["Powerful data transformation", "Any API via code"], cons: ["US cloud only — GDPR concern", "Overkill for simple flows"] },
+    legal:       { pros: ["Granular control via code"], cons: ["US-based cloud — data sovereignty issue", "No self-hosting"] },
+    hr:          { pros: ["Code flexibility for edge cases"], cons: ["Not beginner-friendly for HR users", "Expensive free tier"] },
+    ecommerce:   { pros: ["Deep API integration capability"], cons: ["Expensive per credit at high volume", "Not visual-friendly"] },
+    other:       { pros: ["Maximum code flexibility"], cons: ["Not price-competitive for low/medium usage"] },
+  },
+  zapier: {
+    marketing:   { pros: ["7,000+ integrations — widest library", "Easiest onboarding ever", "Best documentation"], cons: ["Most expensive per op — 10x Make", "No self-hosting"] },
+    operations:  { pros: ["Huge integration library", "Reliable uptime"], cons: ["Multi-step = multiple tasks billed", "Very expensive at scale"] },
+    developer:   { pros: ["7,000+ integrations for edge cases"], cons: ["No real code steps", "Most expensive per op", "No self-hosting"] },
+    finance:     { pros: ["QuickBooks, Xero, every accounting app"], cons: ["Very expensive", "No data sovereignty"] },
+    legal:       { pros: ["Easy audit flows", "DocuSign, contracts apps all present"], cons: ["US company — GDPR complexity", "No self-hosting", "Expensive"] },
+    hr:          { pros: ["Every HRIS and HR tool connected", "Easiest for non-technical HR"], cons: ["Expensive for high-volume onboarding/offboarding"] },
+    ecommerce:   { pros: ["Every e-commerce platform covered"], cons: ["Each order step billed as task — costs explode"] },
+    other:       { pros: ["Widest app coverage", "Easiest for non-devs"], cons: ["Worst value for money in the market"] },
+  },
+  activepieces: {
+    marketing:   { pros: ["MIT license — use freely", "Clean no-code UI", "Self-hostable"], cons: ["Only ~200 integrations", "Smaller community"] },
+    operations:  { pros: ["MIT license, unlimited customization", "Multi-user self-hosted"], cons: ["Fewer integrations than alternatives"] },
+    developer:   { pros: ["MIT = build products on top legally", "Growing fast"], cons: ["No native code steps yet", "Smaller ecosystem"] },
+    finance:     { pros: ["Self-hostable for data privacy", "MIT license"], cons: ["Limited finance app integrations"] },
+    legal:       { pros: ["Full self-hosting for data sovereignty", "MIT license"], cons: ["Small integration library"] },
+    hr:          { pros: ["MIT license, GDPR-friendly self-host"], cons: ["Missing some niche HRIS integrations"] },
+    ecommerce:   { pros: ["MIT license, self-hostable"], cons: ["No Shopify native integration yet"] },
+    other:       { pros: ["Best open-source option for non-devs"], cons: ["Still maturing — some rough edges"] },
+  },
+  automatisch: {
+    marketing:   { pros: ["Simple UI", "EU-built"], cons: ["Only 50 integrations", "No AI nodes", "No code steps"] },
+    operations:  { pros: ["Dead simple, EU GDPR-native"], cons: ["Very limited integrations", "No AI features"] },
+    developer:   { pros: ["Open-source, self-hostable"], cons: ["No code steps", "50 integrations — too limited for devs"] },
+    finance:     { pros: ["German company — strongest GDPR", "Self-hostable"], cons: ["Limited finance integrations"] },
+    legal:       { pros: ["Best GDPR posture of any tool", "German HQ", "Self-hostable"], cons: ["Very limited integrations"] },
+    hr:          { pros: ["GDPR-first, self-hostable"], cons: ["Missing key HRIS integrations"] },
+    ecommerce:   { pros: ["Simple self-hosted option"], cons: ["No Shopify/WooCommerce", "Too limited for e-commerce"] },
+    other:       { pros: ["Simplest self-host setup"], cons: ["Only worth it for very basic use cases"] },
+  },
+  "node-red": {
+    marketing:   { pros: ["Free, Apache 2.0"], cons: ["Not built for SaaS apps at all", "Extremely hard for non-devs"] },
+    operations:  { pros: ["Great for hardware/IoT operations"], cons: ["Not suitable for SaaS app automation"] },
+    developer:   { pros: ["Apache 2.0 — full freedom", "IoT + MQTT + hardware protocol support", "Runs on Pi/edge devices"], cons: ["UI is dated", "SaaS integrations are community-maintained"] },
+    finance:     { pros: ["Free forever"], cons: ["No finance app integrations", "Wrong tool for this use case"] },
+    legal:       { pros: ["Self-hosted, Apache 2.0"], cons: ["Not suitable for document/compliance workflows"] },
+    hr:          { pros: ["Free, self-hosted"], cons: ["No HR/HRIS integrations", "Wrong tool for this use case"] },
+    ecommerce:   { pros: ["Free"], cons: ["No e-commerce integrations", "Not the right tool"] },
+    other:       { pros: ["Free, maximum freedom for IoT/hardware use cases"], cons: ["Only if you're doing IoT or hardware automation"] },
+  },
+};
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let selectedRole = null, selectedWorkflow = null;
+let hostPref = "any", aiPref = "any", billing = "monthly";
+let maxBudget = 50;
+let selectedIntegrations = [];
+const ANNUAL_DISCOUNT = 0.8;
+
+// ── Wizard navigation ─────────────────────────────────────────────────────────
+function goStep(n) {
+  document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+  document.getElementById("step-" + n).classList.add("active");
+
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById("wp-" + i);
+    dot.classList.remove("active", "done");
+    if (i < n) dot.classList.add("done");
+    else if (i === n) dot.classList.add("active");
+    const line = document.getElementById("wl-" + i);
+    if (line) line.classList.toggle("done", i < n);
+  }
+
+  if (n === 2) renderWorkflowGrid();
+  if (n === 4) renderResults();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ── Step 1: Role selection ────────────────────────────────────────────────────
+function selectRole(card) {
+  document.querySelectorAll(".role-card").forEach(c => c.classList.remove("selected"));
+  card.classList.add("selected");
+  selectedRole = card.dataset.role;
+  document.getElementById("btn-next-1").disabled = false;
+}
+
+// ── Step 2: Workflow stack ────────────────────────────────────────────────────
+function renderWorkflowGrid() {
+  const wfs = getFilteredWorkflows();
+  const roleLabels = { marketing:"Marketing", operations:"Operations", developer:"Developer", finance:"Finance", legal:"Legal", hr:"HR", ecommerce:"E-commerce", other:"General" };
+  const role = selectedRole || "other";
+  document.getElementById("step2-sub").textContent =
+    `${wfs.length} pipeline${wfs.length !== 1 ? "s" : ""} for ${roleLabels[role] || "your role"} — pick one.`;
+
+  const stack = document.getElementById("wf-stack");
+  stack.innerHTML = wfs.map(wf =>
+    `<div class="wf-card${selectedWorkflow === wf.id ? " selected" : ""}" id="wfc-${wf.id}" onclick="selectWorkflow('${wf.id}')">
+      <div class="wf-card-header">
+        <div class="wf-card-icon">${wf.icon}</div>
+        <div>
+          <div class="wf-card-title">${wf.title}</div>
+          <div class="wf-card-sub">${wf.subtitle}</div>
+        </div>
+      </div>
+      <div class="wf-card-diagram">
+        <svg class="wf-big-svg" id="wf-svg-${wf.id}" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-height:220px;"></svg>
+      </div>
+    </div>`
+  ).join("");
+
+  // Render all diagrams
+  wfs.forEach(wf => renderBigDiagram(wf, `wf-svg-${wf.id}`));
+
+  document.getElementById("btn-next-2").disabled = selectedWorkflow === null;
+}
+
+function selectWorkflow(id) {
+  const prev = selectedWorkflow;
+  selectedWorkflow = id;
+  document.querySelectorAll(".wf-card").forEach(c => c.classList.remove("selected"));
+  const card = document.getElementById("wfc-" + id);
+  if (card) card.classList.add("selected");
+  document.getElementById("btn-next-2").disabled = false;
+
+  const wf = WORKFLOWS.find(w => w.id === id);
+  if (!wf) return;
+  document.getElementById("ops").value = findClosestIdx(CALC_OPS_STEPS, wf.defaultOps);
+  document.getElementById("workflows").value = findClosestIdx(CALC_WF_STEPS, wf.defaultWorkflows);
+  updateOpsDisplay(); updateWfDisplay();
+  if (wf.needsAI) {
+    aiPref = "yes";
+    document.querySelectorAll("[data-ai]").forEach(b => b.classList.toggle("active", b.dataset.ai === "yes"));
+  }
+}
+
+// ── Step 3 inputs ─────────────────────────────────────────────────────────────
+const CALC_OPS_STEPS = [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
+const CALC_WF_STEPS  = [1, 3, 5, 10, 15, 20, 50, 100];
+function getCalcOps() { return CALC_OPS_STEPS[parseInt(document.getElementById("ops").value)]; }
+function getCalcWf()  { return CALC_WF_STEPS[parseInt(document.getElementById("workflows").value)]; }
+function findClosestIdx(arr, val) { return arr.reduce((b,v,i) => Math.abs(v-val) < Math.abs(arr[b]-val) ? i : b, 0); }
+function updateOpsDisplay() { document.getElementById("ops-display").textContent = getCalcOps().toLocaleString(); }
+function updateWfDisplay()  { document.getElementById("wf-display").textContent  = getCalcWf(); }
+
+function updateBudget(v) {
+  maxBudget = parseInt(v);
+  const display = document.getElementById("budget-display");
+  display.textContent = maxBudget === 0 ? "Any" : "$" + maxBudget;
+}
+function setHost(v, btn) { hostPref = v; document.querySelectorAll("[data-host]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
+function setAI(v, btn)   { aiPref  = v; document.querySelectorAll("[data-ai]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
+function setBilling(v, btn) { billing = v; document.querySelectorAll("[data-billing]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
+
+// ── Integration picker ────────────────────────────────────────────────────────
+const integSearch  = document.getElementById("integ-search");
+const integDropdown = document.getElementById("integ-dropdown");
+const integSelectedEl = document.getElementById("integ-selected");
+let integHighlight = -1;
+
+function renderIntegSelected() {
+  integSelectedEl.innerHTML = selectedIntegrations.map(name =>
+    `<span class="integ-tag">${name}<button onclick="removeInteg('${name.replace(/'/g,"\\'")}')">×</button></span>`
+  ).join("");
+}
+function removeInteg(name) { toggleIntegration(name); }
+function toggleIntegration(name, event) {
+  if (event) event.stopPropagation();
+  if (selectedIntegrations.includes(name)) selectedIntegrations = selectedIntegrations.filter(n => n !== name);
+  else { selectedIntegrations.push(name); integSearch.value = ""; }
+  renderIntegSelected(); renderIntegDropdown();
+}
+function renderIntegDropdown() {
+  const q = integSearch.value.trim().toLowerCase();
+  const matches = INTEGRATIONS.filter(a => a.name.toLowerCase().includes(q));
+  if (!matches.length) { integDropdown.innerHTML = `<div class="integ-empty-opt">No app found.</div>`; return; }
+  const sel = matches.filter(a => selectedIntegrations.includes(a.name));
+  const unsel = matches.filter(a => !selectedIntegrations.includes(a.name));
+  const byCat = {};
+  unsel.forEach(a => { (byCat[a.cat] = byCat[a.cat] || []).push(a); });
+  let html = "", idx = 0;
+  if (sel.length) {
+    html += `<div class="integ-cat-head">Selected</div>`;
+    sel.forEach(a => { html += `<div class="integ-opt selected" onclick="toggleIntegration('${a.name.replace(/'/g,"\\'")}',event)"><span class="integ-checkbox"></span><span class="integ-name">${a.name}</span><span class="integ-cat">${Object.values(a.s).filter(v=>v).length}/7 tools</span></div>`; idx++; });
+  }
+  for (const cat of Object.keys(byCat)) {
+    html += `<div class="integ-cat-head">${cat}</div>`;
+    byCat[cat].forEach(a => { html += `<div class="integ-opt" onclick="toggleIntegration('${a.name.replace(/'/g,"\\'")}',event)"><span class="integ-checkbox"></span><span class="integ-name">${a.name}</span><span class="integ-cat">${Object.values(a.s).filter(v=>v).length}/7 tools</span></div>`; idx++; });
+  }
+  integDropdown.innerHTML = html; integHighlight = -1;
+}
+integSearch.addEventListener("focus", () => { renderIntegDropdown(); integDropdown.classList.add("open"); });
+integSearch.addEventListener("input", () => { renderIntegDropdown(); integDropdown.classList.add("open"); });
+integSearch.addEventListener("keydown", e => {
+  const opts = Array.from(integDropdown.querySelectorAll(".integ-opt"));
+  if (e.key === "ArrowDown") { e.preventDefault(); integHighlight = Math.min(integHighlight+1, opts.length-1); }
+  else if (e.key === "ArrowUp") { e.preventDefault(); integHighlight = Math.max(integHighlight-1, 0); }
+  else if (e.key === "Enter" && integHighlight >= 0 && opts[integHighlight]) { e.preventDefault(); opts[integHighlight].click(); return; }
+  else if (e.key === "Escape") { integDropdown.classList.remove("open"); return; }
+  opts.forEach((o,i) => o.classList.toggle("highlight", i === integHighlight));
+  if (opts[integHighlight]) opts[integHighlight].scrollIntoView({ block: "nearest" });
+});
+document.addEventListener("click", e => { if (!e.target.closest(".integ-search-wrap")) integDropdown.classList.remove("open"); });
+
+// ── Cost engine ───────────────────────────────────────────────────────────────
+function toolSupportsAll(slug) {
+  return selectedIntegrations.every(name => {
+    const app = INTEGRATIONS.find(a => a.name === name);
+    return app && app.s[slug] === 1;
+  });
+}
+function calcCost(tool, ops, workflows) {
+  if (hostPref === "cloud" && tool.selfHostable && !tool.plans.some(p => !p.selfHostOnly)) return null;
+  if (hostPref === "selfhost" && !tool.selfHostable) return null;
+  if (aiPref === "yes" && !tool.aiFeatures) return null;
+  if (selectedIntegrations.length && !toolSupportsAll(tool.slug)) return null;
+  let best = null;
+  for (const plan of tool.plans) {
+    if (hostPref === "cloud" && plan.selfHostOnly) continue;
+    if (hostPref === "selfhost" && !plan.selfHostOnly) continue;
+    if (plan.workflowLimit !== Infinity && plan.workflowLimit < workflows) continue;
+    let cost = plan.monthlyUsd;
+    if (billing === "annual" && !plan.selfHostOnly && plan.monthlyUsd > 0) cost = Math.round(cost * ANNUAL_DISCOUNT);
+    if (!plan.selfHostOnly && ops > plan.opsIncluded) {
+      if (tool.overage) cost += Math.ceil((ops - plan.opsIncluded) / tool.overage.per) * tool.overage.usd;
+      else continue;
+    }
+    if (best === null || cost < best.cost) best = { cost, plan };
+  }
+  return best;
+}
+
+// ── Match score engine ────────────────────────────────────────────────────────
+function computeMatchScore(tool, costResult) {
+  const role = selectedRole || "other";
+  const wf = WORKFLOWS.find(w => w.id === selectedWorkflow);
+  const weights = ROLE_WEIGHTS[role];
+  const caps = TOOL_SCORES[tool.slug];
+
+  // Feature scores
+  const featureScore = (
+    caps.noCode       * weights.noCode +
+    caps.codeAccess   * weights.codeAccess +
+    caps.aiNodes      * weights.aiNodes +
+    caps.selfHost     * weights.selfHost +
+    caps.gdpr         * weights.gdpr +
+    caps.integrations * weights.integrations
+  );
+
+  // Workflow fit bonus
+  let wfBonus = 0;
+  if (wf) {
+    if (wf.needsAI && tool.aiFeatures) wfBonus += 0.05;
+    if (wf.needsNoCode && TOOL_SCORES[tool.slug].noCode > 0.7) wfBonus += 0.04;
+    if (wf.roles.includes(role)) wfBonus += 0.03;
+  }
+
+  // Price score — relative to budget
+  let priceScore = 1;
+  if (maxBudget > 0 && costResult !== null) {
+    const ratio = costResult.cost / maxBudget;
+    priceScore = ratio <= 1 ? 1 - ratio * 0.3 : Math.max(0, 1 - ratio * 0.6);
+  }
+
+  const normalised = Math.min(1, Math.max(0,
+    featureScore * 0.60 + priceScore * 0.30 + wfBonus
+  ));
+  return Math.round(normalised * 100);
+}
+
+function matchLabel(score) {
+  if (score >= 80) return { cls: "great", text: score + "% match" };
+  if (score >= 60) return { cls: "good",  text: score + "% match" };
+  if (score >= 40) return { cls: "ok",    text: score + "% match" };
+  return { cls: "poor", text: score + "% match" };
+}
+
+function costClass(cost) {
+  if (cost === 0) return "c-free";
+  if (cost <= 10) return "c-cheap";
+  if (cost <= 30) return "c-mid";
+  return "c-exp";
+}
+
+// ── Render results ────────────────────────────────────────────────────────────
+function renderResults() {
+  const ops = getCalcOps();
+  const workflows = getCalcWf();
+  const role = selectedRole || "other";
+  const wf = WORKFLOWS.find(w => w.id === selectedWorkflow);
+
+  // Profile summary chips
+  const roleLabel = { marketing:"Marketing", operations:"Operations", developer:"Developer", finance:"Finance / Accounting", legal:"Legal / Compliance", hr:"HR / People Ops", ecommerce:"E-commerce", other:"Mixed / Other" };
+  document.getElementById("profile-summary").innerHTML = [
+    `<div class="profile-chip">Role: <span>${roleLabel[role] || role}</span></div>`,
+    wf ? `<div class="profile-chip">Workflow: <span>${wf.title}</span></div>` : "",
+    `<div class="profile-chip">Volume: <span>${ops.toLocaleString()} ops · ${workflows} workflows</span></div>`,
+    maxBudget > 0 ? `<div class="profile-chip">Budget: <span>$${maxBudget}/mo</span></div>` : "",
+    billing === "annual" ? `<div class="profile-chip">Billing: <span>Annual</span></div>` : "",
+    hostPref !== "any" ? `<div class="profile-chip">Hosting: <span>${hostPref === "selfhost" ? "Self-hosted" : "Cloud only"}</span></div>` : "",
+    aiPref === "yes" ? `<div class="profile-chip">AI nodes: <span>Required</span></div>` : "",
+  ].join("");
+
+  const items = TOOLS.map(tool => {
+    const costResult = calcCost(tool, ops, workflows);
+    const score = computeMatchScore(tool, costResult);
+    return { tool, costResult, score };
+  }).filter(r => r.costResult !== null);
+
+  items.sort((a, b) => b.score - a.score);
+
+  const list = document.getElementById("results-list");
+  const noMsg = document.getElementById("no-results-msg");
+
+  if (!items.length) {
+    list.innerHTML = "";
+    noMsg.style.display = "block";
+    return;
+  }
+  noMsg.style.display = "none";
+
+  const whyData = TOOL_WHY;
+  list.innerHTML = items.map((r, i) => {
+    const { tool, costResult, score } = r;
+    const isTop = i === 0;
+    const label = matchLabel(score);
+    const cost = costResult.cost;
+    const overBudget = maxBudget > 0 && cost > maxBudget;
+    const why = (whyData[tool.slug] || {})[role] || { pros: [], cons: [] };
+
+    const dimScores = [
+      { label: "No-code UI",    val: TOOL_SCORES[tool.slug].noCode },
+      { label: "Code access",   val: TOOL_SCORES[tool.slug].codeAccess },
+      { label: "AI nodes",      val: TOOL_SCORES[tool.slug].aiNodes },
+      { label: "Self-hosting",  val: TOOL_SCORES[tool.slug].selfHost },
+      { label: "GDPR / privacy",val: TOOL_SCORES[tool.slug].gdpr },
+      { label: "Integrations",  val: TOOL_SCORES[tool.slug].integrations },
+    ];
+
+    const cardClass = isTop ? "top-pick" : (score >= 60 ? "good-fit" : "");
+
+    return `<div class="result-card ${cardClass}" id="rc-${tool.slug}">
+      <div class="result-header">
+        <div class="result-rank ${isTop ? "top" : ""}">${isTop ? "★" : "#" + (i+1)}</div>
+        <div>
+          <div class="result-tool-name">
+            <img src="${LOGOS[tool.slug]}" class="tool-logo" alt="${tool.name}" onerror="this.style.display='none'">
+            ${tool.name}
+            ${isTop ? `<span class="tag tag-best">Top pick</span>` : ""}
+            <span class="match-badge ${label.cls}">${label.text}</span>
+          </div>
+          <div class="result-plan">${costResult.plan.note}${overBudget ? `  <span style="color:var(--red);font-weight:700;">Over budget</span>` : ""}</div>
+          <button class="result-expand-btn" onclick="toggleExpand('${tool.slug}')">
+            <span id="expand-icon-${tool.slug}">▸</span> Why this score?
+          </button>
+        </div>
+        <div class="result-cost-col">
+          <div class="result-cost ${costClass(cost)}">${cost === 0 ? "Free" : "$" + cost + "/mo"}</div>
+          <div class="result-cost-note">${costResult.plan.name}</div>
+        </div>
+        <div class="result-cta-col">
+          <a href="${tool.affiliateUrl}" target="_blank" rel="noopener${tool.hasAffiliate ? " sponsored" : ""}"
+             class="visit-btn${tool.hasAffiliate ? " affiliate" : ""}">
+            ${tool.hasAffiliate ? "Try free →" : "Visit →"}
+          </a>
+        </div>
+      </div>
+      <div class="result-scores">
+        ${dimScores.map(d => {
+          const pct = Math.round(d.val * 100);
+          const cls = pct >= 70 ? "green" : pct >= 40 ? "" : "red";
+          return `<div class="score-row"><div class="score-label">${d.label}</div><div class="score-bar-wrap"><div class="score-fill ${cls}" style="width:${pct}%"></div></div><div class="score-num">${pct}</div></div>`;
+        }).join("")}
+        <div class="why-list">
+          ${why.pros.map(p => `<div class="why-item pro">${p}</div>`).join("")}
+          ${why.cons.map(c => `<div class="why-item con">${c}</div>`).join("")}
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function toggleExpand(slug) {
+  const card = document.getElementById("rc-" + slug);
+  const icon = document.getElementById("expand-icon-" + slug);
+  card.classList.toggle("expanded");
+  icon.textContent = card.classList.contains("expanded") ? "▾" : "▸";
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Best Automation Tools 2026 — n8n vs Make vs Zapier vs Pipedream Reviews | AutomationCost.io</title>
+  <meta name="description" content="Honest reviews of n8n, Make, Pipedream, Zapier, Activepieces, Automatisch and Node-RED. UI, community, support, learning curve, and who each tool is really for.">
+  <link rel="canonical" href="https://automationcost.io/tools.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
+      --border: #1f2d45; --text: #e8edf5; --muted: #6b7a99;
+      --accent: #2f6bff; --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 10px;
+    }
+    body {
+      background: var(--bg);
+      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(47,107,255,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%);
+      background-repeat: no-repeat; background-attachment: fixed;
+      color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ── */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg); }
+    body { padding-top: 100px; }
+    .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+    .nav-bottom::-webkit-scrollbar { display: none; }
+    .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
+    .nav-bottom a:hover { color: var(--text); }
+    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: #10b981; }
+    .logo { display: flex; align-items: center; gap: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.06rem; color: var(--text); letter-spacing: -0.035em; text-decoration: none; }
+    .logo span { color: #10b981; }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
+    .nav-badge { font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--muted); }
+
+    /* ── Layout ── */
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── Hero ── */
+    .hero { padding: 48px 0 40px; }
+    .hero-badge { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--muted); padding: 4px 14px; margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--muted); font-size: 0.95rem; max-width: 640px; }
+
+    /* ── TOC ── */
+    .toc { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
+    .toc a { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; color: var(--muted); transition: border-color 0.15s, color 0.15s; text-decoration: none; }
+    .toc a img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 1px; object-fit: contain; }
+    .toc a:hover { border-color: var(--accent); color: var(--text); text-decoration: none; }
+
+    /* ── Tool card ── */
+    .tool-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      margin-bottom: 32px; overflow: hidden; scroll-margin-top: 120px;
+    }
+    .tool-header {
+      display: flex; align-items: center; gap: 20px; padding: 28px 32px 24px;
+      border-bottom: 1px solid var(--border); flex-wrap: wrap;
+    }
+    .tool-header img { width: 48px; height: 48px; border-radius: 12px; background: #fff; padding: 4px; object-fit: contain; flex-shrink: 0; }
+    .tool-header-text { flex: 1; min-width: 200px; }
+    .tool-header h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 4px; }
+    .tool-tagline { font-size: 14px; color: var(--muted); }
+    .tool-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 5px; }
+    .badge-green { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+    .badge-blue { background: rgba(47,107,255,0.15); color: var(--accent); border: 1px solid rgba(47,107,255,0.3); }
+    .badge-yellow { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
+    .badge-muted { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+    .tool-cta { display: inline-block; background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; padding: 10px 20px; border-radius: 8px; text-decoration: none; white-space: nowrap; flex-shrink: 0; transition: opacity 0.15s; }
+    .tool-cta:hover { opacity: 0.85; text-decoration: none; }
+    .tool-cta.plain { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+
+    /* ── Tool body ── */
+    .tool-body { padding: 28px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    @media (max-width: 720px) { .tool-body { grid-template-columns: 1fr; } }
+
+    .tool-section h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 12px; }
+
+    /* ── Ratings ── */
+    .ratings { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .rating-row { display: flex; flex-direction: column; gap: 4px; }
+    .rating-label { font-size: 12px; color: var(--muted); }
+    .rating-bar-wrap { display: flex; align-items: center; gap: 8px; }
+    .rating-bar { height: 6px; border-radius: 3px; background: var(--surface2); flex: 1; overflow: hidden; }
+    .rating-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 0.3s; }
+    .rating-fill.green { background: var(--green); }
+    .rating-fill.yellow { background: var(--yellow); }
+    .rating-fill.red { background: var(--red); }
+    .rating-num { font-size: 12px; font-weight: 700; color: var(--text); width: 20px; text-align: right; flex-shrink: 0; }
+
+    /* ── Pros/cons ── */
+    .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .pro-item { font-size: 13px; color: var(--text); display: flex; gap: 8px; margin-bottom: 7px; }
+    .pro-item::before { content: "✓"; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .con-item { font-size: 13px; color: var(--muted); display: flex; gap: 8px; margin-bottom: 7px; }
+    .con-item::before { content: "✗"; color: var(--red); flex-shrink: 0; }
+    .pros-col h4, .cons-col h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+    .pros-col h4 { color: var(--green); }
+    .cons-col h4 { color: var(--red); }
+
+    /* ── Best for / not for ── */
+    .best-for-list { list-style: none; }
+    .best-for-list li { font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; }
+    .best-for-list li:last-child { border-bottom: none; }
+    .best-for-list li span { color: var(--muted); }
+
+    /* ── Quick facts ── */
+    .quick-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .fact { background: var(--surface2); border-radius: 7px; padding: 10px 14px; }
+    .fact-label { font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+    .fact-val { font-size: 13px; font-weight: 700; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 32px; }
+    footer a { color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M29 11 L15 24 L29 37" stroke="#10b981" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="34.5" cy="24" r="3.4" fill="#10b981"/>
+      </svg>
+      Automation<span>Cost</span>.io
+    </a>
+    <span class="nav-badge">Updated June 2026 · Real pricing data</span>
+  </div>
+  <nav class="nav-bottom">
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="compare.html">Compare</a>
+    <a href="limits.html">Pricing & Limits</a>
+    <a href="tools.html" class="active">Tools</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-badge">7 tools reviewed · June 2026</div>
+    <h1>Automation tools reviewed — <em>beyond the pricing page</em></h1>
+    <p>UI, community, support quality, learning curve, and who each tool is actually built for. The things you only find out after you've used them.</p>
+  </div>
+
+  <div class="toc">
+    <a href="#n8n"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=64" alt="n8n">n8n</a>
+    <a href="#make"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=64" alt="Make">Make</a>
+    <a href="#pipedream"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=64" alt="Pipedream">Pipedream</a>
+    <a href="#zapier"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=64" alt="Zapier">Zapier</a>
+    <a href="#activepieces"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=64" alt="Activepieces">Activepieces</a>
+    <a href="#automatisch"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=64" alt="Automatisch">Automatisch</a>
+    <a href="#node-red"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=64" alt="Node-RED">Node-RED</a>
+  </div>
+
+  <!-- ── n8n ── -->
+  <div class="tool-card" id="n8n">
+    <div class="tool-header">
+      <img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=64" alt="n8n">
+      <div class="tool-header-text">
+        <h2>n8n</h2>
+        <div class="tool-tagline">Open-source workflow automation for developers and technical teams</div>
+        <div class="tool-badges">
+          <span class="badge badge-green">Self-hostable</span>
+          <span class="badge badge-blue">AI nodes</span>
+          <span class="badge badge-green">400+ integrations</span>
+          <span class="badge badge-muted">Sustainable Use License</span>
+        </div>
+      </div>
+      <a href="https://n8n.io" target="_blank" rel="noopener sponsored" class="tool-cta">Try n8n free →</a>
+    </div>
+    <div class="tool-body">
+      <div class="tool-section">
+        <h3>Ratings</h3>
+        <div class="ratings">
+          <div class="rating-row"><div class="rating-label">UI / ease of use</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:70%"></div></div><div class="rating-num">7</div></div></div>
+          <div class="rating-row"><div class="rating-label">Community</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:90%"></div></div><div class="rating-num">9</div></div></div>
+          <div class="rating-row"><div class="rating-label">Documentation</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:85%"></div></div><div class="rating-num">8.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Support quality</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:65%"></div></div><div class="rating-num">6.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">AI / LLM features</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:95%"></div></div><div class="rating-num">9.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Value for money</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:95%"></div></div><div class="rating-num">9.5</div></div></div>
+        </div>
+      </div>
+      <div class="tool-section">
+        <h3>Quick facts</h3>
+        <div class="quick-facts">
+          <div class="fact"><div class="fact-label">Founded</div><div class="fact-val">2019</div></div>
+          <div class="fact"><div class="fact-label">License</div><div class="fact-val">Sustainable Use</div></div>
+          <div class="fact"><div class="fact-label">Integrations</div><div class="fact-val">400+</div></div>
+          <div class="fact"><div class="fact-label">Community size</div><div class="fact-val">~50k members</div></div>
+          <div class="fact"><div class="fact-label">Self-host cost</div><div class="fact-val">~$8/mo VPS</div></div>
+          <div class="fact"><div class="fact-label">Cloud from</div><div class="fact-val">$20/mo</div></div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Pros & cons</h3>
+        <div class="pros-cons">
+          <div class="pros-col">
+            <h4>Pros</h4>
+            <div class="pro-item">Best AI/LLM node library in the space — GPT, Claude, local models, agents</div>
+            <div class="pro-item">Truly unlimited self-hosted: no execution caps, no workflow limits</div>
+            <div class="pro-item">Active community forum — most questions answered within hours</div>
+            <div class="pro-item">Native code nodes (JavaScript/Python) inside workflows</div>
+            <div class="pro-item">Strong version control and workflow export (JSON)</div>
+          </div>
+          <div class="cons-col">
+            <h4>Cons</h4>
+            <div class="con-item">UI is busier than Make or Zapier — steeper learning curve for non-devs</div>
+            <div class="con-item">Sustainable Use License restricts building a competing SaaS product on top</div>
+            <div class="con-item">Cloud plan workflow limits are low (5 on Starter, 15 on Pro)</div>
+            <div class="con-item">Official support slow on free/community tier — mostly community-driven</div>
+            <div class="con-item">Self-hosting requires server management knowledge</div>
+          </div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Who it's for</h3>
+        <ul class="best-for-list">
+          <li>✓ <span>Developers and technical users who want full control over their automation stack</span></li>
+          <li>✓ <span>Teams building AI workflows — agents, RAG pipelines, LLM chaining</span></li>
+          <li>✓ <span>Anyone who wants unlimited workflows for ~$8/mo (self-hosted)</span></li>
+          <li>✓ <span>GDPR-conscious teams who need data to stay on their own servers</span></li>
+          <li>✗ <span>Non-technical users who want a simple drag-and-drop experience</span></li>
+          <li>✗ <span>Teams who need managed cloud with no server maintenance</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Make ── -->
+  <div class="tool-card" id="make">
+    <div class="tool-header">
+      <img src="https://www.google.com/s2/favicons?domain=make.com&sz=64" alt="Make">
+      <div class="tool-header-text">
+        <h2>Make</h2>
+        <div class="tool-tagline">Visual automation with the best price-per-operation in cloud</div>
+        <div class="tool-badges">
+          <span class="badge badge-blue">Cloud only</span>
+          <span class="badge badge-green">1,500+ integrations</span>
+          <span class="badge badge-green">Free tier</span>
+          <span class="badge badge-muted">Proprietary</span>
+        </div>
+      </div>
+      <a href="https://www.make.com" target="_blank" rel="noopener sponsored" class="tool-cta">Try Make free →</a>
+    </div>
+    <div class="tool-body">
+      <div class="tool-section">
+        <h3>Ratings</h3>
+        <div class="ratings">
+          <div class="rating-row"><div class="rating-label">UI / ease of use</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:90%"></div></div><div class="rating-num">9</div></div></div>
+          <div class="rating-row"><div class="rating-label">Community</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:80%"></div></div><div class="rating-num">8</div></div></div>
+          <div class="rating-row"><div class="rating-label">Documentation</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:85%"></div></div><div class="rating-num">8.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Support quality</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:70%"></div></div><div class="rating-num">7</div></div></div>
+          <div class="rating-row"><div class="rating-label">AI / LLM features</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:70%"></div></div><div class="rating-num">7</div></div></div>
+          <div class="rating-row"><div class="rating-label">Value for money</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:92%"></div></div><div class="rating-num">9.2</div></div></div>
+        </div>
+      </div>
+      <div class="tool-section">
+        <h3>Quick facts</h3>
+        <div class="quick-facts">
+          <div class="fact"><div class="fact-label">Founded</div><div class="fact-val">2012 (as Integromat)</div></div>
+          <div class="fact"><div class="fact-label">License</div><div class="fact-val">Proprietary</div></div>
+          <div class="fact"><div class="fact-label">Integrations</div><div class="fact-val">1,500+</div></div>
+          <div class="fact"><div class="fact-label">Community size</div><div class="fact-val">~100k members</div></div>
+          <div class="fact"><div class="fact-label">Free tier</div><div class="fact-val">1,000 ops/mo</div></div>
+          <div class="fact"><div class="fact-label">Paid from</div><div class="fact-val">$9/mo</div></div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Pros & cons</h3>
+        <div class="pros-cons">
+          <div class="pros-col">
+            <h4>Pros</h4>
+            <div class="pro-item">Most visually intuitive UI — canvas-based, modules snap together</div>
+            <div class="pro-item">Best cloud price per operation — $9/mo for 10k ops beats everything</div>
+            <div class="pro-item">Unlimited scenarios (workflows) on every paid plan</div>
+            <div class="pro-item">30-day execution log history even on free plan</div>
+            <div class="pro-item">Strong data transformation tools — built-in functions, iterators, aggregators</div>
+          </div>
+          <div class="cons-col">
+            <h4>Cons</h4>
+            <div class="con-item">No self-hosting — your data lives on Make's servers (Prague/EU)</div>
+            <div class="con-item">No native code steps — can't run custom JavaScript inside a scenario</div>
+            <div class="con-item">AI features are basic compared to n8n — no agent/chain support</div>
+            <div class="con-item">Rebranding from Integromat caused some confusion in documentation</div>
+            <div class="con-item">Complex scenarios can get visually cluttered with many modules</div>
+          </div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Who it's for</h3>
+        <ul class="best-for-list">
+          <li>✓ <span>Non-technical users and marketers who want visual automation without code</span></li>
+          <li>✓ <span>Agencies managing complex multi-step workflows at scale on a budget</span></li>
+          <li>✓ <span>Anyone replacing Zapier — you get more ops for ~80% less money</span></li>
+          <li>✓ <span>Teams in EU who want data processed in EU (Make is Czech/EU company)</span></li>
+          <li>✗ <span>Developers who need to run custom scripts inside workflows</span></li>
+          <li>✗ <span>Teams with strict data sovereignty requirements (self-host needed)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Pipedream ── -->
+  <div class="tool-card" id="pipedream">
+    <div class="tool-header">
+      <img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=64" alt="Pipedream">
+      <div class="tool-header-text">
+        <h2>Pipedream</h2>
+        <div class="tool-tagline">Code-first automation platform built for developers</div>
+        <div class="tool-badges">
+          <span class="badge badge-blue">Cloud only</span>
+          <span class="badge badge-blue">Code steps</span>
+          <span class="badge badge-green">2,000+ integrations</span>
+          <span class="badge badge-muted">Proprietary</span>
+        </div>
+      </div>
+      <a href="https://pipedream.com" target="_blank" rel="noopener sponsored" class="tool-cta">Try Pipedream free →</a>
+    </div>
+    <div class="tool-body">
+      <div class="tool-section">
+        <h3>Ratings</h3>
+        <div class="ratings">
+          <div class="rating-row"><div class="rating-label">UI / ease of use</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:65%"></div></div><div class="rating-num">6.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Community</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:65%"></div></div><div class="rating-num">6.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Documentation</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:85%"></div></div><div class="rating-num">8.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Support quality</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:70%"></div></div><div class="rating-num">7</div></div></div>
+          <div class="rating-row"><div class="rating-label">AI / LLM features</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:75%"></div></div><div class="rating-num">7.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Value for money</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:60%"></div></div><div class="rating-num">6</div></div></div>
+        </div>
+      </div>
+      <div class="tool-section">
+        <h3>Quick facts</h3>
+        <div class="quick-facts">
+          <div class="fact"><div class="fact-label">Founded</div><div class="fact-val">2017</div></div>
+          <div class="fact"><div class="fact-label">License</div><div class="fact-val">Proprietary</div></div>
+          <div class="fact"><div class="fact-label">Integrations</div><div class="fact-val">2,000+</div></div>
+          <div class="fact"><div class="fact-label">Code languages</div><div class="fact-val">Node.js, Python</div></div>
+          <div class="fact"><div class="fact-label">Free tier</div><div class="fact-val">100 credits/mo</div></div>
+          <div class="fact"><div class="fact-label">Paid from</div><div class="fact-val">$29/mo</div></div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Pros & cons</h3>
+        <div class="pros-cons">
+          <div class="pros-col">
+            <h4>Pros</h4>
+            <div class="pro-item">Run full Node.js or Python code in any workflow step — no sandboxing limits</div>
+            <div class="pro-item">Most pre-built integrations (2,000+) with maintained API auth</div>
+            <div class="pro-item">Excellent for API-heavy workflows — REST, GraphQL, webhooks</div>
+            <div class="pro-item">Strong component library — reuse code across workflows</div>
+            <div class="pro-item">npm package support — any Node.js library available</div>
+          </div>
+          <div class="cons-col">
+            <h4>Cons</h4>
+            <div class="con-item">Free tier is effectively useless — 100 credits burns in minutes</div>
+            <div class="con-item">Most expensive overage at $10/1,000 credits</div>
+            <div class="con-item">Not for non-technical users — UI assumes coding comfort</div>
+            <div class="con-item">No self-hosting option — US-based cloud only</div>
+            <div class="con-item">Community is smaller and less active than n8n or Make</div>
+          </div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Who it's for</h3>
+        <ul class="best-for-list">
+          <li>✓ <span>Developers who want to write real code inside automation workflows</span></li>
+          <li>✓ <span>Backend engineers building event-driven systems and API integrations</span></li>
+          <li>✓ <span>Teams with complex data transformation needs (custom parsing, ETL)</span></li>
+          <li>✗ <span>Non-technical users — there is no visual-only path here</span></li>
+          <li>✗ <span>Budget-conscious users — it's expensive per operation vs Make or n8n</span></li>
+          <li>✗ <span>EU/GDPR teams who need data in Europe (US-based only)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Zapier ── -->
+  <div class="tool-card" id="zapier">
+    <div class="tool-header">
+      <img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=64" alt="Zapier">
+      <div class="tool-header-text">
+        <h2>Zapier</h2>
+        <div class="tool-tagline">The largest integration library, built for non-technical users</div>
+        <div class="tool-badges">
+          <span class="badge badge-blue">Cloud only</span>
+          <span class="badge badge-green">7,000+ integrations</span>
+          <span class="badge badge-yellow">Expensive</span>
+          <span class="badge badge-muted">Proprietary</span>
+        </div>
+      </div>
+      <a href="https://zapier.com" target="_blank" rel="noopener" class="tool-cta plain">Visit Zapier →</a>
+    </div>
+    <div class="tool-body">
+      <div class="tool-section">
+        <h3>Ratings</h3>
+        <div class="ratings">
+          <div class="rating-row"><div class="rating-label">UI / ease of use</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:95%"></div></div><div class="rating-num">9.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Community</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:85%"></div></div><div class="rating-num">8.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Documentation</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:90%"></div></div><div class="rating-num">9</div></div></div>
+          <div class="rating-row"><div class="rating-label">Support quality</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:80%"></div></div><div class="rating-num">8</div></div></div>
+          <div class="rating-row"><div class="rating-label">AI / LLM features</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:70%"></div></div><div class="rating-num">7</div></div></div>
+          <div class="rating-row"><div class="rating-label">Value for money</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill red" style="width:25%"></div></div><div class="rating-num">2.5</div></div></div>
+        </div>
+      </div>
+      <div class="tool-section">
+        <h3>Quick facts</h3>
+        <div class="quick-facts">
+          <div class="fact"><div class="fact-label">Founded</div><div class="fact-val">2011</div></div>
+          <div class="fact"><div class="fact-label">License</div><div class="fact-val">Proprietary</div></div>
+          <div class="fact"><div class="fact-label">Integrations</div><div class="fact-val">7,000+</div></div>
+          <div class="fact"><div class="fact-label">Community size</div><div class="fact-val">~200k+ users</div></div>
+          <div class="fact"><div class="fact-label">Free tier</div><div class="fact-val">100 tasks/mo</div></div>
+          <div class="fact"><div class="fact-label">Paid from</div><div class="fact-val">$20/mo</div></div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Pros & cons</h3>
+        <div class="pros-cons">
+          <div class="pros-col">
+            <h4>Pros</h4>
+            <div class="pro-item">7,000+ integrations — by far the widest app library in the industry</div>
+            <div class="pro-item">Easiest onboarding — guided setup, no technical knowledge needed</div>
+            <div class="pro-item">Best documentation and tutorial library for beginners</div>
+            <div class="pro-item">Reliable uptime and long track record (since 2011)</div>
+            <div class="pro-item">Large ecosystem of Zapier-certified experts and agencies</div>
+          </div>
+          <div class="cons-col">
+            <h4>Cons</h4>
+            <div class="con-item">Most expensive per operation — up to 10x more than Make for same workload</div>
+            <div class="con-item">Free tier is barely usable — 100 tasks is nothing real-world</div>
+            <div class="con-item">No self-hosting — entirely cloud-based</div>
+            <div class="con-item">Multi-step Zaps count every action as a separate task (expensive fast)</div>
+            <div class="con-item">No native code steps on most plans</div>
+          </div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Who it's for</h3>
+        <ul class="best-for-list">
+          <li>✓ <span>Non-technical users who need a specific niche app that only Zapier supports</span></li>
+          <li>✓ <span>Companies with budget and a need for polished, managed enterprise automation</span></li>
+          <li>✓ <span>Teams already invested in the Zapier ecosystem (existing Zaps, certified partners)</span></li>
+          <li>✗ <span>Anyone price-sensitive — Make does the same for 80% less</span></li>
+          <li>✗ <span>Developers or technical users who need code steps or self-hosting</span></li>
+          <li>✗ <span>Teams doing high-volume multi-step automations (costs explode fast)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Activepieces ── -->
+  <div class="tool-card" id="activepieces">
+    <div class="tool-header">
+      <img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=64" alt="Activepieces">
+      <div class="tool-header-text">
+        <h2>Activepieces</h2>
+        <div class="tool-tagline">MIT-licensed open-source automation with a no-code Zapier-like UI</div>
+        <div class="tool-badges">
+          <span class="badge badge-green">Self-hostable</span>
+          <span class="badge badge-green">MIT License</span>
+          <span class="badge badge-blue">200+ integrations</span>
+          <span class="badge badge-green">Free tier</span>
+        </div>
+      </div>
+      <a href="https://www.activepieces.com" target="_blank" rel="noopener" class="tool-cta plain">Visit Activepieces →</a>
+    </div>
+    <div class="tool-body">
+      <div class="tool-section">
+        <h3>Ratings</h3>
+        <div class="ratings">
+          <div class="rating-row"><div class="rating-label">UI / ease of use</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:85%"></div></div><div class="rating-num">8.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Community</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:60%"></div></div><div class="rating-num">6</div></div></div>
+          <div class="rating-row"><div class="rating-label">Documentation</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:70%"></div></div><div class="rating-num">7</div></div></div>
+          <div class="rating-row"><div class="rating-label">Support quality</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:60%"></div></div><div class="rating-num">6</div></div></div>
+          <div class="rating-row"><div class="rating-label">AI / LLM features</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:65%"></div></div><div class="rating-num">6.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Value for money</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:95%"></div></div><div class="rating-num">9.5</div></div></div>
+        </div>
+      </div>
+      <div class="tool-section">
+        <h3>Quick facts</h3>
+        <div class="quick-facts">
+          <div class="fact"><div class="fact-label">Founded</div><div class="fact-val">2022</div></div>
+          <div class="fact"><div class="fact-label">License</div><div class="fact-val">MIT (truly free)</div></div>
+          <div class="fact"><div class="fact-label">Integrations</div><div class="fact-val">~200</div></div>
+          <div class="fact"><div class="fact-label">GitHub stars</div><div class="fact-val">~10k+</div></div>
+          <div class="fact"><div class="fact-label">Self-host cost</div><div class="fact-val">~$8/mo VPS</div></div>
+          <div class="fact"><div class="fact-label">Cloud from</div><div class="fact-val">$10/mo</div></div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Pros & cons</h3>
+        <div class="pros-cons">
+          <div class="pros-col">
+            <h4>Pros</h4>
+            <div class="pro-item">MIT license — no restrictions, build anything on top of it commercially</div>
+            <div class="pro-item">Cleanest no-code UI of any open-source tool — looks like Zapier</div>
+            <div class="pro-item">Fastest-growing open-source automation tool in 2024–2026</div>
+            <div class="pro-item">Multi-user support even on self-hosted (unlike n8n community edition)</div>
+            <div class="pro-item">Active GitHub — new integrations added frequently</div>
+          </div>
+          <div class="cons-col">
+            <h4>Cons</h4>
+            <div class="con-item">Only ~200 integrations — much smaller than n8n, Make, or Zapier</div>
+            <div class="con-item">Smaller community — fewer answers to edge case questions</div>
+            <div class="con-item">Younger project — some rough edges and occasional breaking changes</div>
+            <div class="con-item">No native code steps (custom JS/Python inside workflows)</div>
+            <div class="con-item">AI features less mature than n8n</div>
+          </div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Who it's for</h3>
+        <ul class="best-for-list">
+          <li>✓ <span>Developers who want MIT-licensed self-hosted automation with no usage restrictions</span></li>
+          <li>✓ <span>Teams building a product on top of an automation engine (MIT allows it)</span></li>
+          <li>✓ <span>Non-technical users who want self-hosting without the n8n complexity</span></li>
+          <li>✓ <span>GDPR-conscious EU teams who need data on their own servers</span></li>
+          <li>✗ <span>Teams needing 500+ integrations out of the box</span></li>
+          <li>✗ <span>Anyone wanting a mature, battle-tested community with years of content</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Automatisch ── -->
+  <div class="tool-card" id="automatisch">
+    <div class="tool-header">
+      <img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=64" alt="Automatisch">
+      <div class="tool-header-text">
+        <h2>Automatisch</h2>
+        <div class="tool-tagline">Simple EU-built open-source automation — privacy first</div>
+        <div class="tool-badges">
+          <span class="badge badge-green">Self-hostable</span>
+          <span class="badge badge-green">GDPR-first</span>
+          <span class="badge badge-muted">~50 integrations</span>
+          <span class="badge badge-muted">AGPL-3.0</span>
+        </div>
+      </div>
+      <a href="https://automatisch.io" target="_blank" rel="noopener" class="tool-cta plain">Visit Automatisch →</a>
+    </div>
+    <div class="tool-body">
+      <div class="tool-section">
+        <h3>Ratings</h3>
+        <div class="ratings">
+          <div class="rating-row"><div class="rating-label">UI / ease of use</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:80%"></div></div><div class="rating-num">8</div></div></div>
+          <div class="rating-row"><div class="rating-label">Community</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill red" style="width:35%"></div></div><div class="rating-num">3.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Documentation</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:60%"></div></div><div class="rating-num">6</div></div></div>
+          <div class="rating-row"><div class="rating-label">Support quality</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:55%"></div></div><div class="rating-num">5.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">AI / LLM features</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill red" style="width:10%"></div></div><div class="rating-num">1</div></div></div>
+          <div class="rating-row"><div class="rating-label">Value for money</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:90%"></div></div><div class="rating-num">9</div></div></div>
+        </div>
+      </div>
+      <div class="tool-section">
+        <h3>Quick facts</h3>
+        <div class="quick-facts">
+          <div class="fact"><div class="fact-label">Founded</div><div class="fact-val">2022</div></div>
+          <div class="fact"><div class="fact-label">License</div><div class="fact-val">AGPL-3.0</div></div>
+          <div class="fact"><div class="fact-label">Integrations</div><div class="fact-val">~50</div></div>
+          <div class="fact"><div class="fact-label">HQ</div><div class="fact-val">Germany (EU)</div></div>
+          <div class="fact"><div class="fact-label">Self-host cost</div><div class="fact-val">~$8/mo VPS</div></div>
+          <div class="fact"><div class="fact-label">Cloud from</div><div class="fact-val">$20/mo</div></div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Pros & cons</h3>
+        <div class="pros-cons">
+          <div class="pros-col">
+            <h4>Pros</h4>
+            <div class="pro-item">Built in Germany — designed for EU data privacy and GDPR compliance</div>
+            <div class="pro-item">Simplest self-hosting setup of any open-source tool (Docker, 10 min)</div>
+            <div class="pro-item">Clean, uncluttered UI — easiest to navigate for non-devs</div>
+            <div class="pro-item">Full execution history stored locally — no data leaves your server</div>
+          </div>
+          <div class="cons-col">
+            <h4>Cons</h4>
+            <div class="con-item">Only ~50 integrations — severely limited compared to any alternative</div>
+            <div class="con-item">No AI nodes at all — not suitable for AI workflow use cases</div>
+            <div class="con-item">Very small community — minimal Stack Overflow answers or tutorials</div>
+            <div class="con-item">AGPL license means commercial use requires open-sourcing your code</div>
+            <div class="con-item">Slower development pace than Activepieces or n8n</div>
+          </div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Who it's for</h3>
+        <ul class="best-for-list">
+          <li>✓ <span>EU companies with strict GDPR requirements who need everything on-premise</span></li>
+          <li>✓ <span>Non-technical teams who want the simplest possible self-hosted setup</span></li>
+          <li>✓ <span>Projects using only the most common apps (Slack, Google, Notion, etc.)</span></li>
+          <li>✗ <span>Anyone needing AI/LLM workflows — no support whatsoever</span></li>
+          <li>✗ <span>Teams needing more than ~50 app integrations</span></li>
+          <li>✗ <span>Commercial SaaS products (AGPL license requires open-sourcing)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Node-RED ── -->
+  <div class="tool-card" id="node-red">
+    <div class="tool-header">
+      <img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=64" alt="Node-RED">
+      <div class="tool-header-text">
+        <h2>Node-RED</h2>
+        <div class="tool-tagline">Event-driven programming tool for IoT, hardware, and protocol automation</div>
+        <div class="tool-badges">
+          <span class="badge badge-green">Self-hostable</span>
+          <span class="badge badge-green">Apache 2.0</span>
+          <span class="badge badge-blue">IoT / MQTT</span>
+          <span class="badge badge-muted">Developer-only</span>
+        </div>
+      </div>
+      <a href="https://nodered.org" target="_blank" rel="noopener" class="tool-cta plain">Visit Node-RED →</a>
+    </div>
+    <div class="tool-body">
+      <div class="tool-section">
+        <h3>Ratings</h3>
+        <div class="ratings">
+          <div class="rating-row"><div class="rating-label">UI / ease of use</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill red" style="width:40%"></div></div><div class="rating-num">4</div></div></div>
+          <div class="rating-row"><div class="rating-label">Community</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:75%"></div></div><div class="rating-num">7.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Documentation</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:70%"></div></div><div class="rating-num">7</div></div></div>
+          <div class="rating-row"><div class="rating-label">Support quality</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill yellow" style="width:65%"></div></div><div class="rating-num">6.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">AI / LLM features</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill red" style="width:15%"></div></div><div class="rating-num">1.5</div></div></div>
+          <div class="rating-row"><div class="rating-label">Value for money</div><div class="rating-bar-wrap"><div class="rating-bar"><div class="rating-fill green" style="width:100%"></div></div><div class="rating-num">10</div></div></div>
+        </div>
+      </div>
+      <div class="tool-section">
+        <h3>Quick facts</h3>
+        <div class="quick-facts">
+          <div class="fact"><div class="fact-label">Founded</div><div class="fact-val">2013 (IBM)</div></div>
+          <div class="fact"><div class="fact-label">License</div><div class="fact-val">Apache 2.0 (truly free)</div></div>
+          <div class="fact"><div class="fact-label">Community nodes</div><div class="fact-val">1,000+</div></div>
+          <div class="fact"><div class="fact-label">Focus</div><div class="fact-val">IoT, hardware, protocols</div></div>
+          <div class="fact"><div class="fact-label">Cost</div><div class="fact-val">Free (+ VPS ~$8/mo)</div></div>
+          <div class="fact"><div class="fact-label">Maintained by</div><div class="fact-val">OpenJS Foundation</div></div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Pros & cons</h3>
+        <div class="pros-cons">
+          <div class="pros-col">
+            <h4>Pros</h4>
+            <div class="pro-item">Apache 2.0 — completely free, use commercially with zero restrictions</div>
+            <div class="pro-item">Best IoT and hardware protocol support (MQTT, Modbus, OPC-UA, serial)</div>
+            <div class="pro-item">Full Node.js code in every node — maximum flexibility</div>
+            <div class="pro-item">Runs on Raspberry Pi, edge devices, embedded systems</div>
+            <div class="pro-item">13+ years of stability — battle-tested in industrial environments</div>
+          </div>
+          <div class="cons-col">
+            <h4>Cons</h4>
+            <div class="con-item">UI is the most dated of all tools — not intuitive for SaaS workflows</div>
+            <div class="con-item">No cloud option — self-host only, always</div>
+            <div class="con-item">SaaS integrations are community nodes — quality varies wildly</div>
+            <div class="con-item">No native AI/LLM nodes — requires custom code to integrate</div>
+            <div class="con-item">Absolutely not for non-technical users</div>
+          </div>
+        </div>
+      </div>
+      <div class="tool-section" style="grid-column: 1 / -1;">
+        <h3>Who it's for</h3>
+        <ul class="best-for-list">
+          <li>✓ <span>IoT developers connecting sensors, PLCs, MQTT brokers, and hardware devices</span></li>
+          <li>✓ <span>Industrial automation engineers needing OPC-UA, Modbus, or serial protocols</span></li>
+          <li>✓ <span>Developers who want maximum flexibility and Apache 2.0 freedom</span></li>
+          <li>✓ <span>Edge computing use cases — runs on Raspberry Pi and similar hardware</span></li>
+          <li>✗ <span>Anyone automating SaaS apps (Slack, Notion, HubSpot) — wrong tool</span></li>
+          <li>✗ <span>Non-technical users — this requires Node.js knowledge</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io. All rights reserved.</div>
+  <div>AutomationCost.io · Independent, data-driven comparisons</div>
+  <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
+  <div style="margin-top:6px">Prices verified June 2026 · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+</footer>
+
+</body>
+</html>
