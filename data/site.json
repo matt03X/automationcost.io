@@ -1,6 +1,6 @@
 {
   "_meta": "Site-wide config consumed by build.py. Edit + run `python build.py`.",
-  "domain": "automationcost.io",
+  "domain": "wizardcost.com",
   "cloudflare_analytics_token": "",
   "sitemap_exclude": [
     "404.html"
