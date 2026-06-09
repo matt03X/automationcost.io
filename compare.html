@@ -5,35 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title id="page-title">Compare Automation Tools — AutomationCost.io</title>
   <meta name="description" id="page-desc" content="Compare automation tools side by side — pricing, limits, features. n8n vs Make vs Pipedream vs Zapier and more.">
+  <link rel="canonical" href="https://automationcost.io/compare.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AutomationCost.io">
+  <meta property="og:title" content="Compare Automation Tools — AutomationCost.io">
+  <meta property="og:description" content="Compare automation tools side by side — pricing, limits, features. n8n vs Make vs Pipedream vs Zapier and more.">
+  <meta property="og:url" content="https://automationcost.io/compare.html">
+  <meta property="og:image" content="https://automationcost.io/og-image.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://automationcost.io/og-image.svg">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
-      --border: #1f2d45; --text: #e8edf5; --muted: #6b7a99;
-      --accent: #2f6bff; --green: #10b981; --yellow: #f59e0b;
-      --red: #ef4444; --radius: 10px;
+      --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99;
+      --accent: #10b981; --accent-br: #16d18c; --accent-glow: rgba(16,185,129,0.20); --accent-dim: rgba(16,185,129,0.09); --ink: #04130d; --link: #6f9bff; --green: #10b981; --yellow: #f59e0b;
+      --red: #ef4444; --radius: 14px; --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
     }
-    body { background: var(--bg); background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(47,107,255,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%); background-repeat: no-repeat; background-attachment: fixed; color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
-    a { color: var(--accent); text-decoration: none; }
+    body { background: var(--bg); background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(16,185,129,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%); background-repeat: no-repeat; background-attachment: fixed; color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; }
+    a { color: var(--link); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
     /* ── Nav ── */
     header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg); }
     body { padding-top: 100px; }
-    .logo { display: flex; align-items: center; gap: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.06rem; color: var(--text); letter-spacing: -0.035em; text-decoration: none; }
-    .logo span { color: #10b981; }
-    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
+    .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .logo .io { color: var(--muted); font-weight: 600; }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 8px; }
     .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
     .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
     .nav-bottom::-webkit-scrollbar { display: none; }
     .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
     .nav-bottom a:hover { color: var(--text); }
     .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: #10b981; }
-    .nav-badge { font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--muted); }
+    .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 11px; color: var(--muted); letter-spacing: 0.01em; }
 
     /* ── Layout ── */
     .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
@@ -42,7 +55,7 @@
     .hero { text-align: center; padding: 48px 0 36px; }
     .hero-badge { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--muted); padding: 4px 14px; margin-bottom: 16px; }
     .hero h1 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 10px; }
-    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero h1 em { font-style: normal; color: var(--accent); font-family: var(--font); }
     .hero p { color: var(--muted); font-size: 0.95rem; }
 
     /* ── Tool selector ── */
@@ -164,7 +177,7 @@
       min-width: 180px;
     }
     .compare-table th:first-child { min-width: 200px; background: var(--bg); border-right: 2px solid var(--border); }
-    .compare-table th.winner-col { background: #0d2218; border-bottom-color: var(--green); }
+    .compare-table th.winner-col { background: #0d2218; box-shadow: inset 0 -3px 0 var(--green); }
 
     .th-inner { padding: 18px 20px; }
     .th-tool-logo { width: 28px; height: 28px; border-radius: 6px; object-fit: contain; background: #fff; padding: 2px; margin-bottom: 10px; display: block; }
@@ -172,7 +185,7 @@
     .th-tool-sub { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 12px; }
     .th-visit-btn { display: inline-block; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 6px; text-decoration: none; transition: opacity 0.15s; }
     .th-visit-btn:hover { opacity: 0.85; text-decoration: none; }
-    .th-visit-btn.affiliate { background: var(--accent); color: #fff; }
+    .th-visit-btn.affiliate { background: var(--accent); color: var(--ink); box-shadow: 0 2px 10px rgba(16,185,129,0.3); }
     .th-visit-btn.plain { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
 
     .compare-table td {
@@ -202,7 +215,7 @@
     .best-val { color: var(--green); font-weight: 700; }
     .worst-val { color: var(--red); }
 
-    .price-tag { font-size: 1.1rem; font-weight: 800; }
+    .price-tag { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; }
     .price-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
     .plan-pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); margin: 2px 2px 2px 0; }
@@ -229,15 +242,29 @@
 
     /* ── View tabs ── */
     .view-tabs { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
-    .view-tab { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 20px; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .view-tab { white-space: nowrap; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 20px; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.15s; font-family: inherit; }
     .view-tab:hover { border-color: var(--accent); color: var(--text); }
-    .view-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .view-tab.active { background: var(--accent); border-color: var(--accent); color: var(--ink); }
 
     /* ── Plans compare (head-to-head) ── */
     .ops-slider-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
     .ops-slider-row label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); white-space: nowrap; }
-    .ops-val { font-size: 1.1rem; font-weight: 800; color: var(--text); min-width: 90px; }
+    .ops-val { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; color: var(--text); min-width: 90px; }
     .ops-range { flex: 1; min-width: 180px; accent-color: var(--accent); height: 4px; cursor: pointer; }
+
+    /* ── Best-for-me toggle ── */
+    .bfm-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+    .bfm-toggle { display: inline-flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--border2); border-radius: 100px; padding: 8px 16px 8px 11px; font-family: var(--font); font-size: 13.5px; font-weight: 700; color: var(--text2); cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s, box-shadow 0.15s; }
+    .bfm-toggle:hover { border-color: var(--accent); color: var(--text); }
+    .bfm-toggle svg { color: var(--muted); transition: color 0.15s; }
+    .bfm-check { width: 18px; height: 18px; border-radius: 6px; border: 2px solid var(--border2); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; transition: background 0.15s, border-color 0.15s; }
+    .bfm-toggle.active { border-color: var(--accent); background: linear-gradient(160deg, rgba(16,185,129,0.16), rgba(16,185,129,0.04)); color: var(--text); box-shadow: 0 0 0 1px var(--accent); }
+    .bfm-toggle.active .bfm-check { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+    .bfm-toggle.active .bfm-check::after { content: "✓"; }
+    .bfm-toggle.active svg { color: var(--accent-br); }
+    .bfm-note { font-size: 13px; color: var(--text2); }
+    .bfm-note a { color: var(--link); font-weight: 600; }
+    .bfm-note b { color: var(--text); }
 
     .plan-compare-grid { display: grid; gap: 16px; margin-bottom: 36px; }
     .plan-compare-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
@@ -257,13 +284,13 @@
     .plan-card.alt-best:hover { background: rgba(255,255,255,0.09); }
     .plan-card.too-small { opacity: 0.35; pointer-events: none; }
     .plan-card-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
-    .plan-card-price { font-size: 1.2rem; font-weight: 800; }
+    .plan-card-price { font-family: var(--mono); font-size: 1.2rem; font-weight: 700; }
     .plan-card-price small { font-size: 12px; font-weight: 400; color: var(--muted); }
     .plan-card-meta { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
     .plan-card-overage { font-size: 11px; color: var(--yellow); margin-top: 3px; }
     .best-badge { font-size: 10px; font-weight: 700; background: var(--green); color: #000; border-radius: 3px; padding: 1px 5px; }
     .cloud-badge { font-size: 10px; font-weight: 700; background: rgba(255,255,255,0.9); color: #0a0e17; border-radius: 3px; padding: 1px 5px; }
-    .recommended-badge { font-size: 10px; font-weight: 700; background: var(--accent); color: #fff; border-radius: 3px; padding: 1px 5px; }
+    .recommended-badge { font-size: 10px; font-weight: 700; background: var(--accent); color: var(--ink); border-radius: 3px; padding: 1px 5px; }
     .plan-card-note { font-size: 11px; font-weight: 600; margin-top: 5px; }
     .plan-card-note.green { color: var(--green); }
     .plan-card-note.white { color: #cfd8e8; }
@@ -279,6 +306,18 @@
     .plan-winner-row .winner-label { font-size: 11px; color: var(--green); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
     .plan-winner-row .winner-name { font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
     .plan-winner-row .winner-detail { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    /* ── Caret price ladder (cheapest ‹ pricier) ── the brand mark as comparison operator */
+    .pc-ladder { display: flex; align-items: center; flex-wrap: wrap; gap: 9px 13px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 24px; }
+    .pc-ladder-label { font-family: var(--mono); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); width: 100%; }
+    .pc-rung { display: inline-flex; align-items: center; gap: 8px; }
+    .pc-rung img { width: 20px; height: 20px; border-radius: 5px; object-fit: contain; background: #fff; padding: 1px; flex-shrink: 0; }
+    .pc-rung .nm { font-weight: 700; font-size: 14px; color: var(--text); letter-spacing: -0.01em; }
+    .pc-rung .pr { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .pc-rung.cheapest .nm, .pc-rung.cheapest .pr { color: var(--green); }
+    .pc-caret { display: inline-flex; color: var(--accent); flex-shrink: 0; }
+    .pc-caret svg { width: 15px; height: 15px; }
+    @media (min-width: 560px) { .pc-ladder-label { width: auto; margin-right: 4px; } }
 
     /* ── Plans table (all plans) ── */
     .plans-toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
@@ -299,18 +338,122 @@
     .plans-table .selfhost-row:hover td { background: rgba(16,185,129,0.08); }
     .plans-table .free-row td { background: rgba(47,107,255,0.04); }
     .plans-table .free-row:hover td { background: rgba(47,107,255,0.08); }
-    .pill-free { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; background: rgba(47,107,255,0.15); color: var(--accent); font-weight: 700; }
+    .pill-free { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; background: rgba(111,155,255,0.14); color: var(--link); font-weight: 700; }
     .pill-selfhost { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; background: rgba(16,185,129,0.15); color: var(--green); font-weight: 700; }
     .pill-custom { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; background: var(--surface2); color: var(--muted); font-weight: 700; }
     .plans-count { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
 
     /* ── Footer ── */
-    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 64px; }
+    footer { border-top: 1px solid var(--border); padding: 34px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 64px; }
     footer a { color: var(--muted); }
+    .funnel-fab { position: fixed; right: 22px; bottom: 22px; z-index: 90; display: inline-flex; align-items: center; gap: 9px; background: var(--accent); color: var(--ink); font-family: var(--font); font-weight: 700; font-size: 14px; letter-spacing: -0.01em; padding: 13px 20px; border-radius: 100px; text-decoration: none; box-shadow: 0 8px 28px rgba(16,185,129,0.36), 0 0 0 1px rgba(16,185,129,0.5); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .funnel-fab:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-2px); text-decoration: none; box-shadow: 0 12px 34px rgba(16,185,129,0.46), 0 0 0 1px rgba(16,185,129,0.6); }
+    @media (max-width: 560px) { .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; } }
 
     @media (max-width: 640px) {
       .selector-bar { flex-direction: column; align-items: flex-start; }
       .share-btn { margin-left: 0; }
+    }
+  
+    /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 8px; padding-right: 8px; }
+      .nav-bottom a { padding: 13px 14px; }
+    }
+    @media (max-width: 620px) {
+      .nav-badge { display: none; }
+      .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 460px) {
+      .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
+    }
+    /* Comparison tables: keep the label column pinned + shrink so 2 tools fit a phone */
+    @media (max-width: 620px) {
+      /* ── Compare Tools: the wide feature×tool matrix is unusable on a phone,
+            so it reflows into a vertical, no-scroll comparison ── */
+      .compare-wrap { overflow-x: visible; }
+      .compare-table { display: block; width: 100%; font-size: 13px; }
+      .compare-table thead, .compare-table tbody, .compare-table tr, .compare-table th, .compare-table td { display: block; width: auto; }
+
+      /* thead → a compact "tools being compared" header */
+      .compare-table thead tr { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 18px; }
+      .compare-table thead th { background: var(--surface) !important; border: 1px solid var(--border) !important; border-right: 1px solid var(--border) !important; border-radius: 12px; min-width: 0; box-shadow: none; }
+      .compare-table thead th:first-child { display: none; }
+      .compare-table thead th.winner-col { border-color: var(--green) !important; background: #0d2218 !important; }
+      .compare-table thead .th-inner { padding: 16px 12px; text-align: center; }
+      .compare-table thead .th-tool-logo { width: 30px; height: 30px; margin: 0 auto 9px; }
+      .compare-table thead .th-tool-name { font-size: 0.95rem; }
+      .compare-table thead .th-tool-name span { display: block; margin-top: 5px; }
+      .compare-table thead .th-tool-sub { display: none; }
+      .compare-table thead .th-visit-btn { display: block; margin-top: 11px; white-space: nowrap; }
+
+      /* tbody: each feature row → a card; values become labelled rows */
+      .compare-table tbody tr { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
+      .compare-table tbody td { position: static; min-width: 0; border: none !important; border-bottom: 1px solid var(--border) !important; padding: 11px 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: right; }
+      .compare-table tbody tr td:last-child { border-bottom: none !important; }
+      .compare-table tbody td::before { content: attr(data-tool); flex-shrink: 0; text-align: left; font-weight: 700; color: var(--text); font-size: 13px; }
+      .compare-table tbody td .cmp-val { text-align: right; line-height: 1.35; }
+      .compare-table tbody td .cmp-val .price-note { font-size: 11px; }
+      .compare-table tbody td.winner-col { background: rgba(16,185,129,0.06); }
+      .compare-table tbody td.winner-col::before { color: var(--green); }
+      /* feature label = card header */
+      .compare-table tbody td:first-child { background: var(--surface2); justify-content: flex-start; font-weight: 700; color: var(--text); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+      .compare-table tbody td:first-child::before { display: none; }
+
+      /* section dividers → plain headings between cards */
+      .compare-table tbody tr.section-row { background: transparent; border: none; margin: 24px 0 8px; overflow: visible; }
+      .section-row td { background: transparent !important; padding: 0 4px 2px !important; border: none !important; color: var(--muted); font-size: 12px; }
+
+      /* winner banner: full-width CTA reads as an intentional stacked card */
+      .winner-banner { padding: 18px 18px; }
+      .cta-btn { width: 100%; text-align: center; }
+      .nav-bottom a { padding: 13px 14px; }
+      .plans-toolbar select { flex: 1; }
+      .ops-slider-row { flex-wrap: wrap; }
+      /* keep plan badges + the "★ Best value" tag from breaking mid-word */
+      .plan-card-name { flex-wrap: wrap; }
+      .plan-card-name span { white-space: nowrap; }
+      .plan-tool-header span span { display: inline-block; white-space: nowrap; }
+
+      /* ── All Plans: a wide 8-column table is unreadable on a phone, so each
+            plan becomes a self-contained card with labelled rows ── */
+      .plans-wrap { overflow-x: visible; }
+      .plans-table thead { display: none; }
+      .plans-table, .plans-table tbody, .plans-table tr, .plans-table td { display: block; width: auto; }
+      .plans-table tr,
+      .plans-table .selfhost-row, .plans-table .free-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 14px; overflow: hidden; }
+      .plans-table .selfhost-row { border-color: rgba(16,185,129,0.4); }
+      .plans-table .free-row { border-color: rgba(47,107,255,0.4); }
+      .plans-table tr:last-child td { border-bottom: 1px solid var(--border); }
+      .plans-table tr:hover td,
+      .plans-table .selfhost-row td, .plans-table .selfhost-row:hover td,
+      .plans-table .free-row td, .plans-table .free-row:hover td { background: transparent; }
+      .plans-table td {
+        position: static !important; left: auto !important; z-index: auto !important;
+        min-width: 0 !important; white-space: normal !important;
+        border: none !important; border-bottom: 1px solid var(--border) !important;
+        padding: 11px 16px !important;
+        display: flex; align-items: center; justify-content: space-between; gap: 18px; text-align: right;
+      }
+      .plans-table td::before {
+        content: attr(data-label); flex-shrink: 0; text-align: left;
+        font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);
+      }
+      /* first cell = card header (tool name), full-width, no label */
+      .plans-table td:first-child {
+        background: var(--surface2) !important; justify-content: flex-start;
+        padding: 13px 16px !important; font-size: 15px;
+      }
+      .plans-table td:first-child::before { display: none; }
+      .plans-table .tool-badge img { width: 22px; height: 22px; }
+    }
+  
+    /* AC-CTA-STACK ── stack hero/CTA button rows full-width on small phones */
+    @media (max-width: 520px) {
+      .cta-row { flex-direction: column; align-items: stretch; }
+      .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
     }
   </style>
 </head>
@@ -320,10 +463,10 @@
   <div class="nav-top">
     <a href="index.html" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M29 11 L15 24 L29 37" stroke="#10b981" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34.5" cy="24" r="3.4" fill="#10b981"/>
+        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
       </svg>
-      Automation<span>Cost</span>.io
+      Automation<span>Cost</span><span class="io">.io</span>
     </a>
     <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
@@ -374,6 +517,16 @@
       <button class="add-btn" id="pc-add-btn" onclick="pcAddSlot()">+ Add tool</button>
     </div>
 
+    <!-- Best-for-me: pulls volume + recommended tool from the calculator -->
+    <div class="bfm-row">
+      <button class="bfm-toggle" id="bfm-toggle" onclick="pcToggleBestForMe()">
+        <span class="bfm-check"></span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3Z"/></svg>
+        Best for me
+      </button>
+      <span class="bfm-note" id="bfm-note"></span>
+    </div>
+
     <!-- ops slider -->
     <div class="ops-slider-row">
       <label>Monthly ops</label>
@@ -385,6 +538,9 @@
 
     <!-- winner row -->
     <div id="pc-winner" style="display:none" class="plan-winner-row"></div>
+
+    <!-- caret price ladder (cheapest ‹ pricier, re-ranks with the slider) -->
+    <div id="pc-ladder" class="pc-ladder" style="display:none"></div>
 
     <!-- legend -->
     <div class="pc-legend">
@@ -457,6 +613,7 @@ const LOGOS = {
   "node-red":     "https://www.google.com/s2/favicons?domain=nodered.org&sz=64",
 };
 
+/* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
 const TOOLS = {
   "n8n": {
     slug: "n8n", name: "n8n",
@@ -507,8 +664,8 @@ const TOOLS = {
     selfHostable: false, aiFeatures: true, integrations: 2000,
     license: "Proprietary (cloud)",
     freeOps: "100 credits/mo", freeWorkflows: "3", maxSteps: "Unlimited",
-    timeout: "30 sec (free) / 12 min (paid)", logHistory: "24 hours (free)",
-    gdprFriendly: false, multiUser: true, apiAccess: true, webhooks: true, codeSteps: true,
+    timeout: "30 sec (free) / 12 min (paid)", logHistory: "24 hours (free)", gdprFriendly: false,
+    multiUser: true, apiAccess: true, webhooks: true, codeSteps: true,
     homepage: "https://pipedream.com",
     affiliateUrl: "https://pipedream.com",
     hasAffiliate: true,
@@ -602,6 +759,7 @@ const TOOLS = {
     cons: ["No cloud option", "Developer-only (no visual UI)", "Limited SaaS integrations"],
   },
 };
+/* DATA:TOOLS:END */
 
 const ALL_SLUGS = Object.keys(TOOLS);
 const MAX_SLOTS = 4;
@@ -820,7 +978,7 @@ function renderResults() {
       rawVals = tools.map(t => t[row.key]);
     }
 
-    tableHtml += `<tr><td>${row.label}</td>`;
+    tableHtml += `<tr><td data-label="${row.label}">${row.label}</td>`;
     tools.forEach((t, i) => {
       const isWinner = i === winnerIdx;
       let val = row.render(t, i);
@@ -832,7 +990,7 @@ function renderResults() {
         if (rawVals[i] === min && max !== min) val = `<span class="worst-val">${val}</span>`;
       }
 
-      tableHtml += `<td class="${isWinner ? 'winner-col' : ''}">${val}</td>`;
+      tableHtml += `<td class="${isWinner ? 'winner-col' : ''}" data-tool="${t.name}"><span class="cmp-val">${val}</span></td>`;
     });
     tableHtml += `</tr>`;
   });
@@ -1027,6 +1185,52 @@ function pcOpsChanged() {
   const ops = pcGetOps();
   document.getElementById("pc-ops-val").textContent = ops === 0 ? "Free tier" : ops >= 1000 ? `${(ops/1000).toLocaleString()}k` : ops.toLocaleString();
   pcRenderGrid(ops);
+}
+
+// ── "Best for me": apply the user's saved finder profile (written by calculator.html) ──
+let bfmActive = false;
+function pcReadProfile() {
+  try { return JSON.parse(localStorage.getItem("ac_profile") || "null"); } catch (e) { return null; }
+}
+function pcSetOpsLabel(ops) {
+  document.getElementById("pc-ops-val").textContent =
+    ops === 0 ? "Free tier" : ops >= 1000 ? `${(ops/1000).toLocaleString()}k` : ops.toLocaleString();
+}
+function pcToggleBestForMe() {
+  const toggle = document.getElementById("bfm-toggle");
+  const note = document.getElementById("bfm-note");
+  const profile = pcReadProfile();
+  if (!profile) {
+    bfmActive = false; toggle.classList.remove("active");
+    note.innerHTML = `No finder answers saved yet — <a href="calculator.html">take the 30-second finder →</a>`;
+    return;
+  }
+  bfmActive = !bfmActive;
+  toggle.classList.toggle("active", bfmActive);
+  if (!bfmActive) { note.textContent = ""; pcRender(); return; }
+
+  // 1) Put the recommended tool first in the line-up
+  if (profile.topTool && TOOLS[profile.topTool]) {
+    pcSelected = [profile.topTool, ...pcSelected.filter(s => s !== profile.topTool)].slice(0, 4);
+  }
+  pcRenderSlots();
+  pcRefreshOpsSteps();
+
+  // 2) Snap the ops slider to the user's volume
+  if (typeof profile.ops === "number") {
+    const idx = OPS_STEPS.reduce((b, v, i) =>
+      Math.abs(v - profile.ops) < Math.abs(OPS_STEPS[b] - profile.ops) ? i : b, 0);
+    document.getElementById("pc-ops-range").value = idx;
+  }
+  const ops = pcGetOps();
+  pcSetOpsLabel(ops);
+  pcRenderGrid(ops);
+
+  // 3) Explain what we matched
+  const bits = [`${profile.ops >= 1000 ? (profile.ops/1000) + "k" : profile.ops} ops/mo`];
+  if (profile.budget) bits.push(`$${profile.budget} budget`);
+  if (profile.topTool && TOOLS[profile.topTool]) bits.push(`${TOOLS[profile.topTool].name} recommended`);
+  note.innerHTML = `Matched to your finder: <b>${bits.join(" · ")}</b>`;
 }
 
 function pcRenderSlots() {
@@ -1258,14 +1462,14 @@ function renderPlansTable() {
     const bestFor = (BEST_FOR[tool.slug] || {})[plan.name] || "—";
 
     return `<tr class="${rowClass}">
-      <td><div class="tool-badge"><img src="${LOGOS[tool.slug]}" alt="${tool.name}" onerror="this.style.display='none'">${tool.name}</div></td>
-      <td>${plan.name}</td>
-      <td>${priceCell}</td>
-      <td>${opsCell}</td>
-      <td>${wfCell}</td>
-      <td>${overageCell}</td>
-      <td>${selfHostCell}</td>
-      <td style="font-size:13px;color:var(--muted)">${bestFor}</td>
+      <td data-label="Tool"><div class="tool-badge"><img src="${LOGOS[tool.slug]}" alt="${tool.name}" onerror="this.style.display='none'">${tool.name}</div></td>
+      <td data-label="Plan">${plan.name}</td>
+      <td data-label="Price/mo">${priceCell}</td>
+      <td data-label="Ops included">${opsCell}</td>
+      <td data-label="Workflows">${wfCell}</td>
+      <td data-label="Overage">${overageCell}</td>
+      <td data-label="Self-host">${selfHostCell}</td>
+      <td data-label="Best for" style="font-size:13px;color:var(--muted)">${bestFor}</td>
     </tr>`;
   }).join("");
 }
@@ -1276,6 +1480,66 @@ initPlansFilter();
 renderSlots();
 renderResults();
 pcRender();
+
+// Deep-link support: ?view=plancomp|allplans (&bestforme=1 auto-applies the saved finder profile)
+(function initDeepLink() {
+  const params = new URLSearchParams(window.location.search);
+  const view = params.get("view");
+  if (view === "plancomp" || view === "allplans") switchView(view);
+  if (view === "plancomp" && params.get("bestforme") === "1") pcToggleBestForMe();
+})();
 </script>
+
+<!-- Caret price ladder: ranks the compared tools cheapest‹pricier at the current
+     ops volume, using the brand caret as the "less-than" operator. Additive — wraps
+     pcRenderGrid without modifying the locked logic. -->
+<script>
+(function () {
+  if (typeof window.pcRenderGrid !== "function") return;
+  var original = window.pcRenderGrid;
+  var CARET = '<span class="pc-caret" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="currentColor" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+
+  function priceLabel(plan) {
+    if (!plan) return "n/a";
+    if (plan.monthlyUsd === null) return "Custom";
+    if (plan.monthlyUsd === 0) return "Free";
+    return "$" + plan.monthlyUsd + "/mo";
+  }
+
+  function renderLadder(ops) {
+    var el = document.getElementById("pc-ladder");
+    if (!el) return;
+    var rows = pcSelected.map(function (s) {
+      var t = TOOLS[s];
+      var plan = pcPickPlan(t, ops, false);
+      return { tool: t, plan: plan, price: plan ? planPrice(plan) : Infinity };
+    }).sort(function (a, b) { return a.price - b.price; });
+
+    var cheapest = rows[0].price;
+    var fmtOps = ops === 0 ? "free tier" : ops >= 1000 ? (ops / 1000).toLocaleString() + "k" : ops.toLocaleString();
+    var rungs = rows.map(function (r) {
+      var isCheap = r.price === cheapest && r.price !== Infinity;
+      return '<span class="pc-rung' + (isCheap ? " cheapest" : "") + '">' +
+        '<img src="' + LOGOS[r.tool.slug] + '" alt="" onerror="this.style.display=\'none\'">' +
+        '<span class="nm">' + r.tool.name + '</span>' +
+        '<span class="pr">' + priceLabel(r.plan) + '</span></span>';
+    });
+    el.innerHTML = '<span class="pc-ladder-label">Price ladder · cheapest first · at ' + fmtOps + ' ops/mo</span>' + rungs.join(CARET);
+    el.style.display = "";
+  }
+
+  window.pcRenderGrid = function (ops) {
+    original.call(this, ops);
+    try { renderLadder(ops); } catch (e) {}
+  };
+
+  // Populate immediately if the plan-comparison view is already showing (deep link).
+  try {
+    var v = document.getElementById("view-plancomp");
+    if (v && v.style.display !== "none") renderLadder(pcGetOps());
+  } catch (e) {}
+})();
+</script>
+<a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="18" height="18" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>Find my cheapest tool →</a>
 </body>
 </html>

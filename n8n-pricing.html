@@ -27,34 +27,36 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #080c14; --surface: #0f1623; --surface2: #151e30; --surface3: #1a2540;
       --border: #1e2d45; --border2: #243350;
       --text: #e8edf5; --text2: #a8b4cc; --muted: #5a6a88;
-      --accent: #2f6bff; --accent-glow: rgba(47,107,255,0.18); --accent-dim: rgba(47,107,255,0.08);
+      --accent: #10b981; --accent-br: #16d18c; --accent-glow: rgba(16,185,129,0.20); --accent-dim: rgba(16,185,129,0.09); --ink: #04130d; --link: #6f9bff;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
       --green: #10b981; --green-soft: rgba(16,185,129,0.12);
       --orange: #f59e0b;
       --radius: 12px; --radius-sm: 8px;
     }
     html { scroll-behavior: smooth; }
+    h1, h2, h3, .section-title, .page-hero h1 { font-family: var(--display); }
     body {
       background: var(--bg); color: var(--text);
-      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: var(--font);
       font-size: 15px; line-height: 1.6; min-height: 100vh; padding-top: 104px;
       -webkit-font-smoothing: antialiased;
     }
     body::before {
       content: ''; position: fixed; inset: 0;
       background:
-        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(47,107,255,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(16,185,129,0.12) 0%, transparent 60%),
         radial-gradient(ellipse 40% 30% at 90% 20%, rgba(16,185,129,0.06) 0%, transparent 50%);
       pointer-events: none; z-index: 0;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { color: #5a8bff; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: #9fbcff; }
     .wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 32px; }
 
     /* ── Nav (shared) ── */
@@ -69,14 +71,15 @@
     .nav-bottom a { padding: 11px 18px; font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
     .nav-bottom a:hover { color: var(--text2); }
     .nav-bottom a.active { color: var(--text); font-weight: 600; border-bottom-color: var(--green); }
-    .logo { display: flex; align-items: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--text); letter-spacing: -0.03em; text-decoration: none; }
+    .logo { display: flex; align-items: center; font-family: var(--display); font-weight: 800; font-size: 1.06rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .logo .io { color: var(--muted); font-weight: 600; }
     .logo:hover { color: var(--text); }
     .logo span { color: var(--green); }
     .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 10px; }
-    .nav-badge { font-size: 11px; font-weight: 500; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 3px 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; font-weight: 500; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 3px 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
     .nav-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); flex-shrink: 0; }
     .nav-dropdown { position: relative; display: flex; align-items: center; }
-    .nav-dropdown-btn { background: none; border: none; color: var(--muted); font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 500; padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s; margin-bottom: -1px; border-bottom: 2px solid transparent; }
+    .nav-dropdown-btn { background: none; border: none; color: var(--muted); font-family: var(--font); font-size: 13px; font-weight: 500; padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s; margin-bottom: -1px; border-bottom: 2px solid transparent; }
     .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text2); }
     .nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); min-width: 210px; z-index: 200; box-shadow: 0 16px 40px rgba(0,0,0,0.5); padding: 6px 0; }
     .nav-dropdown.open .nav-dropdown-menu { display: block; }
@@ -91,9 +94,9 @@
     .page-hero h1 { font-size: clamp(1.9rem, 4.5vw, 2.9rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 16px; }
     .page-hero p { color: var(--text2); font-size: 1.05rem; max-width: 600px; margin-bottom: 28px; line-height: 1.7; }
     .cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 48px; }
-    .btn-primary { background: var(--accent); color: #fff; border: none; border-radius: var(--radius-sm); padding: 12px 24px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 0 0 1px rgba(47,107,255,0.4), 0 6px 20px rgba(47,107,255,0.28); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
-    .btn-primary:hover { background: #3d78ff; color: #fff; transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(47,107,255,0.5), 0 10px 28px rgba(47,107,255,0.38); }
-    .btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 11px 20px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.15s, color 0.15s; }
+    .btn-primary { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 24px; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 6px 20px rgba(16,185,129,0.28); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .btn-primary:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 10px 28px rgba(16,185,129,0.38); }
+    .btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 11px 20px; font-family: var(--font); font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.15s, color 0.15s; }
     .btn-secondary:hover { border-color: var(--accent); color: var(--text); }
 
     /* ── Verdict box ── */
@@ -119,13 +122,13 @@
     }
     .plan-card.highlight {
       border-color: var(--accent);
-      box-shadow: 0 0 0 1px var(--accent-glow), 0 8px 32px rgba(47,107,255,0.12);
-      background: linear-gradient(160deg, rgba(47,107,255,0.06) 0%, var(--surface) 60%);
+      box-shadow: 0 0 0 1px var(--accent-glow), 0 8px 32px rgba(16,185,129,0.12);
+      background: linear-gradient(160deg, rgba(16,185,129,0.06) 0%, var(--surface) 60%);
     }
-    .plan-name { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
-    .plan-price { font-size: 1.75rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; line-height: 1; }
+    .plan-name { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+    .plan-price { font-family: var(--mono); font-size: 1.75rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; line-height: 1; }
     .plan-price span { font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
-    .plan-tag { display: inline-block; font-size: 11px; font-weight: 600; background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(47,107,255,0.25); border-radius: 4px; padding: 2px 8px; margin-bottom: 14px; }
+    .plan-tag { display: inline-block; font-size: 11px; font-weight: 600; background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(16,185,129,0.25); border-radius: 4px; padding: 2px 8px; margin-bottom: 14px; }
     .plan-detail { font-size: 13px; color: var(--text2); margin-top: 14px; line-height: 1.7; }
     .plan-detail li { list-style: none; padding: 3px 0; display: flex; align-items: baseline; gap: 8px; }
     .plan-detail li::before { content: "·"; color: var(--accent); flex-shrink: 0; font-weight: 700; }
@@ -134,7 +137,7 @@
     /* ── Tables ── */
     .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; }
     .comparison-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .comparison-table th { text-align: left; padding: 11px 16px; color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .comparison-table th { font-family: var(--mono); text-align: left; padding: 11px 16px; color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; background: var(--surface2); border-bottom: 1px solid var(--border); }
     .comparison-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text2); }
     .comparison-table tr:last-child td { border-bottom: none; }
     .comparison-table tbody tr:hover td { background: var(--surface2); color: var(--text); }
@@ -146,7 +149,7 @@
 
     /* ── FAQ ── */
     .faq-item { border-bottom: 1px solid var(--border); }
-    .faq-q { width: 100%; background: none; border: none; color: var(--text); font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; text-align: left; padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: color 0.15s; }
+    .faq-q { width: 100%; background: none; border: none; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 600; text-align: left; padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: color 0.15s; }
     .faq-q:hover { color: var(--accent); }
     .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
     .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--accent); }
@@ -174,6 +177,30 @@
       .page-hero { padding: 40px 0 36px; }
       .plans-grid { grid-template-columns: 1fr 1fr; }
     }
+    .funnel-fab { position: fixed; right: 22px; bottom: 22px; z-index: 90; display: inline-flex; align-items: center; gap: 9px; background: var(--accent); color: var(--ink); font-family: var(--font); font-size: 14px; font-weight: 700; padding: 13px 20px; border-radius: 100px; text-decoration: none; box-shadow: 0 10px 30px rgba(16,185,129,0.4), 0 0 0 1px rgba(16,185,129,0.5); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .funnel-fab:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-2px); text-decoration: none; box-shadow: 0 14px 38px rgba(16,185,129,0.5); }
+    @media (max-width: 560px) { .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; } }
+  
+    /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 8px; padding-right: 8px; }
+      .nav-bottom a { padding: 13px 14px; }
+    }
+    @media (max-width: 620px) {
+      .nav-badge { display: none; }
+      .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 460px) {
+      .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
+    }
+  
+    /* AC-CTA-STACK ── stack hero/CTA button rows full-width on small phones */
+    @media (max-width: 520px) {
+      .cta-row { flex-direction: column; align-items: stretch; }
+      .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+    }
   </style>
 </head>
 <body>
@@ -182,10 +209,10 @@
   <div class="nav-top">
     <a href="index.html" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M29 11 L15 24 L29 37" stroke="#10b981" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34.5" cy="24" r="3.4" fill="#10b981"/>
+        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
       </svg>
-      Automation<span>Cost</span>.io
+      Automation<span>Cost</span><span class="io">.io</span>
     </a>
     <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
@@ -381,5 +408,6 @@ if (dd) {
   document.addEventListener("click", () => dd.classList.remove("open"));
 }
 </script>
+<a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="17" height="17" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#04130d"/></svg> Find my best tool</a>
 </body>
 </html>

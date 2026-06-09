@@ -1,0 +1,434 @@
+{
+  "_meta": {
+    "note": "CANONICAL SOURCE OF TRUTH for tool pricing data = the moat. Edit this file, then run `python build.py` to inject it into calculator.html + compare.html. DO NOT edit the const TOOLS blocks in those files by hand.",
+    "conventions": {
+      "opsIncluded": "null = Infinity (unlimited)",
+      "workflowLimit": "null = Infinity (unlimited)",
+      "monthlyUsd": "null = custom / contact sales (calculator skips these plans, compare renders 'Custom')",
+      "note": "calculator-only display label for the plan; omit for plans the calculator skips (custom-priced)"
+    },
+    "last_reviewed": "2026-06-09"
+  },
+  "tools": [
+    {
+      "slug": "n8n",
+      "name": "n8n",
+      "tagline": "Open-source automation for developers & self-hosters",
+      "selfHostable": true,
+      "aiFeatures": true,
+      "integrations": 400,
+      "license": "Sustainable Use",
+      "freeOps": "Unlimited*",
+      "freeWorkflows": "Unlimited*",
+      "maxSteps": "Unlimited",
+      "timeout": "No limit*",
+      "logHistory": "7 days (cloud)",
+      "gdprFriendly": true,
+      "multiUser": false,
+      "apiAccess": true,
+      "webhooks": true,
+      "codeSteps": true,
+      "homepage": "https://n8n.io",
+      "affiliateUrl": "https://n8n.io",
+      "hasAffiliate": true,
+      "plans": [
+        {
+          "name": "Self-hosted",
+          "monthlyUsd": 8,
+          "opsIncluded": null,
+          "workflowLimit": null,
+          "selfHostOnly": true,
+          "note": "Self-hosted + VPS (~$8/mo)"
+        },
+        {
+          "name": "Cloud Starter",
+          "monthlyUsd": 20,
+          "opsIncluded": 2500,
+          "workflowLimit": 5,
+          "note": "Cloud Starter"
+        },
+        {
+          "name": "Cloud Pro",
+          "monthlyUsd": 50,
+          "opsIncluded": 10000,
+          "workflowLimit": 15,
+          "note": "Cloud Pro"
+        },
+        {
+          "name": "Cloud Enterprise",
+          "monthlyUsd": null,
+          "opsIncluded": null,
+          "workflowLimit": null
+        }
+      ],
+      "overage": null,
+      "pros": [
+        "Truly unlimited self-hosted",
+        "Best AI/LLM nodes",
+        "Strong community"
+      ],
+      "cons": [
+        "Setup required for self-host",
+        "Smaller cloud workflow limit"
+      ]
+    },
+    {
+      "slug": "make",
+      "name": "Make",
+      "tagline": "Visual automation builder with the best cloud value",
+      "selfHostable": false,
+      "aiFeatures": true,
+      "integrations": 1500,
+      "license": "Proprietary (cloud)",
+      "freeOps": "1,000/mo",
+      "freeWorkflows": "Unlimited",
+      "maxSteps": "Unlimited",
+      "timeout": "40 min",
+      "logHistory": "30 days",
+      "gdprFriendly": true,
+      "multiUser": true,
+      "apiAccess": true,
+      "webhooks": true,
+      "codeSteps": false,
+      "homepage": "https://www.make.com",
+      "affiliateUrl": "https://www.make.com",
+      "hasAffiliate": true,
+      "plans": [
+        {
+          "name": "Free",
+          "monthlyUsd": 0,
+          "opsIncluded": 1000,
+          "workflowLimit": null,
+          "note": "Free tier"
+        },
+        {
+          "name": "Core",
+          "monthlyUsd": 9,
+          "opsIncluded": 10000,
+          "workflowLimit": null,
+          "note": "Core plan"
+        },
+        {
+          "name": "Pro",
+          "monthlyUsd": 16,
+          "opsIncluded": 10000,
+          "workflowLimit": null,
+          "note": "Pro plan"
+        },
+        {
+          "name": "Teams",
+          "monthlyUsd": 29,
+          "opsIncluded": 10000,
+          "workflowLimit": null,
+          "note": "Teams plan"
+        },
+        {
+          "name": "Enterprise",
+          "monthlyUsd": null,
+          "opsIncluded": null,
+          "workflowLimit": null
+        }
+      ],
+      "overage": {
+        "per": 10000,
+        "usd": 9
+      },
+      "pros": [
+        "Best price per op in cloud",
+        "30-day log history on free",
+        "Visual drag-and-drop"
+      ],
+      "cons": [
+        "No self-hosting",
+        "No native code steps"
+      ]
+    },
+    {
+      "slug": "pipedream",
+      "name": "Pipedream",
+      "tagline": "Code-first automation platform for developers",
+      "selfHostable": false,
+      "aiFeatures": true,
+      "integrations": 2000,
+      "license": "Proprietary (cloud)",
+      "freeOps": "100 credits/mo",
+      "freeWorkflows": "3",
+      "maxSteps": "Unlimited",
+      "timeout": "30 sec (free) / 12 min (paid)",
+      "logHistory": "24 hours (free)",
+      "gdprFriendly": false,
+      "multiUser": true,
+      "apiAccess": true,
+      "webhooks": true,
+      "codeSteps": true,
+      "homepage": "https://pipedream.com",
+      "affiliateUrl": "https://pipedream.com",
+      "hasAffiliate": true,
+      "plans": [
+        {
+          "name": "Free",
+          "monthlyUsd": 0,
+          "opsIncluded": 100,
+          "workflowLimit": 3,
+          "note": "Free tier"
+        },
+        {
+          "name": "Basic",
+          "monthlyUsd": 29,
+          "opsIncluded": 2000,
+          "workflowLimit": 20,
+          "note": "Basic plan"
+        },
+        {
+          "name": "Advanced",
+          "monthlyUsd": 49,
+          "opsIncluded": 5000,
+          "workflowLimit": null,
+          "note": "Advanced plan"
+        },
+        {
+          "name": "Business",
+          "monthlyUsd": null,
+          "opsIncluded": null,
+          "workflowLimit": null
+        }
+      ],
+      "overage": {
+        "per": 1000,
+        "usd": 10
+      },
+      "pros": [
+        "Run Node.js/Python in workflows",
+        "Most integrations (2,000+)",
+        "Best for devs"
+      ],
+      "cons": [
+        "Expensive overage",
+        "Very limited free tier",
+        "No self-host"
+      ]
+    },
+    {
+      "slug": "zapier",
+      "name": "Zapier",
+      "tagline": "The most integrations, built for non-technical users",
+      "selfHostable": false,
+      "aiFeatures": true,
+      "integrations": 7000,
+      "license": "Proprietary (cloud)",
+      "freeOps": "100 tasks/mo",
+      "freeWorkflows": "5",
+      "maxSteps": "2 steps (free)",
+      "timeout": "15 min",
+      "logHistory": "15 min delay (free)",
+      "gdprFriendly": false,
+      "multiUser": true,
+      "apiAccess": true,
+      "webhooks": true,
+      "codeSteps": false,
+      "homepage": "https://zapier.com",
+      "affiliateUrl": "https://zapier.com",
+      "hasAffiliate": false,
+      "plans": [
+        {
+          "name": "Free",
+          "monthlyUsd": 0,
+          "opsIncluded": 100,
+          "workflowLimit": 5,
+          "note": "Free tier"
+        },
+        {
+          "name": "Starter",
+          "monthlyUsd": 20,
+          "opsIncluded": 750,
+          "workflowLimit": 20,
+          "note": "Starter plan"
+        },
+        {
+          "name": "Professional",
+          "monthlyUsd": 49,
+          "opsIncluded": 2000,
+          "workflowLimit": null,
+          "note": "Professional plan"
+        },
+        {
+          "name": "Team",
+          "monthlyUsd": 69,
+          "opsIncluded": 2000,
+          "workflowLimit": null,
+          "note": "Team plan"
+        },
+        {
+          "name": "Enterprise",
+          "monthlyUsd": null,
+          "opsIncluded": null,
+          "workflowLimit": null
+        }
+      ],
+      "overage": {
+        "per": 1000,
+        "usd": 25
+      },
+      "pros": [
+        "7,000+ integrations — most of any tool",
+        "Easiest for non-technical users",
+        "Huge ecosystem"
+      ],
+      "cons": [
+        "Most expensive per op",
+        "Free tier severely limited",
+        "No self-host"
+      ]
+    },
+    {
+      "slug": "activepieces",
+      "name": "Activepieces",
+      "tagline": "MIT-licensed open-source automation, Zapier-like UI",
+      "selfHostable": true,
+      "aiFeatures": true,
+      "integrations": 200,
+      "license": "MIT",
+      "freeOps": "Unlimited*",
+      "freeWorkflows": "Unlimited*",
+      "maxSteps": "Unlimited",
+      "timeout": "No limit*",
+      "logHistory": "7 days (cloud)",
+      "gdprFriendly": true,
+      "multiUser": true,
+      "apiAccess": true,
+      "webhooks": true,
+      "codeSteps": false,
+      "homepage": "https://www.activepieces.com",
+      "affiliateUrl": "https://www.activepieces.com",
+      "hasAffiliate": false,
+      "plans": [
+        {
+          "name": "Self-hosted",
+          "monthlyUsd": 8,
+          "opsIncluded": null,
+          "workflowLimit": null,
+          "selfHostOnly": true,
+          "note": "Self-hosted + VPS (~$8/mo)"
+        },
+        {
+          "name": "Cloud Starter",
+          "monthlyUsd": 10,
+          "opsIncluded": 5000,
+          "workflowLimit": null,
+          "note": "Cloud Starter"
+        },
+        {
+          "name": "Cloud Pro",
+          "monthlyUsd": 25,
+          "opsIncluded": 15000,
+          "workflowLimit": null,
+          "note": "Cloud Pro"
+        }
+      ],
+      "overage": null,
+      "pros": [
+        "True MIT license — no restrictions",
+        "No-code UI like Zapier",
+        "Self-hostable"
+      ],
+      "cons": [
+        "Fewer integrations (~200)",
+        "Smaller community than n8n",
+        "No code steps"
+      ]
+    },
+    {
+      "slug": "automatisch",
+      "name": "Automatisch",
+      "tagline": "Simple EU-friendly open-source automation",
+      "selfHostable": true,
+      "aiFeatures": false,
+      "integrations": 50,
+      "license": "AGPL-3.0",
+      "freeOps": "Unlimited*",
+      "freeWorkflows": "Unlimited*",
+      "maxSteps": "Unlimited",
+      "timeout": "No limit*",
+      "logHistory": "Full history*",
+      "gdprFriendly": true,
+      "multiUser": false,
+      "apiAccess": false,
+      "webhooks": true,
+      "codeSteps": false,
+      "homepage": "https://automatisch.io",
+      "affiliateUrl": "https://automatisch.io",
+      "hasAffiliate": false,
+      "plans": [
+        {
+          "name": "Self-hosted",
+          "monthlyUsd": 8,
+          "opsIncluded": null,
+          "workflowLimit": null,
+          "selfHostOnly": true,
+          "note": "Self-hosted + VPS (~$8/mo)"
+        },
+        {
+          "name": "Cloud",
+          "monthlyUsd": 20,
+          "opsIncluded": null,
+          "workflowLimit": null,
+          "note": "Cloud plan"
+        }
+      ],
+      "overage": null,
+      "pros": [
+        "Simplest setup",
+        "Full data control (GDPR)",
+        "Unlimited on self-host"
+      ],
+      "cons": [
+        "Only ~50 integrations",
+        "No AI nodes",
+        "Smallest community"
+      ]
+    },
+    {
+      "slug": "node-red",
+      "name": "Node-RED",
+      "tagline": "Event-driven automation for IoT and hardware",
+      "selfHostable": true,
+      "aiFeatures": false,
+      "integrations": 1000,
+      "license": "Apache 2.0",
+      "freeOps": "Unlimited",
+      "freeWorkflows": "Unlimited",
+      "maxSteps": "Unlimited",
+      "timeout": "No limit",
+      "logHistory": "Full history",
+      "gdprFriendly": true,
+      "multiUser": false,
+      "apiAccess": true,
+      "webhooks": true,
+      "codeSteps": true,
+      "homepage": "https://nodered.org",
+      "affiliateUrl": "https://nodered.org",
+      "hasAffiliate": false,
+      "plans": [
+        {
+          "name": "Self-hosted",
+          "monthlyUsd": 8,
+          "opsIncluded": null,
+          "workflowLimit": null,
+          "selfHostOnly": true,
+          "note": "Self-hosted + VPS (~$8/mo)"
+        }
+      ],
+      "overage": null,
+      "pros": [
+        "Apache 2.0 — completely free",
+        "Node.js code steps",
+        "Best for IoT/hardware"
+      ],
+      "cons": [
+        "No cloud option",
+        "Developer-only (no visual UI)",
+        "Limited SaaS integrations"
+      ]
+    }
+  ]
+}

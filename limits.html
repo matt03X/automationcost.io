@@ -6,57 +6,75 @@
   <title>Automation Tool Pricing & Limits 2026 — n8n vs Make vs Zapier | AutomationCost.io</title>
   <meta name="description" content="Full comparison of ops limits, workflow caps, execution timeouts, and log history for n8n, Make, Pipedream, Zapier, Activepieces, Automatisch and Node-RED.">
   <link rel="canonical" href="https://automationcost.io/limits.html">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"What counts as an operation or task?","acceptedAnswer":{"@type":"Answer","text":"Each tool counts usage differently. In Zapier, one task = one action step (a 3-step Zap triggered 100 times = 300 tasks). In Make, one operation = one module execution. In n8n, one execution = one full workflow run regardless of steps. In Pipedream, credits are consumed per compute time. Self-hosted tools like n8n, Activepieces and Automatisch have no operation limits at all."}},
+      {"@type":"Question","name":"Is n8n really free to self-host?","acceptedAnswer":{"@type":"Answer","text":"Yes — n8n Community Edition is free to self-host with unlimited workflows and executions. You only pay for the server (typically $5–12/mo on DigitalOcean or Hetzner). It uses a Sustainable Use License which restricts commercial SaaS resale, but for running your own automations it is fully free."}},
+      {"@type":"Question","name":"Make vs Zapier — why is Make so much cheaper?","acceptedAnswer":{"@type":"Answer","text":"Make counts multi-step workflows more efficiently. A 5-step scenario triggered 1,000 times = 5,000 operations in Make at $9/mo. The same in Zapier = 5,000 tasks, requiring the $49/mo Professional plan. For anything beyond simple 2-step automations, Make is 70–80% cheaper than Zapier."}},
+      {"@type":"Question","name":"What is the difference between n8n and Activepieces?","acceptedAnswer":{"@type":"Answer","text":"Both are open-source and self-hostable. n8n has more integrations (~400 vs ~200), more mature AI nodes and a larger community. Activepieces uses the unrestricted MIT license while n8n uses the Sustainable Use License. Activepieces has a more Zapier-like no-code UI; n8n is more developer-oriented."}},
+      {"@type":"Question","name":"How accurate is this pricing data?","acceptedAnswer":{"@type":"Answer","text":"All prices were verified directly from each tool's pricing page in June 2026. SaaS pricing changes frequently — this page is updated whenever a tool changes its plans, and each tool links to its official pricing page."}}
+    ]
+  }
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
       --border: #1f2d45; --text: #e8edf5; --muted: #6b7a99;
-      --accent: #2f6bff; --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 10px;
+      --accent: #10b981; --accent-br: #16d18c; --accent-dim: rgba(16,185,129,0.09); --accent-glow: rgba(16,185,129,0.20); --ink: #04130d; --link: #6f9bff; --border2: #27375a; --text2: #a8b4cc;
+      --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 14px; --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
     }
     body {
       background: var(--bg);
-      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(47,107,255,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%);
+      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(16,185,129,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%);
       background-repeat: no-repeat; background-attachment: fixed;
-      color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh;
+      color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; -webkit-font-smoothing: antialiased;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: #9fbcff; }
+    h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; text-wrap: balance; }
 
     /* ── Nav ── */
-    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg); }
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,14,23,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
     body { padding-top: 100px; }
     .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
     .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
     .nav-bottom::-webkit-scrollbar { display: none; }
     .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
     .nav-bottom a:hover { color: var(--text); }
-    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: #10b981; }
-    .logo { display: flex; align-items: center; gap: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.06rem; color: var(--text); letter-spacing: -0.035em; text-decoration: none; }
-    .logo span { color: #10b981; }
-    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
-    .nav-badge { font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--muted); }
+    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: var(--accent); }
+    .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .logo .io { color: var(--muted); font-weight: 600; }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 8px; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); display: flex; align-items: center; gap: 7px; letter-spacing: 0.01em; }
+    .nav-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 7px var(--accent); }
 
     /* ── Layout ── */
     .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
 
     /* ── Hero ── */
-    .hero { padding: 48px 0 32px; }
-    .hero-badge { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--muted); padding: 4px 14px; margin-bottom: 16px; }
-    .hero h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .hero { padding: 64px 0 36px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; font-family: var(--mono); font-size: 11.5px; color: var(--text2); padding: 6px 15px; margin-bottom: 22px; letter-spacing: 0.02em; }
+    .hero h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
     .hero h1 em { font-style: normal; color: var(--accent); }
-    .hero p { color: var(--muted); font-size: 0.95rem; max-width: 640px; }
+    .hero p { color: var(--text2); font-size: 1.08rem; max-width: 640px; line-height: 1.7; text-wrap: pretty; }
 
     /* ── Toolbar ── */
     .limits-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
-    .lt-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+    .lt-label { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
     .lt-chip { display: inline-flex; align-items: center; gap: 7px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 7px 13px; font-size: 13px; color: var(--text); cursor: pointer; transition: border-color 0.15s, background 0.15s; user-select: none; }
     .lt-chip:hover { border-color: var(--accent); }
     .lt-chip input { accent-color: var(--accent); cursor: pointer; margin: 0; }
-    .lt-chip:has(input:checked) { border-color: var(--accent); background: rgba(47,107,255,0.08); }
+    .lt-chip:has(input:checked) { border-color: var(--accent); background: rgba(16,185,129,0.08); }
     .lt-sort { display: flex; align-items: center; gap: 8px; margin-left: auto; }
     #limits-sort { appearance: none; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px; font-weight: 600; padding: 7px 28px 7px 12px; cursor: pointer; outline: none; font-family: inherit; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3l3 3 3-3' stroke='%236b7a99' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
     #limits-sort:hover { border-color: var(--accent); }
@@ -65,7 +83,7 @@
     /* ── Table ── */
     .table-wrap { overflow-x: auto; margin-bottom: 12px; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: auto; }
-    th { background: var(--surface2); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    th { background: var(--surface2); color: var(--muted); font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; }
     td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: var(--surface2); }
@@ -78,7 +96,7 @@
 
     /* ── Use cases ── */
     .section { margin: 48px 0 24px; }
-    .section h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+    .section h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
     .section p { color: var(--muted); font-size: 0.95rem; }
     .use-cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 48px; }
     .use-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
@@ -98,8 +116,37 @@
     .faq-item.open .faq-a { display: block; }
 
     /* ── Footer ── */
-    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 64px; }
+    footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 64px; }
     footer a { color: var(--muted); }
+
+    /* ── Funnel CTA ── */
+    .finder-cta { background: linear-gradient(160deg, rgba(16,185,129,0.10), var(--surface) 65%); border: 1px solid rgba(16,185,129,0.35); border-radius: var(--radius); padding: 32px 36px; margin: 8px 0 56px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+    .finder-cta-text { flex: 1 1 340px; }
+    .finder-cta h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+    .finder-cta p { color: var(--text2); font-size: 14.5px; line-height: 1.6; max-width: 560px; }
+    .btn-primary-lg { background: var(--accent); color: var(--ink); border-radius: var(--radius-sm); padding: 15px 28px; font-family: var(--font); font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 9px; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 10px 30px rgba(16,185,129,0.28); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; white-space: nowrap; }
+    .btn-primary-lg:hover { background: var(--accent-br); transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 14px 36px rgba(16,185,129,0.4); color: var(--ink); }
+  
+    /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 8px; padding-right: 8px; }
+      .nav-bottom a { padding: 13px 14px; }
+    }
+    @media (max-width: 620px) {
+      .nav-badge { display: none; }
+      .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 460px) {
+      .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
+    }
+  
+    /* AC-CTA-STACK ── stack hero/CTA button rows full-width on small phones */
+    @media (max-width: 520px) {
+      .cta-row { flex-direction: column; align-items: stretch; }
+      .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+    }
   </style>
 </head>
 <body>
@@ -108,10 +155,10 @@
   <div class="nav-top">
     <a href="index.html" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M29 11 L15 24 L29 37" stroke="#10b981" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34.5" cy="24" r="3.4" fill="#10b981"/>
+        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
       </svg>
-      Automation<span>Cost</span>.io
+      Automation<span>Cost</span><span class="io">.io</span>
     </a>
     <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
@@ -286,6 +333,17 @@
       <p>Managing automations for multiple clients, need team access and separate workspaces.</p>
       <div class="pick">→ <strong>Make Teams</strong> ($29/mo) or <strong>n8n Cloud Pro</strong> for multi-user workflows</div>
     </div>
+  </div>
+
+  <!-- Funnel CTA -->
+  <div class="finder-cta">
+    <div class="finder-cta-text">
+      <h2>Still comparing? Let us pick for you.</h2>
+      <p>Answer 4 quick questions — company size, role, workflow, volume — and get your cheapest-fit tool ranked in 30 seconds.</p>
+    </div>
+    <a href="calculator.html" class="btn-primary-lg">Find my best tool
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
   </div>
 
   <div class="section" id="faq">

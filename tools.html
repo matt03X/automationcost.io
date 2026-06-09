@@ -6,49 +6,70 @@
   <title>Best Automation Tools 2026 — n8n vs Make vs Zapier vs Pipedream Reviews | AutomationCost.io</title>
   <meta name="description" content="Honest reviews of n8n, Make, Pipedream, Zapier, Activepieces, Automatisch and Node-RED. UI, community, support, learning curve, and who each tool is really for.">
   <link rel="canonical" href="https://automationcost.io/tools.html">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Best automation tools 2026 — reviews",
+    "itemListElement": [
+      {"@type":"ListItem","position":1,"name":"n8n"},
+      {"@type":"ListItem","position":2,"name":"Make"},
+      {"@type":"ListItem","position":3,"name":"Pipedream"},
+      {"@type":"ListItem","position":4,"name":"Zapier"},
+      {"@type":"ListItem","position":5,"name":"Activepieces"},
+      {"@type":"ListItem","position":6,"name":"Automatisch"},
+      {"@type":"ListItem","position":7,"name":"Node-RED"}
+    ]
+  }
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
       --border: #1f2d45; --text: #e8edf5; --muted: #6b7a99;
-      --accent: #2f6bff; --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 10px;
+      --accent: #10b981; --accent-br: #16d18c; --accent-dim: rgba(16,185,129,0.09); --accent-glow: rgba(16,185,129,0.20); --ink: #04130d; --link: #6f9bff; --border2: #27375a; --text2: #a8b4cc;
+      --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 14px; --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
     }
     body {
       background: var(--bg);
-      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(47,107,255,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%);
+      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(16,185,129,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%);
       background-repeat: no-repeat; background-attachment: fixed;
-      color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh;
+      color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; -webkit-font-smoothing: antialiased;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: #9fbcff; }
+    h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; text-wrap: balance; }
 
     /* ── Nav ── */
-    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg); }
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,14,23,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
     body { padding-top: 100px; }
     .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
     .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
     .nav-bottom::-webkit-scrollbar { display: none; }
     .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
     .nav-bottom a:hover { color: var(--text); }
-    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: #10b981; }
-    .logo { display: flex; align-items: center; gap: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.06rem; color: var(--text); letter-spacing: -0.035em; text-decoration: none; }
-    .logo span { color: #10b981; }
-    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
-    .nav-badge { font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--muted); }
+    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: var(--accent); }
+    .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .logo .io { color: var(--muted); font-weight: 600; }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 8px; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); display: flex; align-items: center; gap: 7px; letter-spacing: 0.01em; }
+    .nav-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 7px var(--accent); }
 
     /* ── Layout ── */
     .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
 
     /* ── Hero ── */
-    .hero { padding: 48px 0 40px; }
-    .hero-badge { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--muted); padding: 4px 14px; margin-bottom: 16px; }
-    .hero h1 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .hero { padding: 64px 0 44px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; font-family: var(--mono); font-size: 11.5px; color: var(--text2); padding: 6px 15px; margin-bottom: 22px; letter-spacing: 0.02em; }
+    .hero h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
     .hero h1 em { font-style: normal; color: var(--accent); }
-    .hero p { color: var(--muted); font-size: 0.95rem; max-width: 640px; }
+    .hero p { color: var(--text2); font-size: 1.08rem; max-width: 640px; line-height: 1.7; text-wrap: pretty; }
 
     /* ── TOC ── */
     .toc { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
@@ -72,18 +93,18 @@
     .tool-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
     .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 5px; }
     .badge-green { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
-    .badge-blue { background: rgba(47,107,255,0.15); color: var(--accent); border: 1px solid rgba(47,107,255,0.3); }
+    .badge-blue { background: rgba(111,155,255,0.13); color: #9fbcff; border: 1px solid rgba(111,155,255,0.28); }
     .badge-yellow { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
     .badge-muted { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
-    .tool-cta { display: inline-block; background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; padding: 10px 20px; border-radius: 8px; text-decoration: none; white-space: nowrap; flex-shrink: 0; transition: opacity 0.15s; }
-    .tool-cta:hover { opacity: 0.85; text-decoration: none; }
+    .tool-cta { display: inline-block; background: var(--accent); color: var(--ink); font-weight: 700; font-size: 13px; padding: 11px 22px; border-radius: var(--radius-sm); text-decoration: none; white-space: nowrap; flex-shrink: 0; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 6px 20px rgba(16,185,129,0.24); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .tool-cta:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-1px); text-decoration: none; box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 10px 26px rgba(16,185,129,0.34); }
     .tool-cta.plain { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
 
     /* ── Tool body ── */
     .tool-body { padding: 28px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
     @media (max-width: 720px) { .tool-body { grid-template-columns: 1fr; } }
 
-    .tool-section h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 12px; }
+    .tool-section h3 { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 12px; }
 
     /* ── Ratings ── */
     .ratings { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -120,8 +141,51 @@
     .fact-val { font-size: 13px; font-weight: 700; }
 
     /* ── Footer ── */
-    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 32px; }
+    footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 32px; }
     footer a { color: var(--muted); }
+
+    /* ── Funnel CTA ── */
+    .finder-cta { background: linear-gradient(160deg, rgba(16,185,129,0.10), var(--surface) 65%); border: 1px solid rgba(16,185,129,0.35); border-radius: var(--radius); padding: 32px 36px; margin: 16px 0 56px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+    .finder-cta-text { flex: 1 1 340px; }
+    .finder-cta h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+    .finder-cta p { color: var(--text2); font-size: 14.5px; line-height: 1.6; max-width: 560px; }
+    .btn-primary-lg { background: var(--accent); color: var(--ink); border-radius: var(--radius-sm); padding: 15px 28px; font-family: var(--font); font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 9px; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 10px 30px rgba(16,185,129,0.28); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; white-space: nowrap; }
+    .btn-primary-lg:hover { background: var(--accent-br); transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 14px 36px rgba(16,185,129,0.4); color: var(--ink); }
+  
+    /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 8px; padding-right: 8px; }
+      .nav-bottom a { padding: 13px 14px; }
+    }
+    @media (max-width: 620px) {
+      .nav-badge { display: none; }
+      .nav-bottom a { padding: 13px 14px; }
+      .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+
+      /* Tool header: logo aligns to the title, tagline + badges flow full-width, CTA full-width */
+      .tool-header { align-items: flex-start; gap: 14px; padding: 22px 18px 20px; }
+      .tool-header img { width: 42px; height: 42px; border-radius: 10px; }
+      .tool-header-text { min-width: 0; flex: 1 1 0; }
+      .tool-cta { flex: 1 1 100%; text-align: center; margin-top: 4px; }
+      .badge { white-space: nowrap; }
+      .tool-body { padding: 22px 18px; gap: 22px; }
+      /* Pros & cons read better stacked; ratings / quick-facts stay 2-up (compact) */
+      .pros-cons { grid-template-columns: 1fr; gap: 18px; }
+      .hero { padding: 48px 0 32px; }
+      .toc { margin-bottom: 32px; }
+    }
+    @media (max-width: 460px) {
+      .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
+      .ratings, .quick-facts { grid-template-columns: 1fr; }
+    }
+  
+    /* AC-CTA-STACK ── stack hero/CTA button rows full-width on small phones */
+    @media (max-width: 520px) {
+      .cta-row { flex-direction: column; align-items: stretch; }
+      .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+    }
   </style>
 </head>
 <body>
@@ -130,10 +194,10 @@
   <div class="nav-top">
     <a href="index.html" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M29 11 L15 24 L29 37" stroke="#10b981" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34.5" cy="24" r="3.4" fill="#10b981"/>
+        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
       </svg>
-      Automation<span>Cost</span>.io
+      Automation<span>Cost</span><span class="io">.io</span>
     </a>
     <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
@@ -681,6 +745,18 @@
     </div>
   </div>
 
+</div>
+
+<div class="wrap">
+  <div class="finder-cta">
+    <div class="finder-cta-text">
+      <h2>Not sure which one is for you?</h2>
+      <p>Skip the reviews — answer 4 quick questions and get your cheapest-fit tool ranked in 30 seconds.</p>
+    </div>
+    <a href="calculator.html" class="btn-primary-lg">Find my best tool
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
 </div>
 
 <footer>
