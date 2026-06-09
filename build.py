@@ -35,6 +35,9 @@ WARN = "/* generováno build.py z data/tools.json — needituj ručně */"
 AN_START = "<!-- ANALYTICS (build.py) -->"
 AN_END = "<!-- /ANALYTICS -->"
 
+GA_START = "<!-- GA4 (build.py) -->"
+GA_END = "<!-- /GA4 -->"
+
 
 # ---------------------------------------------------------------------------
 # Pomocníci pro formátování hodnot do JS literálů
@@ -252,6 +255,35 @@ def apply_analytics(token: str, pages: list[Path]) -> list[str]:
     return changed
 
 
+def apply_ga4(measurement_id: str, pages: list[Path]) -> list[str]:
+    """Vloží/odebere GA4 snippet před </head> všech stránek. Idempotentní."""
+    snippet = ""
+    if measurement_id:
+        snippet = (
+            f'{GA_START}\n'
+            f'  <script async src="https://www.googletagmanager.com/gtag/js?id={measurement_id}"></script>\n'
+            f'  <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}'
+            f'gtag("js",new Date());gtag("config","{measurement_id}");</script>\n'
+            f'  {GA_END}\n  '
+        )
+    changed = []
+    import re as _re
+    block_re = _re.compile(_re.escape(GA_START) + r".*?" + _re.escape(GA_END) + r"\n?\s*", _re.S)
+    for p in pages:
+        text = p.read_text(encoding="utf-8")
+        cleaned = block_re.sub("", text)
+        if measurement_id:
+            if "</head>" not in cleaned:
+                continue
+            new = cleaned.replace("</head>", snippet + "</head>", 1)
+        else:
+            new = cleaned
+        if new != text:
+            p.write_text(new, encoding="utf-8")
+            changed.append(p.name)
+    return changed
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Inject data/tools.json into static pages.")
     parser.add_argument("--check", action="store_true",
@@ -297,6 +329,8 @@ def main() -> int:
         changed.append("robots.txt")
     an_changed = apply_analytics(site.get("cloudflare_analytics_token", ""), pages)
     changed.extend(an_changed)
+    ga_changed = apply_ga4(site.get("ga4_measurement_id", ""), pages)
+    changed.extend(ga_changed)
 
     if changed:
         print(f"[build] aktualizováno: {', '.join(changed)}")
