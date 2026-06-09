@@ -604,6 +604,7 @@ const LOGOS = {
   "node-red":     "https://www.google.com/s2/favicons?domain=nodered.org&sz=64",
 };
 
+/* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
 const TOOLS = {
   "n8n": {
     slug: "n8n", name: "n8n",
@@ -654,8 +655,8 @@ const TOOLS = {
     selfHostable: false, aiFeatures: true, integrations: 2000,
     license: "Proprietary (cloud)",
     freeOps: "100 credits/mo", freeWorkflows: "3", maxSteps: "Unlimited",
-    timeout: "30 sec (free) / 12 min (paid)", logHistory: "24 hours (free)",
-    gdprFriendly: false, multiUser: true, apiAccess: true, webhooks: true, codeSteps: true,
+    timeout: "30 sec (free) / 12 min (paid)", logHistory: "24 hours (free)", gdprFriendly: false,
+    multiUser: true, apiAccess: true, webhooks: true, codeSteps: true,
     homepage: "https://pipedream.com",
     affiliateUrl: "https://pipedream.com",
     hasAffiliate: true,
@@ -749,6 +750,7 @@ const TOOLS = {
     cons: ["No cloud option", "Developer-only (no visual UI)", "Limited SaaS integrations"],
   },
 };
+/* DATA:TOOLS:END */
 
 const ALL_SLUGS = Object.keys(TOOLS);
 const MAX_SLOTS = 4;

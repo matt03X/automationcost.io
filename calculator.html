@@ -1634,56 +1634,65 @@ const INTEGRATIONS = [
   { name: "Twilio (SMS)",     cat: "Marketing",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
 ];
 
+/* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
 const TOOLS = [
-  { slug: "n8n", name: "n8n", selfHostable: true, aiFeatures: true, integrations: 400,
+  {
+    slug: "n8n", name: "n8n", selfHostable: true, aiFeatures: true, integrations: 400,
     homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: true,
     plans: [
-      { name: "Self-hosted", monthlyUsd: 8,  opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
-      { name: "Cloud Starter", monthlyUsd: 20, opsIncluded: 2500,   workflowLimit: 5,        note: "Cloud Starter" },
-      { name: "Cloud Pro",     monthlyUsd: 50, opsIncluded: 10000,  workflowLimit: 15,       note: "Cloud Pro" },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
+      { name: "Cloud Starter", monthlyUsd: 20, opsIncluded: 2500, workflowLimit: 5, note: "Cloud Starter" },
+      { name: "Cloud Pro", monthlyUsd: 50, opsIncluded: 10000, workflowLimit: 15, note: "Cloud Pro" },
     ], overage: null },
-  { slug: "make", name: "Make", selfHostable: false, aiFeatures: true, integrations: 1500,
+  {
+    slug: "make", name: "Make", selfHostable: false, aiFeatures: true, integrations: 1500,
     homepage: "https://www.make.com", affiliateUrl: "https://www.make.com", hasAffiliate: true,
     plans: [
-      { name: "Free",  monthlyUsd: 0,  opsIncluded: 1000,  workflowLimit: Infinity, note: "Free tier" },
-      { name: "Core",  monthlyUsd: 9,  opsIncluded: 10000, workflowLimit: Infinity, note: "Core plan" },
-      { name: "Pro",   monthlyUsd: 16, opsIncluded: 10000, workflowLimit: Infinity, note: "Pro plan" },
+      { name: "Free", monthlyUsd: 0, opsIncluded: 1000, workflowLimit: Infinity, note: "Free tier" },
+      { name: "Core", monthlyUsd: 9, opsIncluded: 10000, workflowLimit: Infinity, note: "Core plan" },
+      { name: "Pro", monthlyUsd: 16, opsIncluded: 10000, workflowLimit: Infinity, note: "Pro plan" },
       { name: "Teams", monthlyUsd: 29, opsIncluded: 10000, workflowLimit: Infinity, note: "Teams plan" },
     ], overage: { per: 10000, usd: 9 } },
-  { slug: "pipedream", name: "Pipedream", selfHostable: false, aiFeatures: true, integrations: 2000,
+  {
+    slug: "pipedream", name: "Pipedream", selfHostable: false, aiFeatures: true, integrations: 2000,
     homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: true,
     plans: [
-      { name: "Free",     monthlyUsd: 0,  opsIncluded: 100,  workflowLimit: 3,        note: "Free tier" },
-      { name: "Basic",    monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 20,       note: "Basic plan" },
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, note: "Free tier" },
+      { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 20, note: "Basic plan" },
       { name: "Advanced", monthlyUsd: 49, opsIncluded: 5000, workflowLimit: Infinity, note: "Advanced plan" },
     ], overage: { per: 1000, usd: 10 } },
-  { slug: "zapier", name: "Zapier", selfHostable: false, aiFeatures: true, integrations: 7000,
+  {
+    slug: "zapier", name: "Zapier", selfHostable: false, aiFeatures: true, integrations: 7000,
     homepage: "https://zapier.com", affiliateUrl: "https://zapier.com", hasAffiliate: false,
     plans: [
-      { name: "Free",         monthlyUsd: 0,  opsIncluded: 100,  workflowLimit: 5,        note: "Free tier" },
-      { name: "Starter",      monthlyUsd: 20, opsIncluded: 750,  workflowLimit: 20,       note: "Starter plan" },
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 5, note: "Free tier" },
+      { name: "Starter", monthlyUsd: 20, opsIncluded: 750, workflowLimit: 20, note: "Starter plan" },
       { name: "Professional", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity, note: "Professional plan" },
-      { name: "Team",         monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity, note: "Team plan" },
+      { name: "Team", monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity, note: "Team plan" },
     ], overage: { per: 1000, usd: 25 } },
-  { slug: "activepieces", name: "Activepieces", selfHostable: true, aiFeatures: true, integrations: 200,
+  {
+    slug: "activepieces", name: "Activepieces", selfHostable: true, aiFeatures: true, integrations: 200,
     homepage: "https://www.activepieces.com", affiliateUrl: "https://www.activepieces.com", hasAffiliate: false,
     plans: [
-      { name: "Self-hosted",   monthlyUsd: 8,  opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
-      { name: "Cloud Starter", monthlyUsd: 10, opsIncluded: 5000,     workflowLimit: Infinity, note: "Cloud Starter" },
-      { name: "Cloud Pro",     monthlyUsd: 25, opsIncluded: 15000,    workflowLimit: Infinity, note: "Cloud Pro" },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
+      { name: "Cloud Starter", monthlyUsd: 10, opsIncluded: 5000, workflowLimit: Infinity, note: "Cloud Starter" },
+      { name: "Cloud Pro", monthlyUsd: 25, opsIncluded: 15000, workflowLimit: Infinity, note: "Cloud Pro" },
     ], overage: null },
-  { slug: "automatisch", name: "Automatisch", selfHostable: true, aiFeatures: false, integrations: 50,
+  {
+    slug: "automatisch", name: "Automatisch", selfHostable: true, aiFeatures: false, integrations: 50,
     homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
     plans: [
-      { name: "Self-hosted", monthlyUsd: 8,  opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
-      { name: "Cloud",       monthlyUsd: 20, opsIncluded: Infinity, workflowLimit: Infinity, note: "Cloud plan" },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
+      { name: "Cloud", monthlyUsd: 20, opsIncluded: Infinity, workflowLimit: Infinity, note: "Cloud plan" },
     ], overage: null },
-  { slug: "node-red", name: "Node-RED", selfHostable: true, aiFeatures: false, integrations: 1000,
+  {
+    slug: "node-red", name: "Node-RED", selfHostable: true, aiFeatures: false, integrations: 1000,
     homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
     ], overage: null },
 ];
+/* DATA:TOOLS:END */
 
 // Role-specific pros/cons text
 const TOOL_WHY = {
