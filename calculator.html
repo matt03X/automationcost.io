@@ -9,21 +9,26 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
-      --border: #1f2d45; --text: #e8edf5; --muted: #6b7a99;
-      --accent: #2f6bff; --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 10px;
+      --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99;
+      --accent: #10b981; --accent-br: #16d18c; --accent-glow: rgba(16,185,129,0.20); --accent-dim: rgba(16,185,129,0.09); --ink: #04130d; --link: #6f9bff;
+      --green: #10b981; --yellow: #f59e0b; --red: #ef4444;
+      --radius: 14px; --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
     }
     body {
       background: var(--bg);
-      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(47,107,255,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%);
+      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(16,185,129,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%);
       background-repeat: no-repeat; background-attachment: fixed;
-      color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh;
+      color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh;
     }
-    a { color: var(--accent); text-decoration: none; }
+    a { color: var(--link); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
     /* ── Nav ── */
@@ -35,10 +40,11 @@
     .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
     .nav-bottom a:hover { color: var(--text); }
     .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: #10b981; }
-    .logo { display: flex; align-items: center; gap: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.06rem; color: var(--text); letter-spacing: -0.035em; text-decoration: none; }
-    .logo span { color: #10b981; }
-    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
-    .nav-badge { font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--muted); }
+    .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .logo .io { color: var(--muted); font-weight: 600; }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 8px; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 11px; color: var(--muted); letter-spacing: 0.01em; }
 
     /* ── Layout ── */
     .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px 80px; }
@@ -58,22 +64,50 @@
     .step { display: none; }
     .step.active { display: block; }
     .step-heading { margin-bottom: 28px; }
-    .step-num { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 6px; }
+    .step-num { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 6px; }
     .step-heading h2 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
     .step-heading p { color: var(--muted); font-size: 0.95rem; }
 
     /* ── Role chips ── */
-    .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 32px; }
+    .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; margin-bottom: 32px; }
     .role-card {
       background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
-      padding: 18px 16px; cursor: pointer; transition: border-color 0.15s, background 0.15s;
-      display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+      padding: 22px 20px; cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
     }
-    .role-card:hover { border-color: var(--accent); }
-    .role-card.selected { border-color: var(--accent); background: rgba(47,107,255,0.08); }
-    .role-icon { font-size: 22px; }
-    .role-name { font-size: 14px; font-weight: 700; }
-    .role-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+    .role-card:hover { border-color: var(--accent); background: rgba(16,185,129,0.05); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+    .role-card:hover .role-icon, .role-card.selected .role-icon { color: var(--accent-br); }
+    .role-card.selected { border-color: var(--accent); background: linear-gradient(160deg, rgba(16,185,129,0.15), rgba(16,185,129,0.04)); box-shadow: 0 0 0 1px var(--accent), 0 10px 28px rgba(16,185,129,0.14); }
+    .role-icon { color: #8a99b5; display: flex; transition: color 0.15s; }
+    .role-name { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; }
+    .role-desc { font-size: 13.5px; color: var(--text2); line-height: 1.55; }
+
+    /* ── Company size cards ── */
+    .size-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(212px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .size-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 20px; cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s; display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
+    .size-card:hover { border-color: var(--accent); background: rgba(16,185,129,0.05); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
+    .size-card:hover .size-icon, .size-card.selected .size-icon { color: var(--accent-br); }
+    .size-card.selected { border-color: var(--accent); background: linear-gradient(160deg, rgba(16,185,129,0.15), rgba(16,185,129,0.04)); box-shadow: 0 0 0 1px var(--accent), 0 10px 28px rgba(16,185,129,0.14); }
+    .size-icon { color: #8a99b5; display: flex; transition: color 0.15s; }
+    .size-name { font-size: 16.5px; font-weight: 700; letter-spacing: -0.01em; }
+    .size-desc { font-size: 13.5px; color: var(--text2); line-height: 1.55; }
+    .size-meta { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+    /* ── Auto-estimate badge (revealed by volume/budget math) ── */
+    .auto-badge { font-family: var(--mono); font-size: 10.5px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; background: var(--accent-dim); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 2px 9px; margin-left: 8px; vertical-align: middle; white-space: nowrap; }
+
+    /* ── Estimate banner (shown by applyEstimate once math fills the sliders) ── */
+    .estimate-note { display: flex; align-items: center; gap: 11px; background: var(--accent-dim); border: 1px solid rgba(16,185,129,0.3); border-radius: var(--radius-sm); padding: 13px 16px; margin-bottom: 26px; font-size: 13.5px; line-height: 1.5; color: var(--text2); }
+    .estimate-note svg { color: var(--accent-br); flex-shrink: 0; }
+    .estimate-note b { color: var(--text); font-weight: 700; }
+
+    /* ── Results → Compare plans CTA ── */
+    .results-next-cta { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; background: linear-gradient(160deg, rgba(16,185,129,0.12), var(--surface) 60%); border: 1px solid rgba(16,185,129,0.35); border-radius: var(--radius); padding: 24px 28px; margin: 28px 0 8px; text-decoration: none !important; color: var(--text); transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s; }
+    .results-next-cta:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,0.3), 0 0 0 1px var(--accent-glow); text-decoration: none !important; color: var(--text); }
+    .rnc-title { font-size: 17px; font-weight: 800; letter-spacing: -0.01em; }
+    .rnc-sub { font-size: 13.5px; color: var(--text2); margin-top: 5px; line-height: 1.55; max-width: 520px; }
+    .rnc-arrow { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--ink); font-weight: 700; font-size: 14px; padding: 12px 22px; border-radius: var(--radius-sm); white-space: nowrap; box-shadow: 0 6px 20px rgba(16,185,129,0.26); transition: background 0.15s; }
+    .results-next-cta:hover .rnc-arrow { background: var(--accent-br); }
 
     /* ── Workflow stack ── */
     .wf-stack { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
@@ -81,15 +115,24 @@
       background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
       cursor: pointer; overflow: hidden; transition: border-color 0.18s, box-shadow 0.18s;
     }
-    .wf-card:hover { border-color: rgba(47,107,255,0.5); box-shadow: 0 4px 24px rgba(47,107,255,0.08); }
-    .wf-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+    .wf-card:hover { border-color: rgba(16,185,129,0.5); background: rgba(16,185,129,0.04); box-shadow: 0 4px 24px rgba(16,185,129,0.08); }
+    .wf-card.selected { border-color: var(--accent); background: linear-gradient(160deg, rgba(16,185,129,0.13), rgba(16,185,129,0.02)); box-shadow: 0 0 0 1px var(--accent), 0 10px 28px rgba(16,185,129,0.13); }
     .wf-card-header {
-      padding: 18px 22px 16px; display: flex; align-items: flex-start; gap: 14px;
+      padding: 28px 24px 18px; display: flex; align-items: flex-start; gap: 14px; position: relative;
     }
-    .wf-card-icon { font-size: 26px; flex-shrink: 0; line-height: 1; margin-top: 2px; }
-    .wf-card-title { font-size: 15px; font-weight: 800; margin-bottom: 3px; }
-    .wf-card-sub { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .wf-check { margin-left: auto; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--border2); display: flex; align-items: center; justify-content: center; color: transparent; flex-shrink: 0; transition: background 0.15s, border-color 0.15s, color 0.15s; }
+    .wf-card:hover .wf-check { border-color: var(--accent); }
+    .wf-card.selected .wf-check { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+    .wf-count-chip { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 6px 14px; align-self: center; }
+    .wf-card-icon { color: var(--accent-br); flex-shrink: 0; line-height: 1; margin-top: 1px; display: flex; }
+    .wf-card-title { font-size: 17px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.01em; }
+    .wf-card-sub { font-size: 14px; color: var(--text2); line-height: 1.55; }
     .wf-card-diagram { padding: 0 16px 18px; }
+    .wf-skip { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; border-style: dashed; }
+    .wf-skip .wf-skip-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+    .wf-skip .wf-skip-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .wf-skip svg { color: var(--muted); flex-shrink: 0; transition: transform 0.15s, color 0.15s; }
+    .wf-skip:hover svg { color: var(--accent-br); transform: translateX(3px); }
 
     /* ── Big workflow diagram ── */
     .wf-stage {
@@ -98,10 +141,10 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       transition: border-color 0.3s;
     }
-    .wf-stage.has-selection { border-color: var(--accent); }
+    .wf-stage.has-selection { border-color: var(--accent); background: linear-gradient(180deg, rgba(16,185,129,0.06), var(--surface)); }
     .wf-stage-hint { color: var(--muted); font-size: 14px; text-align: center; }
-    .wf-stage-title { font-size: 16px; font-weight: 800; margin-bottom: 4px; text-align: center; }
-    .wf-stage-desc { font-size: 13px; color: var(--muted); margin-bottom: 20px; text-align: center; max-width: 480px; }
+    .wf-stage-title { font-size: 18px; font-weight: 800; margin-bottom: 5px; text-align: center; }
+    .wf-stage-desc { font-size: 14px; color: var(--text2); margin-bottom: 20px; text-align: center; max-width: 520px; }
     .wf-canvas-wrap { width: 100%; overflow-x: auto; }
     .wf-big-svg { display: block; margin: 0 auto; }
 
@@ -118,7 +161,7 @@
     .toggle-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
     .save-pill { font-size: 10px; background: rgba(16,185,129,0.18); color: var(--green); border-radius: 4px; padding: 1px 5px; margin-left: 4px; font-weight: 700; }
     .budget-row { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
-    .budget-val { font-size: 18px; font-weight: 800; color: var(--text); min-width: 70px; }
+    .budget-val { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--text); min-width: 70px; }
     .budget-note { font-size: 12px; color: var(--muted); }
 
     /* ── Integration picker ── */
@@ -126,7 +169,7 @@
     .section-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
     .integ-selected { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
     .integ-selected:empty { display: none; }
-    .integ-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(47,107,255,0.12); border: 1px solid var(--accent); border-radius: 6px; padding: 4px 8px 4px 10px; font-size: 13px; color: var(--text); font-weight: 600; }
+    .integ-tag { display: inline-flex; align-items: center; gap: 6px; background: rgba(16,185,129,0.12); border: 1px solid var(--accent); border-radius: 6px; padding: 4px 8px 4px 10px; font-size: 13px; color: var(--text); font-weight: 600; }
     .integ-tag button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 15px; line-height: 1; padding: 0; font-family: inherit; }
     .integ-tag button:hover { color: var(--red); }
     .integ-search-wrap { position: relative; }
@@ -138,7 +181,7 @@
     .integ-opt:last-child { border-bottom: none; }
     .integ-opt:hover, .integ-opt.highlight { background: var(--surface2); }
     .integ-opt .integ-cat { font-size: 11px; color: var(--muted); margin-left: auto; }
-    .integ-opt.selected { background: rgba(47,107,255,0.08); }
+    .integ-opt.selected { background: rgba(16,185,129,0.08); }
     .integ-opt.selected .integ-name { color: var(--accent); }
     .integ-checkbox { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--border); background: var(--bg); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background 0.1s, border-color 0.1s; }
     .integ-opt.selected .integ-checkbox { background: var(--accent); border-color: var(--accent); }
@@ -148,8 +191,8 @@
 
     /* ── Nav buttons ── */
     .step-nav { display: flex; align-items: center; justify-content: space-between; margin-top: 32px; gap: 12px; }
-    .btn-primary { background: var(--accent); border: none; border-radius: 8px; color: #fff; font-size: 14px; font-weight: 700; padding: 13px 28px; cursor: pointer; font-family: inherit; transition: opacity 0.15s; }
-    .btn-primary:hover { opacity: 0.85; }
+    .btn-primary { background: var(--accent); border: none; border-radius: var(--radius-sm); color: var(--ink); font-size: 14.5px; font-weight: 700; letter-spacing: -0.01em; padding: 13px 28px; cursor: pointer; font-family: var(--font); box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 8px 24px rgba(16,185,129,0.26); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .btn-primary:hover { background: var(--accent-br); transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 12px 30px rgba(16,185,129,0.36); }
     .btn-back { background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-size: 14px; font-weight: 600; padding: 12px 20px; cursor: pointer; font-family: inherit; transition: border-color 0.15s, color 0.15s; }
     .btn-back:hover { border-color: var(--text); color: var(--text); }
 
@@ -166,10 +209,15 @@
       margin-bottom: 12px; overflow: hidden; transition: border-color 0.15s;
     }
     .result-card.top-pick { border-color: var(--green); }
-    .result-card.good-fit { border-color: rgba(47,107,255,0.4); }
+    .result-card.good-fit { border-color: rgba(16,185,129,0.4); }
 
     .result-header { padding: 18px 22px; display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 14px; }
-    @media (max-width: 600px) { .result-header { grid-template-columns: auto 1fr; } .result-header .result-cost-col, .result-header .result-cta-col { display: none; } }
+    @media (max-width: 600px) {
+      /* Reflow into two rows so the cost + affiliate CTA stay visible on phones */
+      .result-header { grid-template-columns: auto 1fr; gap: 6px 14px; }
+      .result-cost-col { text-align: left; }
+      .result-cta-col { justify-self: end; align-self: center; }
+    }
     .result-rank { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); min-width: 20px; }
     .result-rank.top { color: var(--green); }
     .result-tool-name { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
@@ -178,7 +226,7 @@
     .tag { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
     .tag-best { background: #0d2a1a; color: var(--green); border: 1px solid var(--green); }
     .result-cost-col { text-align: right; }
-    .result-cost { font-size: 1.15rem; font-weight: 800; }
+    .result-cost { font-family: var(--mono); font-size: 1.15rem; font-weight: 700; }
     .result-cost.c-free { color: var(--green); }
     .result-cost.c-cheap { color: #86efac; }
     .result-cost.c-mid { color: var(--yellow); }
@@ -187,7 +235,8 @@
     .result-cta-col { flex-shrink: 0; }
     .visit-btn { display: inline-block; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 7px; text-decoration: none; transition: border-color 0.15s; white-space: nowrap; }
     .visit-btn:hover { border-color: var(--accent); text-decoration: none; }
-    .visit-btn.affiliate { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .visit-btn.affiliate { background: var(--accent); border-color: var(--accent); color: var(--ink); font-weight: 700; box-shadow: 0 4px 16px rgba(16,185,129,0.3); }
+    .visit-btn.affiliate:hover { background: var(--accent-br); border-color: var(--accent-br); }
 
     /* ── Match score bar ── */
     .result-scores { padding: 0 22px 16px; border-top: 1px solid var(--border); display: none; }
@@ -202,11 +251,11 @@
     .score-fill.green { background: var(--green); }
     .score-fill.yellow { background: var(--yellow); }
     .score-fill.red { background: var(--red); }
-    .score-num { font-size: 12px; font-weight: 700; width: 36px; text-align: right; flex-shrink: 0; }
+    .score-num { font-family: var(--mono); font-size: 12px; font-weight: 700; width: 36px; text-align: right; flex-shrink: 0; }
 
     .match-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-left: 8px; }
     .match-badge.great { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
-    .match-badge.good { background: rgba(47,107,255,0.15); color: var(--accent); border: 1px solid rgba(47,107,255,0.3); }
+    .match-badge.good { background: rgba(16,185,129,0.15); color: var(--accent); border: 1px solid rgba(16,185,129,0.3); }
     .match-badge.ok { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
     .match-badge.poor { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
 
@@ -224,8 +273,37 @@
     .no-results strong { color: var(--text); }
 
     /* ── Footer ── */
-    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 32px; }
+    footer { border-top: 1px solid var(--border); padding: 34px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 32px; }
     footer a { color: var(--muted); }
+
+    /* ────────────────────────────────────────────────────────────────────
+       Mobile readability (added) + auto-advance UI cleanup
+       ──────────────────────────────────────────────────────────────────── */
+    /* Single-select steps auto-advance, so their Next button is redundant */
+    #step-1 .step-nav { display: none; }
+    #btn-next-1 { display: none; }
+
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 8px; padding-right: 8px; }
+      .nav-bottom a { padding: 12px 14px; }
+    }
+    @media (max-width: 620px) {
+      .nav-badge { display: none; }
+      /* Compact stepper: drop the text labels, keep numbered dots + connectors */
+      .wizard-progress { margin-bottom: 28px; gap: 0; }
+      .wp-step span { display: none; }
+      .wp-dot { width: 26px; height: 26px; }
+      .wp-line { margin: 0 5px; min-width: 10px; }
+      .step-heading { margin-bottom: 22px; }
+      .step-nav { flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+      .step-nav .btn-primary { padding: 13px 20px; }
+      .role-card, .size-card { padding: 18px 16px; }
+      .wf-card-header { padding: 20px 16px 14px; }
+      .wf-card-diagram { padding: 0 10px 14px; }
+      footer { padding: 30px 18px; }
+    }
   </style>
 </head>
 <body>
@@ -234,10 +312,10 @@
   <div class="nav-top">
     <a href="index.html" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M29 11 L15 24 L29 37" stroke="#10b981" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34.5" cy="24" r="3.4" fill="#10b981"/>
+        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
       </svg>
-      Automation<span>Cost</span>.io
+      Automation<span>Cost</span><span class="io">.io</span>
     </a>
     <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
@@ -254,74 +332,121 @@
 
   <!-- Progress bar -->
   <div class="wizard-progress" id="wizard-progress">
-    <div class="wp-step active" id="wp-1"><div class="wp-dot">1</div><span>Your role</span></div>
+    <div class="wp-step active" id="wp-1"><div class="wp-dot">1</div><span>Company size</span></div>
     <div class="wp-line" id="wl-1"></div>
-    <div class="wp-step" id="wp-2"><div class="wp-dot">2</div><span>Workflow type</span></div>
+    <div class="wp-step" id="wp-2"><div class="wp-dot">2</div><span>Your role</span></div>
     <div class="wp-line" id="wl-2"></div>
-    <div class="wp-step" id="wp-3"><div class="wp-dot">3</div><span>Volume & budget</span></div>
+    <div class="wp-step" id="wp-3"><div class="wp-dot">3</div><span>Workflow type</span></div>
     <div class="wp-line" id="wl-3"></div>
-    <div class="wp-step" id="wp-4"><div class="wp-dot">4</div><span>Results</span></div>
+    <div class="wp-step" id="wp-4"><div class="wp-dot">4</div><span>Volume & budget</span></div>
+    <div class="wp-line" id="wl-4"></div>
+    <div class="wp-step" id="wp-5"><div class="wp-dot">5</div><span>Results</span></div>
   </div>
 
-  <!-- ── Step 1: Role ── -->
+  <!-- ── Step 1: Company size ── -->
   <div class="step active" id="step-1">
     <div class="step-heading">
-      <div class="step-num">Step 1 of 3</div>
+      <div class="step-num">Step 1 of 4</div>
+      <h2>How big is your team?</h2>
+      <p>Company size lets us pre-estimate your likely volume and budget — so the sliders later start at a sensible default instead of zero. You can always adjust them.</p>
+    </div>
+    <div class="size-grid">
+      <div class="size-card" data-size="solo" onclick="selectCompanySize(this)">
+        <div class="size-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a7 7 0 0 1 13 0"/></svg></div>
+        <div class="size-name">Just me</div>
+        <div class="size-desc">Solo founder, freelancer or a personal side-project</div>
+        <div class="size-meta">1 person</div>
+      </div>
+      <div class="size-card" data-size="small" onclick="selectCompanySize(this)">
+        <div class="size-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="size-name">Small team</div>
+        <div class="size-desc">A startup or small department running shared automations</div>
+        <div class="size-meta">2–10 people</div>
+      </div>
+      <div class="size-card" data-size="growing" onclick="selectCompanySize(this)">
+        <div class="size-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
+        <div class="size-name">Growing</div>
+        <div class="size-desc">Scaling fast — several teams automating in parallel</div>
+        <div class="size-meta">11–50 people</div>
+      </div>
+      <div class="size-card" data-size="midmarket" onclick="selectCompanySize(this)">
+        <div class="size-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01"/></svg></div>
+        <div class="size-name">Mid-market</div>
+        <div class="size-desc">Established company with high-volume, cross-team flows</div>
+        <div class="size-meta">51–200 people</div>
+      </div>
+      <div class="size-card" data-size="enterprise" onclick="selectCompanySize(this)">
+        <div class="size-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01"/></svg></div>
+        <div class="size-name">Enterprise</div>
+        <div class="size-desc">Large org with heavy throughput and compliance needs</div>
+        <div class="size-meta">200+ people</div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <span></span>
+      <button class="btn-primary" id="btn-next-0" onclick="goStep(2)" disabled>Next: Your role →</button>
+    </div>
+  </div>
+
+  <!-- ── Step 2: Role ── -->
+  <div class="step" id="step-2">
+    <div class="step-heading">
+      <div class="step-num">Step 2 of 4</div>
       <h2>What's your role?</h2>
       <p>This helps us weight features that matter most to you — AI nodes, no-code UI, code access, compliance, and more.</p>
     </div>
     <div class="role-grid">
       <div class="role-card" data-role="marketing" onclick="selectRole(this)">
-        <div class="role-icon">📣</div>
+        <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div>
         <div class="role-name">Marketing</div>
         <div class="role-desc">Email sequences, lead flows, social posting, CRM sync</div>
       </div>
       <div class="role-card" data-role="operations" onclick="selectRole(this)">
-        <div class="role-icon">⚙️</div>
+        <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></svg></div>
         <div class="role-name">Operations</div>
         <div class="role-desc">Process automation, approvals, reporting, cross-team data sync</div>
       </div>
       <div class="role-card" data-role="developer" onclick="selectRole(this)">
-        <div class="role-icon">💻</div>
+        <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
         <div class="role-name">Developer</div>
         <div class="role-desc">APIs, webhooks, custom code steps, backend pipelines</div>
       </div>
       <div class="role-card" data-role="finance" onclick="selectRole(this)">
-        <div class="role-icon">💰</div>
+        <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg></div>
         <div class="role-name">Finance / Accounting</div>
         <div class="role-desc">Invoice processing, expense sync, payment notifications</div>
       </div>
       <div class="role-card" data-role="legal" onclick="selectRole(this)">
-        <div class="role-icon">⚖️</div>
+        <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M5 7h14"/><path d="m5 7-3 7h6l-3-7z"/><path d="m19 7-3 7h6l-3-7z"/></svg></div>
         <div class="role-name">Legal / Compliance</div>
         <div class="role-desc">Document flows, GDPR-sensitive data, audit trails</div>
       </div>
       <div class="role-card" data-role="hr" onclick="selectRole(this)">
-        <div class="role-icon">👥</div>
+        <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <div class="role-name">HR / People Ops</div>
         <div class="role-desc">Onboarding, offboarding, Slack notifications, HRIS sync</div>
       </div>
       <div class="role-card" data-role="ecommerce" onclick="selectRole(this)">
-        <div class="role-icon">🛒</div>
+        <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.5 3h2l2.6 12.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></div>
         <div class="role-name">E-commerce</div>
         <div class="role-desc">Order processing, inventory sync, customer notifications</div>
       </div>
       <div class="role-card" data-role="other" onclick="selectRole(this)">
-        <div class="role-icon">🔧</div>
+        <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></div>
         <div class="role-name">Other / Mixed</div>
         <div class="role-desc">Multiple use-cases or not sure yet</div>
       </div>
     </div>
     <div class="step-nav">
-      <span></span>
-      <button class="btn-primary" id="btn-next-1" onclick="goStep(2)" disabled>Next: Workflow type →</button>
+      <button class="btn-back" onclick="goStep(1)">← Back</button>
+      <button class="btn-primary" id="btn-next-1" onclick="goStep(3)" disabled>Next: Workflow type →</button>
     </div>
   </div>
 
-  <!-- ── Step 2: Workflow type ── -->
-  <div class="step" id="step-2">
+  <!-- ── Step 3: Workflow type ── -->
+  <div class="step" id="step-3">
     <div class="step-heading">
-      <div class="step-num">Step 2 of 3</div>
+      <div class="step-num">Step 3 of 4</div>
       <h2 id="step2-heading">What will you automate?</h2>
       <p id="step2-sub">Pipelines for your role — pick one.</p>
     </div>
@@ -329,22 +454,29 @@
     <div class="wf-stack" id="wf-stack"></div>
 
     <div class="step-nav">
-      <button class="btn-back" onclick="goStep(1)">← Back</button>
-      <button class="btn-primary" id="btn-next-2" onclick="goStep(3)" disabled>Next: Volume & budget →</button>
+      <button class="btn-back" onclick="goStep(2)">← Back</button>
+      <span class="wf-count-chip" id="wf-count-chip" hidden></span>
+      <button class="btn-primary" id="btn-next-2" onclick="goStep(4)" disabled>Next: Volume & budget →</button>
     </div>
   </div>
 
-  <!-- ── Step 3: Volume & budget ── -->
-  <div class="step" id="step-3">
+  <!-- ── Step 4: Volume & budget ── -->
+  <div class="step" id="step-4">
     <div class="step-heading">
-      <div class="step-num">Step 3 of 3</div>
+      <div class="step-num">Step 4 of 4</div>
       <h2>Volume & budget</h2>
       <p>We'll calculate the exact cost per tool and factor it into your match score.</p>
     </div>
 
+    <!-- Revealed by applyEstimate() once the volume/budget math runs -->
+    <div class="estimate-note" id="estimate-note" hidden>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3Z"/></svg>
+      <div><b>Pre-filled from your answers.</b> We estimated these from your company size, role and workflow — adjust anything that doesn't look right.</div>
+    </div>
+
     <div class="inputs-grid">
       <div>
-        <label for="ops">Operations / tasks per month</label>
+        <label for="ops">Operations / tasks per month <span class="auto-badge" id="ops-auto" hidden>✦ auto-estimated</span></label>
         <div class="budget-row" style="margin-top:8px">
           <div class="budget-val" id="ops-display">5,000</div>
           <input type="range" id="ops" min="0" max="8" step="1" value="4" oninput="updateOpsDisplay()">
@@ -352,7 +484,7 @@
         <div class="hint">ops/mo · Each app action = 1 op. A 3-step workflow triggered 1,000×/mo = 3,000 ops.</div>
       </div>
       <div>
-        <label for="workflows">Active workflows</label>
+        <label for="workflows">Active workflows <span class="auto-badge" id="wf-auto" hidden>✦ auto-estimated</span></label>
         <div class="budget-row" style="margin-top:8px">
           <div class="budget-val" id="wf-display">5</div>
           <input type="range" id="workflows" min="0" max="7" step="1" value="2" oninput="updateWfDisplay()">
@@ -360,7 +492,7 @@
         <div class="hint">workflows · How many separate automations you run in parallel.</div>
       </div>
       <div>
-        <label>Max monthly budget</label>
+        <label>Max monthly budget <span class="auto-badge" id="budget-auto" hidden>✦ auto-estimated</span></label>
         <div class="budget-row">
           <div class="budget-val" id="budget-display">$50</div>
           <input type="range" id="budget" min="0" max="300" step="5" value="50" oninput="updateBudget(this.value)">
@@ -401,13 +533,13 @@
     </div>
 
     <div class="step-nav">
-      <button class="btn-back" onclick="goStep(2)">← Back</button>
-      <button class="btn-primary" onclick="goStep(4)">See my recommendations →</button>
+      <button class="btn-back" onclick="goStep(3)">← Back</button>
+      <button class="btn-primary" onclick="goStep(5)">See my recommendations →</button>
     </div>
   </div>
 
-  <!-- ── Step 4: Results ── -->
-  <div class="step" id="step-4">
+  <!-- ── Step 5: Results ── -->
+  <div class="step" id="step-5">
     <div class="results-header">
       <h2>Your personalized recommendations</h2>
       <p>Ranked by match score — a weighted mix of feature fit for your role, workflow type, price vs your budget, and capabilities.</p>
@@ -417,6 +549,15 @@
     <div id="no-results-msg" class="no-results" style="display:none">
       No tool supports <strong>all</strong> your selected integrations with these settings. Try removing one, or note that most platforms support any app via custom HTTP requests.
     </div>
+    <a href="compare.html?view=plancomp&bestforme=1" class="results-next-cta">
+      <div class="rnc-text">
+        <div class="rnc-title">Next: compare plans head-to-head</div>
+        <div class="rnc-sub">See the cheapest plan at your exact volume — your answers carry over automatically.</div>
+      </div>
+      <span class="rnc-arrow">Compare plans
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
+      </span>
+    </a>
     <button class="restart-btn" onclick="goStep(1)">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
       Start over
@@ -1339,7 +1480,8 @@ const WORKFLOWS = [
 ];
 
 // ── Big SVG diagram renderer ──────────────────────────────────────────────────
-const NODE_W = 150, NODE_H = 64;
+const NODE_W = 180, NODE_H = 74;
+const TYPE_ICONS = { trigger:'<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/>', action:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>', condition:'<line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/>', ai:'<path d="m12 3 1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3Z"/>', output:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>' };
 const TYPE_LABELS = {
   trigger: "TRIGGER", action: "ACTION", condition: "CONDITION", ai: "AI", output: "OUTPUT"
 };
@@ -1407,8 +1549,8 @@ function renderBigDiagram(wf, svgId) {
 
     if (e.label) {
       const lx = mx, ly = (y1 + y2) / 2 - 6;
-      edgesHTML += `<rect x="${lx - 22}" y="${ly - 11}" width="44" height="15" rx="4" fill="${e.color}" opacity="0.15"/>`;
-      edgesHTML += `<text x="${lx}" y="${ly}" fill="${e.color}" font-size="9" font-family="system-ui,sans-serif" font-weight="700" text-anchor="middle">${e.label}</text>`;
+      edgesHTML += `<rect x="${lx - (e.label.length*7+20)/2}" y="${ly - 13}" width="${e.label.length*7+20}" height="21" rx="6" fill="${e.color}" opacity="0.16"/>`;
+      edgesHTML += `<text x="${lx}" y="${ly}" fill="${e.color}" font-size="11.5" font-family="'JetBrains Mono',monospace" font-weight="700" text-anchor="middle">${e.label}</text>`;
     }
   });
   edgesHTML += `</g>`;
@@ -1419,13 +1561,13 @@ function renderBigDiagram(wf, svgId) {
     const typeLabel = TYPE_LABELS[n.type] || "";
     nodesHTML += `
       <g class="wf-node-g" transform="translate(${n.x},${n.y})">
-        <rect width="${NODE_W}" height="${NODE_H}" rx="9" fill="${c}" opacity="0.13" stroke="${c}" stroke-width="1.5"/>
-        <rect x="0" y="0" width="${NODE_W}" height="5" rx="9" fill="${c}" opacity="0.55"/>
+        <rect width="${NODE_W}" height="${NODE_H}" rx="12" fill="${c}" opacity="0.14" stroke="${c}" stroke-width="1.5"/>
+        <rect x="0" y="0" width="${NODE_W}" height="6" rx="12" fill="${c}" opacity="0.6"/>
         <rect x="0" y="5" width="${NODE_W}" height="0" fill="${c}" opacity="0.55"/>
-        <text x="8" y="18" fill="${c}" font-size="8" font-family="system-ui,sans-serif" font-weight="800" letter-spacing="0.07em" opacity="0.85">${typeLabel}</text>
-        <text x="8" y="38" font-size="14" fill="${c}" font-family="system-ui,sans-serif" opacity="0.9">${n.icon}</text>
-        <text x="28" y="38" fill="#e8edf5" font-size="12" font-family="system-ui,sans-serif" font-weight="700">${n.label}</text>
-        <text x="8" y="55" fill="#6b7a99" font-size="9" font-family="system-ui,sans-serif">${n.sublabel}</text>
+        <g transform="translate(${NODE_W/2 - 9}, 10) scale(0.75)" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">${TYPE_ICONS[n.type]||""}</g>
+        <text x="${NODE_W/2}" y="49" text-anchor="middle" fill="#e8edf5" font-size="14.5" font-family="'Plus Jakarta Sans',system-ui,sans-serif" font-weight="700">${n.label}</text>
+        <text x="${NODE_W/2}" y="65" text-anchor="middle" fill="#8a99b5" font-size="10.5" font-family="'Plus Jakarta Sans',system-ui,sans-serif">${n.sublabel}</text>
+        <!-- node text centered above -->
       </g>`;
   });
   nodesHTML += `</g>`;
@@ -1618,7 +1760,8 @@ const TOOL_WHY = {
 };
 
 // ── State ─────────────────────────────────────────────────────────────────────
-let selectedRole = null, selectedWorkflow = null;
+let selectedRole = null, selectedWorkflow = null, selectedCompanySize = null;
+let selectedWorkflows = []; // multi-select list; selectedWorkflow = last picked (primary, used by scoring)
 let hostPref = "any", aiPref = "any", billing = "monthly";
 let maxBudget = 50;
 let selectedIntegrations = [];
@@ -1629,7 +1772,7 @@ function goStep(n) {
   document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
   document.getElementById("step-" + n).classList.add("active");
 
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 5; i++) {
     const dot = document.getElementById("wp-" + i);
     dot.classList.remove("active", "done");
     if (i < n) dot.classList.add("done");
@@ -1638,8 +1781,9 @@ function goStep(n) {
     if (line) line.classList.toggle("done", i < n);
   }
 
-  if (n === 2) renderWorkflowGrid();
-  if (n === 4) renderResults();
+  if (n === 3) renderWorkflowGrid();
+  if (n === 4 && selectedCompanySize) applyEstimate(estimateVolumeBudget());
+  if (n === 5) renderResults();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -1651,23 +1795,35 @@ function selectRole(card) {
   document.getElementById("btn-next-1").disabled = false;
 }
 
+// ── Step 1: Company size ──────────────────────────────────────────────────────
+// Visual only. `selectedCompanySize` is exposed so the volume/budget estimation
+// math (added separately in the backend) can pre-fill the ops / workflows /
+// budget sliders and reveal the .auto-badge hints on step 4.
+function selectCompanySize(card) {
+  document.querySelectorAll(".size-card").forEach(c => c.classList.remove("selected"));
+  card.classList.add("selected");
+  selectedCompanySize = card.dataset.size;
+  document.getElementById("btn-next-0").disabled = false;
+}
+
 // ── Step 2: Workflow stack ────────────────────────────────────────────────────
 function renderWorkflowGrid() {
   const wfs = getFilteredWorkflows();
   const roleLabels = { marketing:"Marketing", operations:"Operations", developer:"Developer", finance:"Finance", legal:"Legal", hr:"HR", ecommerce:"E-commerce", other:"General" };
   const role = selectedRole || "other";
   document.getElementById("step2-sub").textContent =
-    `${wfs.length} pipeline${wfs.length !== 1 ? "s" : ""} for ${roleLabels[role] || "your role"} — pick one.`;
+    `${wfs.length} pipeline${wfs.length !== 1 ? "s" : ""} for ${roleLabels[role] || "your role"} — pick one or more to combine them.`;
 
   const stack = document.getElementById("wf-stack");
   stack.innerHTML = wfs.map(wf =>
-    `<div class="wf-card${selectedWorkflow === wf.id ? " selected" : ""}" id="wfc-${wf.id}" onclick="selectWorkflow('${wf.id}')">
+    `<div class="wf-card${selectedWorkflows.includes(wf.id) ? " selected" : ""}" id="wfc-${wf.id}" onclick="selectWorkflow('${wf.id}')">
       <div class="wf-card-header">
-        <div class="wf-card-icon">${wf.icon}</div>
+        <div class="wf-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg></div>
         <div>
           <div class="wf-card-title">${wf.title}</div>
           <div class="wf-card-sub">${wf.subtitle}</div>
         </div>
+        <div class="wf-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
       <div class="wf-card-diagram">
         <svg class="wf-big-svg" id="wf-svg-${wf.id}" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-height:220px;"></svg>
@@ -1677,27 +1833,52 @@ function renderWorkflowGrid() {
 
   // Render all diagrams
   wfs.forEach(wf => renderBigDiagram(wf, `wf-svg-${wf.id}`));
+  var _wfstack = document.getElementById("wf-stack");
+  if (_wfstack) { _wfstack.insertAdjacentHTML("beforeend", `<div class="wf-card wf-skip" onclick="selectedWorkflow=null; selectedWorkflows=[]; goStep(4);"><div><div class="wf-skip-title">Other / I don't know yet</div><div class="wf-skip-sub">Skip this step — we'll match you on your volume &amp; budget instead</div></div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>`); }
 
-  document.getElementById("btn-next-2").disabled = selectedWorkflow === null;
+  document.getElementById("btn-next-2").disabled = selectedWorkflows.length === 0;
+  updateWfSelectedCount();
 }
 
 function selectWorkflow(id) {
-  const prev = selectedWorkflow;
-  selectedWorkflow = id;
-  document.querySelectorAll(".wf-card").forEach(c => c.classList.remove("selected"));
-  const card = document.getElementById("wfc-" + id);
-  if (card) card.classList.add("selected");
-  document.getElementById("btn-next-2").disabled = false;
+  const i = selectedWorkflows.indexOf(id);
+  if (i === -1) selectedWorkflows.push(id);
+  else selectedWorkflows.splice(i, 1);
+  // primary = last picked, so the existing single-workflow scoring keeps working
+  selectedWorkflow = selectedWorkflows.length ? selectedWorkflows[selectedWorkflows.length - 1] : null;
 
-  const wf = WORKFLOWS.find(w => w.id === id);
-  if (!wf) return;
-  document.getElementById("ops").value = findClosestIdx(CALC_OPS_STEPS, wf.defaultOps);
-  document.getElementById("workflows").value = findClosestIdx(CALC_WF_STEPS, wf.defaultWorkflows);
-  updateOpsDisplay(); updateWfDisplay();
-  if (wf.needsAI) {
-    aiPref = "yes";
-    document.querySelectorAll("[data-ai]").forEach(b => b.classList.toggle("active", b.dataset.ai === "yes"));
+  document.querySelectorAll(".wf-card").forEach(c => c.classList.remove("selected"));
+  selectedWorkflows.forEach(wid => {
+    const c = document.getElementById("wfc-" + wid);
+    if (c) c.classList.add("selected");
+  });
+  document.getElementById("btn-next-2").disabled = selectedWorkflows.length === 0;
+  updateWfSelectedCount();
+
+  // Pre-fill sliders from the SUM of selected workflows' defaults (visual estimate;
+  // Claude Code's applyEstimate() can override this with the real math).
+  if (selectedWorkflows.length) {
+    let sumOps = 0, sumWf = 0, anyAI = false;
+    selectedWorkflows.forEach(wid => {
+      const w = WORKFLOWS.find(x => x.id === wid);
+      if (w) { sumOps += w.defaultOps; sumWf += w.defaultWorkflows; if (w.needsAI) anyAI = true; }
+    });
+    document.getElementById("ops").value = findClosestIdx(CALC_OPS_STEPS, sumOps);
+    document.getElementById("workflows").value = findClosestIdx(CALC_WF_STEPS, sumWf);
+    updateOpsDisplay(); updateWfDisplay();
+    if (anyAI) {
+      aiPref = "yes";
+      document.querySelectorAll("[data-ai]").forEach(b => b.classList.toggle("active", b.dataset.ai === "yes"));
+    }
   }
+}
+
+function updateWfSelectedCount() {
+  const chip = document.getElementById("wf-count-chip");
+  if (!chip) return;
+  const n = selectedWorkflows.length;
+  chip.hidden = n === 0;
+  chip.textContent = n + (n === 1 ? " workflow selected" : " workflows selected");
 }
 
 // ── Step 3 inputs ─────────────────────────────────────────────────────────────
@@ -1714,6 +1895,86 @@ function updateBudget(v) {
   const display = document.getElementById("budget-display");
   display.textContent = maxBudget === 0 ? "Any" : "$" + maxBudget;
 }
+
+// ── Volume & budget auto-estimate ─────────────────────────────────────────────
+function estimateVolumeBudget() {
+  const sizeBase = {
+    solo:       { ops: 1000,   workflows: 2,  budget: 10  },
+    small:      { ops: 5000,   workflows: 5,  budget: 35  },
+    growing:    { ops: 25000,  workflows: 10, budget: 90  },
+    midmarket:  { ops: 100000, workflows: 20, budget: 200 },
+    enterprise: { ops: 300000, workflows: 30, budget: 350 },
+  };
+  const roleOpsScale    = { dev: 1.4, ops: 1.3, founder: 0.9, nocode: 0.8 };
+  const roleWfScale     = { dev: 0.9, ops: 1.0, founder: 1.2, nocode: 1.3 };
+  const roleBudgetScale = { dev: 1.1, ops: 1.1, founder: 1.0, nocode: 0.9 };
+
+  const base = sizeBase[selectedCompanySize] || sizeBase.small;
+  const rs   = roleOpsScale[selectedRole]    || 1;
+  const rw   = roleWfScale[selectedRole]     || 1;
+  const rb   = roleBudgetScale[selectedRole] || 1;
+
+  // workflow-type ops multiplier (use primary selectedWorkflow's defaultOps if available)
+  let wfMult = 1;
+  if (selectedWorkflow) {
+    const wf = WORKFLOWS.find(w => w.id === selectedWorkflow);
+    if (wf && wf.defaultOps) {
+      // scale relative to a "medium" baseline of 5000 ops
+      wfMult = Math.max(0.5, Math.min(3, wf.defaultOps / 5000));
+    }
+  }
+  // extra workflows add proportional ops
+  const wfCount = Math.max(1, selectedWorkflows.length);
+
+  return {
+    ops:       Math.round(base.ops * rs * wfMult * Math.sqrt(wfCount)),
+    workflows: Math.round(base.workflows * rw * Math.sqrt(wfCount)),
+    budget:    Math.round(base.budget * rb),
+  };
+}
+
+// ── Volume & budget auto-estimate (VISUAL PLUMBING — math added separately) ───
+// Integration point for Claude Code: compute the numbers from selectedCompanySize
+// / selectedRole / selectedWorkflow, then call:
+//     applyEstimate({ ops: 12000, workflows: 6, budget: 80 });
+// Pass only the keys you want to fill. This sets the sliders to the closest step,
+// refreshes their displays, reveals the "✦ auto-estimated" badges and the banner.
+// If the user then drags a slider, that slider's badge auto-clears (see below).
+function applyEstimate(est) {
+  est = est || {};
+  if (typeof est.ops === "number") {
+    document.getElementById("ops").value = findClosestIdx(CALC_OPS_STEPS, est.ops);
+    updateOpsDisplay();
+    document.getElementById("ops-auto").hidden = false;
+  }
+  if (typeof est.workflows === "number") {
+    document.getElementById("workflows").value = findClosestIdx(CALC_WF_STEPS, est.workflows);
+    updateWfDisplay();
+    document.getElementById("wf-auto").hidden = false;
+  }
+  if (typeof est.budget === "number") {
+    document.getElementById("budget").value = est.budget;
+    updateBudget(est.budget);
+    document.getElementById("budget-auto").hidden = false;
+  }
+  const note = document.getElementById("estimate-note");
+  if (note) note.hidden = false;
+}
+
+// Manual drag clears the "auto-estimated" flag on that slider (visual feedback only).
+[["ops","ops-auto"],["workflows","wf-auto"],["budget","budget-auto"]].forEach(function (pair) {
+  const el = document.getElementById(pair[0]);
+  if (!el) return;
+  el.addEventListener("input", function () {
+    const badge = document.getElementById(pair[1]);
+    if (badge) badge.hidden = true;
+    const note = document.getElementById("estimate-note");
+    const allHidden = ["ops-auto","wf-auto","budget-auto"].every(function (id) {
+      const b = document.getElementById(id); return !b || b.hidden;
+    });
+    if (note && allHidden) note.hidden = true;
+  });
+});
 function setHost(v, btn) { hostPref = v; document.querySelectorAll("[data-host]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
 function setAI(v, btn)   { aiPref  = v; document.querySelectorAll("[data-ai]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
 function setBilling(v, btn) { billing = v; document.querySelectorAll("[data-billing]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
@@ -1944,6 +2205,18 @@ function renderResults() {
       </div>
     </div>`;
   }).join("");
+
+  // Persist a lightweight profile so compare.html "Best for me" can use it.
+  try {
+    localStorage.setItem("ac_profile", JSON.stringify({
+      ops: getCalcOps(), workflows: getCalcWf(), budget: maxBudget,
+      hostPref: hostPref, aiPref: aiPref, role: selectedRole, companySize: selectedCompanySize,
+      workflowsSel: selectedWorkflows.slice(),
+      topTool: items.length ? items[0].tool.slug : null,
+      topPlan: (items.length && items[0].costResult) ? items[0].costResult.plan.name : null,
+      ts: Date.now()
+    }));
+  } catch (e) {}
 }
 
 function toggleExpand(slug) {
@@ -1954,5 +2227,27 @@ function toggleExpand(slug) {
 }
 
 </script>
+
+<!-- Auto-advance single-select wizard steps (company size, role) so no extra
+     confirm click is needed. Wraps the existing globals without touching them. -->
+<script>
+(function () {
+  function autoAdvance(fnName, nextStep) {
+    var original = window[fnName];
+    if (typeof original !== "function") return;
+    window[fnName] = function (card) {
+      original.call(this, card);
+      clearTimeout(window.__acAutoAdvance);
+      // brief beat so the green "selected" state is visible before moving on
+      window.__acAutoAdvance = setTimeout(function () {
+        if (typeof goStep === "function") goStep(nextStep);
+      }, 240);
+    };
+  }
+  autoAdvance("selectCompanySize", 2); // step 1 → step 2
+  autoAdvance("selectRole", 3);        // step 2 → step 3
+})();
+</script>
+</body>
 </body>
 </html>
