@@ -26,10 +26,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "tools.json"
+SITE = ROOT / "data" / "site.json"
 
 START = "/* DATA:TOOLS:START */"
 END = "/* DATA:TOOLS:END */"
 WARN = "/* generováno build.py z data/tools.json — needituj ručně */"
+
+AN_START = "<!-- ANALYTICS (build.py) -->"
+AN_END = "<!-- /ANALYTICS -->"
 
 
 # ---------------------------------------------------------------------------
@@ -173,6 +177,81 @@ def inject(path: Path, generated: str) -> bool:
     return False
 
 
+# ---------------------------------------------------------------------------
+# Site-wide artefakty: sitemap.xml, robots.txt, analytics snippet
+# ---------------------------------------------------------------------------
+
+def load_site() -> dict:
+    if SITE.exists():
+        return json.loads(SITE.read_text(encoding="utf-8"))
+    return {"domain": "automationcost.io", "cloudflare_analytics_token": "", "sitemap_exclude": ["404.html"]}
+
+
+def public_pages(exclude: list[str]) -> list[Path]:
+    """Veřejné HTML stránky (seřazené), bez vyloučených a bez pomocných `_*`."""
+    skip = set(exclude or [])
+    return sorted(
+        p for p in ROOT.glob("*.html")
+        if p.name not in skip and not p.name.startswith("_")
+    )
+
+
+def build_sitemap(domain: str, pages: list[Path]) -> bool:
+    urls = []
+    for p in pages:
+        loc = f"https://{domain}/" if p.name == "index.html" else f"https://{domain}/{p.name}"
+        urls.append(f"  <url><loc>{loc}</loc></url>")
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(urls) + "\n</urlset>\n"
+    )
+    out = ROOT / "sitemap.xml"
+    if not out.exists() or out.read_text(encoding="utf-8") != xml:
+        out.write_text(xml, encoding="utf-8")
+        return True
+    return False
+
+
+def build_robots(domain: str) -> bool:
+    txt = f"User-agent: *\nAllow: /\n\nSitemap: https://{domain}/sitemap.xml\n"
+    out = ROOT / "robots.txt"
+    if not out.exists() or out.read_text(encoding="utf-8") != txt:
+        out.write_text(txt, encoding="utf-8")
+        return True
+    return False
+
+
+def apply_analytics(token: str, pages: list[Path]) -> list[str]:
+    """Vloží/odebere Cloudflare Web Analytics snippet před </head> všech stránek.
+    Idempotentní: nejdřív smaže starý ANALYTICS blok, pak (je-li token) vloží čerstvý.
+    Prázdný token = jen úklid (žádné tracking)."""
+    snippet = ""
+    if token:
+        snippet = (
+            f'{AN_START}\n'
+            f'  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" '
+            f'data-cf-beacon=\'{{"token": "{token}"}}\'></script>\n'
+            f'  {AN_END}\n  '
+        )
+    changed = []
+    import re as _re
+    block_re = _re.compile(_re.escape(AN_START) + r".*?" + _re.escape(AN_END) + r"\n?\s*", _re.S)
+    for p in pages:
+        text = p.read_text(encoding="utf-8")
+        cleaned = block_re.sub("", text)
+        if token:
+            if "</head>" not in cleaned:
+                continue
+            new = cleaned.replace("</head>", snippet + "</head>", 1)
+        else:
+            new = cleaned
+        if new != text:
+            p.write_text(new, encoding="utf-8")
+            changed.append(p.name)
+    return changed
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Inject data/tools.json into static pages.")
     parser.add_argument("--check", action="store_true",
@@ -181,6 +260,7 @@ def main() -> int:
 
     data = json.loads(DATA.read_text(encoding="utf-8"))
     tools = data["tools"]
+    site = load_site()
 
     targets = {
         ROOT / "calculator.html": render_calculator(tools),
@@ -207,10 +287,24 @@ def main() -> int:
     for path, generated in targets.items():
         if inject(path, generated):
             changed.append(path.name)
+
+    # site-wide artefakty
+    domain = site.get("domain", "automationcost.io")
+    pages = public_pages(site.get("sitemap_exclude", ["404.html"]))
+    if build_sitemap(domain, pages):
+        changed.append("sitemap.xml")
+    if build_robots(domain):
+        changed.append("robots.txt")
+    an_changed = apply_analytics(site.get("cloudflare_analytics_token", ""), pages)
+    changed.extend(an_changed)
+
     if changed:
         print(f"[build] aktualizováno: {', '.join(changed)}")
     else:
-        print("[build] beze změny (stránky už byly aktuální).")
+        print("[build] beze změny (vše aktuální).")
+    if not site.get("cloudflare_analytics_token"):
+        print("[build] pozn.: cloudflare_analytics_token je prázdný → analytics se nevkládá. "
+              "Doplň token v data/site.json a spusť build znovu.")
     return 0
 
 
