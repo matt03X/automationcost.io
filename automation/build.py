@@ -2,7 +2,7 @@
 """build.py — vstříkne kanonická data z data/tools.json do statických stránek.
 
 Jediný zdroj pravdy = data/tools.json. Tento skript z něj vygeneruje `const TOOLS`
-blok pro calculator.html (pole, jen ocenitelné plány) a compare.html (objekt, všechny
+blok pro calculator.html (pole, všechny plány vč. custom tier) a compare.html (objekt, všechny
 plány + bohatší pole) a nahradí obsah mezi markery:
 
     /* DATA:TOOLS:START */ … /* DATA:TOOLS:END */
@@ -15,7 +15,7 @@ Spuštění:
 
 Konvence v tools.json:
     opsIncluded / workflowLimit == null  → Infinity (unlimited)
-    monthlyUsd == null                   → custom (calculator plán přeskočí, compare = null)
+    monthlyUsd == null                   → custom (calculator cenu odhadne za běhu, compare = "Custom")
 """
 from __future__ import annotations
 
@@ -73,7 +73,12 @@ def js_overage(ov) -> str:
 # ---------------------------------------------------------------------------
 
 def render_plan(plan: dict, *, include_note: bool) -> str:
-    parts = [
+    parts = []
+    if plan.get("monthlyUsd") is None:
+        # custom / contact-sales tier — calculator.html estimates its price at
+        # runtime (calcCost), compare.html renders "Custom"
+        parts.append("custom: true")
+    parts += [
         f'name: {js_str(plan["name"])}',
         f'monthlyUsd: {js_money(plan.get("monthlyUsd"))}',
         f'opsIncluded: {js_limit(plan.get("opsIncluded"))}',
@@ -87,13 +92,14 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Projektor: calculator.html  (pole; jen plány s konkrétní cenou; s note)
+# Projektor: calculator.html  (pole; všechny plány — custom tier s flagem
+# `custom: true`, jehož cenu calcCost odhaduje za běhu; s note)
 # ---------------------------------------------------------------------------
 
 def render_calculator(tools: list[dict]) -> str:
     lines = ["const TOOLS = ["]
     for t in tools:
-        priced = [p for p in t["plans"] if p.get("monthlyUsd") is not None]
+        priced = t["plans"]
         lines.append("  {")
         lines.append(
             f'    slug: {js_str(t["slug"])}, name: {js_str(t["name"])}, '

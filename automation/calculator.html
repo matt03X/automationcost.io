@@ -484,7 +484,7 @@
         <label for="ops">Operations / tasks per month <span class="auto-badge" id="ops-auto" hidden>✦ auto-estimated</span></label>
         <div class="budget-row" style="margin-top:8px">
           <div class="budget-val" id="ops-display">5,000</div>
-          <input type="range" id="ops" min="0" max="8" step="1" value="4" oninput="updateOpsDisplay()">
+          <input type="range" id="ops" min="0" max="11" step="1" value="4" oninput="updateOpsDisplay()">
         </div>
         <div class="hint">ops/mo · Each app action = 1 op. A 3-step workflow triggered 1,000×/mo = 3,000 ops.</div>
       </div>
@@ -500,7 +500,7 @@
         <label>Max monthly budget <span class="auto-badge" id="budget-auto" hidden>✦ auto-estimated</span></label>
         <div class="budget-row">
           <div class="budget-val" id="budget-display">$50</div>
-          <input type="range" id="budget" min="0" max="300" step="5" value="50" oninput="updateBudget(this.value)">
+          <input type="range" id="budget" min="0" max="500" step="5" value="50" oninput="updateBudget(this.value)">
         </div>
         <div class="budget-note" id="budget-note">Tools above this will be marked as over-budget, not hidden</div>
       </div>
@@ -1648,6 +1648,7 @@ const TOOLS = [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
       { name: "Cloud Starter", monthlyUsd: 20, opsIncluded: 2500, workflowLimit: 5, note: "Cloud Starter" },
       { name: "Cloud Pro", monthlyUsd: 50, opsIncluded: 10000, workflowLimit: 15, note: "Cloud Pro" },
+      { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null },
   {
     slug: "make", name: "Make", selfHostable: false, aiFeatures: true, integrations: 1500,
@@ -1657,6 +1658,7 @@ const TOOLS = [
       { name: "Core", monthlyUsd: 9, opsIncluded: 10000, workflowLimit: Infinity, note: "Core plan" },
       { name: "Pro", monthlyUsd: 16, opsIncluded: 10000, workflowLimit: Infinity, note: "Pro plan" },
       { name: "Teams", monthlyUsd: 29, opsIncluded: 10000, workflowLimit: Infinity, note: "Teams plan" },
+      { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: { per: 10000, usd: 9 } },
   {
     slug: "pipedream", name: "Pipedream", selfHostable: false, aiFeatures: true, integrations: 2000,
@@ -1665,6 +1667,7 @@ const TOOLS = [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, note: "Free tier" },
       { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 20, note: "Basic plan" },
       { name: "Advanced", monthlyUsd: 49, opsIncluded: 5000, workflowLimit: Infinity, note: "Advanced plan" },
+      { custom: true, name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: { per: 1000, usd: 10 } },
   {
     slug: "zapier", name: "Zapier", selfHostable: false, aiFeatures: true, integrations: 7000,
@@ -1674,6 +1677,7 @@ const TOOLS = [
       { name: "Starter", monthlyUsd: 20, opsIncluded: 750, workflowLimit: 20, note: "Starter plan" },
       { name: "Professional", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity, note: "Professional plan" },
       { name: "Team", monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity, note: "Team plan" },
+      { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: { per: 1000, usd: 25 } },
   {
     slug: "activepieces", name: "Activepieces", selfHostable: true, aiFeatures: true, integrations: 200,
@@ -1739,7 +1743,7 @@ const TOOL_WHY = {
     legal:       { pros: ["Easy audit flows", "DocuSign, contracts apps all present"], cons: ["US company — GDPR complexity", "No self-hosting", "Expensive"] },
     hr:          { pros: ["Every HRIS and HR tool connected", "Easiest for non-technical HR"], cons: ["Expensive for high-volume onboarding/offboarding"] },
     ecommerce:   { pros: ["Every e-commerce platform covered"], cons: ["Each order step billed as task — costs explode"] },
-    other:       { pros: ["Widest app coverage", "Easiest for non-devs"], cons: ["Worst value for money in the market"] },
+    other:       { pros: ["Widest app coverage", "Easiest for non-devs"], cons: ["Most expensive per task among compared tools"] },
   },
   activepieces: {
     marketing:   { pros: ["MIT license — use freely", "Clean no-code UI", "Self-hostable"], cons: ["Only ~200 integrations", "Smaller community"] },
@@ -1779,6 +1783,7 @@ let selectedWorkflows = []; // multi-select list; selectedWorkflow = last picked
 let hostPref = "any", aiPref = "any", billing = "monthly";
 let maxBudget = 50;
 let selectedIntegrations = [];
+let lastEstimateSig = null; // profile the sliders were last auto-estimated for
 const ANNUAL_DISCOUNT = 0.8;
 
 // ── Wizard navigation ─────────────────────────────────────────────────────────
@@ -1796,7 +1801,15 @@ function goStep(n) {
   }
 
   if (n === 3) renderWorkflowGrid();
-  if (n === 4 && selectedCompanySize) applyEstimate(estimateVolumeBudget());
+  if (n === 4 && selectedCompanySize) {
+    // Re-estimate only when size/role/workflows changed — navigating back and
+    // forth must not wipe the user's manual slider tweaks.
+    const sig = selectedCompanySize + "|" + selectedRole + "|" + selectedWorkflows.slice().sort().join(",");
+    if (sig !== lastEstimateSig) {
+      applyEstimate(estimateVolumeBudget());
+      lastEstimateSig = sig;
+    }
+  }
   if (n === 5) renderResults();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -1869,21 +1882,11 @@ function selectWorkflow(id) {
   document.getElementById("btn-next-2").disabled = selectedWorkflows.length === 0;
   updateWfSelectedCount();
 
-  // Pre-fill sliders from the SUM of selected workflows' defaults (visual estimate;
-  // Claude Code's applyEstimate() can override this with the real math).
-  if (selectedWorkflows.length) {
-    let sumOps = 0, sumWf = 0, anyAI = false;
-    selectedWorkflows.forEach(wid => {
-      const w = WORKFLOWS.find(x => x.id === wid);
-      if (w) { sumOps += w.defaultOps; sumWf += w.defaultWorkflows; if (w.needsAI) anyAI = true; }
-    });
-    document.getElementById("ops").value = findClosestIdx(CALC_OPS_STEPS, sumOps);
-    document.getElementById("workflows").value = findClosestIdx(CALC_WF_STEPS, sumWf);
-    updateOpsDisplay(); updateWfDisplay();
-    if (anyAI) {
-      aiPref = "yes";
-      document.querySelectorAll("[data-ai]").forEach(b => b.classList.toggle("active", b.dataset.ai === "yes"));
-    }
+  // Sliders are filled by estimateVolumeBudget() when entering step 4 — here
+  // we only sync the AI toggle, since needsAI is a property of the workflows.
+  if (selectedWorkflows.some(wid => { const w = WORKFLOWS.find(x => x.id === wid); return w && w.needsAI; })) {
+    aiPref = "yes";
+    document.querySelectorAll("[data-ai]").forEach(b => b.classList.toggle("active", b.dataset.ai === "yes"));
   }
 }
 
@@ -1896,7 +1899,7 @@ function updateWfSelectedCount() {
 }
 
 // ── Step 3 inputs ─────────────────────────────────────────────────────────────
-const CALC_OPS_STEPS = [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
+const CALC_OPS_STEPS = [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
 const CALC_WF_STEPS  = [1, 3, 5, 10, 15, 20, 50, 100];
 function getCalcOps() { return CALC_OPS_STEPS[parseInt(document.getElementById("ops").value)]; }
 function getCalcWf()  { return CALC_WF_STEPS[parseInt(document.getElementById("workflows").value)]; }
@@ -1932,24 +1935,26 @@ function estimateVolumeBudget() {
   const rw   = roleWfScale[selectedRole]     || 1;
   const rb   = roleBudgetScale[selectedRole] || 1;
 
-  // workflow-type ops multiplier (use primary selectedWorkflow's defaultOps if available)
+  // workflow-type ops multiplier — TOTAL default volume of all selected
+  // workflows relative to a "medium" 5000-ops baseline, with a sublinear
+  // exponent (shared triggers/steps give mild economies of scale). Sum-based
+  // ⇒ order-independent AND adding a workflow can never lower the estimate.
   let wfMult = 1;
-  if (selectedWorkflow) {
-    const wf = WORKFLOWS.find(w => w.id === selectedWorkflow);
-    if (wf && wf.defaultOps) {
-      // scale relative to a "medium" baseline of 5000 ops
-      wfMult = Math.max(0.5, Math.min(3, wf.defaultOps / 5000));
-    }
+  const selWfs = selectedWorkflows
+    .map(id => WORKFLOWS.find(w => w.id === id))
+    .filter(w => w && w.defaultOps);
+  if (selWfs.length) {
+    const sumOps = selWfs.reduce((s, w) => s + w.defaultOps, 0);
+    wfMult = Math.max(0.5, Math.min(5, Math.pow(sumOps / 5000, 0.8)));
   }
-  // extra workflows add proportional ops
   const wfCount = Math.max(1, selectedWorkflows.length);
 
   // ops / workflows are snapped to the nearest slider step by findClosestIdx,
   // so values above the top step simply clamp to it. budget is a continuous
-  // slider (max 300) — clamp here so the displayed $ never exceeds the track.
-  const BUDGET_MAX = 300;
+  // slider — clamp here so the displayed $ never exceeds the track.
+  const BUDGET_MAX = 500;
   return {
-    ops:       Math.round(base.ops * rs * wfMult * Math.sqrt(wfCount)),
+    ops:       Math.round(base.ops * rs * wfMult),
     workflows: Math.round(base.workflows * rw * Math.sqrt(wfCount)),
     budget:    Math.min(BUDGET_MAX, Math.round(base.budget * rb)),
   };
@@ -2062,6 +2067,7 @@ function calcCost(tool, ops, workflows) {
   if (selectedIntegrations.length && !toolSupportsAll(tool.slug)) return null;
   let best = null;
   for (const plan of tool.plans) {
+    if (plan.custom) continue; // "contact sales" tier — estimated below
     if (hostPref === "cloud" && plan.selfHostOnly) continue;
     if (hostPref === "selfhost" && !plan.selfHostOnly) continue;
     if (plan.workflowLimit !== Infinity && plan.workflowLimit < workflows) continue;
@@ -2072,6 +2078,32 @@ function calcCost(tool, ops, workflows) {
       else continue;
     }
     if (best === null || cost < best.cost) best = { cost, plan };
+  }
+
+  // Custom / "contact sales" tier: estimate a price so the tool doesn't
+  // silently vanish at volumes above its public plans. Anchored to the
+  // largest priced cloud plan; enterprise deals scale sublinearly with
+  // volume — exponent 0.7 tracks published high-volume pricing (e.g. Zapier
+  // 100k tasks ≈ $733/mo vs $49/2k anchor → 49×50^0.7 ≈ $760).
+  const customPlan = tool.plans.find(p => p.custom);
+  if (customPlan && hostPref !== "selfhost") {
+    const anchors = tool.plans.filter(p => !p.custom && !p.selfHostOnly && p.monthlyUsd > 0 && isFinite(p.opsIncluded));
+    const maxInc = anchors.length ? Math.max(...anchors.map(p => p.opsIncluded)) : 0;
+    const anchor = anchors.filter(p => p.opsIncluded === maxInc).sort((a, b) => a.monthlyUsd - b.monthlyUsd)[0];
+    const wfOk = customPlan.workflowLimit === Infinity || customPlan.workflowLimit >= workflows;
+    if (anchor && wfOk && ops > anchor.opsIncluded) {
+      let est = anchor.monthlyUsd * Math.max(1.3, Math.pow(ops / anchor.opsIncluded, 0.7));
+      if (billing === "annual") est *= ANNUAL_DISCOUNT;
+      est = Math.max(5, Math.round(est / 5) * 5);
+      // Use the estimate when public plans can't cover the volume at all, or
+      // when we're clearly beyond the public ladder (2× the largest tier) and
+      // a negotiated deal beats linear overage. Plain min() keeps the price
+      // curve monotonic — no cliff at the switch-over volume.
+      const beyondPublic = ops > anchor.opsIncluded * 2;
+      if (best === null || (beyondPublic && est < best.cost)) {
+        best = { cost: est, plan: Object.assign({}, customPlan, { note: customPlan.name + " — price estimated, contact sales" }), estimated: true };
+      }
+    }
   }
   return best;
 }
@@ -2201,8 +2233,8 @@ function renderResults() {
           </button>
         </div>
         <div class="result-cost-col">
-          <div class="result-cost ${costClass(cost)}">${cost === 0 ? "Free" : "$" + cost + "/mo"}</div>
-          <div class="result-cost-note">${costResult.plan.name}</div>
+          <div class="result-cost ${costClass(cost)}">${cost === 0 ? "Free" : (costResult.estimated ? "~$" : "$") + cost + "/mo"}</div>
+          <div class="result-cost-note">${costResult.plan.name}${costResult.estimated ? " · estimate" : ""}</div>
         </div>
         <div class="result-cta-col">
           <a href="${tool.affiliateUrl}" target="_blank" rel="noopener${tool.hasAffiliate ? " sponsored" : ""}"
@@ -2223,7 +2255,9 @@ function renderResults() {
         </div>
       </div>
     </div>`;
-  }).join("");
+  }).join("") + (items.some(r => r.costResult.estimated)
+    ? `<div style="font-size:12px;color:var(--muted);margin:10px 2px 0;">~ Estimated price — derived from the vendor's public pricing; actual enterprise quotes may differ. Always verify on the vendor's site.</div>`
+    : "");
 
   // Persist a lightweight profile so compare.html "Best for me" can use it.
   try {
@@ -2267,6 +2301,5 @@ function toggleExpand(slug) {
   autoAdvance("selectRole", 3);        // step 2 → step 3
 })();
 </script>
-</body>
 </body>
 </html>
