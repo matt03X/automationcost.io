@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>n8n Pricing 2026 — Cloud vs Self-Hosted Cost Breakdown</title>
+  <meta name="description" content="n8n pricing explained: Cloud Starter $20/mo, Pro $50/mo, or self-hosted for ~$8/mo with unlimited ops. See which plan is right for your usage.">
+  <link rel="canonical" href="https://wizardcost.com/automation/n8n-pricing.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="n8n Pricing 2026 — Cloud vs Self-Hosted Cost Breakdown">
+  <meta property="og:description" content="n8n pricing explained: Cloud Starter $20/mo, Pro $50/mo, or self-hosted for ~$8/mo with unlimited ops.">
+  <meta property="og:url" content="https://wizardcost.com/automation/n8n-pricing.html">
+  <meta property="og:image" content="https://wizardcost.com/automation/og-image.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type":"Question","name":"How much does n8n cost per month?","acceptedAnswer":{"@type":"Answer","text":"n8n Cloud starts at $20/mo (Starter: 2,500 ops, 5 workflows) and $50/mo (Pro: 10,000 ops, 15 workflows). Self-hosted n8n is free — you only pay for the server, typically $4–$8/mo on a basic VPS."}},
+      {"@type":"Question","name":"Is n8n self-hosted free?","acceptedAnswer":{"@type":"Answer","text":"Yes. n8n Community Edition is free and open-source. You can run it on any VPS or your own hardware. There are no ops limits, no workflow caps, and no monthly fees — just your server cost."}},
+      {"@type":"Question","name":"What is the difference between n8n Cloud and self-hosted?","acceptedAnswer":{"@type":"Answer","text":"n8n Cloud is fully managed — no setup, automatic updates, built-in monitoring. Self-hosted gives you unlimited ops and workflows but requires you to manage the server. Cloud plans cap ops at 2,500–10,000/mo; self-hosted has no limits."}},
+      {"@type":"Question","name":"Does n8n have a free plan?","acceptedAnswer":{"@type":"Answer","text":"n8n Cloud does not have a free tier. However, n8n Community Edition (self-hosted) is completely free. You can also try n8n Cloud free for 14 days."}},
+      {"@type":"Question","name":"Is n8n cheaper than Make for cloud usage?","acceptedAnswer":{"@type":"Answer","text":"No — Make is cheaper for cloud usage. Make Core at $9/mo includes 10,000 ops, while n8n Starter at $20/mo includes only 2,500 ops. However, n8n wins on self-hosted and for very high volumes."}}
+    ]
+  }
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080c14; --surface: #0f1623; --surface2: #151e30; --surface3: #1a2540;
+      --border: #1e2d45; --border2: #243350;
+      --text: #e8edf5; --text2: #a8b4cc; --muted: #5a6a88;
+      --accent: #10b981; --accent-br: #16d18c; --accent-glow: rgba(16,185,129,0.20); --accent-dim: rgba(16,185,129,0.09); --ink: #04130d; --link: #6f9bff;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+      --green: #10b981; --green-soft: rgba(16,185,129,0.12);
+      --orange: #f59e0b;
+      --radius: 12px; --radius-sm: 8px;
+    }
+    html { scroll-behavior: smooth; }
+    h1, h2, h3, .section-title, .page-hero h1 { font-family: var(--display); }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: var(--font);
+      font-size: 15px; line-height: 1.6; min-height: 100vh; padding-top: 104px;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(16,185,129,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 90% 20%, rgba(16,185,129,0.06) 0%, transparent 50%);
+      pointer-events: none; z-index: 0;
+    }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: #9fbcff; }
+    .wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── Nav (shared) ── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(8,12,20,0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-bottom { padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; border-top: 1px solid var(--border); }
+    .nav-bottom::-webkit-scrollbar { display: none; }
+    .nav-bottom a { padding: 11px 18px; font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
+    .nav-bottom a:hover { color: var(--text2); }
+    .nav-bottom a.active { color: var(--text); font-weight: 600; border-bottom-color: var(--green); }
+    .logo { display: flex; align-items: center; font-family: var(--display); font-weight: 800; font-size: 1.06rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .logo .io { color: var(--muted); font-weight: 600; }
+    .logo:hover { color: var(--text); }
+    .logo span { color: var(--green); }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 10px; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; font-weight: 500; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 3px 11px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .nav-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); flex-shrink: 0; }
+    .nav-dropdown { position: relative; display: flex; align-items: center; }
+    .nav-dropdown-btn { background: none; border: none; color: var(--muted); font-family: var(--font); font-size: 13px; font-weight: 500; padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s; margin-bottom: -1px; border-bottom: 2px solid transparent; }
+    .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text2); }
+    .nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); min-width: 210px; z-index: 200; box-shadow: 0 16px 40px rgba(0,0,0,0.5); padding: 6px 0; }
+    .nav-dropdown.open .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 13px; font-weight: 500; color: var(--text2); text-decoration: none; transition: background 0.1s, color 0.1s; border-bottom: none !important; }
+    .nav-dropdown-menu a:hover { background: var(--surface2); color: var(--text); }
+    .nav-dropdown-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }
+
+    /* ── Page hero ── */
+    .page-hero { padding: 56px 0 48px; }
+    .tool-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 7px 14px; font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 22px; }
+    .tool-badge img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 1px; }
+    .page-hero h1 { font-size: clamp(1.9rem, 4.5vw, 2.9rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 16px; }
+    .page-hero p { color: var(--text2); font-size: 1.05rem; max-width: 600px; margin-bottom: 28px; line-height: 1.7; }
+    .cta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 48px; }
+    .btn-primary { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 24px; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 6px 20px rgba(16,185,129,0.28); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .btn-primary:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 10px 28px rgba(16,185,129,0.38); }
+    .btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 11px 20px; font-family: var(--font); font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.15s, color 0.15s; }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--text); }
+
+    /* ── Verdict box ── */
+    .verdict {
+      background: var(--surface2); border: 1px solid var(--border2);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius); padding: 20px 24px; margin-bottom: 48px;
+    }
+    .verdict-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+    .verdict p { font-size: 14px; color: var(--text2); line-height: 1.7; margin: 0; }
+    .verdict strong { color: var(--text); }
+
+    /* ── Sections ── */
+    .section { margin-bottom: 52px; }
+    .section-title { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 20px; }
+
+    /* ── Plan cards ── */
+    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; margin-bottom: 14px; }
+    .plan-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px 20px;
+      transition: border-color 0.15s;
+    }
+    .plan-card.highlight {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-glow), 0 8px 32px rgba(16,185,129,0.12);
+      background: linear-gradient(160deg, rgba(16,185,129,0.06) 0%, var(--surface) 60%);
+    }
+    .plan-name { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+    .plan-price { font-family: var(--mono); font-size: 1.75rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 4px; line-height: 1; }
+    .plan-price span { font-size: 13px; font-weight: 400; color: var(--muted); letter-spacing: 0; }
+    .plan-tag { display: inline-block; font-size: 11px; font-weight: 600; background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(16,185,129,0.25); border-radius: 4px; padding: 2px 8px; margin-bottom: 14px; }
+    .plan-detail { font-size: 13px; color: var(--text2); margin-top: 14px; line-height: 1.7; }
+    .plan-detail li { list-style: none; padding: 3px 0; display: flex; align-items: baseline; gap: 8px; }
+    .plan-detail li::before { content: "·"; color: var(--accent); flex-shrink: 0; font-weight: 700; }
+    .plan-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+    /* ── Tables ── */
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; }
+    .comparison-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .comparison-table th { font-family: var(--mono); text-align: left; padding: 11px 16px; color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .comparison-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--text2); }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .comparison-table tbody tr:hover td { background: var(--surface2); color: var(--text); }
+    .comparison-table td:first-child { color: var(--text); font-weight: 500; }
+    .tag-yes { color: var(--green); font-weight: 700; }
+    .tag-no { color: var(--muted); }
+    .tag-best { color: var(--green); font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .tag-best::before { content: '✓'; }
+
+    /* ── FAQ ── */
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; background: none; border: none; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 600; text-align: left; padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: color 0.15s; }
+    .faq-q:hover { color: var(--accent); }
+    .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--accent); }
+    .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.75; padding-bottom: 20px; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-a a { color: var(--accent); font-weight: 500; }
+
+    /* ── Related grid ── */
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 12px; }
+    .related-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; text-decoration: none; color: var(--text); display: block; transition: border-color 0.15s, transform 0.15s; }
+    .related-card:hover { border-color: var(--border2); transform: translateY(-2px); color: var(--text); }
+    .related-card-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .related-card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 40px 32px 32px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.9; margin-top: 64px; }
+    footer a { color: var(--muted); transition: color 0.15s; }
+    footer a:hover { color: var(--text2); }
+    .footer-brand { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 16px; font-size: 13px; font-weight: 700; color: var(--text2); letter-spacing: -0.02em; }
+    .footer-brand .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+
+    @media (max-width: 640px) {
+      .wrap { padding: 0 20px; }
+      .nav-top, .nav-bottom { padding: 0 20px; }
+      .page-hero { padding: 40px 0 36px; }
+      .plans-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .funnel-fab { position: fixed; right: 22px; bottom: 22px; z-index: 90; display: inline-flex; align-items: center; gap: 9px; background: var(--accent); color: var(--ink); font-family: var(--font); font-size: 14px; font-weight: 700; padding: 13px 20px; border-radius: 100px; text-decoration: none; box-shadow: 0 10px 30px rgba(16,185,129,0.4), 0 0 0 1px rgba(16,185,129,0.5); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .funnel-fab:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-2px); text-decoration: none; box-shadow: 0 14px 38px rgba(16,185,129,0.5); }
+    @media (max-width: 560px) { .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; } }
+  
+    /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 8px; padding-right: 8px; }
+      .nav-bottom a { padding: 13px 14px; }
+    }
+    @media (max-width: 620px) {
+      .nav-badge { display: none; }
+      .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 460px) {
+      .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
+    }
+  
+    /* AC-CTA-STACK ── stack hero/CTA button rows full-width on small phones */
+    @media (max-width: 520px) {
+      .cta-row { flex-direction: column; align-items: stretch; }
+      .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+    }
+  </style>
+<!-- GA4 (build.py) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6LGJVD931P"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6LGJVD931P");</script>
+  <!-- /GA4 -->
+  </head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
+      </svg>
+      Automation<span>Cost</span><span class="io">.io</span>
+    </a>
+    <span class="nav-badge">Updated June 2026 · Real pricing data</span>
+  </div>
+  <nav class="nav-bottom">
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="compare.html">Compare</a>
+    <a href="limits.html">Pricing & Limits</a>
+    <a href="tools.html">Tools</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn">Pricing Guides <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-dropdown-menu">
+        <a href="n8n-pricing.html" style="color:var(--text);font-weight:600"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
+        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
+        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
+        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
+        <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <div class="page-hero">
+    <div class="tool-badge"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=64" alt="n8n">n8n</div>
+    <h1>n8n Pricing 2026 —<br>Cloud vs Self-Hosted</h1>
+    <p>The honest breakdown of n8n's costs: when cloud makes sense, when self-hosting saves you money, and exactly what each plan includes.</p>
+    <div class="cta-row">
+      <a href="calculator.html" class="btn-primary">Calculate my n8n cost</a>
+      <a href="compare.html?tools=n8n,make" class="btn-secondary">n8n vs Make</a>
+      <a href="compare.html?tools=n8n,zapier" class="btn-secondary">n8n vs Zapier</a>
+    </div>
+  </div>
+
+  <div class="verdict">
+    <div class="verdict-label">Quick verdict</div>
+    <p><strong>Self-host if you're comfortable with Linux</strong> — you get unlimited ops for ~$4–8/mo. <strong>Cloud Starter ($20/mo) if you want zero maintenance</strong> — but the 2,500 ops cap is tight for anything serious. For cloud at scale, Make is cheaper per op.</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">n8n Plans & Pricing</h2>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-name">Self-Hosted</div>
+        <div class="plan-price">~$8<span>/mo</span></div>
+        <div class="plan-tag">Server cost only</div>
+        <ul class="plan-detail">
+          <li>Unlimited ops</li>
+          <li>Unlimited workflows</li>
+          <li>Full data control</li>
+          <li>Community edition free</li>
+          <li>You manage updates</li>
+        </ul>
+      </div>
+      <div class="plan-card highlight">
+        <div class="plan-name">Cloud Starter</div>
+        <div class="plan-price">$20<span>/mo</span></div>
+        <div class="plan-tag">Most popular</div>
+        <ul class="plan-detail">
+          <li>2,500 ops/month</li>
+          <li>5 active workflows</li>
+          <li>7-day log history</li>
+          <li>Managed hosting</li>
+          <li>14-day free trial</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Cloud Pro</div>
+        <div class="plan-price">$50<span>/mo</span></div>
+        <ul class="plan-detail">
+          <li>10,000 ops/month</li>
+          <li>15 active workflows</li>
+          <li>14-day log history</li>
+          <li>Priority support</li>
+          <li>Custom variables</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-price">Custom</div>
+        <ul class="plan-detail">
+          <li>Unlimited ops</li>
+          <li>Unlimited workflows</li>
+          <li>SSO / SAML</li>
+          <li>SLA + dedicated support</li>
+          <li>Air-gap deployments</li>
+        </ul>
+      </div>
+    </div>
+    <p class="plan-note">*Self-hosted server cost example: Hetzner CX22 ~$4/mo · DigitalOcean Basic ~$6/mo · Oracle Free Tier $0</p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Cloud vs Self-Hosted: Which is cheaper?</h2>
+    <div class="table-wrap">
+      <table class="comparison-table">
+        <thead><tr><th>Your scenario</th><th>Best option</th><th>Monthly cost</th></tr></thead>
+        <tbody>
+          <tr><td>Under 2,500 ops, no server skills</td><td>n8n Cloud Starter</td><td>$20/mo</td></tr>
+          <tr><td>Under 2,500 ops, comfortable with Linux</td><td class="tag-best">Self-hosted (Hetzner)</td><td>~$4/mo</td></tr>
+          <tr><td>2,500–10,000 ops</td><td>Self-hosted or Cloud Pro</td><td>$4–$50/mo</td></tr>
+          <tr><td>Over 10,000 ops</td><td class="tag-best">Self-hosted</td><td>~$8/mo</td></tr>
+          <tr><td>Team, GDPR compliance required</td><td class="tag-best">Self-hosted (EU server)</td><td>~$10/mo</td></tr>
+          <tr><td>No maintenance, just want it to work</td><td>n8n Cloud</td><td>$20–$50/mo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">n8n vs Competitors — Quick Comparison</h2>
+    <div class="table-wrap">
+      <table class="comparison-table">
+        <thead><tr><th>Tool</th><th>Entry price</th><th>Ops included</th><th>Self-host</th><th>Free tier</th></tr></thead>
+        <tbody>
+          <tr><td><strong>n8n Cloud</strong></td><td>$20/mo</td><td>2,500</td><td class="tag-yes">Yes (free)</td><td class="tag-no">No (14-day trial)</td></tr>
+          <tr><td><a href="make-pricing.html">Make</a></td><td>$9/mo</td><td>10,000</td><td class="tag-no">No</td><td class="tag-yes">1,000 ops/mo</td></tr>
+          <tr><td><a href="zapier-pricing.html">Zapier</a></td><td>$20/mo</td><td>750</td><td class="tag-no">No</td><td class="tag-yes">100 tasks/mo</td></tr>
+          <tr><td><a href="pipedream-pricing.html">Pipedream</a></td><td>$29/mo</td><td>2,000</td><td class="tag-no">No</td><td class="tag-yes">100 credits/mo</td></tr>
+          <tr><td><a href="activepieces-pricing.html">Activepieces</a></td><td>$10/mo</td><td>5,000</td><td class="tag-yes">Yes (free)</td><td class="tag-no">No</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:12px;font-size:13px"><a href="compare.html?tools=n8n,make,zapier,pipedream">Compare all tools side by side →</a></p>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How much does n8n cost per month?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">n8n Cloud starts at $20/mo (Starter: 2,500 ops, 5 workflows) and $50/mo (Pro: 10,000 ops, 15 workflows). Self-hosted n8n is free — you only pay for the server, typically $4–$8/mo on a basic VPS.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is n8n self-hosted free?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">Yes. n8n Community Edition is free and open-source (Sustainable Use License). You can run it on any VPS or your own hardware with no ops limits, no workflow caps, and no monthly fees beyond your server cost.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Does n8n have overage charges?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">n8n Cloud does not charge per-op overages. If you exceed your plan's ops limit, workflows simply stop running until the next billing cycle. You can upgrade to the next plan to get more ops.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What counts as an "operation" in n8n?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">In n8n Cloud, each node execution counts as one operation. A workflow with 5 nodes that runs 100 times = 500 ops. The trigger node is also counted. Self-hosted n8n has no op limits regardless of usage.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is n8n cheaper than Make for cloud usage?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">No — Make is cheaper for cloud usage. Make Core at $9/mo includes 10,000 ops, while n8n Starter at $20/mo includes only 2,500 ops. However, n8n wins on self-hosted (free vs. Make which has no self-host option) and for very high volumes.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 class="section-title">Compare n8n to other tools</h2>
+    <div class="related-grid">
+      <a href="compare.html?tools=n8n,make" class="related-card">
+        <div class="related-card-name">n8n vs Make</div>
+        <div class="related-card-desc">Cloud value, ops limits, self-host options</div>
+      </a>
+      <a href="compare.html?tools=n8n,zapier" class="related-card">
+        <div class="related-card-name">n8n vs Zapier</div>
+        <div class="related-card-desc">Cost per op, integrations, ease of use</div>
+      </a>
+      <a href="compare.html?tools=n8n,pipedream" class="related-card">
+        <div class="related-card-name">n8n vs Pipedream</div>
+        <div class="related-card-desc">Developer features, code steps, pricing</div>
+      </a>
+      <a href="compare.html?tools=n8n,activepieces" class="related-card">
+        <div class="related-card-name">n8n vs Activepieces</div>
+        <div class="related-card-desc">Open-source alternatives compared</div>
+      </a>
+      <a href="compare.html?tools=n8n,make,zapier,pipedream" class="related-card">
+        <div class="related-card-name">All tools vs n8n</div>
+        <div class="related-card-desc">Full 4-tool comparison</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-brand"><span class="dot"></span>AutomationCost.io</div>
+  <div>Independent, data-driven pricing comparisons for automation tools.</div>
+  <div style="margin-top:8px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
+  <div style="margin-top:8px">Prices verified June 2026 · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+</footer>
+
+<script>
+function toggleFaq(btn) { btn.closest(".faq-item").classList.toggle("open"); }
+const dd = document.querySelector(".nav-dropdown");
+if (dd) {
+  dd.querySelector(".nav-dropdown-btn").addEventListener("click", function(e) { e.stopPropagation(); dd.classList.toggle("open"); });
+  document.addEventListener("click", () => dd.classList.remove("open"));
+}
+</script>
+<a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="17" height="17" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#04130d"/></svg> Find my best tool</a>
+</body>
+</html>

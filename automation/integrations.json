@@ -1,0 +1,58 @@
+{
+  "_comment": "Honest integration support matrix. Big platforms (Zapier/Make/Pipedream/n8n) support virtually all popular apps — verified via their public app directories. Automatisch support derived from its actual repo app folders (github.com/automatisch/automatisch/packages/backend/src/apps, 131 connectors, June 2026). Node-RED is IoT/protocol-focused; native SaaS connectors are sparse (community nodes exist but not first-party). Activepieces (~510 pieces) covers most popular SaaS. last_checked 2026-06.",
+  "last_checked": "2026-06",
+  "tools_order": ["n8n", "make", "pipedream", "zapier", "activepieces", "automatisch", "node-red"],
+  "apps": [
+    { "name": "Slack",            "category": "Communication", "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Discord",          "category": "Communication", "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Telegram",         "category": "Communication", "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": true  } },
+    { "name": "Microsoft Teams",  "category": "Communication", "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": false, "node-red": false } },
+    { "name": "Mattermost",       "category": "Communication", "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+
+    { "name": "Gmail",            "category": "Email",         "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Outlook",          "category": "Email",         "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": false, "node-red": false } },
+    { "name": "Mailchimp",        "category": "Email",         "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "SMTP (any email)", "category": "Email",         "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": true  } },
+
+    { "name": "Google Sheets",    "category": "Productivity",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Google Drive",     "category": "Productivity",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Google Calendar",  "category": "Productivity",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Google Docs",      "category": "Productivity",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Notion",           "category": "Productivity",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Airtable",         "category": "Productivity",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Todoist",          "category": "Productivity",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Dropbox",          "category": "Productivity",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+
+    { "name": "Trello",           "category": "Project Mgmt",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Asana",            "category": "Project Mgmt",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "ClickUp",          "category": "Project Mgmt",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Monday.com",       "category": "Project Mgmt",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Jira",             "category": "Project Mgmt",  "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": false, "node-red": false } },
+    { "name": "Linear",          "category": "Project Mgmt",   "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": false, "node-red": false } },
+
+    { "name": "HubSpot",          "category": "CRM & Sales",   "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Salesforce",       "category": "CRM & Sales",   "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Pipedrive",        "category": "CRM & Sales",   "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+
+    { "name": "Stripe",           "category": "Payments",      "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "PayPal",           "category": "Payments",      "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": false, "node-red": false } },
+    { "name": "Xero",             "category": "Payments",      "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+
+    { "name": "Shopify",          "category": "E-commerce",    "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": false, "node-red": false } },
+    { "name": "WooCommerce",      "category": "E-commerce",    "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": false, "node-red": false } },
+    { "name": "WordPress",        "category": "E-commerce",    "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+
+    { "name": "GitHub",           "category": "Developer",     "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "GitLab",           "category": "Developer",     "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "PostgreSQL",       "category": "Developer",     "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": true  } },
+    { "name": "Webhook / HTTP",   "category": "Developer",     "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": true  } },
+    { "name": "MQTT",             "category": "Developer",     "support": { "n8n": true, "make": false, "pipedream": false, "zapier": false, "activepieces": false, "automatisch": false, "node-red": true } },
+
+    { "name": "OpenAI",           "category": "AI",            "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Anthropic Claude", "category": "AI",            "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+
+    { "name": "YouTube",          "category": "Marketing",     "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Twitter / X",      "category": "Marketing",     "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } },
+    { "name": "Twilio (SMS)",     "category": "Marketing",     "support": { "n8n": true, "make": true, "pipedream": true, "zapier": true, "activepieces": true, "automatisch": true,  "node-red": false } }
+  ]
+}

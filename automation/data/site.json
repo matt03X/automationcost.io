@@ -1,0 +1,10 @@
+{
+  "_meta": "Site-wide config consumed by build.py. Edit + run `python build.py`.",
+  "domain": "wizardcost.com",
+  "base_path": "/automation",
+  "cloudflare_analytics_token": "",
+  "ga4_measurement_id": "G-6LGJVD931P",
+  "sitemap_exclude": [
+    "404.html"
+  ]
+}

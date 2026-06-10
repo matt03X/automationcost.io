@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title id="page-title">Compare Automation Tools — AutomationCost.io</title>
+  <meta name="description" id="page-desc" content="Compare automation tools side by side — pricing, limits, features. n8n vs Make vs Pipedream vs Zapier and more.">
+  <link rel="canonical" href="https://wizardcost.com/automation/compare.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AutomationCost.io">
+  <meta property="og:title" content="Compare Automation Tools — AutomationCost.io">
+  <meta property="og:description" content="Compare automation tools side by side — pricing, limits, features. n8n vs Make vs Pipedream vs Zapier and more.">
+  <meta property="og:url" content="https://wizardcost.com/automation/compare.html">
+  <meta property="og:image" content="https://wizardcost.com/automation/og-image.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.svg">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
+      --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99;
+      --accent: #10b981; --accent-br: #16d18c; --accent-glow: rgba(16,185,129,0.20); --accent-dim: rgba(16,185,129,0.09); --ink: #04130d; --link: #6f9bff; --green: #10b981; --yellow: #f59e0b;
+      --red: #ef4444; --radius: 14px; --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    body { background: var(--bg); background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(16,185,129,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(16,185,129,0.08), transparent 50%); background-repeat: no-repeat; background-attachment: fixed; color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ── */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg); }
+    body { padding-top: 100px; }
+    .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .logo .io { color: var(--muted); font-weight: 600; }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 8px; }
+    .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+    .nav-bottom::-webkit-scrollbar { display: none; }
+    .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
+    .nav-bottom a:hover { color: var(--text); }
+    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: #10b981; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 11px; color: var(--muted); letter-spacing: 0.01em; }
+
+    /* ── Layout ── */
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── Hero ── */
+    .hero { text-align: center; padding: 48px 0 36px; }
+    .hero-badge { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--muted); padding: 4px 14px; margin-bottom: 16px; }
+    .hero h1 { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 10px; }
+    .hero h1 em { font-style: normal; color: var(--accent); font-family: var(--font); }
+    .hero p { color: var(--muted); font-size: 0.95rem; }
+
+    /* ── Tool selector ── */
+    .selector-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .selector-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); white-space: nowrap; }
+    .vs-slots { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex: 1; }
+    .vs-divider { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    .tool-slot { position: relative; }
+    .tool-select {
+      appearance: none;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 36px 10px 14px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s;
+      min-width: 150px;
+      font-family: inherit;
+    }
+    .tool-select:focus, .tool-select:hover { border-color: var(--accent); }
+    .tool-slot::after { content: "▾"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; font-size: 11px; }
+
+    .remove-btn {
+      position: absolute;
+      top: -6px; right: -6px;
+      width: 18px; height: 18px;
+      background: var(--border);
+      border: none;
+      border-radius: 50%;
+      color: var(--muted);
+      font-size: 10px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .remove-btn:hover { background: var(--red); color: #fff; }
+
+    .add-btn {
+      background: transparent;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 18px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .add-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    .share-btn {
+      margin-left: auto;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      display: flex; align-items: center; gap: 6px;
+      white-space: nowrap;
+    }
+    .share-btn:hover { border-color: var(--accent); color: var(--text); }
+    .share-btn.copied { border-color: var(--green); color: var(--green); }
+
+    /* ── Empty state ── */
+    .empty-state { text-align: center; padding: 80px 20px; color: var(--muted); }
+    .empty-state svg { opacity: 0.2; margin-bottom: 16px; }
+    .empty-state p { font-size: 1rem; }
+
+    /* ── Winner banner ── */
+    .winner-banner {
+      background: linear-gradient(135deg, #0d2a1a 0%, #0a1f2e 100%);
+      border: 1px solid var(--green);
+      border-radius: var(--radius);
+      padding: 20px 28px;
+      margin-bottom: 28px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .winner-label { font-size: 11px; color: var(--green); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .winner-name { font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+    .winner-reason { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .cta-btn { display: inline-block; background: var(--green); color: #000; font-weight: 700; font-size: 14px; padding: 11px 22px; border-radius: 8px; text-decoration: none; white-space: nowrap; flex-shrink: 0; transition: opacity 0.15s; }
+    .cta-btn:hover { opacity: 0.85; text-decoration: none; }
+
+    /* ── Compare table ── */
+    .compare-wrap { overflow-x: auto; margin-bottom: 12px; }
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+
+    .compare-table th {
+      background: var(--surface2);
+      padding: 0;
+      border-bottom: 2px solid var(--border);
+      border-right: 1px solid var(--border);
+      vertical-align: top;
+      min-width: 180px;
+    }
+    .compare-table th:first-child { min-width: 200px; background: var(--bg); border-right: 2px solid var(--border); }
+    .compare-table th.winner-col { background: #0d2218; box-shadow: inset 0 -3px 0 var(--green); }
+
+    .th-inner { padding: 18px 20px; }
+    .th-tool-logo { width: 28px; height: 28px; border-radius: 6px; object-fit: contain; background: #fff; padding: 2px; margin-bottom: 10px; display: block; }
+    .th-tool-name { font-size: 1rem; font-weight: 800; margin-bottom: 4px; }
+    .th-tool-sub { font-size: 12px; color: var(--muted); line-height: 1.4; margin-bottom: 12px; }
+    .th-visit-btn { display: inline-block; font-size: 12px; font-weight: 700; padding: 6px 14px; border-radius: 6px; text-decoration: none; transition: opacity 0.15s; }
+    .th-visit-btn:hover { opacity: 0.85; text-decoration: none; }
+    .th-visit-btn.affiliate { background: var(--accent); color: var(--ink); box-shadow: 0 2px 10px rgba(16,185,129,0.3); }
+    .th-visit-btn.plain { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
+
+    .compare-table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .compare-table td:first-child {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--muted);
+      background: var(--bg);
+      border-right: 2px solid var(--border);
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td { background: var(--surface2); }
+    .compare-table tr:hover td:first-child { background: var(--surface2); }
+    .compare-table td.winner-col { background: #060f09; }
+    .compare-table tr:hover td.winner-col { background: #0a1a10; }
+
+    .section-row td { background: var(--surface2) !important; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding: 8px 20px; border-bottom: 1px solid var(--border); }
+
+    .check { color: var(--green); font-weight: 700; }
+    .cross { color: var(--red); }
+    .partial { color: var(--yellow); }
+    .best-val { color: var(--green); font-weight: 700; }
+    .worst-val { color: var(--red); }
+
+    .price-tag { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; }
+    .price-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .plan-pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); margin: 2px 2px 2px 0; }
+
+    /* ── Verdict section ── */
+    .verdict-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 32px 0; }
+    .verdict-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .verdict-card h3 { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+    .verdict-card .pick { font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .verdict-card p { font-size: 13px; color: var(--muted); }
+    .verdict-logo { width: 22px; height: 22px; border-radius: 4px; object-fit: contain; background: #fff; padding: 1px; flex-shrink: 0; }
+
+    /* ── FAQ ── */
+    .section-heading { margin: 48px 0 20px; }
+    .section-heading h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 6px; }
+    .section-heading p { color: var(--muted); font-size: 0.9rem; }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 18px 0; }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-q { font-weight: 700; font-size: 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .faq-q::after { content: "+"; color: var(--muted); font-size: 1.2rem; flex-shrink: 0; }
+    .faq-item.open .faq-q::after { content: "−"; }
+    .faq-a { color: var(--muted); font-size: 13px; line-height: 1.7; display: none; margin-top: 10px; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── View tabs ── */
+    .view-tabs { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+    .view-tab { white-space: nowrap; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 9px 20px; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .view-tab:hover { border-color: var(--accent); color: var(--text); }
+    .view-tab.active { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+
+    /* ── Plans compare (head-to-head) ── */
+    .ops-slider-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .ops-slider-row label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); white-space: nowrap; }
+    .ops-val { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; color: var(--text); min-width: 90px; }
+    .ops-range { flex: 1; min-width: 180px; accent-color: var(--accent); height: 4px; cursor: pointer; }
+
+    /* ── Best-for-me toggle ── */
+    .bfm-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+    .bfm-toggle { display: inline-flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--border2); border-radius: 100px; padding: 8px 16px 8px 11px; font-family: var(--font); font-size: 13.5px; font-weight: 700; color: var(--text2); cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s, box-shadow 0.15s; }
+    .bfm-toggle:hover { border-color: var(--accent); color: var(--text); }
+    .bfm-toggle svg { color: var(--muted); transition: color 0.15s; }
+    .bfm-check { width: 18px; height: 18px; border-radius: 6px; border: 2px solid var(--border2); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; transition: background 0.15s, border-color 0.15s; }
+    .bfm-toggle.active { border-color: var(--accent); background: linear-gradient(160deg, rgba(16,185,129,0.16), rgba(16,185,129,0.04)); color: var(--text); box-shadow: 0 0 0 1px var(--accent); }
+    .bfm-toggle.active .bfm-check { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+    .bfm-toggle.active .bfm-check::after { content: "✓"; }
+    .bfm-toggle.active svg { color: var(--accent-br); }
+    .bfm-note { font-size: 13px; color: var(--text2); }
+    .bfm-note a { color: var(--link); font-weight: 600; }
+    .bfm-note b { color: var(--text); }
+
+    .plan-compare-grid { display: grid; gap: 16px; margin-bottom: 36px; }
+    .plan-compare-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .plan-compare-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .plan-compare-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+    .plan-tool-col { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .plan-tool-header { background: var(--surface2); padding: 16px 18px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
+    .plan-tool-header img { width: 24px; height: 24px; border-radius: 5px; object-fit: contain; background: #fff; padding: 1px; }
+    .plan-tool-header span { font-weight: 800; font-size: 15px; }
+    .plan-card { padding: 14px 18px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.12s; position: relative; }
+    .plan-card:last-child { border-bottom: none; }
+    .plan-card:hover { background: var(--surface2); }
+    .plan-card.best-plan { background: rgba(16,185,129,0.07); border-left: 3px solid var(--green); padding-left: 15px; }
+    .plan-card.best-plan:hover { background: rgba(16,185,129,0.13); }
+    .plan-card.alt-best { background: rgba(255,255,255,0.05); border-left: 3px solid rgba(255,255,255,0.35); padding-left: 15px; }
+    .plan-card.alt-best:hover { background: rgba(255,255,255,0.09); }
+    .plan-card.too-small { opacity: 0.35; pointer-events: none; }
+    .plan-card-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; }
+    .plan-card-price { font-family: var(--mono); font-size: 1.2rem; font-weight: 700; }
+    .plan-card-price small { font-size: 12px; font-weight: 400; color: var(--muted); }
+    .plan-card-meta { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+    .plan-card-overage { font-size: 11px; color: var(--yellow); margin-top: 3px; }
+    .best-badge { font-size: 10px; font-weight: 700; background: var(--green); color: #000; border-radius: 3px; padding: 1px 5px; }
+    .cloud-badge { font-size: 10px; font-weight: 700; background: rgba(255,255,255,0.9); color: #0a0e17; border-radius: 3px; padding: 1px 5px; }
+    .recommended-badge { font-size: 10px; font-weight: 700; background: var(--accent); color: var(--ink); border-radius: 3px; padding: 1px 5px; }
+    .plan-card-note { font-size: 11px; font-weight: 600; margin-top: 5px; }
+    .plan-card-note.green { color: var(--green); }
+    .plan-card-note.white { color: #cfd8e8; }
+
+    .pc-legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+    .pc-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .pc-legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; flex-shrink: 0; }
+    .pc-legend i.g { background: var(--green); }
+    .pc-legend i.w { background: rgba(255,255,255,0.85); }
+    .pc-legend i.f { background: var(--surface2); border: 1px solid var(--border); opacity: 0.5; }
+
+    .plan-winner-row { background: linear-gradient(135deg, #0d2a1a 0%, #0a1f2e 100%); border: 1px solid var(--green); border-radius: var(--radius); padding: 18px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .plan-winner-row .winner-label { font-size: 11px; color: var(--green); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+    .plan-winner-row .winner-name { font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+    .plan-winner-row .winner-detail { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+    /* ── Caret price ladder (cheapest ‹ pricier) ── the brand mark as comparison operator */
+    .pc-ladder { display: flex; align-items: center; flex-wrap: wrap; gap: 9px 13px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 24px; }
+    .pc-ladder-label { font-family: var(--mono); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); width: 100%; }
+    .pc-rung { display: inline-flex; align-items: center; gap: 8px; }
+    .pc-rung img { width: 20px; height: 20px; border-radius: 5px; object-fit: contain; background: #fff; padding: 1px; flex-shrink: 0; }
+    .pc-rung .nm { font-weight: 700; font-size: 14px; color: var(--text); letter-spacing: -0.01em; }
+    .pc-rung .pr { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .pc-rung.cheapest .nm, .pc-rung.cheapest .pr { color: var(--green); }
+    .pc-caret { display: inline-flex; color: var(--accent); flex-shrink: 0; }
+    .pc-caret svg { width: 15px; height: 15px; }
+    @media (min-width: 560px) { .pc-ladder-label { width: auto; margin-right: 4px; } }
+
+    /* ── Plans table (all plans) ── */
+    .plans-toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .plans-toolbar select { appearance: none; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px; font-weight: 600; padding: 8px 32px 8px 12px; cursor: pointer; outline: none; font-family: inherit; transition: border-color 0.15s; }
+    .plans-toolbar select:hover, .plans-toolbar select:focus { border-color: var(--accent); }
+    .plans-toolbar label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .plans-wrap { overflow-x: auto; margin-bottom: 12px; }
+    .plans-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .plans-table th { background: var(--surface2); padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); border-bottom: 2px solid var(--border); white-space: nowrap; }
+    .plans-table th:first-child { border-right: 2px solid var(--border); min-width: 160px; }
+    .plans-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .plans-table td:first-child { font-weight: 700; border-right: 2px solid var(--border); white-space: nowrap; }
+    .plans-table tr:last-child td { border-bottom: none; }
+    .plans-table tr:hover td { background: var(--surface2); }
+    .plans-table .tool-badge { display: inline-flex; align-items: center; gap: 6px; }
+    .plans-table .tool-badge img { width: 18px; height: 18px; border-radius: 4px; object-fit: contain; background: #fff; padding: 1px; }
+    .plans-table .selfhost-row td { background: rgba(16,185,129,0.04); }
+    .plans-table .selfhost-row:hover td { background: rgba(16,185,129,0.08); }
+    .plans-table .free-row td { background: rgba(47,107,255,0.04); }
+    .plans-table .free-row:hover td { background: rgba(47,107,255,0.08); }
+    .pill-free { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; background: rgba(111,155,255,0.14); color: var(--link); font-weight: 700; }
+    .pill-selfhost { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; background: rgba(16,185,129,0.15); color: var(--green); font-weight: 700; }
+    .pill-custom { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 4px; background: var(--surface2); color: var(--muted); font-weight: 700; }
+    .plans-count { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 34px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 64px; }
+    footer a { color: var(--muted); }
+    .funnel-fab { position: fixed; right: 22px; bottom: 22px; z-index: 90; display: inline-flex; align-items: center; gap: 9px; background: var(--accent); color: var(--ink); font-family: var(--font); font-weight: 700; font-size: 14px; letter-spacing: -0.01em; padding: 13px 20px; border-radius: 100px; text-decoration: none; box-shadow: 0 8px 28px rgba(16,185,129,0.36), 0 0 0 1px rgba(16,185,129,0.5); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .funnel-fab:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-2px); text-decoration: none; box-shadow: 0 12px 34px rgba(16,185,129,0.46), 0 0 0 1px rgba(16,185,129,0.6); }
+    @media (max-width: 560px) { .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; } }
+
+    @media (max-width: 640px) {
+      .selector-bar { flex-direction: column; align-items: flex-start; }
+      .share-btn { margin-left: 0; }
+    }
+  
+    /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 8px; padding-right: 8px; }
+      .nav-bottom a { padding: 13px 14px; }
+    }
+    @media (max-width: 620px) {
+      .nav-badge { display: none; }
+      .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 460px) {
+      .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
+    }
+    /* Comparison tables: keep the label column pinned + shrink so 2 tools fit a phone */
+    @media (max-width: 620px) {
+      /* ── Compare Tools: the wide feature×tool matrix is unusable on a phone,
+            so it reflows into a vertical, no-scroll comparison ── */
+      .compare-wrap { overflow-x: visible; }
+      .compare-table { display: block; width: 100%; font-size: 13px; }
+      .compare-table thead, .compare-table tbody, .compare-table tr, .compare-table th, .compare-table td { display: block; width: auto; }
+
+      /* thead → a compact "tools being compared" header */
+      .compare-table thead tr { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 18px; }
+      .compare-table thead th { background: var(--surface) !important; border: 1px solid var(--border) !important; border-right: 1px solid var(--border) !important; border-radius: 12px; min-width: 0; box-shadow: none; }
+      .compare-table thead th:first-child { display: none; }
+      .compare-table thead th.winner-col { border-color: var(--green) !important; background: #0d2218 !important; }
+      .compare-table thead .th-inner { padding: 16px 12px; text-align: center; }
+      .compare-table thead .th-tool-logo { width: 30px; height: 30px; margin: 0 auto 9px; }
+      .compare-table thead .th-tool-name { font-size: 0.95rem; }
+      .compare-table thead .th-tool-name span { display: block; margin-top: 5px; }
+      .compare-table thead .th-tool-sub { display: none; }
+      .compare-table thead .th-visit-btn { display: block; margin-top: 11px; white-space: nowrap; }
+
+      /* tbody: each feature row → a card; values become labelled rows */
+      .compare-table tbody tr { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
+      .compare-table tbody td { position: static; min-width: 0; border: none !important; border-bottom: 1px solid var(--border) !important; padding: 11px 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; text-align: right; }
+      .compare-table tbody tr td:last-child { border-bottom: none !important; }
+      .compare-table tbody td::before { content: attr(data-tool); flex-shrink: 0; text-align: left; font-weight: 700; color: var(--text); font-size: 13px; }
+      .compare-table tbody td .cmp-val { text-align: right; line-height: 1.35; }
+      .compare-table tbody td .cmp-val .price-note { font-size: 11px; }
+      .compare-table tbody td.winner-col { background: rgba(16,185,129,0.06); }
+      .compare-table tbody td.winner-col::before { color: var(--green); }
+      /* feature label = card header */
+      .compare-table tbody td:first-child { background: var(--surface2); justify-content: flex-start; font-weight: 700; color: var(--text); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+      .compare-table tbody td:first-child::before { display: none; }
+
+      /* section dividers → plain headings between cards */
+      .compare-table tbody tr.section-row { background: transparent; border: none; margin: 24px 0 8px; overflow: visible; }
+      .section-row td { background: transparent !important; padding: 0 4px 2px !important; border: none !important; color: var(--muted); font-size: 12px; }
+
+      /* winner banner: full-width CTA reads as an intentional stacked card */
+      .winner-banner { padding: 18px 18px; }
+      .cta-btn { width: 100%; text-align: center; }
+      .nav-bottom a { padding: 13px 14px; }
+      .plans-toolbar select { flex: 1; }
+      .ops-slider-row { flex-wrap: wrap; }
+      /* keep plan badges + the "★ Best value" tag from breaking mid-word */
+      .plan-card-name { flex-wrap: wrap; }
+      .plan-card-name span { white-space: nowrap; }
+      .plan-tool-header span span { display: inline-block; white-space: nowrap; }
+
+      /* ── All Plans: a wide 8-column table is unreadable on a phone, so each
+            plan becomes a self-contained card with labelled rows ── */
+      .plans-wrap { overflow-x: visible; }
+      .plans-table thead { display: none; }
+      .plans-table, .plans-table tbody, .plans-table tr, .plans-table td { display: block; width: auto; }
+      .plans-table tr,
+      .plans-table .selfhost-row, .plans-table .free-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 14px; overflow: hidden; }
+      .plans-table .selfhost-row { border-color: rgba(16,185,129,0.4); }
+      .plans-table .free-row { border-color: rgba(47,107,255,0.4); }
+      .plans-table tr:last-child td { border-bottom: 1px solid var(--border); }
+      .plans-table tr:hover td,
+      .plans-table .selfhost-row td, .plans-table .selfhost-row:hover td,
+      .plans-table .free-row td, .plans-table .free-row:hover td { background: transparent; }
+      .plans-table td {
+        position: static !important; left: auto !important; z-index: auto !important;
+        min-width: 0 !important; white-space: normal !important;
+        border: none !important; border-bottom: 1px solid var(--border) !important;
+        padding: 11px 16px !important;
+        display: flex; align-items: center; justify-content: space-between; gap: 18px; text-align: right;
+      }
+      .plans-table td::before {
+        content: attr(data-label); flex-shrink: 0; text-align: left;
+        font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted);
+      }
+      /* first cell = card header (tool name), full-width, no label */
+      .plans-table td:first-child {
+        background: var(--surface2) !important; justify-content: flex-start;
+        padding: 13px 16px !important; font-size: 15px;
+      }
+      .plans-table td:first-child::before { display: none; }
+      .plans-table .tool-badge img { width: 22px; height: 22px; }
+    }
+  
+    /* AC-CTA-STACK ── stack hero/CTA button rows full-width on small phones */
+    @media (max-width: 520px) {
+      .cta-row { flex-direction: column; align-items: stretch; }
+      .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+    }
+  </style>
+<!-- GA4 (build.py) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6LGJVD931P"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6LGJVD931P");</script>
+  <!-- /GA4 -->
+  </head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
+      </svg>
+      Automation<span>Cost</span><span class="io">.io</span>
+    </a>
+    <span class="nav-badge">Updated June 2026 · Real pricing data</span>
+  </div>
+  <nav class="nav-bottom">
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="compare.html" class="active">Compare</a>
+    <a href="limits.html">Pricing & Limits</a>
+    <a href="tools.html">Tools</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-badge">Side-by-side comparison · Updated June 2026</div>
+    <h1>Compare automation tools <em>head-to-head</em></h1>
+    <p>Compare tools side by side, or browse every plan across all tools at once.</p>
+  </div>
+
+  <!-- ── View tabs ── -->
+  <div class="view-tabs">
+    <button class="view-tab active" id="tab-tools"     onclick="switchView('tools')">Compare Tools</button>
+    <button class="view-tab"        id="tab-plancomp"  onclick="switchView('plancomp')">Compare Plans</button>
+    <button class="view-tab"        id="tab-allplans"  onclick="switchView('allplans')">All Plans</button>
+  </div>
+
+  <!-- ── Tool compare view ── -->
+  <div id="view-tools">
+    <div class="selector-bar">
+      <span class="selector-label">Compare</span>
+      <div class="vs-slots" id="vs-slots"></div>
+      <button class="add-btn" id="add-btn" onclick="addSlot()">+ Add tool</button>
+      <button class="share-btn" id="share-btn" onclick="copyShareUrl()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+        Share
+      </button>
+    </div>
+    <div id="results"></div>
+  </div>
+
+  <!-- ── Plan compare view ── -->
+  <div id="view-plancomp" style="display:none">
+    <!-- tool picker (reuses selector-bar style) -->
+    <div class="selector-bar">
+      <span class="selector-label">Compare</span>
+      <div class="vs-slots" id="pc-vs-slots"></div>
+      <button class="add-btn" id="pc-add-btn" onclick="pcAddSlot()">+ Add tool</button>
+    </div>
+
+    <!-- Best-for-me: pulls volume + recommended tool from the calculator -->
+    <div class="bfm-row">
+      <button class="bfm-toggle" id="bfm-toggle" onclick="pcToggleBestForMe()">
+        <span class="bfm-check"></span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3Z"/></svg>
+        Best for me
+      </button>
+      <span class="bfm-note" id="bfm-note"></span>
+    </div>
+
+    <!-- ops slider -->
+    <div class="ops-slider-row">
+      <label>Monthly ops</label>
+      <span class="ops-val" id="pc-ops-val">5,000</span>
+      <input type="range" class="ops-range" id="pc-ops-range" min="0" max="6" value="3" step="1"
+             oninput="pcOpsChanged()">
+      <span style="font-size:12px;color:var(--muted)">Drag to find the cheapest plan at your volume</span>
+    </div>
+
+    <!-- winner row -->
+    <div id="pc-winner" style="display:none" class="plan-winner-row"></div>
+
+    <!-- caret price ladder (cheapest ‹ pricier, re-ranks with the slider) -->
+    <div id="pc-ladder" class="pc-ladder" style="display:none"></div>
+
+    <!-- legend -->
+    <div class="pc-legend">
+      <span><i class="g"></i> Cheapest plan that fits your volume</span>
+      <span><i class="w"></i> Best managed-cloud plan (if you don't self-host)</span>
+      <span><i class="f"></i> Too few ops — auto-skipped to the tier above</span>
+    </div>
+
+    <!-- plan columns -->
+    <div id="pc-grid"></div>
+
+    <p style="font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:48px">
+      * Highlighted plan = cheapest option at current volume. Self-hosted cost = ~$8/mo VPS only. Data verified June 2026.
+    </p>
+  </div>
+
+  <!-- ── All Plans view ── -->
+  <div id="view-allplans" style="display:none">
+    <div class="plans-toolbar">
+      <label>Filter by tool:</label>
+      <select id="plans-filter-tool" onchange="renderPlansTable()">
+        <option value="all">All tools</option>
+      </select>
+      <label style="margin-left:8px">Sort by:</label>
+      <select id="plans-sort" onchange="renderPlansTable()">
+        <option value="price">Price (low → high)</option>
+        <option value="ops">Ops included (high → low)</option>
+        <option value="tool">Tool name</option>
+      </select>
+    </div>
+    <div class="plans-count" id="plans-count"></div>
+    <div class="plans-wrap">
+      <table class="plans-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Plan</th>
+            <th>Price/mo</th>
+            <th>Ops included</th>
+            <th>Workflows</th>
+            <th>Overage</th>
+            <th>Self-host</th>
+            <th>Best for</th>
+          </tr>
+        </thead>
+        <tbody id="plans-body"></tbody>
+      </table>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:8px">* Self-hosted: you pay ~$8/mo for a VPS, not the tool. Unlimited ops & workflows. Data verified June 2026.</p>
+  </div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io. All rights reserved.</div>
+  <div>AutomationCost.io · Independent, data-driven comparisons</div>
+  <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
+  <div style="margin-top:6px">Prices verified June 2026 · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+</footer>
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────────
+const LOGOS = {
+  "n8n":          "https://www.google.com/s2/favicons?domain=n8n.io&sz=64",
+  "make":         "https://www.google.com/s2/favicons?domain=make.com&sz=64",
+  "pipedream":    "https://www.google.com/s2/favicons?domain=pipedream.com&sz=64",
+  "zapier":       "https://www.google.com/s2/favicons?domain=zapier.com&sz=64",
+  "activepieces": "https://www.google.com/s2/favicons?domain=activepieces.com&sz=64",
+  "automatisch":  "https://www.google.com/s2/favicons?domain=automatisch.io&sz=64",
+  "node-red":     "https://www.google.com/s2/favicons?domain=nodered.org&sz=64",
+};
+
+/* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
+const TOOLS = {
+  "n8n": {
+    slug: "n8n", name: "n8n",
+    tagline: "Open-source automation for developers & self-hosters",
+    selfHostable: true, aiFeatures: true, integrations: 400,
+    license: "Sustainable Use",
+    freeOps: "Unlimited*", freeWorkflows: "Unlimited*", maxSteps: "Unlimited",
+    timeout: "No limit*", logHistory: "7 days (cloud)", gdprFriendly: true,
+    multiUser: false, apiAccess: true, webhooks: true, codeSteps: true,
+    homepage: "https://n8n.io",
+    affiliateUrl: "https://n8n.io",
+    hasAffiliate: true,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true },
+      { name: "Cloud Starter", monthlyUsd: 20, opsIncluded: 2500, workflowLimit: 5 },
+      { name: "Cloud Pro", monthlyUsd: 50, opsIncluded: 10000, workflowLimit: 15 },
+      { name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
+    ],
+    overage: null,
+    pros: ["Truly unlimited self-hosted", "Best AI/LLM nodes", "Strong community"],
+    cons: ["Setup required for self-host", "Smaller cloud workflow limit"],
+  },
+  "make": {
+    slug: "make", name: "Make",
+    tagline: "Visual automation builder with the best cloud value",
+    selfHostable: false, aiFeatures: true, integrations: 1500,
+    license: "Proprietary (cloud)",
+    freeOps: "1,000/mo", freeWorkflows: "Unlimited", maxSteps: "Unlimited",
+    timeout: "40 min", logHistory: "30 days", gdprFriendly: true,
+    multiUser: true, apiAccess: true, webhooks: true, codeSteps: false,
+    homepage: "https://www.make.com",
+    affiliateUrl: "https://www.make.com/en/register?pc=wizardcost",
+    hasAffiliate: true,
+    plans: [
+      { name: "Free", monthlyUsd: 0, opsIncluded: 1000, workflowLimit: Infinity },
+      { name: "Core", monthlyUsd: 9, opsIncluded: 10000, workflowLimit: Infinity },
+      { name: "Pro", monthlyUsd: 16, opsIncluded: 10000, workflowLimit: Infinity },
+      { name: "Teams", monthlyUsd: 29, opsIncluded: 10000, workflowLimit: Infinity },
+      { name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
+    ],
+    overage: { per: 10000, usd: 9 },
+    pros: ["Best price per op in cloud", "30-day log history on free", "Visual drag-and-drop"],
+    cons: ["No self-hosting", "No native code steps"],
+  },
+  "pipedream": {
+    slug: "pipedream", name: "Pipedream",
+    tagline: "Code-first automation platform for developers",
+    selfHostable: false, aiFeatures: true, integrations: 2000,
+    license: "Proprietary (cloud)",
+    freeOps: "100 credits/mo", freeWorkflows: "3", maxSteps: "Unlimited",
+    timeout: "30 sec (free) / 12 min (paid)", logHistory: "24 hours (free)", gdprFriendly: false,
+    multiUser: true, apiAccess: true, webhooks: true, codeSteps: true,
+    homepage: "https://pipedream.com",
+    affiliateUrl: "https://pipedream.com",
+    hasAffiliate: true,
+    plans: [
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3 },
+      { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 20 },
+      { name: "Advanced", monthlyUsd: 49, opsIncluded: 5000, workflowLimit: Infinity },
+      { name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
+    ],
+    overage: { per: 1000, usd: 10 },
+    pros: ["Run Node.js/Python in workflows", "Most integrations (2,000+)", "Best for devs"],
+    cons: ["Expensive overage", "Very limited free tier", "No self-host"],
+  },
+  "zapier": {
+    slug: "zapier", name: "Zapier",
+    tagline: "The most integrations, built for non-technical users",
+    selfHostable: false, aiFeatures: true, integrations: 7000,
+    license: "Proprietary (cloud)",
+    freeOps: "100 tasks/mo", freeWorkflows: "5", maxSteps: "2 steps (free)",
+    timeout: "15 min", logHistory: "15 min delay (free)", gdprFriendly: false,
+    multiUser: true, apiAccess: true, webhooks: true, codeSteps: false,
+    homepage: "https://zapier.com",
+    affiliateUrl: "https://zapier.com",
+    hasAffiliate: false,
+    plans: [
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 5 },
+      { name: "Starter", monthlyUsd: 20, opsIncluded: 750, workflowLimit: 20 },
+      { name: "Professional", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity },
+      { name: "Team", monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity },
+      { name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
+    ],
+    overage: { per: 1000, usd: 25 },
+    pros: ["7,000+ integrations — most of any tool", "Easiest for non-technical users", "Huge ecosystem"],
+    cons: ["Most expensive per op", "Free tier severely limited", "No self-host"],
+  },
+  "activepieces": {
+    slug: "activepieces", name: "Activepieces",
+    tagline: "MIT-licensed open-source automation, Zapier-like UI",
+    selfHostable: true, aiFeatures: true, integrations: 200,
+    license: "MIT",
+    freeOps: "Unlimited*", freeWorkflows: "Unlimited*", maxSteps: "Unlimited",
+    timeout: "No limit*", logHistory: "7 days (cloud)", gdprFriendly: true,
+    multiUser: true, apiAccess: true, webhooks: true, codeSteps: false,
+    homepage: "https://www.activepieces.com",
+    affiliateUrl: "https://www.activepieces.com",
+    hasAffiliate: false,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true },
+      { name: "Cloud Starter", monthlyUsd: 10, opsIncluded: 5000, workflowLimit: Infinity },
+      { name: "Cloud Pro", monthlyUsd: 25, opsIncluded: 15000, workflowLimit: Infinity },
+    ],
+    overage: null,
+    pros: ["True MIT license — no restrictions", "No-code UI like Zapier", "Self-hostable"],
+    cons: ["Fewer integrations (~200)", "Smaller community than n8n", "No code steps"],
+  },
+  "automatisch": {
+    slug: "automatisch", name: "Automatisch",
+    tagline: "Simple EU-friendly open-source automation",
+    selfHostable: true, aiFeatures: false, integrations: 50,
+    license: "AGPL-3.0",
+    freeOps: "Unlimited*", freeWorkflows: "Unlimited*", maxSteps: "Unlimited",
+    timeout: "No limit*", logHistory: "Full history*", gdprFriendly: true,
+    multiUser: false, apiAccess: false, webhooks: true, codeSteps: false,
+    homepage: "https://automatisch.io",
+    affiliateUrl: "https://automatisch.io",
+    hasAffiliate: false,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true },
+      { name: "Cloud", monthlyUsd: 20, opsIncluded: Infinity, workflowLimit: Infinity },
+    ],
+    overage: null,
+    pros: ["Simplest setup", "Full data control (GDPR)", "Unlimited on self-host"],
+    cons: ["Only ~50 integrations", "No AI nodes", "Smallest community"],
+  },
+  "node-red": {
+    slug: "node-red", name: "Node-RED",
+    tagline: "Event-driven automation for IoT and hardware",
+    selfHostable: true, aiFeatures: false, integrations: 1000,
+    license: "Apache 2.0",
+    freeOps: "Unlimited", freeWorkflows: "Unlimited", maxSteps: "Unlimited",
+    timeout: "No limit", logHistory: "Full history", gdprFriendly: true,
+    multiUser: false, apiAccess: true, webhooks: true, codeSteps: true,
+    homepage: "https://nodered.org",
+    affiliateUrl: "https://nodered.org",
+    hasAffiliate: false,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true },
+    ],
+    overage: null,
+    pros: ["Apache 2.0 — completely free", "Node.js code steps", "Best for IoT/hardware"],
+    cons: ["No cloud option", "Developer-only (no visual UI)", "Limited SaaS integrations"],
+  },
+};
+/* DATA:TOOLS:END */
+
+const ALL_SLUGS = Object.keys(TOOLS);
+const MAX_SLOTS = 4;
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let selected = [];
+
+// ── URL params ────────────────────────────────────────────────────────────────
+function readUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const tools = params.get("tools");
+  if (tools) {
+    const slugs = tools.split(",").filter(s => TOOLS[s]).slice(0, MAX_SLOTS);
+    if (slugs.length >= 1) return slugs;
+  }
+  return ["n8n", "make"];
+}
+
+function writeUrl() {
+  const url = new URL(window.location.href);
+  url.searchParams.set("tools", selected.join(","));
+  window.history.replaceState({}, "", url.toString());
+  updatePageMeta();
+}
+
+function updatePageMeta() {
+  if (selected.length < 2) return;
+  const names = selected.map(s => TOOLS[s].name).join(" vs ");
+  document.getElementById("page-title").textContent = `${names} — Pricing Comparison | AutomationCost.io`;
+  document.getElementById("page-desc").setAttribute("content",
+    `Compare ${names} side by side — pricing, limits, features. Which is cheapest for your usage?`);
+}
+
+// ── Slots UI ──────────────────────────────────────────────────────────────────
+function renderSlots() {
+  const container = document.getElementById("vs-slots");
+  container.innerHTML = "";
+
+  selected.forEach((slug, i) => {
+    if (i > 0) {
+      const div = document.createElement("span");
+      div.className = "vs-divider";
+      div.textContent = "vs";
+      container.appendChild(div);
+    }
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "tool-slot";
+
+    const sel = document.createElement("select");
+    sel.className = "tool-select";
+    ALL_SLUGS.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s;
+      opt.textContent = TOOLS[s].name;
+      opt.selected = s === slug;
+      if (selected.includes(s) && s !== slug) opt.disabled = true;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener("change", () => {
+      selected[i] = sel.value;
+      writeUrl();
+      renderSlots();
+      renderResults();
+    });
+
+    wrapper.appendChild(sel);
+
+    if (selected.length > 2) {
+      const rm = document.createElement("button");
+      rm.className = "remove-btn";
+      rm.title = "Remove";
+      rm.textContent = "×";
+      rm.onclick = () => {
+        selected.splice(i, 1);
+        writeUrl();
+        renderSlots();
+        renderResults();
+      };
+      wrapper.appendChild(rm);
+    }
+
+    container.appendChild(wrapper);
+  });
+
+  document.getElementById("add-btn").disabled = selected.length >= MAX_SLOTS;
+}
+
+function addSlot() {
+  if (selected.length >= MAX_SLOTS) return;
+  const available = ALL_SLUGS.find(s => !selected.includes(s));
+  if (available) {
+    selected.push(available);
+
+    writeUrl();
+    renderSlots();
+    renderResults();
+  }
+}
+
+function copyShareUrl() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.getElementById("share-btn");
+    btn.classList.add("copied");
+    btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Copied!`;
+    setTimeout(() => {
+      btn.classList.remove("copied");
+      btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg> Share`;
+    }, 2000);
+  });
+}
+
+// ── Cost engine ───────────────────────────────────────────────────────────────
+function cheapestPlan(tool, ops = 5000) {
+  let best = null;
+  for (const plan of tool.plans) {
+    if (plan.monthlyUsd === null) continue;
+    let cost = plan.monthlyUsd;
+    if (!plan.selfHostOnly && ops > plan.opsIncluded) {
+      if (tool.overage) cost += Math.ceil((ops - plan.opsIncluded) / tool.overage.per) * tool.overage.usd;
+      else continue;
+    }
+    if (best === null || cost < best.cost) best = { cost, plan };
+  }
+  return best;
+}
+
+// ── Render results ────────────────────────────────────────────────────────────
+function renderResults() {
+  const container = document.getElementById("results");
+  if (selected.length < 2) {
+    container.innerHTML = `<div class="empty-state"><p>Select at least 2 tools to compare.</p></div>`;
+    return;
+  }
+
+  const tools = selected.map(s => TOOLS[s]);
+  const costs = tools.map(t => cheapestPlan(t, 5000));
+
+  // Find winner (lowest cost at 5k ops)
+  let winnerIdx = 0;
+  costs.forEach((c, i) => {
+    if (c && costs[winnerIdx] && c.cost < costs[winnerIdx].cost) winnerIdx = i;
+  });
+  const winner = tools[winnerIdx];
+  const winnerCost = costs[winnerIdx];
+
+  // ── Winner banner
+  const logoImg = `<img src="${LOGOS[winner.slug]}" alt="${winner.name}" style="width:28px;height:28px;border-radius:6px;object-fit:contain;background:#fff;padding:2px;" onerror="this.style.display='none'">`;
+  let bannerHtml = `
+    <div class="winner-banner">
+      <div>
+        <div class="winner-label">Best value at 5,000 ops/mo</div>
+        <div class="winner-name">${logoImg} ${winner.name}</div>
+        <div class="winner-reason">$${winnerCost.cost}/mo · ${winner.tagline}</div>
+      </div>
+      <a href="${winner.affiliateUrl}" target="_blank" rel="noopener${winner.hasAffiliate ? ' sponsored' : ''}"
+         class="cta-btn">Try ${winner.name} free →</a>
+    </div>`;
+
+  // ── Compare table
+  const ROWS = [
+    { section: "Pricing" },
+    { key: "starting_price",  label: "Starting price",      render: (t, i) => renderPrice(costs[i]) },
+    { key: "free_ops",        label: "Free ops / month",    render: (t) => t.freeOps },
+    { key: "free_workflows",  label: "Free workflows",      render: (t) => t.freeWorkflows },
+    { key: "overage",         label: "Overage cost",        render: (t) => t.overage ? `$${t.overage.usd} per ${t.overage.per.toLocaleString()} ops` : `<span class="check">No overage</span>` },
+    { section: "Limits" },
+    { key: "max_steps",       label: "Max steps/workflow",  render: (t) => t.maxSteps },
+    { key: "timeout",         label: "Execution timeout",   render: (t) => t.timeout },
+    { key: "log_history",     label: "Log history",         render: (t) => t.logHistory },
+    { section: "Hosting & License" },
+    { key: "self_host",       label: "Self-hostable",       render: (t) => t.selfHostable ? `<span class="check">✓ Yes</span>` : `<span class="cross">✗ No</span>` },
+    { key: "license",         label: "License",             render: (t) => t.license },
+    { key: "gdpr",            label: "GDPR friendly",       render: (t) => t.gdprFriendly ? `<span class="check">✓</span>` : `<span class="partial">Partial</span>` },
+    { section: "Features" },
+    { key: "integrations",    label: "Integrations",        render: (t) => `${t.integrations.toLocaleString()}+` },
+    { key: "ai_nodes",        label: "AI / LLM nodes",      render: (t) => t.aiFeatures ? `<span class="check">✓</span>` : `<span class="cross">✗</span>` },
+    { key: "code_steps",      label: "Code steps",          render: (t) => t.codeSteps ? `<span class="check">✓</span>` : `<span class="cross">✗</span>` },
+    { key: "webhooks",        label: "Webhooks",             render: (t) => t.webhooks ? `<span class="check">✓</span>` : `<span class="cross">✗</span>` },
+    { key: "multi_user",      label: "Multi-user / teams",  render: (t) => t.multiUser ? `<span class="check">✓</span>` : `<span class="cross">✗</span>` },
+    { key: "api_access",      label: "API access",          render: (t) => t.apiAccess ? `<span class="check">✓</span>` : `<span class="cross">✗</span>` },
+    { section: "All Plans" },
+    { key: "plans",           label: "Available plans",     render: (t) => renderPlans(t) },
+  ];
+
+  // Highlight best/worst for numeric rows
+  const highlightKeys = new Set(["integrations"]);
+
+  let tableHtml = `<div class="compare-wrap"><table class="compare-table"><thead><tr>
+    <th><div class="th-inner" style="padding:18px 20px 18px;"><span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);">Feature</span></div></th>`;
+
+  tools.forEach((t, i) => {
+    const isWinner = i === winnerIdx;
+    tableHtml += `<th class="${isWinner ? 'winner-col' : ''}">
+      <div class="th-inner">
+        <img src="${LOGOS[t.slug]}" alt="${t.name}" class="th-tool-logo" onerror="this.style.display='none'">
+        <div class="th-tool-name">${t.name}${isWinner ? ' <span style="font-size:11px;color:var(--green);font-weight:700;">★ Best value</span>' : ''}</div>
+        <div class="th-tool-sub">${t.tagline}</div>
+        <a href="${t.affiliateUrl}" target="_blank" rel="noopener${t.hasAffiliate ? ' sponsored' : ''}"
+           class="th-visit-btn ${t.hasAffiliate ? 'affiliate' : 'plain'}">${t.hasAffiliate ? 'Try free →' : 'Visit →'}</a>
+      </div>
+    </th>`;
+  });
+
+  tableHtml += `</tr></thead><tbody>`;
+
+  ROWS.forEach(row => {
+    if (row.section) {
+      tableHtml += `<tr class="section-row"><td colspan="${tools.length + 1}">${row.section}</td></tr>`;
+      return;
+    }
+
+    // Compute raw values for highlight
+    let rawVals = null;
+    if (highlightKeys.has(row.key)) {
+      rawVals = tools.map(t => t[row.key]);
+    }
+
+    tableHtml += `<tr><td data-label="${row.label}">${row.label}</td>`;
+    tools.forEach((t, i) => {
+      const isWinner = i === winnerIdx;
+      let val = row.render(t, i);
+
+      if (rawVals) {
+        const max = Math.max(...rawVals);
+        const min = Math.min(...rawVals);
+        if (rawVals[i] === max && max !== min) val = `<span class="best-val">${val}</span>`;
+        if (rawVals[i] === min && max !== min) val = `<span class="worst-val">${val}</span>`;
+      }
+
+      tableHtml += `<td class="${isWinner ? 'winner-col' : ''}" data-tool="${t.name}"><span class="cmp-val">${val}</span></td>`;
+    });
+    tableHtml += `</tr>`;
+  });
+
+  tableHtml += `</tbody></table></div>`;
+  tableHtml += `<p style="font-size:12px;color:var(--muted);margin-bottom:40px">* When self-hosted. Prices at 5,000 ops/mo. Data verified June 2026.</p>`;
+
+  // ── Verdict cards
+  const verdictCategories = [
+    { label: "Cheapest overall",    pick: (tools) => [...tools].sort((a,b) => (cheapestPlan(a,5000)?.cost??999) - (cheapestPlan(b,5000)?.cost??999))[0], reason: (t) => `$${cheapestPlan(t,5000)?.cost}/mo at 5k ops` },
+    { label: "Most integrations",   pick: (tools) => [...tools].sort((a,b) => b.integrations - a.integrations)[0], reason: (t) => `${t.integrations.toLocaleString()}+ integrations` },
+    { label: "Best for beginners",  pick: (tools) => tools.find(t => !t.selfHostable && t.freeOps !== "100 tasks/mo" && t.freeOps !== "100 credits/mo") || tools[0], reason: () => "Easiest setup, best free tier" },
+    { label: "Best for developers", pick: (tools) => tools.find(t => t.codeSteps) || tools.find(t => t.selfHostable) || tools[0], reason: () => "Code steps + full control" },
+    { label: "Best self-hosted",    pick: (tools) => tools.find(t => t.selfHostable && t.license === "MIT") || tools.find(t => t.selfHostable) || tools[0], reason: (t) => `${t.license} license` },
+    { label: "Most GDPR friendly",  pick: (tools) => tools.find(t => t.gdprFriendly && t.selfHostable) || tools.find(t => t.gdprFriendly) || tools[0], reason: () => "EU data control + self-host option" },
+  ];
+
+  let verdictHtml = `<div class="section-heading"><h2>Verdict by use case</h2><p>Which tool wins for each scenario within your selected tools.</p></div><div class="verdict-grid">`;
+  verdictCategories.forEach(cat => {
+    const pick = cat.pick(tools);
+    verdictHtml += `
+      <div class="verdict-card">
+        <h3>${cat.label}</h3>
+        <div class="pick">
+          <img src="${LOGOS[pick.slug]}" class="verdict-logo" alt="${pick.name}" onerror="this.style.display='none'">
+          ${pick.name}
+        </div>
+        <p>${cat.reason(pick)}</p>
+      </div>`;
+  });
+  verdictHtml += `</div>`;
+
+  // ── Pros/cons
+  let prosConsHtml = `<div class="section-heading"><h2>Pros & cons</h2></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:48px">`;
+  tools.forEach(t => {
+    prosConsHtml += `
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+          <img src="${LOGOS[t.slug]}" style="width:22px;height:22px;border-radius:4px;object-fit:contain;background:#fff;padding:1px;" onerror="this.style.display='none'">
+          <span style="font-weight:800;font-size:15px">${t.name}</span>
+        </div>
+        ${t.pros.map(p => `<div style="font-size:13px;color:var(--green);margin-bottom:5px;">✓ ${p}</div>`).join("")}
+        ${t.cons.map(c => `<div style="font-size:13px;color:var(--muted);margin-bottom:5px;margin-top:3px;">✗ ${c}</div>`).join("")}
+      </div>`;
+  });
+  prosConsHtml += `</div>`;
+
+  // ── FAQ (dynamic based on selected tools)
+  const faqHtml = renderFaq(tools);
+
+  container.innerHTML = bannerHtml + tableHtml + verdictHtml + prosConsHtml + faqHtml;
+
+  // Attach FAQ toggles
+  container.querySelectorAll(".faq-q").forEach(q => {
+    q.onclick = () => q.parentElement.classList.toggle("open");
+  });
+}
+
+function renderPrice(costObj) {
+  if (!costObj) return `<span class="muted">Custom</span>`;
+  if (costObj.cost === 0) return `<span class="best-val price-tag">Free</span>`;
+  return `<span class="price-tag">$${costObj.cost}<small>/mo</small></span><div class="price-note">${costObj.plan.name}</div>`;
+}
+
+function renderPlans(tool) {
+  return tool.plans.map(p => {
+    const price = p.monthlyUsd === null ? "Custom" : p.monthlyUsd === 0 ? "Free" : `$${p.monthlyUsd}/mo`;
+    return `<span class="plan-pill">${p.name}: ${price}</span>`;
+  }).join("");
+}
+
+function renderFaq(tools) {
+  const names = tools.map(t => t.name);
+  const nameStr = names.slice(0, -1).join(", ") + (names.length > 1 ? ` and ${names[names.length - 1]}` : names[0]);
+
+  const cheapest = [...tools].sort((a,b) => (cheapestPlan(a,5000)?.cost??999) - (cheapestPlan(b,5000)?.cost??999))[0];
+  const mostIntegrations = [...tools].sort((a,b) => b.integrations - a.integrations)[0];
+  const selfHostable = tools.filter(t => t.selfHostable);
+  const withAffiliate = tools.filter(t => t.hasAffiliate);
+
+  const faqs = [
+    {
+      q: `Which is cheapest — ${nameStr}?`,
+      a: `At 5,000 ops/month, <strong>${cheapest.name}</strong> is the cheapest option at $${cheapestPlan(cheapest, 5000)?.cost}/mo. ${cheapest.selfHostable ? "Self-hosting brings this even lower — you only pay for the VPS (~$8/mo)." : ""} The winner changes based on your usage volume — use the <a href="index.html#calculator">pricing calculator</a> to see the exact cost for your workflow count.`,
+    },
+    {
+      q: `Which has the most integrations?`,
+      a: `<strong>${mostIntegrations.name}</strong> leads with ${mostIntegrations.integrations.toLocaleString()}+ integrations among the tools you're comparing. ${mostIntegrations.slug === "zapier" ? "Zapier has the widest integration library of any automation tool — but you pay a significant premium for it." : ""}`,
+    },
+    selfHostable.length > 0 ? {
+      q: `Which tools can be self-hosted?`,
+      a: `Among your selected tools, <strong>${selfHostable.map(t => t.name).join(" and ")}</strong> ${selfHostable.length === 1 ? "supports" : "support"} self-hosting. Self-hosting means you run the software on your own server (~$8/mo on Hetzner or DigitalOcean) and pay no per-operation fees — unlimited workflows and executions.`,
+    } : null,
+    {
+      q: `Can I switch between these tools later?`,
+      a: `Not easily — workflows don't export in a universal format. Each tool has its own workflow structure (n8n uses JSON flows, Make uses scenarios, Zapier uses Zaps). Migrating 20+ workflows is a significant time investment. Pick carefully based on your long-term needs, not just the current price.`,
+    },
+    withAffiliate.length > 0 ? {
+      q: `Do you earn a commission on these tools?`,
+      a: `Yes — ${withAffiliate.map(t => t.name).join(", ")} ${withAffiliate.length === 1 ? "has" : "have"} affiliate programs. If you click their links and subscribe, we earn a commission at no extra cost to you. This never influences our rankings or data — tools without affiliate programs (like Zapier) are compared equally. See our <a href="affiliate.html">Affiliate Disclosure</a>.`,
+    } : null,
+  ].filter(Boolean);
+
+  let html = `<div class="section-heading"><h2>Frequently asked questions</h2></div><div style="margin-bottom:64px">`;
+  faqs.forEach(faq => {
+    html += `<div class="faq-item"><div class="faq-q">${faq.q}</div><div class="faq-a">${faq.a}</div></div>`;
+  });
+  html += `</div>`;
+  return html;
+}
+
+// ── View switching ────────────────────────────────────────────────────────────
+let currentView = "tools";
+
+function switchView(view) {
+  currentView = view;
+  document.getElementById("view-tools").style.display    = view === "tools"    ? "" : "none";
+  document.getElementById("view-plancomp").style.display = view === "plancomp" ? "" : "none";
+  document.getElementById("view-allplans").style.display = view === "allplans" ? "" : "none";
+  document.getElementById("tab-tools").classList.toggle("active",    view === "tools");
+  document.getElementById("tab-plancomp").classList.toggle("active", view === "plancomp");
+  document.getElementById("tab-allplans").classList.toggle("active", view === "allplans");
+  if (view === "allplans")  renderPlansTable();
+  if (view === "plancomp")  pcRender();
+}
+
+// ── Plan Compare (head-to-head) ───────────────────────────────────────────────
+let OPS_STEPS = [0, 2500, 10000, 25000]; // rebuilt dynamically
+let pcSelected = ["n8n", "make"];
+
+// Does a plan have enough monthly ops for this volume? (self-host/custom = unlimited)
+function planCovers(plan, ops) {
+  return plan.opsIncluded === Infinity || plan.opsIncluded >= ops;
+}
+// Sortable price (custom/enterprise = last resort)
+function planPrice(plan) {
+  return plan.monthlyUsd === null ? Infinity : plan.monthlyUsd;
+}
+// Cheapest plan that covers `ops`. cloudOnly=true excludes self-hosted.
+// This is the "step-up" engine: as ops grow past a tier's limit, planCovers() fails
+// for that tier and the next-larger tier becomes the cheapest covering plan.
+function pcPickPlan(tool, ops, cloudOnly) {
+  let pick = null;
+  for (const plan of tool.plans) {
+    if (cloudOnly && plan.selfHostOnly) continue;
+    if (!planCovers(plan, ops)) continue;
+    if (pick === null || planPrice(plan) < planPrice(pick)) pick = plan;
+  }
+  return pick;
+}
+
+// Build non-silent slider steps from currently selected tools.
+// A step is "silent" if no tool's cheapest covering plan changes vs. the previous step.
+function computeOpsSteps(tools) {
+  const raw = new Set();
+  for (const t of tools)
+    for (const p of t.plans)
+      if (p.opsIncluded !== Infinity) raw.add(p.opsIncluded);
+  const thresholds = [0, ...Array.from(raw).sort((a,b) => a-b)];
+
+  const steps = [0];
+  let prevAll   = tools.map(t => pcPickPlan(t, 0, false)?.name);
+  let prevCloud = tools.map(t => pcPickPlan(t, 0, true)?.name);
+  for (const ops of thresholds.slice(1)) {
+    const all   = tools.map(t => pcPickPlan(t, ops, false)?.name);
+    const cloud = tools.map(t => pcPickPlan(t, ops, true)?.name);
+    if (all.some((v,i) => v !== prevAll[i]) || cloud.some((v,i) => v !== prevCloud[i])) {
+      steps.push(ops);
+      prevAll = all; prevCloud = cloud;
+    }
+  }
+  const maxFinite = thresholds.at(-1);
+  if (maxFinite > 0) steps.push(Math.ceil(maxFinite * 2.5 / 1000) * 1000);
+  return steps;
+}
+
+// Recompute OPS_STEPS for current selection, clamp slider, refresh label. Returns ops.
+function pcRefreshOpsSteps() {
+  OPS_STEPS = computeOpsSteps(pcSelected.map(s => TOOLS[s]));
+  const slider = document.getElementById("pc-ops-range");
+  slider.max = OPS_STEPS.length - 1;
+  if (parseInt(slider.value) >= OPS_STEPS.length) slider.value = OPS_STEPS.length - 1;
+  return pcGetOps();
+}
+
+function pcGetOps() {
+  return OPS_STEPS[parseInt(document.getElementById("pc-ops-range").value)];
+}
+
+function pcOpsChanged() {
+  const ops = pcGetOps();
+  document.getElementById("pc-ops-val").textContent = ops === 0 ? "Free tier" : ops >= 1000 ? `${(ops/1000).toLocaleString()}k` : ops.toLocaleString();
+  pcRenderGrid(ops);
+}
+
+// ── "Best for me": apply the user's saved finder profile (written by calculator.html) ──
+let bfmActive = false;
+function pcReadProfile() {
+  try { return JSON.parse(localStorage.getItem("ac_profile") || "null"); } catch (e) { return null; }
+}
+function pcSetOpsLabel(ops) {
+  document.getElementById("pc-ops-val").textContent =
+    ops === 0 ? "Free tier" : ops >= 1000 ? `${(ops/1000).toLocaleString()}k` : ops.toLocaleString();
+}
+function pcToggleBestForMe() {
+  const toggle = document.getElementById("bfm-toggle");
+  const note = document.getElementById("bfm-note");
+  const profile = pcReadProfile();
+  if (!profile) {
+    bfmActive = false; toggle.classList.remove("active");
+    note.innerHTML = `No finder answers saved yet — <a href="calculator.html">take the 30-second finder →</a>`;
+    return;
+  }
+  bfmActive = !bfmActive;
+  toggle.classList.toggle("active", bfmActive);
+  if (!bfmActive) { note.textContent = ""; pcRender(); return; }
+
+  // 1) Put the recommended tool first in the line-up
+  if (profile.topTool && TOOLS[profile.topTool]) {
+    pcSelected = [profile.topTool, ...pcSelected.filter(s => s !== profile.topTool)].slice(0, 4);
+  }
+  pcRenderSlots();
+  pcRefreshOpsSteps();
+
+  // 2) Snap the ops slider to the user's volume
+  if (typeof profile.ops === "number") {
+    const idx = OPS_STEPS.reduce((b, v, i) =>
+      Math.abs(v - profile.ops) < Math.abs(OPS_STEPS[b] - profile.ops) ? i : b, 0);
+    document.getElementById("pc-ops-range").value = idx;
+  }
+  const ops = pcGetOps();
+  pcSetOpsLabel(ops);
+  pcRenderGrid(ops);
+
+  // 3) Explain what we matched
+  const bits = [`${profile.ops >= 1000 ? (profile.ops/1000) + "k" : profile.ops} ops/mo`];
+  if (profile.budget) bits.push(`$${profile.budget} budget`);
+  if (profile.topTool && TOOLS[profile.topTool]) bits.push(`${TOOLS[profile.topTool].name} recommended`);
+  note.innerHTML = `Matched to your finder: <b>${bits.join(" · ")}</b>`;
+}
+
+function pcRenderSlots() {
+  const container = document.getElementById("pc-vs-slots");
+  container.innerHTML = "";
+  pcSelected.forEach((slug, i) => {
+    if (i > 0) { const s = document.createElement("span"); s.className = "vs-divider"; s.textContent = "vs"; container.appendChild(s); }
+    const wrap = document.createElement("div");
+    wrap.className = "tool-slot";
+    const sel = document.createElement("select");
+    sel.className = "tool-select";
+    ALL_SLUGS.forEach(s => {
+      const opt = document.createElement("option");
+      opt.value = s; opt.textContent = TOOLS[s].name; opt.selected = s === slug;
+      if (pcSelected.includes(s) && s !== slug) opt.disabled = true;
+      sel.appendChild(opt);
+    });
+    sel.addEventListener("change", () => { pcSelected[i] = sel.value; pcRenderSlots(); pcRenderGrid(pcRefreshOpsSteps()); });
+    wrap.appendChild(sel);
+    if (pcSelected.length > 2) {
+      const rm = document.createElement("button");
+      rm.className = "remove-btn"; rm.title = "Remove"; rm.textContent = "×";
+      rm.onclick = () => { pcSelected.splice(i, 1); pcRenderSlots(); pcRenderGrid(pcRefreshOpsSteps()); };
+      wrap.appendChild(rm);
+    }
+    container.appendChild(wrap);
+  });
+  document.getElementById("pc-add-btn").disabled = pcSelected.length >= 4;
+}
+
+function pcAddSlot() {
+  if (pcSelected.length >= 4) return;
+  const avail = ALL_SLUGS.find(s => !pcSelected.includes(s));
+  if (avail) { pcSelected.push(avail); pcRenderSlots(); pcRenderGrid(pcRefreshOpsSteps()); }
+}
+
+function pcRenderGrid(ops) {
+  const tools = pcSelected.map(s => TOOLS[s]);
+  // Per-column recommendations:
+  const overallBests = tools.map(t => pcPickPlan(t, ops, false)); // incl self-host → green
+  const cloudBests   = tools.map(t => pcPickPlan(t, ops, true));  // cloud only      → white
+
+  // Overall winner tool = lowest cheapest-covering price across selected tools
+  let winIdx = 0;
+  overallBests.forEach((p, i) => {
+    if (p && overallBests[winIdx] && planPrice(p) < planPrice(overallBests[winIdx])) winIdx = i;
+  });
+  const winTool = tools[winIdx];
+  const winPlan = overallBests[winIdx];
+
+  const fmtOps = o => o === 0 ? "free tier" : o >= 1000 ? `${(o/1000).toLocaleString()}k` : o.toLocaleString();
+
+  // Winner row
+  const wRow = document.getElementById("pc-winner");
+  if (winPlan) {
+    wRow.style.display = "";
+    const priceTxt = winPlan.monthlyUsd === null ? "Custom pricing"
+                   : winPlan.monthlyUsd === 0 ? "Free"
+                   : `$${winPlan.monthlyUsd}/mo`;
+    wRow.innerHTML = `
+      <div>
+        <div class="winner-label">Cheapest at ${fmtOps(ops)} ops/mo</div>
+        <div class="winner-name">
+          <img src="${LOGOS[winTool.slug]}" style="width:24px;height:24px;border-radius:5px;object-fit:contain;background:#fff;padding:1px;" onerror="this.style.display='none'">
+          ${winTool.name} — ${winPlan.name}
+        </div>
+        <div class="winner-detail">${priceTxt} · ${winPlan.opsIncluded === Infinity ? "Unlimited ops" : `${winPlan.opsIncluded.toLocaleString()} ops included`}</div>
+      </div>
+      <a href="${winTool.affiliateUrl}" target="_blank" rel="noopener${winTool.hasAffiliate ? ' sponsored' : ''}"
+         class="cta-btn">Try ${winTool.name} free →</a>`;
+  } else {
+    wRow.style.display = "none";
+  }
+
+  // Grid
+  const grid = document.getElementById("pc-grid");
+  grid.className = `plan-compare-grid cols-${pcSelected.length}`;
+
+  grid.innerHTML = tools.map((tool, ti) => {
+    const overallBest = overallBests[ti];
+    const cloudBest   = cloudBests[ti];
+    const isWinnerCol = ti === winIdx;
+
+    const cards = tool.plans.map(plan => {
+      const isSelf   = !!plan.selfHostOnly;
+      const isCustom = plan.monthlyUsd === null;
+      const covers   = planCovers(plan, ops);
+
+      const isGreen = overallBest && overallBest.name === plan.name;           // cheapest overall
+      const isWhite = !isGreen && cloudBest && cloudBest.name === plan.name;   // best cloud (if distinct)
+      const tooSmall = !covers;                                                // not enough ops
+
+      const cardCls = isGreen ? 'best-plan' : isWhite ? 'alt-best' : tooSmall ? 'too-small' : '';
+
+      const priceHtml = isCustom
+        ? `<div class="plan-card-price"><span style="color:var(--muted);font-size:1rem">Custom</span></div>`
+        : plan.monthlyUsd === 0
+        ? `<div class="plan-card-price" style="color:var(--accent)">Free</div>`
+        : `<div class="plan-card-price">$${plan.monthlyUsd}<small>/mo</small></div>`;
+
+      const opsHtml = plan.opsIncluded === Infinity
+        ? `<span style="color:var(--green)">Unlimited ops${isSelf ? '*' : ''}</span>`
+        : `${plan.opsIncluded.toLocaleString()} ops/mo`;
+      const wfHtml = plan.workflowLimit === Infinity ? "Unlimited workflows" : `${plan.workflowLimit} workflows`;
+
+      const badges = [
+        isGreen ? `<span class="best-badge">Cheapest</span>` : "",
+        isWhite ? `<span class="cloud-badge">Best cloud</span>` : "",
+        isSelf  ? `<span class="pill-selfhost" style="font-size:10px;padding:1px 5px">Self-host</span>` : "",
+      ].filter(Boolean).join(" ");
+
+      // Reliability note under the recommended plans
+      let note = "";
+      if (isGreen) {
+        note = isSelf
+          ? `<div class="plan-card-note green">✓ Cheapest — unlimited ops, you self-host (~$8/mo VPS)</div>`
+          : `<div class="plan-card-note green">✓ Covers your ${fmtOps(ops)} ops — cheapest plan that fits</div>`;
+      } else if (isWhite) {
+        note = `<div class="plan-card-note white">✓ Best managed-cloud plan for ${fmtOps(ops)} ops</div>`;
+      }
+
+      return `<div class="plan-card ${cardCls}">
+        <div class="plan-card-name">${plan.name} ${badges}</div>
+        ${priceHtml}
+        <div class="plan-card-meta">${opsHtml} · ${wfHtml}</div>
+        ${note}
+      </div>`;
+    }).join("");
+
+    return `<div class="plan-tool-col" style="${isWinnerCol ? 'border-color:var(--green)' : ''}">
+      <div class="plan-tool-header" style="${isWinnerCol ? 'background:rgba(16,185,129,0.1)' : ''}">
+        <img src="${LOGOS[tool.slug]}" alt="${tool.name}" onerror="this.style.display='none'">
+        <span>${tool.name}${isWinnerCol ? ' <span style="font-size:11px;color:var(--green);font-weight:700">★ Best value</span>' : ''}</span>
+      </div>
+      ${cards}
+    </div>`;
+  }).join("");
+}
+
+function pcRender() {
+  pcRenderSlots();
+  pcRenderGrid(pcRefreshOpsSteps());
+}
+
+// ── Plans table ───────────────────────────────────────────────────────────────
+const BEST_FOR = {
+  "n8n":          { "Self-hosted": "Devs who want unlimited self-hosted", "Cloud Starter": "Small teams on cloud", "Cloud Pro": "Growing cloud teams", "Cloud Enterprise": "Large orgs" },
+  "make":         { "Free": "Trying out Make", "Core": "Small businesses", "Pro": "Agencies & power users", "Teams": "Larger teams", "Enterprise": "Enterprise" },
+  "pipedream":    { "Free": "Hobbyists & testing", "Basic": "Small projects", "Advanced": "Developers & startups", "Business": "Enterprise devs" },
+  "zapier":       { "Free": "Trying out Zapier", "Starter": "Simple automations", "Professional": "Power users", "Team": "Small teams", "Enterprise": "Large orgs" },
+  "activepieces": { "Self-hosted": "Teams wanting MIT self-host", "Cloud Starter": "Small non-technical teams", "Cloud Pro": "Growing teams" },
+  "automatisch":  { "Self-hosted": "EU/GDPR-focused self-hosters", "Cloud": "Small EU-based teams" },
+  "node-red":     { "Self-hosted": "IoT & hardware developers" },
+};
+
+function initPlansFilter() {
+  const sel = document.getElementById("plans-filter-tool");
+  ALL_SLUGS.forEach(slug => {
+    const opt = document.createElement("option");
+    opt.value = slug;
+    opt.textContent = TOOLS[slug].name;
+    sel.appendChild(opt);
+  });
+}
+
+function renderPlansTable() {
+  const filterTool = document.getElementById("plans-filter-tool").value;
+  const sortBy = document.getElementById("plans-sort").value;
+
+  // Flatten all plans
+  let rows = [];
+  ALL_SLUGS.forEach(slug => {
+    const tool = TOOLS[slug];
+    tool.plans.forEach(plan => {
+      rows.push({ tool, plan });
+    });
+  });
+
+  // Filter
+  if (filterTool !== "all") rows = rows.filter(r => r.tool.slug === filterTool);
+
+  // Sort
+  if (sortBy === "price") {
+    rows.sort((a, b) => {
+      const pa = a.plan.monthlyUsd === null ? 99999 : a.plan.monthlyUsd;
+      const pb = b.plan.monthlyUsd === null ? 99999 : b.plan.monthlyUsd;
+      return pa - pb;
+    });
+  } else if (sortBy === "ops") {
+    rows.sort((a, b) => {
+      const oa = a.plan.opsIncluded === Infinity ? 99999999 : a.plan.opsIncluded;
+      const ob = b.plan.opsIncluded === Infinity ? 99999999 : b.plan.opsIncluded;
+      return ob - oa;
+    });
+  } else {
+    rows.sort((a, b) => a.tool.name.localeCompare(b.tool.name));
+  }
+
+  document.getElementById("plans-count").textContent = `${rows.length} plan${rows.length !== 1 ? "s" : ""}`;
+
+  const tbody = document.getElementById("plans-body");
+  tbody.innerHTML = rows.map(({ tool, plan }) => {
+    const isSelfHost = !!plan.selfHostOnly;
+    const isFree = plan.monthlyUsd === 0;
+    const rowClass = isSelfHost ? "selfhost-row" : isFree ? "free-row" : "";
+
+    const priceCell = plan.monthlyUsd === null
+      ? `<span class="pill-custom">Custom</span>`
+      : plan.monthlyUsd === 0
+        ? `<span class="pill-free">Free</span>`
+        : `<strong>$${plan.monthlyUsd}</strong>`;
+
+    const opsCell = plan.opsIncluded === Infinity
+      ? `<span class="${isSelfHost ? 'check' : 'best-val'}">Unlimited${isSelfHost ? '*' : ''}</span>`
+      : plan.opsIncluded.toLocaleString();
+
+    const wfCell = plan.workflowLimit === Infinity
+      ? `<span class="check">Unlimited</span>`
+      : plan.workflowLimit;
+
+    const overageCell = tool.overage
+      ? `$${tool.overage.usd} / ${tool.overage.per.toLocaleString()} ops`
+      : `<span class="check">None</span>`;
+
+    const selfHostCell = isSelfHost
+      ? `<span class="pill-selfhost">Self-host</span>`
+      : `<span style="color:var(--muted)">Cloud</span>`;
+
+    const bestFor = (BEST_FOR[tool.slug] || {})[plan.name] || "—";
+
+    return `<tr class="${rowClass}">
+      <td data-label="Tool"><div class="tool-badge"><img src="${LOGOS[tool.slug]}" alt="${tool.name}" onerror="this.style.display='none'">${tool.name}</div></td>
+      <td data-label="Plan">${plan.name}</td>
+      <td data-label="Price/mo">${priceCell}</td>
+      <td data-label="Ops included">${opsCell}</td>
+      <td data-label="Workflows">${wfCell}</td>
+      <td data-label="Overage">${overageCell}</td>
+      <td data-label="Self-host">${selfHostCell}</td>
+      <td data-label="Best for" style="font-size:13px;color:var(--muted)">${bestFor}</td>
+    </tr>`;
+  }).join("");
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+selected = readUrl();
+initPlansFilter();
+renderSlots();
+renderResults();
+pcRender();
+
+// Deep-link support: ?view=plancomp|allplans (&bestforme=1 auto-applies the saved finder profile)
+(function initDeepLink() {
+  const params = new URLSearchParams(window.location.search);
+  const view = params.get("view");
+  if (view === "plancomp" || view === "allplans") switchView(view);
+  if (view === "plancomp" && params.get("bestforme") === "1") pcToggleBestForMe();
+})();
+</script>
+
+<!-- Caret price ladder: ranks the compared tools cheapest‹pricier at the current
+     ops volume, using the brand caret as the "less-than" operator. Additive — wraps
+     pcRenderGrid without modifying the locked logic. -->
+<script>
+(function () {
+  if (typeof window.pcRenderGrid !== "function") return;
+  var original = window.pcRenderGrid;
+  var CARET = '<span class="pc-caret" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="currentColor" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';
+
+  function priceLabel(plan) {
+    if (!plan) return "n/a";
+    if (plan.monthlyUsd === null) return "Custom";
+    if (plan.monthlyUsd === 0) return "Free";
+    return "$" + plan.monthlyUsd + "/mo";
+  }
+
+  function renderLadder(ops) {
+    var el = document.getElementById("pc-ladder");
+    if (!el) return;
+    var rows = pcSelected.map(function (s) {
+      var t = TOOLS[s];
+      var plan = pcPickPlan(t, ops, false);
+      return { tool: t, plan: plan, price: plan ? planPrice(plan) : Infinity };
+    }).sort(function (a, b) { return a.price - b.price; });
+
+    var cheapest = rows[0].price;
+    var fmtOps = ops === 0 ? "free tier" : ops >= 1000 ? (ops / 1000).toLocaleString() + "k" : ops.toLocaleString();
+    var rungs = rows.map(function (r) {
+      var isCheap = r.price === cheapest && r.price !== Infinity;
+      return '<span class="pc-rung' + (isCheap ? " cheapest" : "") + '">' +
+        '<img src="' + LOGOS[r.tool.slug] + '" alt="" onerror="this.style.display=\'none\'">' +
+        '<span class="nm">' + r.tool.name + '</span>' +
+        '<span class="pr">' + priceLabel(r.plan) + '</span></span>';
+    });
+    el.innerHTML = '<span class="pc-ladder-label">Price ladder · cheapest first · at ' + fmtOps + ' ops/mo</span>' + rungs.join(CARET);
+    el.style.display = "";
+  }
+
+  window.pcRenderGrid = function (ops) {
+    original.call(this, ops);
+    try { renderLadder(ops); } catch (e) {}
+  };
+
+  // Populate immediately if the plan-comparison view is already showing (deep link).
+  try {
+    var v = document.getElementById("view-plancomp");
+    if (v && v.style.display !== "none") renderLadder(pcGetOps());
+  } catch (e) {}
+})();
+</script>
+<a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="18" height="18" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>Find my cheapest tool →</a>
+</body>
+</html>
