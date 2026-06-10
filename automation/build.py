@@ -254,13 +254,18 @@ def diff_tools(old: dict, new: dict, date: str) -> list[dict]:
     return entries
 
 
-def render_changelog(tools: list[dict]) -> str:
+def changelog_entries() -> tuple[list[dict], str | None]:
+    """Záznamy changelogu z git historie (nejnovější první) + datum prvního
+    commitu tools.json (genesis). Sdílí je changelog.html i RSS feed."""
     hist = tools_history()
     entries = []
     for (_, older), (date, newer) in zip(hist, hist[1:]):
         entries.extend(diff_tools(older, newer, date))
     entries.sort(key=lambda e: e["d"], reverse=True)
+    return entries, (hist[0][0] if hist else None)
 
+
+def render_changelog(tools: list[dict], entries: list[dict], genesis: str | None) -> str:
     lines = ["const CHANGELOG = ["]
     for e in entries:
         lines.append(
@@ -269,8 +274,8 @@ def render_changelog(tools: list[dict]) -> str:
     lines.append("];")
 
     import datetime as _dt
-    if hist:
-        y, m, _ = hist[0][0].split("-")
+    if genesis:
+        y, m, _ = genesis.split("-")
         genesis_month = _dt.date(int(y), int(m), 1).strftime("%B %Y")
     else:
         genesis_month = "June 2026"
@@ -367,6 +372,52 @@ def build_robots(domain: str, base_path: str, extra_sitemaps: list[str] | None =
     return False
 
 
+def _xml_escape(s: str) -> str:
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def build_feed(domain: str, base_path: str, entries: list[dict]) -> bool:
+    """RSS feed cenového changelogu → feed.xml (max 50 nejnovějších záznamů).
+    Stejná data jako changelog.html; prázdný changelog = validní feed bez položek."""
+    import datetime as _dt
+    prefix = _site_prefix(domain, base_path)
+    page = f"{prefix}/changelog.html"
+    items = []
+    for e in entries[:50]:
+        title = f'{e["name"]} — {e["item"]}: {e["old"]} → {e["neu"]}'
+        desc = f'{e["name"]} {e["item"]} changed from {e["old"]} to {e["neu"]}.'
+        pub = _dt.datetime.strptime(e["d"], "%Y-%m-%d").strftime("%a, %d %b %Y 00:00:00 GMT")
+        slug = e["item"].lower().replace(" ", "-")
+        guid = f'{e["d"]}-{e["tool"]}-{slug}'
+        items.append(
+            "  <item>\n"
+            f"    <title>{_xml_escape(title)}</title>\n"
+            f"    <link>{page}</link>\n"
+            f'    <guid isPermaLink="false">{_xml_escape(guid)}</guid>\n'
+            f"    <pubDate>{pub}</pubDate>\n"
+            f"    <description>{_xml_escape(desc)}</description>\n"
+            "  </item>"
+        )
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n'
+        "<channel>\n"
+        "  <title>AutomationCost — Automation Tool Price Changelog</title>\n"
+        f"  <link>{page}</link>\n"
+        "  <description>Every dated price and limit change recorded across n8n, Make, Zapier, "
+        "Pipedream and more — sourced from official pricing pages.</description>\n"
+        "  <language>en</language>\n"
+        f'  <atom:link href="{prefix}/feed.xml" rel="self" type="application/rss+xml"/>\n'
+        + ("\n".join(items) + "\n" if items else "")
+        + "</channel>\n</rss>\n"
+    )
+    out = ROOT / "feed.xml"
+    if not out.exists() or out.read_text(encoding="utf-8") != xml:
+        out.write_text(xml, encoding="utf-8")
+        return True
+    return False
+
+
 def apply_analytics(token: str, pages: list[Path]) -> list[str]:
     """Vloží/odebere Cloudflare Web Analytics snippet před </head> všech stránek.
     Idempotentní: nejdřív smaže starý ANALYTICS blok, pak (je-li token) vloží čerstvý.
@@ -436,6 +487,7 @@ def main() -> int:
 
     # jobs: (path, generated, start, end, warn)
     jobs: list[tuple[Path, str, str, str, str]] = []
+    clog_entries: list[dict] = []
 
     # TOOLS injection only applies to pages that actually carry the markers.
     # An umbrella/homepage build (no calculator.html / compare.html present)
@@ -449,10 +501,12 @@ def main() -> int:
         }
         jobs += [(p, fn(tools), START, END, WARN) for p, fn in candidates.items() if p.exists()]
 
-        # changelog: generovaný z git historie tools.json
+        # changelog: generovaný z git historie tools.json (entries sdílí i RSS feed)
+        clog_entries, clog_genesis = changelog_entries()
         clog_page = ROOT / "changelog.html"
         if clog_page.exists() and CLOG_START in clog_page.read_text(encoding="utf-8"):
-            jobs.append((clog_page, render_changelog(tools), CLOG_START, CLOG_END, CLOG_WARN))
+            jobs.append((clog_page, render_changelog(tools, clog_entries, clog_genesis),
+                         CLOG_START, CLOG_END, CLOG_WARN))
 
     if args.check:
         dirty = []
@@ -479,6 +533,8 @@ def main() -> int:
         changed.append("sitemap.xml")
     if build_robots(domain, base_path, site.get("extra_sitemaps", [])):
         changed.append("robots.txt")
+    if DATA.exists() and build_feed(domain, base_path, clog_entries):
+        changed.append("feed.xml")
     an_changed = apply_analytics(site.get("cloudflare_analytics_token", ""), pages)
     changed.extend(an_changed)
     ga_changed = apply_ga4(site.get("ga4_measurement_id", ""), pages)

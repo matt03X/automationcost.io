@@ -30,7 +30,7 @@
       "codeSteps": true,
       "homepage": "https://n8n.io",
       "affiliateUrl": "https://n8n.io",
-      "hasAffiliate": true,
+      "hasAffiliate": false,
       "plans": [
         {
           "name": "Self-hosted",
@@ -163,7 +163,7 @@
       "codeSteps": true,
       "homepage": "https://pipedream.com",
       "affiliateUrl": "https://pipedream.com",
-      "hasAffiliate": true,
+      "hasAffiliate": false,
       "plans": [
         {
           "name": "Free",
