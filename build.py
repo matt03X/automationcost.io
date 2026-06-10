@@ -1,36 +1,54 @@
 #!/usr/bin/env python3
-"""build.py — vstříkne kanonická data z data/tools.json do statických stránek.
+"""build.py — root (umbrella) build pro wizardcost.com.
 
-Jediný zdroj pravdy = data/tools.json. Tento skript z něj vygeneruje `const TOOLS`
-blok pro calculator.html (pole, jen ocenitelné plány) a compare.html (objekt, všechny
-plány + bohatší pole) a nahradí obsah mezi markery:
+Homepage: vygeneruje `const DEMO` blok hero price-dema z automation/data/tools.json
+(jediný zdroj pravdy cen) a nahradí obsah mezi markery:
 
-    /* DATA:TOOLS:START */ … /* DATA:TOOLS:END */
+    /* DATA:DEMO:START */ … /* DATA:DEMO:END */
 
-Build-time injekce (ne runtime fetch) → ceny zůstávají v HTML pro crawlery, žádná latence.
+Cenová logika kopíruje cost engine z automation/calculator.html (calcCost):
+monthly billing, self-host povolen, workflows=3, custom tier odhad exponentem 0.7
+nad největším veřejným cloud plánem. Při změně enginu změň i `cheapest_monthly`
+níže — shodu hlídá calc-test/verify-demo.js.
+
+Dále: sitemap.xml, robots.txt, GA4/analytics snippety. TOOLS injekce pro
+calculator/compare tu zůstává jen pro případ, že by stránky ležely v rootu
+(v tomhle repu žijí v /automation/ s vlastním build.py).
 
 Spuštění:
-    python build.py            # přegeneruje calculator.html + compare.html
+    python build.py            # přegeneruje index.html (DEMO) + site artefakty
     python build.py --check    # selže (exit 1), pokud by build něco změnil (CI guard)
 
 Konvence v tools.json:
     opsIncluded / workflowLimit == null  → Infinity (unlimited)
-    monthlyUsd == null                   → custom (calculator plán přeskočí, compare = null)
+    monthlyUsd == null                   → custom (cena se odhaduje)
 """
 from __future__ import annotations
 
 import argparse
 import json
+import math
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "tools.json"
+AUTOMATION_DATA = ROOT / "automation" / "data" / "tools.json"
 SITE = ROOT / "data" / "site.json"
 
 START = "/* DATA:TOOLS:START */"
 END = "/* DATA:TOOLS:END */"
 WARN = "/* generováno build.py z data/tools.json — needituj ručně */"
+
+DEMO_START = "/* DATA:DEMO:START */"
+DEMO_END = "/* DATA:DEMO:END */"
+DEMO_WARN = "/* generováno build.py z automation/data/tools.json — needituj ručně */"
+
+# Hero demo: které objemy a nástroje homepage ukazuje
+DEMO_VOLUMES = [1000, 5000, 20000, 100000]
+DEMO_TOOLS = [("n8n", "n8n"), ("make", "Make"), ("pipedream", "Pipedream"), ("zapier", "Zapier")]
+DEMO_WORKFLOWS = 3
+DEMO_FOOT_TEXT = "*n8n ≈ $8/mo VPS · ~ price estimated (custom tier)"
 
 AN_START = "<!-- ANALYTICS (build.py) -->"
 AN_END = "<!-- /ANALYTICS -->"
@@ -155,25 +173,112 @@ def render_compare(tools: list[dict]) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Hero price demo (homepage) — Python port calcCost z automation/calculator.html
+# ---------------------------------------------------------------------------
+
+def cheapest_monthly(tool: dict, ops: int, workflows: int = DEMO_WORKFLOWS) -> dict | None:
+    """Nejlevnější měsíční cena nástroje při daném objemu (hostPref=any, monthly).
+
+    Vrací {"cost": int, "label": str, "est": bool}. Zrcadlí calcCost():
+    - plány s monthlyUsd=None (custom) se přeskočí a ocení odhadem níže
+    - overage: ceil((ops - included) / per) * usd
+    - custom odhad: kotva = největší veřejný cloud plán; cena škáluje
+      sublineárně exponentem 0.7 (min 1.3× kotvy, zaokrouhleno na $5);
+      použije se, když veřejné plány nestačí, nebo nad 2× kotvy když je levnější
+    - shoda ceny: pro label preferuj placený plán bez overage (Core, ne Free+ops)
+    """
+    best = None  # (cost, label_pref, plan, overage_usd)
+    for p in tool["plans"]:
+        if p.get("monthlyUsd") is None:
+            continue
+        wl = p.get("workflowLimit")
+        if wl is not None and wl < workflows:
+            continue
+        cost = p["monthlyUsd"]
+        over = 0
+        inc = p.get("opsIncluded")  # None = unlimited
+        if not p.get("selfHostOnly") and inc is not None and ops > inc:
+            ov = tool.get("overage")
+            if not ov:
+                continue
+            over = math.ceil((ops - inc) / ov["per"]) * ov["usd"]
+            cost += over
+        # při shodě ceny preferuj pro label placený plán bez overage, pak placený
+        # s overage, až nakonec free tier ("Core +ops" čitelnější než "Free +ops")
+        if over == 0 and p["monthlyUsd"] > 0:
+            label_pref = 0
+        elif p["monthlyUsd"] > 0:
+            label_pref = 1
+        else:
+            label_pref = 2
+        if best is None or (cost, label_pref) < (best[0], best[1]):
+            best = (cost, label_pref, p, over)
+
+    custom = next((p for p in tool["plans"] if p.get("monthlyUsd") is None), None)
+    if custom:
+        anchors = [p for p in tool["plans"]
+                   if p.get("monthlyUsd") and not p.get("selfHostOnly") and p.get("opsIncluded") is not None]
+        if anchors:
+            max_inc = max(p["opsIncluded"] for p in anchors)
+            anchor = min((p for p in anchors if p["opsIncluded"] == max_inc), key=lambda p: p["monthlyUsd"])
+            if ops > anchor["opsIncluded"]:
+                est = anchor["monthlyUsd"] * max(1.3, (ops / anchor["opsIncluded"]) ** 0.7)
+                est = max(5, int(est / 5 + 0.5) * 5)
+                beyond_public = ops > anchor["opsIncluded"] * 2
+                if best is None or (beyond_public and est < best[0]):
+                    return {"cost": est, "label": custom["name"], "est": True}
+
+    if best is None:
+        return None
+    cost, _, plan, over = best
+    if plan.get("selfHostOnly"):
+        label = "self-hosted*"
+    else:
+        label = plan["name"] + (" +ops" if over > 0 else "")
+    return {"cost": cost, "label": label, "est": False}
+
+
+def render_demo(tools: list[dict]) -> str:
+    by_slug = {t["slug"]: t for t in tools}
+    lines = ["const DEMO = {"]
+    for vol in DEMO_VOLUMES:
+        rows = []
+        for slug, display in DEMO_TOOLS:
+            r = cheapest_monthly(by_slug[slug], vol)
+            if r is None:
+                raise SystemExit(f"CHYBA: {slug} nemá ocenitelný plán pro {vol} ops — uprav DEMO_TOOLS/DEMO_VOLUMES.")
+            row = f'{{n:{js_str(display)}, c:{r["cost"]}, note:{js_str(r["label"])}'
+            if r["est"]:
+                row += ", est:1"
+            rows.append(row + "}")
+        lines.append(f"  {vol}: [ " + ", ".join(rows) + " ],")
+    lines.append("};")
+    lines.append(f"const DEMO_FOOT = {js_str(DEMO_FOOT_TEXT)};")
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
 # Injekce mezi markery
 # ---------------------------------------------------------------------------
 
-def inject(path: Path, generated: str) -> bool:
-    """Nahradí obsah mezi START/END markery. Vrací True, pokud se soubor změnil."""
-    text = path.read_text(encoding="utf-8")
-    if START not in text or END not in text:
+def render_block(text: str, generated: str, start: str, end: str, warn: str) -> str:
+    """Vrátí text s nahrazeným obsahem mezi markery (beze změny souboru)."""
+    if start not in text or end not in text:
         raise SystemExit(
-            f"CHYBA: v {path.name} chybí markery {START} … {END}. "
-            "Obal `const TOOLS = …;` těmito markery (jednorázově ručně)."
+            f"CHYBA: chybí markery {start} … {end}. "
+            "Obal generovaný blok těmito markery (jednorázově ručně)."
         )
-    pre, rest = text.split(START, 1)
-    _, post = rest.split(END, 1)
-
+    pre, rest = text.split(start, 1)
+    _, post = rest.split(end, 1)
     # zachovej odsazení markeru (mezery před START na jeho řádku)
     indent = pre[pre.rfind("\n") + 1:]
-    block = f"{START} {WARN}\n{generated}\n{indent}{END}"
-    new_text = pre + block + post
+    return pre + f"{start} {warn}\n{generated}\n{indent}{end}" + post
 
+
+def inject(path: Path, generated: str, start: str = START, end: str = END, warn: str = WARN) -> bool:
+    """Nahradí obsah mezi markery. Vrací True, pokud se soubor změnil."""
+    text = path.read_text(encoding="utf-8")
+    new_text = render_block(text, generated, start, end, warn)
     if new_text != text:
         path.write_text(new_text, encoding="utf-8")
         return True
@@ -307,10 +412,12 @@ def main() -> int:
 
     site = load_site()
 
+    # jobs: (path, generated, start, end, warn)
+    jobs: list[tuple[Path, str, str, str, str]] = []
+
     # TOOLS injection only applies to pages that actually carry the markers.
     # An umbrella/homepage build (no calculator.html / compare.html present)
     # simply skips it and still does sitemap / robots / analytics.
-    targets = {}
     if DATA.exists():
         data = json.loads(DATA.read_text(encoding="utf-8"))
         tools = data["tools"]
@@ -318,27 +425,30 @@ def main() -> int:
             ROOT / "calculator.html": render_calculator,
             ROOT / "compare.html": render_compare,
         }
-        targets = {p: fn(tools) for p, fn in candidates.items() if p.exists()}
+        jobs += [(p, fn(tools), START, END, WARN) for p, fn in candidates.items() if p.exists()]
+
+    # Hero price demo na homepage — čte kanonická data z automation/data/tools.json
+    index_page = ROOT / "index.html"
+    demo_src = AUTOMATION_DATA if AUTOMATION_DATA.exists() else DATA
+    if index_page.exists() and demo_src.exists() and DEMO_START in index_page.read_text(encoding="utf-8"):
+        demo_tools = json.loads(demo_src.read_text(encoding="utf-8"))["tools"]
+        jobs.append((index_page, render_demo(demo_tools), DEMO_START, DEMO_END, DEMO_WARN))
 
     if args.check:
         dirty = []
-        for path, generated in targets.items():
+        for path, generated, start, end, warn in jobs:
             text = path.read_text(encoding="utf-8")
-            pre, rest = text.split(START, 1)
-            _, post = rest.split(END, 1)
-            indent = pre[pre.rfind("\n") + 1:]
-            block = f"{START} {WARN}\n{generated}\n{indent}{END}"
-            if pre + block + post != text:
+            if render_block(text, generated, start, end, warn) != text:
                 dirty.append(path.name)
         if dirty:
             print(f"[build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python build.py`.")
             return 1
-        print("[build --check] OK — stránky jsou aktuální vůči data/tools.json.")
+        print("[build --check] OK — stránky jsou aktuální vůči tools.json.")
         return 0
 
     changed = []
-    for path, generated in targets.items():
-        if inject(path, generated):
+    for path, generated, start, end, warn in jobs:
+        if inject(path, generated, start, end, warn):
             changed.append(path.name)
 
     # site-wide artefakty
