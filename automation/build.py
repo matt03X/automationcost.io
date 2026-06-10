@@ -32,6 +32,10 @@ START = "/* DATA:TOOLS:START */"
 END = "/* DATA:TOOLS:END */"
 WARN = "/* generováno build.py z data/tools.json — needituj ručně */"
 
+CLOG_START = "/* DATA:CHANGELOG:START */"
+CLOG_END = "/* DATA:CHANGELOG:END */"
+CLOG_WARN = "/* generováno build.py z git historie data/tools.json — needituj ručně */"
+
 AN_START = "<!-- ANALYTICS (build.py) -->"
 AN_END = "<!-- /ANALYTICS -->"
 
@@ -161,25 +165,142 @@ def render_compare(tools: list[dict]) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Changelog: git historie data/tools.json → veřejný cenový changelog
+# ---------------------------------------------------------------------------
+
+def _fmt_money(v) -> str:
+    return "Custom" if v is None else f"${v}/mo"
+
+
+def _fmt_ops(v) -> str:
+    return "Unlimited" if v is None else f"{v:,} ops"
+
+
+def _fmt_wf(v) -> str:
+    return "Unlimited" if v is None else f"{v} workflows"
+
+
+def _fmt_overage(ov) -> str:
+    return "none" if ov is None else f"${ov['usd']}/{ov['per']:,} ops"
+
+
+def tools_history() -> list[tuple[str, dict]]:
+    """[(date, parsed tools.json)] pro každý commit měnící data/tools.json,
+    od nejstaršího. Sleduje přejmenování (--follow). Bez gitu vrací []."""
+    import subprocess
+    repo = ROOT.parent
+    rel = str(DATA.relative_to(repo)).replace("\\", "/")
+    log = subprocess.run(
+        ["git", "-C", str(repo), "log", "--follow", "--format=%H %ad", "--date=short",
+         "--name-only", "--", rel],
+        capture_output=True, text=True)
+    if log.returncode != 0:
+        return []
+    commits = []  # (sha, date, path_at_commit)
+    sha_date = None
+    for raw in log.stdout.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        parts = line.split()
+        if len(parts) == 2 and len(parts[0]) == 40:
+            sha_date = (parts[0], parts[1])
+        elif sha_date and line.endswith(".json"):
+            commits.append((sha_date[0], sha_date[1], line))
+            sha_date = None
+    commits.reverse()  # git log dává nejnovější první
+    hist = []
+    for sha, date, path in commits:
+        show = subprocess.run(["git", "-C", str(repo), "show", f"{sha}:{path}"],
+                              capture_output=True, text=True)
+        if show.returncode != 0:
+            continue
+        try:
+            hist.append((date, json.loads(show.stdout)))
+        except json.JSONDecodeError:
+            continue
+    return hist
+
+
+def diff_tools(old: dict, new: dict, date: str) -> list[dict]:
+    """Cenově relevantní rozdíly dvou verzí tools.json → changelog záznamy.
+    Ignoruje _meta, texty, affiliate URL apod. Nové nástroje/plány nehlásí
+    (přírůstek katalogu není změna ceny)."""
+    entries = []
+    olds = {t["slug"]: t for t in old.get("tools", [])}
+    for t in new.get("tools", []):
+        o = olds.get(t["slug"])
+        if o is None:
+            continue
+        add = lambda item, a, b, d: entries.append(
+            {"d": date, "tool": t["slug"], "name": t["name"], "item": item, "old": a, "neu": b, "dir": d})
+        if o.get("integrations") != t.get("integrations"):
+            add("Integrations", str(o.get("integrations")), str(t.get("integrations")), "info")
+        if o.get("overage") != t.get("overage"):
+            add("Overage", _fmt_overage(o.get("overage")), _fmt_overage(t.get("overage")), "info")
+        old_plans = {p["name"]: p for p in o.get("plans", [])}
+        for p in t.get("plans", []):
+            q = old_plans.get(p["name"])
+            if q is None:
+                continue
+            a, b = q.get("monthlyUsd"), p.get("monthlyUsd")
+            if a != b:
+                direction = "info" if (a is None or b is None) else ("up" if b > a else "down")
+                add(p["name"], _fmt_money(a), _fmt_money(b), direction)
+            if q.get("opsIncluded") != p.get("opsIncluded"):
+                add(f"{p['name']} — included ops", _fmt_ops(q.get("opsIncluded")), _fmt_ops(p.get("opsIncluded")), "info")
+            if q.get("workflowLimit") != p.get("workflowLimit"):
+                add(f"{p['name']} — workflow limit", _fmt_wf(q.get("workflowLimit")), _fmt_wf(p.get("workflowLimit")), "info")
+    return entries
+
+
+def render_changelog(tools: list[dict]) -> str:
+    hist = tools_history()
+    entries = []
+    for (_, older), (date, newer) in zip(hist, hist[1:]):
+        entries.extend(diff_tools(older, newer, date))
+    entries.sort(key=lambda e: e["d"], reverse=True)
+
+    lines = ["const CHANGELOG = ["]
+    for e in entries:
+        lines.append(
+            f'  {{ d: {js_str(e["d"])}, tool: {js_str(e["tool"])}, name: {js_str(e["name"])}, '
+            f'item: {js_str(e["item"])}, old: {js_str(e["old"])}, neu: {js_str(e["neu"])}, dir: {js_str(e["dir"])} }},')
+    lines.append("];")
+
+    import datetime as _dt
+    if hist:
+        y, m, _ = hist[0][0].split("-")
+        genesis_month = _dt.date(int(y), int(m), 1).strftime("%B %Y")
+    else:
+        genesis_month = "June 2026"
+    n_plans = sum(len(t.get("plans", [])) for t in tools)
+    lines.append(f'const CLOG_GENESIS = {js_str(f"Tracking started {genesis_month} · {len(tools)} tools · {n_plans} plans")};')
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
 # Injekce mezi markery
 # ---------------------------------------------------------------------------
 
-def inject(path: Path, generated: str) -> bool:
-    """Nahradí obsah mezi START/END markery. Vrací True, pokud se soubor změnil."""
-    text = path.read_text(encoding="utf-8")
-    if START not in text or END not in text:
+def render_block(text: str, generated: str, start: str, end: str, warn: str) -> str:
+    """Vrátí text s nahrazeným obsahem mezi markery (beze změny souboru)."""
+    if start not in text or end not in text:
         raise SystemExit(
-            f"CHYBA: v {path.name} chybí markery {START} … {END}. "
-            "Obal `const TOOLS = …;` těmito markery (jednorázově ručně)."
+            f"CHYBA: chybí markery {start} … {end}. "
+            "Obal generovaný blok těmito markery (jednorázově ručně)."
         )
-    pre, rest = text.split(START, 1)
-    _, post = rest.split(END, 1)
-
+    pre, rest = text.split(start, 1)
+    _, post = rest.split(end, 1)
     # zachovej odsazení markeru (mezery před START na jeho řádku)
     indent = pre[pre.rfind("\n") + 1:]
-    block = f"{START} {WARN}\n{generated}\n{indent}{END}"
-    new_text = pre + block + post
+    return pre + f"{start} {warn}\n{generated}\n{indent}{end}" + post
 
+
+def inject(path: Path, generated: str, start: str = START, end: str = END, warn: str = WARN) -> bool:
+    """Nahradí obsah mezi markery. Vrací True, pokud se soubor změnil."""
+    text = path.read_text(encoding="utf-8")
+    new_text = render_block(text, generated, start, end, warn)
     if new_text != text:
         path.write_text(new_text, encoding="utf-8")
         return True
@@ -313,10 +434,12 @@ def main() -> int:
 
     site = load_site()
 
+    # jobs: (path, generated, start, end, warn)
+    jobs: list[tuple[Path, str, str, str, str]] = []
+
     # TOOLS injection only applies to pages that actually carry the markers.
     # An umbrella/homepage build (no calculator.html / compare.html present)
     # simply skips it and still does sitemap / robots / analytics.
-    targets = {}
     if DATA.exists():
         data = json.loads(DATA.read_text(encoding="utf-8"))
         tools = data["tools"]
@@ -324,17 +447,18 @@ def main() -> int:
             ROOT / "calculator.html": render_calculator,
             ROOT / "compare.html": render_compare,
         }
-        targets = {p: fn(tools) for p, fn in candidates.items() if p.exists()}
+        jobs += [(p, fn(tools), START, END, WARN) for p, fn in candidates.items() if p.exists()]
+
+        # changelog: generovaný z git historie tools.json
+        clog_page = ROOT / "changelog.html"
+        if clog_page.exists() and CLOG_START in clog_page.read_text(encoding="utf-8"):
+            jobs.append((clog_page, render_changelog(tools), CLOG_START, CLOG_END, CLOG_WARN))
 
     if args.check:
         dirty = []
-        for path, generated in targets.items():
+        for path, generated, start, end, warn in jobs:
             text = path.read_text(encoding="utf-8")
-            pre, rest = text.split(START, 1)
-            _, post = rest.split(END, 1)
-            indent = pre[pre.rfind("\n") + 1:]
-            block = f"{START} {WARN}\n{generated}\n{indent}{END}"
-            if pre + block + post != text:
+            if render_block(text, generated, start, end, warn) != text:
                 dirty.append(path.name)
         if dirty:
             print(f"[build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python build.py`.")
@@ -343,8 +467,8 @@ def main() -> int:
         return 0
 
     changed = []
-    for path, generated in targets.items():
-        if inject(path, generated):
+    for path, generated, start, end, warn in jobs:
+        if inject(path, generated, start, end, warn):
             changed.append(path.name)
 
     # site-wide artefakty
