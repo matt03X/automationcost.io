@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://wizardcost.com/sitemap.xml
+Sitemap: https://wizardcost.com/automation/sitemap.xml

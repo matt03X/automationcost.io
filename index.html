@@ -3,41 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AutomationCost.io — Real Pricing for n8n, Make, Pipedream, Zapier</title>
-  <meta name="description" content="Compare the real cost of automation tools. Free calculator, side-by-side limits, and honest recommendations. n8n vs Make vs Pipedream vs Zapier.">
+  <title>WizardCost — Real pricing calculators for software</title>
+  <meta name="description" content="WizardCost runs live pricing calculators for software categories. Real advertised prices, your actual usage, and the cheapest pick computed — not star ratings.">
+  <!-- GA4 is injected by build.py (markers near </head>) — do not add it here. -->
   <link rel="canonical" href="https://wizardcost.com/">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "AutomationCost.io",
-    "url": "https://wizardcost.com/",
-    "description": "Compare the real cost of automation tools. Free calculator, side-by-side limits, and honest recommendations.",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://wizardcost.com/compare.html?tools={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {"@type":"Question","name":"Is n8n cheaper than Make?","acceptedAnswer":{"@type":"Answer","text":"Self-hosted n8n costs ~$8/mo (server only) with unlimited ops — cheaper than any Make plan for high volumes. On cloud, Make Core at $9/mo gives 10,000 ops while n8n Cloud Starter at $20/mo gives only 2,500 ops, making Make cheaper for cloud users under 10k ops/month."}},
-      {"@type":"Question","name":"Is n8n cheaper than Zapier?","acceptedAnswer":{"@type":"Answer","text":"Yes, significantly. n8n self-hosted costs ~$8/mo with unlimited operations. Zapier charges $49/mo for just 2,000 tasks. Even n8n Cloud at $20/mo (2,500 ops) beats Zapier's $20/mo Starter plan which only includes 750 tasks."}},
-      {"@type":"Question","name":"What is Make.com pricing?","acceptedAnswer":{"@type":"Answer","text":"Make offers a free plan with 1,000 ops/month. Paid plans start at $9/mo (Core, 10,000 ops), $16/mo (Pro, 10,000 ops + advanced features), and $29/mo (Teams). Additional ops cost $9 per 10,000."}},
-      {"@type":"Question","name":"Which automation tool has the cheapest free plan?","acceptedAnswer":{"@type":"Answer","text":"Make has the most generous free plan at 1,000 ops/month with unlimited workflows. Zapier and Pipedream free tiers are limited to 100 ops/month. n8n, Activepieces, and Automatisch are free when self-hosted."}},
-      {"@type":"Question","name":"Can I self-host Make or Zapier?","acceptedAnswer":{"@type":"Answer","text":"No. Make and Zapier are cloud-only. If you need self-hosting for GDPR compliance or cost control, consider n8n (Sustainable Use license), Activepieces (MIT license), Automatisch (AGPL), or Node-RED (Apache 2.0)."}},
-      {"@type":"Question","name":"What is the cheapest way to run n8n?","acceptedAnswer":{"@type":"Answer","text":"Self-hosting n8n on a VPS (e.g., Oracle Free Tier, Hetzner ~$4/mo, or DigitalOcean ~$6/mo) gives you unlimited ops and workflows for almost nothing."}}
-    ]
-  }
-  </script>
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="AutomationCost.io">
-  <meta property="og:title" content="AutomationCost.io — Real Pricing for n8n, Make, Pipedream, Zapier">
-  <meta property="og:description" content="Compare the real cost of automation tools. Free calculator, side-by-side limits, honest recommendations.">
+  <meta property="og:site_name" content="WizardCost">
+  <meta property="og:title" content="WizardCost — Real pricing calculators for software">
+  <meta property="og:description" content="Live pricing calculators for software categories. Real advertised prices, your usage, the cheapest pick computed.">
   <meta property="og:url" content="https://wizardcost.com/">
   <meta property="og:image" content="https://wizardcost.com/og-image.svg">
   <meta name="twitter:card" content="summary_large_image">
@@ -49,23 +22,18 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      /* ── Surfaces (Caret kit) ── */
-      --bg: #0a0e17;
-      --surface: #111827;
-      --surface2: #1a2236;
-      --border: #1f2d45;
-      --border2: #27375a;
-      --text: #e8edf5;
-      --text2: #a8b4cc;
-      --muted: #6b7a99;
-      /* ── Accent = GREEN. Reserved for the winner / cheapest / primary action. ── */
-      --accent: #10b981;
-      --accent-br: #16d18c;
-      --accent-glow: rgba(16,185,129,0.20);
-      --accent-dim: rgba(16,185,129,0.09);
-      --ink: #04130d;
-      /* blue is demoted to inline-link duty only */
-      --link: #6f9bff;
+      --bg: #0b0a12;
+      --surface: #131120;
+      --surface2: #18152a;
+      --border: #241f3d;
+      --border2: #2e2750;
+      --text: #efeaff;
+      --text2: #b6aed6;
+      --muted: #6f6a85;
+      --accent: #a78bfa;
+      --accent-deep: #7c4dff;
+      --ink: #0e081f;
+      --green: #16d18c;
       --radius: 14px;
       --radius-sm: 9px;
       --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -79,291 +47,106 @@
       font-family: var(--font);
       font-size: 15.5px;
       line-height: 1.7;
-      letter-spacing: 0.01em;
-      word-spacing: 0.04em;
-      min-height: 100vh;
-      padding-top: 104px;
       -webkit-font-smoothing: antialiased;
     }
-    a { color: var(--link); text-decoration: none; }
-    a:hover { color: #9fbcff; }
-    h1, h2, h3 { letter-spacing: -0.018em; text-wrap: balance; }
-    h1 { word-spacing: -0.01em; }
-
-    /* ── Background ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 58% at 50% -12%, rgba(16,185,129,0.16) 0%, transparent 62%),
-        radial-gradient(ellipse 48% 38% at 88% 8%, rgba(22,209,140,0.08) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 44% at 6% 92%, rgba(16,185,129,0.06) 0%, transparent 58%),
-        linear-gradient(180deg, rgba(16,185,129,0.04) 0%, transparent 22%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .wrap { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+    a { color: var(--accent); text-decoration: none; }
+    h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
 
     /* ── Nav ── */
-    header {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(10,14,23,0.86);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-top { padding: 0 32px; height: 58px; display: flex; align-items: center; justify-content: space-between; }
-    .nav-bottom { padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; border-top: 1px solid var(--border); }
-    .nav-bottom::-webkit-scrollbar { display: none; }
-    .nav-bottom a {
-      padding: 12px 18px; font-size: 13.5px; font-weight: 500; color: var(--muted);
-      text-decoration: none; white-space: nowrap;
-      border-bottom: 2px solid transparent; margin-bottom: -1px;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .nav-bottom a:hover { color: var(--text2); }
-    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: var(--accent); }
-    .logo {
-      display: flex; align-items: center; gap: 0;
-      font-family: var(--display); font-weight: 800; font-size: 1.08rem;
-      color: var(--text); letter-spacing: -0.01em; text-decoration: none;
-    }
-    .logo:hover { color: var(--text); }
-    .logo span { color: var(--accent); }
-    .logo .io { color: var(--muted); font-weight: 600; }
-    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 8px; }
-    .nav-badge {
-      font-family: var(--mono);
-      font-size: 11px; font-weight: 500;
-      background: var(--surface2); border: 1px solid var(--border2);
-      border-radius: 20px; padding: 4px 12px; color: var(--muted);
-      display: flex; align-items: center; gap: 7px; letter-spacing: 0.01em;
-    }
-    .nav-badge::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent); box-shadow: 0 0 7px var(--accent);
-      flex-shrink: 0;
-    }
-    .nav-dropdown { position: relative; display: flex; align-items: center; }
-    .nav-dropdown-btn {
-      background: none; border: none; color: var(--muted);
-      font-family: var(--font); font-size: 13.5px; font-weight: 500;
-      padding: 12px 18px; cursor: pointer;
-      display: flex; align-items: center; gap: 5px; white-space: nowrap;
-      transition: color 0.15s; margin-bottom: -1px; border-bottom: 2px solid transparent;
-    }
-    .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text2); }
-    .nav-dropdown-menu {
-      display: none; position: absolute; top: calc(100% + 8px); left: 0;
-      background: var(--surface); border: 1px solid var(--border2);
-      border-radius: var(--radius); min-width: 214px; z-index: 200;
-      box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
-      padding: 6px 0;
-    }
-    .nav-dropdown.open .nav-dropdown-menu { display: block; }
-    .nav-dropdown-menu a {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 16px; font-size: 13px; font-weight: 600;
-      color: var(--text2); text-decoration: none; transition: background 0.1s, color 0.1s;
-      border-bottom: none !important;
-    }
-    .nav-dropdown-menu a:hover { background: var(--surface2); color: var(--text); }
-    .nav-dropdown-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }
+    header { position: sticky; top: 0; z-index: 50; background: rgba(11,10,18,0.86); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-top { height: 60px; display: flex; align-items: center; justify-content: space-between; max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+    .logo { display: inline-flex; align-items: center; font-family: var(--display); font-weight: 800; font-size: 1.12rem; color: var(--text); letter-spacing: -0.01em; }
+    .logo .c { color: var(--accent); }
+    .logo-icon { width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; font-weight: 500; background: var(--surface2); border: 1px solid var(--border2); color: var(--text2); border-radius: 100px; padding: 4px 12px; }
 
     /* ── Hero ── */
-    .hero { text-align: center; padding: 88px 0 68px; }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--surface2); border: 1px solid var(--border2);
-      border-radius: 100px; font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--text2);
-      padding: 6px 15px; margin-bottom: 30px; letter-spacing: 0.02em;
-    }
-    .hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); flex-shrink: 0; }
-    .hero h1 {
-      font-size: clamp(2.5rem, 5.2vw, 3.85rem);
-      font-weight: 800; line-height: 1.1;
-      max-width: 16ch; margin: 0 auto 24px;
-    }
-    .hero h1 em {
-      font-style: normal;
-      background: linear-gradient(96deg, #16d18c 0%, #2ee6a6 48%, #10b981 100%);
-      -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent; color: transparent;
-    }
-    .hero p { color: var(--text2); font-size: 1.16rem; max-width: 580px; margin: 0 auto 42px; line-height: 1.72; text-wrap: pretty; }
-    .hero-cta { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 60px; }
-    .btn-primary {
-      background: var(--accent); color: var(--ink);
-      border: none; border-radius: var(--radius-sm);
-      padding: 15px 30px; font-family: var(--font);
-      font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: -0.01em;
-      text-decoration: none; display: inline-flex; align-items: center; gap: 9px;
-      box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 10px 30px rgba(16,185,129,0.28);
-      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
-    }
-    .btn-primary:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 14px 36px rgba(16,185,129,0.4); }
-    .btn-secondary {
-      background: var(--surface2); color: var(--text2);
-      border: 1px solid var(--border2); border-radius: var(--radius-sm);
-      padding: 14px 24px; font-family: var(--font);
-      font-size: 15px; font-weight: 600;
-      text-decoration: none; display: inline-block;
-      transition: border-color 0.15s, color 0.15s, transform 0.15s;
-    }
-    .btn-secondary:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
+    .hero { text-align: center; padding: 92px 0 64px; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--text2); padding: 6px 15px; margin-bottom: 30px; letter-spacing: 0.02em; }
+    .hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .hero h1 { font-size: clamp(2.3rem, 5.4vw, 3.9rem); font-weight: 800; line-height: 1.06; letter-spacing: -0.03em; margin: 0 auto 22px; max-width: 740px; text-wrap: balance; }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--text2); font-size: 1.16rem; max-width: 600px; margin: 0 auto 42px; line-height: 1.72; text-wrap: pretty; }
+    .hero-cta { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+    .btn-primary { background: var(--accent-deep); color: #fff; border: none; border-radius: var(--radius-sm); padding: 15px 30px; font-family: var(--font); font-size: 15px; font-weight: 700; letter-spacing: -0.01em; display: inline-flex; align-items: center; gap: 9px; box-shadow: 0 0 24px rgba(124,77,255,0.35); transition: transform 0.15s, box-shadow 0.15s; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 34px rgba(124,77,255,0.5); color: #fff; }
+    .btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 14px 24px; font-size: 15px; font-weight: 600; display: inline-block; transition: border-color 0.15s, color 0.15s; }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--text); }
 
-    /* ── Stats row ── */
-    .stats-row {
-      display: flex; align-items: center; justify-content: center;
-      gap: 0; flex-wrap: wrap; margin-bottom: 72px;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden;
-    }
-    .stat-item {
-      flex: 1 1 160px; padding: 22px 28px; text-align: center;
-      border-right: 1px solid var(--border);
-    }
+    .hero-proof { display: inline-flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 13.5px; color: var(--muted); font-family: var(--mono); margin-bottom: 0; background: var(--surface2); border: 1px solid var(--border2); border-radius: 99px; padding: 9px 20px; }
+    .hero-proof b { color: var(--text); font-weight: 700; }
+    .hero-proof .hp-cmp { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .hero-proof .hp-price b { color: var(--green); }
+    .hero-proof .hp-price.dim b { color: #e25c5c; }
+    .hero-proof .hp-caret { color: var(--green); font-weight: 800; }
+    .hero-proof .hp-gap { border-left: 1px solid var(--border2); padding-left: 12px; }
+    .hero-proof .hp-gap b { color: var(--text); }
+
+    /* ── Stats strip ── */
+    .stats-row { display: flex; justify-content: center; padding: 44px 0 0; }
+    .stats-inner { display: flex; flex-wrap: wrap; justify-content: center; }
+    .stat-item { padding: 0 36px; text-align: center; border-right: 1px solid var(--border); }
     .stat-item:last-child { border-right: none; }
     .stat-num { font-family: var(--mono); font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
-    .stat-num.green { color: var(--accent); }
     .stat-num.accent { color: var(--accent); }
     .stat-label { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
 
-    /* ── CTA cards ── */
-    .section-label { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 18px; }
-    .cta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 72px; }
-    .cta-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 30px;
-      text-decoration: none; color: var(--text);
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-      display: block; position: relative; overflow: hidden;
-    }
-    .cta-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% -20%, var(--accent-dim), transparent 70%);
-      opacity: 0; transition: opacity 0.2s;
-    }
-    .cta-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.32), 0 0 0 1px var(--accent-glow); text-decoration: none; color: var(--text); }
-    .cta-card:hover::before { opacity: 1; }
-    .cta-card.featured { border-color: rgba(16,185,129,0.35); background: linear-gradient(165deg, rgba(16,185,129,0.06), var(--surface) 60%); }
-    .cta-icon {
-      width: 46px; height: 46px; border-radius: 12px;
-      background: var(--accent-dim); border: 1px solid rgba(16,185,129,0.25);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px; position: relative;
-    }
-    .cta-card h2 { font-size: 1.12rem; font-weight: 700; margin-bottom: 9px; position: relative; }
-    .cta-card p { font-size: 13.5px; color: var(--text2); line-height: 1.65; margin-bottom: 20px; position: relative; }
-    .cta-arrow { font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--accent); position: relative; display: flex; align-items: center; gap: 5px; letter-spacing: 0.02em; }
-    .cta-arrow svg { transition: transform 0.15s; }
-    .cta-card:hover .cta-arrow svg { transform: translateX(3px); }
+    /* ── Wizard grid ── */
+    .section { padding: 78px 0 0; }
+    .section-label { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px; }
+    .section h2 { font-size: 1.75rem; font-weight: 800; margin-bottom: 8px; }
+    .section-sub { color: var(--text2); font-size: 15px; margin-bottom: 30px; max-width: 560px; text-wrap: pretty; }
 
-    /* ── Tool pages strip ── */
-    .tool-pages { margin-bottom: 72px; }
-    .tool-page-grid { display: flex; flex-wrap: wrap; gap: 10px; }
-    .tool-page-link {
-      display: flex; align-items: center; gap: 10px;
-      background: var(--surface2); border: 1px solid var(--border2);
-      border-radius: var(--radius-sm); padding: 12px 18px;
-      font-size: 13.5px; font-weight: 700; color: var(--text);
-      text-decoration: none; transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
-    }
-    .tool-page-link:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow); transform: translateY(-1px); }
-    .tool-page-link img { width: 20px; height: 20px; border-radius: 5px; object-fit: contain; background: #fff; padding: 2px; }
+    .wizard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .wizard-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 12px; transition: border-color 0.15s, transform 0.15s; }
+    a.wizard-card { color: inherit; }
+    a.wizard-card:hover { transform: translateY(-2px); }
+    .wizard-head { display: flex; align-items: center; gap: 12px; }
+    .wizard-head svg { width: 34px; height: 34px; flex-shrink: 0; }
+    .wizard-name { font-family: var(--display); font-size: 1.13rem; font-weight: 800; letter-spacing: -0.01em; }
+    .wizard-name .suffix { font-weight: 600; color: var(--muted); }
+    .wizard-desc { font-size: 13.5px; color: var(--text2); line-height: 1.65; }
+    .wizard-meta { font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+    .wizard-badge { position: absolute; top: 18px; right: 18px; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; padding: 4px 10px; border-radius: 99px; }
+    .badge-live { background: rgba(22,209,140,0.12); border: 1px solid rgba(22,209,140,0.45); color: var(--green); }
+    .badge-next { background: rgba(217,123,251,0.1); border: 1px solid rgba(217,123,251,0.4); color: #d97bfb; }
+    .badge-soon { background: var(--surface2); border: 1px solid var(--border2); color: var(--muted); }
+    .wizard-card.soon { opacity: 0.62; }
+    .wizard-card.live { border-color: rgba(22,209,140,0.4); }
+    .wizard-card.live:hover { border-color: var(--green); }
+    .wizard-go { font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--green); display: flex; align-items: center; gap: 5px; letter-spacing: 0.02em; }
 
-    /* ── FAQ ── */
-    .faq { margin-bottom: 80px; }
-    .faq-heading { font-size: 1.7rem; font-weight: 800; margin-bottom: 30px; }
-    .faq-item { border-bottom: 1px solid var(--border); }
-    .faq-q {
-      width: 100%; background: none; border: none; color: var(--text);
-      font-family: var(--font); font-size: 16px; font-weight: 600; letter-spacing: -0.01em;
-      text-align: left; padding: 22px 0; cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center; gap: 16px;
-      transition: color 0.15s;
-    }
-    .faq-q:hover { color: var(--accent); }
-    .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
-    .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--accent); }
-    .faq-a { display: none; color: var(--text2); font-size: 14.5px; line-height: 1.78; padding-bottom: 22px; max-width: 780px; }
-    .faq-item.open .faq-a { display: block; }
-    .faq-a a { color: var(--link); font-weight: 500; }
-    .faq-a a:hover { color: #9fbcff; }
-
-    /* ── Network band ── */
-    .network {
-      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 30px 32px; margin-bottom: 72px;
-      display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
-    }
-    .network-mark { display: flex; align-items: center; gap: 12px; }
-    .network-mark .dots { display: flex; }
-    .network-mark .dots span { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--bg); margin-left: -4px; }
-    .network-txt h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 3px; }
-    .network-txt p { font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .network-txt b { color: var(--text2); }
+    /* ── Edge section ── */
+    .edge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .edge-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 26px; }
+    .edge-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--accent); }
+    .edge-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .edge-card p { font-size: 13.5px; color: var(--text2); line-height: 1.7; }
 
     /* ── Footer ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 46px 32px 38px;
-      text-align: center;
-      font-family: var(--display);
-      font-size: 12.5px; color: var(--muted); line-height: 1.95; letter-spacing: 0;
-    }
+    footer { border-top: 1px solid var(--border); margin-top: 88px; padding: 46px 32px 38px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.95; }
     footer a { color: var(--muted); transition: color 0.15s; }
     footer a:hover { color: var(--text2); }
-    .footer-brand { display: flex; align-items: center; justify-content: center; gap: 9px; margin-bottom: 16px; font-family: var(--display); font-size: 15px; font-weight: 700; color: var(--text2); letter-spacing: 0.02em; }
-    .footer-brand .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 7px var(--accent); }
+    .footer-brand { display: inline-flex; align-items: center; justify-content: center; gap: 9px; margin-bottom: 14px; font-family: var(--display); font-size: 15px; font-weight: 700; color: var(--text2); }
+    .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
 
-    /* ── Scroll reveal + hero entrance ── */
-    @media (prefers-reduced-motion: no-preference) {
-      .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(0.16,0.84,0.44,1), transform 0.7s cubic-bezier(0.16,0.84,0.44,1); will-change: opacity, transform; }
-      .reveal.in { opacity: 1; transform: none; }
-      .reveal[data-d="1"] { transition-delay: 0.08s; }
-      .reveal[data-d="2"] { transition-delay: 0.16s; }
-      .reveal[data-d="3"] { transition-delay: 0.24s; }
-      .hero-eyebrow, .hero h1, .hero p, .hero-cta { animation: heroIn 0.85s cubic-bezier(0.16,0.84,0.44,1) backwards; }
-      .hero h1 { animation-delay: 0.07s; }
-      .hero p { animation-delay: 0.15s; }
-      .hero-cta { animation-delay: 0.23s; }
-      @keyframes heroIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-      .wrap { padding: 0 20px; }
-      .nav-top, .nav-bottom { padding: 0 20px; }
-      .hero { padding: 60px 0 50px; }
-      .stats-row { flex-direction: column; }
-      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
-      .stat-item:last-child { border-bottom: none; }
-      .network { flex-direction: column; align-items: flex-start; }
-    }
-  
-    /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
+    /* ── Mobile ── */
     @media (max-width: 760px) {
       .wrap { padding-left: 18px; padding-right: 18px; }
       .nav-top { padding-left: 18px; padding-right: 18px; }
-      .nav-bottom { padding-left: 8px; padding-right: 8px; }
-      .nav-bottom a { padding: 13px 14px; }
     }
     @media (max-width: 620px) {
       .nav-badge { display: none; }
-      .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding: 64px 0 48px; }
+      .stat-item { padding: 0 20px; }
+      .stat-num { font-size: 1.35rem; }
+      .hero-proof { flex-direction: column; gap: 7px; border-radius: 18px; padding: 14px 22px; }
+      .hero-proof .hp-gap { border-left: none; padding-left: 0; border-top: 1px solid var(--border2); padding-top: 8px; width: 100%; text-align: center; }
     }
-    @media (max-width: 460px) {
-      .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
-    }
-  
-    /* AC-CTA-STACK ── stack hero/CTA button rows full-width on small phones */
     @media (max-width: 520px) {
-      .cta-row { flex-direction: column; align-items: stretch; }
-      .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+      .hero-cta { flex-direction: column; align-items: stretch; }
+      .hero-cta > a { justify-content: center; text-align: center; }
     }
   </style>
 <!-- GA4 (build.py) -->
@@ -375,204 +158,163 @@
 
 <header>
   <div class="nav-top">
-    <a href="index.html" class="logo">
+    <a href="#" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
+        <defs><linearGradient id="wzlogo" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#b08cff"></stop><stop offset="1" stop-color="#7c4dff"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wzlogo)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path>
       </svg>
-      Automation<span>Cost</span><span class="io">.io</span>
+      Wizard<span class="c">Cost</span>
     </a>
-    <span class="nav-badge">Updated June 2026 · Real pricing data</span>
+    <span class="nav-badge">7 wizards planned · 1 live</span>
   </div>
-  <nav class="nav-bottom">
-    <a href="index.html" class="active">Home</a>
-    <a href="calculator.html">Calculator</a>
-    <a href="compare.html">Compare</a>
-    <a href="limits.html">Pricing & Limits</a>
-    <a href="tools.html">Tools</a>
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-btn">Pricing Guides <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="nav-dropdown-menu">
-        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
-        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
-        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
-        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
-        <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
-      </div>
-    </div>
-  </nav>
 </header>
 
-<div class="wrap">
-
-  <div class="hero">
-    <div class="hero-eyebrow">
-      <span class="dot"></span>
-      Free · No signup · Updated June 2026
-    </div>
-    <h1>Find the automation tool that's <em>actually cheapest</em> for you.</h1>
-    <p>Real pricing for n8n, Make, Pipedream, Zapier and more — matched to your real usage, not marketing pages. Answer 3 questions, get your pick in 30 seconds.</p>
-    <div class="hero-cta">
-      <a href="calculator.html" class="btn-primary">
-        Find my best tool
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
-      </a>
-      <a href="compare.html" class="btn-secondary">Compare tools →</a>
-    </div>
-  </div>
-
-  <div class="stats-row reveal">
-    <div class="stat-item">
-      <div class="stat-num accent">7</div>
-      <div class="stat-label">tools tracked</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">30+</div>
-      <div class="stat-label">pricing plans</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num green">weekly</div>
-      <div class="stat-label">data refresh</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">$0</div>
-      <div class="stat-label">to use this site</div>
-    </div>
-  </div>
-
-  <div class="cta-grid">
-    <a href="calculator.html" class="cta-card featured reveal" data-d="1">
-      <div class="cta-icon">
-        <svg width="22" height="22" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/></svg>
-      </div>
-      <h2>Find my best tool</h2>
-      <p>Answer 3 questions about your role, volume, and budget — get a ranked, personalized match with the cheapest pick flagged.</p>
-      <span class="cta-arrow">Start the finder <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+<section class="hero wrap" data-screen-label="Hero">
+  <div class="hero-eyebrow"><span class="dot"></span>Free · No signup · Prices verified June 2026</div>
+  <h1>Know what software will <em>actually cost</em> — before you sign up.</h1>
+  <p>WizardCost runs live pricing calculators for software categories. Real advertised prices, your actual usage, and the cheapest pick computed — not star ratings.</p>
+  <div class="hero-cta">
+    <a href="/automation/" class="btn-primary">
+      Try the Automation wizard
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"></polyline></svg>
     </a>
-    <a href="compare.html" class="cta-card reveal" data-d="2">
-      <div class="cta-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16d18c" stroke-width="2.2"><path d="M9 3v18M15 3v18M4 8h16M4 16h16"/></svg>
+    <a href="#wizards" class="btn-secondary">See all wizards ↓</a>
+  </div>
+  <div class="hero-proof">
+    <span class="hp-label">From the Automation wizard — same 5,000 ops/mo:</span>
+    <span class="hp-cmp"><span class="hp-price"><b>$8</b> on n8n</span> <span class="hp-caret" aria-hidden="true">&lt;</span> <span class="hp-price dim"><b>$124</b> on Zapier</span></span>
+    <span class="hp-gap">a <b>$1,392/yr</b> gap</span>
+  </div>
+
+  <div class="stats-row">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-num accent">7</div><div class="stat-label">tools tracked</div></div>
+      <div class="stat-item"><div class="stat-num">24</div><div class="stat-label">plans priced</div></div>
+      <div class="stat-item"><div class="stat-num">Jun 2026</div><div class="stat-label">prices verified</div></div>
+      <div class="stat-item"><div class="stat-num accent">$0</div><div class="stat-label">to use</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section wrap" id="wizards" data-screen-label="Wizard grid">
+  <div class="section-label">The Wizards</div>
+  <h2>One wizard per software category.</h2>
+  <p class="section-sub">Each wizard tracks real advertised pricing for its niche and computes the cheapest tool for your usage.</p>
+
+  <div class="wizard-grid">
+
+    <a class="wizard-card live" href="/automation/">
+      <span class="wizard-badge badge-live">● LIVE</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg1" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg1)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#16d18c;">Automation<span class="suffix">Cost</span></span>
       </div>
-      <h2>Compare Tools</h2>
-      <p>Pick any 2–4 tools and see pricing, limits, features, and plans side by side. Or browse all plans at once.</p>
-      <span class="cta-arrow">Compare tools <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+      <div class="wizard-desc">n8n, Make, Zapier, Pipedream &amp; more — priced at your ops volume, with free-tier limits and self-hosting math.</div>
+      <div class="wizard-meta">7 tools · calculator + compare · updated Jun 2026</div>
+      <div class="wizard-go">Open wizard <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
     </a>
-    <a href="limits.html" class="cta-card reveal" data-d="3">
-      <div class="cta-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16d18c" stroke-width="2.2"><path d="M4 19V5M4 19h16M9 16V9M14 16V6M19 16v-4"/></svg>
+
+    <div class="wizard-card">
+      <span class="wizard-badge badge-next">NEXT UP</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg2" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e98bff"></stop><stop offset="1" stop-color="#c44dff"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg2)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#d97bfb;">LLM<span class="suffix">Cost</span></span>
       </div>
-      <h2>Pricing &amp; Limits</h2>
-      <p>Full table of ops limits, workflow caps, execution timeouts, and log history for every tool. Filterable.</p>
-      <span class="cta-arrow">See all limits <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
-    </a>
-  </div>
-
-  <div class="tool-pages reveal">
-    <div class="section-label">Pricing guides by tool</div>
-    <div class="tool-page-grid">
-      <a href="n8n-pricing.html" class="tool-page-link"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=64" alt="n8n">n8n Pricing</a>
-      <a href="make-pricing.html" class="tool-page-link"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=64" alt="Make">Make Pricing</a>
-      <a href="pipedream-pricing.html" class="tool-page-link"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=64" alt="Pipedream">Pipedream Pricing</a>
-      <a href="zapier-pricing.html" class="tool-page-link"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=64" alt="Zapier">Zapier Pricing</a>
-      <a href="activepieces-pricing.html" class="tool-page-link"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=64" alt="Activepieces">Activepieces Pricing</a>
-      <a href="automatisch-pricing.html" class="tool-page-link"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=64" alt="Automatisch">Automatisch Pricing</a>
-      <a href="node-red-pricing.html" class="tool-page-link"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=64" alt="Node-RED">Node-RED Pricing</a>
-    </div>
-  </div>
-
-  <div class="faq reveal">
-    <h2 class="faq-heading">Frequently asked questions</h2>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Is n8n cheaper than Make?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Self-hosted n8n costs ~$8/mo (server only) with unlimited ops — cheaper than any Make plan for high volumes. On cloud, <a href="make-pricing.html">Make Core at $9/mo</a> gives 10,000 ops while <a href="n8n-pricing.html">n8n Cloud Starter at $20/mo</a> gives only 2,500 ops, making Make cheaper for cloud users under 10k ops/month. <a href="compare.html?tools=n8n,make">Compare n8n vs Make →</a></div>
+      <div class="wizard-desc">OpenAI, Anthropic, Gemini, Mistral — price per million tokens at your real prompt/completion mix.</div>
+      <div class="wizard-meta">in the works</div>
     </div>
 
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Is n8n cheaper than Zapier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Yes, significantly. n8n self-hosted costs ~$8/mo with unlimited operations. <a href="zapier-pricing.html">Zapier charges $49/mo</a> for just 2,000 tasks. Even n8n Cloud at $20/mo (2,500 ops) beats Zapier's $20/mo Starter plan which includes only 750 tasks. <a href="compare.html?tools=n8n,zapier">Compare n8n vs Zapier →</a></div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">How much does n8n Cloud cost?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">n8n Cloud starts at $20/mo (Starter: 2,500 ops, 5 workflows) and $50/mo (Pro: 10,000 ops, 15 workflows). Self-hosted n8n costs only your server (~$8/mo on a basic VPS) with no ops or workflow limits. <a href="n8n-pricing.html">Full n8n pricing breakdown →</a></div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">What is Make.com pricing?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Make offers a free plan with 1,000 ops/month. Paid plans start at $9/mo (Core, 10,000 ops), $16/mo (Pro), and $29/mo (Teams). Additional ops cost $9 per 10,000. Make is the most affordable cloud option for mid-volume automation. <a href="make-pricing.html">Full Make pricing breakdown →</a></div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Which automation tool has the cheapest free plan?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Make has the most generous free plan at 1,000 ops/month with unlimited workflows. Zapier and Pipedream free tiers are limited to 100 ops/month. n8n, Activepieces, and Automatisch are free when self-hosted with no limits. <a href="limits.html">See all free plan limits →</a></div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Is Pipedream cheaper than Zapier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a"><a href="pipedream-pricing.html">Pipedream Basic at $29/mo</a> (2,000 credits) vs <a href="zapier-pricing.html">Zapier Professional at $49/mo</a> (2,000 tasks) — Pipedream wins on price. But Zapier has 7,000+ integrations vs Pipedream's 2,000, so the right choice depends on which integrations you need. <a href="compare.html?tools=pipedream,zapier">Compare Pipedream vs Zapier →</a></div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Can I self-host Make or Zapier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">No. Make and Zapier are cloud-only. If you need self-hosting for GDPR compliance or cost control, consider <a href="n8n-pricing.html">n8n</a> (Sustainable Use license), <a href="activepieces-pricing.html">Activepieces</a> (MIT license), Automatisch (AGPL), or Node-RED (Apache 2.0).</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">What is the cheapest way to run n8n?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Self-hosting n8n on a VPS (e.g., Oracle Free Tier, Hetzner ~$4/mo, or DigitalOcean ~$6/mo) gives you unlimited ops and workflows for almost nothing. The n8n community edition is free — you only pay for the server. <a href="n8n-pricing.html">n8n self-hosted vs cloud cost →</a></div>
-    </div>
-  </div>
-
-  <div class="network reveal">
-    <div class="network-mark">
-      <svg width="34" height="34" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/></svg>
-      <div class="dots">
-        <span style="background:#10b981"></span>
-        <span style="background:#2f6bff"></span>
-        <span style="background:#a855f7"></span>
-        <span style="background:#f59e0b"></span>
+    <div class="wizard-card soon">
+      <span class="wizard-badge badge-soon">SOON</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg3" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc06b"></stop><stop offset="1" stop-color="#e07b2a"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg3)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#ffa45c;">Email<span class="suffix">Cost</span></span>
       </div>
+      <div class="wizard-desc">Transactional email APIs — Resend, Postmark, SendGrid, SES — priced per send volume.</div>
+      <div class="wizard-meta">coming soon</div>
     </div>
-    <div class="network-txt">
-      <h3>Part of the Cost.io network</h3>
-      <p><b>AutomationCost.io</b> is one of a family of independent, data-driven cost-comparison sites. Same honest method, no marketing fluff — just the real number for your usage.</p>
+
+    <div class="wizard-card soon">
+      <span class="wizard-badge badge-soon">SOON</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg4" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6fc2ff"></stop><stop offset="1" stop-color="#2a6fdb"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg4)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#5cb8ff;">Storage<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">Object storage &amp; CDN — S3, R2, B2, Wasabi — priced per TB stored and egressed.</div>
+      <div class="wizard-meta">coming soon</div>
+    </div>
+
+    <div class="wizard-card soon">
+      <span class="wizard-badge badge-soon">SOON</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg5" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff9a8b"></stop><stop offset="1" stop-color="#e85a4a"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg5)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#ff7a6b;">CRM<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">HubSpot, Pipedrive, Attio &amp; friends — priced per seat, with the upgrade-tier traps mapped.</div>
+      <div class="wizard-meta">coming soon</div>
+    </div>
+
+    <div class="wizard-card soon">
+      <span class="wizard-badge badge-soon">SOON</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg6" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffd35c"></stop><stop offset="1" stop-color="#d99a0b"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg6)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#fbbf24;">SEO<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">Ahrefs, Semrush, lower-cost challengers — priced per tracked keywords and crawl credits.</div>
+      <div class="wizard-meta">coming soon</div>
+    </div>
+
+    <div class="wizard-card soon">
+      <span class="wizard-badge badge-soon">SOON</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg7" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5ce8d4"></stop><stop offset="1" stop-color="#0ea5a0"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg7)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#2dd4bf;">Nocode<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">Bubble, Webflow, Glide, Softr — priced per app, records and visitors as you grow.</div>
+      <div class="wizard-meta">coming soon</div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section wrap" data-screen-label="Why WizardCost">
+  <div class="section-label">Why WizardCost</div>
+  <h2>Calculators, not star ratings.</h2>
+  <p class="section-sub">Most software directories rank tools by reviews and ad budgets. We just do the math.</p>
+
+  <div class="edge-grid">
+    <div class="edge-card">
+      <div class="edge-icon">=</div>
+      <h3>Your usage, your price</h3>
+      <p>Enter your real volume — ops, tokens, sends, seats — and see the actual monthly bill for every tool, not a "starting at" teaser.</p>
+    </div>
+    <div class="edge-card">
+      <div class="edge-icon">↻</div>
+      <h3>Fresh, dated prices</h3>
+      <p>Every price is taken from the vendor's official pricing page and stamped with the date it was last verified. No stale screenshots.</p>
+    </div>
+    <div class="edge-card">
+      <div class="edge-icon">&lt;</div>
+      <h3>Math picks the winner</h3>
+      <p>The cheapest tool at your volume is computed, not sponsored. When we earn an affiliate commission, it's labeled — and it never changes the ranking.</p>
     </div>
   </div>
+</section>
 
-</div>
-
-<footer>
-  <div class="footer-brand"><span class="dot"></span>AutomationCost.io</div>
-  <div>Independent, data-driven pricing comparisons for automation tools.</div>
-  <div style="margin-top:8px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
-  <div style="margin-top:8px">Prices verified June 2026 · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+<footer data-screen-label="Footer">
+  <div class="footer-brand">
+    <svg width="20" height="20" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wzfoot" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#b08cff"></stop><stop offset="1" stop-color="#7c4dff"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wzfoot)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+    WizardCost
+  </div>
+  <div class="footer-links">
+    <a href="/automation/">Automation wizard</a>
+    <a href="/automation/affiliate.html">Affiliate disclosure</a>
+    <a href="/automation/privacy.html">Privacy</a>
+    <a href="/automation/terms.html">Terms</a>
+  </div>
+  <div>© 2026 WizardCost. Prices belong to their vendors and can change — always confirm on the official pricing page.</div>
 </footer>
 
-<script>
-function toggleFaq(btn) {
-  btn.closest(".faq-item").classList.toggle("open");
-}
-const dd = document.querySelector(".nav-dropdown");
-if (dd) {
-  dd.querySelector(".nav-dropdown-btn").addEventListener("click", function(e) {
-    e.stopPropagation();
-    dd.classList.toggle("open");
-  });
-  document.addEventListener("click", () => dd.classList.remove("open"));
-}
-
-// Scroll reveal — windows fade + slide up as they enter the viewport
-(function () {
-  var els = document.querySelectorAll(".reveal");
-  if (!("IntersectionObserver" in window)) { els.forEach(function (el) { el.classList.add("in"); }); return; }
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-  els.forEach(function (el) { io.observe(el); });
-})();
-</script>
 </body>
 </html>

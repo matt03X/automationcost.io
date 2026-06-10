@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Find Your Best Automation Tool 2026 — Guided Tool Finder | AutomationCost.io</title>
-  <meta name="description" content="Answer 3 questions about your role, workflow type, and budget — get a personalized match score for n8n, Make, Pipedream, Zapier and more.">
+  <meta name="description" content="Answer a few quick questions about your team, role, workflow type, and budget — get a personalized match score for n8n, Make, Pipedream, Zapier and more.">
   <link rel="canonical" href="https://wizardcost.com/automation/calculator.html">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,7 +43,7 @@
     .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
     .logo span { color: var(--accent); }
     .logo .io { color: var(--muted); font-weight: 600; }
-    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 8px; }
+    .logo-icon { width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }
     .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 11px; color: var(--muted); letter-spacing: 0.01em; }
 
     /* ── Layout ── */
@@ -51,7 +51,7 @@
 
     /* ── Wizard progress ── */
     .wizard-progress { display: flex; align-items: center; gap: 0; margin-bottom: 40px; padding-top: 36px; }
-    .wp-step { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted); flex-shrink: 0; }
+    .wp-step { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted); flex-shrink: 0; white-space: nowrap; }
     .wp-step.active { color: var(--text); }
     .wp-step.done { color: var(--green); }
     .wp-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; transition: all 0.2s; }
@@ -316,10 +316,11 @@
   <div class="nav-top">
     <a href="index.html" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
+        <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
       </svg>
-      Automation<span>Cost</span><span class="io">.io</span>
+      Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
     </a>
     <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
@@ -1910,6 +1911,8 @@ function updateBudget(v) {
 }
 
 // ── Volume & budget auto-estimate ─────────────────────────────────────────────
+// Derives ops / workflows / budget from the wizard's company-size + role + workflow
+// picks, then feeds applyEstimate(). Called from goStep(4) when a size is chosen.
 function estimateVolumeBudget() {
   const sizeBase = {
     solo:       { ops: 1000,   workflows: 2,  budget: 10  },
@@ -1918,9 +1921,11 @@ function estimateVolumeBudget() {
     midmarket:  { ops: 100000, workflows: 20, budget: 200 },
     enterprise: { ops: 300000, workflows: 30, budget: 350 },
   };
-  const roleOpsScale    = { dev: 1.4, ops: 1.3, founder: 0.9, nocode: 0.8 };
-  const roleWfScale     = { dev: 0.9, ops: 1.0, founder: 1.2, nocode: 1.3 };
-  const roleBudgetScale = { dev: 1.1, ops: 1.1, founder: 1.0, nocode: 0.9 };
+  // Keys MUST match the data-role values in the markup:
+  // developer | operations | marketing | finance | legal | hr | ecommerce | other
+  const roleOpsScale    = { developer: 1.4, operations: 1.3, ecommerce: 1.5, marketing: 1.1, finance: 0.9, hr: 0.7, legal: 0.6, other: 1.0 };
+  const roleWfScale     = { developer: 0.9, operations: 1.2, ecommerce: 1.2, marketing: 1.3, finance: 1.0, hr: 0.9, legal: 0.8, other: 1.0 };
+  const roleBudgetScale = { developer: 1.1, operations: 1.1, ecommerce: 1.2, marketing: 1.0, finance: 0.9, hr: 0.8, legal: 0.8, other: 1.0 };
 
   const base = sizeBase[selectedCompanySize] || sizeBase.small;
   const rs   = roleOpsScale[selectedRole]    || 1;
@@ -1939,20 +1944,21 @@ function estimateVolumeBudget() {
   // extra workflows add proportional ops
   const wfCount = Math.max(1, selectedWorkflows.length);
 
+  // ops / workflows are snapped to the nearest slider step by findClosestIdx,
+  // so values above the top step simply clamp to it. budget is a continuous
+  // slider (max 300) — clamp here so the displayed $ never exceeds the track.
+  const BUDGET_MAX = 300;
   return {
     ops:       Math.round(base.ops * rs * wfMult * Math.sqrt(wfCount)),
     workflows: Math.round(base.workflows * rw * Math.sqrt(wfCount)),
-    budget:    Math.round(base.budget * rb),
+    budget:    Math.min(BUDGET_MAX, Math.round(base.budget * rb)),
   };
 }
 
-// ── Volume & budget auto-estimate (VISUAL PLUMBING — math added separately) ───
-// Integration point for Claude Code: compute the numbers from selectedCompanySize
-// / selectedRole / selectedWorkflow, then call:
-//     applyEstimate({ ops: 12000, workflows: 6, budget: 80 });
-// Pass only the keys you want to fill. This sets the sliders to the closest step,
-// refreshes their displays, reveals the "✦ auto-estimated" badges and the banner.
-// If the user then drags a slider, that slider's badge auto-clears (see below).
+// ── Apply estimate to sliders (VISUAL PLUMBING) ───────────────────────────────
+// Sets the sliders to the closest step, refreshes their displays, reveals the
+// "✦ auto-estimated" badges and the banner. If the user then drags a slider,
+// that slider's badge auto-clears (see below).
 function applyEstimate(est) {
   est = est || {};
   if (typeof est.ops === "number") {

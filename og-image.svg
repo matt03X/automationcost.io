@@ -1,22 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
   <defs>
     <radialGradient id="g" cx="50%" cy="2%" r="75%">
-      <stop offset="0%" stop-color="#10b981" stop-opacity="0.22"></stop>
-      <stop offset="58%" stop-color="#0a0e17" stop-opacity="0"></stop>
+      <stop offset="0%" stop-color="#7c4dff" stop-opacity="0.24"></stop>
+      <stop offset="58%" stop-color="#0b0a12" stop-opacity="0"></stop>
     </radialGradient>
+    <linearGradient id="mk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b08cff"></stop>
+      <stop offset="1" stop-color="#7c4dff"></stop>
+    </linearGradient>
   </defs>
 
-  <rect width="1200" height="630" fill="#0a0e17"></rect>
+  <rect width="1200" height="630" fill="#0b0a12"></rect>
   <rect width="1200" height="630" fill="url(#g)"></rect>
 
-  <g transform="translate(525,118) scale(3)">
-    <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path>
-    <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"></circle>
+  <g transform="translate(522,112) scale(3)">
+    <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#mk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path>
   </g>
 
-  <text x="600" y="392" text-anchor="middle" font-family="Helvetica, Arial, system-ui, sans-serif" font-weight="700" font-size="68" letter-spacing="-2.5" fill="#e8edf5">Automation<tspan fill="#10b981">Cost</tspan><tspan fill="#6b7a99">.io</tspan></text>
+  <text x="600" y="392" text-anchor="middle" font-family="Helvetica, Arial, system-ui, sans-serif" font-weight="700" font-size="68" letter-spacing="-2.5" fill="#ece8f7">Wizard<tspan fill="#b08cff">Cost</tspan></text>
 
-  <text x="600" y="452" text-anchor="middle" font-family="Helvetica, Arial, system-ui, sans-serif" font-weight="400" font-size="26" fill="#8a97b0">How much does your automation actually cost?</text>
+  <text x="600" y="452" text-anchor="middle" font-family="Helvetica, Arial, system-ui, sans-serif" font-weight="400" font-size="26" fill="#9890b0">Real pricing calculators for software — not star ratings.</text>
 
-  <text x="600" y="524" text-anchor="middle" font-family="'Courier New', monospace" font-weight="700" font-size="28" letter-spacing="1" fill="#5a6680">n8n<tspan fill="#16d18c">  ‹  </tspan>make<tspan fill="#16d18c">  ‹  </tspan>zapier</text>
+  <text x="600" y="524" text-anchor="middle" font-family="'Courier New', monospace" font-weight="700" font-size="28" letter-spacing="1" fill="#6a6280">automation<tspan fill="#b08cff">  ‹  </tspan>llm<tspan fill="#b08cff">  ‹  </tspan>storage<tspan fill="#b08cff">  ‹  </tspan>crm</text>
 </svg>

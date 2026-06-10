@@ -132,7 +132,7 @@
     .logo:hover { color: var(--text); }
     .logo span { color: var(--accent); }
     .logo .io { color: var(--muted); font-weight: 600; }
-    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 8px; }
+    .logo-icon { width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }
     .nav-badge {
       font-family: var(--mono);
       font-size: 11px; font-weight: 500;
@@ -192,7 +192,15 @@
       -webkit-text-fill-color: transparent; color: transparent;
     }
     .hero p { color: var(--text2); font-size: 1.16rem; max-width: 580px; margin: 0 auto 42px; line-height: 1.72; text-wrap: pretty; }
-    .hero-cta { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 60px; }
+    .hero-cta { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 26px; }
+    .hero-proof { display: inline-flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 13.5px; color: var(--muted); font-family: var(--mono); margin-bottom: 60px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 99px; padding: 9px 20px; }
+    .hero-proof b { color: var(--text); font-weight: 700; }
+    .hero-proof .hp-price b { color: #16d18c; }
+    .hero-proof .hp-price.dim b { color: #e25c5c; }
+    .hero-proof .hp-cmp { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .hero-proof .hp-caret { color: #16d18c; font-weight: 800; }
+    .hero-proof .hp-gap { border-left: 1px solid var(--border2); padding-left: 12px; }
+    .hero-proof .hp-gap b { color: var(--text); }
     .btn-primary {
       background: var(--accent); color: var(--ink);
       border: none; border-radius: var(--radius-sm);
@@ -355,6 +363,9 @@
     @media (max-width: 620px) {
       .nav-badge { display: none; }
       .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+      /* hero proof: stack as centered rows — keep "$8 on n8n < $124 on Zapier" together */
+      .hero-proof { flex-direction: column; gap: 7px; border-radius: 18px; padding: 14px 22px; }
+      .hero-proof .hp-gap { border-left: none; padding-left: 0; border-top: 1px solid var(--border2); padding-top: 8px; width: 100%; text-align: center; }
     }
     @media (max-width: 460px) {
       .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
@@ -377,10 +388,11 @@
   <div class="nav-top">
     <a href="index.html" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
+        <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
       </svg>
-      Automation<span>Cost</span><span class="io">.io</span>
+      Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
     </a>
     <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
@@ -411,13 +423,18 @@
       Free · No signup · Updated June 2026
     </div>
     <h1>Find the automation tool that's <em>actually cheapest</em> for you.</h1>
-    <p>Real pricing for n8n, Make, Pipedream, Zapier and more — matched to your real usage, not marketing pages. Answer 3 questions, get your pick in 30 seconds.</p>
+    <p>Real pricing for n8n, Make, Pipedream, Zapier and more — matched to your real usage, not marketing pages. Answer a few quick questions, get your pick in 30 seconds.</p>
     <div class="hero-cta">
       <a href="calculator.html" class="btn-primary">
         Find my best tool
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
       </a>
       <a href="compare.html" class="btn-secondary">Compare tools →</a>
+    </div>
+    <div class="hero-proof">
+      <span class="hp-label">Same 5,000 ops/mo:</span>
+      <span class="hp-cmp"><span class="hp-price"><b>$8</b> on n8n</span> <span class="hp-caret" aria-hidden="true">&lt;</span> <span class="hp-price dim"><b>$124</b> on Zapier</span></span>
+      <span class="hp-gap">that's a <b>$1,392/yr</b> gap</span>
     </div>
   </div>
 
@@ -446,7 +463,7 @@
         <svg width="22" height="22" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/></svg>
       </div>
       <h2>Find my best tool</h2>
-      <p>Answer 3 questions about your role, volume, and budget — get a ranked, personalized match with the cheapest pick flagged.</p>
+      <p>Answer a few questions about your team, volume, and budget — get a ranked, personalized match with the cheapest pick flagged.</p>
       <span class="cta-arrow">Start the finder <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
     </a>
     <a href="compare.html" class="cta-card reveal" data-d="2">
@@ -526,24 +543,24 @@
 
   <div class="network reveal">
     <div class="network-mark">
-      <svg width="34" height="34" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/></svg>
+      <svg width="34" height="34" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="acmk2" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#b08cff"></stop><stop offset="1" stop-color="#7c4dff"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk2)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
       <div class="dots">
-        <span style="background:#10b981"></span>
-        <span style="background:#2f6bff"></span>
-        <span style="background:#a855f7"></span>
-        <span style="background:#f59e0b"></span>
+        <span style="background:#16d18c"></span>
+        <span style="background:#d97bfb"></span>
+        <span style="background:#5cb8ff"></span>
+        <span style="background:#ffa45c"></span>
       </div>
     </div>
     <div class="network-txt">
-      <h3>Part of the Cost.io network</h3>
-      <p><b>AutomationCost.io</b> is one of a family of independent, data-driven cost-comparison sites. Same honest method, no marketing fluff — just the real number for your usage.</p>
+      <h3>Part of WizardCost</h3>
+      <p><b>AutomationCost</b> is the first of <a href="/">WizardCost</a>'s pricing wizards — live calculators with real, dated prices for a whole software category. Same honest method, no marketing fluff.</p>
     </div>
   </div>
 
 </div>
 
 <footer>
-  <div class="footer-brand"><span class="dot"></span>AutomationCost.io</div>
+  <div class="footer-brand"><span class="dot"></span>AutomationCost</div>
   <div>Independent, data-driven pricing comparisons for automation tools.</div>
   <div style="margin-top:8px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
   <div style="margin-top:8px">Prices verified June 2026 · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>

@@ -70,7 +70,8 @@
     .tool-badge img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 1px; }
     .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
     .page-hero p { color: var(--muted); font-size: 1.05rem; max-width: 640px; margin-bottom: 28px; }
-    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .hero-trust { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 48px; }
     .btn-primary { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 24px; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 6px 20px rgba(16,185,129,0.26); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
     .btn-primary:hover { background: var(--accent-br); transform: translateY(-1px); text-decoration: none; box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 10px 28px rgba(16,185,129,0.36); }
     .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.15s; }
@@ -152,10 +153,11 @@
   <div class="nav-top">
     <a href="index.html" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
+        <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
       </svg>
-      Automation<span>Cost</span><span class="io">.io</span>
+      Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
     </a>
     <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
@@ -185,9 +187,11 @@
     <h1>Activepieces Pricing 2026 — Free Open Source Automation</h1>
     <p>Activepieces is MIT-licensed — free forever for self-hosting, with no restrictions. Cloud plans start at $10/mo. Here's everything you need to know.</p>
     <div class="cta-row">
-      <a href="compare.html?tools=activepieces,n8n" class="btn-primary">Compare Activepieces vs n8n</a>
+      <a href="https://www.activepieces.com" target="_blank" rel="noopener sponsored" class="btn-primary">Try Activepieces free →</a>
+      <a href="compare.html?tools=activepieces,n8n" class="btn-secondary">Compare Activepieces vs n8n</a>
       <a href="compare.html?tools=activepieces,zapier" class="btn-secondary">Compare Activepieces vs Zapier</a>
     </div>
+    <div class="hero-trust">Prices verified June 2026 · taken from Activepieces’s official pricing page</div>
   </div>
 
   <div class="section">

@@ -199,10 +199,17 @@ def public_pages(exclude: list[str]) -> list[Path]:
     )
 
 
-def build_sitemap(domain: str, pages: list[Path]) -> bool:
+def _site_prefix(domain: str, base_path: str) -> str:
+    """https://domain  +  optional /base_path  (no trailing slash)."""
+    bp = (base_path or "").strip("/")
+    return f"https://{domain}/{bp}".rstrip("/") if bp else f"https://{domain}"
+
+
+def build_sitemap(domain: str, base_path: str, pages: list[Path]) -> bool:
+    prefix = _site_prefix(domain, base_path)
     urls = []
     for p in pages:
-        loc = f"https://{domain}/" if p.name == "index.html" else f"https://{domain}/{p.name}"
+        loc = f"{prefix}/" if p.name == "index.html" else f"{prefix}/{p.name}"
         urls.append(f"  <url><loc>{loc}</loc></url>")
     xml = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -216,8 +223,16 @@ def build_sitemap(domain: str, pages: list[Path]) -> bool:
     return False
 
 
-def build_robots(domain: str) -> bool:
-    txt = f"User-agent: *\nAllow: /\n\nSitemap: https://{domain}/sitemap.xml\n"
+def build_robots(domain: str, base_path: str, extra_sitemaps: list[str] | None = None) -> bool:
+    """robots.txt only belongs at the domain root. In a sub-folder build
+    (base_path set) we skip it — the root build owns the canonical robots.txt.
+    extra_sitemaps lists additional sitemap URLs (e.g. per-section /automation/
+    sitemaps) so crawlers discover every section from the one root robots.txt."""
+    if (base_path or "").strip("/"):
+        return False
+    sitemaps = [f"https://{domain}/sitemap.xml", *(extra_sitemaps or [])]
+    lines = "\n".join(f"Sitemap: {s}" for s in sitemaps)
+    txt = f"User-agent: *\nAllow: /\n\n{lines}\n"
     out = ROOT / "robots.txt"
     if not out.exists() or out.read_text(encoding="utf-8") != txt:
         out.write_text(txt, encoding="utf-8")
@@ -290,14 +305,20 @@ def main() -> int:
                         help="Selže (exit 1), pokud by build něco změnil — bez zápisu.")
     args = parser.parse_args()
 
-    data = json.loads(DATA.read_text(encoding="utf-8"))
-    tools = data["tools"]
     site = load_site()
 
-    targets = {
-        ROOT / "calculator.html": render_calculator(tools),
-        ROOT / "compare.html": render_compare(tools),
-    }
+    # TOOLS injection only applies to pages that actually carry the markers.
+    # An umbrella/homepage build (no calculator.html / compare.html present)
+    # simply skips it and still does sitemap / robots / analytics.
+    targets = {}
+    if DATA.exists():
+        data = json.loads(DATA.read_text(encoding="utf-8"))
+        tools = data["tools"]
+        candidates = {
+            ROOT / "calculator.html": render_calculator,
+            ROOT / "compare.html": render_compare,
+        }
+        targets = {p: fn(tools) for p, fn in candidates.items() if p.exists()}
 
     if args.check:
         dirty = []
@@ -322,10 +343,11 @@ def main() -> int:
 
     # site-wide artefakty
     domain = site.get("domain", "automationcost.io")
+    base_path = site.get("base_path", "")
     pages = public_pages(site.get("sitemap_exclude", ["404.html"]))
-    if build_sitemap(domain, pages):
+    if build_sitemap(domain, base_path, pages):
         changed.append("sitemap.xml")
-    if build_robots(domain):
+    if build_robots(domain, base_path, site.get("extra_sitemaps", [])):
         changed.append("robots.txt")
     an_changed = apply_analytics(site.get("cloudflare_analytics_token", ""), pages)
     changed.extend(an_changed)

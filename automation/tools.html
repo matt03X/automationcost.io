@@ -57,7 +57,7 @@
     .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
     .logo span { color: var(--accent); }
     .logo .io { color: var(--muted); font-weight: 600; }
-    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 8px; }
+    .logo-icon { width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }
     .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); display: flex; align-items: center; gap: 7px; letter-spacing: 0.01em; }
     .nav-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 7px var(--accent); }
 
@@ -198,10 +198,11 @@
   <div class="nav-top">
     <a href="index.html" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/>
+        <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
       </svg>
-      Automation<span>Cost</span><span class="io">.io</span>
+      Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
     </a>
     <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
@@ -320,7 +321,7 @@
           <span class="badge badge-muted">Proprietary</span>
         </div>
       </div>
-      <a href="https://www.make.com/en/register?pc=wizardcost" target="_blank" rel="noopener sponsored" class="tool-cta">Try Make free →</a>
+      <a href="https://www.make.com" target="_blank" rel="noopener sponsored" class="tool-cta">Try Make free →</a>
     </div>
     <div class="tool-body">
       <div class="tool-section">
