@@ -6,6 +6,66 @@
   <title>Find Your Best Automation Tool 2026 — Guided Tool Finder | AutomationCost.io</title>
   <meta name="description" content="Answer a few quick questions about your team, role, workflow type, and budget — get a personalized match score for n8n, Make, Pipedream, Zapier and more.">
   <link rel="canonical" href="https://wizardcost.com/automation/calculator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AutomationCost.io">
+  <meta property="og:title" content="Find Your Best Automation Tool 2026 — Guided Tool Finder">
+  <meta property="og:description" content="Answer a few quick questions about your team, role, workflow type, and budget — get a personalized match score for n8n, Make, Pipedream, Zapier and more.">
+  <meta property="og:url" content="https://wizardcost.com/automation/calculator.html">
+  <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "Automation Tool Cost Calculator",
+        "url": "https://wizardcost.com/automation/calculator.html",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "publisher": { "@type": "Organization", "name": "WizardCost", "url": "https://wizardcost.com/" }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does the calculator estimate my monthly operations?",
+            "acceptedAnswer": { "@type": "Answer", "text": "We project a starting volume from your company size, role and the workflow types you select — each workflow type carries a typical monthly ops baseline, and picking several scales the estimate sublinearly rather than just adding them up. The auto-estimate is only a starting point: you can override the ops, workflows and budget sliders in the Volume & budget step at any time." }
+          },
+          {
+            "@type": "Question",
+            "name": "Where does the pricing data come from?",
+            "acceptedAnswer": { "@type": "Answer", "text": "From each tool's official public pricing page, verified by hand. Every change we record is dated and published in our <a href=\"https://wizardcost.com/automation/changelog.html\">price changelog</a>, and the footer shows the month prices were last verified." }
+          },
+          {
+            "@type": "Question",
+            "name": "What does a ~ estimated price mean?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Enterprise and custom tiers have no public price. When your volume goes beyond the biggest public plan, we estimate the custom tier by scaling the largest public plan's price sublinearly, calibrated against published price points. Estimated prices are marked with ~ and a disclaimer: treat them as a ballpark and confirm the real quote with the vendor's sales team." }
+          },
+          {
+            "@type": "Question",
+            "name": "Which tools does the calculator cover?",
+            "acceptedAnswer": { "@type": "Answer", "text": "n8n, Make, Zapier, Pipedream, Activepieces, Automatisch and Node-RED — cloud plans and self-hosted options alike. You can also put them side by side on the <a href=\"https://wizardcost.com/automation/compare.html\">compare page</a>." }
+          },
+          {
+            "@type": "Question",
+            "name": "Is WizardCost affiliated with any of these vendors?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No — we're independent. Some outbound links are affiliate links (marked as sponsored) and we may earn a commission at no extra cost to you, but affiliate status never affects match scores or rankings: every tool is ranked by the same formula on the same data. See the <a href=\"https://wizardcost.com/automation/affiliate.html\">affiliate disclosure</a>." }
+          },
+          {
+            "@type": "Question",
+            "name": "Why does n8n often rank cheapest?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Because n8n can be self-hosted — the Community Edition is free and you only pay for a server, which we assume at roughly $8/mo for a small VPS (shown as “self-hosted*”). If self-hosting isn't an option for you, switch Hosting preference to “Cloud only” in the Volume & budget step and the ranking recalculates with cloud plans only." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -304,6 +364,19 @@
       .wf-card-diagram { padding: 0 10px 14px; }
       footer { padding: 30px 18px; }
     }
+
+    /* ── FAQ ── */
+    .faq-section { max-width: 760px; margin: 70px auto 0; padding-top: 34px; border-top: 1px solid var(--border); }
+    .faq-section h2 { font-family: var(--display); font-size: 1.35rem; letter-spacing: -0.01em; margin-bottom: 4px; }
+    .faq-sub { color: var(--muted); font-size: 13.5px; margin-bottom: 14px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; background: none; border: none; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 600; text-align: left; padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: color 0.15s; }
+    .faq-q:hover { color: var(--accent); }
+    .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--accent); }
+    .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.75; padding-bottom: 20px; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-a a { color: var(--accent); font-weight: 500; }
   </style>
 <!-- GA4 (build.py) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6LGJVD931P"></script>
@@ -569,6 +642,36 @@
       Start over
     </button>
   </div>
+
+  <!-- ── FAQ ── -->
+  <section class="faq-section" id="faq">
+    <h2>Frequently asked questions</h2>
+    <div class="faq-sub">How the calculator works, where the data comes from, and what the estimates mean.</div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How does the calculator estimate my monthly operations?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">We project a starting volume from your company size, role and the workflow types you select — each workflow type carries a typical monthly ops baseline, and picking several scales the estimate sublinearly rather than just adding them up. The auto-estimate is only a starting point: you can override the ops, workflows and budget sliders in the Volume & budget step at any time.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Where does the pricing data come from?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">From each tool's official public pricing page, verified by hand. Every change we record is dated and published in our <a href="changelog.html">price changelog</a>, and the footer shows the month prices were last verified.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What does a ~ estimated price mean?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">Enterprise and custom tiers have no public price. When your volume goes beyond the biggest public plan, we estimate the custom tier by scaling the largest public plan's price sublinearly, calibrated against published price points. Estimated prices are marked with ~ and a disclaimer: treat them as a ballpark and confirm the real quote with the vendor's sales team.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Which tools does the calculator cover?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">n8n, Make, Zapier, Pipedream, Activepieces, Automatisch and Node-RED — cloud plans and self-hosted options alike. You can also put them side by side on the <a href="compare.html">compare page</a>.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is WizardCost affiliated with any of these vendors?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">No — we're independent. Some outbound links are affiliate links (marked as sponsored) and we may earn a commission at no extra cost to you, but affiliate status never affects match scores or rankings: every tool is ranked by the same formula on the same data. See the <a href="affiliate.html">affiliate disclosure</a>.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Why does n8n often rank cheapest?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">Because n8n can be self-hosted — the Community Edition is free and you only pay for a server, which we assume at roughly $8/mo for a small VPS (shown as “self-hosted*”). If self-hosting isn't an option for you, switch Hosting preference to “Cloud only” in the Volume & budget step and the ranking recalculates with cloud plans only.</div>
+    </div>
+  </section>
 
 </div>
 
@@ -1644,7 +1747,7 @@ const INTEGRATIONS = [
 const TOOLS = [
   {
     slug: "n8n", name: "n8n", selfHostable: true, aiFeatures: true, integrations: 400,
-    homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: true,
+    homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
       { name: "Cloud Starter", monthlyUsd: 20, opsIncluded: 2500, workflowLimit: 5, note: "Cloud Starter" },
@@ -1663,7 +1766,7 @@ const TOOLS = [
     ], overage: { per: 10000, usd: 9 } },
   {
     slug: "pipedream", name: "Pipedream", selfHostable: false, aiFeatures: true, integrations: 2000,
-    homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: true,
+    homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, note: "Free tier" },
       { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 20, note: "Basic plan" },
@@ -2001,6 +2104,7 @@ function applyEstimate(est) {
   });
 });
 function setHost(v, btn) { hostPref = v; document.querySelectorAll("[data-host]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
+function toggleFaq(btn) { btn.closest(".faq-item").classList.toggle("open"); }
 function setAI(v, btn)   { aiPref  = v; document.querySelectorAll("[data-ai]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
 function setBilling(v, btn) { billing = v; document.querySelectorAll("[data-billing]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
 
