@@ -25,6 +25,10 @@ v sitemap, nedostane analytics). Handoff **přes tuto branch (`vs-pages`), ne ch
 
 1. **Hero verdikt** — jedna věta s vítězem podle kontextu, ne absolutně
    („Make is 8–17× cheaper per operation; Zapier wins on integration count — 7,000+ vs 2,000+").
+   **Důležité: verdikt se NEgeneruje** — bude to ručně psané pole v datech páru a build ho
+   vloží doslovně. Každá dvojice má jiného vítěze a jiné „ale"; automatické skládání z čísel
+   by znělo roboticky. Pro vzorovou stránku napiš verdikt Zapier vs Make sám; u dalších párů
+   se věta napíše vždy při jejich přidání.
 2. **Cena podle objemu** — tabulka 4 objemů, oba nástroje, levnější zvýrazněn.
    Statická data z buildu (žádný JS engine na stránce!). Reálná čísla pro Zapier vs Make
    (3 workflows, monthly, nejlevnější plán):
