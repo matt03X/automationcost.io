@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Email capture — price-drop alerts (design handoff demo)</title>
+  <!-- head metadata: build.py -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── demo scaffold: vars + base copied from calculator.html, NOT part of the snippet ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
+      --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99;
+      --accent: #10b981; --accent-br: #16d18c; --accent-glow: rgba(16,185,129,0.20); --accent-dim: rgba(16,185,129,0.09); --ink: #04130d; --link: #6f9bff;
+      --green: #10b981; --red: #ef4444;
+      --radius: 14px; --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1160px; margin: 0 auto; padding-left: 32px; padding-right: 32px; padding-bottom: 80px; }
+    @media (max-width: 760px) { .wrap { padding-left: 18px; padding-right: 18px; } }
+
+    /* demo-only chrome (labels between examples) */
+    .demo-note { font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 56px 0 16px; padding-top: 28px; border-top: 1px dashed var(--border2); }
+    .demo-note:first-child { margin-top: 40px; border-top: 0; padding-top: 0; }
+    .demo-context { font-size: 13px; color: var(--muted); margin: -10px 0 18px; }
+
+    /* demo-only: simplified neighbours from calculator results, for context */
+    .savings-banner { display: flex; align-items: center; gap: 10px; background: linear-gradient(160deg, rgba(16,185,129,0.14), var(--surface) 70%); border: 1px solid rgba(16,185,129,0.4); border-radius: var(--radius-sm); padding: 13px 18px; margin-bottom: 24px; font-size: 14px; color: var(--text); }
+    .savings-banner b { color: var(--green); font-family: var(--mono); }
+    .results-next-cta { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; background: linear-gradient(160deg, rgba(16,185,129,0.12), var(--surface) 60%); border: 1px solid rgba(16,185,129,0.35); border-radius: var(--radius); padding: 24px 28px; margin: 28px 0 8px; text-decoration: none !important; color: var(--text); transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s; }
+    .results-next-cta:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,0.3), 0 0 0 1px var(--accent-glow); color: var(--text); }
+    .rnc-title { font-size: 17px; font-weight: 800; letter-spacing: -0.01em; }
+    .rnc-sub { font-size: 13.5px; color: var(--text2); margin-top: 5px; line-height: 1.55; max-width: 520px; }
+    .rnc-arrow { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--ink); font-weight: 700; font-size: 14px; padding: 12px 22px; border-radius: var(--radius-sm); white-space: nowrap; box-shadow: 0 6px 20px rgba(16,185,129,0.26); transition: background 0.15s; }
+    .results-next-cta:hover .rnc-arrow { background: var(--accent-br); }
+
+    /* ── EMAILCAP:CSS:START ── price-drop alerts capture block (reusable) ──
+       Deliberately quieter than .results-next-cta: plain surface + border, accent only
+       in the mono label and the button — the page's primary CTA stays "Compare plans". */
+    .price-alerts { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 24px 28px; margin: 28px 0 0; }
+    .pa-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 8px; }
+    .pa-title { font-family: var(--display); font-size: 17px; font-weight: 800; letter-spacing: -0.01em; }
+    .pa-sub { font-size: 13.5px; color: var(--text2); margin-top: 5px; line-height: 1.55; max-width: 560px; }
+    .pa-form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .pa-input { flex: 1 1 240px; min-width: 0; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; font-family: var(--font); font-size: 14.5px; color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; }
+    .pa-input::placeholder { color: var(--muted); }
+    .pa-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .pa-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--accent); color: var(--ink); border: 0; cursor: pointer; font-family: var(--font); font-weight: 700; font-size: 14px; padding: 12px 22px; border-radius: var(--radius-sm); white-space: nowrap; transition: background 0.15s; }
+    .pa-btn:hover { background: var(--accent-br); }
+    .pa-btn:disabled { opacity: 0.6; cursor: default; }
+    .pa-note { font-size: 12.5px; color: var(--muted); margin-top: 12px; line-height: 1.55; }
+    .pa-note a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+    .pa-note a:hover { color: var(--text2); }
+    .pa-msg { display: none; margin-top: 14px; font-size: 14px; line-height: 1.55; }
+    .pa-msg.show { display: flex; align-items: flex-start; gap: 9px; }
+    .pa-msg svg { flex-shrink: 0; margin-top: 3px; }
+    .pa-msg.ok { color: var(--green); }
+    .pa-msg.err { color: var(--red); }
+    .price-alerts.subscribed .pa-form, .price-alerts.subscribed .pa-note { display: none; }
+    @media (max-width: 520px) {
+      .price-alerts { padding: 20px 18px; }
+      .pa-form { flex-direction: column; }
+      .pa-btn { width: 100%; min-height: 44px; }
+    }
+    /* ── EMAILCAP:CSS:END ── */
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="demo-note">A — Calculator results page (primary placement)</div>
+  <p class="demo-context">Tail of the results step: savings banner and Compare-plans CTA are simplified context copies — only the block between the EMAILCAP anchors ships.</p>
+
+  <div class="savings-banner">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="#10b981"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+    <span>n8n saves you <b>~$1,464/yr</b> vs Make at your volume.</span>
+  </div>
+
+  <!-- EMAILCAP:HTML:START — price-drop alerts capture (calculator copy variant).
+       Engineering: set form action to the MailerLite form endpoint and remove the
+       DEMO ONLY branch in the JS. Copy variants per page:
+       · calculator/changelog: title + sub as written below
+       · vs-pages (generator): title = "Get an email when {A} or {B} changes pricing."
+                               sub   = "Every change is verified by hand and published to the changelog — you get one email per confirmed change."
+       Disclosure line is owner-approval-pending — do not reword without owner OK. -->
+  <section class="price-alerts" id="price-alerts" data-screen-label="Price-drop alerts">
+    <div class="pa-label">Price-drop alerts</div>
+    <div class="pa-title">Get an email when any of these tools changes its pricing.</div>
+    <p class="pa-sub">Every change is verified by hand and published to the <a href="changelog.html">changelog</a> — you get one email per confirmed change. All 7 tools covered.</p>
+    <form class="pa-form" id="pa-form" action="REPLACE_ME_MAILERLITE_FORM_ACTION" method="post" novalidate>
+      <label class="sr-only" for="pa-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+      <input class="pa-input" id="pa-email" name="fields[email]" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
+      <button class="pa-btn" id="pa-btn" type="submit">Get price alerts</button>
+    </form>
+    <div class="pa-msg" id="pa-msg" role="status" aria-live="polite"></div>
+    <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
+  </section>
+  <!-- EMAILCAP:HTML:END -->
+
+  <a href="#" class="results-next-cta" onclick="return false">
+    <div class="rnc-text">
+      <div class="rnc-title">Next: compare plans head-to-head</div>
+      <div class="rnc-sub">See the cheapest plan at your exact volume — your answers carry over automatically.</div>
+    </div>
+    <span class="rnc-arrow">Compare plans
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
+    </span>
+  </a>
+
+  <div class="demo-note">B — vs-page copy variant (generator fills {A}/{B})</div>
+  <p class="demo-context">Same block, different copy — example for zapier-vs-make. Goes below pros/cons, above outbound CTA.</p>
+
+  <section class="price-alerts" data-screen-label="Price-drop alerts (vs variant)">
+    <div class="pa-label">Price-drop alerts</div>
+    <div class="pa-title">Get an email when Zapier or Make changes pricing.</div>
+    <p class="pa-sub">Every change is verified by hand and published to the <a href="changelog.html">changelog</a> — you get one email per confirmed change.</p>
+    <form class="pa-form" action="REPLACE_ME_MAILERLITE_FORM_ACTION" method="post" novalidate>
+      <label style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);" for="pa-email-2">Email address</label>
+      <input class="pa-input" id="pa-email-2" name="fields[email]" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
+      <button class="pa-btn" type="submit">Get price alerts</button>
+    </form>
+    <div class="pa-msg" role="status" aria-live="polite"></div>
+    <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
+  </section>
+
+  <div class="demo-note">States (static previews)</div>
+  <p class="demo-context">Submit either form above to see the live flow. Below: success and error end-states for reference.</p>
+
+  <section class="price-alerts subscribed">
+    <div class="pa-label">Price-drop alerts</div>
+    <div class="pa-title">Get an email when any of these tools changes its pricing.</div>
+    <p class="pa-sub">Every change is verified by hand and published to the <a href="changelog.html">changelog</a> — you get one email per confirmed change. All 7 tools covered.</p>
+    <div class="pa-msg ok show">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      <span>Check your inbox to confirm your subscription.</span>
+    </div>
+  </section>
+
+  <section class="price-alerts" style="margin-top: 16px;">
+    <div class="pa-label">Price-drop alerts</div>
+    <div class="pa-title">Get an email when any of these tools changes its pricing.</div>
+    <p class="pa-sub">Every change is verified by hand and published to the <a href="changelog.html">changelog</a> — you get one email per confirmed change. All 7 tools covered.</p>
+    <div class="pa-form">
+      <input class="pa-input" type="email" placeholder="you@company.com" value="someone@company">
+      <button class="pa-btn" type="button">Get price alerts</button>
+    </div>
+    <div class="pa-msg err show">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Something went wrong — please try again.</span>
+    </div>
+    <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
+  </section>
+
+</div>
+
+<script>
+/* ── EMAILCAP:JS:START — wire every .price-alerts form on the page ──
+   Engineering: replace REPLACE_ME_MAILERLITE_FORM_ACTION with the MailerLite form
+   endpoint and DELETE the DEMO-ONLY branch. Success copy is fixed (double opt-in). */
+(function () {
+  var OK_MSG  = 'Check your inbox to confirm your subscription.';
+  var ERR_MSG = 'Something went wrong — please try again.';
+  var OK_ICON  = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+  var ERR_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+
+  function show(msgEl, ok, text) {
+    msgEl.className = 'pa-msg show ' + (ok ? 'ok' : 'err');
+    msgEl.innerHTML = (ok ? OK_ICON : ERR_ICON) + '<span>' + text + '</span>';
+  }
+
+  document.querySelectorAll('.price-alerts form.pa-form').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var card  = form.closest('.price-alerts');
+      var input = form.querySelector('.pa-input');
+      var btn   = form.querySelector('.pa-btn');
+      var msgEl = card.querySelector('.pa-msg');
+      if (!input.value || input.validity.typeMismatch || input.value.indexOf('@') < 1) {
+        show(msgEl, false, 'Please enter a valid email address.');
+        input.focus();
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Subscribing…';
+
+      /* DEMO ONLY — simulate success; engineering replaces with the real POST below */
+      if (form.action.indexOf('REPLACE_ME') !== -1) {
+        setTimeout(function () {
+          card.classList.add('subscribed');
+          show(msgEl, true, OK_MSG);
+        }, 700);
+        return;
+      }
+      /* REAL SUBMIT (engineering): */
+      fetch(form.action, { method: 'POST', body: new FormData(form) })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); })
+        .then(function () {
+          card.classList.add('subscribed');
+          show(msgEl, true, OK_MSG);
+        })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Get price alerts';
+          show(msgEl, false, ERR_MSG);
+        });
+    });
+  });
+})();
+/* ── EMAILCAP:JS:END ── */
+</script>
+</body>
+</html>
