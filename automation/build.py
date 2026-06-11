@@ -238,7 +238,7 @@ def diff_tools(old: dict, new: dict, date: str) -> list[dict]:
         add = lambda item, a, b, d: entries.append(
             {"d": date, "tool": t["slug"], "name": t["name"], "item": item, "old": a, "neu": b, "dir": d})
         if o.get("integrations") != t.get("integrations"):
-            add("Integrations", str(o.get("integrations")), str(t.get("integrations")), "info")
+            add("Integrations", f"{o.get('integrations'):,}", f"{t.get('integrations'):,}", "info")
         if o.get("overage") != t.get("overage"):
             add("Overage", _fmt_overage(o.get("overage")), _fmt_overage(t.get("overage")), "info")
         old_plans = {p["name"]: p for p in o.get("plans", [])}
@@ -1072,46 +1072,84 @@ def _xml_escape(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
-def build_feed(domain: str, base_path: str, entries: list[dict]) -> bool:
-    """RSS feed cenového changelogu → feed.xml (max 50 nejnovějších záznamů).
-    Stejná data jako changelog.html; prázdný changelog = validní feed bez položek."""
+def _entry_kind(e: dict) -> str:
+    """Lidský popis typu záznamu pro feed descriptions (žádná vata opakující titulek)."""
+    if e["dir"] == "up":
+        return "Price increase"
+    if e["dir"] == "down":
+        return "Price decrease"
+    item = e["item"].lower()
+    if "integrations" in item:
+        return "Catalog update"
+    if "included ops" in item or "workflow limit" in item:
+        return "Plan limits update"
+    if "overage" in item:
+        return "Overage pricing update"
+    return "Pricing structure update"
+
+
+def _is_alert_entry(e: dict) -> bool:
+    """Email alerty slibují 'price-change alerts only' (disclosure schválená
+    ownerem) → do alerts.xml patří jen ceny a limity plánů, NE počty integrací."""
+    return e["item"] != "Integrations"
+
+
+def _feed_xml(prefix: str, self_name: str, title: str, channel_desc: str, entries: list[dict]) -> str:
     import datetime as _dt
-    prefix = _site_prefix(domain, base_path)
     page = f"{prefix}/changelog.html"
     items = []
     for e in entries[:50]:
-        title = f'{e["name"]} — {e["item"]}: {e["old"]} → {e["neu"]}'
-        desc = f'{e["name"]} {e["item"]} changed from {e["old"]} to {e["neu"]}.'
+        item_title = f'{e["name"]} — {e["item"]}: {e["old"]} → {e["neu"]}'
+        desc = f'{_entry_kind(e)}, verified {e["d"]}. Full history in the WizardCost price changelog.'
         pub = _dt.datetime.strptime(e["d"], "%Y-%m-%d").strftime("%a, %d %b %Y 00:00:00 GMT")
         slug = e["item"].lower().replace(" ", "-")
         guid = f'{e["d"]}-{e["tool"]}-{slug}'
         items.append(
             "  <item>\n"
-            f"    <title>{_xml_escape(title)}</title>\n"
+            f"    <title>{_xml_escape(item_title)}</title>\n"
             f"    <link>{page}</link>\n"
             f'    <guid isPermaLink="false">{_xml_escape(guid)}</guid>\n'
             f"    <pubDate>{pub}</pubDate>\n"
             f"    <description>{_xml_escape(desc)}</description>\n"
             "  </item>"
         )
-    xml = (
+    return (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n'
         "<channel>\n"
-        "  <title>AutomationCost — Automation Tool Price Changelog</title>\n"
+        f"  <title>{_xml_escape(title)}</title>\n"
         f"  <link>{page}</link>\n"
-        "  <description>Every dated price and limit change recorded across n8n, Make, Zapier, "
-        "Pipedream and more — sourced from official pricing pages.</description>\n"
+        f"  <description>{_xml_escape(channel_desc)}</description>\n"
         "  <language>en</language>\n"
-        f'  <atom:link href="{prefix}/feed.xml" rel="self" type="application/rss+xml"/>\n'
+        f'  <atom:link href="{prefix}/{self_name}" rel="self" type="application/rss+xml"/>\n'
         + ("\n".join(items) + "\n" if items else "")
         + "</channel>\n</rss>\n"
     )
-    out = ROOT / "feed.xml"
-    if not out.exists() or out.read_text(encoding="utf-8") != xml:
-        out.write_text(xml, encoding="utf-8")
-        return True
-    return False
+
+
+def build_feed(domain: str, base_path: str, entries: list[dict]) -> list[str]:
+    """Dva RSS feedy z changelog záznamů (max 50 nejnovějších):
+    - feed.xml   = plný changelog (RSS čtečky, autodiscovery na changelog.html)
+    - alerts.xml = JEN ceny + limity plánů → zdroj MailerLite RSS kampaně
+      (email slib 'price-change alerts only' — počty integrací sem nepatří)."""
+    prefix = _site_prefix(domain, base_path)
+    feeds = [
+        ("feed.xml", "AutomationCost — Automation Tool Price Changelog",
+         "Every dated price and limit change recorded across n8n, Make, Zapier, "
+         "Pipedream and more — sourced from official pricing pages.", entries),
+        ("alerts.xml", "WizardCost — Price-Change Alerts",
+         "Price and plan-limit changes only — the feed behind WizardCost email alerts. "
+         "Catalog updates (integration counts) live in the full changelog feed.",
+         [e for e in entries if _is_alert_entry(e)]),
+    ]
+    changed = []
+    for name, title, desc, ents in feeds:
+        xml = _feed_xml(prefix, name, title, desc, ents)
+        out = ROOT / name
+        if not out.exists() or out.read_text(encoding="utf-8") != xml:
+            out.write_text(xml, encoding="utf-8")
+            changed.append(name)
+    return changed
 
 
 def apply_analytics(token: str, pages: list[Path]) -> list[str]:
@@ -1235,8 +1273,8 @@ def main() -> int:
         changed.append("sitemap.xml")
     if build_robots(domain, base_path, site.get("extra_sitemaps", [])):
         changed.append("robots.txt")
-    if DATA.exists() and build_feed(domain, base_path, clog_entries):
-        changed.append("feed.xml")
+    if DATA.exists():
+        changed += build_feed(domain, base_path, clog_entries)
     an_changed = apply_analytics(site.get("cloudflare_analytics_token", ""), pages)
     changed.extend(an_changed)
     ga_changed = apply_ga4(site.get("ga4_measurement_id", ""), pages)
