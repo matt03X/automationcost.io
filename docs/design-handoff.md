@@ -109,4 +109,9 @@ verdikt 14–24× ověřen, FAQ matematika (28× overage) sedí, žádný mojiba
 
 - Lokálně po integraci: root `build.py --check` OK, homepage smoke 11/11,
   jediný literál `</head>` v index.html.
-- Live po deployi: *(doplní engineering — scout-mobile-edges 375px + e2e)*
+- **Live po deployi (2026-06-11): VŠE OK.**
+  - `scout-mobile-edges.js` 375px: `/` → „ok — nic se nedotýká krajů"
+    (EDGE záznamy na /automation/ = horizontálně scrollující nav, záměr).
+  - e2e 16/16, žádné JS chyby.
+  - Živé HTML obsahuje `id="tool-shots"`, opravený tag „9,000+ integrations",
+    longhand `padding-top: 104px`; placeholder SVG servírují s HTTP 200.
