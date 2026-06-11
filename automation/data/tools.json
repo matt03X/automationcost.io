@@ -263,7 +263,7 @@
         "usd": 25
       },
       "pros": [
-        "7,000+ integrations — most of any tool",
+        "9,000+ integrations — most of any tool",
         "Easiest for non-technical users",
         "Huge ecosystem"
       ],
@@ -332,7 +332,7 @@
         "Self-hostable"
       ],
       "cons": [
-        "Fewer integrations (~200)",
+        "Fewer integrations than Zapier (747+)",
         "Smaller community than n8n",
         "No code steps"
       ]
