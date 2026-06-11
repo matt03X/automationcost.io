@@ -1094,13 +1094,25 @@ def _is_alert_entry(e: dict) -> bool:
     return e["item"] != "Integrations"
 
 
-def _feed_xml(prefix: str, self_name: str, title: str, channel_desc: str, entries: list[dict]) -> str:
+def _alert_meta(e: dict) -> str:
+    """Meta řádek email alertů — přesný formát ze specu designu (2026-06-11):
+    'Price change · verified June 11, 2026' | 'Plan limit change · verified …'."""
+    import datetime as _dt
+    item = e["item"].lower()
+    kind = "Plan limit change" if ("included ops" in item or "workflow limit" in item) else "Price change"
+    dt = _dt.datetime.strptime(e["d"], "%Y-%m-%d")
+    return f"{kind} · verified {dt:%B} {dt.day}, {dt.year}"
+
+
+def _feed_xml(prefix: str, self_name: str, title: str, channel_desc: str, entries: list[dict],
+              alert_style: bool = False) -> str:
     import datetime as _dt
     page = f"{prefix}/changelog.html"
     items = []
     for e in entries[:50]:
         item_title = f'{e["name"]} — {e["item"]}: {e["old"]} → {e["neu"]}'
-        desc = f'{_entry_kind(e)}, verified {e["d"]}. Full history in the WizardCost price changelog.'
+        desc = (_alert_meta(e) if alert_style
+                else f'{_entry_kind(e)}, verified {e["d"]}. Full history in the WizardCost price changelog.')
         pub = _dt.datetime.strptime(e["d"], "%Y-%m-%d").strftime("%a, %d %b %Y 00:00:00 GMT")
         slug = e["item"].lower().replace(" ", "-")
         guid = f'{e["d"]}-{e["tool"]}-{slug}'
@@ -1144,7 +1156,7 @@ def build_feed(domain: str, base_path: str, entries: list[dict]) -> list[str]:
     ]
     changed = []
     for name, title, desc, ents in feeds:
-        xml = _feed_xml(prefix, name, title, desc, ents)
+        xml = _feed_xml(prefix, name, title, desc, ents, alert_style=(name == "alerts.xml"))
         out = ROOT / name
         if not out.exists() or out.read_text(encoding="utf-8") != xml:
             out.write_text(xml, encoding="utf-8")
