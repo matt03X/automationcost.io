@@ -13,8 +13,8 @@
     "mainEntity": [
       {"@type":"Question","name":"What counts as an operation or task?","acceptedAnswer":{"@type":"Answer","text":"Each tool counts usage differently. In Zapier, one task = one action step (a 3-step Zap triggered 100 times = 300 tasks). In Make, one operation = one module execution. In n8n, one execution = one full workflow run regardless of steps. In Pipedream, credits are consumed per compute time. Self-hosted tools like n8n, Activepieces and Automatisch have no operation limits at all."}},
       {"@type":"Question","name":"Is n8n really free to self-host?","acceptedAnswer":{"@type":"Answer","text":"Yes — n8n Community Edition is free to self-host with unlimited workflows and executions. You only pay for the server (typically $5–12/mo on DigitalOcean or Hetzner). It uses a Sustainable Use License which restricts commercial SaaS resale, but for running your own automations it is fully free."}},
-      {"@type":"Question","name":"Make vs Zapier — why is Make so much cheaper?","acceptedAnswer":{"@type":"Answer","text":"Make counts multi-step workflows more efficiently. A 5-step scenario triggered 1,000 times = 5,000 operations in Make at $9/mo. The same in Zapier = 5,000 tasks, requiring the $49/mo Professional plan. For anything beyond simple 2-step automations, Make is 70–80% cheaper than Zapier."}},
-      {"@type":"Question","name":"What is the difference between n8n and Activepieces?","acceptedAnswer":{"@type":"Answer","text":"Both are open-source and self-hostable. n8n has more integrations (~400 vs ~200), more mature AI nodes and a larger community. Activepieces uses the unrestricted MIT license while n8n uses the Sustainable Use License. Activepieces has a more Zapier-like no-code UI; n8n is more developer-oriented."}},
+      {"@type":"Question","name":"Make vs Zapier — why is Make so much cheaper?","acceptedAnswer":{"@type":"Answer","text":"Make counts multi-step workflows more efficiently. A 5-step scenario triggered 1,000 times = 5,000 operations in Make at $9/mo. The same in Zapier = 5,000 tasks — several times the Professional base tier of 750 tasks ($19.99/mo billed annually). For anything beyond simple 2-step automations, Make is 70–80% cheaper than Zapier."}},
+      {"@type":"Question","name":"What is the difference between n8n and Activepieces?","acceptedAnswer":{"@type":"Answer","text":"Both are open-source and self-hostable. n8n has more mature AI nodes, code steps and a larger community. Activepieces counts more integrations (747+ vs ~400) and uses the unrestricted MIT license while n8n uses the Sustainable Use License. Activepieces has a more Zapier-like no-code UI; n8n is more developer-oriented."}},
       {"@type":"Question","name":"How accurate is this pricing data?","acceptedAnswer":{"@type":"Answer","text":"All prices were verified directly from each tool's pricing page in June 2026. SaaS pricing changes frequently — this page is updated whenever a tool changes its plans, and each tool links to its official pricing page."}}
     ]
   }
@@ -322,7 +322,7 @@
     <div class="use-card">
       <h3>I need max integrations</h3>
       <p>You use a lot of obscure apps and need them all connected out of the box.</p>
-      <div class="pick">→ <strong>Zapier</strong> (7,000+ apps) — but you'll pay a premium for it</div>
+      <div class="pick">→ <strong>Zapier</strong> (9,000+ apps) — but you'll pay a premium for it</div>
     </div>
     <div class="use-card">
       <h3>GDPR / EU data control</h3>
@@ -366,11 +366,11 @@
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">Make vs Zapier — why is Make so much cheaper?</div>
-      <div class="faq-a">Make counts multi-step workflows more efficiently. A 5-step scenario triggered 1,000 times = 5,000 operations in Make at $9/mo. The same in Zapier = 5,000 tasks, which requires the $49/mo Professional plan. For anything beyond simple 2-step automations, Make is 70–80% cheaper than Zapier.</div>
+      <div class="faq-a">Make counts multi-step workflows more efficiently. A 5-step scenario triggered 1,000 times = 5,000 operations in Make at $9/mo. The same in Zapier = 5,000 tasks — several times the Professional base tier of 750 tasks ($19.99/mo billed annually). For anything beyond simple 2-step automations, Make is 70–80% cheaper than Zapier.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">What's the difference between n8n and Activepieces?</div>
-      <div class="faq-a">Both are open-source and self-hostable, but key differences: n8n has more integrations (~400 vs ~200), more mature AI nodes, and a larger community. Activepieces uses the MIT license (completely unrestricted), while n8n uses Sustainable Use License. Activepieces has a more Zapier-like no-code UI; n8n is more developer-oriented.</div>
+      <div class="faq-a">Both are open-source and self-hostable, but key differences: n8n has more mature AI nodes, code steps, and a larger community. Activepieces counts more integrations (747+ vs ~400) and uses the MIT license (completely unrestricted), while n8n uses Sustainable Use License. Activepieces has a more Zapier-like no-code UI; n8n is more developer-oriented.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">How accurate is this pricing data?</div>

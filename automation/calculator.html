@@ -1774,22 +1774,22 @@ const TOOLS = [
       { custom: true, name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: { per: 1000, usd: 10 } },
   {
-    slug: "zapier", name: "Zapier", selfHostable: false, aiFeatures: true, integrations: 7000,
+    slug: "zapier", name: "Zapier", selfHostable: false, aiFeatures: true, integrations: 9000,
     homepage: "https://zapier.com", affiliateUrl: "https://zapier.com", hasAffiliate: false,
     plans: [
-      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 5, note: "Free tier" },
-      { name: "Starter", monthlyUsd: 20, opsIncluded: 750, workflowLimit: 20, note: "Starter plan" },
-      { name: "Professional", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity, note: "Professional plan" },
-      { name: "Team", monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity, note: "Team plan" },
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity, note: "Free tier" },
+      { name: "Professional", monthlyUsd: 19.99, opsIncluded: 750, workflowLimit: Infinity, note: "Professional (750 tasks, billed annually)" },
+      { name: "Team", monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity, note: "Team (2,000 tasks, billed annually)" },
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: { per: 1000, usd: 25 } },
   {
-    slug: "activepieces", name: "Activepieces", selfHostable: true, aiFeatures: true, integrations: 200,
+    slug: "activepieces", name: "Activepieces", selfHostable: true, aiFeatures: true, integrations: 747,
     homepage: "https://www.activepieces.com", affiliateUrl: "https://www.activepieces.com", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
-      { name: "Cloud Starter", monthlyUsd: 10, opsIncluded: 5000, workflowLimit: Infinity, note: "Cloud Starter" },
-      { name: "Cloud Pro", monthlyUsd: 25, opsIncluded: 15000, workflowLimit: Infinity, note: "Cloud Pro" },
+      { name: "Cloud Free", monthlyUsd: 0, opsIncluded: Infinity, workflowLimit: 10, note: "10 free active flows, unlimited runs" },
+      { name: "Standard (20 flows)", monthlyUsd: 50, opsIncluded: Infinity, workflowLimit: 20, note: "$5/active flow after 10 free — priced at 20 flows" },
+      { name: "Standard (30 flows)", monthlyUsd: 100, opsIncluded: Infinity, workflowLimit: 30, note: "$5/active flow after 10 free — priced at 30 flows" },
     ], overage: null },
   {
     slug: "automatisch", name: "Automatisch", selfHostable: true, aiFeatures: false, integrations: 50,
@@ -1799,7 +1799,7 @@ const TOOLS = [
       { name: "Cloud", monthlyUsd: 20, opsIncluded: Infinity, workflowLimit: Infinity, note: "Cloud plan" },
     ], overage: null },
   {
-    slug: "node-red", name: "Node-RED", selfHostable: true, aiFeatures: false, integrations: 1000,
+    slug: "node-red", name: "Node-RED", selfHostable: true, aiFeatures: false, integrations: 5000,
     homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
@@ -1840,9 +1840,9 @@ const TOOL_WHY = {
     other:       { pros: ["Maximum code flexibility"], cons: ["Not price-competitive for low/medium usage"] },
   },
   zapier: {
-    marketing:   { pros: ["7,000+ integrations — widest library", "Easiest onboarding ever", "Best documentation"], cons: ["Most expensive per op — 10x Make", "No self-hosting"] },
+    marketing:   { pros: ["9,000+ integrations — widest library", "Easiest onboarding ever", "Best documentation"], cons: ["Most expensive per op — 10x Make", "No self-hosting"] },
     operations:  { pros: ["Huge integration library", "Reliable uptime"], cons: ["Multi-step = multiple tasks billed", "Very expensive at scale"] },
-    developer:   { pros: ["7,000+ integrations for edge cases"], cons: ["No real code steps", "Most expensive per op", "No self-hosting"] },
+    developer:   { pros: ["9,000+ integrations for edge cases"], cons: ["No real code steps", "Most expensive per op", "No self-hosting"] },
     finance:     { pros: ["QuickBooks, Xero, every accounting app"], cons: ["Very expensive", "No data sovereignty"] },
     legal:       { pros: ["Easy audit flows", "DocuSign, contracts apps all present"], cons: ["US company — GDPR complexity", "No self-hosting", "Expensive"] },
     hr:          { pros: ["Every HRIS and HR tool connected", "Easiest for non-technical HR"], cons: ["Expensive for high-volume onboarding/offboarding"] },
@@ -1850,7 +1850,7 @@ const TOOL_WHY = {
     other:       { pros: ["Widest app coverage", "Easiest for non-devs"], cons: ["Most expensive per task among compared tools"] },
   },
   activepieces: {
-    marketing:   { pros: ["MIT license — use freely", "Clean no-code UI", "Self-hostable"], cons: ["Only ~200 integrations", "Smaller community"] },
+    marketing:   { pros: ["MIT license — use freely", "Clean no-code UI", "Self-hostable"], cons: ["747+ integrations — less than Make/Zapier", "Smaller community"] },
     operations:  { pros: ["MIT license, unlimited customization", "Multi-user self-hosted"], cons: ["Fewer integrations than alternatives"] },
     developer:   { pros: ["MIT = build products on top legally", "Growing fast"], cons: ["No native code steps yet", "Smaller ecosystem"] },
     finance:     { pros: ["Self-hostable for data privacy", "MIT license"], cons: ["Limited finance app integrations"] },

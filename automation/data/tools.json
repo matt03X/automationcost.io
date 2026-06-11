@@ -7,7 +7,7 @@
       "monthlyUsd": "null = custom / contact sales (calculator estimates the price at runtime from the largest priced plan, compare renders 'Custom')",
       "note": "calculator-only display label for the plan; omit for custom-priced plans (calculator synthesizes '<name> — price estimated, contact sales')"
     },
-    "last_reviewed": "2026-06-09"
+    "last_reviewed": "2026-06-11"
   },
   "tools": [
     {
@@ -214,10 +214,10 @@
       "tagline": "The most integrations, built for non-technical users",
       "selfHostable": false,
       "aiFeatures": true,
-      "integrations": 7000,
+      "integrations": 9000,
       "license": "Proprietary (cloud)",
       "freeOps": "100 tasks/mo",
-      "freeWorkflows": "5",
+      "freeWorkflows": "Unlimited (within task limit)",
       "maxSteps": "2 steps (free)",
       "timeout": "15 min",
       "logHistory": "15 min delay (free)",
@@ -234,29 +234,22 @@
           "name": "Free",
           "monthlyUsd": 0,
           "opsIncluded": 100,
-          "workflowLimit": 5,
+          "workflowLimit": null,
           "note": "Free tier"
         },
         {
-          "name": "Starter",
-          "monthlyUsd": 20,
-          "opsIncluded": 750,
-          "workflowLimit": 20,
-          "note": "Starter plan"
-        },
-        {
           "name": "Professional",
-          "monthlyUsd": 49,
-          "opsIncluded": 2000,
+          "monthlyUsd": 19.99,
+          "opsIncluded": 750,
           "workflowLimit": null,
-          "note": "Professional plan"
+          "note": "Professional (750 tasks, billed annually)"
         },
         {
           "name": "Team",
           "monthlyUsd": 69,
           "opsIncluded": 2000,
           "workflowLimit": null,
-          "note": "Team plan"
+          "note": "Team (2,000 tasks, billed annually)"
         },
         {
           "name": "Enterprise",
@@ -270,7 +263,7 @@
         "usd": 25
       },
       "pros": [
-        "7,000+ integrations — most of any tool",
+        "9,000+ integrations — most of any tool",
         "Easiest for non-technical users",
         "Huge ecosystem"
       ],
@@ -286,10 +279,10 @@
       "tagline": "MIT-licensed open-source automation, Zapier-like UI",
       "selfHostable": true,
       "aiFeatures": true,
-      "integrations": 200,
+      "integrations": 747,
       "license": "MIT",
-      "freeOps": "Unlimited*",
-      "freeWorkflows": "Unlimited*",
+      "freeOps": "Unlimited runs",
+      "freeWorkflows": "10 active flows (cloud)",
       "maxSteps": "Unlimited",
       "timeout": "No limit*",
       "logHistory": "7 days (cloud)",
@@ -311,18 +304,25 @@
           "note": "Self-hosted + VPS (~$8/mo)"
         },
         {
-          "name": "Cloud Starter",
-          "monthlyUsd": 10,
-          "opsIncluded": 5000,
-          "workflowLimit": null,
-          "note": "Cloud Starter"
+          "name": "Cloud Free",
+          "monthlyUsd": 0,
+          "opsIncluded": null,
+          "workflowLimit": 10,
+          "note": "10 free active flows, unlimited runs"
         },
         {
-          "name": "Cloud Pro",
-          "monthlyUsd": 25,
-          "opsIncluded": 15000,
-          "workflowLimit": null,
-          "note": "Cloud Pro"
+          "name": "Standard (20 flows)",
+          "monthlyUsd": 50,
+          "opsIncluded": null,
+          "workflowLimit": 20,
+          "note": "$5/active flow after 10 free — priced at 20 flows"
+        },
+        {
+          "name": "Standard (30 flows)",
+          "monthlyUsd": 100,
+          "opsIncluded": null,
+          "workflowLimit": 30,
+          "note": "$5/active flow after 10 free — priced at 30 flows"
         }
       ],
       "overage": null,
@@ -332,7 +332,7 @@
         "Self-hostable"
       ],
       "cons": [
-        "Fewer integrations (~200)",
+        "Fewer integrations than Zapier (747+)",
         "Smaller community than n8n",
         "No code steps"
       ]
@@ -393,7 +393,7 @@
       "tagline": "Event-driven automation for IoT and hardware",
       "selfHostable": true,
       "aiFeatures": false,
-      "integrations": 1000,
+      "integrations": 5000,
       "license": "Apache 2.0",
       "freeOps": "Unlimited",
       "freeWorkflows": "Unlimited",
