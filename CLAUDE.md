@@ -46,7 +46,7 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
 - **Disclosure „Price-change alerts only. No newsletter, unsubscribe anytime." je závazek ownera (2026-06-11) — NEMĚNIT a na seznam NIKDY neposílat newsletter bez nového souhlasu subscriberů.**
 - **Automatizované testy NIKDY nesubmitují formulář** (= reální subscribeři + DOI maily). Live testy kontrolují jen přítomnost bloku/action URL.
 - **Dva RSS feedy** (build_feed): `feed.xml` = plný changelog (RSS čtečky); `alerts.xml` = JEN ceny + limity plánů (`_is_alert_entry` vylučuje Integrations) → zdroj MailerLite RSS kampaně. Nikdy nemířit kampaň na feed.xml — porušila by slib „price-change alerts only". Kampaň: denně 9:00 UTC, „New posts" ON.
-- **POZOR: RSS kampaně jsou u MailerLite placené** — fungují jen během trialu (do ~2026-06-25). Pak: po každé cenové revizi (commit + deploy) následuje **ruční krok: duplikovat poslední alert kampaň v MailerLite, aktualizovat položky, Send na skupinu price-drop-alerts**. Případná automatizace přes MailerLite API = otestovat (plán C). Žádné testovací sendy na seznam, jakmile obsahuje cizí subscribery.
+- **Rozesílka alertů = `python scripts/send_price_alerts.py`** (po commitu a deployi cenové revize): čte alerts.xml, GUID stav v gitignored `.alerts-sent.json`, renderuje `scripts/email-template.html` (design), vytvoří kampaň přes MailerLite API; bez flagu jen draft, `--send` odešle. Token z env/`engine/.env` — NIKDY v repu. RSS kampaň v MailerLite je placená (jede jen do konce trialu ~25. 6.) → pak ji vypnout, skript je náhrada. Žádné testovací sendy na seznam, jakmile obsahuje cizí subscribery.
 
 ## Pasti (poučení z historie, neopakovat)
 
