@@ -12,6 +12,7 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
   - `/* DATA:DEMO:START|END */` v root `index.html` (hero price demo) → root `build.py` (čte automation data)
   - `/* DATA:CHANGELOG:START|END */` v `automation/changelog.html` → `automation/build.py` (generuje z **git historie** tools.json)
 - Po změně tools.json spusť **oba** buildy: `python automation/build.py` i `python build.py` (root), commitni výsledek. `--check` = CI guard (exit 1 při zastaralých blocích).
+- **Pořadí u cenových změn:** changelog/RSS se generují z **git historie** tools.json → nejdřív commitni samotný tools.json, pak teprve buildy (jinak nový diff v changelogu nebude). Cenová změna se propisuje i do ručních textů (meta descriptions, FAQ, tabulky, TOOL_WHY v kalkulátoru, BEST_FOR v compare) — po změně grepni staré hodnoty napříč stránkami. Ověřování drift reportu: `calc-test/scout-vendor-pricing.js` / `scout-vendor-detail.js` (Playwright čte oficiální ceníky).
 - Changelog vzniká z git diffů tools.json → do tools.json patří jen **ověřené** změny. Drift report ze scraperu (`automation/data/drift-report.md`, netrackovaný) = neověřené nálezy, ne potvrzená fakta. Datum commitu = veřejné datum záznamu v changelogu.
 - Při změně cen aktualizuj i `_meta.last_reviewed` a nav badge „Updated <Month Year>" na stránkách.
 
