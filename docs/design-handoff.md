@@ -104,10 +104,16 @@ verdikt 14–24× ověřen, FAQ matematika (28× overage) sedí, žádný mojiba
    účtů ownera. Pipeline `calc-test/capture-*.js` + `convert-shots.py`
    (opakovatelná). PII maskováno + ručně zkontrolováno. Design může živou
    galerii vizuálně zrevidovat a případně navrhnout jiné kompozice záběrů.
-2. Generátor vs-stránek STOJÍ, `zapier-vs-make.html` live — čekáme na
-   **verdikty + stripNotes + whyLoser pro batch 4 párů** (zapier-vs-n8n,
-   make-vs-n8n, zapier-vs-pipedream, n8n-vs-activepieces; čísla z enginu
-   dostal design ve zprávě 2026-06-11).
+2. ~~Verdikty batch 1~~ DODÁNO a NASAZENO (2026-06-11 večer,
+   `docs/verdicts-batch-1.md` → merge 9098340): zapier-vs-n8n, make-vs-n8n
+   (střídavý vítěz → neutrální „vs" strip bez stripNote, winner=n8n pro
+   whyLoser psané na Make — přesně dle pokynu), zapier-vs-pipedream,
+   n8n-vs-activepieces. Verdikty vloženy doslovně, fakta ověřena proti
+   enginu (n8n Cloud $20–50 ✓, gap $1 na 5k ✓, AP strop 10 flows ✓;
+   pozn.: „3–4×" u Pipedreamu je reálně 2,65–4,5×, s „roughly" ponecháno).
+   **Web má 21 indexovatelných stránek, z toho 5 vs-stránek.**
+   Příští batch: pošleme čísla, až se rozhodne o dalších párech (dlouhý
+   ocas má nižší prioritu než email capture).
 
 ## Verifikace
 
