@@ -115,6 +115,34 @@ verdikt 14–24× ověřen, FAQ matematika (28× overage) sedí, žádný mojiba
    Příští batch: pošleme čísla, až se rozhodne o dalších párech (dlouhý
    ocas má nižší prioritu než email capture).
 
+## Email capture — rozhodnutí pro návrh (2026-06-11, odpovědi na dotazník designu)
+
+1. **Backend: MailerLite** (hostovaný form endpoint + API) — free tier 1 000
+   subscriberů, double opt-in vestavěný, EU firma (GDPR story čistá), API
+   umožní později automatizovat rozesílku z changelog pipeline. Formspree jen
+   sbírá (neumí posílat), Buttondown free jen do 100 subs, CF Worker = zbytečné
+   moving parts. Účet založí owner (wizardcost.test@gmail.com), integrace
+   engineering. UI kontrakt: POST email → inline stavy success („Check your
+   inbox to confirm" — DOI) / error; žádné redirecty.
+2. **Slib: jeden seznam, alerty na všech 7 nástrojů.** Personalizace = v2
+   (engineering uloží top-tool z ac_profile jako hidden field/metadata už
+   teď, ale UI ji neslibuje). Sends jsou vzácné — ceny se mění párkrát ročně.
+3. **Umístění: blok na konci výsledků, NAD results-next-cta** — ask přijde
+   až po konzumaci hodnoty, neruší čtení doporučení. Šířka/vizuál konzistentní
+   s results-next-cta kartou.
+4. **Pole: jen email + tlačítko + jednořádková disclosure** („Price-change
+   alerts only. No newsletter, unsubscribe anytime."). Souhlas = akce
+   subscribe + double opt-in; bez GDPR checkboxu. ⚠ podléhá schválení ownera.
+5. **Frekvence: „Only when a price changes"** — pravdivé (posíláme jen
+   z ověřených changelog záznamů), žádný newsletter.
+6. **Rozsah: rovnou reusable blok** — výsledková stránka (priorita),
+   changelog.html („get these in your inbox") a vs-stránky (generátor ho
+   vloží automaticky). Jeden návrh, tři kontexty.
+7. **1 finální návrh** držící stávající vizuál — žádné varianty.
+8. **Ne:** popup, sticky bar, exit-intent, lead magnet (v1 bez incentivu).
+   Tón = stávající web (mono labely, suchá poctivá copy). Footer odkaz na
+   privacy.html. Unsubscribe řeší MailerLite link v mailech.
+
 ## Verifikace
 
 - Lokálně po integraci: root `build.py --check` OK, homepage smoke 11/11,
