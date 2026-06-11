@@ -99,11 +99,15 @@ verdikt 14–24× ověřen, FAQ matematika (28× overage) sedí, žádný mojiba
 
 ## Co má design dodat příště
 
-1. Nic neblokuje — čekáme na rozhodnutí ownera o zdrojích screenshotů
-   (press assety vs test účty, viz odpověď 4 výše). Pak reálné captury
-   WebP/AVIF 1600×1000, stejné názvy souborů.
-2. Až engineering postaví generátor vs-stránek, pošleme seznam dalších párů —
-   verdikty navrhneš per pár (dohoda z odpovědi 8).
+1. ~~Screenshoty~~ VYŘEŠENO (2026-06-11 večer): galerie má reálné captury —
+   n8n z veřejného template canvasu (bez účtu), Make/Zapier/Pipedream z demo
+   účtů ownera. Pipeline `calc-test/capture-*.js` + `convert-shots.py`
+   (opakovatelná). PII maskováno + ručně zkontrolováno. Design může živou
+   galerii vizuálně zrevidovat a případně navrhnout jiné kompozice záběrů.
+2. Generátor vs-stránek STOJÍ, `zapier-vs-make.html` live — čekáme na
+   **verdikty + stripNotes + whyLoser pro batch 4 párů** (zapier-vs-n8n,
+   make-vs-n8n, zapier-vs-pipedream, n8n-vs-activepieces; čísla z enginu
+   dostal design ve zprávě 2026-06-11).
 
 ## Verifikace
 
