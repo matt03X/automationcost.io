@@ -355,6 +355,12 @@
       .nav-bottom { padding-left: 8px; padding-right: 8px; }
       .nav-bottom a { padding: 12px 14px; }
     }
+    /* Hidden on desktop — diagrams are always visible there. MUST precede the
+       620px media block: same specificity, so source order decides on mobile. */
+    .wf-diagram-toggle { display: none; align-items: center; gap: 6px; background: none; border: none; color: var(--muted); font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; padding: 0 16px 14px; }
+    .wf-diagram-toggle svg { transition: transform 0.2s; }
+    .wf-card.diagram-open .wf-diagram-toggle svg { transform: rotate(180deg); }
+
     @media (max-width: 620px) {
       .nav-badge { display: none; }
       /* Compact stepper: drop the text labels, keep numbered dots + connectors */
@@ -376,11 +382,6 @@
       .wf-card.diagram-open .wf-card-diagram { display: block; }
       .wf-diagram-toggle { display: inline-flex; }
     }
-
-    /* Hidden on desktop — diagrams are always visible there */
-    .wf-diagram-toggle { display: none; align-items: center; gap: 6px; background: none; border: none; color: var(--muted); font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; padding: 0 16px 14px; }
-    .wf-diagram-toggle svg { transition: transform 0.2s; }
-    .wf-card.diagram-open .wf-diagram-toggle svg { transform: rotate(180deg); }
 
     /* ── Resume banner (shown when a recent profile is in localStorage) ── */
     .resume-banner { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 26px; font-size: 13.5px; color: var(--text2); }
@@ -1815,7 +1816,7 @@ const TOOLS = [
     slug: "zapier", name: "Zapier", selfHostable: false, aiFeatures: true, integrations: 9000,
     homepage: "https://zapier.com", affiliateUrl: "https://zapier.com", hasAffiliate: false,
     plans: [
-      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity, note: "Free tier" },
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity, overage: null, note: "Free tier" },
       { name: "Professional", monthlyUsd: 19.99, opsIncluded: 750, workflowLimit: Infinity, note: "Professional (750 tasks, billed annually)" },
       { name: "Team", monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity, note: "Team (2,000 tasks, billed annually)" },
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
@@ -2225,7 +2226,9 @@ function calcCost(tool, ops, workflows) {
     let cost = plan.monthlyUsd;
     if (billing === "annual" && !plan.selfHostOnly && plan.monthlyUsd > 0) cost = Math.round(cost * ANNUAL_DISCOUNT);
     if (!plan.selfHostOnly && ops > plan.opsIncluded) {
-      if (tool.overage) cost += Math.ceil((ops - plan.opsIncluded) / tool.overage.per) * tool.overage.usd;
+      // per-plan overage přebíjí tool-level; null = plán nemá pay-as-you-go
+      const ov = plan.overage !== undefined ? plan.overage : tool.overage;
+      if (ov) cost = Math.round((cost + Math.ceil((ops - plan.opsIncluded) / ov.per) * ov.usd) * 100) / 100; // na centy ($19.99 + $25 ≠ 44.9899…)
       else continue;
     }
     if (best === null || cost < best.cost) best = { cost, plan };

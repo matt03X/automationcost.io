@@ -5,7 +5,8 @@
       "opsIncluded": "null = Infinity (unlimited)",
       "workflowLimit": "null = Infinity (unlimited)",
       "monthlyUsd": "null = custom / contact sales (calculator estimates the price at runtime from the largest priced plan, compare renders 'Custom')",
-      "note": "calculator-only display label for the plan; omit for custom-priced plans (calculator synthesizes '<name> — price estimated, contact sales')"
+      "note": "calculator-only display label for the plan; omit for custom-priced plans (calculator synthesizes '<name> — price estimated, contact sales')",
+      "overage (per-plan)": "optional key on a plan: overrides the tool-level overage; null = this plan has NO pay-as-you-go (engines skip it when ops exceed opsIncluded). Absent key = inherit tool-level."
     },
     "last_reviewed": "2026-06-11"
   },
@@ -235,6 +236,7 @@
           "monthlyUsd": 0,
           "opsIncluded": 100,
           "workflowLimit": null,
+          "overage": null,
           "note": "Free tier"
         },
         {
