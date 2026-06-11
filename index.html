@@ -390,10 +390,9 @@
 </section>
 
 <!-- GALLERY:HTML:START ── desktop-only tool screenshot gallery (design-backlog #2).
-     Replace assets/shots/*.svg placeholders with real product-UI captures
-     (own test accounts or official press/brand assets — faceless, no people, no stock).
-     Export WebP/AVIF at 1600×1000 (2x of 800×500 render) and keep the same filenames
-     or update the four src attributes. Logos/UI shown in comparative-review context. -->
+     Real captures from demo accounts (faceless, PII masked) — regenerate via
+     calc-test/capture-n8n.js + capture-shots.js → convert-shots.py (WebP 1600×1000).
+     Logos/UI shown in comparative-review context. -->
 <section class="section wrap shots-section" id="tool-shots" data-screen-label="Tool screenshots">
   <div class="section-label">Under the hood</div>
   <h2>The tools we price, up close.</h2>
@@ -402,28 +401,28 @@
     <figure class="shot rv">
       <div class="shot-frame">
         <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">n8n — workflow editor</span></div>
-        <img src="assets/shots/n8n-editor.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="n8n workflow editor: node canvas with connected automation steps">
+        <img src="assets/shots/n8n-editor.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="n8n workflow editor: node canvas with connected automation steps">
       </div>
       <figcaption><b>n8n</b> node canvas <span class="shot-tag">self-hostable</span></figcaption>
     </figure>
     <figure class="shot rv">
       <div class="shot-frame">
         <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">Make — scenario builder</span></div>
-        <img src="assets/shots/make-scenario.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="Make scenario builder: visual modules connected in a flow">
+        <img src="assets/shots/make-scenario.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Make scenario builder: visual modules connected in a flow">
       </div>
       <figcaption><b>Make</b> scenario builder <span class="shot-tag">cheapest cloud</span></figcaption>
     </figure>
     <figure class="shot rv">
       <div class="shot-frame">
         <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">Zapier — Zap editor</span></div>
-        <img src="assets/shots/zapier-editor.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="Zapier Zap editor: step-by-step trigger and action setup">
+        <img src="assets/shots/zapier-editor.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Zapier Zap editor: step-by-step trigger and action setup">
       </div>
       <figcaption><b>Zapier</b> Zap editor <span class="shot-tag">9,000+ integrations</span></figcaption>
     </figure>
     <figure class="shot rv">
       <div class="shot-frame">
         <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">Pipedream — workflow code</span></div>
-        <img src="assets/shots/pipedream-workflow.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="Pipedream workflow: code steps and event data inspector">
+        <img src="assets/shots/pipedream-workflow.webp" width="1600" height="1000" loading="lazy" decoding="async" alt="Pipedream workflow: code steps and event data inspector">
       </div>
       <figcaption><b>Pipedream</b> code steps <span class="shot-tag">dev-centric</span></figcaption>
     </figure>
