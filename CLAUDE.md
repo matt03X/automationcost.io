@@ -45,6 +45,7 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
 - Backend = **MailerLite** (účet ownera wizardcost.test@gmail.com, sender alerts@wizardcost.com přes Cloudflare Email Routing). Form action + povinná skrytá pole `ml-submit=1`, `anticsrf=true`. Double opt-in zapnutý.
 - **Disclosure „Price-change alerts only. No newsletter, unsubscribe anytime." je závazek ownera (2026-06-11) — NEMĚNIT a na seznam NIKDY neposílat newsletter bez nového souhlasu subscriberů.**
 - **Automatizované testy NIKDY nesubmitují formulář** (= reální subscribeři + DOI maily). Live testy kontrolují jen přítomnost bloku/action URL.
+- **Dva RSS feedy** (build_feed): `feed.xml` = plný changelog (RSS čtečky); `alerts.xml` = JEN ceny + limity plánů (`_is_alert_entry` vylučuje Integrations) → zdroj MailerLite RSS kampaně. Nikdy nemířit kampaň na feed.xml — porušila by slib „price-change alerts only". Kampaň: denně 9:00 UTC, „New posts" ON.
 
 ## Pasti (poučení z historie, neopakovat)
 
