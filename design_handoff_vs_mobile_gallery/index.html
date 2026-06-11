@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WizardCost — Real pricing calculators for software</title>
+  <meta name="description" content="WizardCost runs live pricing calculators for software categories. Real advertised prices, your actual usage, and the cheapest pick computed — not star ratings.">
+  <!-- GA4 vkládá build.py na konec hlavičky — needituj GA4 blok ručně. -->
+  <link rel="canonical" href="https://wizardcost.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WizardCost">
+  <meta property="og:title" content="WizardCost — Real pricing calculators for software">
+  <meta property="og:description" content="Live pricing calculators for software categories. Real advertised prices, your usage, the cheapest pick computed.">
+  <meta property="og:url" content="https://wizardcost.com/">
+  <meta property="og:image" content="https://wizardcost.com/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/og-image.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://wizardcost.com/#org",
+        "name": "WizardCost",
+        "url": "https://wizardcost.com/",
+        "logo": "https://wizardcost.com/og-image.png",
+        "description": "Independent, data-driven pricing calculators for software categories. Real advertised prices, human-verified, with a public price changelog."
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://wizardcost.com/#website",
+        "name": "WizardCost",
+        "url": "https://wizardcost.com/",
+        "publisher": { "@id": "https://wizardcost.com/#org" }
+      }
+    ]
+  }
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0b0a12;
+      --surface: #131120;
+      --surface2: #18152a;
+      --border: #241f3d;
+      --border2: #2e2750;
+      --text: #efeaff;
+      --text2: #b6aed6;
+      --muted: #6f6a85;
+      --accent: #a78bfa;
+      --accent-deep: #7c4dff;
+      --ink: #0e081f;
+      --green: #16d18c;
+      --red: #e25c5c;
+      --radius: 14px;
+      --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15.5px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── Nav ── */
+    header { position: sticky; top: 0; z-index: 50; background: rgba(11,10,18,0.86); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-top { height: 60px; display: flex; align-items: center; justify-content: space-between; max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+    .logo { display: inline-flex; align-items: center; font-family: var(--display); font-weight: 800; font-size: 1.12rem; color: var(--text); letter-spacing: -0.01em; }
+    .logo .c { color: var(--accent); }
+    .logo-icon { width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }
+    @media (prefers-reduced-motion: no-preference) {
+      .logo:hover .spark { animation: twinkle 0.7s ease; transform-origin: 36.5px 24px; }
+      @keyframes twinkle { 0%,100% { transform: scale(1); } 50% { transform: scale(1.45) rotate(18deg); } }
+    }
+    .nav-badge { font-family: var(--mono); font-size: 11px; font-weight: 500; background: var(--surface2); border: 1px solid var(--border2); color: var(--text2); border-radius: 100px; padding: 4px 12px; }
+
+    /* ── Hero ── */
+    /* FIX(mobile-edges): .hero/.demo-section/.section used shorthand `padding: X 0 Y`,
+       which overrode .wrap's side padding (same specificity, later in source) — content
+       and CTA buttons ran edge-to-edge at 375px. Longhand keeps .wrap's 32px/18px sides. */
+    .hero { position: relative; text-align: center; padding-top: 104px; padding-bottom: 56px; }
+    .hero-caret-bg { position: absolute; left: 50%; top: 38px; transform: translateX(-50%); font-family: var(--mono); font-weight: 700; font-size: 560px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(167,139,250,0.07); pointer-events: none; user-select: none; z-index: 0; }
+    .hero > *:not(.hero-caret-bg) { position: relative; z-index: 1; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--text2); padding: 6px 15px; margin-bottom: 34px; letter-spacing: 0.02em; }
+    .hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .hero h1 { font-size: clamp(2.5rem, 6vw, 4.4rem); font-weight: 800; line-height: 1.02; letter-spacing: -0.035em; margin: 0 auto 24px; max-width: 820px; text-wrap: balance; }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--text2); font-size: 1.16rem; max-width: 590px; margin: 0 auto 40px; line-height: 1.72; text-wrap: pretty; }
+    .hero-cta { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .btn-primary { background: var(--accent-deep); color: #fff; border: none; border-radius: var(--radius-sm); padding: 15px 30px; font-family: var(--font); font-size: 15px; font-weight: 700; letter-spacing: -0.01em; display: inline-flex; align-items: center; gap: 9px; box-shadow: 0 0 24px rgba(124,77,255,0.35); transition: transform 0.15s, box-shadow 0.15s; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 0 34px rgba(124,77,255,0.5); color: #fff; }
+    .btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 14px 24px; font-size: 15px; font-weight: 600; display: inline-block; transition: border-color 0.15s, color 0.15s; }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--text); }
+
+    /* ── Live demo ── */
+    .demo-section { padding-top: 64px; } /* FIX(mobile-edges): longhand, see .hero note */
+    .demo-card { background: linear-gradient(180deg, var(--surface) 0%, #100d1d 100%); border: 1px solid var(--border2); border-radius: 20px; padding: 34px 36px 30px; position: relative; overflow: hidden; }
+    .demo-card::before { content: ""; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(167,139,250,0.55), transparent); }
+    .demo-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+    .demo-title { font-family: var(--display); font-size: 1.2rem; font-weight: 800; }
+    .demo-note { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+    .vol-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
+    .vol-chip { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text2); background: var(--surface2); border: 1px solid var(--border2); border-radius: 99px; padding: 9px 18px; cursor: pointer; transition: all 0.15s; min-height: 40px; }
+    .vol-chip:hover { border-color: var(--accent); color: var(--text); }
+    .vol-chip.on { background: rgba(124,77,255,0.16); border-color: var(--accent); color: var(--accent); font-weight: 700; }
+    .price-rows { display: flex; flex-direction: column; gap: 13px; margin-bottom: 22px; }
+    .price-row { display: grid; grid-template-columns: 120px 1fr 110px; align-items: center; gap: 16px; }
+    .pr-name { font-family: var(--display); font-size: 14.5px; font-weight: 700; text-align: right; color: var(--text2); display: flex; align-items: center; justify-content: flex-end; gap: 7px; }
+    .pr-name .win-tag { font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; color: var(--green); border: 1px solid rgba(22,209,140,0.45); background: rgba(22,209,140,0.1); padding: 2px 7px; border-radius: 99px; }
+    .pr-track { height: 30px; background: rgba(255,255,255,0.025); border-radius: 7px; overflow: hidden; }
+    .pr-bar { height: 100%; border-radius: 7px; background: linear-gradient(90deg, #3d3367, #5b4a9e); transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1); min-width: 3px; }
+    .pr-bar.win { background: linear-gradient(90deg, #0ea66e, #2fe39c); box-shadow: 0 0 14px rgba(22,209,140,0.3); }
+    .pr-bar.worst { background: linear-gradient(90deg, #8a3d3d, #c25555); }
+    .pr-cost { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .pr-cost small { font-size: 11px; color: var(--muted); font-weight: 500; }
+    .pr-cost small.plan::before { content: " · "; }
+    .demo-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 20px; }
+    .demo-save { font-family: var(--mono); font-size: 13.5px; color: var(--muted); }
+    .demo-save b { color: var(--green); font-weight: 700; }
+    .demo-cta { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent); display: inline-flex; align-items: center; gap: 6px; }
+    .demo-cta svg { transition: transform 0.15s; }
+    .demo-cta:hover svg { transform: translateX(3px); }
+
+    /* ── Stats strip ── */
+    .stats-row { display: flex; justify-content: center; padding: 46px 0 0; }
+    .stats-inner { display: flex; flex-wrap: wrap; justify-content: center; }
+    .stat-item { padding: 0 36px; text-align: center; border-right: 1px solid var(--border); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-family: var(--mono); font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+    .stat-num.accent { color: var(--accent); }
+    .stat-label { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* ── Wizard grid ── */
+    .section { padding-top: 84px; } /* FIX(mobile-edges): longhand, see .hero note */
+    .section-label { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px; }
+    .section h2 { font-size: 1.85rem; font-weight: 800; margin-bottom: 8px; }
+    .section-sub { color: var(--text2); font-size: 15px; margin-bottom: 32px; max-width: 560px; text-wrap: pretty; }
+
+    .wizard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .wizard-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 12px; transition: border-color 0.15s, transform 0.15s; }
+    a.wizard-card { color: inherit; }
+    a.wizard-card:hover { transform: translateY(-2px); }
+    .wizard-num { font-family: var(--mono); font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: 0.08em; }
+    .wizard-head { display: flex; align-items: center; gap: 12px; }
+    .wizard-head svg { width: 34px; height: 34px; flex-shrink: 0; }
+    .wizard-name { font-family: var(--display); font-size: 1.13rem; font-weight: 800; letter-spacing: -0.01em; }
+    .wizard-name .suffix { font-weight: 600; color: var(--muted); }
+    .wizard-desc { font-size: 13.5px; color: var(--text2); line-height: 1.65; }
+    .wizard-meta { font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+    .wizard-badge { position: absolute; top: 18px; right: 18px; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; padding: 4px 10px; border-radius: 99px; }
+    .badge-live { background: rgba(22,209,140,0.12); border: 1px solid rgba(22,209,140,0.45); color: var(--green); }
+    .badge-next { background: rgba(217,123,251,0.1); border: 1px solid rgba(217,123,251,0.4); color: #d97bfb; }
+    .badge-soon { background: var(--surface2); border: 1px solid var(--border2); color: var(--muted); }
+    .wizard-card.soon { opacity: 0.62; }
+    .wizard-card.live { border-color: rgba(22,209,140,0.4); background: linear-gradient(180deg, rgba(22,209,140,0.05) 0%, var(--surface) 45%); }
+    .wizard-card.live:hover { border-color: var(--green); }
+    .wizard-go { font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--green); display: flex; align-items: center; gap: 5px; letter-spacing: 0.02em; }
+    .wizard-go svg { transition: transform 0.15s; }
+    a.wizard-card:hover .wizard-go svg { transform: translateX(3px); }
+
+    /* ── Edge / manifesto ── */
+    .edge-rows { border-top: 1px solid var(--border); }
+    .edge-row { display: grid; grid-template-columns: 110px 280px 1fr; gap: 28px; align-items: baseline; padding: 30px 0; border-bottom: 1px solid var(--border); }
+    .edge-num { font-family: var(--mono); font-size: 30px; font-weight: 700; color: var(--accent); opacity: 0.85; }
+    .edge-row h3 { font-size: 1.12rem; font-weight: 800; }
+    .edge-row p { font-size: 14px; color: var(--text2); line-height: 1.7; max-width: 560px; }
+
+    /* ── Tool screenshots (desktop only) ── GALLERY:CSS:START ──
+       Hidden below 1024px by design (mobile is already dense — see design-backlog #1).
+       Images: width/height attrs + aspect-ratio reserve space → zero layout shift.
+       loading="lazy" + below the fold → never competes with hero LCP. */
+    .shots-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .shot { margin: 0; }
+    .shot-frame { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); overflow: hidden; transition: border-color 0.15s; }
+    .shot:hover .shot-frame { border-color: #3a3263; }
+    .shot-chrome { display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-bottom: 1px solid var(--border); background: var(--surface2); }
+    .shot-chrome i { width: 9px; height: 9px; border-radius: 50%; background: var(--border2); }
+    .shot-chrome .shot-url { margin-left: 10px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: 0.02em; }
+    .shot-frame img { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 1000; object-fit: cover; }
+    .shot figcaption { display: flex; align-items: center; gap: 10px; padding: 12px 4px 0; font-family: var(--mono); font-size: 12.5px; color: var(--text2); }
+    .shot figcaption b { color: var(--text); font-weight: 700; }
+    .shot-tag { margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border2); background: var(--surface2); border-radius: 99px; padding: 3px 10px; white-space: nowrap; }
+    @media (max-width: 1023.98px) { .shots-section { display: none; } }
+    /* ── GALLERY:CSS:END ── */
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); margin-top: 92px; padding: 46px 32px 38px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.95; }
+    footer a { color: var(--muted); transition: color 0.15s; }
+    footer a:hover { color: var(--text2); }
+    .footer-brand { display: inline-flex; align-items: center; justify-content: center; gap: 9px; margin-bottom: 14px; font-family: var(--display); font-size: 15px; font-weight: 700; color: var(--text2); }
+    .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+
+    /* ── Scroll reveal — hidden state ONLY when JS opts in via html.js-reveal;
+          fallback timer in JS guarantees content can never stay hidden ── */
+    @media (prefers-reduced-motion: no-preference) {
+      html.js-reveal .rv:not(.in) { opacity: 0 !important; transform: translateY(14px); }
+      .rv { transition: opacity 0.6s ease, transform 0.6s ease; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .hero-caret-bg { font-size: 380px; }
+    }
+    @media (max-width: 620px) {
+      .nav-badge { display: none; }
+      .hero { padding-top: 68px; padding-bottom: 40px; } /* FIX(mobile-edges): longhand */
+      .stat-item { padding: 0 20px; }
+      .stat-num { font-size: 1.35rem; }
+      .demo-card { padding: 24px 18px 22px; }
+      .price-row { grid-template-columns: 86px 1fr 84px; gap: 10px; }
+      .pr-name { font-size: 12.5px; }
+      .pr-name .win-tag { display: none; }
+      .pr-cost { font-size: 13px; }
+      .pr-cost small.plan { display: block; font-size: 10px; line-height: 1.35; }
+      .pr-cost small.plan::before { content: ""; }
+      .edge-row { grid-template-columns: 1fr; gap: 6px; padding: 24px 0; }
+      .edge-num { font-size: 22px; }
+    }
+    @media (max-width: 520px) {
+      .hero-cta { flex-direction: column; align-items: stretch; }
+      .hero-cta > a { justify-content: center; text-align: center; }
+      .demo-foot { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+<!-- GA4 (build.py) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6LGJVD931P"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6LGJVD931P");</script>
+  <!-- /GA4 -->
+  </head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a href="/" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="wzlogo" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#b08cff"></stop><stop offset="1" stop-color="#7c4dff"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wzlogo)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path class="spark" d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path>
+      </svg>
+      Wizard<span class="c">Cost</span>
+    </a>
+    <span class="nav-badge">7 wizards planned · 1 live</span>
+  </div>
+</header>
+
+<section class="hero wrap" data-screen-label="Hero">
+  <div class="hero-caret-bg" aria-hidden="true">&lt;</div>
+  <div class="hero-eyebrow"><span class="dot"></span>Free · No signup · Prices verified June 2026</div>
+  <h1>Know what software will <em>actually cost</em> — before you sign up.</h1>
+  <p>WizardCost runs live pricing calculators for software categories. Real advertised prices, your actual usage, and the cheapest pick computed — not star ratings.</p>
+  <div class="hero-cta">
+    <a href="/automation/" class="btn-primary">
+      Try the Automation wizard
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+    <a href="#wizards" class="btn-secondary">See all wizards ↓</a>
+  </div>
+</section>
+
+<section class="demo-section wrap" data-screen-label="Live demo">
+  <div class="demo-card rv">
+    <div class="demo-head">
+      <div class="demo-title">What does automation cost per month?</div>
+      <div class="demo-note">live sample · June 2026 prices · from the Automation wizard</div>
+    </div>
+    <div class="vol-chips" role="tablist" aria-label="Operations per month" id="vol-chips"></div>
+    <div class="price-rows" id="price-rows"></div>
+    <div class="demo-foot">
+      <div class="demo-save" id="demo-save"></div>
+      <a href="/automation/calculator.html" class="demo-cta">
+        Get your exact number
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="stats-row rv">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-num accent">7</div><div class="stat-label">tools tracked</div></div>
+      <div class="stat-item"><div class="stat-num">24</div><div class="stat-label">plans priced</div></div>
+      <div class="stat-item"><div class="stat-num">Jun 2026</div><div class="stat-label">prices verified</div></div>
+      <div class="stat-item"><div class="stat-num accent">$0</div><div class="stat-label">to use</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section wrap" id="wizards" data-screen-label="Wizard grid">
+  <div class="section-label">The Wizards</div>
+  <h2>One wizard per software category.</h2>
+  <p class="section-sub">Each wizard tracks real advertised pricing for its niche and computes the cheapest tool for your usage.</p>
+
+  <div class="wizard-grid">
+
+    <a class="wizard-card live rv" href="/automation/">
+      <span class="wizard-badge badge-live">● LIVE</span>
+      <span class="wizard-num">01</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg1" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg1)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#16d18c;">Automation<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">n8n, Make, Zapier, Pipedream &amp; more — priced at your ops volume, with free-tier limits and self-hosting math.</div>
+      <div class="wizard-meta">7 tools · calculator + compare · updated Jun 2026</div>
+      <div class="wizard-go">Open wizard <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+    </a>
+
+    <div class="wizard-card rv">
+      <span class="wizard-badge badge-next">NEXT UP</span>
+      <span class="wizard-num">02</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg2" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e98bff"></stop><stop offset="1" stop-color="#c44dff"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg2)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#d97bfb;">LLM<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">OpenAI, Anthropic, Gemini, Mistral — price per million tokens at your real prompt/completion mix.</div>
+      <div class="wizard-meta">in the works</div>
+    </div>
+
+    <div class="wizard-card soon rv">
+      <span class="wizard-badge badge-soon">SOON</span>
+      <span class="wizard-num">03</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg3" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffc06b"></stop><stop offset="1" stop-color="#e07b2a"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg3)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#ffa45c;">Email<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">Transactional email APIs — Resend, Postmark, SendGrid, SES — priced per send volume.</div>
+      <div class="wizard-meta">coming soon</div>
+    </div>
+
+    <div class="wizard-card soon rv">
+      <span class="wizard-badge badge-soon">SOON</span>
+      <span class="wizard-num">04</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg4" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6fc2ff"></stop><stop offset="1" stop-color="#2a6fdb"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg4)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#5cb8ff;">Storage<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">Object storage &amp; CDN — S3, R2, B2, Wasabi — priced per TB stored and egressed.</div>
+      <div class="wizard-meta">coming soon</div>
+    </div>
+
+    <div class="wizard-card soon rv">
+      <span class="wizard-badge badge-soon">SOON</span>
+      <span class="wizard-num">05</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg5" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff9a8b"></stop><stop offset="1" stop-color="#e85a4a"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg5)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#ff7a6b;">CRM<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">HubSpot, Pipedrive, Attio &amp; friends — priced per seat, with the upgrade-tier traps mapped.</div>
+      <div class="wizard-meta">coming soon</div>
+    </div>
+
+    <div class="wizard-card soon rv">
+      <span class="wizard-badge badge-soon">SOON</span>
+      <span class="wizard-num">06</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg6" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffd35c"></stop><stop offset="1" stop-color="#d99a0b"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg6)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#fbbf24;">SEO<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">Ahrefs, Semrush, lower-cost challengers — priced per tracked keywords and crawl credits.</div>
+      <div class="wizard-meta">coming soon</div>
+    </div>
+
+    <div class="wizard-card soon rv">
+      <span class="wizard-badge badge-soon">SOON</span>
+      <span class="wizard-num">07</span>
+      <div class="wizard-head">
+        <svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg7" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5ce8d4"></stop><stop offset="1" stop-color="#0ea5a0"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg7)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <span class="wizard-name" style="color:#2dd4bf;">Nocode<span class="suffix">Cost</span></span>
+      </div>
+      <div class="wizard-desc">Bubble, Webflow, Glide, Softr — priced per app, records and visitors as you grow.</div>
+      <div class="wizard-meta">coming soon</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GALLERY:HTML:START ── desktop-only tool screenshot gallery (design-backlog #2).
+     Replace assets/shots/*.svg placeholders with real product-UI captures
+     (own test accounts or official press/brand assets — faceless, no people, no stock).
+     Export WebP/AVIF at 1600×1000 (2x of 800×500 render) and keep the same filenames
+     or update the four src attributes. Logos/UI shown in comparative-review context. -->
+<section class="section wrap shots-section" id="tool-shots" data-screen-label="Tool screenshots">
+  <div class="section-label">Under the hood</div>
+  <h2>The tools we price, up close.</h2>
+  <p class="section-sub">This is what you'd actually be working in — captured from our own test accounts, not marketing renders.</p>
+  <div class="shots-grid">
+    <figure class="shot rv">
+      <div class="shot-frame">
+        <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">n8n — workflow editor</span></div>
+        <img src="assets/shots/n8n-editor.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="n8n workflow editor: node canvas with connected automation steps">
+      </div>
+      <figcaption><b>n8n</b> node canvas <span class="shot-tag">self-hostable</span></figcaption>
+    </figure>
+    <figure class="shot rv">
+      <div class="shot-frame">
+        <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">Make — scenario builder</span></div>
+        <img src="assets/shots/make-scenario.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="Make scenario builder: visual modules connected in a flow">
+      </div>
+      <figcaption><b>Make</b> scenario builder <span class="shot-tag">cheapest cloud</span></figcaption>
+    </figure>
+    <figure class="shot rv">
+      <div class="shot-frame">
+        <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">Zapier — Zap editor</span></div>
+        <img src="assets/shots/zapier-editor.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="Zapier Zap editor: step-by-step trigger and action setup">
+      </div>
+      <figcaption><b>Zapier</b> Zap editor <span class="shot-tag">7,000+ integrations</span></figcaption>
+    </figure>
+    <figure class="shot rv">
+      <div class="shot-frame">
+        <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">Pipedream — workflow code</span></div>
+        <img src="assets/shots/pipedream-workflow.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="Pipedream workflow: code steps and event data inspector">
+      </div>
+      <figcaption><b>Pipedream</b> code steps <span class="shot-tag">dev-centric</span></figcaption>
+    </figure>
+  </div>
+</section>
+<!-- GALLERY:HTML:END -->
+
+<section class="section wrap" data-screen-label="Why WizardCost">
+  <div class="section-label">Why WizardCost</div>
+  <h2>Calculators, not star ratings.</h2>
+  <p class="section-sub">Most software directories rank tools by reviews and ad budgets. We just do the math.</p>
+
+  <div class="edge-rows">
+    <div class="edge-row rv">
+      <div class="edge-num">01</div>
+      <h3>Your usage, your price</h3>
+      <p>Enter your real volume — ops, tokens, sends, seats — and see the actual monthly bill for every tool, not a "starting at" teaser.</p>
+    </div>
+    <div class="edge-row rv">
+      <div class="edge-num">02</div>
+      <h3>Fresh, dated prices</h3>
+      <p>Every price is taken from the vendor's official pricing page and stamped with the date it was last verified. No stale screenshots.</p>
+    </div>
+    <div class="edge-row rv">
+      <div class="edge-num">03</div>
+      <h3>Math picks the winner</h3>
+      <p>The cheapest tool at your volume is computed, not sponsored. When we earn an affiliate commission, it's labeled — and it never changes the ranking.</p>
+    </div>
+  </div>
+</section>
+
+<footer data-screen-label="Footer">
+  <div class="footer-brand">
+    <svg width="20" height="20" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wzfoot" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#b08cff"></stop><stop offset="1" stop-color="#7c4dff"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wzfoot)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+    WizardCost
+  </div>
+  <div class="footer-links">
+    <a href="/automation/">Automation wizard</a>
+    <a href="/automation/affiliate.html">Affiliate disclosure</a>
+    <a href="/automation/privacy.html">Privacy</a>
+    <a href="/automation/terms.html">Terms</a>
+  </div>
+  <div>© 2026 WizardCost. Prices belong to their vendors and can change — always confirm on the official pricing page.</div>
+</footer>
+
+<script>
+// ── Demo data — generated by build.py from automation/data/tools.json.
+//    est:1 = estimated custom-tier price, rendered with ~ prefix.
+/* DATA:DEMO:START */ /* generováno build.py z automation/data/tools.json — needituj ručně */
+const DEMO = {
+  1000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:0, note:"Free"}, {n:"Pipedream", c:10, note:"Free +ops"}, {n:"Zapier", c:44.99, note:"Professional +ops"} ],
+  5000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:9, note:"Core"}, {n:"Pipedream", c:49, note:"Advanced"}, {n:"Zapier", c:130, note:"Enterprise", est:1} ],
+  20000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:18, note:"Core +ops"}, {n:"Pipedream", c:130, note:"Business", est:1}, {n:"Zapier", c:345, note:"Enterprise", est:1} ],
+  100000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:45, note:"Enterprise", est:1}, {n:"Pipedream", c:400, note:"Business", est:1}, {n:"Zapier", c:1065, note:"Enterprise", est:1} ],
+};
+const DEMO_FOOT = "*n8n ≈ $8/mo VPS · ~ price estimated (custom tier)";
+/* DATA:DEMO:END */
+
+function renderDemo(vol) {
+  const rows = DEMO[vol];
+  const max = Math.max(...rows.map(r => r.c));
+  const min = Math.min(...rows.map(r => r.c));
+  const container = document.getElementById("price-rows");
+  container.innerHTML = rows.map(r => {
+    const pct = max > 0 ? Math.max((r.c / max) * 100, 1.5) : 1.5;
+    const cls = r.c === min ? "win" : (r.c === max && max !== min ? "worst" : "");
+    const price = (r.est ? "~" : "") + "$" + r.c.toLocaleString();
+    return `<div class="price-row">
+      <div class="pr-name">${r.n}${r.c === min ? '<span class="win-tag">CHEAPEST</span>' : ''}</div>
+      <div class="pr-track"><div class="pr-bar ${cls}" style="width:0%" data-w="${pct}"></div></div>
+      <div class="pr-cost">${price}<small>/mo</small><small class="plan">${r.note}</small></div>
+    </div>`;
+  }).join("");
+  requestAnimationFrame(() => {
+    container.querySelectorAll(".pr-bar").forEach(b => {
+      void b.offsetWidth; // forced reflow so the 0% → target transition registers
+      b.style.width = b.dataset.w + "%";
+    });
+  });
+  // safety: if rAF frames are coalesced (background tab), set widths directly
+  setTimeout(() => {
+    container.querySelectorAll(".pr-bar").forEach(b => {
+      if (b.style.width === "0%" || b.style.width === "") b.style.width = b.dataset.w + "%";
+    });
+  }, 120);
+  const saveYr = (max - min) * 12;
+  const isEst = rows.some(r => (r.c === min || r.c === max) && r.est);
+  document.getElementById("demo-save").innerHTML =
+    saveYr > 0 ? `Cheapest vs priciest at this volume: <b>${isEst ? "~" : ""}$${saveYr.toLocaleString()}/yr</b> difference &nbsp;·&nbsp; ${DEMO_FOOT}` : "";
+}
+
+// ── Volume chips — generated from DEMO keys so build.py controls volumes too
+const DEFAULT_VOL = Object.keys(DEMO).map(Number).includes(5000) ? 5000 : Math.min(...Object.keys(DEMO).map(Number));
+document.getElementById("vol-chips").innerHTML = Object.keys(DEMO).map(Number).sort((a, b) => a - b)
+  .map(v => `<button class="vol-chip${v === DEFAULT_VOL ? ' on' : ''}" data-vol="${v}">${v.toLocaleString()} ops/mo</button>`).join("");
+
+document.querySelectorAll(".vol-chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    document.querySelectorAll(".vol-chip").forEach(c => c.classList.remove("on"));
+    chip.classList.add("on");
+    renderDemo(+chip.dataset.vol);
+  });
+});
+renderDemo(DEFAULT_VOL);
+
+// ── Scroll reveal (respects prefers-reduced-motion via CSS gate) ──
+document.documentElement.classList.add("js-reveal");
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll(".rv").forEach(el => io.observe(el));
+// safety net: never leave content hidden (throttled iframes, IO quirks)
+setTimeout(() => { document.querySelectorAll(".rv:not(.in)").forEach(el => el.classList.add("in")); }, 1400);
+</script>
+
+</body>
+</html>
