@@ -30,6 +30,7 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
 | `verify-demo.js` | po každé změně enginu, dat nebo Python portu (parita DEMO ↔ JS engine) |
 | `test-ops-estimate.js`, `test-200-firem.js` | po změně estimate matematiky (plausibilita doporučení, monotonie, pořadí) |
 | `test-smoke-flow.js` | po změně wizardu (end-to-end přes DOM stub) |
+| `test-share-restore.js` | po změně share URL / restore logiky kalkulátoru (round-trip, resume banner, validace) |
 | `test-homepage-smoke.js`, `test-changelog-smoke.js` | po změně homepage dema / changelogu |
 | `e2e-live.js` | po deployi (Playwright proklik živého webu, screenshoty do `calc-test/screenshots/`) |
 | `check-ui-live.js` | po změně nav/headeru (dropdown Pricing Guides, logo →`/`, favicon — live) |

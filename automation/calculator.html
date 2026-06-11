@@ -257,10 +257,16 @@
     .btn-back:hover { border-color: var(--text); color: var(--text); }
 
     /* ── Results ── */
-    .results-header { margin-bottom: 24px; }
+    .results-header { margin-bottom: 24px; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
     .results-header h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; }
     .results-header p { color: var(--muted); font-size: 14px; }
+    .share-btn { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 1px solid var(--border); color: var(--muted); font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; cursor: pointer; font-family: inherit; transition: border-color 0.15s, color 0.15s; flex-shrink: 0; margin-top: 4px; }
+    .share-btn:hover { border-color: var(--accent); color: var(--text); }
+    .share-btn.copied { border-color: var(--green); color: var(--green); }
     .profile-summary { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .savings-banner { display: flex; align-items: center; gap: 10px; background: linear-gradient(160deg, rgba(16,185,129,0.14), var(--surface) 70%); border: 1px solid rgba(16,185,129,0.4); border-radius: var(--radius-sm); padding: 13px 18px; margin: -12px 0 24px; font-size: 14px; color: var(--text); }
+    .savings-banner b { color: var(--green); font-family: var(--mono); }
+    .savings-banner svg { flex-shrink: 0; color: var(--green); }
     .profile-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--muted); }
     .profile-chip span { color: var(--text); }
 
@@ -363,7 +369,24 @@
       .wf-card-header { padding: 20px 16px 14px; }
       .wf-card-diagram { padding: 0 10px 14px; }
       footer { padding: 30px 18px; }
+      /* Diagrams collapsed on phones — 5+ cards × 220px SVG would push the
+         Next button several screens down. Card tap still selects; the toggle
+         only reveals the diagram. */
+      .wf-card-diagram { display: none; }
+      .wf-card.diagram-open .wf-card-diagram { display: block; }
+      .wf-diagram-toggle { display: inline-flex; }
     }
+
+    /* Hidden on desktop — diagrams are always visible there */
+    .wf-diagram-toggle { display: none; align-items: center; gap: 6px; background: none; border: none; color: var(--muted); font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; padding: 0 16px 14px; }
+    .wf-diagram-toggle svg { transition: transform 0.2s; }
+    .wf-card.diagram-open .wf-diagram-toggle svg { transform: rotate(180deg); }
+
+    /* ── Resume banner (shown when a recent profile is in localStorage) ── */
+    .resume-banner { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 26px; font-size: 13.5px; color: var(--text2); }
+    .resume-banner a { color: var(--accent); font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .resume-banner .resume-dismiss { margin-left: auto; background: none; border: none; color: var(--muted); font-size: 16px; cursor: pointer; padding: 0 4px; line-height: 1; }
+    .resume-banner .resume-dismiss:hover { color: var(--text); }
 
     /* ── FAQ ── */
     .faq-section { max-width: 760px; margin: 70px auto 0; padding-top: 34px; border-top: 1px solid var(--border); }
@@ -420,6 +443,14 @@
     <div class="wp-step" id="wp-4"><div class="wp-dot">4</div><span>Volume & budget</span></div>
     <div class="wp-line" id="wl-4"></div>
     <div class="wp-step" id="wp-5"><div class="wp-dot">5</div><span>Results</span></div>
+  </div>
+
+  <!-- Resume banner — revealed on load when a recent profile is stored -->
+  <div class="resume-banner" id="resume-banner" hidden>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span>You have saved answers from a previous visit.</span>
+    <a onclick="resumeStoredProfile()">See your results →</a>
+    <button class="resume-dismiss" onclick="document.getElementById('resume-banner').hidden = true" aria-label="Dismiss">×</button>
   </div>
 
   <!-- ── Step 1: Company size ── -->
@@ -620,10 +651,17 @@
   <!-- ── Step 5: Results ── -->
   <div class="step" id="step-5">
     <div class="results-header">
-      <h2>Your personalized recommendations</h2>
-      <p>Ranked by match score — a weighted mix of feature fit for your role, workflow type, price vs your budget, and capabilities.</p>
+      <div>
+        <h2>Your personalized recommendations</h2>
+        <p>Ranked by match score — a weighted mix of feature fit for your role, workflow type, price vs your budget, and capabilities.</p>
+      </div>
+      <button class="share-btn" id="share-btn" onclick="copyShareLink(this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <span id="share-btn-label">Copy share link</span>
+      </button>
     </div>
     <div class="profile-summary" id="profile-summary"></div>
+    <div class="savings-banner" id="savings-banner" hidden></div>
     <div id="results-list"></div>
     <div id="no-results-msg" class="no-results" style="display:none">
       No tool supports <strong>all</strong> your selected integrations with these settings. Try removing one, or note that most platforms support any app via custom HTTP requests.
@@ -1956,6 +1994,7 @@ function renderWorkflowGrid() {
         </div>
         <div class="wf-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
       </div>
+      <button class="wf-diagram-toggle" onclick="toggleDiagram(event, '${wf.id}')">View workflow diagram <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="wf-card-diagram">
         <svg class="wf-big-svg" id="wf-svg-${wf.id}" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-height:220px;"></svg>
       </div>
@@ -2000,6 +2039,13 @@ function updateWfSelectedCount() {
   const n = selectedWorkflows.length;
   chip.hidden = n === 0;
   chip.textContent = n + (n === 1 ? " workflow selected" : " workflows selected");
+}
+
+// Mobile-only: reveals the collapsed diagram without toggling card selection.
+function toggleDiagram(event, id) {
+  event.stopPropagation();
+  const card = document.getElementById("wfc-" + id);
+  if (card) card.classList.toggle("diagram-open");
 }
 
 // ── Step 3 inputs ─────────────────────────────────────────────────────────────
@@ -2294,13 +2340,33 @@ function renderResults() {
 
   const list = document.getElementById("results-list");
   const noMsg = document.getElementById("no-results-msg");
+  const savings = document.getElementById("savings-banner");
 
   if (!items.length) {
     list.innerHTML = "";
     noMsg.style.display = "block";
+    if (savings) savings.hidden = true;
     return;
   }
   noMsg.style.display = "none";
+
+  // Money quote: yearly savings of the top pick vs the runner-up. Only shown
+  // when the difference is real (≥ $2/mo) and positive — a pricier top pick
+  // just means fit beat price, no banner needed.
+  if (savings) {
+    const yearly = Math.round((items[1] ? items[1].costResult.cost - items[0].costResult.cost : 0) * 12);
+    if (items.length >= 2 && yearly >= 24) {
+      const approx = items[0].costResult.estimated || items[1].costResult.estimated;
+      savings.innerHTML =
+        `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>` +
+        `<div><b>${items[0].tool.name}</b> saves you <b>${approx ? "~" : ""}$${yearly.toLocaleString("en-US")}/yr</b> vs ${items[1].tool.name} — the next-best match at your volume.</div>`;
+      savings.hidden = false;
+    } else {
+      savings.hidden = true;
+    }
+  }
+
+  syncShareUrl();
 
   const whyData = TOOL_WHY;
   list.innerHTML = items.map((r, i) => {
@@ -2368,7 +2434,7 @@ function renderResults() {
   try {
     localStorage.setItem("ac_profile", JSON.stringify({
       ops: getCalcOps(), workflows: getCalcWf(), budget: maxBudget,
-      hostPref: hostPref, aiPref: aiPref, role: selectedRole, companySize: selectedCompanySize,
+      hostPref: hostPref, aiPref: aiPref, billing: billing, role: selectedRole, companySize: selectedCompanySize,
       workflowsSel: selectedWorkflows.slice(),
       topTool: items.length ? items[0].tool.slug : null,
       topPlan: (items.length && items[0].costResult) ? items[0].costResult.plan.name : null,
@@ -2383,6 +2449,158 @@ function toggleExpand(slug) {
   card.classList.toggle("expanded");
   icon.textContent = card.classList.contains("expanded") ? "▾" : "▸";
 }
+
+// ── Share link & profile restore ──────────────────────────────────────────────
+// The results page doubles as a permalink: every answer is serialized into the
+// query string (?s=size&r=role&w=wf.ids&o=opsIdx&f=wfIdx&b=budget&bi=a&h=host
+// &ai=y&i=App~App). Loading such a URL re-creates the state and jumps straight
+// to results. All window.location/history access is guarded — the DOM-stub
+// test harness has neither.
+const SHARE_SIZES = ["solo", "small", "growing", "midmarket", "enterprise"];
+const SHARE_ROLES = ["marketing", "operations", "developer", "finance", "legal", "hr", "ecommerce", "other"];
+
+function buildShareQuery() {
+  const p = new URLSearchParams();
+  if (selectedCompanySize) p.set("s", selectedCompanySize);
+  if (selectedRole) p.set("r", selectedRole);
+  if (selectedWorkflows.length) p.set("w", selectedWorkflows.join("."));
+  p.set("o", document.getElementById("ops").value);
+  p.set("f", document.getElementById("workflows").value);
+  p.set("b", String(maxBudget));
+  if (billing === "annual") p.set("bi", "a");
+  if (hostPref !== "any") p.set("h", hostPref);
+  if (aiPref === "yes") p.set("ai", "y");
+  if (selectedIntegrations.length) p.set("i", selectedIntegrations.join("~"));
+  return p.toString();
+}
+
+// Keeps the address bar in sync with the rendered results (replace, not push —
+// Back must leave the page, not unwind slider tweaks).
+function syncShareUrl() {
+  try {
+    if (window.history && window.history.replaceState && window.location)
+      window.history.replaceState(null, "", window.location.pathname + "?" + buildShareQuery());
+  } catch (e) {}
+}
+
+function copyShareLink(btn) {
+  syncShareUrl();
+  const url = window.location ? window.location.href : "";
+  const label = document.getElementById("share-btn-label");
+  const done = () => {
+    btn.classList.add("copied");
+    if (label) label.textContent = "Link copied ✓";
+    setTimeout(() => { btn.classList.remove("copied"); if (label) label.textContent = "Copy share link"; }, 2000);
+  };
+  const fallback = () => {
+    const ta = document.createElement("textarea");
+    ta.value = url; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  };
+  if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText)
+    navigator.clipboard.writeText(url).then(done, fallback);
+  else fallback();
+}
+
+function profileFromParams(qs) {
+  const p = new URLSearchParams(qs);
+  if (!p.get("s") || !p.get("r")) return null;
+  const num = (v, d) => { const n = parseInt(v, 10); return isFinite(n) ? n : d; };
+  return {
+    size: p.get("s"), role: p.get("r"),
+    wfs: p.get("w") ? p.get("w").split(".") : [],
+    opsIdx: num(p.get("o"), 4), wfIdx: num(p.get("f"), 2), budget: num(p.get("b"), 50),
+    billing: p.get("bi") === "a" ? "annual" : "monthly",
+    host: p.get("h") || "any",
+    ai: p.get("ai") === "y" ? "yes" : "any",
+    integ: p.get("i") ? p.get("i").split("~") : [],
+  };
+}
+
+function profileFromStored() {
+  try {
+    const raw = localStorage.getItem("ac_profile");
+    if (!raw) return null;
+    const p = JSON.parse(raw);
+    if (!p || !p.companySize || !p.role) return null;
+    if (!p.ts || Date.now() - p.ts > 30 * 24 * 3600 * 1000) return null; // stale after 30 days
+    return {
+      size: p.companySize, role: p.role, wfs: p.workflowsSel || [],
+      opsIdx: findClosestIdx(CALC_OPS_STEPS, p.ops || 5000),
+      wfIdx: findClosestIdx(CALC_WF_STEPS, p.workflows || 5),
+      budget: typeof p.budget === "number" ? p.budget : 50,
+      billing: p.billing === "annual" ? "annual" : "monthly",
+      host: p.hostPref || "any", ai: p.aiPref || "any",
+      integ: [],
+    };
+  } catch (e) { return null; }
+}
+
+// Restores wizard state from a normalized profile and jumps straight to results.
+function restoreProfile(prof) {
+  if (SHARE_SIZES.indexOf(prof.size) === -1 || SHARE_ROLES.indexOf(prof.role) === -1) return false;
+  selectedCompanySize = prof.size;
+  selectedRole = prof.role;
+  selectedWorkflows = (prof.wfs || []).filter(id => WORKFLOWS.some(w => w.id === id));
+  selectedWorkflow = selectedWorkflows.length ? selectedWorkflows[selectedWorkflows.length - 1] : null;
+  if (prof.host === "cloud" || prof.host === "selfhost") hostPref = prof.host;
+  if (prof.ai === "yes") aiPref = "yes";
+  if (prof.billing === "annual") billing = "annual";
+  maxBudget = Math.max(0, Math.min(500, prof.budget));
+  selectedIntegrations = (prof.integ || []).filter(n => INTEGRATIONS.some(a => a.name === n));
+
+  // Sliders get the restored values directly; matching lastEstimateSig stops
+  // goStep(4) from re-estimating over them when the user navigates back.
+  document.getElementById("ops").value = String(Math.max(0, Math.min(CALC_OPS_STEPS.length - 1, prof.opsIdx)));
+  updateOpsDisplay();
+  document.getElementById("workflows").value = String(Math.max(0, Math.min(CALC_WF_STEPS.length - 1, prof.wfIdx)));
+  updateWfDisplay();
+  document.getElementById("budget").value = String(maxBudget);
+  updateBudget(maxBudget);
+  lastEstimateSig = selectedCompanySize + "|" + selectedRole + "|" + selectedWorkflows.slice().sort().join(",");
+
+  // Reflect the restored answers in the UI so navigating back looks right.
+  try {
+    const sc = document.querySelector('.size-card[data-size="' + prof.size + '"]');
+    if (sc) sc.classList.add("selected");
+    const rc = document.querySelector('.role-card[data-role="' + prof.role + '"]');
+    if (rc) rc.classList.add("selected");
+    document.querySelectorAll("[data-billing]").forEach(b => b.classList.toggle("active", b.dataset.billing === billing));
+    document.querySelectorAll("[data-host]").forEach(b => b.classList.toggle("active", b.dataset.host === hostPref));
+    document.querySelectorAll("[data-ai]").forEach(b => b.classList.toggle("active", b.dataset.ai === aiPref));
+    document.getElementById("btn-next-0").disabled = false;
+    document.getElementById("btn-next-1").disabled = false;
+    renderIntegSelected();
+  } catch (e) {}
+
+  goStep(5);
+  return true;
+}
+
+function resumeStoredProfile() {
+  const banner = document.getElementById("resume-banner");
+  if (banner) banner.hidden = true;
+  const prof = profileFromStored();
+  if (prof) restoreProfile(prof);
+}
+
+// On load: a share URL wins; otherwise a recent stored profile reveals the
+// resume banner. No-ops in the test harness (no location, empty storage).
+(function () {
+  try {
+    const qs = window.location && window.location.search;
+    if (qs && qs.length > 1) {
+      const prof = profileFromParams(qs);
+      if (prof && restoreProfile(prof)) return;
+    }
+    if (profileFromStored()) {
+      const banner = document.getElementById("resume-banner");
+      if (banner) banner.hidden = false;
+    }
+  } catch (e) {}
+})();
 
 </script>
 
