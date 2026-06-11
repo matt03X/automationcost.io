@@ -39,6 +39,13 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
 | `check-jsonld.js` | po změně head sekcí (validita JSON-LD bloků) |
 | `test-vs-pages.js` | po změně pairs.json, tools.json nebo vs šablony (JSON-LD 1:1, affiliate pravidla, čísla z enginu, per-řádkové cheap, cross-linky) |
 
+## Email capture (price-drop alerts)
+
+- Blok mezi `EMAILCAP:CSS|HTML|JS START/END` anchory žije na 3 místech: calculator.html, changelog.html, šablona vs-stránek v automation/build.py (`EMAILCAP_ACTION`). Měnit synchronně.
+- Backend = **MailerLite** (účet ownera wizardcost.test@gmail.com, sender alerts@wizardcost.com přes Cloudflare Email Routing). Form action + povinná skrytá pole `ml-submit=1`, `anticsrf=true`. Double opt-in zapnutý.
+- **Disclosure „Price-change alerts only. No newsletter, unsubscribe anytime." je závazek ownera (2026-06-11) — NEMĚNIT a na seznam NIKDY neposílat newsletter bez nového souhlasu subscriberů.**
+- **Automatizované testy NIKDY nesubmitují formulář** (= reální subscribeři + DOI maily). Live testy kontrolují jen přítomnost bloku/action URL.
+
 ## Pasti (poučení z historie, neopakovat)
 
 - GA4/analytics injektor v build.py vkládá snippet před **první výskyt** `</head>` v souboru → nikdy nepiš literál `</head>` do HTML komentářů ani stringů.
