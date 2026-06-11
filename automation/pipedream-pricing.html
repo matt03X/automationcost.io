@@ -36,7 +36,7 @@
         "name": "Is Pipedream cheaper than Zapier?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Pipedream Basic at $29/mo (2,000 credits) is cheaper than Zapier Professional at $49/mo (2,000 tasks). Pipedream also lets you run Node.js and Python code natively, which Zapier does not."
+          "text": "Yes, at equal volume. Pipedream Basic at $29/mo includes 2,000 credits; getting 2,000 tasks on Zapier requires the Team plan at $69/mo (Professional's $19.99/mo base tier includes only 750 tasks). Pipedream also lets you run Node.js and Python code natively, which Zapier does not."
         }
       }
     ]
@@ -110,7 +110,7 @@
     .nav-dropdown { position: relative; display: flex; align-items: center; flex-shrink: 0; }
     .nav-dropdown-btn { background: none; border: none; color: var(--muted); font-family: inherit; font-size: 14px; padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s; }
     .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text); }
-    .nav-dropdown-menu { display: none; position: absolute; top: calc(100%% + 2px); left: 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); min-width: 200px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.4); padding: 6px 0; }
+    .nav-dropdown-menu { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); min-width: 200px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.4); padding: 6px 0; }
     .nav-dropdown.open .nav-dropdown-menu { display: block; }
     .nav-dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 13px; font-weight: 500; color: var(--text); text-decoration: none; transition: background 0.1s; border-bottom: none !important; }
     .nav-dropdown-menu a:hover { background: var(--surface2); }
@@ -151,7 +151,7 @@
 
 <header>
   <div class="nav-top">
-    <a href="index.html" class="logo">
+    <a href="/" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
         <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -174,8 +174,10 @@
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
         <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
-        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
+        <a href="pipedream-pricing.html" style="color:var(--text);font-weight:600"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
         <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
+        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
+        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
       </div>
     </div>
   </nav>
@@ -252,9 +254,9 @@
       <thead><tr><th>Feature</th><th>Pipedream</th><th>Make</th><th>Zapier</th></tr></thead>
       <tbody>
         <tr><td>Run Node.js / Python code</td><td class="tag-yes">Yes (native)</td><td class="tag-no">No</td><td class="tag-no">No</td></tr>
-        <tr><td>Price at 2,000 ops/mo</td><td>$29/mo</td><td>$9/mo</td><td>$49/mo</td></tr>
+        <tr><td>Price at 2,000 ops/mo</td><td>$29/mo</td><td>$9/mo</td><td>$69/mo</td></tr>
         <tr><td>Execution timeout</td><td>12 min (paid)</td><td>40 min</td><td>15 min</td></tr>
-        <tr><td>Integrations</td><td>2,000+</td><td>1,500+</td><td>7,000+</td></tr>
+        <tr><td>Integrations</td><td>2,000+</td><td>1,500+</td><td>9,000+</td></tr>
         <tr><td>Self-hosting</td><td class="tag-no">No</td><td class="tag-no">No</td><td class="tag-no">No</td></tr>
         <tr><td>Free tier</td><td>100 credits</td><td>1,000 ops</td><td>100 tasks</td></tr>
       </tbody>
@@ -272,7 +274,7 @@
 
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Is Pipedream cheaper than Zapier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Yes. Pipedream Basic at $29/mo (2,000 credits) beats Zapier Professional at $49/mo (2,000 tasks). Pipedream also includes native code steps, longer execution timeouts, and dedicated workers — all missing from Zapier's equivalent tier.</div>
+      <div class="faq-a">Yes, at equal volume. Pipedream Basic at $29/mo includes 2,000 credits; getting 2,000 tasks on Zapier requires the $69/mo Team plan (Professional's $19.99/mo base tier includes only 750 tasks). Pipedream also includes native code steps, longer execution timeouts, and dedicated workers.</div>
     </div>
 
     <div class="faq-item">
@@ -326,7 +328,9 @@ function toggleFaq(btn) {
 <script>
 document.querySelector(".nav-dropdown-btn").addEventListener("click", function(e) {
   e.stopPropagation();
-  this.closest(".nav-dropdown").classList.toggle("open");
+  var dd = this.closest(".nav-dropdown");
+  var r = this.getBoundingClientRect(), m = dd.querySelector(".nav-dropdown-menu"); m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 224)) + "px"; m.style.top = (r.bottom + 8) + "px";
+  dd.classList.toggle("open");
 });
 document.addEventListener("click", function() {
   document.querySelectorAll(".nav-dropdown.open").forEach(d => d.classList.remove("open"));

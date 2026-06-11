@@ -26,7 +26,7 @@
     "@type": "FAQPage",
     "mainEntity": [
       {"@type":"Question","name":"Is n8n cheaper than Make?","acceptedAnswer":{"@type":"Answer","text":"Self-hosted n8n costs ~$8/mo (server only) with unlimited ops — cheaper than any Make plan for high volumes. On cloud, Make Core at $9/mo gives 10,000 ops while n8n Cloud Starter at $20/mo gives only 2,500 ops, making Make cheaper for cloud users under 10k ops/month."}},
-      {"@type":"Question","name":"Is n8n cheaper than Zapier?","acceptedAnswer":{"@type":"Answer","text":"Yes, significantly. n8n self-hosted costs ~$8/mo with unlimited operations. Zapier charges $49/mo for just 2,000 tasks. Even n8n Cloud at $20/mo (2,500 ops) beats Zapier's $20/mo Starter plan which only includes 750 tasks."}},
+      {"@type":"Question","name":"Is n8n cheaper than Zapier?","acceptedAnswer":{"@type":"Answer","text":"Yes, significantly. n8n self-hosted costs ~$8/mo with unlimited operations. Zapier's Professional plan at $19.99/mo (billed annually) includes just 750 tasks. Even n8n Cloud at $20/mo includes 2,500 ops — over 3x more for the same money."}},
       {"@type":"Question","name":"What is Make.com pricing?","acceptedAnswer":{"@type":"Answer","text":"Make offers a free plan with 1,000 ops/month. Paid plans start at $9/mo (Core, 10,000 ops), $16/mo (Pro, 10,000 ops + advanced features), and $29/mo (Teams). Additional ops cost $9 per 10,000."}},
       {"@type":"Question","name":"Which automation tool has the cheapest free plan?","acceptedAnswer":{"@type":"Answer","text":"Make has the most generous free plan at 1,000 ops/month with unlimited workflows. Zapier and Pipedream free tiers are limited to 100 ops/month. n8n, Activepieces, and Automatisch are free when self-hosted."}},
       {"@type":"Question","name":"Can I self-host Make or Zapier?","acceptedAnswer":{"@type":"Answer","text":"No. Make and Zapier are cloud-only. If you need self-hosting for GDPR compliance or cost control, consider n8n (Sustainable Use license), Activepieces (MIT license), Automatisch (AGPL), or Node-RED (Apache 2.0)."}},
@@ -155,7 +155,7 @@
     }
     .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text2); }
     .nav-dropdown-menu {
-      display: none; position: absolute; top: calc(100% + 8px); left: 0;
+      display: none; position: fixed;
       background: var(--surface); border: 1px solid var(--border2);
       border-radius: var(--radius); min-width: 214px; z-index: 200;
       box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
@@ -386,7 +386,7 @@
 
 <header>
   <div class="nav-top">
-    <a href="index.html" class="logo">
+    <a href="/" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
         <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -411,6 +411,8 @@
         <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
         <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
         <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
+        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
+        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
       </div>
     </div>
   </nav>
@@ -508,7 +510,7 @@
 
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Is n8n cheaper than Zapier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Yes, significantly. n8n self-hosted costs ~$8/mo with unlimited operations. <a href="zapier-pricing.html">Zapier charges $49/mo</a> for just 2,000 tasks. Even n8n Cloud at $20/mo (2,500 ops) beats Zapier's $20/mo Starter plan which includes only 750 tasks. <a href="compare.html?tools=n8n,zapier">Compare n8n vs Zapier →</a></div>
+      <div class="faq-a">Yes, significantly. n8n self-hosted costs ~$8/mo with unlimited operations. <a href="zapier-pricing.html">Zapier's Professional plan at $19.99/mo</a> (billed annually) includes just 750 tasks. Even n8n Cloud at $20/mo includes 2,500 ops — over 3x more for the same money. <a href="compare.html?tools=n8n,zapier">Compare n8n vs Zapier →</a></div>
     </div>
 
     <div class="faq-item">
@@ -528,7 +530,7 @@
 
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Is Pipedream cheaper than Zapier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a"><a href="pipedream-pricing.html">Pipedream Basic at $29/mo</a> (2,000 credits) vs <a href="zapier-pricing.html">Zapier Professional at $49/mo</a> (2,000 tasks) — Pipedream wins on price. But Zapier has 7,000+ integrations vs Pipedream's 2,000, so the right choice depends on which integrations you need. <a href="compare.html?tools=pipedream,zapier">Compare Pipedream vs Zapier →</a></div>
+      <div class="faq-a"><a href="pipedream-pricing.html">Pipedream Basic at $29/mo</a> includes 2,000 credits, while 2,000 tasks on <a href="zapier-pricing.html">Zapier</a> require the $69/mo Team plan — Pipedream wins on price. But Zapier has 9,000+ integrations vs Pipedream's 2,000, so the right choice depends on which integrations you need. <a href="compare.html?tools=pipedream,zapier">Compare Pipedream vs Zapier →</a></div>
     </div>
 
     <div class="faq-item">
@@ -575,6 +577,7 @@ const dd = document.querySelector(".nav-dropdown");
 if (dd) {
   dd.querySelector(".nav-dropdown-btn").addEventListener("click", function(e) {
     e.stopPropagation();
+    var r = this.getBoundingClientRect(), m = dd.querySelector(".nav-dropdown-menu"); m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 224)) + "px"; m.style.top = (r.bottom + 8) + "px";
     dd.classList.toggle("open");
   });
   document.addEventListener("click", () => dd.classList.remove("open"));

@@ -128,7 +128,7 @@
 
 <header>
   <div class="nav-top">
-    <a href="index.html" class="logo">
+    <a href="/" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
         <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -192,6 +192,12 @@ const LOGOS = {
 //    dir: "up" (price increased = red) | "down" (decreased = green) | "info" (neutral)
 /* DATA:CHANGELOG:START */ /* generováno build.py z git historie data/tools.json — needituj ručně */
 const CHANGELOG = [
+  { d: "2026-06-11", tool: "zapier", name: "Zapier", item: "Integrations", old: "7000", neu: "9000", dir: "info" },
+  { d: "2026-06-11", tool: "zapier", name: "Zapier", item: "Free — workflow limit", old: "5 workflows", neu: "Unlimited", dir: "info" },
+  { d: "2026-06-11", tool: "zapier", name: "Zapier", item: "Professional", old: "$49/mo", neu: "$19.99/mo", dir: "down" },
+  { d: "2026-06-11", tool: "zapier", name: "Zapier", item: "Professional — included ops", old: "2,000 ops", neu: "750 ops", dir: "info" },
+  { d: "2026-06-11", tool: "activepieces", name: "Activepieces", item: "Integrations", old: "200", neu: "747", dir: "info" },
+  { d: "2026-06-11", tool: "node-red", name: "Node-RED", item: "Integrations", old: "1000", neu: "5000", dir: "info" },
 ];
 const CLOG_GENESIS = "Tracking started June 2026 · 7 tools · 24 plans";
 /* DATA:CHANGELOG:END */

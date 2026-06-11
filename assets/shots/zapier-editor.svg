@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <pattern id="stripe-zapier-editor" width="28" height="28" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+      <rect width="28" height="28" fill="#131120"></rect>
+      <rect width="14" height="28" fill="#17142a"></rect>
+    </pattern>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#stripe-zapier-editor)"></rect>
+  <rect x="1" y="1" width="1598" height="998" fill="none" stroke="#2e2750" stroke-width="2" stroke-dasharray="10 8"></rect>
+  <text x="800" y="470" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="42" fill="#8a84a5">[ Zapier — Zap editor ]</text>
+  <text x="800" y="535" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="26" fill="#5a5575">placeholder · replace with real capture · 1600×1000 · WebP/AVIF · faceless UI only</text>
+</svg>

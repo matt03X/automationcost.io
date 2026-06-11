@@ -90,6 +90,9 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
     ]
     if plan.get("selfHostOnly"):
         parts.append("selfHostOnly: true")
+    if "overage" in plan:
+        # per-plan override tool-level overage; null = plán nemá pay-as-you-go
+        parts.append(f'overage: {js_overage(plan["overage"])}')
     if include_note and plan.get("note"):
         parts.append(f'note: {js_str(plan["note"])}')
     return "{ " + ", ".join(parts) + " }"

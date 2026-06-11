@@ -37,7 +37,7 @@
     ]
   }
   </script>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -90,7 +90,10 @@
     .nav-badge { font-family: var(--mono); font-size: 11px; font-weight: 500; background: var(--surface2); border: 1px solid var(--border2); color: var(--text2); border-radius: 100px; padding: 4px 12px; }
 
     /* ── Hero ── */
-    .hero { position: relative; text-align: center; padding: 104px 0 56px; }
+    /* FIX(mobile-edges): .hero/.demo-section/.section used shorthand `padding: X 0 Y`,
+       which overrode .wrap's side padding (same specificity, later in source) — content
+       and CTA buttons ran edge-to-edge at 375px. Longhand keeps .wrap's 32px/18px sides. */
+    .hero { position: relative; text-align: center; padding-top: 104px; padding-bottom: 56px; }
     .hero-caret-bg { position: absolute; left: 50%; top: 38px; transform: translateX(-50%); font-family: var(--mono); font-weight: 700; font-size: 560px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(167,139,250,0.07); pointer-events: none; user-select: none; z-index: 0; }
     .hero > *:not(.hero-caret-bg) { position: relative; z-index: 1; }
     .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--text2); padding: 6px 15px; margin-bottom: 34px; letter-spacing: 0.02em; }
@@ -105,7 +108,7 @@
     .btn-secondary:hover { border-color: var(--accent); color: var(--text); }
 
     /* ── Live demo ── */
-    .demo-section { padding: 64px 0 0; }
+    .demo-section { padding-top: 64px; } /* FIX(mobile-edges): longhand, see .hero note */
     .demo-card { background: linear-gradient(180deg, var(--surface) 0%, #100d1d 100%); border: 1px solid var(--border2); border-radius: 20px; padding: 34px 36px 30px; position: relative; overflow: hidden; }
     .demo-card::before { content: ""; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(167,139,250,0.55), transparent); }
     .demo-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
@@ -143,7 +146,7 @@
     .stat-label { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
 
     /* ── Wizard grid ── */
-    .section { padding: 84px 0 0; }
+    .section { padding-top: 84px; } /* FIX(mobile-edges): longhand, see .hero note */
     .section-label { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px; }
     .section h2 { font-size: 1.85rem; font-weight: 800; margin-bottom: 8px; }
     .section-sub { color: var(--text2); font-size: 15px; margin-bottom: 32px; max-width: 560px; text-wrap: pretty; }
@@ -177,6 +180,24 @@
     .edge-row h3 { font-size: 1.12rem; font-weight: 800; }
     .edge-row p { font-size: 14px; color: var(--text2); line-height: 1.7; max-width: 560px; }
 
+    /* ── Tool screenshots (desktop only) ── GALLERY:CSS:START ──
+       Hidden below 1024px by design (mobile is already dense — see design-backlog #1).
+       Images: width/height attrs + aspect-ratio reserve space → zero layout shift.
+       loading="lazy" + below the fold → never competes with hero LCP. */
+    .shots-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .shot { margin: 0; }
+    .shot-frame { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); overflow: hidden; transition: border-color 0.15s; }
+    .shot:hover .shot-frame { border-color: #3a3263; }
+    .shot-chrome { display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-bottom: 1px solid var(--border); background: var(--surface2); }
+    .shot-chrome i { width: 9px; height: 9px; border-radius: 50%; background: var(--border2); }
+    .shot-chrome .shot-url { margin-left: 10px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: 0.02em; }
+    .shot-frame img { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 1000; object-fit: cover; }
+    .shot figcaption { display: flex; align-items: center; gap: 10px; padding: 12px 4px 0; font-family: var(--mono); font-size: 12.5px; color: var(--text2); }
+    .shot figcaption b { color: var(--text); font-weight: 700; }
+    .shot-tag { margin-left: auto; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border2); background: var(--surface2); border-radius: 99px; padding: 3px 10px; white-space: nowrap; }
+    @media (max-width: 1023.98px) { .shots-section { display: none; } }
+    /* ── GALLERY:CSS:END ── */
+
     /* ── Footer ── */
     footer { border-top: 1px solid var(--border); margin-top: 92px; padding: 46px 32px 38px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.95; }
     footer a { color: var(--muted); transition: color 0.15s; }
@@ -199,7 +220,7 @@
     }
     @media (max-width: 620px) {
       .nav-badge { display: none; }
-      .hero { padding: 68px 0 40px; }
+      .hero { padding-top: 68px; padding-bottom: 40px; } /* FIX(mobile-edges): longhand */
       .stat-item { padding: 0 20px; }
       .stat-num { font-size: 1.35rem; }
       .demo-card { padding: 24px 18px 22px; }
@@ -368,6 +389,48 @@
   </div>
 </section>
 
+<!-- GALLERY:HTML:START ── desktop-only tool screenshot gallery (design-backlog #2).
+     Replace assets/shots/*.svg placeholders with real product-UI captures
+     (own test accounts or official press/brand assets — faceless, no people, no stock).
+     Export WebP/AVIF at 1600×1000 (2x of 800×500 render) and keep the same filenames
+     or update the four src attributes. Logos/UI shown in comparative-review context. -->
+<section class="section wrap shots-section" id="tool-shots" data-screen-label="Tool screenshots">
+  <div class="section-label">Under the hood</div>
+  <h2>The tools we price, up close.</h2>
+  <p class="section-sub">This is what you'd actually be working in — the real product UIs, not marketing renders.</p>
+  <div class="shots-grid">
+    <figure class="shot rv">
+      <div class="shot-frame">
+        <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">n8n — workflow editor</span></div>
+        <img src="assets/shots/n8n-editor.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="n8n workflow editor: node canvas with connected automation steps">
+      </div>
+      <figcaption><b>n8n</b> node canvas <span class="shot-tag">self-hostable</span></figcaption>
+    </figure>
+    <figure class="shot rv">
+      <div class="shot-frame">
+        <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">Make — scenario builder</span></div>
+        <img src="assets/shots/make-scenario.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="Make scenario builder: visual modules connected in a flow">
+      </div>
+      <figcaption><b>Make</b> scenario builder <span class="shot-tag">cheapest cloud</span></figcaption>
+    </figure>
+    <figure class="shot rv">
+      <div class="shot-frame">
+        <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">Zapier — Zap editor</span></div>
+        <img src="assets/shots/zapier-editor.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="Zapier Zap editor: step-by-step trigger and action setup">
+      </div>
+      <figcaption><b>Zapier</b> Zap editor <span class="shot-tag">9,000+ integrations</span></figcaption>
+    </figure>
+    <figure class="shot rv">
+      <div class="shot-frame">
+        <div class="shot-chrome"><i></i><i></i><i></i><span class="shot-url">Pipedream — workflow code</span></div>
+        <img src="assets/shots/pipedream-workflow.svg" width="1600" height="1000" loading="lazy" decoding="async" alt="Pipedream workflow: code steps and event data inspector">
+      </div>
+      <figcaption><b>Pipedream</b> code steps <span class="shot-tag">dev-centric</span></figcaption>
+    </figure>
+  </div>
+</section>
+<!-- GALLERY:HTML:END -->
+
 <section class="section wrap" data-screen-label="Why WizardCost">
   <div class="section-label">Why WizardCost</div>
   <h2>Calculators, not star ratings.</h2>
@@ -411,10 +474,10 @@
 //    est:1 = estimated custom-tier price, rendered with ~ prefix.
 /* DATA:DEMO:START */ /* generováno build.py z automation/data/tools.json — needituj ručně */
 const DEMO = {
-  1000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:0, note:"Free"}, {n:"Pipedream", c:10, note:"Free +ops"}, {n:"Zapier", c:25, note:"Free +ops"} ],
-  5000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:9, note:"Core"}, {n:"Pipedream", c:49, note:"Advanced"}, {n:"Zapier", c:95, note:"Enterprise", est:1} ],
-  20000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:18, note:"Core +ops"}, {n:"Pipedream", c:130, note:"Business", est:1}, {n:"Zapier", c:245, note:"Enterprise", est:1} ],
-  100000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:45, note:"Enterprise", est:1}, {n:"Pipedream", c:400, note:"Business", est:1}, {n:"Zapier", c:760, note:"Enterprise", est:1} ],
+  1000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:0, note:"Free"}, {n:"Pipedream", c:10, note:"Free +ops"}, {n:"Zapier", c:44.99, note:"Professional +ops"} ],
+  5000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:9, note:"Core"}, {n:"Pipedream", c:49, note:"Advanced"}, {n:"Zapier", c:130, note:"Enterprise", est:1} ],
+  20000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:18, note:"Core +ops"}, {n:"Pipedream", c:130, note:"Business", est:1}, {n:"Zapier", c:345, note:"Enterprise", est:1} ],
+  100000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:45, note:"Enterprise", est:1}, {n:"Pipedream", c:400, note:"Business", est:1}, {n:"Zapier", c:1065, note:"Enterprise", est:1} ],
 };
 const DEMO_FOOT = "*n8n ≈ $8/mo VPS · ~ price estimated (custom tier)";
 /* DATA:DEMO:END */

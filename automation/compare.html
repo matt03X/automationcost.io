@@ -470,7 +470,7 @@
 
 <header>
   <div class="nav-top">
-    <a href="index.html" class="logo">
+    <a href="/" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
         <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -693,31 +693,30 @@ const TOOLS = {
   "zapier": {
     slug: "zapier", name: "Zapier",
     tagline: "The most integrations, built for non-technical users",
-    selfHostable: false, aiFeatures: true, integrations: 7000,
+    selfHostable: false, aiFeatures: true, integrations: 9000,
     license: "Proprietary (cloud)",
-    freeOps: "100 tasks/mo", freeWorkflows: "5", maxSteps: "2 steps (free)",
+    freeOps: "100 tasks/mo", freeWorkflows: "Unlimited (within task limit)", maxSteps: "2 steps (free)",
     timeout: "15 min", logHistory: "15 min delay (free)", gdprFriendly: false,
     multiUser: true, apiAccess: true, webhooks: true, codeSteps: false,
     homepage: "https://zapier.com",
     affiliateUrl: "https://zapier.com",
     hasAffiliate: false,
     plans: [
-      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 5 },
-      { name: "Starter", monthlyUsd: 20, opsIncluded: 750, workflowLimit: 20 },
-      { name: "Professional", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity },
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity, overage: null },
+      { name: "Professional", monthlyUsd: 19.99, opsIncluded: 750, workflowLimit: Infinity },
       { name: "Team", monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity },
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ],
     overage: { per: 1000, usd: 25 },
-    pros: ["7,000+ integrations — most of any tool", "Easiest for non-technical users", "Huge ecosystem"],
+    pros: ["9,000+ integrations — most of any tool", "Easiest for non-technical users", "Huge ecosystem"],
     cons: ["Most expensive per op", "Free tier severely limited", "No self-host"],
   },
   "activepieces": {
     slug: "activepieces", name: "Activepieces",
     tagline: "MIT-licensed open-source automation, Zapier-like UI",
-    selfHostable: true, aiFeatures: true, integrations: 200,
+    selfHostable: true, aiFeatures: true, integrations: 747,
     license: "MIT",
-    freeOps: "Unlimited*", freeWorkflows: "Unlimited*", maxSteps: "Unlimited",
+    freeOps: "Unlimited runs", freeWorkflows: "10 active flows (cloud)", maxSteps: "Unlimited",
     timeout: "No limit*", logHistory: "7 days (cloud)", gdprFriendly: true,
     multiUser: true, apiAccess: true, webhooks: true, codeSteps: false,
     homepage: "https://www.activepieces.com",
@@ -725,12 +724,13 @@ const TOOLS = {
     hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true },
-      { name: "Cloud Starter", monthlyUsd: 10, opsIncluded: 5000, workflowLimit: Infinity },
-      { name: "Cloud Pro", monthlyUsd: 25, opsIncluded: 15000, workflowLimit: Infinity },
+      { name: "Cloud Free", monthlyUsd: 0, opsIncluded: Infinity, workflowLimit: 10 },
+      { name: "Standard (20 flows)", monthlyUsd: 50, opsIncluded: Infinity, workflowLimit: 20 },
+      { name: "Standard (30 flows)", monthlyUsd: 100, opsIncluded: Infinity, workflowLimit: 30 },
     ],
     overage: null,
     pros: ["True MIT license — no restrictions", "No-code UI like Zapier", "Self-hostable"],
-    cons: ["Fewer integrations (~200)", "Smaller community than n8n", "No code steps"],
+    cons: ["Fewer integrations than Zapier (747+)", "Smaller community than n8n", "No code steps"],
   },
   "automatisch": {
     slug: "automatisch", name: "Automatisch",
@@ -754,7 +754,7 @@ const TOOLS = {
   "node-red": {
     slug: "node-red", name: "Node-RED",
     tagline: "Event-driven automation for IoT and hardware",
-    selfHostable: true, aiFeatures: false, integrations: 1000,
+    selfHostable: true, aiFeatures: false, integrations: 5000,
     license: "Apache 2.0",
     freeOps: "Unlimited", freeWorkflows: "Unlimited", maxSteps: "Unlimited",
     timeout: "No limit", logHistory: "Full history", gdprFriendly: true,
@@ -890,7 +890,9 @@ function cheapestPlan(tool, ops = 5000) {
     if (plan.monthlyUsd === null) continue;
     let cost = plan.monthlyUsd;
     if (!plan.selfHostOnly && ops > plan.opsIncluded) {
-      if (tool.overage) cost += Math.ceil((ops - plan.opsIncluded) / tool.overage.per) * tool.overage.usd;
+      // per-plan overage přebíjí tool-level; null = plán nemá pay-as-you-go
+      const ov = plan.overage !== undefined ? plan.overage : tool.overage;
+      if (ov) cost = Math.round((cost + Math.ceil((ops - plan.opsIncluded) / ov.per) * ov.usd) * 100) / 100; // na centy ($19.99 + $25 ≠ 44.9899…)
       else continue;
     }
     if (best === null || cost < best.cost) best = { cost, plan };
@@ -1409,8 +1411,8 @@ const BEST_FOR = {
   "n8n":          { "Self-hosted": "Devs who want unlimited self-hosted", "Cloud Starter": "Small teams on cloud", "Cloud Pro": "Growing cloud teams", "Cloud Enterprise": "Large orgs" },
   "make":         { "Free": "Trying out Make", "Core": "Small businesses", "Pro": "Agencies & power users", "Teams": "Larger teams", "Enterprise": "Enterprise" },
   "pipedream":    { "Free": "Hobbyists & testing", "Basic": "Small projects", "Advanced": "Developers & startups", "Business": "Enterprise devs" },
-  "zapier":       { "Free": "Trying out Zapier", "Starter": "Simple automations", "Professional": "Power users", "Team": "Small teams", "Enterprise": "Large orgs" },
-  "activepieces": { "Self-hosted": "Teams wanting MIT self-host", "Cloud Starter": "Small non-technical teams", "Cloud Pro": "Growing teams" },
+  "zapier":       { "Free": "Trying out Zapier", "Professional": "Power users", "Team": "Small teams", "Enterprise": "Large orgs" },
+  "activepieces": { "Self-hosted": "Teams wanting MIT self-host", "Cloud Free": "Up to 10 flows — free", "Standard (20 flows)": "Small non-technical teams", "Standard (30 flows)": "Growing teams" },
   "automatisch":  { "Self-hosted": "EU/GDPR-focused self-hosters", "Cloud": "Small EU-based teams" },
   "node-red":     { "Self-hosted": "IoT & hardware developers" },
 };

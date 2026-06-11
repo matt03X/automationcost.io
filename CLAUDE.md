@@ -12,12 +12,14 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
   - `/* DATA:DEMO:START|END */` v root `index.html` (hero price demo) → root `build.py` (čte automation data)
   - `/* DATA:CHANGELOG:START|END */` v `automation/changelog.html` → `automation/build.py` (generuje z **git historie** tools.json)
 - Po změně tools.json spusť **oba** buildy: `python automation/build.py` i `python build.py` (root), commitni výsledek. `--check` = CI guard (exit 1 při zastaralých blocích).
+- **Pořadí u cenových změn:** changelog/RSS se generují z **git historie** tools.json → nejdřív commitni samotný tools.json, pak teprve buildy (jinak nový diff v changelogu nebude). Cenová změna se propisuje i do ručních textů (meta descriptions, FAQ, tabulky, TOOL_WHY v kalkulátoru, BEST_FOR v compare) — po změně grepni staré hodnoty napříč stránkami. Ověřování drift reportu: `calc-test/scout-vendor-pricing.js` / `scout-vendor-detail.js` (Playwright čte oficiální ceníky).
 - Changelog vzniká z git diffů tools.json → do tools.json patří jen **ověřené** změny. Drift report ze scraperu (`automation/data/drift-report.md`, netrackovaný) = neověřené nálezy, ne potvrzená fakta. Datum commitu = veřejné datum záznamu v changelogu.
 - Při změně cen aktualizuj i `_meta.last_reviewed` a nav badge „Updated <Month Year>" na stránkách.
 
 ## Cost engine (automation/calculator.html)
 
 - `calcCost`: custom/„contact sales" plány (`monthlyUsd: null`, flag `custom: true` z buildu) se oceňují odhadem — kotva = největší veřejný cloud plán, škálování exponentem **0.7** (kalibrováno na veřejný Zapier ceník), minimum 1.3× kotvy, zaokrouhlení na $5. Odhad se použije, když veřejné plány objem nepokryjí, nebo nad 2× kotvy, když je levnější než lineární overage (čisté `min()` → cenová křivka je monotónní). Odhady se zobrazují `~$X` + „estimate" + disclaimer.
+- **Overage je per-tool s per-plan overridem:** volitelný klíč `overage` na plánu v tools.json přebíjí tool-level; `null` = plán nemá pay-as-you-go a engine ho při překročení `opsIncluded` přeskočí (Zapier Free). Logika žije na **4 místech** — calcCost (calculator), cheapestPlan (compare), cheapest_monthly (root build.py), render_plan (oba build.py) — měnit synchronně. Cena s overagem se zaokrouhluje na centy ($19.99 + $25 jinak dá 44.9899…). POZOR: changelog plan-level overage záměrně nediffuje (oprava našeho modelu ≠ změna vendor ceníku) — případnou reálnou změnu vendor PAYG zapiš do changelogu ručně úpravou tool-level overage.
 - `estimateVolumeBudget`: workflow multiplikátor = `clamp((Σ defaultOps / 5000)^0.8, 0.5, 5)` — záměrně **monotónní** (přidání workflow nikdy nesníží odhad) a **nezávislý na pořadí** kliknutí. Neměnit bez spuštění test sady.
 - **Python port** enginu žije v root `build.py` (`cheapest_monthly`) kvůli generování DATA:DEMO. Při změně JS enginu uprav i port — paritu hlídá `calc-test/verify-demo.js` (musí být 16/16).
 - `goStep(4)` re-estimuje slidery jen při změně profilu (signature guard) — ruční úpravy uživatele přežívají navigaci.
@@ -29,8 +31,11 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
 | `verify-demo.js` | po každé změně enginu, dat nebo Python portu (parita DEMO ↔ JS engine) |
 | `test-ops-estimate.js`, `test-200-firem.js` | po změně estimate matematiky (plausibilita doporučení, monotonie, pořadí) |
 | `test-smoke-flow.js` | po změně wizardu (end-to-end přes DOM stub) |
+| `test-share-restore.js` | po změně share URL / restore logiky kalkulátoru (round-trip, resume banner, validace) |
 | `test-homepage-smoke.js`, `test-changelog-smoke.js` | po změně homepage dema / changelogu |
 | `e2e-live.js` | po deployi (Playwright proklik živého webu, screenshoty do `calc-test/screenshots/`) |
+| `check-ui-live.js` | po změně nav/headeru (dropdown Pricing Guides, logo →`/`, favicon — live) |
+| `check-jsonld.js` | po změně head sekcí (validita JSON-LD bloků) |
 
 ## Pasti (poučení z historie, neopakovat)
 
