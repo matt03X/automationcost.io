@@ -12,6 +12,7 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
   - `/* DATA:DEMO:START|END */` v root `index.html` (hero price demo) → root `build.py` (čte automation data)
   - `/* DATA:CHANGELOG:START|END */` v `automation/changelog.html` → `automation/build.py` (generuje z **git historie** tools.json)
 - Po změně tools.json spusť **oba** buildy: `python automation/build.py` i `python build.py` (root), commitni výsledek. `--check` = CI guard (exit 1 při zastaralých blocích).
+- **X-vs-Y stránky** (`automation/<a>-vs-<b>.html`) jsou **CELÉ generované** — `build_vs_pages()` v automation/build.py z tools.json (čísla přes root `cheapest_monthly`, import — žádná třetí kopie enginu) + `automation/data/pairs.json` (editorial: verdikt/stripNote/whyLoser/faq — ručně psané, vkládané doslovně; design navrhuje, owner schvaluje). Nikdy needitovat vygenerované soubory ručně. Pořadí slugů v URL: zapier > make > n8n > pipedream > activepieces > automatisch > node-red. Cross-linky generátor omezuje na existující páry. Vzor šablony: `_vs-example.html` (mimo sitemap).
 - **Pořadí u cenových změn:** changelog/RSS se generují z **git historie** tools.json → nejdřív commitni samotný tools.json, pak teprve buildy (jinak nový diff v changelogu nebude). Cenová změna se propisuje i do ručních textů (meta descriptions, FAQ, tabulky, TOOL_WHY v kalkulátoru, BEST_FOR v compare) — po změně grepni staré hodnoty napříč stránkami. Ověřování drift reportu: `calc-test/scout-vendor-pricing.js` / `scout-vendor-detail.js` (Playwright čte oficiální ceníky).
 - Changelog vzniká z git diffů tools.json → do tools.json patří jen **ověřené** změny. Drift report ze scraperu (`automation/data/drift-report.md`, netrackovaný) = neověřené nálezy, ne potvrzená fakta. Datum commitu = veřejné datum záznamu v changelogu.
 - Při změně cen aktualizuj i `_meta.last_reviewed` a nav badge „Updated <Month Year>" na stránkách.
@@ -36,6 +37,7 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
 | `e2e-live.js` | po deployi (Playwright proklik živého webu, screenshoty do `calc-test/screenshots/`) |
 | `check-ui-live.js` | po změně nav/headeru (dropdown Pricing Guides, logo →`/`, favicon — live) |
 | `check-jsonld.js` | po změně head sekcí (validita JSON-LD bloků) |
+| `test-vs-pages.js` | po změně pairs.json, tools.json nebo vs šablony (JSON-LD 1:1, affiliate pravidla, čísla z enginu, per-řádkové cheap, cross-linky) |
 
 ## Pasti (poučení z historie, neopakovat)
 
