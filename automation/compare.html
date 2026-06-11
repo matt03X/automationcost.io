@@ -702,7 +702,7 @@ const TOOLS = {
     affiliateUrl: "https://zapier.com",
     hasAffiliate: false,
     plans: [
-      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity },
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity, overage: null },
       { name: "Professional", monthlyUsd: 19.99, opsIncluded: 750, workflowLimit: Infinity },
       { name: "Team", monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity },
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
@@ -890,7 +890,9 @@ function cheapestPlan(tool, ops = 5000) {
     if (plan.monthlyUsd === null) continue;
     let cost = plan.monthlyUsd;
     if (!plan.selfHostOnly && ops > plan.opsIncluded) {
-      if (tool.overage) cost += Math.ceil((ops - plan.opsIncluded) / tool.overage.per) * tool.overage.usd;
+      // per-plan overage přebíjí tool-level; null = plán nemá pay-as-you-go
+      const ov = plan.overage !== undefined ? plan.overage : tool.overage;
+      if (ov) cost = Math.round((cost + Math.ceil((ops - plan.opsIncluded) / ov.per) * ov.usd) * 100) / 100; // na centy ($19.99 + $25 ≠ 44.9899…)
       else continue;
     }
     if (best === null || cost < best.cost) best = { cost, plan };

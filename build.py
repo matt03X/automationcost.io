@@ -99,6 +99,9 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
     ]
     if plan.get("selfHostOnly"):
         parts.append("selfHostOnly: true")
+    if "overage" in plan:
+        # per-plan override tool-level overage; null = plán nemá pay-as-you-go
+        parts.append(f'overage: {js_overage(plan["overage"])}')
     if include_note and plan.get("note"):
         parts.append(f'note: {js_str(plan["note"])}')
     return "{ " + ", ".join(parts) + " }"
@@ -198,11 +201,12 @@ def cheapest_monthly(tool: dict, ops: int, workflows: int = DEMO_WORKFLOWS) -> d
         over = 0
         inc = p.get("opsIncluded")  # None = unlimited
         if not p.get("selfHostOnly") and inc is not None and ops > inc:
-            ov = tool.get("overage")
+            # per-plan overage přebíjí tool-level; null = plán nemá pay-as-you-go
+            ov = p["overage"] if "overage" in p else tool.get("overage")
             if not ov:
                 continue
             over = math.ceil((ops - inc) / ov["per"]) * ov["usd"]
-            cost += over
+            cost = round(cost + over, 2)  # na centy — zrcadlí JS ($19.99 + $25 ≠ 44.9899…)
         # při shodě ceny preferuj pro label placený plán bez overage, pak placený
         # s overage, až nakonec free tier ("Core +ops" čitelnější než "Free +ops")
         if over == 0 and p["monthlyUsd"] > 0:
