@@ -31,6 +31,8 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
 | `test-smoke-flow.js` | po změně wizardu (end-to-end přes DOM stub) |
 | `test-homepage-smoke.js`, `test-changelog-smoke.js` | po změně homepage dema / changelogu |
 | `e2e-live.js` | po deployi (Playwright proklik živého webu, screenshoty do `calc-test/screenshots/`) |
+| `check-ui-live.js` | po změně nav/headeru (dropdown Pricing Guides, logo →`/`, favicon — live) |
+| `check-jsonld.js` | po změně head sekcí (validita JSON-LD bloků) |
 
 ## Pasti (poučení z historie, neopakovat)
 
