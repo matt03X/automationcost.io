@@ -700,7 +700,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
     <form class="pa-form" id="pa-form" action="{EMAILCAP_ACTION}" method="post" novalidate>
       <label for="pa-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
       <input class="pa-input" id="pa-email" name="fields[email]" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
-      <button class="pa-btn" id="pa-btn" type="submit">Get price alerts</button>
+      <input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button class="pa-btn" id="pa-btn" type="submit">Get price alerts</button>
     </form>
     <div class="pa-msg" id="pa-msg" role="status" aria-live="polite"></div>
     <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
@@ -975,9 +975,9 @@ _VS_CSS = """    *, *::before, *::after { box-sizing: border-box; margin: 0; pad
 
 
 # MailerLite form endpoint — stejná hodnota je hardcoded v calculator.html
-# a changelog.html (grep REPLACE_ME_MAILERLITE_FORM_ACTION → nahradit na
+# a changelog.html (grep https://assets.mailerlite.com/jsonp/2426816/forms/190009354045359550/subscribe → nahradit na
 # 3 místech najednou, pak rebuild).
-EMAILCAP_ACTION = "REPLACE_ME_MAILERLITE_FORM_ACTION"
+EMAILCAP_ACTION = "https://assets.mailerlite.com/jsonp/2426816/forms/190009354045359550/subscribe"
 
 
 # ---------------------------------------------------------------------------

@@ -375,10 +375,10 @@
     <div class="pa-label">Price-drop alerts</div>
     <div class="pa-title">Get an email when Zapier or Pipedream changes pricing.</div>
     <p class="pa-sub">Every change is verified by hand and published to the <a href="changelog.html">changelog</a> — you get one email per confirmed change.</p>
-    <form class="pa-form" id="pa-form" action="REPLACE_ME_MAILERLITE_FORM_ACTION" method="post" novalidate>
+    <form class="pa-form" id="pa-form" action="https://assets.mailerlite.com/jsonp/2426816/forms/190009354045359550/subscribe" method="post" novalidate>
       <label for="pa-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
       <input class="pa-input" id="pa-email" name="fields[email]" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
-      <button class="pa-btn" id="pa-btn" type="submit">Get price alerts</button>
+      <input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button class="pa-btn" id="pa-btn" type="submit">Get price alerts</button>
     </form>
     <div class="pa-msg" id="pa-msg" role="status" aria-live="polite"></div>
     <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
