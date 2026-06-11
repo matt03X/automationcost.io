@@ -1,0 +1,76 @@
+{
+  "_meta": {
+    "note": "Editorial data for generated X-vs-Y pages (render_vs_pages in build.py). Pricing numbers ALWAYS come from tools.json via the engine - never write prices here. Verdict/stripNote/whyLoser are hand-written per pair (design drafts, owner approves, inserted verbatim incl. HTML).",
+    "conventions": {
+      "pair order": "slug 'a' = more searched tool (zapier > make > n8n > pipedream > activepieces > automatisch > node-red); page slug = '<a>-vs-<b>.html'; array order = production priority (cross-links pick nearest published pairs from the top)",
+      "winner": "slug of the overall value pick from the verdict - gets the .winner outbound card",
+      "stripNote": "optional tagline after the vs-strip (e.g. 'at every volume we track') - only when the winner is uniform across volumes; omit when winners flip",
+      "verdict": "verbatim HTML for the hero verdict box (may contain <b class=\"win\">)",
+      "faq": "optional full FAQ override [{q, a-html}]; when absent the generator builds standard FAQs from data + whyLoser",
+      "whyLoser": "editorial answer to 'Why would anyone pick <loser>, then?' - used by auto-FAQ when faq override absent"
+    },
+    "volumes": [1000, 5000, 20000, 100000]
+  },
+  "tools": {
+    "zapier": {
+      "opDef": "In Zapier, one task = one action step — a 3-step Zap triggered 100 times consumes 300 tasks.",
+      "ctaBlurb": "100 free tasks a month on 2-step Zaps — fine for checking whether your apps are supported."
+    },
+    "make": {
+      "opDef": "In Make, one operation = one module execution, counted per module across the scenario.",
+      "ctaBlurb": "1,000 free ops a month, unlimited scenarios — enough to run a real pilot before paying anything."
+    },
+    "n8n": {
+      "opDef": "n8n Cloud counts workflow executions — one run is one execution regardless of step count; self-hosted n8n has no metering at all.",
+      "ctaBlurb": "Community Edition is free forever self-hosted; Cloud has a free trial — test a real workflow either way."
+    },
+    "pipedream": {
+      "opDef": "In Pipedream, one credit ≈ 30 seconds of compute per step — a multi-step workflow typically consumes several credits per run.",
+      "ctaBlurb": "Free tier gives 100 credits a month on 3 workflows — enough to validate an integration."
+    },
+    "activepieces": {
+      "opDef": "Activepieces doesn't meter runs at all — pricing is per active flow, with unlimited executions.",
+      "ctaBlurb": "10 active flows free with unlimited runs — a real pilot costs nothing."
+    },
+    "automatisch": {
+      "opDef": "Automatisch doesn't meter operations — one flat cloud price, or self-host for free.",
+      "ctaBlurb": "Open source — self-host for free, or take the flat-price cloud plan."
+    },
+    "node-red": {
+      "opDef": "Node-RED has no metering — it's open-source software you run on your own hardware.",
+      "ctaBlurb": "Free and open source — install and run in minutes on a Pi or VPS."
+    }
+  },
+  "pairs": [
+    {
+      "a": "zapier",
+      "b": "make",
+      "winner": "make",
+      "stripNote": "at every volume we track",
+      "verdict": "<b class=\"win\">Make is 14–24× cheaper at paid volumes</b> — and its free tier covers 1,000 ops/mo outright; <b>Zapier wins on integration count — 9,000+ vs 1,500+</b>. If your apps exist in both ecosystems, Make is the value pick. If you depend on a long-tail integration only Zapier has, that decides it.",
+      "whyLoser": "Integrations. With 9,000+ supported apps versus Make's 1,500+, Zapier is often the only tool that connects a niche CRM or legacy system. If the integration you need exists only there, the price premium is the cost of admission.",
+      "faq": [
+        {
+          "q": "Is Make cheaper than Zapier?",
+          "a": "At every volume we track, yes — from $0 vs $44.99 at 1,000 ops/mo to ~$45 vs ~$1,065 at 100,000. Zapier's free tier has no pay-as-you-go, so any real volume starts on a paid plan — and its overage ($25 per 1,000 tasks) is roughly 28× Make's ($9 per 10,000 ops), so the gap grows with volume."
+        },
+        {
+          "q": "What counts as an operation on each?",
+          "a": "In Zapier, one task = one action step — a 3-step Zap triggered 100 times consumes 300 tasks. In Make, one operation = one module execution, counted similarly per module. Both count multi-step workflows multiplicatively, so the per-unit price difference is what matters."
+        },
+        {
+          "q": "Can I self-host either of them?",
+          "a": "No — both are cloud-only. If self-hosting matters to you (cost control, GDPR, data residency), look at n8n or Activepieces instead — see the <a href=\"compare.html\">compare tool</a>."
+        },
+        {
+          "q": "Why would anyone pick Zapier, then?",
+          "a": "Integrations. With 9,000+ supported apps versus Make's 1,500+, Zapier is often the only tool that connects a niche CRM or legacy system. If the integration you need exists only there, the price premium is the cost of admission."
+        },
+        {
+          "q": "How accurate are these prices?",
+          "a": "Taken from official pricing pages and verified June 2026. Values marked ~ are estimates for custom enterprise tiers. Every change we record lands in the <a href=\"changelog.html\">price changelog</a>."
+        }
+      ]
+    }
+  ]
+}
