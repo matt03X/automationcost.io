@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno build.py z data/tools.json + data/pairs.json — needituj ručně -->
-  <title>Zapier vs Make: Pricing &amp; Cost Comparison 2026 | AutomationCost.io</title>
-  <meta name="description" content="Zapier vs Make priced at 1,000 / 5,000 / 20,000 / 100,000 ops per month — real plans, overage math, feature differences and which one is cheaper for your usage.">
-  <link rel="canonical" href="https://wizardcost.com/automation/zapier-vs-make.html">
+  <title>Zapier vs n8n: Pricing &amp; Cost Comparison 2026 | AutomationCost.io</title>
+  <meta name="description" content="Zapier vs n8n priced at 1,000 / 5,000 / 20,000 / 100,000 ops per month — real plans, overage math, feature differences and which one is cheaper for your usage.">
+  <link rel="canonical" href="https://wizardcost.com/automation/zapier-vs-n8n.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AutomationCost.io">
-  <meta property="og:title" content="Zapier vs Make: Pricing &amp; Cost Comparison 2026">
-  <meta property="og:description" content="Zapier vs Make priced at 1,000 / 5,000 / 20,000 / 100,000 ops per month — real plans, overage math, feature differences and which one is cheaper for your usage.">
-  <meta property="og:url" content="https://wizardcost.com/automation/zapier-vs-make.html">
+  <meta property="og:title" content="Zapier vs n8n: Pricing &amp; Cost Comparison 2026">
+  <meta property="og:description" content="Zapier vs n8n priced at 1,000 / 5,000 / 20,000 / 100,000 ops per month — real plans, overage math, feature differences and which one is cheaper for your usage.">
+  <meta property="og:url" content="https://wizardcost.com/automation/zapier-vs-n8n.html">
   <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.png">
@@ -22,10 +22,10 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Is Make cheaper than Zapier?",
+      "name": "Is n8n cheaper than Zapier?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "At every volume we track, yes — from $0 vs $44.99 at 1,000 ops/mo to ~$45 vs ~$1,065 at 100,000. Zapier's free tier has no pay-as-you-go, so any real volume starts on a paid plan — and its overage ($25 per 1,000 tasks) is roughly 28× Make's ($9 per 10,000 ops), so the gap grows with volume."
+        "text": "At every volume we track, yes — from $8 vs $44.99 at 1,000 ops/mo to $8 vs ~$1,065 at 100,000. Prices include overage where it applies — see the table above."
       }
     },
     {
@@ -33,7 +33,7 @@
       "name": "What counts as an operation on each?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "In Zapier, one task = one action step — a 3-step Zap triggered 100 times consumes 300 tasks. In Make, one operation = one module execution, counted similarly per module. Both count multi-step workflows multiplicatively, so the per-unit price difference is what matters."
+        "text": "In Zapier, one task = one action step — a 3-step Zap triggered 100 times consumes 300 tasks. n8n Cloud counts workflow executions — one run is one execution regardless of step count; self-hosted n8n has no metering at all."
       }
     },
     {
@@ -41,7 +41,7 @@
       "name": "Can I self-host either of them?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No — both are cloud-only. If self-hosting matters to you (cost control, GDPR, data residency), look at n8n or Activepieces instead — see the <a href=\"compare.html\">compare tool</a>."
+        "text": "n8n yes — self-hosting makes it nearly free at any volume. Zapier is cloud-only."
       }
     },
     {
@@ -49,7 +49,7 @@
       "name": "Why would anyone pick Zapier, then?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Integrations. With 9,000+ supported apps versus Make's 1,500+, Zapier is often the only tool that connects a niche CRM or legacy system. If the integration you need exists only there, the price premium is the cost of admission."
+        "text": "Because n8n's $8 assumes you run it yourself — installing, updating, backing up and monitoring your own server. If that's not your team, the realistic alternative is n8n Cloud at $20–50/mo with workflow limits. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys."
       }
     },
     {
@@ -226,15 +226,15 @@
   <!-- 1 ── Hero verdict -->
   <div class="hero" data-screen-label="VS hero">
     <div class="hero-badge">prices verified june 2026 · 3 workflows · monthly billing</div>
-    <h1>Zapier vs Make — <em>which costs less?</em></h1>
+    <h1>Zapier vs n8n — <em>which costs less?</em></h1>
     <div class="vs-strip">
-      <span class="who"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=64" alt="Make logo">Make</span>
+      <span class="who"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=64" alt="n8n logo">n8n</span>
       <span class="lt">&lt;</span>
       <span class="who"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=64" alt="Zapier logo">Zapier</span>
-      <span style="color:var(--muted); font-weight:500;">at every volume we track</span>
+      <span style="color:var(--muted); font-weight:500;">at every volume we track — self-hosted</span>
     </div>
     <div class="verdict">
-      <b class="win">Make is 14–24× cheaper at paid volumes</b> — and its free tier covers 1,000 ops/mo outright; <b>Zapier wins on integration count — 9,000+ vs 1,500+</b>. If your apps exist in both ecosystems, Make is the value pick. If you depend on a long-tail integration only Zapier has, that decides it.
+      <b class="win">n8n runs at a flat ~$8/mo at every volume</b> — but only if you self-host it; <b>Zapier is the no-code path with 9,000+ integrations</b>. The $8 is Community Edition on a VPS you maintain yourself — if nobody on your team wants to own a server, compare against n8n Cloud ($20–50/mo, with workflow limits) instead: still cheaper than Zapier's ~$130–$1,065, but no longer a rout.
     </div>
   </div>
 
@@ -246,33 +246,33 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>ops / month</th><th>Zapier</th><th>Make</th></tr>
+          <tr><th>ops / month</th><th>Zapier</th><th>n8n</th></tr>
         </thead>
         <tbody>
           <tr>
             <td class="vol">1,000</td>
             <td><span class="price">$44.99<small>Professional +ops</small></span></td>
-            <td class="cheap"><span class="price">$0 <span class="ok">✓</span><small>Free</small></span></td>
+            <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
           <tr>
             <td class="vol">5,000</td>
             <td><span class="price">~$130<small>Enterprise (estimate)</small></span></td>
-            <td class="cheap"><span class="price">$9 <span class="ok">✓</span><small>Core</small></span></td>
+            <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
           <tr>
             <td class="vol">20,000</td>
             <td><span class="price">~$345<small>Enterprise (estimate)</small></span></td>
-            <td class="cheap"><span class="price">$18 <span class="ok">✓</span><small>Core +ops</small></span></td>
+            <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
           <tr>
             <td class="vol">100,000</td>
             <td><span class="price">~$1,065<small>Enterprise (estimate)</small></span></td>
-            <td class="cheap"><span class="price">~$45 <span class="ok">✓</span><small>Enterprise (estimate)</small></span></td>
+            <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="tbl-note">~ = estimated custom-tier pricing (vendor quotes individually; calibrated against public list prices). Assumes 3 workflows, monthly billing, cheapest qualifying plan. Prices verified June 2026 — see the <a href="changelog.html">price changelog</a>.</p>
+    <p class="tbl-note">~ = estimated custom-tier pricing (vendor quotes individually; calibrated against public list prices). Assumes 3 workflows, monthly billing, cheapest qualifying plan. Prices verified June 2026 — see the <a href="changelog.html">price changelog</a>. * self-hosted = open-source edition + ~$8/mo VPS.</p>
   </div>
 
   <!-- 3 ── Calculator CTA -->
@@ -288,22 +288,26 @@
   <div class="section" data-screen-label="Feature differences">
     <div class="section-label">Where they differ</div>
     <h2>Feature differences that matter</h2>
-    <p class="section-sub">Only the rows where Zapier and Make actually differ — identical capabilities are left out.</p>
+    <p class="section-sub">Only the rows where Zapier and n8n actually differ — identical capabilities are left out.</p>
     <div class="table-wrap">
       <table class="diff-table">
-        <thead><tr><th>Feature</th><th>Zapier</th><th>Make</th></tr></thead>
+        <thead><tr><th>Feature</th><th>Zapier</th><th>n8n</th></tr></thead>
         <tbody>
-          <tr><td>Integrations</td><td><span class="diff-win">9,000+</span></td><td>1,500+</td></tr>
-          <tr><td>Free tier</td><td>100 tasks/mo · Unlimited (within task limit)</td><td>1,000/mo · Unlimited</td></tr>
-          <tr><td>Overage model</td><td>+$25 per 1,000 ops</td><td><span class="diff-win">+$9 per 10,000 ops</span></td></tr>
+          <tr><td>Integrations</td><td><span class="diff-win">9,000+</span></td><td>400+</td></tr>
+          <tr><td>Free tier</td><td>100 tasks/mo · Unlimited (within task limit)</td><td>Unlimited* · Unlimited*</td></tr>
+          <tr><td>Overage model</td><td>+$25 per 1,000 ops</td><td>none — upgrade only</td></tr>
           <tr><td>Steps per workflow</td><td>2 steps (free)</td><td><span class="diff-win">Unlimited</span></td></tr>
-          <tr><td>Execution timeout</td><td>15 min</td><td><span class="diff-win">40 min</span></td></tr>
-          <tr><td>Log history</td><td>15 min delay (free)</td><td>30 days</td></tr>
+          <tr><td>Execution timeout</td><td>15 min</td><td><span class="diff-win">No limit*</span></td></tr>
+          <tr><td>Log history</td><td>15 min delay (free)</td><td>7 days (cloud)</td></tr>
           <tr><td>GDPR-friendly</td><td><span class="cross">✗</span></td><td><span class="diff-win"><span class="check">✓</span></span></td></tr>
+          <tr><td>Self-hosting</td><td><span class="cross">✗</span></td><td><span class="diff-win"><span class="check">✓</span></span></td></tr>
+          <tr><td>Multi-user</td><td><span class="diff-win"><span class="check">✓</span></span></td><td><span class="cross">✗</span></td></tr>
+          <tr><td>Code steps</td><td><span class="cross">✗</span></td><td><span class="diff-win"><span class="check">✓</span></span></td></tr>
+          <tr><td>License</td><td>Proprietary (cloud)</td><td>Sustainable Use</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="diff-same">Same on both: self-hosting · ai features · multi-user · api access · webhooks · code steps · license.</p>
+    <p class="diff-same">Same on both: ai features · api access · webhooks.</p>
   </div>
 
   <!-- 5 ── Pros / cons -->
@@ -326,16 +330,16 @@
         </ul>
       </div>
       <div class="pc-card">
-        <div class="pc-head"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=64" alt="Make logo">Make</div>
+        <div class="pc-head"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=64" alt="n8n logo">n8n</div>
         <ul>
-          <li class="pro">Best price per op in cloud</li>
-          <li class="pro">30-day log history on free</li>
-          <li class="pro">Visual drag-and-drop</li>
+          <li class="pro">Truly unlimited self-hosted</li>
+          <li class="pro">Best AI/LLM nodes</li>
+          <li class="pro">Strong community</li>
         </ul>
         <div class="pc-divider"></div>
         <ul>
-          <li class="con">No self-hosting</li>
-          <li class="con">No native code steps</li>
+          <li class="con">Setup required for self-host</li>
+          <li class="con">Smaller cloud workflow limit</li>
         </ul>
       </div>
     </div>
@@ -347,20 +351,20 @@
     <h2>Common questions</h2>
     <div class="faq" style="margin-top:16px;">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Is Make cheaper than Zapier?</button>
-        <div class="faq-a">At every volume we track, yes — from $0 vs $44.99 at 1,000 ops/mo to ~$45 vs ~$1,065 at 100,000. Zapier's free tier has no pay-as-you-go, so any real volume starts on a paid plan — and its overage ($25 per 1,000 tasks) is roughly 28× Make's ($9 per 10,000 ops), so the gap grows with volume.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">Is n8n cheaper than Zapier?</button>
+        <div class="faq-a">At every volume we track, yes — from $8 vs $44.99 at 1,000 ops/mo to $8 vs ~$1,065 at 100,000. Prices include overage where it applies — see the table above.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">What counts as an operation on each?</button>
-        <div class="faq-a">In Zapier, one task = one action step — a 3-step Zap triggered 100 times consumes 300 tasks. In Make, one operation = one module execution, counted similarly per module. Both count multi-step workflows multiplicatively, so the per-unit price difference is what matters.</div>
+        <div class="faq-a">In Zapier, one task = one action step — a 3-step Zap triggered 100 times consumes 300 tasks. n8n Cloud counts workflow executions — one run is one execution regardless of step count; self-hosted n8n has no metering at all.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Can I self-host either of them?</button>
-        <div class="faq-a">No — both are cloud-only. If self-hosting matters to you (cost control, GDPR, data residency), look at n8n or Activepieces instead — see the <a href="compare.html">compare tool</a>.</div>
+        <div class="faq-a">n8n yes — self-hosting makes it nearly free at any volume. Zapier is cloud-only.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Why would anyone pick Zapier, then?</button>
-        <div class="faq-a">Integrations. With 9,000+ supported apps versus Make's 1,500+, Zapier is often the only tool that connects a niche CRM or legacy system. If the integration you need exists only there, the price premium is the cost of admission.</div>
+        <div class="faq-a">Because n8n's $8 assumes you run it yourself — installing, updating, backing up and monitoring your own server. If that's not your team, the realistic alternative is n8n Cloud at $20–50/mo with workflow limits. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?</button>
@@ -375,10 +379,9 @@
     <h2>Both have free tiers — test with your real workflow</h2>
     <div class="out-grid" style="margin-top:18px;">
       <div class="out-card winner">
-        <div class="out-head"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=64" alt="Make logo">Make</div>
-        <p>1,000 free ops a month, unlimited scenarios — enough to run a real pilot before paying anything.</p>
-        <a href="https://www.make.com/en/register?pc=wizardcost" target="_blank" rel="noopener sponsored" class="out-btn aff">Try Make free →</a>
-        <span class="aff-note">Affiliate link — never affects our rankings.</span>
+        <div class="out-head"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=64" alt="n8n logo">n8n</div>
+        <p>Community Edition is free forever self-hosted; Cloud has a free trial — test a real workflow either way.</p>
+        <a href="https://n8n.io" target="_blank" rel="noopener" class="out-btn plain">Visit n8n →</a>
       </div>
       <div class="out-card">
         <div class="out-head"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=64" alt="Zapier logo">Zapier</div>
@@ -393,7 +396,7 @@
     <div class="section-label">Keep digging</div>
     <div class="xlinks">
       
-<a class="xlink" href="zapier-pricing.html">Zapier pricing in detail</a>      <a class="xlink" href="make-pricing.html">Make pricing in detail</a>      <a class="xlink" href="compare.html">Compare all 7 tools</a>      <a class="xlink" href="zapier-vs-n8n.html">Zapier vs n8n</a>      <a class="xlink" href="make-vs-n8n.html">Make vs n8n</a>      <a class="xlink" href="zapier-vs-pipedream.html">Zapier vs Pipedream</a>
+<a class="xlink" href="zapier-pricing.html">Zapier pricing in detail</a>      <a class="xlink" href="n8n-pricing.html">n8n pricing in detail</a>      <a class="xlink" href="compare.html">Compare all 7 tools</a>      <a class="xlink" href="zapier-vs-make.html">Zapier vs Make</a>      <a class="xlink" href="make-vs-n8n.html">Make vs n8n</a>      <a class="xlink" href="zapier-vs-pipedream.html">Zapier vs Pipedream</a>
     </div>
   </div>
 
