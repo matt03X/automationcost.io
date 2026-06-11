@@ -8,3 +8,4 @@ PORTFOLIO.md
 Thumbs.db
 desktop.ini
 automation/data/drift-report.md
+__pycache__/
