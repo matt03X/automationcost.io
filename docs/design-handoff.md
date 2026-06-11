@@ -74,14 +74,39 @@ Nasazeno a živě ověřeno (e2e 16/16, share/restore 13/13):
    images (PNG 1200×630) jsou nice-to-have — nadesignuj, až vs-stránky
    prokážou traffic; generátor pak jen přepne URL v datech páru.
 
-## Co má design dodat teď (pořadí)
+## Integrace balíčku `design_handoff_vs_mobile_gallery` (2026-06-11)
 
-1. **`mobile-padding-fix`** branch — fix dle `design-backlog.md` bod 1 (hned).
-2. **`automation/_vs-example.html`** na branch `vs-pages` dle briefu
-   (verdikt Zapier vs Make napiš sám — viz brief).
-3. Návrh galerie screenshotů (mock s placeholdery stačí) — assety vyřešíme
-   podle bodu 4 výše.
+Balíček dorazil přes GitHub upload na master — INTEGROVÁNO. Co engineering
+při integraci upravil (zpětná vazba pro příští dodávky):
+
+1. **Zastaralá čísla integrací** — Zapier „7,000+" → **9,000+**, Make „2,000+"
+   → **1,500+** (verdikt, feature diff, pros, FAQ #4 ve vs-example; shot-tag
+   v galerii). Zdroj pravdy = `automation/data/tools.json` (`integrations`),
+   po cenové revizi 2026-06-11. Před psaním čísel do textů vždy číst odtud.
+2. **Affiliate URL bez tracking parametru** — `https://www.make.com` →
+   `https://www.make.com/en/register?pc=wizardcost` (bez `?pc=` není provize).
+   Zdroj: `affiliateUrl` v tools.json.
+3. **„captured from our own test accounts"** v galerii změkčeno na „the real
+   product UIs" — test účty nemáme a možná pojedeme z press assetů; text nesmí
+   tvrdit něco, co (zatím) není pravda.
+4. **Logo `href="index.html"` → `href="/"`** ve vs-example — konvence od UI
+   fixu 2026-06-11: logo všude vede na root homepage wizardcost.com.
+
+Jinak balíček prošel bez výhrad: padding fix je správná diagnóza (shorthand
+`padding: X 0 Y` vs `.wrap`), tabulka vs-example sedí s enginem na cent,
+verdikt 14–24× ověřen, FAQ matematika (28× overage) sedí, žádný mojibake,
+žádný literál `</head>` v komentářích.
+
+## Co má design dodat příště
+
+1. Nic neblokuje — čekáme na rozhodnutí ownera o zdrojích screenshotů
+   (press assety vs test účty, viz odpověď 4 výše). Pak reálné captury
+   WebP/AVIF 1600×1000, stejné názvy souborů.
+2. Až engineering postaví generátor vs-stránek, pošleme seznam dalších párů —
+   verdikty navrhneš per pár (dohoda z odpovědi 8).
 
 ## Verifikace
 
-*(sem engineering vkládá výstupy testů po integraci design balíčků)*
+- Lokálně po integraci: root `build.py --check` OK, homepage smoke 11/11,
+  jediný literál `</head>` v index.html.
+- Live po deployi: *(doplní engineering — scout-mobile-edges 375px + e2e)*
