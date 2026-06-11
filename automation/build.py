@@ -175,12 +175,10 @@ def _fmt_money(v) -> str:
     return "Custom" if v is None else f"${v}/mo"
 
 
-def _fmt_ops(v) -> str:
-    return "Unlimited" if v is None else f"{v:,} ops"
-
-
-def _fmt_wf(v) -> str:
-    return "Unlimited" if v is None else f"{v} workflows"
+def _fmt_count(v) -> str:
+    """Hodnoty limitů BEZ jednotky — jednotku nese název pole („included ops",
+    „workflow limit"), opakovat ji ve hodnotách je duplicitní (feedback designu)."""
+    return "Unlimited" if v is None else f"{v:,}"
 
 
 def _fmt_overage(ov) -> str:
@@ -251,9 +249,9 @@ def diff_tools(old: dict, new: dict, date: str) -> list[dict]:
                 direction = "info" if (a is None or b is None) else ("up" if b > a else "down")
                 add(p["name"], _fmt_money(a), _fmt_money(b), direction)
             if q.get("opsIncluded") != p.get("opsIncluded"):
-                add(f"{p['name']} — included ops", _fmt_ops(q.get("opsIncluded")), _fmt_ops(p.get("opsIncluded")), "info")
+                add(f"{p['name']} — included ops", _fmt_count(q.get("opsIncluded")), _fmt_count(p.get("opsIncluded")), "info")
             if q.get("workflowLimit") != p.get("workflowLimit"):
-                add(f"{p['name']} — workflow limit", _fmt_wf(q.get("workflowLimit")), _fmt_wf(p.get("workflowLimit")), "info")
+                add(f"{p['name']} — workflow limit", _fmt_count(q.get("workflowLimit")), _fmt_count(p.get("workflowLimit")), "info")
     return entries
 
 
