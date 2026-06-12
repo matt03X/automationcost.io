@@ -6,9 +6,15 @@
       "workflowLimit": "null = Infinity (unlimited)",
       "monthlyUsd": "null = custom / contact sales (calculator estimates the price at runtime from the largest priced plan, compare renders 'Custom')",
       "note": "calculator-only display label for the plan; omit for custom-priced plans (calculator synthesizes '<name> — price estimated, contact sales')",
-      "overage (per-plan)": "optional key on a plan: overrides the tool-level overage; null = this plan has NO pay-as-you-go (engines skip it when ops exceed opsIncluded). Absent key = inherit tool-level."
+      "overage (per-plan)": "optional key on a plan: overrides the tool-level overage; null = this plan has NO pay-as-you-go (engines skip it when ops exceed opsIncluded). Absent key = inherit tool-level.",
+      "currency": "monthlyUsd = face value; n8n bills in EUR (annual-billing price recorded, € label in plan note). No FX conversion — a rate change would fake a changelog entry."
     },
-    "last_reviewed": "2026-06-11"
+    "todo": [
+      "pipedream: additional-credit (overage) rate is no longer public on the pricing page — current $10/1k kept from earlier verification, re-verify against billing docs",
+      "automatisch: Cloud plan removed 2026-06-12 — price no longer published anywhere public (homepage only says 'affordable cloud solution'); restore only with a verifiable price",
+      "make: vendor renamed operations -> credits (prices unchanged, 1 module action = 1 credit; code execution 2 credits/sec) — watch copy on pages"
+    ],
+    "last_reviewed": "2026-06-12"
   },
   "tools": [
     {
@@ -25,7 +31,7 @@
       "timeout": "No limit*",
       "logHistory": "7 days (cloud)",
       "gdprFriendly": true,
-      "multiUser": false,
+      "multiUser": true,
       "apiAccess": true,
       "webhooks": true,
       "codeSteps": true,
@@ -45,15 +51,23 @@
           "name": "Cloud Starter",
           "monthlyUsd": 20,
           "opsIncluded": 2500,
-          "workflowLimit": 5,
-          "note": "Cloud Starter"
+          "workflowLimit": null,
+          "note": "Cloud Starter (€20/mo billed annually)"
         },
         {
           "name": "Cloud Pro",
           "monthlyUsd": 50,
           "opsIncluded": 10000,
-          "workflowLimit": 15,
-          "note": "Cloud Pro"
+          "workflowLimit": null,
+          "note": "Cloud Pro (€50/mo billed annually)"
+        },
+        {
+          "name": "Business",
+          "monthlyUsd": 667,
+          "opsIncluded": 40000,
+          "workflowLimit": null,
+          "selfHostOnly": true,
+          "note": "Business — self-hosted license (€667/mo billed annually)"
         },
         {
           "name": "Cloud Enterprise",
@@ -70,7 +84,7 @@
       ],
       "cons": [
         "Setup required for self-host",
-        "Smaller cloud workflow limit"
+        "Big jump from Pro to Business tier"
       ]
     },
     {
@@ -171,21 +185,29 @@
           "monthlyUsd": 0,
           "opsIncluded": 100,
           "workflowLimit": 3,
+          "overage": null,
           "note": "Free tier"
         },
         {
           "name": "Basic",
           "monthlyUsd": 29,
           "opsIncluded": 2000,
-          "workflowLimit": 20,
+          "workflowLimit": 10,
           "note": "Basic plan"
         },
         {
           "name": "Advanced",
           "monthlyUsd": 49,
-          "opsIncluded": 5000,
+          "opsIncluded": 2000,
           "workflowLimit": null,
           "note": "Advanced plan"
+        },
+        {
+          "name": "Connect",
+          "monthlyUsd": 99,
+          "opsIncluded": 10000,
+          "workflowLimit": null,
+          "note": "Connect — 10k credits (developer plan)"
         },
         {
           "name": "Business",
@@ -368,13 +390,6 @@
           "workflowLimit": null,
           "selfHostOnly": true,
           "note": "Self-hosted + VPS (~$8/mo)"
-        },
-        {
-          "name": "Cloud",
-          "monthlyUsd": 20,
-          "opsIncluded": null,
-          "workflowLimit": null,
-          "note": "Cloud plan"
         }
       ],
       "overage": null,

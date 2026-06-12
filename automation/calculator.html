@@ -1838,8 +1838,9 @@ const TOOLS = [
     homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
-      { name: "Cloud Starter", monthlyUsd: 20, opsIncluded: 2500, workflowLimit: 5, note: "Cloud Starter" },
-      { name: "Cloud Pro", monthlyUsd: 50, opsIncluded: 10000, workflowLimit: 15, note: "Cloud Pro" },
+      { name: "Cloud Starter", monthlyUsd: 20, opsIncluded: 2500, workflowLimit: Infinity, note: "Cloud Starter (€20/mo billed annually)" },
+      { name: "Cloud Pro", monthlyUsd: 50, opsIncluded: 10000, workflowLimit: Infinity, note: "Cloud Pro (€50/mo billed annually)" },
+      { name: "Business", monthlyUsd: 667, opsIncluded: 40000, workflowLimit: Infinity, selfHostOnly: true, note: "Business — self-hosted license (€667/mo billed annually)" },
       { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null },
   {
@@ -1856,9 +1857,10 @@ const TOOLS = [
     slug: "pipedream", name: "Pipedream", selfHostable: false, aiFeatures: true, integrations: 2000,
     homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: false,
     plans: [
-      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, note: "Free tier" },
-      { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 20, note: "Basic plan" },
-      { name: "Advanced", monthlyUsd: 49, opsIncluded: 5000, workflowLimit: Infinity, note: "Advanced plan" },
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, overage: null, note: "Free tier" },
+      { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 10, note: "Basic plan" },
+      { name: "Advanced", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity, note: "Advanced plan" },
+      { name: "Connect", monthlyUsd: 99, opsIncluded: 10000, workflowLimit: Infinity, note: "Connect — 10k credits (developer plan)" },
       { custom: true, name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: { per: 1000, usd: 10 } },
   {
@@ -1884,7 +1886,6 @@ const TOOLS = [
     homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
-      { name: "Cloud", monthlyUsd: 20, opsIncluded: Infinity, workflowLimit: Infinity, note: "Cloud plan" },
     ], overage: null },
   {
     slug: "node-red", name: "Node-RED", selfHostable: true, aiFeatures: false, integrations: 5000,
@@ -1898,7 +1899,7 @@ const TOOLS = [
 // Role-specific pros/cons text
 const TOOL_WHY = {
   n8n: {
-    marketing:   { pros: ["Best AI nodes for content pipelines", "Visual canvas, decent for non-devs"], cons: ["Cloud plan workflow limit (5 on Starter)", "Steeper initial setup vs Make"] },
+    marketing:   { pros: ["Best AI nodes for content pipelines", "Visual canvas, decent for non-devs"], cons: ["Cloud Starter caps at 2,500 ops/mo", "Steeper initial setup vs Make"] },
     operations:  { pros: ["Unlimited workflows self-hosted", "Strong data transformation"], cons: ["Requires more technical setup", "Cloud limits can be tight"] },
     developer:   { pros: ["Full JS/Python code nodes", "Best-in-class AI agent support", "Self-hosted = unlimited"], cons: ["Sustainable Use License restricts SaaS resale"] },
     finance:     { pros: ["Self-host keeps data on your server", "Good audit trail in logs"], cons: ["Not built for accounting-specific compliance"] },

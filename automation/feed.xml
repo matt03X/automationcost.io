@@ -7,6 +7,34 @@
   <language>en</language>
   <atom:link href="https://wizardcost.com/automation/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
+    <title>n8n — Cloud Starter — workflow limit: 5 → Unlimited</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-12-n8n-cloud-starter-—-workflow-limit</guid>
+    <pubDate>Fri, 12 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Plan limits update, verified 2026-06-12. Full history in the WizardCost price changelog.</description>
+  </item>
+  <item>
+    <title>n8n — Cloud Pro — workflow limit: 15 → Unlimited</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-12-n8n-cloud-pro-—-workflow-limit</guid>
+    <pubDate>Fri, 12 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Plan limits update, verified 2026-06-12. Full history in the WizardCost price changelog.</description>
+  </item>
+  <item>
+    <title>Pipedream — Basic — workflow limit: 20 → 10</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-12-pipedream-basic-—-workflow-limit</guid>
+    <pubDate>Fri, 12 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Plan limits update, verified 2026-06-12. Full history in the WizardCost price changelog.</description>
+  </item>
+  <item>
+    <title>Pipedream — Advanced — included ops: 5,000 → 2,000</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-12-pipedream-advanced-—-included-ops</guid>
+    <pubDate>Fri, 12 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Plan limits update, verified 2026-06-12. Full history in the WizardCost price changelog.</description>
+  </item>
+  <item>
     <title>Zapier — Integrations: 7,000 → 9,000</title>
     <link>https://wizardcost.com/automation/changelog.html</link>
     <guid isPermaLink="false">2026-06-11-zapier-integrations</guid>
