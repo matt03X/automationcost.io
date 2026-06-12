@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LLM API Price Changelog — OpenAI, Claude, Gemini Pricing History | WizardCost</title>
+  <meta name="description" content="Every price and limit change we've recorded across OpenAI, Anthropic, Gemini, DeepSeek, xAI and Mistral APIs — dated, sourced from official pricing pages.">
+  <link rel="canonical" href="https://wizardcost.com/llm/changelog.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WizardCost">
+  <meta property="og:title" content="LLM API Price Changelog — Model Pricing History">
+  <meta property="og:description" content="Every price and limit change we've recorded across OpenAI, Anthropic, Gemini, DeepSeek, xAI and Mistral APIs — dated, sourced from official pricing pages.">
+  <meta property="og:url" content="https://wizardcost.com/llm/changelog.html">
+  <meta property="og:image" content="https://wizardcost.com/llm/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/llm/og-image.png">
+  <link rel="alternate" type="application/rss+xml" title="WizardCost — LLM Price Changelog (RSS)" href="feed.xml">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
+      --border: #1f2d45; --text: #e8edf5; --muted: #6b7a99;
+      --accent: #d97bfb; --accent-br: #e98bff; --accent-dim: rgba(217,123,251,0.09); --accent-glow: rgba(217,123,251,0.20); --ink: #1a0524; --link: #6f9bff; --border2: #27375a; --text2: #a8b4cc;
+      --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 14px; --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    body {
+      background: var(--bg);
+      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(217,123,251,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(217,123,251,0.08), transparent 50%);
+      background-repeat: no-repeat; background-attachment: fixed;
+      color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; -webkit-font-smoothing: antialiased;
+      padding-top: 100px;
+    }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: #9fbcff; }
+    h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; text-wrap: balance; }
+
+    /* ── Nav (shared shell) ── */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,14,23,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+    .nav-bottom::-webkit-scrollbar { display: none; }
+    .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
+    .nav-bottom a:hover { color: var(--text); }
+    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: var(--accent); }
+    .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .logo .io { color: var(--muted); font-weight: 600; }
+    .logo-icon { width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); display: flex; align-items: center; gap: 7px; letter-spacing: 0.01em; }
+    .nav-dropdown { position: relative; display: flex; align-items: center; }
+    .nav-dropdown-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-family: var(--font); font-size: 14px; padding: 12px 20px; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s, border-color 0.15s; margin-bottom: -2px; border-bottom: 2px solid transparent; }
+    .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text); }
+    .nav-dropdown-btn.active { color: var(--text); font-weight: 700; border-bottom-color: var(--accent); }
+    .nav-dropdown-menu { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); min-width: 214px; z-index: 200; box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03); padding: 6px 0; }
+    .nav-dropdown.open .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin-bottom: 0; font-size: 13px; font-weight: 600; color: var(--text2); transition: background 0.1s, color 0.1s; border-bottom: none !important; }
+    .nav-dropdown-menu a:hover { background: var(--surface2); color: var(--text); text-decoration: none; }
+    .nav-dropdown-menu a.active { color: var(--accent-br); background: var(--accent-dim); }
+    .nav-dropdown-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }
+    .nav-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 7px var(--accent); }
+
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+
+    /* ── Hero ── */
+    .hero { padding: 64px 0 40px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; font-family: var(--mono); font-size: 11.5px; color: var(--text2); padding: 6px 15px; margin-bottom: 22px; letter-spacing: 0.02em; }
+    .hero h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--text2); font-size: 1.08rem; max-width: 640px; line-height: 1.7; text-wrap: pretty; }
+
+    /* ── Changelog timeline ── */
+    .clog-month { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin: 38px 0 14px; display: flex; align-items: center; gap: 14px; }
+    .clog-month::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+    .clog-entry { display: grid; grid-template-columns: 92px 190px 1fr auto; gap: 18px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 15px 20px; margin-bottom: 10px; }
+    .ce-date { font-family: var(--mono); font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+    .ce-tool { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 14px; min-width: 0; }
+    .ce-tool img { width: 20px; height: 20px; border-radius: 5px; background: #fff; padding: 2px; object-fit: contain; flex-shrink: 0; }
+    .ce-tool .item { color: var(--muted); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ce-change { font-family: var(--mono); font-size: 13.5px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .ce-old { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(107,122,153,0.6); }
+    .ce-arrow { color: var(--muted); }
+    .ce-new { color: var(--text); font-weight: 700; }
+    .ce-delta { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; padding: 4px 11px; border-radius: 99px; white-space: nowrap; }
+    .ce-delta.up { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.4); color: #f87171; }
+    .ce-delta.down { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.4); color: #16d18c; }
+    .ce-delta.info { background: var(--surface2); border: 1px solid var(--border2); color: var(--muted); }
+    .clog-genesis { text-align: center; font-family: var(--mono); font-size: 12.5px; color: var(--muted); padding: 26px 0 6px; }
+    .clog-genesis b { color: var(--text2); }
+    .clog-empty { text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--border2); border-radius: var(--radius); padding: 48px 28px; font-size: 14.5px; margin-top: 28px; }
+    .clog-empty b { color: var(--text2); }
+
+    /* ── Method note ── */
+    .method-note { display: flex; gap: 14px; align-items: baseline; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 20px; margin: 34px 0 0; font-size: 13.5px; color: var(--text2); line-height: 1.65; }
+    .method-note .tick { font-family: var(--mono); color: var(--accent-br); font-weight: 700; flex-shrink: 0; }
+
+    /* ── Funnel CTA ── */
+    .finder-cta { background: linear-gradient(160deg, rgba(217,123,251,0.10), var(--surface) 65%); border: 1px solid rgba(217,123,251,0.35); border-radius: var(--radius); padding: 28px 32px; margin: 52px 0 64px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .finder-cta-text { flex: 1 1 320px; }
+    .finder-cta h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 6px; }
+    .finder-cta p { color: var(--text2); font-size: 14px; line-height: 1.6; }
+    .btn-primary-lg { background: var(--accent); color: var(--ink); border-radius: var(--radius-sm); padding: 14px 26px; font-family: var(--font); font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 9px; box-shadow: 0 0 0 1px rgba(217,123,251,0.4), 0 10px 30px rgba(217,123,251,0.28); transition: transform 0.15s, box-shadow 0.15s; white-space: nowrap; }
+    .btn-primary-lg:hover { transform: translateY(-1px); color: var(--ink); }
+
+    footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 24px; }
+    footer a { color: var(--muted); }
+
+    /* AC-MOBILE-SHELL ── unified mobile readability layer ── */
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 8px; padding-right: 8px; }
+      .nav-bottom a { padding: 13px 14px; }
+    }
+    @media (max-width: 620px) {
+      .nav-badge { display: none; }
+      .clog-entry { grid-template-columns: 1fr auto; grid-template-areas: "tool delta" "change change" "date date"; gap: 6px 12px; padding: 14px 16px; }
+      .ce-tool { grid-area: tool; }
+      .ce-delta { grid-area: delta; justify-self: end; }
+      .ce-change { grid-area: change; margin-top: 2px; }
+      .ce-date { grid-area: date; font-size: 11.5px; }
+    }
+    @media (max-width: 520px) {
+      .finder-cta { flex-direction: column; align-items: stretch; text-align: left; }
+      .btn-primary-lg { justify-content: center; }
+    }
+
+    /* ── EMAILCAP:CSS:START — držet 1:1 s _provider-template.html ── */
+    .price-alerts { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 24px 28px; margin: 32px 0 0; }
+    .pa-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 8px; }
+    .pa-title { font-family: var(--display); font-size: 17px; font-weight: 800; letter-spacing: -0.01em; }
+    .pa-sub { font-size: 13.5px; color: var(--text2); margin-top: 5px; line-height: 1.55; max-width: 560px; }
+    .pa-form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .pa-input { flex: 1 1 240px; min-width: 0; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; font-family: var(--font); font-size: 14.5px; color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; }
+    .pa-input::placeholder { color: var(--muted); }
+    .pa-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .pa-btn { display: inline-flex; align-items: center; justify-content: center; background: var(--accent); color: var(--ink); border: 0; cursor: pointer; font-family: var(--font); font-weight: 700; font-size: 14px; padding: 12px 22px; border-radius: var(--radius-sm); white-space: nowrap; transition: background 0.15s; }
+    .pa-btn:hover { background: var(--accent-br); }
+    .pa-btn:disabled { opacity: 0.6; cursor: default; }
+    .pa-note { font-size: 12.5px; color: var(--muted); margin-top: 12px; }
+    .pa-note a { color: var(--muted); text-decoration: underline; }
+    .pa-msg { display: none; margin-top: 14px; font-size: 14px; }
+    .pa-msg.show { display: flex; align-items: flex-start; gap: 9px; }
+    .pa-msg.ok { color: var(--green); }
+    .pa-msg.err { color: var(--red); }
+    .price-alerts.subscribed .pa-form, .price-alerts.subscribed .pa-note { display: none; }
+    @media (max-width: 520px) { .price-alerts { padding: 20px 18px; } .pa-form { flex-direction: column; } .pa-btn { width: 100%; min-height: 44px; } }
+    /* ── EMAILCAP:CSS:END ── */
+  </style>
+<!-- ANALYTICS (build.py) -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
+  <!-- /ANALYTICS -->
+  <!-- GA4 (build.py) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6LGJVD931P"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6LGJVD931P");</script>
+  <!-- /GA4 -->
+  </head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a href="/" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="llmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e98bff"></stop><stop offset="1" stop-color="#c44dff"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#llmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#fbeeff"></path>
+      </svg>
+      LLM<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+    </a>
+    <span class="nav-badge">LLM API pricing · verified June 2026</span>
+  </div>
+  <nav class="nav-bottom">
+    <a href="./">Calculator</a>
+    <a href="#" onclick="return false">Compare models</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn" type="button">Providers <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-dropdown-menu">
+        <a href="openai-pricing.html"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=32" alt="">OpenAI</a>
+        <a href="anthropic-pricing.html"><img src="https://www.google.com/s2/favicons?domain=anthropic.com&sz=32" alt="">Anthropic</a>
+        <a href="gemini-pricing.html"><img src="https://www.google.com/s2/favicons?domain=ai.google.dev&sz=32" alt="">Gemini</a>
+        <a href="deepseek-pricing.html"><img src="https://www.google.com/s2/favicons?domain=deepseek.com&sz=32" alt="">DeepSeek</a>
+        <a href="grok-pricing.html"><img src="https://www.google.com/s2/favicons?domain=x.ai&sz=32" alt="">Grok</a>
+        <a href="mistral-pricing.html"><img src="https://www.google.com/s2/favicons?domain=mistral.ai&sz=32" alt="">Mistral</a>
+      </div>
+    </div>
+    <a href="changelog.html" class="active">Changelog</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <div class="hero" data-screen-label="Changelog hero">
+    <div class="hero-badge">tracking since June 2026</div>
+    <h1>LLM price <em>changelog</em></h1>
+    <p>Every price and limit change we record across 18 tracked models — dated, with the old and new value. Sourced from official pricing pages, generated from our data history.</p>
+  </div>
+
+  <div id="clog" data-screen-label="Changelog timeline"></div>
+
+  <div class="method-note">
+    <span class="tick">✓</span>
+    <span>Changes land here after a human reviews what our price monitor found — typos and A/B-tested vendor pages don't. Spotted a price we missed? The vendor's official pricing page always wins.</span>
+  </div>
+
+  <div class="finder-cta">
+    <div class="finder-cta-text">
+      <h2>Prices moved. Your cheapest model may have too.</h2>
+      <p>Re-run the calculator against the current numbers.</p>
+    </div>
+    <a href="./" class="btn-primary-lg">Find my model →</a>
+  </div>
+
+  <!-- EMAILCAP:HTML:START — LLM varianta (skupina price-drop-alerts-llm; action = EMAILCAP_ACTION_LLM v build.py, měnit synchronně) -->
+  <section class="price-alerts" data-screen-label="Price-drop alerts">
+    <div class="pa-label">Price-drop alerts</div>
+    <div class="pa-title">Get an email when any tracked LLM provider changes pricing.</div>
+    <p class="pa-sub">Every change is verified by hand and published here first — you get one email per confirmed change.</p>
+    <form class="pa-form" action="https://assets.mailerlite.com/jsonp/2426816/forms/190087424470157211/subscribe" method="post" novalidate>
+      <label for="pa-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+      <input class="pa-input" id="pa-email" name="fields[email]" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
+      <input type="hidden" name="ml-submit" value="1">
+      <input type="hidden" name="anticsrf" value="true">
+      <button class="pa-btn" type="submit">Get price alerts</button>
+    </form>
+    <div class="pa-msg" role="status" aria-live="polite"></div>
+    <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="/automation/privacy.html">Privacy</a></p>
+  </section>
+  <!-- EMAILCAP:HTML:END -->
+
+</div>
+
+<footer>
+  WizardCost · independent — not affiliated with any vendor · <a href="/automation/privacy.html">Privacy</a> · <a href="/automation/terms.html">Terms</a>
+</footer>
+
+<script>
+const LOGOS = {
+  "openai":    "https://www.google.com/s2/favicons?domain=openai.com&sz=64",
+  "anthropic": "https://www.google.com/s2/favicons?domain=anthropic.com&sz=64",
+  "google":    "https://www.google.com/s2/favicons?domain=ai.google.dev&sz=64",
+  "deepseek":  "https://www.google.com/s2/favicons?domain=deepseek.com&sz=64",
+  "xai":       "https://www.google.com/s2/favicons?domain=x.ai&sz=64",
+  "mistral":   "https://www.google.com/s2/favicons?domain=mistral.ai&sz=64",
+};
+
+// ── Changelog data — generated by build.py from the git history of data/models.json.
+//    dir: "up" (price increased = red) | "down" (decreased = green) | "info" (neutral)
+/* DATA:CHANGELOG:START */ /* generováno build.py z git historie data/models.json — needituj ručně */
+const CHANGELOG = [
+];
+const CLOG_GENESIS = "Tracking started June 2026 · 6 providers · 18 models";
+/* DATA:CHANGELOG:END */
+
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+function renderChangelog() {
+  const root = document.getElementById("clog");
+  if (!CHANGELOG.length) {
+    root.innerHTML = `<div class="clog-empty"><b>No price changes recorded yet.</b><br>${CLOG_GENESIS} — when a vendor moves a price, it shows up here.</div>`;
+    return;
+  }
+  const sorted = [...CHANGELOG].sort((a, b) => b.d.localeCompare(a.d));
+  let html = "", lastMonth = "";
+  for (const e of sorted) {
+    const dt = new Date(e.d + "T00:00:00");
+    const monthKey = MONTHS[dt.getMonth()] + " " + dt.getFullYear();
+    if (monthKey !== lastMonth) { html += `<div class="clog-month">${monthKey}</div>`; lastMonth = monthKey; }
+    const day = dt.getDate() + " " + MONTHS[dt.getMonth()].slice(0,3);
+    const deltaLabel = e.dir === "up" ? "↑ increase" : e.dir === "down" ? "↓ decrease" : "changed";
+    const logo = LOGOS[e.pslug] ? `<img src="${LOGOS[e.pslug]}" alt="" onerror="this.style.display='none'">` :"";
+    html += `<div class="clog-entry">
+      <span class="ce-date">${day}</span>
+      <span class="ce-tool">${logo}${e.name}&nbsp;<span class="item">· ${e.item}</span></span>
+      <span class="ce-change"><span class="ce-old">${e.old}</span><span class="ce-arrow">→</span><span class="ce-new">${e.neu}</span></span>
+      <span class="ce-delta ${e.dir}">${deltaLabel}</span>
+    </div>`;
+  }
+  html += `<div class="clog-genesis"><b>✦</b> ${CLOG_GENESIS}</div>`;
+  root.innerHTML = html;
+}
+renderChangelog();
+</script>
+
+<script>
+/* Providers dropdown (vzor automation Pricing Guides) — držet 1:1 s _provider-template.html */
+(function () {
+  var dd = document.querySelector(".nav-dropdown");
+  if (!dd) return;
+  dd.querySelector(".nav-dropdown-btn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    var r = this.getBoundingClientRect(), m = dd.querySelector(".nav-dropdown-menu");
+    m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 224)) + "px";
+    m.style.top = (r.bottom + 8) + "px";
+    dd.classList.toggle("open");
+  });
+  document.addEventListener("click", function () { dd.classList.remove("open"); });
+})();
+</script>
+<script>
+/* ── EMAILCAP:JS:START — držet 1:1 s _provider-template.html ── */
+(function () {
+  var OK = 'Check your inbox to confirm your subscription.';
+  document.querySelectorAll('.price-alerts form.pa-form').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var card = form.closest('.price-alerts');
+      var input = form.querySelector('.pa-input');
+      var btn = form.querySelector('.pa-btn');
+      var msg = card.querySelector('.pa-msg');
+      function show(ok, text) { msg.className = 'pa-msg show ' + (ok ? 'ok' : 'err'); msg.textContent = text; }
+      if (!input.value || input.value.indexOf('@') < 1) { show(false, 'Please enter a valid email address.'); input.focus(); return; }
+      btn.disabled = true; btn.textContent = 'Subscribing…';
+      fetch(form.action, { method: 'POST', body: new FormData(form) })
+        .then(function (r) { if (!r.ok) throw 0; card.classList.add('subscribed'); show(true, OK); })
+        .catch(function () { btn.disabled = false; btn.textContent = 'Get price alerts'; show(false, 'Something went wrong — please try again.'); });
+    });
+  });
+})();
+/* ── EMAILCAP:JS:END ── */
+</script>
+</body>
+</html>

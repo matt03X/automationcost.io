@@ -2,7 +2,9 @@
 
 Umbrella web **wizardcost.com** (GitHub Pages z `master`, CNAME v rootu — push = deploy, CDN cache ~10 min).
 Root = homepage WizardCost. `/automation/` = AutomationCost (kalkulátor, compare, pricing stránky, changelog).
-Každá úroveň má vlastní `build.py` + `data/site.json`.
+`/llm/` = LLMCost (wizard #2 — kalkulátor LLM API cen, compare, 6 provider stránek, changelog; LIVE od 2026-06-12). Každá úroveň má vlastní `build.py` + `data/`.
+LLM zdroj pravdy = `llm/data/models.json` (ceny ověřené scoutem, dumpy v calc-test/llm-pricing-dumps/), marker blok `DATA:MODELS:START|END`, engine přímo v `llm/index.html` (cost(): per-model cached ceny, cache gating per use case, batch jen ověření provideři).
+LLM provider stránky (`llm/<provider>-pricing.html`, slugy gemini/grok = produkt, ne provider) jsou **CELÉ generované** — `build_provider_pages()` v llm/build.py ze šablony `llm/_provider-template.html` (mimo sitemap); poznámkové karty (caching/batch/context) se generují z models.json → v1.1 backfill je aktualizuje sám. Nikdy needitovat vygenerované soubory ručně. Capture action = konstanta `EMAILCAP_ACTION_LLM` v llm/build.py — OSTRÁ od 2026-06-12: MailerLite formulář „LLM price alerts" id 190087424470157211 → skupina `price-drop-alerts-llm` id 190087503473018215 (env `MAILERLITE_GROUP_LLM` v engine/.env pro send skript `--site llm`). Stejná action ručně v llm/changelog.html EMAILCAP bloku — měnit synchronně. LLM alerty = oddělený seznam od automation (slib disclosure je scoped per skupina).
 
 ## Zdroj pravdy a generované bloky
 
@@ -39,6 +41,8 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
 | `check-ui-live.js` | po změně nav/headeru (dropdown Pricing Guides, logo →`/`, favicon — live) |
 | `check-jsonld.js` | po změně head sekcí (validita JSON-LD bloků) |
 | `test-vs-pages.js` | po změně pairs.json, tools.json nebo vs šablony (JSON-LD 1:1, affiliate pravidla, čísla z enginu, per-řádkové cheap, cross-linky) |
+| `test-llm-engine.js` | po změně llm/index.html enginu nebo models.json (ruční kontrolní příklady, cache/batch gating; `--table` = referenční tabulka pro design) |
+| `test-llm-provider-pages.js` | po změně models.json, llm/build.py nebo _provider-template.html (ceny/≈$/mo 1:1 s enginem, žádné sloty, cross-linky, EMAILCAP; `--launch` = REPLACE_ME action je FAIL — pustit v launch checklistu) |
 | `verify-pricing-live.js` | plošný audit tools.json proti oficiálním ceníkům (Playwright; dumpy do `vendor-pricing-dumps/` = evidence, verdikt dělá člověk) — měsíčně a před každou cenovou revizí |
 | `check-jsonld-pricing.js` | po ruční editaci JSON-LD na pricing stránkách (parse všech bloků) |
 

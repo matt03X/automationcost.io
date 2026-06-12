@@ -26,7 +26,7 @@
     "todo_v1_1": [
       "OpenAI/Gemini batch ceny (taby na cenikove strance - scout musi kliknout)",
       "xAI cached input cena (Prompt Caching doc)",
-      "context windows OpenAI/Anthropic/Mistral (model docs)",
+      "context windows: zbyva gpt-5.5-pro, gpt-5.4-nano, Gemini rada, Mistral Large (model docs je neukazuji primo)",
       "Gemini/OpenAI long-context prirazky do engine (zatim jen poznamka)"
     ],
     "last_reviewed": "2026-06-12"
@@ -39,10 +39,10 @@
       "pricingUrl": "https://platform.openai.com/docs/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "gpt-5.5", "name": "GPT-5.5", "tier": "frontier", "inputPerM": 5.00, "cachedInputPerM": 0.50, "outputPerM": 30.00, "batchDiscount": null, "contextWindow": null, "longContextNote": "long context: $10 in / $1 cached / $45 out" },
+        { "id": "gpt-5.5", "name": "GPT-5.5", "tier": "frontier", "inputPerM": 5.00, "cachedInputPerM": 0.50, "outputPerM": 30.00, "batchDiscount": null, "contextWindow": 1000000, "longContextNote": "long context: $10 in / $1 cached / $45 out" },
         { "id": "gpt-5.5-pro", "name": "GPT-5.5 Pro", "tier": "frontier", "inputPerM": 30.00, "cachedInputPerM": null, "outputPerM": 180.00, "batchDiscount": null, "contextWindow": null, "longContextNote": "long context: $60 in / $270 out" },
-        { "id": "gpt-5.4", "name": "GPT-5.4", "tier": "frontier", "inputPerM": 2.50, "cachedInputPerM": 0.25, "outputPerM": 15.00, "batchDiscount": null, "contextWindow": null, "longContextNote": "long context: $5 in / $0.50 cached / $22.50 out" },
-        { "id": "gpt-5.4-mini", "name": "GPT-5.4 mini", "tier": "mid", "inputPerM": 0.75, "cachedInputPerM": 0.075, "outputPerM": 4.50, "batchDiscount": null, "contextWindow": null },
+        { "id": "gpt-5.4", "name": "GPT-5.4", "tier": "frontier", "inputPerM": 2.50, "cachedInputPerM": 0.25, "outputPerM": 15.00, "batchDiscount": null, "contextWindow": 1000000, "longContextNote": "long context: $5 in / $0.50 cached / $22.50 out" },
+        { "id": "gpt-5.4-mini", "name": "GPT-5.4 mini", "tier": "mid", "inputPerM": 0.75, "cachedInputPerM": 0.075, "outputPerM": 4.50, "batchDiscount": null, "contextWindow": 400000 },
         { "id": "gpt-5.4-nano", "name": "GPT-5.4 nano", "tier": "budget", "inputPerM": 0.20, "cachedInputPerM": 0.02, "outputPerM": 1.25, "batchDiscount": null, "contextWindow": null }
       ]
     },
@@ -53,10 +53,10 @@
       "pricingUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "claude-fable-5", "name": "Claude Fable 5", "tier": "frontier", "inputPerM": 10.00, "cachedInputPerM": 1.00, "outputPerM": 50.00, "batchDiscount": 0.5, "contextWindow": null },
-        { "id": "claude-opus-4-8", "name": "Claude Opus 4.8", "tier": "frontier", "inputPerM": 5.00, "cachedInputPerM": 0.50, "outputPerM": 25.00, "batchDiscount": 0.5, "contextWindow": null },
-        { "id": "claude-sonnet-4-6", "name": "Claude Sonnet 4.6", "tier": "mid", "inputPerM": 3.00, "cachedInputPerM": 0.30, "outputPerM": 15.00, "batchDiscount": 0.5, "contextWindow": null },
-        { "id": "claude-haiku-4-5", "name": "Claude Haiku 4.5", "tier": "budget", "inputPerM": 1.00, "cachedInputPerM": 0.10, "outputPerM": 5.00, "batchDiscount": 0.5, "contextWindow": null }
+        { "id": "claude-fable-5", "name": "Claude Fable 5", "tier": "frontier", "inputPerM": 10.00, "cachedInputPerM": 1.00, "outputPerM": 50.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
+        { "id": "claude-opus-4-8", "name": "Claude Opus 4.8", "tier": "frontier", "inputPerM": 5.00, "cachedInputPerM": 0.50, "outputPerM": 25.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
+        { "id": "claude-sonnet-4-6", "name": "Claude Sonnet 4.6", "tier": "mid", "inputPerM": 3.00, "cachedInputPerM": 0.30, "outputPerM": 15.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
+        { "id": "claude-haiku-4-5", "name": "Claude Haiku 4.5", "tier": "budget", "inputPerM": 1.00, "cachedInputPerM": 0.10, "outputPerM": 5.00, "batchDiscount": 0.5, "contextWindow": 200000 }
       ]
     },
     {
