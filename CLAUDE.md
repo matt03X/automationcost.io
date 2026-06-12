@@ -38,6 +38,8 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
 | `check-ui-live.js` | po změně nav/headeru (dropdown Pricing Guides, logo →`/`, favicon — live) |
 | `check-jsonld.js` | po změně head sekcí (validita JSON-LD bloků) |
 | `test-vs-pages.js` | po změně pairs.json, tools.json nebo vs šablony (JSON-LD 1:1, affiliate pravidla, čísla z enginu, per-řádkové cheap, cross-linky) |
+| `verify-pricing-live.js` | plošný audit tools.json proti oficiálním ceníkům (Playwright; dumpy do `vendor-pricing-dumps/` = evidence, verdikt dělá člověk) — měsíčně a před každou cenovou revizí |
+| `check-jsonld-pricing.js` | po ruční editaci JSON-LD na pricing stránkách (parse všech bloků) |
 
 ## Email capture (price-drop alerts)
 
