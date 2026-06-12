@@ -43,6 +43,7 @@ LLM provider stránky (`llm/<provider>-pricing.html`, slugy gemini/grok = produk
 | `test-vs-pages.js` | po změně pairs.json, tools.json nebo vs šablony (JSON-LD 1:1, affiliate pravidla, čísla z enginu, per-řádkové cheap, cross-linky) |
 | `test-llm-engine.js` | po změně llm/index.html enginu nebo models.json (ruční kontrolní příklady, cache/batch gating; `--table` = referenční tabulka pro design) |
 | `test-llm-provider-pages.js` | po změně models.json, llm/build.py nebo _provider-template.html (ceny/≈$/mo 1:1 s enginem, žádné sloty, cross-linky, EMAILCAP; `--launch` = REPLACE_ME action je FAIL — pustit v launch checklistu) |
+| `check-llm-links.js` | po změně nav/odkazů na llm stránkách (žádný mockup placeholder href="#", relativní cíle existují) — poučení z launche: mrtvé nav odkazy na index+changelog |
 | `verify-pricing-live.js` | plošný audit tools.json proti oficiálním ceníkům (Playwright; dumpy do `vendor-pricing-dumps/` = evidence, verdikt dělá člověk) — měsíčně a před každou cenovou revizí |
 | `check-jsonld-pricing.js` | po ruční editaci JSON-LD na pricing stránkách (parse všech bloků) |
 
