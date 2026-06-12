@@ -2,7 +2,7 @@
 
 Umbrella web **wizardcost.com** (GitHub Pages z `master`, CNAME v rootu — push = deploy, CDN cache ~10 min).
 Root = homepage WizardCost. `/automation/` = AutomationCost (kalkulátor, compare, pricing stránky, changelog).
-`/llm/` = LLMCost (wizard #2, ve stavbě na branchích `llmcost-*` — NEmergovat do masteru před launch checklistem Fáze 3). Každá úroveň má vlastní `build.py` + `data/`.
+`/llm/` = LLMCost (wizard #2 — kalkulátor LLM API cen, compare, 6 provider stránek, changelog; LIVE od 2026-06-12). Každá úroveň má vlastní `build.py` + `data/`.
 LLM zdroj pravdy = `llm/data/models.json` (ceny ověřené scoutem, dumpy v calc-test/llm-pricing-dumps/), marker blok `DATA:MODELS:START|END`, engine přímo v `llm/index.html` (cost(): per-model cached ceny, cache gating per use case, batch jen ověření provideři).
 LLM provider stránky (`llm/<provider>-pricing.html`, slugy gemini/grok = produkt, ne provider) jsou **CELÉ generované** — `build_provider_pages()` v llm/build.py ze šablony `llm/_provider-template.html` (mimo sitemap); poznámkové karty (caching/batch/context) se generují z models.json → v1.1 backfill je aktualizuje sám. Nikdy needitovat vygenerované soubory ručně. Capture action = konstanta `EMAILCAP_ACTION_LLM` v llm/build.py — OSTRÁ od 2026-06-12: MailerLite formulář „LLM price alerts" id 190087424470157211 → skupina `price-drop-alerts-llm` id 190087503473018215 (env `MAILERLITE_GROUP_LLM` v engine/.env pro send skript `--site llm`). Stejná action ručně v llm/changelog.html EMAILCAP bloku — měnit synchronně. LLM alerty = oddělený seznam od automation (slib disclosure je scoped per skupina).
 
@@ -16,8 +16,9 @@ LLM provider stránky (`llm/<provider>-pricing.html`, slugy gemini/grok = produk
 - Po změně tools.json spusť **oba** buildy: `python automation/build.py` i `python build.py` (root), commitni výsledek. `--check` = CI guard (exit 1 při zastaralých blocích).
 - **X-vs-Y stránky** (`automation/<a>-vs-<b>.html`) jsou **CELÉ generované** — `build_vs_pages()` v automation/build.py z tools.json (čísla přes root `cheapest_monthly`, import — žádná třetí kopie enginu) + `automation/data/pairs.json` (editorial: verdikt/stripNote/whyLoser/faq — ručně psané, vkládané doslovně; design navrhuje, owner schvaluje). Nikdy needitovat vygenerované soubory ručně. Pořadí slugů v URL: zapier > make > n8n > pipedream > activepieces > automatisch > node-red. Cross-linky generátor omezuje na existující páry. Vzor šablony: `_vs-example.html` (mimo sitemap).
 - **Pořadí u cenových změn:** changelog/RSS se generují z **git historie** tools.json → nejdřív commitni samotný tools.json, pak teprve buildy (jinak nový diff v changelogu nebude). Cenová změna se propisuje i do ručních textů (meta descriptions, FAQ, tabulky, TOOL_WHY v kalkulátoru, BEST_FOR v compare) — po změně grepni staré hodnoty napříč stránkami. Ověřování drift reportu: `calc-test/scout-vendor-pricing.js` / `scout-vendor-detail.js` (Playwright čte oficiální ceníky).
-- Changelog vzniká z git diffů tools.json → do tools.json patří jen **ověřené** změny. Drift report ze scraperu (`automation/data/drift-report.md`, netrackovaný) = neověřené nálezy, ne potvrzená fakta. Datum commitu = veřejné datum záznamu v changelogu.
-- Při změně cen aktualizuj i `_meta.last_reviewed` a nav badge „Updated <Month Year>" na stránkách.
+- Changelog vzniká z git diffů tools.json → do tools.json patří jen **ověřené** změny. **Oprava našich dat ≠ vendor změna**: `data/changelog-overrides.json` (`baseline_until`) vylučuje bootstrap-éru diffy z changelogu i feedů — Wayback audit 2026-06-12 prokázal, že záznamy z 11.–12. 6. byly korekce chybných výchozích dat (Zapier $19.99 stabilní od 2024, Pipedream 2k/10wf od 2025-04, n8n limity zrušeny už 2025-08-07). Skutečná data vendor změn s archive evidencí patří do history vrstvy (wayback backtesting, calc-test/wayback/). Baseline posouvat jen s auditním důkazem. Drift report ze scraperu (`automation/data/drift-report.md`, netrackovaný) = neověřené nálezy, ne potvrzená fakta. Datum commitu = veřejné datum záznamu v changelogu.
+- Při změně cen aktualizuj i `_meta.last_reviewed`, nav badge „Updated <Month Year>" na stránkách **a sentinely v `scripts/price-watch.js`** (jinak druhý den falešný poplach).
+- **Denní hlídač cen:** `.github/workflows/price-watch.yml` (cron 06:00 UTC) spouští `scripts/price-watch.js` — sentinel check oficiálních ceníků proti tools.json (nízkošumový: hlídá jen naše čísla, marketing změny ignoruje; automatisch inverzně — alert, kdyby cena znovu byla veřejná). Fail = GitHub mail ownerovi → ověřit `node calc-test/verify-pricing-live.js <slug>` → revize dat. Nové plány sentinely nechytí → měsíční deep audit verify-pricing-live.js zůstává.
 
 ## Cost engine (automation/calculator.html)
 
@@ -42,6 +43,8 @@ LLM provider stránky (`llm/<provider>-pricing.html`, slugy gemini/grok = produk
 | `test-vs-pages.js` | po změně pairs.json, tools.json nebo vs šablony (JSON-LD 1:1, affiliate pravidla, čísla z enginu, per-řádkové cheap, cross-linky) |
 | `test-llm-engine.js` | po změně llm/index.html enginu nebo models.json (ruční kontrolní příklady, cache/batch gating; `--table` = referenční tabulka pro design) |
 | `test-llm-provider-pages.js` | po změně models.json, llm/build.py nebo _provider-template.html (ceny/≈$/mo 1:1 s enginem, žádné sloty, cross-linky, EMAILCAP; `--launch` = REPLACE_ME action je FAIL — pustit v launch checklistu) |
+| `verify-pricing-live.js` | plošný audit tools.json proti oficiálním ceníkům (Playwright; dumpy do `vendor-pricing-dumps/` = evidence, verdikt dělá člověk) — měsíčně a před každou cenovou revizí |
+| `check-jsonld-pricing.js` | po ruční editaci JSON-LD na pricing stránkách (parse všech bloků) |
 
 ## Email capture (price-drop alerts)
 

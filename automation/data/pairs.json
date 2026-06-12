@@ -77,8 +77,8 @@
       "b": "n8n",
       "winner": "n8n",
       "stripNote": "at every volume we track — self-hosted",
-      "verdict": "<b class=\"win\">n8n runs at a flat ~$8/mo at every volume</b> — but only if you self-host it; <b>Zapier is the no-code path with 9,000+ integrations</b>. The $8 is Community Edition on a VPS you maintain yourself — if nobody on your team wants to own a server, compare against n8n Cloud ($20–50/mo, with workflow limits) instead: still cheaper than Zapier's ~$130–$1,065, but no longer a rout.",
-      "whyLoser": "Because n8n's $8 assumes you run it yourself — installing, updating, backing up and monitoring your own server. If that's not your team, the realistic alternative is n8n Cloud at $20–50/mo with workflow limits. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys."
+      "verdict": "<b class=\"win\">n8n runs at a flat ~$8/mo at every volume</b> — but only if you self-host it; <b>Zapier is the no-code path with 9,000+ integrations</b>. The $8 is Community Edition on a VPS you maintain yourself — if nobody on your team wants to own a server, compare against n8n Cloud ($20–50/mo, with execution quotas) instead: still cheaper than Zapier's ~$130–$1,065, but no longer a rout.",
+      "whyLoser": "Because n8n's $8 assumes you run it yourself — installing, updating, backing up and monitoring your own server. If that's not your team, the realistic alternative is n8n Cloud at $20–50/mo with execution quotas. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys."
     },
     {
       "a": "make",
@@ -132,7 +132,7 @@
       "winner": "n8n",
       "stripNote": "at every volume we track — self-hosted",
       "verdict": "<b class=\"win\">n8n holds a flat ~$8/mo at every volume — if you self-host it</b>; <b>Pipedream is the managed path for the same developer audience</b>. This isn't no-code vs code — both are dev-friendly. It's your server + open-source vs managed cloud + code steps: if running a VPS is routine for your team, n8n wins on price outright ($8 vs $10–~$400). If you'd rather never touch infrastructure, Pipedream's premium is the hosting bill.",
-      "whyLoser": "Because the ~$8 assumes you operate n8n yourself — and n8n Cloud, the managed alternative, runs $20–50/mo with workflow limits. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server."
+      "whyLoser": "Because the ~$8 assumes you operate n8n yourself — and n8n Cloud, the managed alternative, runs $20–50/mo with execution quotas. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server."
     }
   ]
 }
