@@ -2,7 +2,8 @@
 
 Umbrella web **wizardcost.com** (GitHub Pages z `master`, CNAME v rootu — push = deploy, CDN cache ~10 min).
 Root = homepage WizardCost. `/automation/` = AutomationCost (kalkulátor, compare, pricing stránky, changelog).
-Každá úroveň má vlastní `build.py` + `data/site.json`.
+`/llm/` = LLMCost (wizard #2, ve stavbě na branchích `llmcost-*` — NEmergovat do masteru před launch checklistem Fáze 3). Každá úroveň má vlastní `build.py` + `data/`.
+LLM zdroj pravdy = `llm/data/models.json` (ceny ověřené scoutem, dumpy v calc-test/llm-pricing-dumps/), marker blok `DATA:MODELS:START|END`, engine přímo v `llm/index.html` (cost(): per-model cached ceny, cache gating per use case, batch jen ověření provideři).
 
 ## Zdroj pravdy a generované bloky
 
@@ -38,6 +39,7 @@ Každá úroveň má vlastní `build.py` + `data/site.json`.
 | `check-ui-live.js` | po změně nav/headeru (dropdown Pricing Guides, logo →`/`, favicon — live) |
 | `check-jsonld.js` | po změně head sekcí (validita JSON-LD bloků) |
 | `test-vs-pages.js` | po změně pairs.json, tools.json nebo vs šablony (JSON-LD 1:1, affiliate pravidla, čísla z enginu, per-řádkové cheap, cross-linky) |
+| `test-llm-engine.js` | po změně llm/index.html enginu nebo models.json (ruční kontrolní příklady, cache/batch gating; `--table` = referenční tabulka pro design) |
 
 ## Email capture (price-drop alerts)
 
