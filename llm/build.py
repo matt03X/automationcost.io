@@ -135,18 +135,23 @@ def diff_models(old: dict, new: dict, date: str) -> list[dict]:
             add = lambda item, a, b, d: entries.append(
                 {"d": date, "tool": m["id"], "name": m["name"], "pslug": p["slug"],
                  "item": item, "old": a, "neu": b, "dir": d})
+            # POZOR: přechod null→hodnota = backfill NAŠÍ verifikace (doplnili
+            # jsme ověřený údaj), NE změna vendora → do changelogu nepatří.
+            # Záznam vzniká jen při změně hodnota→hodnota.
             for key, label in (("inputPerM", "input price"), ("outputPerM", "output price"),
                                ("cachedInputPerM", "cached input price")):
                 a, b = q.get(key), m.get(key)
-                if a != b:
-                    direction = "info" if (a is None or b is None) else ("up" if b > a else "down")
-                    add(label, _fmt_perM(a), _fmt_perM(b), direction)
-            if q.get("batchDiscount") != m.get("batchDiscount"):
-                add("batch discount", _fmt_batch(q.get("batchDiscount")), _fmt_batch(m.get("batchDiscount")), "info")
-            if q.get("contextWindow") != m.get("contextWindow"):
-                add("context window", _fmt_ctx(q.get("contextWindow")), _fmt_ctx(m.get("contextWindow")), "info")
-            if q.get("tier") != m.get("tier"):
-                add("tier (editorial)", q.get("tier") or "n/a", m.get("tier") or "n/a", "info")
+                if a != b and a is not None and b is not None:
+                    add(label, _fmt_perM(a), _fmt_perM(b), "up" if b > a else "down")
+            a, b = q.get("batchDiscount"), m.get("batchDiscount")
+            if a != b and a is not None and b is not None:
+                add("batch discount", _fmt_batch(a), _fmt_batch(b), "info")
+            a, b = q.get("contextWindow"), m.get("contextWindow")
+            if a != b and a is not None and b is not None:
+                add("context window", _fmt_ctx(a), _fmt_ctx(b), "info")
+            a, b = q.get("tier"), m.get("tier")
+            if a != b and a is not None and b is not None:
+                add("tier (editorial)", a, b, "info")
     return entries
 
 
