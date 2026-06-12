@@ -63,6 +63,7 @@
     .logo { display: flex; align-items: center; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; }
     .logo:hover { text-decoration: none; }
     .logo span { color: var(--accent); }
+    .logo-icon { width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }
     .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 11px; color: var(--muted); }
 
     .wrap { max-width: 1160px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
@@ -172,7 +173,13 @@
 
 <header>
   <div class="nav-top">
-    <a href="/" class="logo">Wizard<span>Cost</span></a>
+    <a href="/" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="llmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e98bff"></stop><stop offset="1" stop-color="#c44dff"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#llmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#fbeeff"></path>
+      </svg>
+      Wizard<span>Cost</span></a>
     <span class="nav-badge">LLM API pricing · verified June 2026</span>
   </div>
   <nav class="nav-bottom">
