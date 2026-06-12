@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Monetizace WizardCost — memo (design → owner + engineering)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Hanken+Grotesk:wght@700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0b0a12; --surface: #14121f; --border: #241f38; --border2: #322a4f;
+      --text: #ece9f5; --text2: #aea8c4; --muted: #6f6890; --accent: #a78bfa; --accent2: #7c4dff;
+      --green: #10b981; --yellow: #f59e0b; --red: #ef4444;
+      --font: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --display: 'Hanken Grotesk', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    body { background: var(--bg); background-image: radial-gradient(ellipse 70% 45% at 50% -5%, rgba(124,77,255,0.14), transparent 60%); background-repeat: no-repeat; color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.7; padding: 52px 18px 100px; }
+    .page { max-width: 860px; margin: 0 auto; }
+    .doc-label { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    h1 { font-family: var(--display); font-size: 29px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
+    .lede { color: var(--text2); margin: 12px 0 0; max-width: 700px; font-size: 14.5px; }
+    h2 { font-family: var(--display); font-size: 19px; font-weight: 800; letter-spacing: -0.01em; margin: 56px 0 14px; }
+    h2 .n { color: var(--accent); font-family: var(--mono); font-size: 14px; margin-right: 10px; }
+    p { margin: 10px 0; color: var(--text2); }
+    p b, li b, td b { color: var(--text); }
+    ul { margin: 10px 0 10px 22px; color: var(--text2); }
+    li { margin: 6px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 16px 0; }
+    th { text-align: left; font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding: 8px 12px; border-bottom: 1px solid var(--border); }
+    td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+    td:first-child { color: var(--text); font-weight: 700; white-space: nowrap; }
+    .tag { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+    .tag.go { color: var(--green); border: 1px solid rgba(16,185,129,0.4); background: rgba(16,185,129,0.08); }
+    .tag.wait { color: var(--yellow); border: 1px solid rgba(245,158,11,0.4); background: rgba(245,158,11,0.07); }
+    .tag.no { color: var(--red); border: 1px solid rgba(239,68,68,0.4); background: rgba(239,68,68,0.07); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 22px; margin: 16px 0; }
+    .card h3 { font-size: 15px; font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .card p { font-size: 13.5px; margin: 6px 0 0; }
+    .warn { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.35); border-radius: 10px; padding: 14px 18px; font-size: 13.5px; color: var(--text2); margin: 18px 0; }
+    .warn b { color: var(--red); }
+    .rule { background: rgba(167,139,250,0.07); border: 1px solid rgba(167,139,250,0.35); border-radius: 10px; padding: 14px 18px; font-size: 13.5px; color: var(--text2); margin: 18px 0; }
+    .rule b { color: var(--accent); }
+    code { font-family: var(--mono); font-size: 12.5px; background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 1px 7px; color: var(--accent); white-space: nowrap; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-label">Design → Owner + Engineering · 2026-06-12 · podklad k rozhodnutí, nic z toho není nasazené</div>
+  <h1>Monetizace WizardCost — kde jsou peníze a kde je značka</h1>
+  <p class="lede">Shrnutí možností pro začínající web s nulovým trafficem a značkou postavenou na nezávislosti. Klíčový fakt: <b>LLM provideři affiliate na API útratu nenabízejí</b> — OpenAI, Anthropic, Google, DeepSeek, xAI ani Mistral za akvizici API zákazníků neplatí. Model „Make s <code>?pc=</code>" se na LLMCost zopakovat nedá.</p>
+
+  <h2><span class="n">01</span>Možnosti, seřazené podle čistoty</h2>
+
+  <div class="card">
+    <h3>Sponzorský slot <span class="tag wait">AŽ BUDE TRAFFIC</span></h3>
+    <p>Model nejbližšího konkurenta (Price Per Token: ~50k devs/měsíc, prodává sponzorství). Jeden viditelně označený slot „Sponsor" na compare/výsledkové stránce. Žádné skryté provize, neovlivňuje ranking — pro ceníkový web nejčistší zdroj příjmu. Nedává smysl pod ~10k návštěv/měsíc; do té doby nic nestavět, jen nechat v layoutu compare stránky rezervu.</p>
+  </div>
+
+  <div class="card">
+    <h3>VPS referral u self-host doporučení <span class="tag go">LZE BRZY</span></h3>
+    <p>Automation subsite už dnes říká „n8n ~$8/mo self-hosted na malém VPS" — přirozené místo pro link „where to rent a VPS" s referral kódem (hosting provideři referral programy běžně mají; konkrétního vybere owner). Je to doporučení nástroje <b>třetí strany, kterou nesrovnáváme</b> — neovlivňuje žádný ranking, takže nehrozí konflikt. Platí plná pravidla: <code>rel="noopener sponsored"</code>, zmínka na affiliate disclosure stránce.</p>
+  </div>
+
+  <div class="card">
+    <h3>Affiliate na okolní AI nástroje <span class="tag wait">JEN S NOVÝM OBSAHEM</span></h3>
+    <p>AI SaaS affiliate programů jsou stovky (adresáře uvádějí 200+), typicky 20–30 % recurring. Ale vyžadují obsah, který zatím nemáme (recenze, návody „co po výběru modelu"). Nezavádět linkem do existujících stránek — to by byl přesně ten „data slop", co nikam nepatří. Otevřít až s rozhodnutím dělat obsahovou sekci.</p>
+  </div>
+
+  <div class="card">
+    <h3>API agregátory (jediný „affiliate na tokeny") <span class="tag no">NEDOPORUČUJI</span></h3>
+    <p>Agregátoři typu AI/ML API platí ~30 % provize z plateb. Háček: mají vlastní, zpravidla vyšší ceny než přímí provideři. Zařadit je do srovnání kvůli provizi znamená doporučovat dražší cestu, protože z ní máme peníze — to je přesný opak slibu „independent, verified", na kterém stojí celá značka i FAQ („affiliate status never affects rankings"). Pokud někdy, tak jako samostatný, jasně označený řádek s editorialním odůvodněním — ne kvůli penězům.</p>
+  </div>
+
+  <h2><span class="n">02</span>Doporučení per subsite</h2>
+  <table>
+    <tr><th>Kde</th><th>Teď</th><th>Později</th></tr>
+    <tr><td>automation</td><td>Make affiliate (běží) + zvážit VPS referral u self-host zmínek</td><td>sponzor slot na compare, až bude traffic</td></tr>
+    <tr><td>llm</td><td><b>žádný affiliate</b> — outbound na providery plain <code>rel="noopener"</code>, „Visit →"</td><td>sponzor slot; VPS referral nedává smysl (API ≠ self-host)</td></tr>
+    <tr><td>root</td><td>nic</td><td>nic — root je rozcestník, ne monetizační plocha</td></tr>
+  </table>
+
+  <div class="rule"><b>Pravidla, která platí pro cokoli z toho:</b> <code>rel="noopener sponsored"</code> na každém placeném linku · zmínka na affiliate disclosure stránce · provize nikdy neovlivní ranking ani verdikt (slíbeno ve FAQ) · sponzor vždy viditelně označen · žádný affiliate bez schválení ownera.</div>
+
+  <div class="warn"><b>Čeho se nedotýkat:</b> placené pozice ve výsledcích kalkulátoru, „doporučené" modely za provizi, affiliate v price-drop alertech (slib „price-change alerts only" je závazek — email s placeným obsahem by ho zabil).</div>
+
+  <h2><span class="n">03</span>Sekvence</h2>
+  <ul>
+    <li><b>Teď:</b> nic nestavět. LLMCost v1 jde ven bez monetizace — poctivost je diferenciace proti Helicone/CostGoat/CloudZero, jejichž kalkulačky jsou lead-gen pro vlastní produkty.</li>
+    <li><b>Krátkodobě:</b> owner rozhodne o VPS referralu na automation (jediná akce s nenulovou hodnotou hned). Engineering: jen výměna jednoho linku + disclosure řádek.</li>
+    <li><b>Po trakci (GSC/GA4 data):</b> sponzor slot na compare stránkách — design dodá podobu slotu, ať je od začátku čitelně „sponsor", ne banner slop.</li>
+  </ul>
+
+</div>
+</body>
+</html>
