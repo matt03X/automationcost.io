@@ -82,6 +82,10 @@
     .nc-sub { font-size: 13.5px; color: var(--text2); margin-top: 5px; line-height: 1.55; max-width: 520px; }
     .nc-arrow { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--ink); font-weight: 700; font-size: 14px; padding: 12px 22px; border-radius: var(--radius-sm); white-space: nowrap; }
 
+    .cross { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+    .cross a { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--text2); background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 7px 16px; transition: border-color 0.15s, color 0.15s; }
+    .cross a:hover { border-color: var(--accent); color: var(--accent-br); text-decoration: none; }
+
     footer { border-top: 1px solid var(--border); margin-top: 72px; padding: 28px 0 48px; }
     footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding-bottom: 0; font-size: 13px; color: var(--muted); }
   </style>
@@ -164,6 +168,16 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
     </span>
   </a>
+
+  <div class="cross" data-screen-label="Cross-links">
+    <a href="openai-pricing.html">OpenAI pricing →</a>
+    <a href="anthropic-pricing.html">Anthropic pricing →</a>
+    <a href="gemini-pricing.html">Gemini pricing →</a>
+    <a href="deepseek-pricing.html">DeepSeek pricing →</a>
+    <a href="grok-pricing.html">Grok pricing →</a>
+    <a href="mistral-pricing.html">Mistral pricing →</a>
+    <a href="changelog.html">Price changelog →</a>
+  </div>
 </section>
 
 <footer>

@@ -267,6 +267,275 @@ def build_feeds(domain: str, base_path: str, entries: list[dict]) -> list[str]:
     return changed
 
 
+# ── provider stránky (CELÉ generované ze šablony — vzor vs-pages automation) ─
+
+TEMPLATE = ROOT / "_provider-template.html"
+EMAILCAP_ACTION_LLM = "REPLACE_ME_MAILERLITE_LLM_FORM_ACTION"  # action nové skupiny price-drop-alerts-llm dodá owner
+TIER_ORDER = {"frontier": 0, "mid": 1, "budget": 2}
+
+# Editorial konfigurace per provider. Slugy podle hledanosti (závazné rozhodnutí):
+# gemini/grok = produkt vyhrává nad providerem. Fakta v poznámkách (ceny, ratio,
+# context windows) se generují z models.json — texty tady jsou jen obálky/výjimky.
+PROVIDER_PAGES = {
+    "openai": {"page": "openai-pricing.html", "crumb": "openai", "h1": "OpenAI API Pricing",
+               "family": "GPT", "vendor": "OpenAI", "cross": "OpenAI pricing"},
+    "anthropic": {"page": "anthropic-pricing.html", "crumb": "anthropic", "h1": "Anthropic Claude API Pricing",
+                  "family": "Claude", "vendor": "Anthropic", "cross": "Anthropic pricing"},
+    "google": {"page": "gemini-pricing.html", "crumb": "gemini", "h1": "Google Gemini API Pricing",
+               "family": "Gemini", "vendor": "Google", "cross": "Gemini pricing",
+               "longctx": "Note the long-context surcharge: Gemini 3.1 Pro Preview bills prompts "
+                          "over 200k tokens at $4 in / $18 out per 1M."},
+    "deepseek": {"page": "deepseek-pricing.html", "crumb": "deepseek", "h1": "DeepSeek API Pricing",
+                 "family": "DeepSeek", "vendor": "DeepSeek", "cross": "DeepSeek pricing",
+                 "cache_lead": "DeepSeek publishes the cheapest cache reads we track: "},
+    "xai": {"page": "grok-pricing.html", "crumb": "grok", "h1": "xAI Grok API Pricing",
+            "family": "Grok", "vendor": "xAI", "cross": "Grok pricing",
+            "source_phrase": "model docs",
+            "cache_none": "xAI documents prompt caching but hasn't published a cached-input price "
+                          "we could verify — until it does, the calculator charges Grok models the "
+                          "full input rate on every token."},
+    "mistral": {"page": "mistral-pricing.html", "crumb": "mistral", "h1": "Mistral AI API Pricing",
+                "family": "Mistral", "vendor": "Mistral", "cross": "Mistral pricing",
+                "intro": "Mistral's public per-token list covers a single model — Mistral Large. "
+                         "Medium and Small have no public per-token price, so we track the one "
+                         "price we can verify against the official pricing FAQ.",
+                "cache_none": "Mistral publishes no cached-input price for Large — the calculator "
+                              "charges the full input rate. If that changes, it lands in the "
+                              '<a href="changelog.html">changelog</a>.',
+                "ctx_none": "We haven't verified an official context-window figure for Mistral "
+                            "Large yet — it's listed as “—” until we do."},
+}
+
+
+def _join(names: list[str]) -> str:
+    return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
+
+
+def _usd(v) -> str:
+    return f"${v:g}"
+
+
+def _fmt_mo(v: float) -> str:
+    r = round(v, 2)
+    if r == int(r):
+        return f"${int(r):,}"
+    return "$" + f"{r:,.2f}".rstrip("0").rstrip(".")
+
+
+def _pct(r: float) -> str:
+    p = round(r * 100, 1)
+    return f"{int(p)}%" if p == int(p) else f"{p}%"
+
+
+def _verified_month(data: dict) -> str:
+    import datetime as _dt
+    lr = data["_meta"].get("last_reviewed")
+    return _dt.datetime.strptime(lr, "%Y-%m-%d").strftime("%B %Y") if lr else "June 2026"
+
+
+def _intro(prov: dict, cfg: dict) -> str:
+    if "intro" in cfg:
+        return cfg["intro"]
+    n = len(prov["models"])
+    count = {2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six"}[n]
+    tiers = [t for t in ("frontier", "mid", "budget") if any(m["tier"] == t for m in prov["models"])]
+    tier_phrase = ("all three tiers" if len(tiers) == 3
+                   else f"the {tiers[0]} and {tiers[1]} tiers" if len(tiers) == 2
+                   else f"the {tiers[0]} tier")
+    src = cfg.get("source_phrase", "pricing page")
+    return (f'Every {cfg["family"]} model we track, at official per-token rates — verified by hand '
+            f'against {cfg["vendor"]}\'s {src}. {count} models across {tier_phrase}.')
+
+
+def _note_cache(prov: dict, cfg: dict) -> str:
+    have = [(m, m["cachedInputPerM"]) for m in prov["models"] if m.get("cachedInputPerM") is not None]
+    if not have:
+        return cfg["cache_none"]
+    missing = [m for m in prov["models"] if m.get("cachedInputPerM") is None]
+    ratios = {round(v / m["inputPerM"], 4) for m, v in have}
+    if len(ratios) == 1:
+        pct = _pct(next(iter(ratios)))
+        if missing:
+            names = _join([m["name"] for m in missing])
+            verb = ("doesn't list one, so the calculator charges it" if len(missing) == 1
+                    else "don't list one, so the calculator charges them")
+            return (f'Cached input is billed at <b>{pct} of the input rate</b> on every '
+                    f'{cfg["family"]} model with a published cache price; {names} {verb} the full '
+                    f'input rate. A major lever for chatbots and agents where most of the prompt '
+                    f'repeats — the <a href="index.html">calculator</a> models this with your cache share.')
+        return (f'Cached input is billed at <b>{pct} of the input rate</b> across all '
+                f'{cfg["family"]} models we track — a major lever for chatbots and agents where '
+                f'most of the prompt repeats. The <a href="index.html">calculator</a> models this '
+                f'with your cache share.')
+    lead = cfg.get("cache_lead", "Cache pricing differs per model: ")
+    parts = "; ".join(f'{m["name"]} at <b>{_usd(v)}/1M</b> ({_pct(v / m["inputPerM"])} of input)'
+                      for m, v in have)
+    return f'{lead}{parts}. The <a href="index.html">calculator</a> models this with your cache share.'
+
+
+def _note_batch(prov: dict, cfg: dict) -> str:
+    have = [m for m in prov["models"] if m.get("batchDiscount") is not None]
+    if not have:
+        return cfg.get("batch_none",
+                       f"No verified batch discount published at our last revision — we only list "
+                       f'discounts we\'ve confirmed, so the Batch toggle in the '
+                       f'<a href="index.html">calculator</a> leaves {cfg["family"]} prices unchanged.')
+    ds = {m["batchDiscount"] for m in have}
+    scope = ("all models we track" if len(have) == len(prov["models"]) and len(have) > 1
+             else _join([m["name"] for m in have]))
+    if len(ds) == 1:
+        pct = f"−{round((1 - next(iter(ds))) * 100)}%"
+        return (f'The Batch API runs asynchronous jobs at a verified <b>{pct} on both input and '
+                f'output</b> across {scope} — flip the Batch toggle in the '
+                f'<a href="index.html">calculator</a> to model it.')
+    return (f'Verified batch discounts apply to {scope} — flip the Batch toggle in the '
+            f'<a href="index.html">calculator</a> to model them.')
+
+
+def _note_ctx(prov: dict, cfg: dict) -> str:
+    have = [m for m in prov["models"] if m.get("contextWindow") is not None]
+    missing = [m for m in prov["models"] if m.get("contextWindow") is None]
+    parts = []
+    if have:
+        groups: dict[int, list[str]] = {}
+        for m in have:
+            groups.setdefault(m["contextWindow"], []).append(m["name"])
+        sizes = sorted(groups, reverse=True)
+        first = groups[sizes[0]]
+        s = (f'{_join(first)} {"run" if len(first) > 1 else "runs"} a verified '
+             f'<b>{_fmt_ctx(sizes[0]).replace(" tokens", "-token")} context window</b>')
+        for size in sizes[1:]:
+            names = groups[size]
+            s += f'; {_join(names)} {"are" if len(names) > 1 else "is"} {_fmt_ctx(size)}'
+        parts.append(s + ".")
+        if missing:
+            names = _join([m["name"] for m in missing])
+            parts.append(f'We haven\'t verified {"a figure" if len(missing) == 1 else "figures"} '
+                         f'for {names} yet — {"it shows" if len(missing) == 1 else "they show"} '
+                         f'as “—” until we do.')
+    else:
+        parts.append(cfg.get("ctx_none",
+                             f"We haven't verified official context-window figures for the "
+                             f'{cfg["family"]} line yet — they\'re listed as “—” until we do.'))
+    if "longctx" in cfg:
+        parts.append(cfg["longctx"])
+    else:
+        lc = [m["name"] for m in prov["models"] if m.get("longContextNote")]
+        if lc:
+            parts.append(f'{_join(lc)} bill{"s" if len(lc) == 1 else ""} higher rates on '
+                         f'long-context prompts — this table and the calculator use standard rates.')
+    return " ".join(parts)
+
+
+def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template: str) -> str:
+    domain = site.get("domain", "wizardcost.com")
+    base_path = site.get("base_path", "/llm")
+    month = _verified_month(data)
+    total = sum(len(p["models"]) for p in data["providers"])
+    n = len(prov["models"])
+
+    mos = {m["id"]: canonical_monthly(m) for m in prov["models"]}
+    best_id = min(mos, key=mos.get) if n > 1 else None
+    rows = []
+    for m in sorted(prov["models"], key=lambda m: (TIER_ORDER[m["tier"]], -mos[m["id"]])):
+        cached = _usd(m["cachedInputPerM"]) if m.get("cachedInputPerM") is not None else "—"
+        batch = (f'−{round((1 - m["batchDiscount"]) * 100)}%'
+                 if m.get("batchDiscount") is not None else "—")
+        best = ' class="best"' if m["id"] == best_id else ""
+        rows.append(
+            "        <tr>\n"
+            f'          <td><span class="m-name">{m["name"]}</span>'
+            f'<span class="m-tier">{m["tier"].upper()}</span></td>\n'
+            f'          <td>{_usd(m["inputPerM"])}</td><td>{_usd(m["outputPerM"])}</td>'
+            f'<td>{cached}</td><td>{batch}</td><td{best}>{_fmt_mo(mos[m["id"]])}</td>\n'
+            "        </tr>")
+
+    have_batch = [m for m in prov["models"] if m.get("batchDiscount") is not None]
+    if have_batch and len({m["batchDiscount"] for m in have_batch}) == 1:
+        pct = f"−{round((1 - have_batch[0]['batchDiscount']) * 100)}%"
+        foot_batch = (f'Batch: the {pct} is {cfg["vendor"]}\'s verified Batch API discount; '
+                      f'the ≈ $/mo column is computed without it.')
+    elif have_batch:
+        foot_batch = "Batch: verified Batch API discounts; the ≈ $/mo column is computed without them."
+    else:
+        foot_batch = (f'Batch: no verified batch discount published for {cfg["family"]} at our '
+                      f"last revision — we only list discounts we've confirmed.")
+
+    cross = [f'    <a href="compare.html">All {total} models →</a>']
+    for p in data["providers"]:
+        if p["slug"] != prov["slug"]:
+            c = PROVIDER_PAGES[p["slug"]]
+            cross.append(f'    <a href="{c["page"]}">{c["cross"]} →</a>')
+    cross.append('    <a href="changelog.html">Price changelog →</a>')
+
+    if n == 1:
+        nc_sub = (f'The calculator puts {prov["models"][0]["name"]} next to the other {total - 1} '
+                  f'models we track — at your volume, token mix and cache share.')
+    else:
+        count = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six"}[n]
+        nc_sub = (f'The calculator puts these {count} models next to the other {total - n} we '
+                  f'track — at your volume, token mix and cache share.')
+
+    names = _join([m["name"] for m in prov["models"]])
+    tokens = {
+        "TITLE": f'{cfg["h1"]} ({month}) — WizardCost',
+        "DESC": (f'{names} — {cfg["vendor"]} API prices per 1M tokens, prompt caching and batch '
+                 f'discounts, verified {month}.'),
+        "CANONICAL": f'{_site_prefix(domain, base_path)}/{cfg["page"]}',
+        "VERIFIED_MONTH": month,
+        "CRUMB": cfg["crumb"],
+        "H1": cfg["h1"],
+        "INTRO": _intro(prov, cfg),
+        "ROWS": "\n".join(rows),
+        "FOOT_BATCH": foot_batch,
+        "NOTE_CACHE": _note_cache(prov, cfg),
+        "NOTE_BATCH": _note_batch(prov, cfg),
+        "NOTE_CTX": _note_ctx(prov, cfg),
+        "NC_TITLE": f'Is {cfg["family"]} the right price for your workload?',
+        "NC_SUB": nc_sub,
+        "CROSS": "\n".join(cross),
+        "CAPTURE_ACTION": EMAILCAP_ACTION_LLM,
+    }
+    page = template
+    for k, v in tokens.items():
+        page = page.replace("{{" + k + "}}", v)
+    if "{{" in page:
+        raise SystemExit(f'CHYBA: nevyplněný token v {cfg["page"]} — zkontroluj šablonu.')
+    return page
+
+
+def _strip_injected(text: str) -> str:
+    """Odstraní GA4/ANALYTICS bloky (vkládané až po generování) pro porovnání."""
+    import re as _re
+    for s, e in ((GA_START, GA_END), (AN_START, AN_END)):
+        text = _re.sub(_re.escape(s) + r".*?" + _re.escape(e) + r"\n?\s*", "", text, flags=_re.S)
+    return text
+
+
+def build_provider_pages(data: dict, site: dict, *, check: bool) -> list[str]:
+    """Vygeneruje <provider>-pricing.html CELÉ ze šablony _provider-template.html
+    (nikdy needitovat ručně). V check módu vrací zastaralé soubory — porovnává
+    bez GA4/analytics bloků, ty build vkládá až po generování."""
+    if not TEMPLATE.exists():
+        return []
+    template = TEMPLATE.read_text(encoding="utf-8")
+    out = []
+    for prov in data["providers"]:
+        cfg = PROVIDER_PAGES.get(prov["slug"])
+        if cfg is None:
+            raise SystemExit(f'CHYBA: provider {prov["slug"]} nemá záznam v PROVIDER_PAGES.')
+        rendered = render_provider_page(prov, cfg, data, site, template)
+        target = ROOT / cfg["page"]
+        existing = target.read_text(encoding="utf-8") if target.exists() else None
+        dirty = existing is None or _strip_injected(existing) != rendered
+        if check and dirty:
+            out.append(cfg["page"])
+        elif not check and dirty:
+            target.write_text(rendered, encoding="utf-8")
+            out.append(cfg["page"])
+    return out
+
+
 # ── injekce mezi markery (vzor automation/build.py) ─────────────────────────
 
 def render_block(text: str, generated: str, start: str, end: str, warn: str) -> str:
@@ -360,6 +629,7 @@ def main() -> int:
         dirty += [p.name for p, gen, s, e, w in clog_jobs
                   if render_block(p.read_text(encoding="utf-8"), gen, s, e, w)
                   != p.read_text(encoding="utf-8")]
+        dirty += build_provider_pages(data, site, check=True)
         if dirty:
             print(f"[llm build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python llm/build.py`.")
             return 1
@@ -375,6 +645,7 @@ def main() -> int:
             changed.append(p.name)
     changed += build_feeds(site.get("domain", "wizardcost.com"),
                            site.get("base_path", "/llm"), clog_entries)
+    changed += build_provider_pages(data, site, check=False)
 
     domain = site.get("domain", "wizardcost.com")
     base_path = site.get("base_path", "/llm")

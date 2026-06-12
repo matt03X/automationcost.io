@@ -4,6 +4,7 @@ Umbrella web **wizardcost.com** (GitHub Pages z `master`, CNAME v rootu — push
 Root = homepage WizardCost. `/automation/` = AutomationCost (kalkulátor, compare, pricing stránky, changelog).
 `/llm/` = LLMCost (wizard #2, ve stavbě na branchích `llmcost-*` — NEmergovat do masteru před launch checklistem Fáze 3). Každá úroveň má vlastní `build.py` + `data/`.
 LLM zdroj pravdy = `llm/data/models.json` (ceny ověřené scoutem, dumpy v calc-test/llm-pricing-dumps/), marker blok `DATA:MODELS:START|END`, engine přímo v `llm/index.html` (cost(): per-model cached ceny, cache gating per use case, batch jen ověření provideři).
+LLM provider stránky (`llm/<provider>-pricing.html`, slugy gemini/grok = produkt, ne provider) jsou **CELÉ generované** — `build_provider_pages()` v llm/build.py ze šablony `llm/_provider-template.html` (mimo sitemap); poznámkové karty (caching/batch/context) se generují z models.json → v1.1 backfill je aktualizuje sám. Nikdy needitovat vygenerované soubory ručně. Capture action = konstanta `EMAILCAP_ACTION_LLM` v llm/build.py (REPLACE_ME do doby, než owner založí MailerLite skupinu price-drop-alerts-llm).
 
 ## Zdroj pravdy a generované bloky
 
@@ -40,6 +41,7 @@ LLM zdroj pravdy = `llm/data/models.json` (ceny ověřené scoutem, dumpy v calc
 | `check-jsonld.js` | po změně head sekcí (validita JSON-LD bloků) |
 | `test-vs-pages.js` | po změně pairs.json, tools.json nebo vs šablony (JSON-LD 1:1, affiliate pravidla, čísla z enginu, per-řádkové cheap, cross-linky) |
 | `test-llm-engine.js` | po změně llm/index.html enginu nebo models.json (ruční kontrolní příklady, cache/batch gating; `--table` = referenční tabulka pro design) |
+| `test-llm-provider-pages.js` | po změně models.json, llm/build.py nebo _provider-template.html (ceny/≈$/mo 1:1 s enginem, žádné sloty, cross-linky, EMAILCAP; `--launch` = REPLACE_ME action je FAIL — pustit v launch checklistu) |
 
 ## Email capture (price-drop alerts)
 

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://wizardcost.com/llm/anthropic-pricing.html</loc></url>
   <url><loc>https://wizardcost.com/llm/changelog.html</loc></url>
   <url><loc>https://wizardcost.com/llm/compare.html</loc></url>
+  <url><loc>https://wizardcost.com/llm/deepseek-pricing.html</loc></url>
+  <url><loc>https://wizardcost.com/llm/gemini-pricing.html</loc></url>
+  <url><loc>https://wizardcost.com/llm/grok-pricing.html</loc></url>
   <url><loc>https://wizardcost.com/llm/</loc></url>
+  <url><loc>https://wizardcost.com/llm/mistral-pricing.html</loc></url>
+  <url><loc>https://wizardcost.com/llm/openai-pricing.html</loc></url>
 </urlset>
