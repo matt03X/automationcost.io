@@ -42,11 +42,27 @@ def js_num(v) -> str:
     return "null" if v is None else str(v)
 
 
+# Kanonický scénář pro ≈$/mo sloupec compare (MUSÍ sedět s USE_CASES chatbot
+# defaulty v index.html a footnote textem na compare — měnit synchronně!).
+# Paritu Python↔JS hlídá calc-test/test-llm-engine.js.
+CANON = {"req": 100000, "in_tok": 2000, "out_tok": 300, "cache": 0.70}
+
+
+def canonical_monthly(m: dict) -> float:
+    """Python port cost() z index.html pro kanonický scénář (bez batch)."""
+    c = CANON["cache"]
+    cached = m.get("cachedInputPerM")
+    in_rate = m["inputPerM"] * (1 - c) + cached * c if cached is not None else m["inputPerM"]
+    in_cost = CANON["req"] * CANON["in_tok"] / 1e6 * in_rate
+    out_cost = CANON["req"] * CANON["out_tok"] / 1e6 * m["outputPerM"]
+    return round(in_cost + out_cost, 4)
+
+
 def render_models(data: dict) -> str:
-    """const MODELS pro index.html (+ budoucí compare). Pole per model:
+    """const MODELS pro index.html + compare.html. Pole per model:
     n (name), p (provider name), pslug, t (tier), i/o (USD za 1M in/out),
     cached (USD za 1M cached input; null = bez cache), batch (násobitel; null),
-    ctx (context window v tokenech; null)."""
+    ctx (context window v tokenech; null), mo (kanonický ≈$/mo — viz CANON)."""
     lines = ["const MODELS = ["]
     for prov in data["providers"]:
         for m in prov["models"]:
@@ -55,7 +71,7 @@ def render_models(data: dict) -> str:
                 f'n: {js_str(m["name"])}, p: {js_str(prov["name"])}, pslug: {js_str(prov["slug"])}, '
                 f't: {js_str(m["tier"])}, i: {js_num(m["inputPerM"])}, o: {js_num(m["outputPerM"])}, '
                 f'cached: {js_num(m.get("cachedInputPerM"))}, batch: {js_num(m.get("batchDiscount"))}, '
-                f'ctx: {js_num(m.get("contextWindow"))} }},'
+                f'ctx: {js_num(m.get("contextWindow"))}, mo: {canonical_monthly(m)} }},'
             )
     lines.append("];")
     lines.append(f'const MODELS_REVIEWED = {js_str(data["_meta"].get("last_reviewed") or "")};')
