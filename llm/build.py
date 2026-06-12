@@ -315,7 +315,9 @@ def nav_dropdown_html(data: dict, active_slug: str | None) -> str:
     """Providers dropdown (1:1 vzor automation „Pricing Guides", magenta přes
     --accent proměnné). Pořadí = pořadí providerů v models.json (= compare),
     labels bez AI/API balastu (rozhodnutí designu 2026-06-12). Stejný markup
-    ručně nesou index/compare/changelog (varianta bez active) — měnit synchronně."""
+    ručně nesou index/compare/changelog (varianta bez active) — měnit synchronně.
+    Favicony lokálně z assets/icons/ (launch review: žádný third-party hotlink);
+    jednorázový zdroj = google s2 favicons sz=32, při změně lineupu dostáhnout."""
     chev = ('<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
             'stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>')
     btn_cls = "nav-dropdown-btn active" if active_slug else "nav-dropdown-btn"
@@ -324,7 +326,7 @@ def nav_dropdown_html(data: dict, active_slug: str | None) -> str:
         c = PROVIDER_PAGES[p["slug"]]
         cls = ' class="active"' if p["slug"] == active_slug else ""
         items.append(f'        <a href="{c["page"]}"{cls}>'
-                     f'<img src="https://www.google.com/s2/favicons?domain={c["domain"]}&sz=32" alt="">'
+                     f'<img src="assets/icons/{p["slug"]}.png" alt="">'
                      f'{c["nav"]}</a>')
     return ('<div class="nav-dropdown">\n'
             f'      <button class="{btn_cls}" type="button">Providers {chev}</button>\n'
@@ -339,7 +341,13 @@ def _join(names: list[str]) -> str:
 
 
 def _usd(v) -> str:
-    return f"${v:g}"
+    """Celé dolary bez desetin ($2); zlomkové vždy aspoň 2 místa ($2.50, ne $2.5),
+    sub-centová přesnost zůstává celá ($0.0028) — parita s money() v compare."""
+    if v == int(v):
+        return f"${int(v)}"
+    txt = f"{v:.10f}".rstrip("0")
+    dec = len(txt.split(".", 1)[1])
+    return f"${v:.{max(2, dec)}f}"
 
 
 def _fmt_mo(v: float) -> str:
