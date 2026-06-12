@@ -185,6 +185,7 @@
           "monthlyUsd": 0,
           "opsIncluded": 100,
           "workflowLimit": 3,
+          "overage": null,
           "note": "Free tier"
         },
         {
