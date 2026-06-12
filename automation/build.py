@@ -257,11 +257,21 @@ def diff_tools(old: dict, new: dict, date: str) -> list[dict]:
 
 def changelog_entries() -> tuple[list[dict], str | None]:
     """Záznamy changelogu z git historie (nejnovější první) + datum prvního
-    commitu tools.json (genesis). Sdílí je changelog.html i RSS feed."""
+    commitu tools.json (genesis). Sdílí je changelog.html i RSS feed.
+
+    Filtr baseline (data/changelog-overrides.json, klíč `baseline_until`):
+    diffy s datem <= baseline jsou BOOTSTRAP OPRAVY našich výchozích dat, ne
+    vendor změny (prokázáno Wayback auditem 2026-06-12 — viz _meta v overrides)
+    → do changelogu ani alertů nepatří. Stejný princip jako llm backfill guard."""
     hist = tools_history()
     entries = []
     for (_, older), (date, newer) in zip(hist, hist[1:]):
         entries.extend(diff_tools(older, newer, date))
+    overrides_path = DATA.parent / "changelog-overrides.json"
+    if overrides_path.exists():
+        baseline = json.loads(overrides_path.read_text(encoding="utf-8")).get("baseline_until")
+        if baseline:
+            entries = [e for e in entries if e["d"] > baseline]
     entries.sort(key=lambda e: e["d"], reverse=True)
     return entries, (hist[0][0] if hist else None)
 

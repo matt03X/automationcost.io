@@ -1,0 +1,8 @@
+{
+  "_meta": {
+    "note": "Korekce changelogu. baseline_until: vsechny diffy tools.json s datem <= tohoto dne se POVAZUJI ZA BOOTSTRAP OPRAVY NASICH DAT, ne za vendor zmeny -> nejdou do changelog.html ani do feedu/alertu. Stejny princip jako llm backfill guard (null->hodnota) a overage suppression.",
+    "evidence": "Wayback audit 2026-06-12 (calc-test/wayback/*/verdict.md + report.md): Zapier Professional $19.99/750 stabilni min. od 2024-06 (nas zaznam $49->$19.99 z 2026-06-11 byl oprava chybnych vychozich dat); Pipedream Basic 10 wf a Advanced 2000 credits min. od 2025-04 (nase 20 wf / 5000 byly chybne od zacatku); n8n workflow limity vendor zrusil 2025-08-06->07 (archive), nase data byla od zacatku zastarala. Skutecna data vendor zmen patri do budouci history vrstvy s archive evidencemi, ne do ziveho changelogu (changelog = zmeny pozorovane BEHEM naseho trackovani).",
+    "pravidlo": "baseline_until posouvat JEN kdyz wayback/scout audit prokaze, ze zaznamy v obdobi byly korekce nasich dat. Budouci skutecne vendor zmeny po baseline datu se reportuji normalne."
+  },
+  "baseline_until": "2026-06-12"
+}
