@@ -62,6 +62,190 @@ def render_models(data: dict) -> str:
     return "\n".join(lines)
 
 
+# ── changelog z git historie models.json (vzor automation/build.py) ─────────
+
+CLOG_START = "/* DATA:CHANGELOG:START */"
+CLOG_END = "/* DATA:CHANGELOG:END */"
+CLOG_WARN = "/* generováno build.py z git historie data/models.json — needituj ručně */"
+
+
+def _fmt_perM(v) -> str:
+    return "n/a" if v is None else f"${v}/1M"
+
+
+def _fmt_batch(v) -> str:
+    return "none" if v is None else f"−{round((1 - v) * 100)}%"
+
+
+def _fmt_ctx(v) -> str:
+    if v is None:
+        return "n/a"
+    return f"{v // 1000000}M tokens" if v >= 1000000 else f"{v // 1000}k tokens"
+
+
+def models_history() -> list[tuple[str, dict]]:
+    """[(date, parsed models.json)] pro každý commit, od nejstaršího (--follow)."""
+    import subprocess
+    repo = ROOT.parent
+    rel = str(DATA.relative_to(repo)).replace("\\", "/")
+    log = subprocess.run(
+        ["git", "-C", str(repo), "log", "--follow", "--format=%H %ad", "--date=short",
+         "--name-only", "--", rel], capture_output=True, text=True)
+    if log.returncode != 0:
+        return []
+    commits, sha_date = [], None
+    for raw in log.stdout.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        parts = line.split()
+        if len(parts) == 2 and len(parts[0]) == 40:
+            sha_date = (parts[0], parts[1])
+        elif sha_date and line.endswith(".json"):
+            commits.append((sha_date[0], sha_date[1], line))
+            sha_date = None
+    commits.reverse()
+    hist = []
+    for sha, date, path in commits:
+        show = subprocess.run(["git", "-C", str(repo), "show", f"{sha}:{path}"],
+                              capture_output=True, text=True)
+        if show.returncode != 0:
+            continue
+        try:
+            hist.append((date, json.loads(show.stdout)))
+        except json.JSONDecodeError:
+            continue
+    return hist
+
+
+def diff_models(old: dict, new: dict, date: str) -> list[dict]:
+    """Cenově relevantní rozdíly verzí models.json → changelog záznamy.
+    Nové modely/provideři se nehlásí (růst katalogu ≠ změna ceny).
+    Tier změny = editorial re-sort → hlásí se jako info, ale NEpatří do alertů."""
+    entries = []
+    old_models = {}
+    for p in old.get("providers", []):
+        for m in p.get("models", []):
+            old_models[m["id"]] = m
+    for p in new.get("providers", []):
+        for m in p.get("models", []):
+            q = old_models.get(m["id"])
+            if q is None:
+                continue
+            add = lambda item, a, b, d: entries.append(
+                {"d": date, "tool": m["id"], "name": m["name"], "pslug": p["slug"],
+                 "item": item, "old": a, "neu": b, "dir": d})
+            for key, label in (("inputPerM", "input price"), ("outputPerM", "output price"),
+                               ("cachedInputPerM", "cached input price")):
+                a, b = q.get(key), m.get(key)
+                if a != b:
+                    direction = "info" if (a is None or b is None) else ("up" if b > a else "down")
+                    add(label, _fmt_perM(a), _fmt_perM(b), direction)
+            if q.get("batchDiscount") != m.get("batchDiscount"):
+                add("batch discount", _fmt_batch(q.get("batchDiscount")), _fmt_batch(m.get("batchDiscount")), "info")
+            if q.get("contextWindow") != m.get("contextWindow"):
+                add("context window", _fmt_ctx(q.get("contextWindow")), _fmt_ctx(m.get("contextWindow")), "info")
+            if q.get("tier") != m.get("tier"):
+                add("tier (editorial)", q.get("tier") or "n/a", m.get("tier") or "n/a", "info")
+    return entries
+
+
+def changelog_entries() -> tuple[list[dict], str | None]:
+    hist = models_history()
+    entries = []
+    for (_, older), (date, newer) in zip(hist, hist[1:]):
+        entries.extend(diff_models(older, newer, date))
+    entries.sort(key=lambda e: e["d"], reverse=True)
+    return entries, (hist[0][0] if hist else None)
+
+
+def render_changelog(data: dict, entries: list[dict], genesis: str | None) -> str:
+    lines = ["const CHANGELOG = ["]
+    for e in entries:
+        lines.append(
+            f'  {{ d: {js_str(e["d"])}, tool: {js_str(e["tool"])}, name: {js_str(e["name"])}, '
+            f'pslug: {js_str(e["pslug"])}, '
+            f'item: {js_str(e["item"])}, old: {js_str(e["old"])}, neu: {js_str(e["neu"])}, dir: {js_str(e["dir"])} }},')
+    lines.append("];")
+    import datetime as _dt
+    if genesis:
+        y, m, _ = genesis.split("-")
+        genesis_month = _dt.date(int(y), int(m), 1).strftime("%B %Y")
+    else:
+        genesis_month = "June 2026"
+    n_providers = len(data.get("providers", []))
+    n_models = sum(len(p.get("models", [])) for p in data.get("providers", []))
+    lines.append(f'const CLOG_GENESIS = {js_str(f"Tracking started {genesis_month} · {n_providers} providers · {n_models} models")};')
+    return "\n".join(lines)
+
+
+def _is_alert_entry(e: dict) -> bool:
+    """Email alerty slibují 'price-change alerts only' → tier re-sort (editorial)
+    do alerts.xml NEpatří; ceny, batch a context window (limit) ano."""
+    return "tier" not in e["item"]
+
+
+def _alert_meta(e: dict) -> str:
+    import datetime as _dt
+    kind = "Price change" if e["dir"] in ("up", "down") else (
+        "Limit change" if "context" in e["item"] else "Pricing structure change")
+    dt = _dt.datetime.strptime(e["d"], "%Y-%m-%d")
+    return f"{kind} · verified {dt:%B} {dt.day}, {dt.year}"
+
+
+def _xml_escape(s: str) -> str:
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _feed_xml(prefix: str, self_name: str, title: str, channel_desc: str,
+              entries: list[dict], alert_style: bool = False) -> str:
+    import datetime as _dt
+    page = f"{prefix}/changelog.html"
+    items = []
+    for e in entries[:50]:
+        item_title = f'{e["name"]} — {e["item"]}: {e["old"]} → {e["neu"]}'
+        desc = (_alert_meta(e) if alert_style
+                else f'{_alert_meta(e)}. Full history in the WizardCost LLM changelog.')
+        pub = _dt.datetime.strptime(e["d"], "%Y-%m-%d").strftime("%a, %d %b %Y 00:00:00 GMT")
+        guid = f'{e["d"]}-{e["tool"]}-{e["item"].replace(" ", "-")}'
+        items.append(
+            "  <item>\n"
+            f"    <title>{_xml_escape(item_title)}</title>\n"
+            f"    <link>{page}</link>\n"
+            f'    <guid isPermaLink="false">{_xml_escape(guid)}</guid>\n'
+            f"    <pubDate>{pub}</pubDate>\n"
+            f"    <description>{_xml_escape(desc)}</description>\n"
+            "  </item>")
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\n<channel>\n'
+            f"  <title>{_xml_escape(title)}</title>\n  <link>{page}</link>\n"
+            f"  <description>{_xml_escape(channel_desc)}</description>\n  <language>en</language>\n"
+            f'  <atom:link href="{prefix}/{self_name}" rel="self" type="application/rss+xml"/>\n'
+            + ("\n".join(items) + "\n" if items else "") + "</channel>\n</rss>\n")
+
+
+def build_feeds(domain: str, base_path: str, entries: list[dict]) -> list[str]:
+    """feed.xml = plný LLM changelog; alerts.xml = jen ceny/limity (zdroj
+    budoucí email kampaně — NIKDY na něj nemířit plný feed, slib disclosure)."""
+    prefix = _site_prefix(domain, base_path)
+    feeds = [
+        ("feed.xml", "WizardCost — LLM API Pricing Changelog",
+         "Every dated price and limit change recorded across OpenAI, Anthropic, Gemini, "
+         "DeepSeek, xAI and Mistral APIs — sourced from official pricing pages.", entries),
+        ("alerts.xml", "WizardCost — LLM Price-Change Alerts",
+         "Price and limit changes only — the feed behind WizardCost LLM email alerts.",
+         [e for e in entries if _is_alert_entry(e)]),
+    ]
+    changed = []
+    for name, title, desc, ents in feeds:
+        xml = _feed_xml(prefix, name, title, desc, ents, alert_style=(name == "alerts.xml"))
+        out = ROOT / name
+        if not out.exists() or out.read_text(encoding="utf-8") != xml:
+            out.write_text(xml, encoding="utf-8")
+            changed.append(name)
+    return changed
+
+
 # ── injekce mezi markery (vzor automation/build.py) ─────────────────────────
 
 def render_block(text: str, generated: str, start: str, end: str, warn: str) -> str:
@@ -140,10 +324,21 @@ def main() -> int:
     generated = render_models(data)
     targets = [p for p in (ROOT / "index.html", ROOT / "compare.html") if p.exists()]
 
+    # changelog: generovaný z git historie models.json (sdílí ho i feedy)
+    clog_entries, clog_genesis = changelog_entries()
+    clog_page = ROOT / "changelog.html"
+    clog_jobs = []
+    if clog_page.exists() and CLOG_START in clog_page.read_text(encoding="utf-8"):
+        clog_jobs.append((clog_page, render_changelog(data, clog_entries, clog_genesis),
+                          CLOG_START, CLOG_END, CLOG_WARN))
+
     if args.check:
         dirty = [p.name for p in targets
                  if render_block(p.read_text(encoding="utf-8"), generated, START, END, WARN)
                  != p.read_text(encoding="utf-8")]
+        dirty += [p.name for p, gen, s, e, w in clog_jobs
+                  if render_block(p.read_text(encoding="utf-8"), gen, s, e, w)
+                  != p.read_text(encoding="utf-8")]
         if dirty:
             print(f"[llm build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python llm/build.py`.")
             return 1
@@ -151,6 +346,14 @@ def main() -> int:
         return 0
 
     changed = [p.name for p in targets if inject(p, generated)]
+    for p, gen, s, e, w in clog_jobs:
+        text = p.read_text(encoding="utf-8")
+        new_text = render_block(text, gen, s, e, w)
+        if new_text != text:
+            p.write_text(new_text, encoding="utf-8")
+            changed.append(p.name)
+    changed += build_feeds(site.get("domain", "wizardcost.com"),
+                           site.get("base_path", "/llm"), clog_entries)
 
     domain = site.get("domain", "wizardcost.com")
     base_path = site.get("base_path", "/llm")
