@@ -12,6 +12,15 @@ Covers n8n, Make, Zapier, Pipedream, Activepieces, Automatisch and Node-RED (clo
 - [Limits & quotas](https://wizardcost.com/automation/limits.html): ops definitions, timeouts, workflow caps per tool.
 - Per-tool pricing breakdowns: [n8n](https://wizardcost.com/automation/n8n-pricing.html), [Make](https://wizardcost.com/automation/make-pricing.html), [Zapier](https://wizardcost.com/automation/zapier-pricing.html), [Pipedream](https://wizardcost.com/automation/pipedream-pricing.html), [Activepieces](https://wizardcost.com/automation/activepieces-pricing.html), [Automatisch](https://wizardcost.com/automation/automatisch-pricing.html), [Node-RED](https://wizardcost.com/automation/node-red-pricing.html).
 
+## LLMCost — LLM API pricing
+
+Covers OpenAI (GPT), Anthropic (Claude), Google (Gemini), DeepSeek, xAI (Grok) and Mistral — 18 models with verified per-token prices (input, output, cached input, batch discounts, context windows).
+
+- [Cost calculator](https://wizardcost.com/llm/): use case, request volume and token mix in — monthly cost per model out, grouped by editorial tier (frontier/mid/budget); prompt caching and batch discounts modeled with per-model verified prices.
+- [Compare models](https://wizardcost.com/llm/compare.html): per-1M-token prices for all 18 models in one sortable table, plus a canonical monthly-cost column.
+- [Price changelog](https://wizardcost.com/llm/changelog.html): every dated price/limit change we have recorded. RSS: https://wizardcost.com/llm/feed.xml
+- Per-provider pricing breakdowns: [OpenAI](https://wizardcost.com/llm/openai-pricing.html), [Anthropic](https://wizardcost.com/llm/anthropic-pricing.html), [Gemini](https://wizardcost.com/llm/gemini-pricing.html), [DeepSeek](https://wizardcost.com/llm/deepseek-pricing.html), [Grok](https://wizardcost.com/llm/grok-pricing.html), [Mistral](https://wizardcost.com/llm/mistral-pricing.html).
+
 ## Data policy
 
 - Prices come from official public pricing pages and are verified by a human before publishing; pages show the month of the last review.
