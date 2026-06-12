@@ -333,9 +333,21 @@ var state = { uc: 'chatbot', req: 100000, inTok: 2000, outTok: 300, inAuto: true
               cache: 70, cacheAuto: true, batch: false, open: null };
 
 /* persist (refresh-friendly; klíč vlastní, nikdy nemazat cizí) */
+/* stropy ručních token vstupů — nad největší context window v datech nedává
+   smysl a součiny s req rozbíjejí čísla; persistovaný stav klampovat taky */
+var TOK_MAX_IN = 2000000, TOK_MAX_OUT = 200000;
+function parseTok(raw, max) {
+  var v = parseInt(String(raw).replace(/[^0-9]/g, ''), 10);
+  return v > 0 ? Math.min(v, max) : null;
+}
+
 try {
   var saved = JSON.parse(localStorage.getItem('llm_profile') || 'null');
-  if (saved && saved.uc) state = saved;
+  if (saved && saved.uc) {
+    state = saved;
+    state.inTok = parseTok(state.inTok, TOK_MAX_IN) || 2000;
+    state.outTok = parseTok(state.outTok, TOK_MAX_OUT) || 300;
+  }
 } catch (e) {}
 function persist() { try { localStorage.setItem('llm_profile', JSON.stringify(state)); } catch (e) {} }
 
@@ -484,13 +496,17 @@ document.querySelectorAll('.vol-chip').forEach(function (b) {
   b.addEventListener('click', function () { state.req = +this.dataset.req; render(); });
 });
 document.getElementById('in-tok').addEventListener('input', function () {
-  var v = parseInt(this.value.replace(/[^0-9]/g, ''), 10);
-  if (v > 0) { state.inTok = v; state.inAuto = false; render(); }
+  var v = parseTok(this.value, TOK_MAX_IN);
+  if (v) { state.inTok = v; state.inAuto = false; render(); }
 });
 document.getElementById('out-tok').addEventListener('input', function () {
-  var v = parseInt(this.value.replace(/[^0-9]/g, ''), 10);
-  if (v > 0) { state.outTok = v; state.outAuto = false; render(); }
+  var v = parseTok(this.value, TOK_MAX_OUT);
+  if (v) { state.outTok = v; state.outAuto = false; render(); }
 });
+/* blur = normalizace pole zpět na stav (render pole s fokusem záměrně nepřepisuje,
+   takže by jinak nečíselný paskvil zůstal viset) */
+document.getElementById('in-tok').addEventListener('blur', function () { this.value = fmtInt(state.inTok); });
+document.getElementById('out-tok').addEventListener('blur', function () { this.value = fmtInt(state.outTok); });
 document.getElementById('cache-slider').addEventListener('input', function () {
   state.cache = +this.value; state.cacheAuto = false; render();
 });
