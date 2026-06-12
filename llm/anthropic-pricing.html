@@ -47,6 +47,16 @@
     .logo .io { color: var(--muted); font-weight: 600; }
     .logo-icon { width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }
     .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 11px; color: var(--muted); }
+    .nav-dropdown { position: relative; display: flex; align-items: center; }
+    .nav-dropdown-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-family: var(--font); font-size: 14px; padding: 12px 20px; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s, border-color 0.15s; margin-bottom: -2px; border-bottom: 2px solid transparent; }
+    .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text); }
+    .nav-dropdown-btn.active { color: var(--text); font-weight: 700; border-bottom-color: var(--accent); }
+    .nav-dropdown-menu { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); min-width: 214px; z-index: 200; box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03); padding: 6px 0; }
+    .nav-dropdown.open .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin-bottom: 0; font-size: 13px; font-weight: 600; color: var(--text2); transition: background 0.1s, color 0.1s; border-bottom: none !important; }
+    .nav-dropdown-menu a:hover { background: var(--surface2); color: var(--text); text-decoration: none; }
+    .nav-dropdown-menu a.active { color: var(--accent-br); background: var(--accent-dim); }
+    .nav-dropdown-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }
     .wrap { max-width: 1160px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
     @media (max-width: 760px) { .wrap { padding-left: 18px; padding-right: 18px; } .nav-top, .nav-bottom { padding-left: 18px; padding-right: 18px; } }
 
@@ -134,7 +144,17 @@
   <nav class="nav-bottom">
     <a href="index.html">Calculator</a>
     <a href="compare.html">Compare models</a>
-    <a href="#" class="active" onclick="return false">Providers</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn active" type="button">Providers <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-dropdown-menu">
+        <a href="openai-pricing.html"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=32" alt="">OpenAI</a>
+        <a href="anthropic-pricing.html" class="active"><img src="https://www.google.com/s2/favicons?domain=anthropic.com&sz=32" alt="">Anthropic</a>
+        <a href="gemini-pricing.html"><img src="https://www.google.com/s2/favicons?domain=ai.google.dev&sz=32" alt="">Gemini</a>
+        <a href="deepseek-pricing.html"><img src="https://www.google.com/s2/favicons?domain=deepseek.com&sz=32" alt="">DeepSeek</a>
+        <a href="grok-pricing.html"><img src="https://www.google.com/s2/favicons?domain=x.ai&sz=32" alt="">Grok</a>
+        <a href="mistral-pricing.html"><img src="https://www.google.com/s2/favicons?domain=mistral.ai&sz=32" alt="">Mistral</a>
+      </div>
+    </div>
     <a href="changelog.html">Changelog</a>
   </nav>
 </header>
@@ -234,6 +254,21 @@
   </div>
 </footer>
 
+<script>
+/* Providers dropdown (vzor automation Pricing Guides) — držet 1:1 s index/compare/changelog */
+(function () {
+  var dd = document.querySelector(".nav-dropdown");
+  if (!dd) return;
+  dd.querySelector(".nav-dropdown-btn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    var r = this.getBoundingClientRect(), m = dd.querySelector(".nav-dropdown-menu");
+    m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 224)) + "px";
+    m.style.top = (r.bottom + 8) + "px";
+    dd.classList.toggle("open");
+  });
+  document.addEventListener("click", function () { dd.classList.remove("open"); });
+})();
+</script>
 <script>
 /* ── EMAILCAP:JS:START ── */
 (function () {

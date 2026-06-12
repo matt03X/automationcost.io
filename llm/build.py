@@ -278,24 +278,25 @@ TIER_ORDER = {"frontier": 0, "mid": 1, "budget": 2}
 # context windows) se generují z models.json — texty tady jsou jen obálky/výjimky.
 PROVIDER_PAGES = {
     "openai": {"page": "openai-pricing.html", "crumb": "openai", "h1": "OpenAI API Pricing",
-               "family": "GPT", "vendor": "OpenAI", "cross": "OpenAI pricing"},
+               "family": "GPT", "vendor": "OpenAI", "cross": "OpenAI pricing", "nav": "OpenAI", "domain": "openai.com"},
     "anthropic": {"page": "anthropic-pricing.html", "crumb": "anthropic", "h1": "Anthropic Claude API Pricing",
-                  "family": "Claude", "vendor": "Anthropic", "cross": "Anthropic pricing"},
+                  "family": "Claude", "vendor": "Anthropic", "cross": "Anthropic pricing", "nav": "Anthropic", "domain": "anthropic.com"},
     "google": {"page": "gemini-pricing.html", "crumb": "gemini", "h1": "Google Gemini API Pricing",
-               "family": "Gemini", "vendor": "Google", "cross": "Gemini pricing",
+               "family": "Gemini", "vendor": "Google", "cross": "Gemini pricing", "nav": "Gemini", "domain": "ai.google.dev",
                "longctx": "Note the long-context surcharge: Gemini 3.1 Pro Preview bills prompts "
-                          "over 200k tokens at $4 in / $18 out per 1M."},
+                          "over 200k tokens at $4 in / $18 out per 1M — the calculator prices "
+                          "all prompts at the base rate."},
     "deepseek": {"page": "deepseek-pricing.html", "crumb": "deepseek", "h1": "DeepSeek API Pricing",
-                 "family": "DeepSeek", "vendor": "DeepSeek", "cross": "DeepSeek pricing",
+                 "family": "DeepSeek", "vendor": "DeepSeek", "cross": "DeepSeek pricing", "nav": "DeepSeek", "domain": "deepseek.com",
                  "cache_lead": "DeepSeek publishes the cheapest cache reads we track: "},
     "xai": {"page": "grok-pricing.html", "crumb": "grok", "h1": "xAI Grok API Pricing",
-            "family": "Grok", "vendor": "xAI", "cross": "Grok pricing",
+            "family": "Grok", "vendor": "xAI", "cross": "Grok pricing", "nav": "Grok", "domain": "x.ai",
             "source_phrase": "model docs",
             "cache_none": "xAI documents prompt caching but hasn't published a cached-input price "
                           "we could verify — until it does, the calculator charges Grok models the "
                           "full input rate on every token."},
     "mistral": {"page": "mistral-pricing.html", "crumb": "mistral", "h1": "Mistral AI API Pricing",
-                "family": "Mistral", "vendor": "Mistral", "cross": "Mistral pricing",
+                "family": "Mistral", "vendor": "Mistral", "cross": "Mistral pricing", "nav": "Mistral", "domain": "mistral.ai",
                 "intro": "Mistral's public per-token list covers a single model — Mistral Large. "
                          "Medium and Small have no public per-token price, so we track the one "
                          "price we can verify against the official pricing FAQ.",
@@ -305,6 +306,29 @@ PROVIDER_PAGES = {
                 "ctx_none": "We haven't verified an official context-window figure for Mistral "
                             "Large yet — it's listed as “—” until we do."},
 }
+
+
+def nav_dropdown_html(data: dict, active_slug: str | None) -> str:
+    """Providers dropdown (1:1 vzor automation „Pricing Guides", magenta přes
+    --accent proměnné). Pořadí = pořadí providerů v models.json (= compare),
+    labels bez AI/API balastu (rozhodnutí designu 2026-06-12). Stejný markup
+    ručně nesou index/compare/changelog (varianta bez active) — měnit synchronně."""
+    chev = ('<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+            'stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>')
+    btn_cls = "nav-dropdown-btn active" if active_slug else "nav-dropdown-btn"
+    items = []
+    for p in data["providers"]:
+        c = PROVIDER_PAGES[p["slug"]]
+        cls = ' class="active"' if p["slug"] == active_slug else ""
+        items.append(f'        <a href="{c["page"]}"{cls}>'
+                     f'<img src="https://www.google.com/s2/favicons?domain={c["domain"]}&sz=32" alt="">'
+                     f'{c["nav"]}</a>')
+    return ('<div class="nav-dropdown">\n'
+            f'      <button class="{btn_cls}" type="button">Providers {chev}</button>\n'
+            '      <div class="nav-dropdown-menu">\n'
+            + "\n".join(items) + "\n"
+            '      </div>\n'
+            '    </div>')
 
 
 def _join(names: list[str]) -> str:
@@ -368,8 +392,9 @@ def _note_cache(prov: dict, cfg: dict) -> str:
                 f'most of the prompt repeats. The <a href="index.html">calculator</a> models this '
                 f'with your cache share.')
     lead = cfg.get("cache_lead", "Cache pricing differs per model: ")
+    # od nejlevnější — když lead slibuje "cheapest", musí věta začínat nejlevnějším
     parts = "; ".join(f'{m["name"]} at <b>{_usd(v)}/1M</b> ({_pct(v / m["inputPerM"])} of input)'
-                      for m, v in have)
+                      for m, v in sorted(have, key=lambda t: t[1]))
     return f'{lead}{parts}. The <a href="index.html">calculator</a> models this with your cache share.'
 
 
@@ -495,6 +520,7 @@ def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template
         "NC_SUB": nc_sub,
         "CROSS": "\n".join(cross),
         "CAPTURE_ACTION": EMAILCAP_ACTION_LLM,
+        "NAV_DROPDOWN": nav_dropdown_html(data, prov["slug"]),
     }
     page = template
     for k, v in tokens.items():
