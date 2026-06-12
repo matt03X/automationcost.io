@@ -495,12 +495,26 @@ document.getElementById('req-slider').addEventListener('input', function () {
 document.querySelectorAll('.vol-chip').forEach(function (b) {
   b.addEventListener('click', function () { state.req = +this.dataset.req; render(); });
 });
+/* živá maska: jen číslice, průběžné formátování s čárkami (fmtInt) a oprava
+   pozice kurzoru — počítá se přes číslice před kurzorem, ne přes indexy */
+function maskTok(el, max) {
+  var digitsBefore = el.value.slice(0, el.selectionStart).replace(/[^0-9]/g, '').length;
+  var v = parseTok(el.value, max);
+  el.value = v ? fmtInt(v) : '';
+  var pos = 0, seen = 0;
+  while (pos < el.value.length && seen < digitsBefore) {
+    if (el.value[pos] >= '0' && el.value[pos] <= '9') seen++;
+    pos++;
+  }
+  el.setSelectionRange(pos, pos);
+  return v;
+}
 document.getElementById('in-tok').addEventListener('input', function () {
-  var v = parseTok(this.value, TOK_MAX_IN);
+  var v = maskTok(this, TOK_MAX_IN);
   if (v) { state.inTok = v; state.inAuto = false; render(); }
 });
 document.getElementById('out-tok').addEventListener('input', function () {
-  var v = parseTok(this.value, TOK_MAX_OUT);
+  var v = maskTok(this, TOK_MAX_OUT);
   if (v) { state.outTok = v; state.outAuto = false; render(); }
 });
 /* blur = normalizace pole zpět na stav (render pole s fokusem záměrně nepřepisuje,
