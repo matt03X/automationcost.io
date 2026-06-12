@@ -270,7 +270,10 @@ def build_feeds(domain: str, base_path: str, entries: list[dict]) -> list[str]:
 # ── provider stránky (CELÉ generované ze šablony — vzor vs-pages automation) ─
 
 TEMPLATE = ROOT / "_provider-template.html"
-EMAILCAP_ACTION_LLM = "REPLACE_ME_MAILERLITE_LLM_FORM_ACTION"  # action nové skupiny price-drop-alerts-llm dodá owner
+# MailerLite formulář "LLM price alerts" (id 190087424470157211) → skupina
+# price-drop-alerts-llm (id 190087503473018215, env MAILERLITE_GROUP_LLM).
+# Stejná action ručně v changelog.html EMAILCAP bloku — měnit synchronně.
+EMAILCAP_ACTION_LLM = "https://assets.mailerlite.com/jsonp/2426816/forms/190087424470157211/subscribe"
 TIER_ORDER = {"frontier": 0, "mid": 1, "budget": 2}
 
 # Editorial konfigurace per provider. Slugy podle hledanosti (závazné rozhodnutí):
