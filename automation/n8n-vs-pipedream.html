@@ -25,7 +25,7 @@
       "name": "Is n8n cheaper than Pipedream?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "At every volume we track, yes — from $8 vs $10 at 1,000 ops/mo to $8 vs ~$400 at 100,000. Prices include overage where it applies — see the table above."
+        "text": "At every volume we track, yes — from $8 vs $29 at 1,000 ops/mo to $8 vs ~$495 at 100,000. Prices include overage where it applies — see the table above."
       }
     },
     {
@@ -49,7 +49,7 @@
       "name": "Why would anyone pick Pipedream, then?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Because the ~$8 assumes you operate n8n yourself — and n8n Cloud, the managed alternative, runs $20–50/mo with workflow limits. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server."
+        "text": "Because the ~$8 assumes you operate n8n yourself — and n8n Cloud, the managed alternative, runs $20–50/mo with execution quotas. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server."
       }
     },
     {
@@ -282,22 +282,22 @@
           <tr>
             <td class="vol">1,000</td>
             <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
-            <td><span class="price">$10<small>Free +ops</small></span></td>
+            <td><span class="price">$29<small>Basic</small></span></td>
           </tr>
           <tr>
             <td class="vol">5,000</td>
             <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
-            <td><span class="price">$49<small>Advanced</small></span></td>
+            <td><span class="price">$59<small>Basic +ops</small></span></td>
           </tr>
           <tr>
             <td class="vol">20,000</td>
             <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
-            <td><span class="price">~$130<small>Business (estimate)</small></span></td>
+            <td><span class="price">$199<small>Connect +ops</small></span></td>
           </tr>
           <tr>
             <td class="vol">100,000</td>
             <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
-            <td><span class="price">~$400<small>Business (estimate)</small></span></td>
+            <td><span class="price">~$495<small>Business (estimate)</small></span></td>
           </tr>
         </tbody>
       </table>
@@ -330,12 +330,11 @@
           <tr><td>Log history</td><td>7 days (cloud)</td><td>24 hours (free)</td></tr>
           <tr><td>GDPR-friendly</td><td><span class="diff-win"><span class="check">✓</span></span></td><td><span class="cross">✗</span></td></tr>
           <tr><td>Self-hosting</td><td><span class="diff-win"><span class="check">✓</span></span></td><td><span class="cross">✗</span></td></tr>
-          <tr><td>Multi-user</td><td><span class="cross">✗</span></td><td><span class="diff-win"><span class="check">✓</span></span></td></tr>
           <tr><td>License</td><td>Sustainable Use</td><td>Proprietary (cloud)</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="diff-same">Same on both: steps per workflow · ai features · api access · webhooks · code steps.</p>
+    <p class="diff-same">Same on both: steps per workflow · ai features · multi-user · api access · webhooks · code steps.</p>
   </div>
 
   <!-- 5 ── Pros / cons -->
@@ -353,7 +352,7 @@
         <div class="pc-divider"></div>
         <ul>
           <li class="con">Setup required for self-host</li>
-          <li class="con">Smaller cloud workflow limit</li>
+          <li class="con">Big jump from Pro to Business tier</li>
         </ul>
       </div>
       <div class="pc-card">
@@ -396,7 +395,7 @@
     <div class="faq" style="margin-top:16px;">
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Is n8n cheaper than Pipedream?</button>
-        <div class="faq-a">At every volume we track, yes — from $8 vs $10 at 1,000 ops/mo to $8 vs ~$400 at 100,000. Prices include overage where it applies — see the table above.</div>
+        <div class="faq-a">At every volume we track, yes — from $8 vs $29 at 1,000 ops/mo to $8 vs ~$495 at 100,000. Prices include overage where it applies — see the table above.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">What counts as an operation on each?</button>
@@ -408,7 +407,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Why would anyone pick Pipedream, then?</button>
-        <div class="faq-a">Because the ~$8 assumes you operate n8n yourself — and n8n Cloud, the managed alternative, runs $20–50/mo with workflow limits. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server.</div>
+        <div class="faq-a">Because the ~$8 assumes you operate n8n yourself — and n8n Cloud, the managed alternative, runs $20–50/mo with execution quotas. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?</button>
