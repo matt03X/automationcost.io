@@ -1,0 +1,155 @@
+{
+  "_meta": {
+    "note": "CURATED price history = the trust layer. Source: Wayback backtesting (calc-test/wayback/<vendor>/verdict.md). ONLY rows with verdict CONFIRMED go in here, each with archive evidence URLs. This is editorial, hand-written — the wayback-backfill.js harness produces candidates, a human classifies them. Never invent an event; an honest 'stable since X' is the point.",
+    "method": "Monthly Wayback snapshots of each vendor's pricing page, price fingerprint per plan, change points bisected to the day and read by hand against both archived snapshots. Figures are face values as they appeared in the archive (no FX conversion).",
+    "conventions": {
+      "usd": "monthly price as displayed; billed-annually figure recorded where that is the headline price",
+      "priceChange": "true = the headline plan price moved; false = packaging/limits/new-plan event with the tracked price unchanged",
+      "type": "price | limits | plan-launch | plan-discontinued | packaging | catalog",
+      "gap": "extraction gap — page rendered prices client-side, so the archive HTML has no figures for that window (candidate for Playwright-over-archive fallback)"
+    },
+    "baseline_until": "2026-06-12",
+    "last_reviewed": "2026-06-13"
+  },
+  "vendors": [
+    {
+      "slug": "zapier",
+      "name": "Zapier",
+      "trackedSince": "2024-06",
+      "currency": "USD",
+      "summary": "No core (per-task) price change since at least June 2024. Professional has held at $19.99/mo and Team at $69/mo, billed annually, across the entire tracked window. The two events we found were packaging and add-on changes, not price moves.",
+      "series": {
+        "Free": [{ "date": "2024-06", "usd": 0 }],
+        "Professional": [{ "date": "2024-06", "usd": 19.99 }],
+        "Team": [{ "date": "2024-06", "usd": 69 }]
+      },
+      "events": [
+        {
+          "date": "2025-04-29",
+          "type": "catalog",
+          "priceChange": false,
+          "title": "AI Agents add-on introduced (Beta, from $50/mo)",
+          "detail": "A new add-on product appeared on the pricing page alongside existing Chatbots/Interfaces/Tables teasers. Outside our per-task automation scope; core plans unchanged.",
+          "evidence": [
+            "https://web.archive.org/web/20250429083306/https://zapier.com/pricing",
+            "https://web.archive.org/web/20250504035157/https://zapier.com/pricing"
+          ]
+        },
+        {
+          "date": "2025-09-17",
+          "type": "packaging",
+          "priceChange": false,
+          "title": "Packaging overhaul — \"Pro\" renamed to \"Professional\"",
+          "detail": "Zaps, Tables and Interfaces merged into unified platform plans; Agents and Chatbots split into their own tabs. Core prices unchanged at $0 / $19.99 / $69. This is the layout you see on the live page today.",
+          "evidence": [
+            "https://web.archive.org/web/20250917095310/https://zapier.com/pricing",
+            "https://web.archive.org/web/20250920135747/https://zapier.com/pricing"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "make",
+      "name": "Make",
+      "trackedSince": "2025-02",
+      "currency": "USD",
+      "summary": "Core $9 / Pro $16 / Teams $29 (per 10k credits/mo, billed annually) have held since at least February 2025. No confirmed price change in the tracked window.",
+      "series": {
+        "Core": [{ "date": "2025-02", "usd": 9 }],
+        "Pro": [{ "date": "2025-02", "usd": 16 }],
+        "Teams": [{ "date": "2025-02", "usd": 29 }]
+      },
+      "events": [
+        {
+          "date": "2024-06",
+          "type": "gap",
+          "priceChange": false,
+          "title": "Pre-2025 prices not machine-readable",
+          "detail": "From June 2024 to January 2025 the pricing page rendered figures client-side, so the archive HTML carries no prices. Tracking with confidence starts February 2025; earlier history is a candidate for a Playwright-over-archive backfill.",
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "slug": "n8n",
+      "name": "n8n",
+      "trackedSince": "2025-03",
+      "currency": "USD→EUR",
+      "summary": "Headline annual prices (Starter, Pro) have held, but on 2025-08-07 n8n restructured the whole offer: it dropped workflow/step/user limits, rewrote quotas to an annual basis, discontinued a $120 tier and launched Business. The currency symbol on the live page is now EUR with the same figures — when exactly $ became € is undetermined.",
+      "series": {
+        "Starter": [{ "date": "2025-03", "usd": 20 }],
+        "Pro": [{ "date": "2025-03", "usd": 50 }],
+        "$120 tier": [{ "date": "2025-03", "usd": 120 }, { "date": "2025-08-07", "usd": null }],
+        "Business": [{ "date": "2025-08-07", "usd": 667 }]
+      },
+      "events": [
+        {
+          "date": "2025-08-07",
+          "type": "limits",
+          "priceChange": false,
+          "title": "Major restructure — workflow limits removed, Business launched, $120 tier dropped",
+          "detail": "Overnight, quotas were rewritten to an annual basis (Starter 30K executions/yr = 2.5k/mo, Pro 120K/yr = 10k/mo) with unlimited workflows, steps and users. The standalone $120/mo tier (50k executions, 50 workflows) disappeared and a Business plan (667/800 annual/monthly) appeared. Annual Starter/Pro prices (20/50) were unchanged. This is the real date of the data drift we first noticed on 2026-06-12 — our old defaults (5/15 workflow limits) had been stale since this day.",
+          "evidence": [
+            "https://web.archive.org/web/20250806080243/https://n8n.io/pricing",
+            "https://web.archive.org/web/20250807160941/https://n8n.io/pricing"
+          ]
+        },
+        {
+          "date": "2025-09-17",
+          "type": "packaging",
+          "priceChange": false,
+          "title": "Page renders annual-only (monthly variants hidden)",
+          "detail": "Monthly figures (24/60/800) and the \"$5\" microcopy dropped out of the HTML; the page now shows the annual default. Prices unchanged (20/50/667 annual).",
+          "evidence": [
+            "https://web.archive.org/web/20250921000000/https://n8n.io/pricing"
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "pipedream",
+      "name": "Pipedream",
+      "trackedSince": "2024-06",
+      "currency": "USD",
+      "summary": "Basic $29 and Advanced $49 (348/588 billed annually) have held since at least June 2024. Two real catalog/limit changes: the Connect plan launched at $99/mo in April 2025, and the Free tier was cut from 300 to 100 credits/mo somewhere between April 2025 and January 2026.",
+      "series": {
+        "Free credits/mo": [{ "date": "2025-04", "usd": 300 }, { "date": "2025-09", "usd": 100 }],
+        "Basic": [{ "date": "2024-06", "usd": 29 }],
+        "Advanced": [{ "date": "2024-06", "usd": 49 }],
+        "Connect": [{ "date": "2025-04-29", "usd": 99 }]
+      },
+      "events": [
+        {
+          "date": "2025-04-29",
+          "type": "plan-launch",
+          "priceChange": false,
+          "title": "Connect plan launched ($99/mo)",
+          "detail": "New \"Connect\" plan (10k credits, auth for external users) appeared. A catalog addition, not a change to existing plan prices.",
+          "evidence": [
+            "https://web.archive.org/web/20250424003531/https://pipedream.com/pricing",
+            "https://web.archive.org/web/20250430012209/https://pipedream.com/pricing"
+          ]
+        },
+        {
+          "date": "2025-09",
+          "type": "limits",
+          "priceChange": false,
+          "title": "Free tier cut from 300 to 100 credits/mo",
+          "detail": "A real tightening of the Free limit (not a price move) sometime between April 2025 (300 credits/mo, 10/day) and January 2026 (100 credits/mo). The exact day is not yet bisected — the figure is a quota, which the price fingerprint does not catch. Date shown is approximate (mid-window).",
+          "evidence": [
+            "https://web.archive.org/web/20250430012209/https://pipedream.com/pricing",
+            "https://web.archive.org/web/20260115212149/https://pipedream.com/pricing"
+          ]
+        },
+        {
+          "date": "2026-02",
+          "type": "gap",
+          "priceChange": false,
+          "title": "Page moved to client-side render",
+          "detail": "From February 2026 the pricing page renders figures client-side, so archive HTML carries no prices. Live data verified via Playwright scout (2026-06-12); archival continuity needs a Playwright-over-archive fallback.",
+          "evidence": []
+        }
+      ]
+    }
+  ]
+}
