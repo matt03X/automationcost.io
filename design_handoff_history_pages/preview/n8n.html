@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Price history — n8n (PREVIEW · real data from history.json)</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e17; --surface: #0f1622;
+    --bg2: #0d1320; --surface2: #131b2b;
+    --border: #1c2536; --border2: #2a364c;
+    --text: #eef2f8; --text2: #aab4c7; --muted: #69748c;
+    --acc: #10b981; --acc-br: #4fe0aa;
+    --n8n: #ea4b71;
+    --warn: #f2b45c;
+    --font: 'Plus Jakarta Sans', sans-serif;
+    --display: 'Hanken Grotesk', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 28px; }
+  .mono { font-family: var(--mono); }
+  .pvbar { background: #1a1206; border-bottom: 1px solid #3a2a0c; color: #f2b45c; font-family: var(--mono); font-size: 11.5px; text-align: center; padding: 7px 12px; letter-spacing: 0.03em; }
+
+  .crumb { font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 30px 0 0; letter-spacing: 0.02em; }
+  .crumb a:hover { color: var(--text2); }
+  .crumb .acc { color: var(--acc); }
+
+  header.lead { padding: 30px 0 44px; border-bottom: 1px solid var(--border); }
+  .kicker { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acc); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .kicker i { width: 6px; height: 6px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 8px var(--acc); }
+  h1 { font-family: var(--display); font-size: clamp(32px, 4.6vw, 50px); font-weight: 900; letter-spacing: -0.03em; line-height: 1.04; max-width: 720px; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--acc-br); }
+  .standfirst { font-size: 17.5px; color: var(--text2); max-width: 620px; margin-top: 20px; text-wrap: pretty; }
+  .byline { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 24px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+  .byline b { color: var(--text2); font-weight: 500; }
+  .byline .stable { color: var(--acc); }
+
+  figure.chart { margin: 46px 0 0; }
+  .chart-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+  .chart-title { font-family: var(--display); font-size: 19px; font-weight: 800; }
+  .chart-src { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .chart-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 22px 20px 14px; }
+  svg#hist { width: 100%; height: auto; display: block; overflow: visible; }
+  .gl { stroke: var(--border); stroke-width: 1; }
+  .gl.zero { stroke: var(--border2); }
+  .axt { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+  .step { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+  .plan-lbl { font-family: var(--mono); font-size: 11.5px; font-weight: 700; }
+  .ev-dot { stroke: var(--bg2); stroke-width: 2.5; }
+  .ev-line { stroke: var(--border2); stroke-width: 1; stroke-dasharray: 2 4; }
+  .disc { fill: none; stroke: var(--muted); stroke-width: 2.5; stroke-dasharray: 1 5; stroke-linecap: round; }
+  .curnote { font-family: var(--mono); font-size: 10px; fill: var(--warn); }
+  figcaption { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 12px; display: flex; gap: 18px; flex-wrap: wrap; }
+  figcaption .lg { display: inline-flex; align-items: center; gap: 7px; }
+  figcaption .lg i { width: 14px; height: 3px; border-radius: 2px; }
+  figcaption .lg i.d { height: 0; border-top: 2.5px dotted var(--muted); width: 16px; }
+
+  .stable-note { display: flex; align-items: center; gap: 14px; margin-top: 28px; padding: 18px 20px; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.06); border-radius: 12px; }
+  .stable-note .big { font-family: var(--mono); font-size: 30px; font-weight: 700; color: var(--acc-br); letter-spacing: -0.03em; white-space: nowrap; }
+  .stable-note p { font-size: 14px; color: var(--text2); }
+  .stable-note p b { color: var(--text); }
+
+  .currency-flag { display: flex; gap: 12px; margin-top: 14px; padding: 14px 18px; border: 1px solid rgba(242,180,92,0.3); background: rgba(242,180,92,0.05); border-radius: 12px; font-size: 13px; color: var(--text2); }
+  .currency-flag b { color: var(--warn); font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  section.events { margin: 56px 0 0; }
+  .events h2 { font-family: var(--display); font-size: 24px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .events .lede { font-size: 14.5px; color: var(--text2); margin-bottom: 26px; }
+  .ev { display: grid; grid-template-columns: 120px 1fr; gap: 20px; padding: 22px 0; border-top: 1px solid var(--border); }
+  .ev .when { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .ev .tag { display: inline-block; margin-top: 8px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; border: 1px solid var(--border2); color: var(--text2); }
+  .ev .tag.limits { color: var(--acc); border-color: rgba(16,185,129,0.4); }
+  .ev .tag.packaging { color: var(--warn); border-color: rgba(242,180,92,0.4); }
+  .ev .tag.plan-launch { color: #6da8ff; border-color: rgba(109,168,255,0.4); }
+  .ev .tag.catalog { color: #c08bff; border-color: rgba(176,45,233,0.4); }
+  .ev .tag.gap { color: var(--muted); border-color: var(--border2); border-style: dashed; }
+  .ev .tag.price { color: #ff6b6b; border-color: rgba(255,107,107,0.5); }
+  .ev h3 { font-family: var(--display); font-size: 17px; font-weight: 800; margin-bottom: 6px; }
+  .ev p { font-size: 14px; color: var(--text2); max-width: 540px; }
+  .ev .evidence { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-family: var(--mono); font-size: 11.5px; color: var(--acc); border-bottom: 1px solid rgba(16,185,129,0.35); padding-bottom: 2px; }
+  .ev .evidence:hover { color: var(--acc-br); }
+  .ev .no-ev { display: inline-block; margin-top: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); font-style: italic; }
+
+  .method { margin: 48px 0 0; padding: 22px 24px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg2); font-size: 13.5px; color: var(--text2); }
+  .method b { color: var(--text); }
+  .share { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin: 40px 0 0; padding: 22px 0 0; border-top: 1px solid var(--border); }
+  .share .wm { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .share .btns { display: flex; gap: 10px; }
+  .share .btn { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--text2); border: 1px solid var(--border2); border-radius: 9px; padding: 8px 15px; }
+  .share .btn.acc { color: #04130c; background: var(--acc); border-color: var(--acc); }
+
+  footer { max-width: 880px; margin: 64px auto 0; padding: 26px 28px 60px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
+
+  @media (max-width: 620px) {
+    .ev { grid-template-columns: 1fr; gap: 6px; }
+    .stable-note { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="pvbar">PREVIEW · real data from automation/data/history.json (n8n) · brand color #EA4B71 · not yet routed to /automation/history/n8n.html</div>
+<div class="wrap">
+  <div class="crumb"><a href="/">WizardCost</a> / <a class="acc" href="/automation/">AutomationCost</a> / <a href="./history.html">price history</a> / <b style="color:var(--text2)">n8n</b></div>
+
+  <header class="lead">
+    <div class="kicker"><i></i>Price history · verified against the Wayback archive</div>
+    <h1>n8n hasn't raised its core price <em>since we started tracking.</em></h1>
+    <p class="standfirst">We check every tracked tool's pricing page against archived snapshots. Across 15 months, n8n's headline Starter and Pro prices never moved — every change was structural. Here's exactly what changed, with a link to the proof.</p>
+    <div class="byline">
+      <span>Tracked since <b>Mar 2025</b></span>
+      <span class="stable">● 2 plans stable · 1 discontinued · 1 launched</span>
+      <span>Figures <b>as shown ($→€)</b></span>
+      <span>Updated <b>Jun 2026</b></span>
+    </div>
+  </header>
+
+  <figure class="chart">
+    <div class="chart-head">
+      <span class="chart-title">Plan price over time</span>
+      <span class="chart-src">step chart · horizontal = price in effect · vertical = day it changed</span>
+    </div>
+    <div class="chart-box">
+      <svg id="hist" viewBox="0 0 840 420"></svg>
+    </div>
+    <figcaption>
+      <span class="lg"><i style="background:#ea4b71"></i>Pro $50</span>
+      <span class="lg"><i style="background:#f0859f"></i>Starter $20</span>
+      <span class="lg"><i style="background:#b97fb0"></i>Business $667</span>
+      <span class="lg"><i class="d"></i>discontinued ($120 tier)</span>
+      <span style="margin-left:auto;">● = annotated change · tap for evidence</span>
+    </figcaption>
+  </figure>
+
+  <div class="currency-flag">
+    <span><b>Currency note</b></span>
+    <span>Figures are face values as they appeared in the archive — no FX conversion. n8n's live page now shows the same numbers in EUR; the exact date the symbol changed from $ to € is undetermined, so the axis is shown without a currency symbol.</span>
+  </div>
+
+  <div class="stable-note">
+    <span class="big">15 months</span>
+    <p><b>No core price change since Mar 2025.</b> Starter (20) and Pro (50) have held their annual price for the entire window we've tracked — the Aug 2025 restructure changed limits and packaging, not the headline price.</p>
+  </div>
+
+  <section class="events">
+    <h2>What actually changed</h2>
+    <p class="lede">Two structural events — neither a price increase. Each links to the archived snapshots it's drawn from.</p>
+    <div id="event-list"></div>
+  </section>
+
+  <div class="method">
+    <b>How we know.</b> Prices are read from n8n's official pricing page and cross-checked against
+    archived snapshots on the Wayback Machine. We log a change only when the archive shows one, and we
+    link the proof. This page is generated from <span class="mono">history.json</span> and re-verified each revision.
+  </div>
+
+  <div class="share">
+    <span class="wm">wizardcost.com · source: Wayback archive · Jun 2026</span>
+    <div class="btns">
+      <a class="btn" href="#">Copy link</a>
+      <a class="btn acc" href="#">Download chart (PNG)</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 WizardCost</span>
+  <span><a href="./history.html">← All price histories</a></span>
+</footer>
+
+<!-- LIVE PAGE: this JSON block is generated by the engine from automation/data/history.json (vendor slug "n8n"). Mock placeholders replaced with real values. -->
+<script id="history-detail-data" type="application/json">
+{
+  "slug": "n8n",
+  "name": "n8n",
+  "trackedSince": "2025-03",
+  "lastReviewed": "2026-06-13",
+  "currency": "USD→EUR",
+  "series": {
+    "Starter": [{ "date": "2025-03", "usd": 20 }],
+    "Pro": [{ "date": "2025-03", "usd": 50 }],
+    "$120 tier": [{ "date": "2025-03", "usd": 120 }, { "date": "2025-08-07", "usd": null }],
+    "Business": [{ "date": "2025-08-07", "usd": 667 }]
+  },
+  "events": [
+    {
+      "date": "2025-08-07",
+      "type": "limits",
+      "priceChange": false,
+      "title": "Major restructure — workflow limits removed, Business launched, $120 tier dropped",
+      "detail": "Overnight, quotas were rewritten to an annual basis (Starter 30K executions/yr, Pro 120K/yr) with unlimited workflows, steps and users. The standalone $120/mo tier disappeared and a Business plan (667 annual) appeared. Annual Starter/Pro prices (20/50) were unchanged.",
+      "evidence": [
+        "https://web.archive.org/web/20250806080243/https://n8n.io/pricing",
+        "https://web.archive.org/web/20250807160941/https://n8n.io/pricing"
+      ]
+    },
+    {
+      "date": "2025-09-17",
+      "type": "packaging",
+      "priceChange": false,
+      "title": "Page renders annual-only (monthly variants hidden)",
+      "detail": "Monthly figures (24/60/800) and the \"$5\" microcopy dropped out of the HTML; the page now shows the annual default. Prices unchanged (20/50/667 annual).",
+      "evidence": [
+        "https://web.archive.org/web/20250921000000/https://n8n.io/pricing"
+      ]
+    }
+  ]
+}
+</script>
+
+<script>
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(t, a) { var n = document.createElementNS(NS, t); for (var k in a) n.setAttribute(k, a[k]); return n; }
+
+  var DATA = JSON.parse(document.getElementById('history-detail-data').textContent);
+  var PLAN_COLORS = { 'Pro':'#ea4b71', 'Starter':'#f0859f', 'Business':'#b97fb0', '$120 tier':'#8a93a8' };
+
+  // ---- time axis from real trackedSince → lastReviewed ----
+  function toFrac(d){ var p=d.split('-').map(Number); return p[0] + ((p[1]||1)-1)/12 + ((p[2]||1)-1)/365; }
+  var t0 = toFrac(DATA.trackedSince), t1 = toFrac(DATA.lastReviewed);
+  // pad axis a touch on both ends
+  t0 = Math.floor(t0*12)/12; t1 = Math.ceil(t1*4)/4;
+
+  var W = 840, H = 420, PL = 44, PR = 150, PT = 22, PB = 44;
+  var yMax = 720; // covers Business 667
+  var X = function (t) { return PL + (t - t0) / (t1 - t0) * (W - PL - PR); };
+  var Y = function (v) { return H - PB - (v / yMax) * (H - PT - PB); };
+  var svg = document.getElementById('hist');
+
+  // y gridlines
+  [0, 50, 120, 667].forEach(function (v) {
+    svg.appendChild(el('line', { class: 'gl' + (v === 0 ? ' zero' : ''), x1: PL, x2: W - PR, y1: Y(v), y2: Y(v) }));
+    var tx = el('text', { class: 'axt', x: PL - 8, y: Y(v) + 4, 'text-anchor': 'end' });
+    tx.textContent = v; svg.appendChild(tx);
+  });
+  // x gridlines (year ticks within window)
+  for (var yr = Math.ceil(t0); yr <= Math.floor(t1); yr++) {
+    svg.appendChild(el('line', { class: 'gl', x1: X(yr), x2: X(yr), y1: PT, y2: H - PB }));
+    var tx = el('text', { class: 'axt', x: X(yr), y: H - PB + 18, 'text-anchor': 'middle' });
+    tx.textContent = yr; svg.appendChild(tx);
+  }
+  // trackedSince marker
+  var tsx = X(toFrac(DATA.trackedSince));
+  var tt = el('text', { class: 'axt', x: tsx, y: H - PB + 18, 'text-anchor': 'middle', fill:'#8a93a8' });
+  tt.textContent = '◂ tracked since ' + DATA.trackedSince; svg.appendChild(tt);
+
+  // ---- step series straight from DATA.series ----
+  Object.keys(DATA.series).forEach(function (name) {
+    var pts = DATA.series[name];
+    var color = PLAN_COLORS[name] || '#aab4c7';
+    var startT = toFrac(pts[0].date);
+    var startV = pts[0].usd;
+    var discontinued = pts.some(function(p){ return p.usd === null; });
+
+    if (discontinued) {
+      // flat line until the null point, then × marker (NO drop to zero)
+      var endPt = pts.find(function(p){ return p.usd === null; });
+      var endT = toFrac(endPt.date);
+      var y = Y(startV);
+      svg.appendChild(el('path', { class: 'disc', d: 'M' + X(startT) + ' ' + y + ' L' + X(endT) + ' ' + y, stroke: color }));
+      var mx = X(endT);
+      svg.appendChild(el('line', { x1: mx - 5, y1: y - 5, x2: mx + 5, y2: y + 5, stroke: color, 'stroke-width': 2 }));
+      svg.appendChild(el('line', { x1: mx - 5, y1: y + 5, x2: mx + 5, y2: y - 5, stroke: color, 'stroke-width': 2 }));
+      var dl = el('text', { class: 'plan-lbl', x: mx + 9, y: y + 4, fill: color });
+      dl.textContent = name + ' · discontinued'; svg.appendChild(dl);
+    } else {
+      // flat line from its own start to t1 (single-point series = stable to present)
+      var y = Y(startV);
+      svg.appendChild(el('path', { class: 'step', d: 'M' + X(startT) + ' ' + y + ' L' + X(t1) + ' ' + y, stroke: color }));
+      svg.appendChild(el('circle', { cx: X(t1), cy: y, r: 3.5, fill: color }));
+      var lbl = el('text', { class: 'plan-lbl', x: X(t1) + 9, y: y + 4, fill: color });
+      lbl.textContent = name + ' ' + startV; svg.appendChild(lbl);
+    }
+  });
+
+  // ---- event annotations from DATA.events (skip gap; only real change points on chart) ----
+  DATA.events.filter(function(e){ return e.type !== 'gap'; }).forEach(function (e) {
+    var x = X(toFrac(e.date));
+    svg.appendChild(el('line', { class: 'ev-line', x1: x, y1: PT, x2: x, y2: H - PB }));
+    var fill = e.type === 'limits' ? '#10b981' : (e.priceChange ? '#ff6b6b' : '#f2b45c');
+    svg.appendChild(el('circle', { class: 'ev-dot', cx: x, cy: Y(50), r: 5, fill: fill }));
+  });
+
+  // ---- event timeline list (real data, with evidence-link gating) ----
+  var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function fmtDate(d){ var p=d.split('-'); var m=MONTHS[(+p[1]||1)-1]; return p[2] ? (m+' '+(+p[2])+', '+p[0]) : (m+' '+p[0]); }
+  var list = document.getElementById('event-list');
+  DATA.events.forEach(function (e) {
+    var div = document.createElement('div'); div.className = 'ev';
+    var evHtml;
+    if (e.evidence && e.evidence.length) {
+      var lbl = e.evidence.length > 1 ? 'evidence: before / after snapshot ↗' : 'evidence: archived snapshot ↗';
+      evHtml = '<a class="evidence" href="' + e.evidence[0] + '" target="_blank" rel="noopener">' + lbl + '</a>';
+    } else {
+      evHtml = '<span class="no-ev">no machine-readable archive for this window</span>';
+    }
+    div.innerHTML =
+      '<div class="when">' + fmtDate(e.date) + '<span class="tag ' + e.type + '">' + e.type.replace('-', ' ') + '</span></div>' +
+      '<div><h3>' + e.title + '</h3><p>' + e.detail + '</p>' + evHtml + '</div>';
+    list.appendChild(div);
+  });
+})();
+</script>
+</body>
+</html>

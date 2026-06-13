@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Price history — all tools (PREVIEW · real data from history.json)</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e17; --bg2: #0d1320; --surface2: #131b2b;
+    --border: #1c2536; --border2: #2a364c;
+    --text: #eef2f8; --text2: #aab4c7; --muted: #69748c;
+    --acc: #10b981; --acc-br: #4fe0aa; --warn: #f2b45c;
+    --font: 'Plus Jakarta Sans', sans-serif;
+    --display: 'Hanken Grotesk', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 28px; }
+  .mono { font-family: var(--mono); }
+
+  .pvbar { background: #1a1206; border-bottom: 1px solid #3a2a0c; color: #f2b45c; font-family: var(--mono); font-size: 11.5px; text-align: center; padding: 7px 12px; letter-spacing: 0.03em; }
+
+  .crumb { font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 30px 0 0; }
+  .crumb a:hover { color: var(--text2); }
+  .crumb .acc { color: var(--acc); }
+
+  header.lead { padding: 30px 0 40px; border-bottom: 1px solid var(--border); }
+  .kicker { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acc); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .kicker i { width: 6px; height: 6px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 8px var(--acc); }
+  h1 { font-family: var(--display); font-size: clamp(32px, 4.6vw, 50px); font-weight: 900; letter-spacing: -0.03em; line-height: 1.04; max-width: 760px; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--acc-br); }
+  .standfirst { font-size: 17.5px; color: var(--text2); max-width: 600px; margin-top: 20px; text-wrap: pretty; }
+
+  .statband { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+  .stat { flex: 1; min-width: 150px; background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+  .stat .n { font-family: var(--mono); font-size: 30px; font-weight: 700; letter-spacing: -0.03em; color: var(--acc-br); line-height: 1; }
+  .stat .n.neutral { color: var(--text); }
+  .stat .l { font-size: 12.5px; color: var(--text2); margin-top: 8px; }
+
+  section.rows { margin: 14px 0 0; }
+  .rows-head { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); padding: 30px 0 4px; }
+  .vrow { display: grid; grid-template-columns: 1fr 200px auto; align-items: center; gap: 24px; padding: 24px 4px; border-top: 1px solid var(--border); transition: background 0.15s; }
+  .vrow:last-child { border-bottom: 1px solid var(--border); }
+  .vrow:hover { background: var(--bg2); }
+  .v-id { display: flex; align-items: baseline; gap: 12px; }
+  .v-name { font-family: var(--display); font-size: 22px; font-weight: 800; letter-spacing: -0.01em; }
+  .v-dot { width: 9px; height: 9px; border-radius: 50%; align-self: center; }
+  .v-note { font-size: 13.5px; color: var(--text2); margin-top: 6px; max-width: 380px; }
+  .v-badge { display: inline-flex; align-items: center; gap: 7px; margin-top: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.04em; padding: 4px 11px; border-radius: 99px; border: 1px solid var(--border2); color: var(--text2); }
+  .v-badge.stable { color: var(--acc); border-color: rgba(16,185,129,0.4); }
+  .v-badge.stable i { width: 6px; height: 6px; border-radius: 50%; background: var(--acc); }
+  .v-badge.changed { color: var(--warn); border-color: rgba(242,180,92,0.4); }
+  .v-since { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 8px; }
+  .spark { width: 200px; height: 48px; }
+  .v-go { font-family: var(--mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .vrow:hover .v-go { color: var(--acc); }
+
+  .method { margin: 40px 0 0; padding: 22px 24px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg2); font-size: 13.5px; color: var(--text2); }
+  .method b { color: var(--text); }
+  .method a { color: var(--acc); border-bottom: 1px solid rgba(16,185,129,0.35); }
+  .share { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin: 36px 0 0; padding: 22px 0 0; border-top: 1px solid var(--border); }
+  .share .wm { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .share .btn { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: #04130c; background: var(--acc); border-radius: 9px; padding: 8px 15px; }
+
+  footer { max-width: 880px; margin: 60px auto 0; padding: 26px 28px 60px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
+
+  @media (max-width: 640px) {
+    .vrow { grid-template-columns: 1fr auto; }
+    .spark { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="pvbar">PREVIEW · real data from automation/data/history.json · brand colors approved 2026-06-13 · not yet routed to /automation/history.html</div>
+<div class="wrap">
+  <div class="crumb"><a href="/">WizardCost</a> / <a class="acc" href="/automation/">AutomationCost</a> / <b style="color:var(--text2)">price history</b></div>
+
+  <header class="lead">
+    <div class="kicker"><i></i>Price history · verified against the Wayback archive</div>
+    <h1>Two years of pricing. Four tools. <em>Zero core price hikes.</em></h1>
+    <p class="standfirst">We track every tool's pricing page against archived snapshots. Here's what actually changed since mid-2024 — and what (notably) didn't. Pick a tool for the full timeline and the proof.</p>
+    <div class="statband">
+      <div class="stat"><div class="n">0</div><div class="l">core price increases across all tracked tools</div></div>
+      <div class="stat"><div class="n neutral">24 mo</div><div class="l">longest tracked window (since June 2024)</div></div>
+      <div class="stat"><div class="n neutral">6</div><div class="l">structural changes logged — all non-price</div></div>
+    </div>
+  </header>
+
+  <section class="rows">
+    <div class="rows-head">Tools · sorted by changes logged</div>
+    <div id="vendor-rows"></div>
+  </section>
+
+  <div class="method">
+    <b>How we know.</b> Each tool's prices are read from its official pricing page and cross-checked
+    against archived snapshots on the Wayback Machine. We log a change only when the archive shows one,
+    and every detail page links the proof. This is a long-term record; for the day-to-day text log see the
+    <a href="/automation/changelog.html">changelog</a>. Tracking windows differ per tool — see "tracked since" on each row.
+  </div>
+
+  <div class="share">
+    <span class="wm">wizardcost.com · source: Wayback archive · Jun 2026</span>
+    <a class="btn" href="#">Copy link</a>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 WizardCost</span>
+  <span><a href="/automation/">← AutomationCost</a></span>
+</footer>
+
+<!-- HISTORY_INDEX_DATA:START — generated from automation/data/history.json (engine). changes = events excl. type:"gap". monthsTracked from trackedSince → _meta.last_reviewed. colors = canonical vendor palette. -->
+<script id="history-index-data" type="application/json">
+[
+  {"slug":"zapier","name":"Zapier","color":"#FF4F00","changes":2,"trackedSince":"Jun 2024","monthsTracked":24,"note":"Professional held at $19.99/mo and Team at $69/mo across the whole window. The two events were packaging and an add-on — not price moves.","series":[[19.99,0.55]],"marks":[0.62,0.9]},
+  {"slug":"make","name":"Make","color":"#B02DE9","changes":0,"trackedSince":"Feb 2025","monthsTracked":16,"note":"Core $9 / Pro $16 / Teams $29 have held since at least February 2025. No confirmed price change in the tracked window.","series":[[16,0.5]]},
+  {"slug":"n8n","name":"n8n","color":"#EA4B71","changes":2,"trackedSince":"Mar 2025","monthsTracked":15,"note":"Starter/Pro prices flat. Aug 2025 restructure removed workflow limits and discontinued the $120 tier; Business launched.","series":[[50,0.62]],"drop":[0.85,0.62],"marks":[0.62]},
+  {"slug":"pipedream","name":"Pipedream","color":"#105ed5","changes":2,"trackedSince":"Jun 2024","monthsTracked":24,"note":"Basic $29 / Advanced $49 held since June 2024. Connect plan launched ($99); free credits cut 300→100 (a quota, not a price).","series":[[49,0.5]],"marks":[0.5,0.78]}
+]
+</script>
+<!-- HISTORY_INDEX_DATA:END -->
+
+<script>
+(function () {
+  var data = JSON.parse(document.getElementById('history-index-data').textContent);
+  var box = document.getElementById('vendor-rows');
+  var SW = 200, SH = 48, pad = 6;
+  function spark(v) {
+    var y = function (f) { return pad + (1 - f) * (SH - 2 * pad); };
+    var x = function (f) { return pad + f * (SW - 2 * pad); };
+    var parts = '';
+    var ly = y(v.series[0][1]);
+    parts += '<line x1="' + x(0) + '" y1="' + ly + '" x2="' + x(1) + '" y2="' + ly + '" stroke="' + v.color + '" stroke-width="2.5" stroke-linecap="round"/>';
+    parts += '<circle cx="' + x(1) + '" cy="' + ly + '" r="3" fill="' + v.color + '"/>';
+    if (v.drop) {
+      var dy = y(v.drop[1]), dx = x(v.drop[0]);
+      parts += '<line x1="' + x(0) + '" y1="' + dy + '" x2="' + dx + '" y2="' + dy + '" stroke="#8a93a8" stroke-width="2" stroke-dasharray="1 4" stroke-linecap="round" transform="translate(0,-9)"/>';
+      parts += '<line x1="' + (dx - 3) + '" y1="' + (dy - 12) + '" x2="' + (dx + 3) + '" y2="' + (dy - 6) + '" stroke="#8a93a8" stroke-width="1.6"/>';
+      parts += '<line x1="' + (dx - 3) + '" y1="' + (dy - 6) + '" x2="' + (dx + 3) + '" y2="' + (dy - 12) + '" stroke="#8a93a8" stroke-width="1.6"/>';
+    }
+    (v.marks || []).forEach(function (mx) {
+      parts += '<circle cx="' + x(mx) + '" cy="' + ly + '" r="4" fill="' + v.bg + '" stroke="' + (v.changes ? '#f2b45c' : v.color) + '" stroke-width="2"/>';
+    });
+    return '<svg class="spark" viewBox="0 0 ' + SW + ' ' + SH + '">' + parts + '</svg>';
+  }
+  data.forEach(function (v) {
+    v.bg = '#0d1320';
+    var badge = v.changes === 0
+      ? '<span class="v-badge stable"><i></i>STABLE · no change since ' + v.trackedSince + '</span>'
+      : '<span class="v-badge changed">' + v.changes + ' change' + (v.changes > 1 ? 's' : '') + ' · all non-price</span>';
+    var a = document.createElement('a');
+    a.className = 'vrow';
+    a.href = './' + v.slug + '.html';
+    a.innerHTML =
+      '<div class="v-id-wrap"><div class="v-id"><span class="v-dot" style="background:' + v.color + '"></span><span class="v-name">' + v.name + '</span></div>' +
+      '<div class="v-note">' + v.note + '</div>' + badge +
+      '<div class="v-since">tracked since ' + v.trackedSince + ' · ' + v.monthsTracked + ' mo</div></div>' +
+      spark(v) +
+      '<span class="v-go">View timeline →</span>';
+    box.appendChild(a);
+  });
+})();
+</script>
+</body>
+</html>
