@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Price history — n8n (editorial mock)</title>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e17; --surface: #0f1622;
+    --bg2: #0d1320; --surface2: #131b2b;
+    --border: #1c2536; --border2: #2a364c;
+    --text: #eef2f8; --text2: #aab4c7; --muted: #69748c;
+    --acc: #10b981; --acc-br: #4fe0aa;
+    --n8n: #ea4b71;            /* stable per-vendor color */
+    --warn: #f2b45c;
+    --font: 'Plus Jakarta Sans', sans-serif;
+    --display: 'Hanken Grotesk', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 28px; }
+  .mono { font-family: var(--mono); }
+
+  /* breadcrumb */
+  .crumb { font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 30px 0 0; letter-spacing: 0.02em; }
+  .crumb a:hover { color: var(--text2); }
+  .crumb .acc { color: var(--acc); }
+
+  /* editorial header */
+  header.lead { padding: 30px 0 44px; border-bottom: 1px solid var(--border); }
+  .kicker { font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--acc); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .kicker i { width: 6px; height: 6px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 8px var(--acc); }
+  h1 { font-family: var(--display); font-size: clamp(32px, 4.6vw, 50px); font-weight: 900; letter-spacing: -0.03em; line-height: 1.04; max-width: 720px; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--acc-br); }
+  .standfirst { font-size: 17.5px; color: var(--text2); max-width: 620px; margin-top: 20px; text-wrap: pretty; }
+  .byline { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 24px; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+  .byline b { color: var(--text2); font-weight: 500; }
+  .byline .stable { color: var(--acc); }
+
+  /* chart figure */
+  figure.chart { margin: 46px 0 0; }
+  .chart-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+  .chart-title { font-family: var(--display); font-size: 19px; font-weight: 800; }
+  .chart-src { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .chart-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 22px 20px 14px; }
+  svg#hist { width: 100%; height: auto; display: block; overflow: visible; }
+  .gl { stroke: var(--border); stroke-width: 1; }
+  .gl.zero { stroke: var(--border2); }
+  .axt { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+  .step { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+  .plan-lbl { font-family: var(--mono); font-size: 11.5px; font-weight: 700; }
+  .ev-dot { stroke: var(--bg2); stroke-width: 2.5; }
+  .ev-line { stroke: var(--border2); stroke-width: 1; stroke-dasharray: 2 4; }
+  .disc { fill: none; stroke: var(--muted); stroke-width: 2.5; stroke-dasharray: 1 5; stroke-linecap: round; }
+  figcaption { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 12px; display: flex; gap: 18px; flex-wrap: wrap; }
+  figcaption .lg { display: inline-flex; align-items: center; gap: 7px; }
+  figcaption .lg i { width: 14px; height: 3px; border-radius: 2px; }
+  figcaption .lg i.d { height: 0; border-top: 2.5px dotted var(--muted); width: 16px; }
+
+  /* stable callout */
+  .stable-note { display: flex; align-items: center; gap: 14px; margin-top: 28px; padding: 18px 20px; border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.06); border-radius: 12px; }
+  .stable-note .big { font-family: var(--mono); font-size: 30px; font-weight: 700; color: var(--acc-br); letter-spacing: -0.03em; white-space: nowrap; }
+  .stable-note p { font-size: 14px; color: var(--text2); }
+  .stable-note p b { color: var(--text); }
+
+  /* event timeline */
+  section.events { margin: 56px 0 0; }
+  .events h2 { font-family: var(--display); font-size: 24px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .events .lede { font-size: 14.5px; color: var(--text2); margin-bottom: 26px; }
+  .ev { display: grid; grid-template-columns: 120px 1fr; gap: 20px; padding: 22px 0; border-top: 1px solid var(--border); }
+  .ev .when { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .ev .tag { display: inline-block; margin-top: 8px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; border: 1px solid var(--border2); color: var(--text2); }
+  .ev .tag.limits { color: var(--acc); border-color: rgba(16,185,129,0.4); }
+  .ev .tag.packaging { color: var(--warn); border-color: rgba(242,180,92,0.4); }
+  .ev .tag.plan { color: #6da8ff; border-color: rgba(109,168,255,0.4); }
+  .ev h3 { font-family: var(--display); font-size: 17px; font-weight: 800; margin-bottom: 6px; }
+  .ev p { font-size: 14px; color: var(--text2); max-width: 540px; }
+  .ev .evidence { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-family: var(--mono); font-size: 11.5px; color: var(--acc); border-bottom: 1px solid rgba(16,185,129,0.35); padding-bottom: 2px; }
+  .ev .evidence:hover { color: var(--acc-br); }
+
+  /* methodology + share */
+  .method { margin: 48px 0 0; padding: 22px 24px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg2); font-size: 13.5px; color: var(--text2); }
+  .method b { color: var(--text); }
+  .share { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin: 40px 0 0; padding: 22px 0 0; border-top: 1px solid var(--border); }
+  .share .wm { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .share .btns { display: flex; gap: 10px; }
+  .share .btn { font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: var(--text2); border: 1px solid var(--border2); border-radius: 9px; padding: 8px 15px; }
+  .share .btn.acc { color: #04130c; background: var(--acc); border-color: var(--acc); }
+
+  footer { max-width: 880px; margin: 64px auto 0; padding: 26px 28px 60px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
+
+  @media (max-width: 620px) {
+    .ev { grid-template-columns: 1fr; gap: 6px; }
+    .stable-note { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="/">WizardCost</a> / <a class="acc" href="/automation/">AutomationCost</a> / <a href="#">price history</a> / <b style="color:var(--text2)">n8n</b></div>
+
+  <header class="lead">
+    <div class="kicker"><i></i>Price history · verified against the Wayback archive</div>
+    <h1>n8n hasn't raised its core price <em>since we started tracking.</em></h1>
+    <p class="standfirst">We check every tracked tool's pricing page against archived snapshots. Across 30 months, n8n's paid-plan prices never moved — the only changes were structural. Here's exactly what changed, with a link to the proof.</p>
+    <div class="byline">
+      <span>Tracked since <b>Jan 2024</b></span>
+      <span class="stable">● 2 plans stable · 1 discontinued</span>
+      <span>Prices in <b>USD / month</b></span>
+      <span>Updated <b>Jun 2026</b></span>
+    </div>
+  </header>
+
+  <figure class="chart">
+    <div class="chart-head">
+      <span class="chart-title">Plan price over time</span>
+      <span class="chart-src">step chart · horizontal = price in effect · vertical = day it changed</span>
+    </div>
+    <div class="chart-box">
+      <svg id="hist" viewBox="0 0 840 380"></svg>
+    </div>
+    <figcaption>
+      <span class="lg"><i style="background:var(--n8n)"></i>Cloud Pro</span>
+      <span class="lg"><i style="background:#f0859f"></i>Cloud Starter</span>
+      <span class="lg"><i class="d"></i>discontinued plan</span>
+      <span style="margin-left:auto;">● = annotated change · tap for evidence</span>
+    </figcaption>
+  </figure>
+
+  <div class="stable-note">
+    <span class="big">30 months</span>
+    <p><b>No core price change since Jan 2024.</b> Both active Cloud plans have held the same monthly price for the entire window we've tracked — a stability most categories can't claim.</p>
+  </div>
+
+  <section class="events">
+    <h2>What actually changed</h2>
+    <p class="lede">Three structural events — none of them a price increase. Each links to the archived snapshot it's drawn from.</p>
+
+    <div class="ev">
+      <div class="when">Aug 2025<span class="tag limits">Limits</span></div>
+      <div>
+        <h3>Workflow execution limits removed</h3>
+        <p>n8n dropped the per-month workflow execution cap on paid Cloud plans. Same price, more headroom — a quiet upgrade, not a repricing.</p>
+        <a class="evidence" href="https://web.archive.org/" target="_blank" rel="noopener">evidence: before / after snapshot ↗</a>
+      </div>
+    </div>
+
+    <div class="ev">
+      <div class="when">Aug 2025<span class="tag packaging">Packaging</span></div>
+      <div>
+        <h3>“Power” tier ($120/mo) discontinued</h3>
+        <p>The top self-serve tier was retired and folded into custom/Enterprise. The line ends here rather than dropping — the plan stopped existing, its price didn't fall.</p>
+        <a class="evidence" href="https://web.archive.org/" target="_blank" rel="noopener">evidence: last archived snapshot ↗</a>
+      </div>
+    </div>
+
+    <div class="ev">
+      <div class="when">Jan 2024<span class="tag plan">Baseline</span></div>
+      <div>
+        <h3>First archived snapshot</h3>
+        <p>Where our record begins. Every price on this page is anchored to a dated archive capture from this point forward.</p>
+        <a class="evidence" href="https://web.archive.org/" target="_blank" rel="noopener">evidence: baseline snapshot ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="method">
+    <b>How we know.</b> Prices are read from n8n's official pricing page and cross-checked against
+    archived snapshots on the Wayback Machine. We log a change only when the archive shows one, and we
+    link the proof. Numbers are placeholder in this mock — the live page is generated from
+    <span class="mono">history.json</span> and re-verified each revision.
+  </div>
+
+  <div class="share">
+    <span class="wm">wizardcost.com · source: Wayback archive · Jun 2026</span>
+    <div class="btns">
+      <a class="btn" href="#">Copy link</a>
+      <a class="btn acc" href="#">Download chart (PNG)</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 WizardCost</span>
+  <span><a href="#">← All price histories</a></span>
+</footer>
+
+<script>
+(function () {
+  // placeholder data — live page reads automation/data/history.json
+  var t0 = 2024 + 0/12, t1 = 2026 + 6/12;     // Jan 2024 → Jul 2026
+  var ym = function (y, m) { return y + (m - 1) / 12; };
+  var series = [
+    { label: 'Cloud Pro', color: '#ea4b71', price: 50, from: ym(2024,1), to: t1, end: 'present' },
+    { label: 'Cloud Starter', color: '#f0859f', price: 20, from: ym(2024,1), to: t1, end: 'present' },
+    { label: 'Power', color: '#8a93a8', price: 120, from: ym(2024,1), to: ym(2025,8), end: 'discontinued' }
+  ];
+  var events = [
+    { t: ym(2025,8), price: 50, label: 'Limits removed', tier: 'lim' },
+    { t: ym(2025,8), price: 120, label: '$120 tier discontinued', tier: 'pkg' }
+  ];
+
+  var W = 840, H = 380, PL = 52, PR = 90, PT = 20, PB = 40;
+  var yMax = 140;
+  var X = function (t) { return PL + (t - t0) / (t1 - t0) * (W - PL - PR); };
+  var Y = function (v) { return H - PB - (v / yMax) * (H - PT - PB); };
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(t, a) { var n = document.createElementNS(NS, t); for (var k in a) n.setAttribute(k, a[k]); return n; }
+  var svg = document.getElementById('hist');
+
+  // y gridlines ($)
+  [0, 50, 100].forEach(function (v) {
+    svg.appendChild(el('line', { class: 'gl' + (v === 0 ? ' zero' : ''), x1: PL, x2: W - PR, y1: Y(v), y2: Y(v) }));
+    var tx = el('text', { class: 'axt', x: PL - 10, y: Y(v) + 4, 'text-anchor': 'end' });
+    tx.textContent = '$' + v; svg.appendChild(tx);
+  });
+  // x gridlines (years)
+  [2024, 2025, 2026].forEach(function (yr) {
+    svg.appendChild(el('line', { class: 'gl', x1: X(yr), x2: X(yr), y1: PT, y2: H - PB }));
+    var tx = el('text', { class: 'axt', x: X(yr), y: H - PB + 18, 'text-anchor': 'middle' });
+    tx.textContent = yr; svg.appendChild(tx);
+  });
+
+  // step lines (flat = stable). horizontal price line; vertical only when price changes.
+  series.forEach(function (s) {
+    var x1 = X(s.from), x2 = X(s.to), y = Y(s.price);
+    var cls = s.end === 'discontinued' ? 'disc' : 'step';
+    svg.appendChild(el('path', { class: cls, d: 'M' + x1 + ' ' + y + ' L' + x2 + ' ' + y, stroke: s.color }));
+    if (s.end === 'present') {
+      // right-edge label + dot
+      svg.appendChild(el('circle', { cx: x2, cy: y, r: 3.5, fill: s.color }));
+      var lbl = el('text', { class: 'plan-lbl', x: x2 + 10, y: y + 4, fill: s.color });
+      lbl.textContent = s.label + ' $' + s.price; svg.appendChild(lbl);
+    } else {
+      // discontinued marker (×) + label
+      var mx = x2;
+      svg.appendChild(el('line', { x1: mx - 5, y1: y - 5, x2: mx + 5, y2: y + 5, stroke: s.color, 'stroke-width': 2 }));
+      svg.appendChild(el('line', { x1: mx - 5, y1: y + 5, x2: mx + 5, y2: y - 5, stroke: s.color, 'stroke-width': 2 }));
+      var dl = el('text', { class: 'plan-lbl', x: mx + 10, y: y + 4, fill: s.color });
+      dl.textContent = s.label + ' · discontinued'; svg.appendChild(dl);
+    }
+  });
+
+  // event annotations — label sits by its own dot (events can share a date)
+  events.forEach(function (e) {
+    var x = X(e.t), y = Y(e.price);
+    svg.appendChild(el('line', { class: 'ev-line', x1: x, y1: PT, x2: x, y2: H - PB }));
+    svg.appendChild(el('circle', { class: 'ev-dot', cx: x, cy: y, r: 5, fill: e.tier === 'lim' ? '#10b981' : '#f2b45c' }));
+    var tx = el('text', { class: 'axt', x: x - 10, y: y - 11, 'text-anchor': 'end', fill: '#c4ccda', 'font-size': 10.5, 'font-weight': 700 });
+    tx.textContent = e.label; svg.appendChild(tx);
+  });
+})();
+</script>
+</body>
+</html>
