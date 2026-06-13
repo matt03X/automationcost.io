@@ -1,0 +1,10 @@
+{
+  "vendor": "activepieces",
+  "scrapedAt": "2026-06-13T23:12:17.513Z",
+  "url": "https://www.activepieces.com/pricing",
+  "unit": "flows",
+  "model": "fixed",
+  "listedPrices": [
+    5
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "vendor": "pipedream",
+  "scrapedAt": "2026-06-13T23:12:05.883Z",
+  "url": "https://pipedream.com/pricing",
+  "unit": "credits",
+  "model": "fixed",
+  "listedPrices": [
+    2,
+    29,
+    49,
+    99,
+    348,
+    588,
+    1188
+  ]
+}

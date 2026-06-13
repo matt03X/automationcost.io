@@ -1,0 +1,45 @@
+# Denní cenový AUDIT: stáhne HTML+ceny všech ceníků, uloží snapshot do
+# automation/data/audit/<vendor>/<datum>.{html,json}, zdiffuje proti předchozímu
+# dni a commitne výsledek. price-history.jsonl = zdroj grafů o změnách cen.
+# Doplňuje price-watch.yml (ten jen hlídá a maily; tenhle sbírá důkazy a historii).
+name: price-audit
+on:
+  schedule:
+    - cron: "30 6 * * *"   # denně 06:30 UTC (po price-watch v 06:00)
+  workflow_dispatch:
+permissions:
+  contents: write          # commit snapshotů zpět do repa
+concurrency:
+  group: price-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright (mimo repo checkout)
+        run: |
+          mkdir -p /tmp/pw
+          cd /tmp/pw
+          npm init -y > /dev/null
+          npm install playwright@1 > /dev/null
+          ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Spustit cenový audit
+        run: NODE_PATH=/tmp/pw/node_modules node scripts/price-audit.js
+      - name: Commit snapshotů a změn
+        run: |
+          git config user.name  "price-audit-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add automation/data/audit
+          if git diff --cached --quiet; then
+            echo "Žádné nové audit soubory — nic k commitu."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            CHANGES=$(D="$DATE" node -e "try{console.log(require('./automation/data/audit/changes-'+process.env.D+'.json').changeCount)}catch{console.log(0)}")
+            git commit -m "audit: cenové snapshoty ${DATE} (${CHANGES} změn)"
+            git push
+          fi
