@@ -8,7 +8,16 @@
       "contextWindow": "max kontext v tokenech; null = neovereno (doplnit z model docs)",
       "tier": "EDITORIAL trida pro ranking (frontier | mid | budget) - kalkulator nesrovnava napric tiery cenou; zarazeni je nase redakce, ne benchmark",
       "longContextNote": "volitelne - prirazka za dlouhy kontext (provider-specific)",
-      "verified": "kazda cena overena proti oficialnimu ceniku - dump v calc-test/llm-pricing-dumps/<provider>.txt s datem"
+      "verified": "kazda cena overena proti oficialnimu ceniku - dump v calc-test/llm-pricing-dumps/<provider>.txt s datem",
+      "swebenchVerified": "SWE-bench Verified skore (% vyreseno), vendor self-reported. JEDNA spolecna metrika kvality pro scatter cena x kvalita (volba: coding/agentic, sedi automation/dev publiku). NULL = vendor toto cislo verejne nepublikuje (NEDOPLNOVAT odhadem ani z agregatoru - jako u history 'gap', honest null > vymyslene cislo).",
+      "qualitySource": "URL na vendor zdroj (launch blog / model card), odkud swebenchVerified pochazi. Evidence-first, jako u cen.",
+      "qualityVerified": "true = cislo cteno primo z vendor stranky (dump v calc-test/llm-benchmark-dumps/ nebo WebFetch vendor tabulky); false = cislo z vendor blogu pres druhou ruku (stranka za JS/anti-bot zdi, graf necitelny) - design ho zobrazi s nizsi jistotou."
+    },
+    "quality_methodology": {
+      "metric": "SWE-bench Verified (% z 500-problem setu), vendor self-reported. Jedna srovnatelna metrika - NEMICHAT s SWE-bench Pro / MMLU / GPQA (nesrovnatelne, ruzny scaffold). Pozn: i SWE-bench Verified se mezi labs lisi scaffoldingem - bereme hlavni cislo, ktere vendor reportuje na sve strance.",
+      "covered_2026_06_13": "6 z 18 modelu ma overene cislo: claude-sonnet-4-6 80.2 (dump), claude-haiku-4-5 73.3 (dump), gemini-3.1-pro 80.6 (WebFetch), gpt-5.5 88.7 / claude-opus-4-8 88.6 / claude-fable-5 95.0 (vendor blog, druha ruka, qualityVerified:false). Zbyle modely NULL - vendori SWE-bench Verified verejne nepublikuji nebo stranka za JS zdi.",
+      "scout": "calc-test/scout-llm-benchmarks.js (Playwright na oficialni vendor stranky -> dump = audit trail). Anti-bot/JS-render limituje pokryti; cisla klasifikuje clovek z dumpu, scout je jen sbira.",
+      "disclaimer_for_design": "Skore je PROXY (vendor self-reported na verejnem benchmarku), ne nas nezavisly test. Zobrazit s 'self-reported, see source' + evidence odkaz. Modely s qualityVerified:false oznacit jako mene jiste. Modely bez skore do scatteru nedavat (nebo 'data pending')."
     },
     "sources": {
       "openai": "https://platform.openai.com/docs/pricing",
@@ -39,7 +48,7 @@
       "pricingUrl": "https://platform.openai.com/docs/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "gpt-5.5", "name": "GPT-5.5", "tier": "frontier", "inputPerM": 5.00, "cachedInputPerM": 0.50, "outputPerM": 30.00, "batchDiscount": null, "contextWindow": 1000000, "longContextNote": "long context: $10 in / $1 cached / $45 out" },
+        { "id": "gpt-5.5", "name": "GPT-5.5", "tier": "frontier", "inputPerM": 5.00, "cachedInputPerM": 0.50, "outputPerM": 30.00, "batchDiscount": null, "contextWindow": 1000000, "longContextNote": "long context: $10 in / $1 cached / $45 out", "swebenchVerified": 88.7, "qualitySource": "https://openai.com/index/introducing-gpt-5-5/", "qualityVerified": false },
         { "id": "gpt-5.5-pro", "name": "GPT-5.5 Pro", "tier": "frontier", "inputPerM": 30.00, "cachedInputPerM": null, "outputPerM": 180.00, "batchDiscount": null, "contextWindow": null, "longContextNote": "long context: $60 in / $270 out" },
         { "id": "gpt-5.4", "name": "GPT-5.4", "tier": "frontier", "inputPerM": 2.50, "cachedInputPerM": 0.25, "outputPerM": 15.00, "batchDiscount": null, "contextWindow": 1000000, "longContextNote": "long context: $5 in / $0.50 cached / $22.50 out" },
         { "id": "gpt-5.4-mini", "name": "GPT-5.4 mini", "tier": "mid", "inputPerM": 0.75, "cachedInputPerM": 0.075, "outputPerM": 4.50, "batchDiscount": null, "contextWindow": 400000 },
@@ -53,10 +62,10 @@
       "pricingUrl": "https://platform.claude.com/docs/en/about-claude/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "claude-fable-5", "name": "Claude Fable 5", "tier": "frontier", "inputPerM": 10.00, "cachedInputPerM": 1.00, "outputPerM": 50.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
-        { "id": "claude-opus-4-8", "name": "Claude Opus 4.8", "tier": "frontier", "inputPerM": 5.00, "cachedInputPerM": 0.50, "outputPerM": 25.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
-        { "id": "claude-sonnet-4-6", "name": "Claude Sonnet 4.6", "tier": "mid", "inputPerM": 3.00, "cachedInputPerM": 0.30, "outputPerM": 15.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
-        { "id": "claude-haiku-4-5", "name": "Claude Haiku 4.5", "tier": "budget", "inputPerM": 1.00, "cachedInputPerM": 0.10, "outputPerM": 5.00, "batchDiscount": 0.5, "contextWindow": 200000 }
+        { "id": "claude-fable-5", "name": "Claude Fable 5", "tier": "frontier", "inputPerM": 10.00, "cachedInputPerM": 1.00, "outputPerM": 50.00, "batchDiscount": 0.5, "contextWindow": 1000000, "swebenchVerified": 95.0, "qualitySource": "https://www.anthropic.com/news/claude-fable-5", "qualityVerified": false },
+        { "id": "claude-opus-4-8", "name": "Claude Opus 4.8", "tier": "frontier", "inputPerM": 5.00, "cachedInputPerM": 0.50, "outputPerM": 25.00, "batchDiscount": 0.5, "contextWindow": 1000000, "swebenchVerified": 88.6, "qualitySource": "https://www.anthropic.com/news/claude-opus-4-8", "qualityVerified": false },
+        { "id": "claude-sonnet-4-6", "name": "Claude Sonnet 4.6", "tier": "mid", "inputPerM": 3.00, "cachedInputPerM": 0.30, "outputPerM": 15.00, "batchDiscount": 0.5, "contextWindow": 1000000, "swebenchVerified": 80.2, "qualitySource": "https://www.anthropic.com/news/claude-sonnet-4-6", "qualityVerified": true },
+        { "id": "claude-haiku-4-5", "name": "Claude Haiku 4.5", "tier": "budget", "inputPerM": 1.00, "cachedInputPerM": 0.10, "outputPerM": 5.00, "batchDiscount": 0.5, "contextWindow": 200000, "swebenchVerified": 73.3, "qualitySource": "https://www.anthropic.com/news/claude-haiku-4-5", "qualityVerified": true }
       ]
     },
     {
@@ -66,7 +75,7 @@
       "pricingUrl": "https://ai.google.dev/gemini-api/docs/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "gemini-3.1-pro-preview", "name": "Gemini 3.1 Pro Preview", "tier": "frontier", "inputPerM": 2.00, "cachedInputPerM": 0.20, "outputPerM": 12.00, "batchDiscount": null, "contextWindow": null, "longContextNote": "prompty >200k tokenu: $4 in / $18 out" },
+        { "id": "gemini-3.1-pro-preview", "name": "Gemini 3.1 Pro Preview", "tier": "frontier", "inputPerM": 2.00, "cachedInputPerM": 0.20, "outputPerM": 12.00, "batchDiscount": null, "contextWindow": null, "longContextNote": "prompty >200k tokenu: $4 in / $18 out", "swebenchVerified": 80.6, "qualitySource": "https://deepmind.google/models/gemini/pro/", "qualityVerified": true },
         { "id": "gemini-3.5-flash", "name": "Gemini 3.5 Flash", "tier": "mid", "inputPerM": 1.50, "cachedInputPerM": 0.15, "outputPerM": 9.00, "batchDiscount": null, "contextWindow": null },
         { "id": "gemini-3-flash-preview", "name": "Gemini 3 Flash Preview", "tier": "mid", "inputPerM": 0.50, "cachedInputPerM": 0.05, "outputPerM": 3.00, "batchDiscount": null, "contextWindow": null },
         { "id": "gemini-3.1-flash-lite", "name": "Gemini 3.1 Flash-Lite", "tier": "budget", "inputPerM": 0.25, "cachedInputPerM": 0.025, "outputPerM": 1.50, "batchDiscount": null, "contextWindow": null }
