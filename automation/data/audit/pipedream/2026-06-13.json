@@ -1,16 +1,367 @@
 {
   "vendor": "pipedream",
-  "scrapedAt": "2026-06-13T23:12:05.883Z",
+  "scrapedAt": "2026-06-13T23:28:15.202Z",
   "url": "https://pipedream.com/pricing",
   "unit": "credits",
-  "model": "fixed",
-  "listedPrices": [
-    2,
-    29,
-    49,
-    99,
-    348,
-    588,
-    1188
-  ]
+  "model": "per-credit-slider",
+  "plans": {
+    "Basic": {
+      "base": 29,
+      "includedCredits": 2000,
+      "curve": [
+        {
+          "credits": 100,
+          "perCredit": 2
+        },
+        {
+          "credits": 4000,
+          "perCredit": 0.01
+        },
+        {
+          "credits": 8000,
+          "perCredit": 0.01
+        },
+        {
+          "credits": 16000,
+          "perCredit": 0.006
+        },
+        {
+          "credits": 25000,
+          "perCredit": 0.0042
+        },
+        {
+          "credits": 40000,
+          "perCredit": 0.0042
+        },
+        {
+          "credits": 60000,
+          "perCredit": 0.0034
+        },
+        {
+          "credits": 90000,
+          "perCredit": 0.0034
+        },
+        {
+          "credits": 140000,
+          "perCredit": 0.0027
+        },
+        {
+          "credits": 200000,
+          "perCredit": 0.0022
+        },
+        {
+          "credits": 260000,
+          "perCredit": 0.0022
+        },
+        {
+          "credits": 320000,
+          "perCredit": 0.0019
+        },
+        {
+          "credits": 380000,
+          "perCredit": 0.0019
+        },
+        {
+          "credits": 440000,
+          "perCredit": 0.0017
+        },
+        {
+          "credits": 500000,
+          "perCredit": 0.0016
+        },
+        {
+          "credits": 560000,
+          "perCredit": 0.0016
+        },
+        {
+          "credits": 630000,
+          "perCredit": 0.0014
+        },
+        {
+          "credits": 720000,
+          "perCredit": 0.0014
+        },
+        {
+          "credits": 850000,
+          "perCredit": 0.0012
+        },
+        {
+          "credits": 1000000,
+          "perCredit": 0.001
+        },
+        {
+          "credits": 1600000,
+          "perCredit": 0.001
+        },
+        {
+          "credits": 2200000,
+          "perCredit": 0.0006
+        },
+        {
+          "credits": 2800000,
+          "perCredit": 0.0006
+        },
+        {
+          "credits": 3400000,
+          "perCredit": 0.0005
+        },
+        {
+          "credits": 4000000,
+          "perCredit": 0.0004
+        },
+        {
+          "credits": 4600000,
+          "perCredit": 0.0004
+        },
+        {
+          "credits": 6000000,
+          "perCredit": 0.0004
+        },
+        {
+          "credits": 9000000,
+          "perCredit": 0.0004
+        }
+      ]
+    },
+    "Advanced": {
+      "base": 49,
+      "includedCredits": 2000,
+      "curve": [
+        {
+          "credits": 100,
+          "perCredit": 0.0003
+        },
+        {
+          "credits": 4000,
+          "perCredit": 0.015
+        },
+        {
+          "credits": 8000,
+          "perCredit": 0.015
+        },
+        {
+          "credits": 16000,
+          "perCredit": 0.009
+        },
+        {
+          "credits": 25000,
+          "perCredit": 0.0063
+        },
+        {
+          "credits": 40000,
+          "perCredit": 0.0063
+        },
+        {
+          "credits": 60000,
+          "perCredit": 0.005
+        },
+        {
+          "credits": 90000,
+          "perCredit": 0.005
+        },
+        {
+          "credits": 140000,
+          "perCredit": 0.004
+        },
+        {
+          "credits": 200000,
+          "perCredit": 0.0032
+        },
+        {
+          "credits": 260000,
+          "perCredit": 0.0032
+        },
+        {
+          "credits": 320000,
+          "perCredit": 0.0029
+        },
+        {
+          "credits": 380000,
+          "perCredit": 0.0029
+        },
+        {
+          "credits": 440000,
+          "perCredit": 0.0026
+        },
+        {
+          "credits": 500000,
+          "perCredit": 0.0024
+        },
+        {
+          "credits": 560000,
+          "perCredit": 0.0024
+        },
+        {
+          "credits": 630000,
+          "perCredit": 0.0021
+        },
+        {
+          "credits": 720000,
+          "perCredit": 0.0021
+        },
+        {
+          "credits": 850000,
+          "perCredit": 0.0018
+        },
+        {
+          "credits": 1000000,
+          "perCredit": 0.00153
+        },
+        {
+          "credits": 1600000,
+          "perCredit": 0.00153
+        },
+        {
+          "credits": 2200000,
+          "perCredit": 0.0009
+        },
+        {
+          "credits": 2800000,
+          "perCredit": 0.0009
+        },
+        {
+          "credits": 3400000,
+          "perCredit": 0.0007
+        },
+        {
+          "credits": 4000000,
+          "perCredit": 0.0006
+        },
+        {
+          "credits": 4600000,
+          "perCredit": 0.0006
+        },
+        {
+          "credits": 6000000,
+          "perCredit": 0.0006
+        },
+        {
+          "credits": 9000000,
+          "perCredit": 0.0006
+        }
+      ]
+    },
+    "Connect": {
+      "base": 99,
+      "includedCredits": 10000,
+      "curve": [
+        {
+          "credits": 10000,
+          "perCredit": 2
+        },
+        {
+          "credits": 12000,
+          "perCredit": 0.012
+        },
+        {
+          "credits": 21000,
+          "perCredit": 0.012
+        },
+        {
+          "credits": 32000,
+          "perCredit": 0.0084
+        },
+        {
+          "credits": 46000,
+          "perCredit": 0.0084
+        },
+        {
+          "credits": 71000,
+          "perCredit": 0.0067
+        },
+        {
+          "credits": 99000,
+          "perCredit": 0.0067
+        },
+        {
+          "credits": 156000,
+          "perCredit": 0.0054
+        },
+        {
+          "credits": 213000,
+          "perCredit": 0.0043
+        },
+        {
+          "credits": 270000,
+          "perCredit": 0.0043
+        },
+        {
+          "credits": 327000,
+          "perCredit": 0.0039
+        },
+        {
+          "credits": 384000,
+          "perCredit": 0.0039
+        },
+        {
+          "credits": 441000,
+          "perCredit": 0.0035
+        },
+        {
+          "credits": 498000,
+          "perCredit": 0.0035
+        },
+        {
+          "credits": 555000,
+          "perCredit": 0.0031
+        },
+        {
+          "credits": 618000,
+          "perCredit": 0.0028
+        },
+        {
+          "credits": 703000,
+          "perCredit": 0.0028
+        },
+        {
+          "credits": 815000,
+          "perCredit": 0.0024
+        },
+        {
+          "credits": 957000,
+          "perCredit": 0.0024
+        },
+        {
+          "credits": 1400000,
+          "perCredit": 0.002
+        },
+        {
+          "credits": 1970000,
+          "perCredit": 0.002
+        },
+        {
+          "credits": 2540000,
+          "perCredit": 0.0012
+        },
+        {
+          "credits": 3110000,
+          "perCredit": 0.001
+        },
+        {
+          "credits": 3680000,
+          "perCredit": 0.001
+        },
+        {
+          "credits": 4250000,
+          "perCredit": 0.0008
+        },
+        {
+          "credits": 4820000,
+          "perCredit": 0.0008
+        },
+        {
+          "credits": 6950000,
+          "perCredit": 0.0007
+        },
+        {
+          "credits": 9800000,
+          "perCredit": 0.0007
+        },
+        {
+          "credits": 4700000,
+          "perCredit": 0.0006
+        }
+      ]
+    }
+  }
 }

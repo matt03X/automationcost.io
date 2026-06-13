@@ -40,7 +40,7 @@ const NO_DIFF = process.argv.includes("--no-diff");
 const VENDORS = {
   zapier:       { url: "https://zapier.com/pricing",                 model: "slider", unit: "tasks" },
   make:         { url: "https://www.make.com/en/pricing",            model: "slider", unit: "credits" },
-  pipedream:    { url: "https://pipedream.com/pricing",              model: "fixed",  unit: "credits" },
+  pipedream:    { url: "https://pipedream.com/pricing",              model: "slider", unit: "credits" },
   n8n:          { url: "https://n8n.io/pricing/",                    model: "fixed",  unit: "executions" },
   activepieces: { url: "https://www.activepieces.com/pricing",       model: "fixed",  unit: "flows" },
   automatisch:  { url: "https://automatisch.io/",                    model: "fixed",  unit: "self-host" },
@@ -166,6 +166,78 @@ async function scrapeMake() {
   return { html, prices: { unit: "credits", monthly, annually } };
 }
 
+// Pipedream: 3 nezávislé slidery (Basic/Advanced/Connect), každý 0..~1800.
+// Základní cena plánu je fixní ($29/$49/$99), ale slider posouvá objem kreditů
+// a dopočítává klesající sazbu "$X per credit" (množstevní sleva). Pro každý plán
+// projedeme slider a sbíráme křivku {credits, perCredit}. Plný měsíční odhad si
+// engine spočítá: základ plánu + (objem nad zahrnuté kredity) × perCredit.
+const PD_PLANS = [
+  { name: "Basic", base: 29, includedCredits: 2000 },
+  { name: "Advanced", base: 49, includedCredits: 2000 },
+  { name: "Connect", base: 99, includedCredits: 10000 },
+];
+async function scrapePipedream() {
+  const page = await newPage();
+  await page.goto(VENDORS.pipedream.url, { waitUntil: "domcontentloaded", timeout: 60000 });
+  await page.waitForTimeout(4500);
+  const html = await page.content();
+
+  const sliderCount = await page.$$eval("input[type=range]", (els) => els.length);
+  if (sliderCount < 3) throw new Error(`čekal 3 slidery, našel ${sliderCount}`);
+
+  // přečte (credits/mo, $/credit) z karty patřící slideru `idx`
+  async function readCard(idx) {
+    return await page.evaluate((i) => {
+      const s = document.querySelectorAll("input[type=range]")[i];
+      let card = s.parentElement;
+      for (let h = 0; h < 8 && card; h++) {
+        const t = card.innerText || "";
+        if (/per\b/.test(t) && /credits?\s*\/mo/i.test(t)) break;
+        card = card.parentElement;
+      }
+      const t = card ? card.innerText : "";
+      const credits = (t.match(/([\d,]+)\s*credits?\s*\/mo/i) || [])[1];
+      const perCredit = (t.match(/\$([\d.]+)\s*per\b/) || [])[1];
+      return {
+        credits: credits ? Number(credits.replace(/,/g, "")) : null,
+        perCredit: perCredit ? Number(perCredit) : null,
+      };
+    }, idx);
+  }
+  function setSlider(idx, val) {
+    return page.evaluate(({ i, v }) => {
+      const el = document.querySelectorAll("input[type=range]")[i];
+      const set = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+      set.call(el, String(v));
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    }, { i: idx, v: val });
+  }
+
+  const plans = {};
+  for (let i = 0; i < PD_PLANS.length; i++) {
+    const meta = PD_PLANS[i];
+    const slider = (await page.$$("input[type=range]"))[i];
+    const max = Number(await slider.getAttribute("max")) || 1800;
+    const curve = [];
+    const seen = new Set();
+    // ~30 vzorků přes celý rozsah stačí na hladkou klesající křivku
+    for (let v = 0; v <= max; v += Math.ceil(max / 30)) {
+      await setSlider(i, v);
+      await page.waitForTimeout(300);
+      const row = await readCard(i);
+      if (row.credits && row.perCredit && !seen.has(row.credits)) {
+        seen.add(row.credits);
+        curve.push(row);
+      }
+    }
+    if (curve.length < 4) throw new Error(`${meta.name}: jen ${curve.length} bodů křivky`);
+    plans[meta.name] = { base: meta.base, includedCredits: meta.includedCredits, curve };
+  }
+  await page.close();
+  return { html, prices: { unit: "credits", model: "per-credit-slider", plans } };
+}
+
 // Fixní ceníky: ulož HTML + vytáhni $N /mo ceny z viditelného textu jako hrubý otisk.
 async function scrapeFixed(v) {
   const page = await newPage();
@@ -182,6 +254,7 @@ async function scrapeFixed(v) {
 async function scrapeVendor(v) {
   if (v === "zapier") return scrapeZapier();
   if (v === "make") return scrapeMake();
+  if (v === "pipedream") return scrapePipedream();
   return scrapeFixed(v);
 }
 
@@ -194,6 +267,21 @@ function diffPrices(vendor, oldP, newP) {
     const a = JSON.stringify(oldP.listedPrices || []);
     const b = JSON.stringify(newP.listedPrices || []);
     if (a !== b) changes.push({ vendor, kind: "listedPrices", old: oldP.listedPrices, neu: newP.listedPrices });
+    return changes;
+  }
+  if (model === "per-credit-slider") {
+    // Pipedream: porovnej základ plánu + sazbu $/credit při stejných objemech.
+    for (const name of Object.keys(newP.plans || {})) {
+      const nu = newP.plans[name], od = (oldP.plans || {})[name];
+      if (!od) continue;
+      if (od.base !== nu.base) changes.push({ vendor, plan: name, kind: "base", old: od.base, neu: nu.base });
+      const oldCurve = Object.fromEntries((od.curve || []).map((r) => [r.credits, r.perCredit]));
+      for (const r of nu.curve || []) {
+        if (oldCurve[r.credits] !== undefined && oldCurve[r.credits] !== r.perCredit) {
+          changes.push({ vendor, plan: name, kind: "perCredit", credits: r.credits, old: oldCurve[r.credits], neu: r.perCredit });
+        }
+      }
+    }
     return changes;
   }
   // slider: porovnej cenu per (interval, units, plan)
