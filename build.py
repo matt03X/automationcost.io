@@ -48,7 +48,7 @@ DEMO_WARN = "/* generováno build.py z automation/data/tools.json — needituj r
 DEMO_VOLUMES = [1000, 5000, 20000, 100000]
 DEMO_TOOLS = [("n8n", "n8n"), ("make", "Make"), ("pipedream", "Pipedream"), ("zapier", "Zapier")]
 DEMO_WORKFLOWS = 3
-DEMO_FOOT_TEXT = "*n8n ≈ $8/mo VPS · ~ price estimated (custom tier)"
+DEMO_FOOT_TEXT = "*self-hosted = server hardware, not a tool fee (~$8–66/mo by volume) · ~ price estimated (custom tier)"
 
 AN_START = "<!-- ANALYTICS (build.py) -->"
 AN_END = "<!-- /ANALYTICS -->"
@@ -84,6 +84,14 @@ def js_overage(ov) -> str:
     if ov is None:
         return "null"
     return f"{{ per: {ov['per']}, usd: {ov['usd']} }}"
+
+
+def js_selfhosthw(tiers) -> str:
+    """selfHostHw = stupňovité VPS prahy podle objemu (upTo == null → Infinity)."""
+    if not tiers:
+        return "null"
+    cells = ", ".join(f"{{ upTo: {js_limit(t.get('upTo'))}, usd: {t['usd']} }}" for t in tiers)
+    return f"[{cells}]"
 
 
 # ---------------------------------------------------------------------------
@@ -128,7 +136,8 @@ def render_calculator(tools: list[dict]) -> str:
         lines.append("    plans: [")
         for p in priced:
             lines.append("      " + render_plan(p, include_note=True) + ",")
-        lines.append(f"    ], overage: {js_overage(t.get('overage'))} }},")
+        lines.append(f"    ], overage: {js_overage(t.get('overage'))}, "
+                     f"selfHostHw: {js_selfhosthw(t.get('selfHostHw'))} }},")
     lines.append("];")
     return "\n".join(lines)
 
@@ -168,6 +177,7 @@ def render_compare(tools: list[dict]) -> str:
             lines.append("      " + render_plan(p, include_note=False) + ",")
         lines.append("    ],")
         lines.append(f"    overage: {js_overage(t.get('overage'))},")
+        lines.append(f"    selfHostHw: {js_selfhosthw(t.get('selfHostHw'))},")
         lines.append(f'    pros: [{", ".join(js_str(x) for x in t["pros"])}],')
         lines.append(f'    cons: [{", ".join(js_str(x) for x in t["cons"])}],')
         lines.append("  },")
@@ -178,6 +188,18 @@ def render_compare(tools: list[dict]) -> str:
 # ---------------------------------------------------------------------------
 # Hero price demo (homepage) — Python port calcCost z automation/calculator.html
 # ---------------------------------------------------------------------------
+
+def self_host_hw_cost(tool: dict, ops: int):
+    """VPS cena pro daný objem (selfHostHw prahy, upTo=None → neomezeno).
+    Zrcadlí JS selfHostHwCost(). None = tool nemá self-host hardware škálu."""
+    tiers = tool.get("selfHostHw")
+    if not tiers:
+        return None
+    for t in tiers:
+        if t.get("upTo") is None or ops <= t["upTo"]:
+            return t["usd"]
+    return tiers[-1]["usd"]
+
 
 def cheapest_monthly(tool: dict, ops: int, workflows: int = DEMO_WORKFLOWS) -> dict | None:
     """Nejlevnější měsíční cena nástroje při daném objemu (hostPref=any, monthly).
@@ -197,7 +219,11 @@ def cheapest_monthly(tool: dict, ops: int, workflows: int = DEMO_WORKFLOWS) -> d
         wl = p.get("workflowLimit")
         if wl is not None and wl < workflows:
             continue
-        cost = p["monthlyUsd"]
+        # čistě open-source self-host plán ($8 placeholder): reálná cena = VPS,
+        # který škáluje s objemem. Placené self-host licence (n8n Business $667)
+        # si drží vlastní cenu. Zrcadlí JS hwPlan větev v calcCost().
+        hw_plan = p.get("selfHostOnly") and p["monthlyUsd"] <= 8 and tool.get("selfHostHw")
+        cost = self_host_hw_cost(tool, ops) if hw_plan else p["monthlyUsd"]
         over = 0
         inc = p.get("opsIncluded")  # None = unlimited
         if not p.get("selfHostOnly") and inc is not None and ops > inc:
