@@ -10,11 +10,13 @@
       "currency": "monthlyUsd = face value; n8n bills in EUR (annual-billing price recorded, € label in plan note). No FX conversion — a rate change would fake a changelog entry."
     },
     "todo": [
-      "pipedream: additional-credit (overage) rate is no longer public on the pricing page — current $10/1k kept from earlier verification, re-verify against billing docs",
-      "automatisch: Cloud plan removed 2026-06-12 — price no longer published anywhere public (homepage only says 'affordable cloud solution'); restore only with a verifiable price",
-      "make: vendor renamed operations -> credits (prices unchanged, 1 module action = 1 credit; code execution 2 credits/sec) — watch copy on pages"
+      "pipedream: additional-credit (overage) rate removed from public pricing page (verified 2026-06-13 against saved pricing snapshot) — overage now Contact Sales only, tool-level overage=null; Business=custom tier carries the over-volume estimate. Free 100cr/3wf still exists in-app but is 'discontinued' for new signups.",
+      "pipedream: pricing page now also meters AI tokens (Basic 20M/mo, Advanced+Connect 50M/mo) on top of credits — not modeled (we price on credits/ops only); noted in plan notes.",
+      "automatisch: Cloud plan removed 2026-06-12 — Elestio managed hosting is the only paid option ($18/mo NC-MEDIUM 2C/4G and up); self-host + VPS remains the modeled cost.",
+      "make: vendor renamed operations -> credits (prices unchanged, 1 module action = 1 credit; code execution 2 credits/sec) — watch copy on pages",
+      "selfHostHw: VPS hardware cost scales with volume (selfHostHw tiers) — derived from Elestio/Netcup list (NC-MEDIUM 2C/4G $18, NC-LARGE 4C/8G $33, NC-XLARGE 8C/16G $66). Re-check when those list prices move."
     ],
-    "last_reviewed": "2026-06-12"
+    "last_reviewed": "2026-06-13"
   },
   "tools": [
     {
@@ -45,7 +47,7 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted + VPS (~$8/mo)"
+          "note": "Self-hosted — server hardware only (not a tool fee)"
         },
         {
           "name": "Cloud Starter",
@@ -77,6 +79,24 @@
         }
       ],
       "overage": null,
+      "selfHostHw": [
+        {
+          "upTo": 10000,
+          "usd": 8
+        },
+        {
+          "upTo": 100000,
+          "usd": 18
+        },
+        {
+          "upTo": 500000,
+          "usd": 33
+        },
+        {
+          "upTo": null,
+          "usd": 66
+        }
+      ],
       "pros": [
         "Truly unlimited self-hosted",
         "Best AI/LLM nodes",
@@ -193,14 +213,14 @@
           "monthlyUsd": 29,
           "opsIncluded": 2000,
           "workflowLimit": 10,
-          "note": "Basic plan"
+          "note": "Basic — 2k credits + 20M AI tokens/mo, 10 workflows"
         },
         {
           "name": "Advanced",
           "monthlyUsd": 49,
           "opsIncluded": 2000,
           "workflowLimit": null,
-          "note": "Advanced plan"
+          "note": "Advanced — 2k credits + 50M AI tokens/mo, unlimited workflows"
         },
         {
           "name": "Connect",
@@ -216,17 +236,14 @@
           "workflowLimit": null
         }
       ],
-      "overage": {
-        "per": 1000,
-        "usd": 10
-      },
+      "overage": null,
       "pros": [
         "Run Node.js/Python in workflows",
         "Most integrations (2,000+)",
         "Best for devs"
       ],
       "cons": [
-        "Expensive overage",
+        "Overage no longer public — quote only",
         "Very limited free tier",
         "No self-host"
       ]
@@ -325,7 +342,7 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted + VPS (~$8/mo)"
+          "note": "Self-hosted — server hardware only (not a tool fee)"
         },
         {
           "name": "Cloud Free",
@@ -350,6 +367,24 @@
         }
       ],
       "overage": null,
+      "selfHostHw": [
+        {
+          "upTo": 10000,
+          "usd": 8
+        },
+        {
+          "upTo": 100000,
+          "usd": 18
+        },
+        {
+          "upTo": 500000,
+          "usd": 33
+        },
+        {
+          "upTo": null,
+          "usd": 66
+        }
+      ],
       "pros": [
         "True MIT license — no restrictions",
         "No-code UI like Zapier",
@@ -389,10 +424,28 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted + VPS (~$8/mo)"
+          "note": "Self-hosted — server hardware only (not a tool fee)"
         }
       ],
       "overage": null,
+      "selfHostHw": [
+        {
+          "upTo": 10000,
+          "usd": 8
+        },
+        {
+          "upTo": 100000,
+          "usd": 18
+        },
+        {
+          "upTo": 500000,
+          "usd": 33
+        },
+        {
+          "upTo": null,
+          "usd": 66
+        }
+      ],
       "pros": [
         "Simplest setup",
         "Full data control (GDPR)",
@@ -432,10 +485,28 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted + VPS (~$8/mo)"
+          "note": "Self-hosted — server hardware only (not a tool fee)"
         }
       ],
       "overage": null,
+      "selfHostHw": [
+        {
+          "upTo": 10000,
+          "usd": 8
+        },
+        {
+          "upTo": 100000,
+          "usd": 18
+        },
+        {
+          "upTo": 500000,
+          "usd": 33
+        },
+        {
+          "upTo": null,
+          "usd": 66
+        }
+      ],
       "pros": [
         "Apache 2.0 — completely free",
         "Node.js code steps",

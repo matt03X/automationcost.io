@@ -59,7 +59,7 @@
           {
             "@type": "Question",
             "name": "Why does n8n often rank cheapest?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Because n8n can be self-hosted — the Community Edition is free and you only pay for a server, which we assume at roughly $8/mo for a small VPS (shown as “self-hosted*”). If self-hosting isn't an option for you, switch Hosting preference to “Cloud only” in the Volume & budget step and the ranking recalculates with cloud plans only." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Because n8n can be self-hosted — the Community Edition software is free, so the only cost is the server it runs on. That is hardware, not a tool fee, and it scales with volume: we estimate roughly $8/mo for a small VPS at low volume, up to ~$66/mo for a large one at high volume. If self-hosting isn't an option for you, switch Hosting preference to “Cloud only” in the Volume & budget step and the ranking recalculates with cloud plans only." }
           }
         ]
       }
@@ -757,7 +757,7 @@
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Why does n8n often rank cheapest?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Because n8n can be self-hosted — the Community Edition is free and you only pay for a server, which we assume at roughly $8/mo for a small VPS (shown as “self-hosted*”). If self-hosting isn't an option for you, switch Hosting preference to “Cloud only” in the Volume & budget step and the ranking recalculates with cloud plans only.</div>
+      <div class="faq-a">Because n8n can be self-hosted — the Community Edition software is free, so the only cost is the server it runs on. That is hardware, not a tool fee, and it scales with volume: we estimate roughly $8/mo for a small VPS at low volume, up to ~$66/mo for a large one at high volume. If self-hosting isn't an option for you, switch Hosting preference to “Cloud only” in the Volume & budget step and the ranking recalculates with cloud plans only.</div>
     </div>
   </section>
 
@@ -1837,12 +1837,12 @@ const TOOLS = [
     slug: "n8n", name: "n8n", selfHostable: true, aiFeatures: true, integrations: 400,
     homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: false,
     plans: [
-      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
       { name: "Cloud Starter", monthlyUsd: 20, opsIncluded: 2500, workflowLimit: Infinity, note: "Cloud Starter (€20/mo billed annually)" },
       { name: "Cloud Pro", monthlyUsd: 50, opsIncluded: 10000, workflowLimit: Infinity, note: "Cloud Pro (€50/mo billed annually)" },
       { name: "Business", monthlyUsd: 667, opsIncluded: 40000, workflowLimit: Infinity, selfHostOnly: true, note: "Business — self-hosted license (€667/mo billed annually)" },
       { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
-    ], overage: null },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
   {
     slug: "make", name: "Make", selfHostable: false, aiFeatures: true, integrations: 1500,
     homepage: "https://www.make.com", affiliateUrl: "https://www.make.com/en/register?pc=wizardcost", hasAffiliate: true,
@@ -1852,17 +1852,17 @@ const TOOLS = [
       { name: "Pro", monthlyUsd: 16, opsIncluded: 10000, workflowLimit: Infinity, note: "Pro plan" },
       { name: "Teams", monthlyUsd: 29, opsIncluded: 10000, workflowLimit: Infinity, note: "Teams plan" },
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
-    ], overage: { per: 10000, usd: 9 } },
+    ], overage: { per: 10000, usd: 9 }, selfHostHw: null },
   {
     slug: "pipedream", name: "Pipedream", selfHostable: false, aiFeatures: true, integrations: 2000,
     homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, overage: null, note: "Free tier" },
-      { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 10, note: "Basic plan" },
-      { name: "Advanced", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity, note: "Advanced plan" },
+      { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 10, note: "Basic — 2k credits + 20M AI tokens/mo, 10 workflows" },
+      { name: "Advanced", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity, note: "Advanced — 2k credits + 50M AI tokens/mo, unlimited workflows" },
       { name: "Connect", monthlyUsd: 99, opsIncluded: 10000, workflowLimit: Infinity, note: "Connect — 10k credits (developer plan)" },
       { custom: true, name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
-    ], overage: { per: 1000, usd: 10 } },
+    ], overage: null, selfHostHw: null },
   {
     slug: "zapier", name: "Zapier", selfHostable: false, aiFeatures: true, integrations: 9000,
     homepage: "https://zapier.com", affiliateUrl: "https://zapier.com", hasAffiliate: false,
@@ -1871,28 +1871,28 @@ const TOOLS = [
       { name: "Professional", monthlyUsd: 19.99, opsIncluded: 750, workflowLimit: Infinity, note: "Professional (750 tasks, billed annually)" },
       { name: "Team", monthlyUsd: 69, opsIncluded: 2000, workflowLimit: Infinity, note: "Team (2,000 tasks, billed annually)" },
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
-    ], overage: { per: 1000, usd: 25 } },
+    ], overage: { per: 1000, usd: 25 }, selfHostHw: null },
   {
     slug: "activepieces", name: "Activepieces", selfHostable: true, aiFeatures: true, integrations: 747,
     homepage: "https://www.activepieces.com", affiliateUrl: "https://www.activepieces.com", hasAffiliate: false,
     plans: [
-      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
       { name: "Cloud Free", monthlyUsd: 0, opsIncluded: Infinity, workflowLimit: 10, note: "10 free active flows, unlimited runs" },
       { name: "Standard (20 flows)", monthlyUsd: 50, opsIncluded: Infinity, workflowLimit: 20, note: "$5/active flow after 10 free — priced at 20 flows" },
       { name: "Standard (30 flows)", monthlyUsd: 100, opsIncluded: Infinity, workflowLimit: 30, note: "$5/active flow after 10 free — priced at 30 flows" },
-    ], overage: null },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
   {
     slug: "automatisch", name: "Automatisch", selfHostable: true, aiFeatures: false, integrations: 50,
     homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
     plans: [
-      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
-    ], overage: null },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
   {
     slug: "node-red", name: "Node-RED", selfHostable: true, aiFeatures: false, integrations: 5000,
     homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
     plans: [
-      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted + VPS (~$8/mo)" },
-    ], overage: null },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
 ];
 /* DATA:TOOLS:END */
 
@@ -1978,6 +1978,18 @@ let maxBudget = 50;
 let selectedIntegrations = [];
 let lastEstimateSig = null; // profile the sliders were last auto-estimated for
 const ANNUAL_DISCOUNT = 0.8;
+
+// Self-host hardware cost scales with volume: a busier instance needs a bigger
+// VPS. selfHostHw (tools.json) = tiers {upTo, usd} from Elestio/Netcup list
+// prices. This is the SERVER bill, NOT a tool fee — the software is free.
+// Returns the monthly $ for the smallest tier that covers `ops`.
+function selfHostHwCost(tool, ops) {
+  if (!tool.selfHostHw) return null;
+  for (const t of tool.selfHostHw) {
+    if (t.upTo === Infinity || ops <= t.upTo) return t.usd;
+  }
+  return tool.selfHostHw[tool.selfHostHw.length - 1].usd;
+}
 
 // ── Wizard navigation ─────────────────────────────────────────────────────────
 function goStep(n) {
@@ -2273,7 +2285,11 @@ function calcCost(tool, ops, workflows) {
     if (hostPref === "cloud" && plan.selfHostOnly) continue;
     if (hostPref === "selfhost" && !plan.selfHostOnly) continue;
     if (plan.workflowLimit !== Infinity && plan.workflowLimit < workflows) continue;
-    let cost = plan.monthlyUsd;
+    // Pure open-source self-host plan ($8 placeholder): real cost is the VPS,
+    // which scales with volume. Paid self-host licenses (e.g. n8n Business $667)
+    // keep their own price and are left untouched.
+    const hwPlan = plan.selfHostOnly && plan.monthlyUsd <= 8 && tool.selfHostHw;
+    let cost = hwPlan ? selfHostHwCost(tool, ops) : plan.monthlyUsd;
     if (billing === "annual" && !plan.selfHostOnly && plan.monthlyUsd > 0) cost = Math.round(cost * ANNUAL_DISCOUNT);
     if (!plan.selfHostOnly && ops > plan.opsIncluded) {
       // per-plan overage přebíjí tool-level; null = plán nemá pay-as-you-go
@@ -2281,7 +2297,7 @@ function calcCost(tool, ops, workflows) {
       if (ov) cost = Math.round((cost + Math.ceil((ops - plan.opsIncluded) / ov.per) * ov.usd) * 100) / 100; // na centy ($19.99 + $25 ≠ 44.9899…)
       else continue;
     }
-    if (best === null || cost < best.cost) best = { cost, plan };
+    if (best === null || cost < best.cost) best = { cost, plan, hwOnly: !!hwPlan };
   }
 
   // Custom / "contact sales" tier: estimate a price so the tool doesn't
@@ -2458,7 +2474,7 @@ function renderResults() {
         </div>
         <div class="result-cost-col">
           <div class="result-cost ${costClass(cost)}">${cost === 0 ? "Free" : (costResult.estimated ? "~$" : "$") + cost + "/mo"}</div>
-          <div class="result-cost-note">${costResult.plan.name}${costResult.estimated ? " · estimate" : ""}</div>
+          <div class="result-cost-note">${costResult.hwOnly ? "server hardware · not a tool fee" : costResult.plan.name + (costResult.estimated ? " · estimate" : "")}</div>
         </div>
         <div class="result-cta-col">
           <a href="${tool.affiliateUrl}" target="_blank" rel="noopener${tool.hasAffiliate ? " sponsored" : ""}"
