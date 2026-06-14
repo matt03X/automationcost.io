@@ -64,6 +64,29 @@ function previousSnapshot(v) {
   catch { return null; }
 }
 
+// ── Billing fingerprint (zachytí změny BILLINGU mimo cenu) ──────────────────
+// Kurátované billing-relevantní řádky z vyrenderované stránky: zahrnuté kvóty,
+// limity (workflows, concurrency, users), AI tokeny, overage, A PRAVIDLA účtování
+// ("2 credits per 1 sec of code execution", "1 module = 1 credit"). Ověřeno
+// empiricky: dva běhy = 0 šumu → stabilní, vhodné na alarm. Diff den-proti-dni
+// → přesně řekne, co se v billingu změnilo, i když se cena nezměnila.
+const BILLING_KW = /credit|task|execution|workflow|operation|module|\bGB\b|\bMB\b|user|seat|project|token|included|unlimited|active|concurrent|per |\/mo|month|retention|insight|overage|API|webhook|SSO|SAML|RBAC|audit/i;
+function extractBillingLines(text) {
+  const out = new Set();
+  for (const raw of (text || "").split("\n")) {
+    const l = raw.replace(/\s+/g, " ").trim();
+    if (!l || l.length > 60) continue;                       // dlouhé = marketing copy
+    if (!BILLING_KW.test(l)) continue;                       // jen billing-relevantní
+    if (!/\d/.test(l) && !/unlimited/i.test(l)) continue;    // číslo nebo "unlimited"
+    out.add(l.toLowerCase());
+  }
+  return [...out].sort();
+}
+async function billingLines(page) {
+  try { return extractBillingLines(await page.evaluate(() => document.body.innerText)); }
+  catch { return []; }
+}
+
 // ── scrape jednotlivých vendorů ─────────────────────────────────────────────
 let _browser = null;
 async function browser() {
@@ -83,6 +106,7 @@ async function scrapeZapier() {
   const res = await page.goto(VENDORS.zapier.url, { waitUntil: "domcontentloaded", timeout: 60000 });
   if (!res || !res.ok()) throw new Error(`HTTP ${res ? res.status() : "?"}`);
   const html = await page.content();
+  const bl = await billingLines(page);
   await page.close();
   const re = /\{"planType":"([^"]+)","tasks":(\d+),"id":\d+,"name":"[^"]*","shortName":"[^"]*","amount":(\d+),"actions":\d+,"interval":"([^"]+)"\}/g;
   const byI = { month: {}, year: {} };
@@ -95,7 +119,7 @@ async function scrapeZapier() {
   }
   if (!n) throw new Error("matice nenalezena (změna formátu?)");
   const rows = (o) => Object.keys(o).map(Number).sort((a, b) => a - b).map((u) => ({ units: u, plans: o[u] }));
-  return { html, prices: { unit: "tasks", monthly: rows(byI.month), annually: rows(byI.year), points: n } };
+  return { html, prices: { unit: "tasks", monthly: rows(byI.month), annually: rows(byI.year), points: n, billingLines: bl } };
 }
 
 // Make: slider 0..18, ceny generuje JS lokálně → projet pozice pro monthly i annually.
@@ -162,8 +186,9 @@ async function scrapeMake() {
   const monthly = await sweep();
   let annually = [];
   if (await setPeriod("pay annually")) annually = await sweep();
+  const bl = await billingLines(page);
   await page.close();
-  return { html, prices: { unit: "credits", monthly, annually } };
+  return { html, prices: { unit: "credits", monthly, annually, billingLines: bl } };
 }
 
 // Pipedream: 3 slidery (Basic/Advanced/Connect). Cena = STUPŇOVITÁ TARIFNÍ TABULKA
@@ -250,8 +275,9 @@ async function scrapePipedream() {
     if (bands.length < 8) throw new Error(`${meta.name}: jen ${bands.length} pásem (sweep selhal?)`);
     plans[meta.name] = { base: meta.base, includedCredits: meta.includedCredits, bands };
   }
+  const bl = await billingLines(page);
   await page.close();
-  return { html, prices: { unit: "credits", model: "per-credit-bands", plans } };
+  return { html, prices: { unit: "credits", model: "per-credit-bands", plans, billingLines: bl } };
 }
 
 // n8n: Starter má fixní objem, ale Pro a Business mají DROPDOWN selektor objemu
@@ -325,9 +351,10 @@ async function scrapeN8n() {
   const monthly = { starter: await starterEur(), billingOk: monthlyOk, dropdowns: await readDropdowns() };
   const annuallyOk = await setBilling("annually");
   const annually = { starter: await starterEur(), billingOk: annuallyOk, dropdowns: await readDropdowns() };
+  const bl = await billingLines(page);
   await page.close();
   if (!monthly.dropdowns.length) throw new Error("n8n: žádné dropdown options (změna struktury?)");
-  return { html, prices: { unit: "executions", currency: "EUR", model: "dropdown-volume", monthly, annually } };
+  return { html, prices: { unit: "executions", currency: "EUR", model: "dropdown-volume", monthly, annually, billingLines: bl } };
 }
 
 // Fixní ceníky: ulož HTML + vytáhni $N /mo ceny z viditelného textu jako hrubý otisk.
@@ -337,10 +364,11 @@ async function scrapeFixed(v) {
   await page.waitForTimeout(3500);
   const html = await page.content();
   const text = await page.evaluate(() => document.body.innerText);
+  const bl = extractBillingLines(text);
   await page.close();
   const prices = [...new Set([...text.matchAll(/\$\s?([\d,]+(?:\.\d{2})?)/g)].map((m) => Number(m[1].replace(/,/g, ""))))]
     .filter((n) => n > 0).sort((a, b) => a - b);
-  return { html, prices: { unit: VENDORS[v].unit, model: "fixed", listedPrices: prices } };
+  return { html, prices: { unit: VENDORS[v].unit, model: "fixed", listedPrices: prices, billingLines: bl } };
 }
 
 async function scrapeVendor(v) {
@@ -355,25 +383,39 @@ async function scrapeVendor(v) {
 function diffPrices(vendor, oldP, newP) {
   const changes = [];
   if (!oldP) return changes;
+
+  // BILLING diff (mimo cenu): zahrnuté kvóty, limity, AI tokeny, overage A
+  // PRAVIDLA účtování — zachycené jako kurátované billing-řádky. Pokryje díru,
+  // kterou cenový diff nevidí (Make "operations→credits", změna included quóty,
+  // nový limit workflows…). Stabilní (0 šumu ověřeno) → smí spustit alarm.
+  const oldBL = oldP.billingLines, newBL = newP.billingLines;
+  if (Array.isArray(oldBL) && Array.isArray(newBL)) {
+    const oldSet = new Set(oldBL), newSet = new Set(newBL);
+    const added = newBL.filter((l) => !oldSet.has(l));
+    const removed = oldBL.filter((l) => !newSet.has(l));
+    for (const l of removed) changes.push({ vendor, kind: "billing", change: "removed", line: l, desc: `${vendor}: billing řádek ZMIZEL → "${l}"` });
+    for (const l of added) changes.push({ vendor, kind: "billing", change: "added", line: l, desc: `${vendor}: billing řádek PŘIBYL → "${l}"` });
+  }
+
   const model = newP.model || (newP.monthly ? "slider" : "fixed");
   if (model === "fixed") {
     const a = JSON.stringify(oldP.listedPrices || []);
     const b = JSON.stringify(newP.listedPrices || []);
-    if (a !== b) changes.push({ vendor, kind: "listedPrices", old: oldP.listedPrices, neu: newP.listedPrices });
+    if (a !== b) changes.push({ vendor, kind: "listedPrices", old: oldP.listedPrices, neu: newP.listedPrices, desc: `${vendor}: ceník fixních plánů se změnil → ${b}` });
     return changes;
   }
   if (model === "dropdown-volume") {
     // n8n: porovnej cenu (EUR) per (billing, dropdown, units).
     for (const billing of ["monthly", "annually"]) {
       const oB = (oldP[billing] || {}), nB = (newP[billing] || {});
-      if (oB.starter !== nB.starter) changes.push({ vendor, billing, plan: "Starter", old: oB.starter, neu: nB.starter });
+      if (oB.starter !== nB.starter) changes.push({ vendor, billing, plan: "Starter", old: oB.starter, neu: nB.starter, desc: `n8n Starter (${billing}): €${oB.starter} → €${nB.starter}` });
       for (let di = 0; di < (nB.dropdowns || []).length; di++) {
         const nd = nB.dropdowns[di], od = (oB.dropdowns || [])[di];
         if (!od) continue;
         const oMap = Object.fromEntries(od.options.map((o) => [o.units, o.eur]));
         for (const o of nd.options) {
           if (oMap[o.units] !== undefined && oMap[o.units] !== o.eur) {
-            changes.push({ vendor, billing, dropdown: nd.label, units: o.units, old: oMap[o.units], neu: o.eur });
+            changes.push({ vendor, billing, dropdown: nd.label, units: o.units, old: oMap[o.units], neu: o.eur, desc: `n8n ${nd.label} @${o.units} exec (${billing}): €${oMap[o.units]} → €${o.eur}` });
           }
         }
       }
@@ -398,11 +440,11 @@ function diffPrices(vendor, oldP, newP) {
       // → neporovnatelné, NEhlásit jako změnu (jinak by migrace formátu = falešný alarm)
       const fmtOk = (b) => (b || []).length && b.every((x) => "upTo" in x);
       if (!fmtOk(od.bands) || !fmtOk(nu.bands)) continue;
-      if (od.base !== nu.base) changes.push({ vendor, plan: name, kind: "base", old: od.base, neu: nu.base });
+      if (od.base !== nu.base) changes.push({ vendor, plan: name, kind: "base", old: od.base, neu: nu.base, desc: `Pipedream ${name}: základ plánu $${od.base} → $${nu.base}/mo` });
       for (const probe of PROBES) {
         const o = rateAt(od.bands, probe), n = rateAt(nu.bands, probe);
         if (o != null && n != null && o !== n) {
-          changes.push({ vendor, plan: name, kind: "perCredit", atCredits: probe, old: o, neu: n });
+          changes.push({ vendor, plan: name, kind: "perCredit", atCredits: probe, old: o, neu: n, desc: `Pipedream ${name}: sazba @${probe.toLocaleString()} kreditů $${o} → $${n}/credit` });
         }
       }
     }
@@ -416,7 +458,7 @@ function diffPrices(vendor, oldP, newP) {
       if (!prev) continue;
       for (const plan of Object.keys(row.plans)) {
         if (prev[plan] !== undefined && prev[plan] !== row.plans[plan]) {
-          changes.push({ vendor, interval, units: row.units, plan, old: prev[plan], neu: row.plans[plan] });
+          changes.push({ vendor, interval, units: row.units, plan, old: prev[plan], neu: row.plans[plan], desc: `${vendor} ${plan} @${Number(row.units).toLocaleString()} (${interval}): $${prev[plan]} → $${row.plans[plan]}` });
         }
       }
     }
@@ -438,8 +480,14 @@ async function scrapeVendorRetry(v, attempts = 3) {
   throw lastErr;
 }
 
+// export pro unit testy (diff logika bez scrapingu); IIFE runner běží jen při
+// přímém spuštění (node price-audit.js), ne při require z testu.
+if (require.main !== module) {
+  module.exports = { diffPrices, extractBillingLines };
+}
+
 // ── runner ───────────────────────────────────────────────────────────────────
-(async () => {
+async function main() {
   const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
   const targets = args.length ? args : Object.keys(VENDORS);
   fs.mkdirSync(AUDIT_DIR, { recursive: true });
@@ -492,16 +540,26 @@ async function scrapeVendorRetry(v, attempts = 3) {
 
   // change report + history (pro grafy)
   if (!NO_DIFF) {
-    const report = { date: TODAY, generatedAt: new Date().toISOString(), changeCount: allChanges.length, changes: allChanges };
+    const billingChanges = allChanges.filter((c) => c.kind === "billing").length;
+    const priceChanges = allChanges.length - billingChanges;
+    const report = {
+      date: TODAY, generatedAt: new Date().toISOString(),
+      changeCount: allChanges.length, priceChanges, billingChanges,
+      changes: allChanges,
+    };
     fs.writeFileSync(path.join(AUDIT_DIR, `changes-${TODAY}.json`), JSON.stringify(report, null, 2) + "\n", "utf8");
     if (allChanges.length) {
       const line = allChanges.map((c) => JSON.stringify({ d: TODAY, ...c })).join("\n") + "\n";
       fs.appendFileSync(path.join(AUDIT_DIR, "price-history.jsonl"), line, "utf8");
     }
-    console.log(`\n📋 ${allChanges.length} cenových změn → audit/changes-${TODAY}.json`);
+    console.log(`\n📋 ${allChanges.length} změn (${priceChanges} cenových, ${billingChanges} billing) → audit/changes-${TODAY}.json`);
+    // čitelný výpis CO se mění (desc) — toto vidí owner v CI logu / mailu
+    for (const c of allChanges) console.log(`   • ${c.desc || JSON.stringify(c)}`);
   }
   if (blocked) console.log(`⚠ ${blocked} vendor(ů) nedostupných (bot wall / CI IP) — neověřeno, ne fail.`);
   // exit 1 JEN při skutečné chybě. Bot-wall (blocked) = exit 0 → cron nekřičí
   // falešně. Když vendor zítra projde, audit doběhne normálně.
   process.exit(failures ? 1 : 0);
-})();
+}
+
+if (require.main === module) main();

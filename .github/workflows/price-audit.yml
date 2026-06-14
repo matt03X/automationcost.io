@@ -47,17 +47,22 @@ jobs:
             git commit -m "audit: cenové snapshoty ${DATE} (${CHANGES} změn)"
             git push
           fi
-      - name: ALARM — fail (= mail ownerovi) jen při REÁLNÉ změně ceny
+      - name: ALARM — fail (= mail ownerovi) jen při REÁLNÉ změně (cena NEBO billing)
         if: always()
         run: |
           DATE=$(date -u +%Y-%m-%d)
           F="automation/data/audit/changes-${DATE}.json"
           CHANGES=$(node -e "try{console.log(require('./'+process.argv[1]).changeCount)}catch{console.log(0)}" "$F" 2>/dev/null || echo 0)
-          echo "Detekováno změn cen: ${CHANGES}"
+          PRICE=$(node -e "try{console.log(require('./'+process.argv[1]).priceChanges)}catch{console.log(0)}" "$F" 2>/dev/null || echo 0)
+          BILL=$(node -e "try{console.log(require('./'+process.argv[1]).billingChanges)}catch{console.log(0)}" "$F" 2>/dev/null || echo 0)
+          echo "Detekováno změn: ${CHANGES} (${PRICE} cenových, ${BILL} billing)"
           if [ "$CHANGES" -gt 0 ]; then
-            echo "## ⚠ Cenová změna detekována ($CHANGES)" >> "$GITHUB_STEP_SUMMARY"
-            node -e "try{require('./'+process.argv[1]).changes.forEach(c=>console.log('· '+JSON.stringify(c)))}catch{}" "$F" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
-            echo "Další krok: node calc-test/verify-pricing-live.js <slug> → ověřit → revize tools.json."
+            echo "## ⚠ Změna v účtování detekována — ${PRICE} cenových, ${BILL} billing" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**Co přesně se mění:**" >> "$GITHUB_STEP_SUMMARY"
+            node -e "try{require('./'+process.argv[1]).changes.forEach(c=>console.log('- '+(c.desc||JSON.stringify(c))))}catch{}" "$F" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Další krok: node calc-test/verify-pricing-live.js <slug> → ověřit → revize tools.json." >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
-          echo "Ceny beze změny — žádný alarm."
+          echo "Ceny i billing beze změny — žádný alarm."
