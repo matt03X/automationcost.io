@@ -41,7 +41,7 @@ const VENDORS = {
   zapier:       { url: "https://zapier.com/pricing",                 model: "slider", unit: "tasks" },
   make:         { url: "https://www.make.com/en/pricing",            model: "slider", unit: "credits" },
   pipedream:    { url: "https://pipedream.com/pricing",              model: "slider", unit: "credits" },
-  n8n:          { url: "https://n8n.io/pricing/",                    model: "fixed",  unit: "executions" },
+  n8n:          { url: "https://n8n.io/pricing/",                    model: "slider", unit: "executions" },
   activepieces: { url: "https://www.activepieces.com/pricing",       model: "fixed",  unit: "flows" },
   automatisch:  { url: "https://automatisch.io/",                    model: "fixed",  unit: "self-host" },
 };
@@ -254,6 +254,82 @@ async function scrapePipedream() {
   return { html, prices: { unit: "credits", model: "per-credit-bands", plans } };
 }
 
+// n8n: Starter má fixní objem, ale Pro a Business mají DROPDOWN selektor objemu
+// (role=button aria-haspopup=listbox, options "10K executions 50€/month").
+// Ceny v EUR, monthly i annually toggle. Otevřeme každý dropdown přes aria-controls
+// a přečteme celou matici objem→cena.
+async function scrapeN8n() {
+  const page = await newPage();
+  await page.goto(VENDORS.n8n.url, { waitUntil: "networkidle", timeout: 60000 });
+  await page.waitForTimeout(3000);
+  const html = await page.content();
+
+  // přečte options ze všech dropdownů (Pro, Business) → [{plan?, options:[{units,eur}]}]
+  async function readDropdowns() {
+    const btns = await page.$$("[role=button][aria-haspopup=listbox]");
+    const result = [];
+    for (const btn of btns) {
+      const ctrl = await btn.getAttribute("aria-controls");
+      const label = (await btn.innerText()).replace(/\s+/g, " ").trim().slice(0, 30);
+      await btn.click();
+      await page.waitForTimeout(700);
+      const options = await page.evaluate((id) => {
+        const lb = document.getElementById(id);
+        if (!lb) return [];
+        const txts = [...lb.querySelectorAll("[role=option], li, div")]
+          .map((o) => o.innerText.replace(/\s+/g, " ").trim());
+        const seen = new Set(), out = [];
+        for (const t of txts) {
+          // "10K executions 50€/month" / "150K executions 1824€/month"
+          const m = t.match(/([\d.]+)\s*([KM])\s*executions\s*([\d,]+)\s*€/i);
+          if (m) {
+            const units = Math.round(parseFloat(m[1]) * (m[2].toUpperCase() === "M" ? 1e6 : 1e3));
+            const eur = Number(m[3].replace(/,/g, ""));
+            if (!seen.has(units)) { seen.add(units); out.push({ units, eur }); }
+          }
+        }
+        return out;
+      }, ctrl);
+      await page.keyboard.press("Escape").catch(() => {}); // zavři dropdown
+      await page.waitForTimeout(300);
+      if (options.length) result.push({ label, options });
+    }
+    return result;
+  }
+  // Starter fixní cena (mimo dropdown) z karty — slouží i jako indikátor billing
+  // (20€ = annually, 24€ = monthly).
+  async function starterEur() {
+    return await page.evaluate(() => {
+      const m = document.body.innerText.match(/(\d+)€\s*\/mo/);
+      return m ? Number(m[1]) : null;
+    });
+  }
+  // Billing je JEDEN switch (Monthly↔Annually), default = annually. Klikneme switch
+  // a ověříme dle Starter ceny; když nesedí, klikneme znovu (max 2×).
+  async function setBilling(want /* "monthly" | "annually" */) {
+    const target = want === "monthly" ? 24 : 20;
+    for (let attempt = 0; attempt < 4; attempt++) {
+      if (await starterEur() === target) return true;
+      // zavři případně otevřený dropdown (přebíjí switch) + klikni switch silově
+      await page.keyboard.press("Escape").catch(() => {});
+      await page.evaluate(() => {
+        const sw = document.querySelector("input[type=checkbox], [role=switch]");
+        if (sw) sw.click();
+      });
+      await page.waitForTimeout(1300);
+    }
+    return await starterEur() === target;
+  }
+
+  const monthlyOk = await setBilling("monthly");
+  const monthly = { starter: await starterEur(), billingOk: monthlyOk, dropdowns: await readDropdowns() };
+  const annuallyOk = await setBilling("annually");
+  const annually = { starter: await starterEur(), billingOk: annuallyOk, dropdowns: await readDropdowns() };
+  await page.close();
+  if (!monthly.dropdowns.length) throw new Error("n8n: žádné dropdown options (změna struktury?)");
+  return { html, prices: { unit: "executions", currency: "EUR", model: "dropdown-volume", monthly, annually } };
+}
+
 // Fixní ceníky: ulož HTML + vytáhni $N /mo ceny z viditelného textu jako hrubý otisk.
 async function scrapeFixed(v) {
   const page = await newPage();
@@ -271,6 +347,7 @@ async function scrapeVendor(v) {
   if (v === "zapier") return scrapeZapier();
   if (v === "make") return scrapeMake();
   if (v === "pipedream") return scrapePipedream();
+  if (v === "n8n") return scrapeN8n();
   return scrapeFixed(v);
 }
 
@@ -283,6 +360,24 @@ function diffPrices(vendor, oldP, newP) {
     const a = JSON.stringify(oldP.listedPrices || []);
     const b = JSON.stringify(newP.listedPrices || []);
     if (a !== b) changes.push({ vendor, kind: "listedPrices", old: oldP.listedPrices, neu: newP.listedPrices });
+    return changes;
+  }
+  if (model === "dropdown-volume") {
+    // n8n: porovnej cenu (EUR) per (billing, dropdown, units).
+    for (const billing of ["monthly", "annually"]) {
+      const oB = (oldP[billing] || {}), nB = (newP[billing] || {});
+      if (oB.starter !== nB.starter) changes.push({ vendor, billing, plan: "Starter", old: oB.starter, neu: nB.starter });
+      for (let di = 0; di < (nB.dropdowns || []).length; di++) {
+        const nd = nB.dropdowns[di], od = (oB.dropdowns || [])[di];
+        if (!od) continue;
+        const oMap = Object.fromEntries(od.options.map((o) => [o.units, o.eur]));
+        for (const o of nd.options) {
+          if (oMap[o.units] !== undefined && oMap[o.units] !== o.eur) {
+            changes.push({ vendor, billing, dropdown: nd.label, units: o.units, old: oMap[o.units], neu: o.eur });
+          }
+        }
+      }
+    }
     return changes;
   }
   if (model === "per-credit-bands") {

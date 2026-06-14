@@ -1,0 +1,128 @@
+{
+  "vendor": "n8n",
+  "scrapedAt": "2026-06-14T00:29:09.673Z",
+  "url": "https://n8n.io/pricing/",
+  "unit": "executions",
+  "currency": "EUR",
+  "model": "dropdown-volume",
+  "monthly": {
+    "starter": 24,
+    "billingOk": true,
+    "dropdowns": [
+      {
+        "label": "10k workflow executions with u",
+        "options": [
+          {
+            "units": 10000,
+            "eur": 60
+          },
+          {
+            "units": 50000,
+            "eur": 144
+          }
+        ]
+      },
+      {
+        "label": "40k workflow executions with u",
+        "options": [
+          {
+            "units": 40000,
+            "eur": 800
+          },
+          {
+            "units": 50000,
+            "eur": 985
+          },
+          {
+            "units": 75000,
+            "eur": 1456
+          },
+          {
+            "units": 100000,
+            "eur": 1726
+          },
+          {
+            "units": 150000,
+            "eur": 2189
+          },
+          {
+            "units": 200000,
+            "eur": 2639
+          },
+          {
+            "units": 300000,
+            "eur": 3512
+          },
+          {
+            "units": 400000,
+            "eur": 4381
+          },
+          {
+            "units": 500000,
+            "eur": 5245
+          }
+        ]
+      }
+    ]
+  },
+  "annually": {
+    "starter": 20,
+    "billingOk": true,
+    "dropdowns": [
+      {
+        "label": "10k workflow executions with u",
+        "options": [
+          {
+            "units": 10000,
+            "eur": 50
+          },
+          {
+            "units": 50000,
+            "eur": 120
+          }
+        ]
+      },
+      {
+        "label": "40k workflow executions with u",
+        "options": [
+          {
+            "units": 40000,
+            "eur": 667
+          },
+          {
+            "units": 50000,
+            "eur": 821
+          },
+          {
+            "units": 75000,
+            "eur": 1213
+          },
+          {
+            "units": 100000,
+            "eur": 1438
+          },
+          {
+            "units": 150000,
+            "eur": 1824
+          },
+          {
+            "units": 200000,
+            "eur": 2199
+          },
+          {
+            "units": 300000,
+            "eur": 2927
+          },
+          {
+            "units": 400000,
+            "eur": 3651
+          },
+          {
+            "units": 500000,
+            "eur": 4371
+          }
+        ]
+      }
+    ]
+  }
+}

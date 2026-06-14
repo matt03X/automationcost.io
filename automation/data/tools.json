@@ -51,25 +51,99 @@
         },
         {
           "name": "Cloud Starter",
-          "monthlyUsd": 20,
+          "monthlyUsd": 24,
           "opsIncluded": 2500,
           "workflowLimit": null,
-          "note": "Cloud Starter (€20/mo billed annually)"
+          "overage": null,
+          "note": "Cloud Starter (€24/mo monthly, 2.5k executions)"
         },
         {
-          "name": "Cloud Pro",
-          "monthlyUsd": 50,
+          "name": "Cloud Pro 10k",
+          "monthlyUsd": 60,
           "opsIncluded": 10000,
           "workflowLimit": null,
-          "note": "Cloud Pro (€50/mo billed annually)"
+          "overage": null,
+          "note": "Cloud Pro — 10k executions (€60/mo monthly)"
         },
         {
-          "name": "Business",
-          "monthlyUsd": 667,
+          "name": "Cloud Pro 50k",
+          "monthlyUsd": 144,
+          "opsIncluded": 50000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Cloud Pro — 50k executions (€144/mo monthly)"
+        },
+        {
+          "name": "Business 40k",
+          "monthlyUsd": 800,
           "opsIncluded": 40000,
           "workflowLimit": null,
-          "selfHostOnly": true,
-          "note": "Business — self-hosted license (€667/mo billed annually)"
+          "overage": null,
+          "note": "Business — 40k executions (€800/mo monthly)"
+        },
+        {
+          "name": "Business 50k",
+          "monthlyUsd": 985,
+          "opsIncluded": 50000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 50k executions (€985/mo monthly)"
+        },
+        {
+          "name": "Business 75k",
+          "monthlyUsd": 1456,
+          "opsIncluded": 75000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 75k executions (€1456/mo monthly)"
+        },
+        {
+          "name": "Business 100k",
+          "monthlyUsd": 1726,
+          "opsIncluded": 100000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 100k executions (€1726/mo monthly)"
+        },
+        {
+          "name": "Business 150k",
+          "monthlyUsd": 2189,
+          "opsIncluded": 150000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 150k executions (€2189/mo monthly)"
+        },
+        {
+          "name": "Business 200k",
+          "monthlyUsd": 2639,
+          "opsIncluded": 200000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 200k executions (€2639/mo monthly)"
+        },
+        {
+          "name": "Business 300k",
+          "monthlyUsd": 3512,
+          "opsIncluded": 300000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 300k executions (€3512/mo monthly)"
+        },
+        {
+          "name": "Business 400k",
+          "monthlyUsd": 4381,
+          "opsIncluded": 400000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 400k executions (€4381/mo monthly)"
+        },
+        {
+          "name": "Business 500k",
+          "monthlyUsd": 5245,
+          "opsIncluded": 500000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 500k executions (€5245/mo monthly)"
         },
         {
           "name": "Cloud Enterprise",
