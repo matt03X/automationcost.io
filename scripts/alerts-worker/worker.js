@@ -42,7 +42,7 @@ async function latestDraft(env, site) {
   const prefix = `Price alert (${site})`;
   return (res.data || [])
     .filter((c) => (c.name || "").startsWith(prefix))
-    .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))[0] || null;
+    .sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime())[0] || null;
 }
 
 function subjectOf(c) {
