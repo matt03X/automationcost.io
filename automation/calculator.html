@@ -1886,7 +1886,7 @@ const TOOLS = [
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "pipedream", name: "Pipedream", unitModel: "runs", annualFactor: 1.0, selfHostable: false, aiFeatures: true, integrations: 2000,
+    slug: "pipedream", name: "Pipedream", unitModel: "runs", annualFactor: 1, selfHostable: false, aiFeatures: true, integrations: 2000,
     homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, overage: null, note: "Free tier" },
@@ -1902,7 +1902,7 @@ const TOOLS = [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity, overage: null, note: "Free tier" },
       { name: "Professional 750", monthlyUsd: 29.99, opsIncluded: 750, workflowLimit: Infinity, overage: null, note: "Professional — 750 tasks/mo ($29.99)" },
       { name: "Professional 1k", monthlyUsd: 58.5, opsIncluded: 1500, workflowLimit: Infinity, overage: null, note: "Professional — 1,500 tasks/mo ($58.5)" },
-      { name: "Professional 2k", monthlyUsd: 73.5, opsIncluded: 2000, workflowLimit: Infinity, overage: null, note: "Professional — 2,000 tasks/mo ($73.5)" },
+      { name: "Professional 2k", monthlyUsd: 80, opsIncluded: 2000, workflowLimit: Infinity, overage: null, note: "Professional — 2,000 tasks/mo ($73.5)" },
       { name: "Professional 5k", monthlyUsd: 133.5, opsIncluded: 5000, workflowLimit: Infinity, overage: null, note: "Professional — 5,000 tasks/mo ($133.5)" },
       { name: "Professional 10k", monthlyUsd: 193.5, opsIncluded: 10000, workflowLimit: Infinity, overage: null, note: "Professional — 10,000 tasks/mo ($193.5)" },
       { name: "Professional 20k", monthlyUsd: 283.5, opsIncluded: 20000, workflowLimit: Infinity, overage: null, note: "Professional — 20,000 tasks/mo ($283.5)" },
@@ -1921,7 +1921,7 @@ const TOOLS = [
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "activepieces", name: "Activepieces", unitModel: "runs", annualFactor: 1.0, selfHostable: true, aiFeatures: true, integrations: 747,
+    slug: "activepieces", name: "Activepieces", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: true, integrations: 747,
     homepage: "https://www.activepieces.com", affiliateUrl: "https://www.activepieces.com", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
@@ -1930,13 +1930,13 @@ const TOOLS = [
       { name: "Standard (30 flows)", monthlyUsd: 100, opsIncluded: Infinity, workflowLimit: 30, note: "$5/active flow after 10 free — priced at 30 flows" },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
   {
-    slug: "automatisch", name: "Automatisch", unitModel: "runs", annualFactor: 1.0, selfHostable: true, aiFeatures: false, integrations: 50,
+    slug: "automatisch", name: "Automatisch", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: false, integrations: 50,
     homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
   {
-    slug: "node-red", name: "Node-RED", unitModel: "runs", annualFactor: 1.0, selfHostable: true, aiFeatures: false, integrations: 5000,
+    slug: "node-red", name: "Node-RED", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: false, integrations: 5000,
     homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
