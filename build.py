@@ -96,6 +96,7 @@ def js_selfhosthw(tiers) -> str:
         return "null"
     cells = ", ".join(
         f"{{ upTo: {js_limit(t.get('upTo'))}, usd: {t['usd']}" +
+        (f", home: {t['home']}" if t.get('home') is not None else "") +
         (f", spec: {js_str(t['spec'])}" if t.get('spec') else "") + " }"
         for t in tiers)
     return f"[{cells}]"
