@@ -543,10 +543,11 @@
 
     <!-- ops slider -->
     <div class="ops-slider-row">
-      <label>Monthly ops</label>
+      <label>Monthly runs</label>
       <span class="ops-val" id="pc-ops-val">5,000</span>
       <input type="range" class="ops-range" id="pc-ops-range" min="0" max="6" value="3" step="1"
              oninput="pcOpsChanged()">
+      <span style="font-size:11px;color:var(--muted);flex-basis:100%;">Workflow runs/mo. Assumes ~3 steps each; each tool's billing unit differs — the <a href="calculator.html">calculator</a> lets you set steps for an exact figure.</span>
       <span style="font-size:12px;color:var(--muted)">Drag to find the cheapest plan at your volume</span>
     </div>
 
@@ -560,7 +561,7 @@
     <div class="pc-legend">
       <span><i class="g"></i> Cheapest plan that fits your volume</span>
       <span><i class="w"></i> Best managed-cloud plan (if you don't self-host)</span>
-      <span><i class="f"></i> Too few ops — auto-skipped to the tier above</span>
+      <span><i class="f"></i> Too few runs — auto-skipped to the tier above</span>
     </div>
 
     <!-- plan columns -->
@@ -630,7 +631,7 @@ const LOGOS = {
 /* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
 const TOOLS = {
   "n8n": {
-    slug: "n8n", name: "n8n",
+    slug: "n8n", name: "n8n", unitModel: "runs",
     tagline: "Open-source automation for developers & self-hosters",
     selfHostable: true, aiFeatures: true, integrations: 400,
     license: "Sustainable Use",
@@ -662,7 +663,7 @@ const TOOLS = {
     cons: ["Setup required for self-host", "Big jump from Pro to Business tier"],
   },
   "make": {
-    slug: "make", name: "Make",
+    slug: "make", name: "Make", unitModel: "modules",
     tagline: "Visual automation builder with the best cloud value",
     selfHostable: false, aiFeatures: true, integrations: 1500,
     license: "Proprietary (cloud)",
@@ -700,7 +701,7 @@ const TOOLS = {
     cons: ["No self-hosting", "No native code steps"],
   },
   "pipedream": {
-    slug: "pipedream", name: "Pipedream",
+    slug: "pipedream", name: "Pipedream", unitModel: "runs",
     tagline: "Code-first automation platform for developers",
     selfHostable: false, aiFeatures: true, integrations: 2000,
     license: "Proprietary (cloud)",
@@ -723,7 +724,7 @@ const TOOLS = {
     cons: ["Overage no longer public — quote only", "Very limited free tier", "No self-host"],
   },
   "zapier": {
-    slug: "zapier", name: "Zapier",
+    slug: "zapier", name: "Zapier", unitModel: "actions",
     tagline: "The most integrations, built for non-technical users",
     selfHostable: false, aiFeatures: true, integrations: 9000,
     license: "Proprietary (cloud)",
@@ -761,7 +762,7 @@ const TOOLS = {
     cons: ["Most expensive per op", "Free tier severely limited", "No self-host"],
   },
   "activepieces": {
-    slug: "activepieces", name: "Activepieces",
+    slug: "activepieces", name: "Activepieces", unitModel: "runs",
     tagline: "MIT-licensed open-source automation, Zapier-like UI",
     selfHostable: true, aiFeatures: true, integrations: 747,
     license: "MIT",
@@ -783,7 +784,7 @@ const TOOLS = {
     cons: ["Fewer integrations than Zapier (747+)", "Smaller community than n8n", "No code steps"],
   },
   "automatisch": {
-    slug: "automatisch", name: "Automatisch",
+    slug: "automatisch", name: "Automatisch", unitModel: "runs",
     tagline: "Simple EU-friendly open-source automation",
     selfHostable: true, aiFeatures: false, integrations: 50,
     license: "AGPL-3.0",
@@ -802,7 +803,7 @@ const TOOLS = {
     cons: ["Only ~50 integrations", "No AI nodes", "Smallest community"],
   },
   "node-red": {
-    slug: "node-red", name: "Node-RED",
+    slug: "node-red", name: "Node-RED", unitModel: "runs",
     tagline: "Event-driven automation for IoT and hardware",
     selfHostable: true, aiFeatures: false, integrations: 5000,
     license: "Apache 2.0",
@@ -935,18 +936,56 @@ function copyShareUrl() {
 }
 
 // ── Cost engine ───────────────────────────────────────────────────────────────
-function cheapestPlan(tool, ops = 5000) {
+// Zrcadlí calculator.html calcCost: self-host HW škála, Pipedream creditBands,
+// per-plan/tool overage, custom-tier odhad, a PŘEVOD jednotek (vendorUnits).
+// Compare používá jeden "runs" slider + fixní steps=3 (kalkulačka má 2 slidery
+// pro přesnost). runs×steps → vendorova billable jednotka.
+function cmpVendorUnits(tool, runs, steps) {
+  const s = Math.max(1, steps);
+  switch (tool.unitModel) {
+    case "modules": return runs * s;
+    case "actions": return Math.round(runs * Math.max(1, s - 1) * 0.8);
+    default:        return runs;
+  }
+}
+function cmpCreditRate(bands, credits) {
+  for (const [upTo, pc] of bands) { if (upTo === null || credits <= upTo) return pc; }
+  return bands[bands.length - 1][1];
+}
+function cmpHwCost(tool, ops) {
+  if (!tool.selfHostHw) return null;
+  for (const t of tool.selfHostHw) { if (t.upTo === Infinity || ops <= t.upTo) return t.usd; }
+  return tool.selfHostHw[tool.selfHostHw.length - 1].usd;
+}
+const CMP_STEPS = 3; // předpokládané kroky/workflow pro převod (compare zjednodušení)
+function cheapestPlan(tool, runs = 5000, steps = CMP_STEPS) {
+  const ops = cmpVendorUnits(tool, runs, steps);
   let best = null;
   for (const plan of tool.plans) {
     if (plan.monthlyUsd === null) continue;
-    let cost = plan.monthlyUsd;
+    const hwPlan = plan.selfHostOnly && plan.monthlyUsd <= 8 && tool.selfHostHw;
+    let cost = hwPlan ? cmpHwCost(tool, ops) : plan.monthlyUsd;
     if (!plan.selfHostOnly && ops > plan.opsIncluded) {
-      // per-plan overage přebíjí tool-level; null = plán nemá pay-as-you-go
-      const ov = plan.overage !== undefined ? plan.overage : tool.overage;
-      if (ov) cost = Math.round((cost + Math.ceil((ops - plan.opsIncluded) / ov.per) * ov.usd) * 100) / 100; // na centy ($19.99 + $25 ≠ 44.9899…)
-      else continue;
+      if (plan.creditBands) {
+        cost = Math.round((cost + (ops - plan.opsIncluded) * cmpCreditRate(plan.creditBands, ops)) * 100) / 100;
+      } else {
+        const ov = plan.overage !== undefined ? plan.overage : tool.overage;
+        if (ov) cost = Math.round((cost + Math.ceil((ops - plan.opsIncluded) / ov.per) * ov.usd) * 100) / 100;
+        else continue;
+      }
     }
     if (best === null || cost < best.cost) best = { cost, plan };
+  }
+  // custom tier odhad (mirror calcCost): kotva = největší veřejný plán, exp 0.7
+  const customPlan = tool.plans.find(p => p.monthlyUsd === null);
+  if (customPlan) {
+    const anchors = tool.plans.filter(p => p.monthlyUsd && !p.selfHostOnly && isFinite(p.opsIncluded));
+    const maxInc = anchors.length ? Math.max(...anchors.map(p => p.opsIncluded)) : 0;
+    const anchor = anchors.filter(p => p.opsIncluded === maxInc).sort((a, b) => a.monthlyUsd - b.monthlyUsd)[0];
+    if (anchor && ops > anchor.opsIncluded) {
+      let est = Math.max(5, Math.round(anchor.monthlyUsd * Math.max(1.3, Math.pow(ops / anchor.opsIncluded, 0.7)) / 5) * 5);
+      if (best === null || (ops > anchor.opsIncluded * 2 && est < best.cost)) best = { cost: est, plan: customPlan, estimated: true };
+    }
   }
   return best;
 }
@@ -962,7 +1001,7 @@ function renderResults() {
   const tools = selected.map(s => TOOLS[s]);
   const costs = tools.map(t => cheapestPlan(t, 5000));
 
-  // Find winner (lowest cost at 5k ops)
+  // Find winner (lowest cost at 5k runs)
   let winnerIdx = 0;
   costs.forEach((c, i) => {
     if (c && costs[winnerIdx] && c.cost < costs[winnerIdx].cost) winnerIdx = i;
@@ -973,7 +1012,7 @@ function renderResults() {
   // ── Winner banner
   const logoImg = `<img src="${LOGOS[winner.slug]}" alt="${winner.name}" style="width:28px;height:28px;border-radius:6px;object-fit:contain;background:#fff;padding:2px;" onerror="this.style.display='none'">`;
 
-  // Real annual savings: winner vs the priciest comparable tool at 5,000 ops/mo
+  // Real annual savings: winner vs the priciest comparable tool at 5,000 runs/mo
   let savingsHtml = "";
   let priciestIdx = -1;
   costs.forEach((c, i) => {
@@ -989,7 +1028,7 @@ function renderResults() {
   let bannerHtml = `
     <div class="winner-banner">
       <div>
-        <div class="winner-label">Best value at 5,000 ops/mo</div>
+        <div class="winner-label">Best value at 5,000 runs/mo</div>
         <div class="winner-name">${logoImg} ${winner.name}</div>
         <div class="winner-reason">$${winnerCost.cost}/mo · ${winner.tagline}</div>
         ${savingsHtml}
@@ -1078,11 +1117,11 @@ function renderResults() {
   });
 
   tableHtml += `</tbody></table></div>`;
-  tableHtml += `<p style="font-size:12px;color:var(--muted);margin-bottom:40px">* When self-hosted. Prices at 5,000 ops/mo. Data verified June 2026.</p>`;
+  tableHtml += `<p style="font-size:12px;color:var(--muted);margin-bottom:40px">* When self-hosted. Prices at 5,000 runs/mo (~3 steps each). Data verified June 2026.</p>`;
 
   // ── Verdict cards
   const verdictCategories = [
-    { label: "Cheapest overall",    pick: (tools) => [...tools].sort((a,b) => (cheapestPlan(a,5000)?.cost??999) - (cheapestPlan(b,5000)?.cost??999))[0], reason: (t) => `$${cheapestPlan(t,5000)?.cost}/mo at 5k ops` },
+    { label: "Cheapest overall",    pick: (tools) => [...tools].sort((a,b) => (cheapestPlan(a,5000)?.cost??999) - (cheapestPlan(b,5000)?.cost??999))[0], reason: (t) => `$${cheapestPlan(t,5000)?.cost}/mo at 5k runs` },
     { label: "Most integrations",   pick: (tools) => [...tools].sort((a,b) => b.integrations - a.integrations)[0], reason: (t) => `${t.integrations.toLocaleString()}+ integrations` },
     { label: "Best for beginners",  pick: (tools) => tools.find(t => !t.selfHostable && t.freeOps !== "100 tasks/mo" && t.freeOps !== "100 credits/mo") || tools[0], reason: () => "Easiest setup, best free tier" },
     { label: "Best for developers", pick: (tools) => tools.find(t => t.codeSteps) || tools.find(t => t.selfHostable) || tools[0], reason: () => "Code steps + full control" },
@@ -1157,7 +1196,7 @@ function renderFaq(tools) {
   const faqs = [
     {
       q: `Which is cheapest — ${nameStr}?`,
-      a: `At 5,000 ops/month, <strong>${cheapest.name}</strong> is the cheapest option at $${cheapestPlan(cheapest, 5000)?.cost}/mo. ${cheapest.selfHostable ? "Self-hosting brings this even lower — you only pay for the server (a VPS from ~$8/mo, scaling with volume), not a tool fee." : ""} The winner changes based on your usage volume — use the <a href="index.html#calculator">pricing calculator</a> to see the exact cost for your workflow count.`,
+      a: `At 5,000 runs/month, <strong>${cheapest.name}</strong> is the cheapest option at $${cheapestPlan(cheapest, 5000)?.cost}/mo. ${cheapest.selfHostable ? "Self-hosting brings this even lower — you only pay for the server (a VPS from ~$8/mo, scaling with volume), not a tool fee." : ""} The winner changes based on your usage volume — use the <a href="index.html#calculator">pricing calculator</a> to see the exact cost for your workflow count.`,
     },
     {
       q: `Which has the most integrations?`,

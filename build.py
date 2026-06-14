@@ -44,11 +44,14 @@ DEMO_START = "/* DATA:DEMO:START */"
 DEMO_END = "/* DATA:DEMO:END */"
 DEMO_WARN = "/* generováno build.py z automation/data/tools.json — needituj ručně */"
 
-# Hero demo: které objemy a nástroje homepage ukazuje
+# Hero demo: které objemy (RUNS/mo) a nástroje homepage ukazuje. DEMO_STEPS =
+# předpokládané kroky/workflow pro převod runs → vendorova jednotka (musí sedět
+# s verify-demo.js, který volá JS calcCost se stejnými steps).
 DEMO_VOLUMES = [1000, 5000, 20000, 100000]
 DEMO_TOOLS = [("n8n", "n8n"), ("make", "Make"), ("pipedream", "Pipedream"), ("zapier", "Zapier")]
 DEMO_WORKFLOWS = 3
-DEMO_FOOT_TEXT = "*self-hosted = server hardware, not a tool fee (~$8–66/mo by volume) · ~ price estimated (custom tier)"
+DEMO_STEPS = 3
+DEMO_FOOT_TEXT = "*self-hosted = server hardware, not a tool fee · units differ per tool (we convert runs→each vendor's unit) · ~ estimated custom tier"
 
 AN_START = "<!-- ANALYTICS (build.py) -->"
 AN_END = "<!-- /ANALYTICS -->"
@@ -134,6 +137,7 @@ def render_calculator(tools: list[dict]) -> str:
         lines.append("  {")
         lines.append(
             f'    slug: {js_str(t["slug"])}, name: {js_str(t["name"])}, '
+            f'unitModel: {js_str(t.get("unitModel", "runs"))}, '
             f'selfHostable: {js_bool(t["selfHostable"])}, aiFeatures: {js_bool(t["aiFeatures"])}, '
             f'integrations: {t["integrations"]},'
         )
@@ -158,7 +162,7 @@ def render_compare(tools: list[dict]) -> str:
     lines = ["const TOOLS = {"]
     for t in tools:
         lines.append(f'  {js_str(t["slug"])}: {{')
-        lines.append(f'    slug: {js_str(t["slug"])}, name: {js_str(t["name"])},')
+        lines.append(f'    slug: {js_str(t["slug"])}, name: {js_str(t["name"])}, unitModel: {js_str(t.get("unitModel", "runs"))},')
         lines.append(f'    tagline: {js_str(t["tagline"])},')
         lines.append(
             f'    selfHostable: {js_bool(t["selfHostable"])}, '
@@ -209,17 +213,30 @@ def self_host_hw_cost(tool: dict, ops: int):
     return tiers[-1]["usd"]
 
 
-def cheapest_monthly(tool: dict, ops: int, workflows: int = DEMO_WORKFLOWS) -> dict | None:
+def vendor_units(tool: dict, runs: int, steps: int) -> int:
+    """runs×steps → billable jednotka vendora. Zrcadlí JS vendorUnits().
+    runs (n8n exec, Pipedream credit/běh), modules=runs×steps (Make), actions
+    (Zapier: trigger+filtry zdarma → runs×(steps−1)×0.8)."""
+    s = max(1, steps)
+    model = tool.get("unitModel", "runs")
+    if model == "modules":
+        return runs * s
+    if model == "actions":
+        return round(runs * max(1, s - 1) * 0.8)
+    return runs
+
+
+def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: int = DEMO_WORKFLOWS) -> dict | None:
     """Nejlevnější měsíční cena nástroje při daném objemu (hostPref=any, monthly).
 
-    Vrací {"cost": int, "label": str, "est": bool}. Zrcadlí calcCost():
+    runs = běhy workflow/měsíc, steps = kroky na workflow → engine přepočítá na
+    vendorovu jednotku (vendor_units) a teprve pak počítá cenu. Zrcadlí calcCost():
     - plány s monthlyUsd=None (custom) se přeskočí a ocení odhadem níže
-    - overage: ceil((ops - included) / per) * usd
-    - custom odhad: kotva = největší veřejný cloud plán; cena škáluje
-      sublineárně exponentem 0.7 (min 1.3× kotvy, zaokrouhleno na $5);
-      použije se, když veřejné plány nestačí, nebo nad 2× kotvy když je levnější
+    - overage: ceil((ops - included) / per) * usd; creditBands flat-per-band
+    - custom odhad: kotva = největší veřejný cloud plán; exponent 0.7
     - shoda ceny: pro label preferuj placený plán bez overage (Core, ne Free+ops)
     """
+    ops = vendor_units(tool, runs, steps)
     best = None  # (cost, label_pref, plan, overage_usd)
     for p in tool["plans"]:
         if p.get("monthlyUsd") is None:
