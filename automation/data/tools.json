@@ -48,7 +48,7 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted — server hardware only (not a tool fee)"
+          "note": "Self-hosted — server + DB only, light workflows (your ops time not included)"
         },
         {
           "name": "Cloud Starter",
@@ -160,16 +160,20 @@
           "usd": 8
         },
         {
+          "upTo": 50000,
+          "usd": 25
+        },
+        {
           "upTo": 100000,
-          "usd": 18
+          "usd": 45
         },
         {
           "upTo": 500000,
-          "usd": 33
+          "usd": 90
         },
         {
           "upTo": null,
-          "usd": 66
+          "usd": 150
         }
       ],
       "pros": [
@@ -866,7 +870,7 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted — server hardware only (not a tool fee)"
+          "note": "Self-hosted — server + DB only, light workflows (your ops time not included)"
         },
         {
           "name": "Cloud Free",
@@ -897,16 +901,20 @@
           "usd": 8
         },
         {
+          "upTo": 50000,
+          "usd": 25
+        },
+        {
           "upTo": 100000,
-          "usd": 18
+          "usd": 45
         },
         {
           "upTo": 500000,
-          "usd": 33
+          "usd": 90
         },
         {
           "upTo": null,
-          "usd": 66
+          "usd": 150
         }
       ],
       "pros": [
@@ -949,7 +957,7 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted — server hardware only (not a tool fee)"
+          "note": "Self-hosted — server + DB only, light workflows (your ops time not included)"
         }
       ],
       "overage": null,
@@ -959,16 +967,20 @@
           "usd": 8
         },
         {
+          "upTo": 50000,
+          "usd": 25
+        },
+        {
           "upTo": 100000,
-          "usd": 18
+          "usd": 45
         },
         {
           "upTo": 500000,
-          "usd": 33
+          "usd": 90
         },
         {
           "upTo": null,
-          "usd": 66
+          "usd": 150
         }
       ],
       "pros": [
@@ -1011,7 +1023,7 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted — server hardware only (not a tool fee)"
+          "note": "Self-hosted — server + DB only, light workflows (your ops time not included)"
         }
       ],
       "overage": null,
@@ -1021,16 +1033,20 @@
           "usd": 8
         },
         {
+          "upTo": 50000,
+          "usd": 25
+        },
+        {
           "upTo": 100000,
-          "usd": 18
+          "usd": 45
         },
         {
           "upTo": 500000,
-          "usd": 33
+          "usd": 90
         },
         {
           "upTo": null,
-          "usd": 66
+          "usd": 150
         }
       ],
       "pros": [

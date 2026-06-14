@@ -59,7 +59,7 @@
           {
             "@type": "Question",
             "name": "Why does n8n often rank cheapest?",
-            "acceptedAnswer": { "@type": "Answer", "text": "Because n8n can be self-hosted — the Community Edition software is free, so the only cost is the server it runs on. That is hardware, not a tool fee, and it scales with volume: we estimate roughly $8/mo for a small VPS at low volume, up to ~$66/mo for a large one at high volume. If self-hosting isn't an option for you, switch Hosting preference to “Cloud only” in the Volume & budget step and the ranking recalculates with cloud plans only." }
+            "acceptedAnswer": { "@type": "Answer", "text": "Because n8n can be self-hosted — the Community Edition software is free, so the only cost is the infrastructure it runs on. That is server cost, not a tool fee, and it scales with volume: roughly $8/mo for a small VPS at low volume, rising to ~$45/mo at 100k runs (you'll need Postgres and Redis by then) and ~$150/mo at very high volume. Two caveats: this assumes lightweight workflows — heavy data processing needs a bigger box — and it does NOT include your time to set up, patch, monitor and back up the server. If self-hosting isn't realistic for you, switch Hosting preference to “Cloud only” in the Volume & budget step and the ranking recalculates with cloud plans only." }
           }
         ]
       }
@@ -765,7 +765,7 @@
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Why does n8n often rank cheapest?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Because n8n can be self-hosted — the Community Edition software is free, so the only cost is the server it runs on. That is hardware, not a tool fee, and it scales with volume: we estimate roughly $8/mo for a small VPS at low volume, up to ~$66/mo for a large one at high volume. If self-hosting isn't an option for you, switch Hosting preference to “Cloud only” in the Volume & budget step and the ranking recalculates with cloud plans only.</div>
+      <div class="faq-a">Because n8n can be self-hosted — the Community Edition software is free, so the only cost is the infrastructure it runs on. That is server cost, not a tool fee, and it scales with volume: roughly $8/mo for a small VPS at low volume, rising to ~$45/mo at 100k runs (you'll need Postgres and Redis by then) and ~$150/mo at very high volume. Two caveats: this assumes lightweight workflows — heavy data processing needs a bigger box — and it does NOT include your time to set up, patch, monitor and back up the server. If self-hosting isn't realistic for you, switch Hosting preference to “Cloud only” in the Volume & budget step and the ranking recalculates with cloud plans only.</div>
     </div>
   </section>
 
@@ -1845,7 +1845,7 @@ const TOOLS = [
     slug: "n8n", name: "n8n", unitModel: "runs", selfHostable: true, aiFeatures: true, integrations: 400,
     homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: false,
     plans: [
-      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
       { name: "Cloud Starter", monthlyUsd: 24, opsIncluded: 2500, workflowLimit: Infinity, overage: null, note: "Cloud Starter (€24/mo monthly, 2.5k executions)" },
       { name: "Cloud Pro 10k", monthlyUsd: 60, opsIncluded: 10000, workflowLimit: Infinity, overage: null, note: "Cloud Pro — 10k executions (€60/mo monthly)" },
       { name: "Cloud Pro 50k", monthlyUsd: 144, opsIncluded: 50000, workflowLimit: Infinity, overage: null, note: "Cloud Pro — 50k executions (€144/mo monthly)" },
@@ -1859,7 +1859,7 @@ const TOOLS = [
       { name: "Business 400k", monthlyUsd: 4381, opsIncluded: 400000, workflowLimit: Infinity, overage: null, note: "Business — 400k executions (€4381/mo monthly)" },
       { name: "Business 500k", monthlyUsd: 5245, opsIncluded: 500000, workflowLimit: Infinity, overage: null, note: "Business — 500k executions (€5245/mo monthly)" },
       { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
-    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }] },
   {
     slug: "make", name: "Make", unitModel: "modules", selfHostable: false, aiFeatures: true, integrations: 1500,
     homepage: "https://www.make.com", affiliateUrl: "https://www.make.com/en/register?pc=wizardcost", hasAffiliate: true,
@@ -1924,23 +1924,23 @@ const TOOLS = [
     slug: "activepieces", name: "Activepieces", unitModel: "runs", selfHostable: true, aiFeatures: true, integrations: 747,
     homepage: "https://www.activepieces.com", affiliateUrl: "https://www.activepieces.com", hasAffiliate: false,
     plans: [
-      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
       { name: "Cloud Free", monthlyUsd: 0, opsIncluded: Infinity, workflowLimit: 10, note: "10 free active flows, unlimited runs" },
       { name: "Standard (20 flows)", monthlyUsd: 50, opsIncluded: Infinity, workflowLimit: 20, note: "$5/active flow after 10 free — priced at 20 flows" },
       { name: "Standard (30 flows)", monthlyUsd: 100, opsIncluded: Infinity, workflowLimit: 30, note: "$5/active flow after 10 free — priced at 30 flows" },
-    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }] },
   {
     slug: "automatisch", name: "Automatisch", unitModel: "runs", selfHostable: true, aiFeatures: false, integrations: 50,
     homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
     plans: [
-      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
-    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }] },
   {
     slug: "node-red", name: "Node-RED", unitModel: "runs", selfHostable: true, aiFeatures: false, integrations: 5000,
     homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
     plans: [
-      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
-    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }] },
 ];
 /* DATA:TOOLS:END */
 

@@ -530,7 +530,8 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
                 f"Prices verified {month_year} — see the <a href=\"changelog.html\">price changelog</a>.")
     if any_selfhost_star:
         tbl_note += (" * self-hosted = free open-source software; the figure is the server "
-                     "hardware (your VPS, not a tool fee), scaling ~$8–66/mo with volume.")
+                     "infrastructure (VPS + DB, not a tool fee), ~$8/mo small to ~$150/mo at "
+                     "high volume — assumes light workflows and excludes your ops time.")
 
     # feature diff — jen rozdílové řádky; shody do věty pod tabulkou
     diff_rows, same = [], []

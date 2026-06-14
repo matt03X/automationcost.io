@@ -568,7 +568,7 @@
     <div id="pc-grid"></div>
 
     <p style="font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:48px">
-      * Highlighted plan = cheapest option at current volume. Self-hosted cost = server hardware only (your VPS, not a tool fee), scaling ~$8–66/mo with volume. Data verified June 2026.
+      * Highlighted plan = cheapest option at current volume. Self-hosted cost = server infrastructure (VPS+DB, not the tool), ~$8–150/mo by volume; assumes light workflows, excludes your ops time. Data verified June 2026.
     </p>
   </div>
 
@@ -604,7 +604,7 @@
         <tbody id="plans-body"></tbody>
       </table>
     </div>
-    <p style="font-size:12px;color:var(--muted);margin-top:8px">* Self-hosted: you pay for a VPS (server hardware, not the tool), scaling ~$8–66/mo with volume. Unlimited ops & workflows. Data verified June 2026.</p>
+    <p style="font-size:12px;color:var(--muted);margin-top:8px">* Self-hosted: you pay for server infrastructure (VPS+DB, not the tool), ~$8–150/mo by volume — assumes light workflows and excludes your ops time. Unlimited runs & workflows. Data verified June 2026.</p>
   </div>
 
 </div><!-- /wrap -->
@@ -658,7 +658,7 @@ const TOOLS = {
       { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ],
     overage: null,
-    selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }],
+    selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }],
     pros: ["Truly unlimited self-hosted", "Best AI/LLM nodes", "Strong community"],
     cons: ["Setup required for self-host", "Big jump from Pro to Business tier"],
   },
@@ -779,7 +779,7 @@ const TOOLS = {
       { name: "Standard (30 flows)", monthlyUsd: 100, opsIncluded: Infinity, workflowLimit: 30 },
     ],
     overage: null,
-    selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }],
+    selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }],
     pros: ["True MIT license — no restrictions", "No-code UI like Zapier", "Self-hostable"],
     cons: ["Fewer integrations than Zapier (747+)", "Smaller community than n8n", "No code steps"],
   },
@@ -798,7 +798,7 @@ const TOOLS = {
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true },
     ],
     overage: null,
-    selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }],
+    selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }],
     pros: ["Simplest setup", "Full data control (GDPR)", "Unlimited on self-host"],
     cons: ["Only ~50 integrations", "No AI nodes", "Smallest community"],
   },
@@ -817,7 +817,7 @@ const TOOLS = {
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true },
     ],
     overage: null,
-    selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }],
+    selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }],
     pros: ["Apache 2.0 — completely free", "Node.js code steps", "Best for IoT/hardware"],
     cons: ["No cloud option", "Developer-only (no visual UI)", "Limited SaaS integrations"],
   },
@@ -1204,7 +1204,7 @@ function renderFaq(tools) {
     },
     selfHostable.length > 0 ? {
       q: `Which tools can be self-hosted?`,
-      a: `Among your selected tools, <strong>${selfHostable.map(t => t.name).join(" and ")}</strong> ${selfHostable.length === 1 ? "supports" : "support"} self-hosting. Self-hosting means you run the software on your own server (a VPS from ~$8/mo on Hetzner or DigitalOcean, scaling toward ~$66/mo at high volume) and pay no per-operation fees — unlimited workflows and executions. That server bill is hardware, not a tool fee.`,
+      a: `Among your selected tools, <strong>${selfHostable.map(t => t.name).join(" and ")}</strong> ${selfHostable.length === 1 ? "supports" : "support"} self-hosting. Self-hosting means you run the software on your own server (a VPS from ~$8/mo, scaling toward ~$150/mo at high volume once you add Postgres/Redis) and pay no per-operation fees — unlimited workflows and executions. That server bill is hardware, not a tool fee.`,
     } : null,
     {
       q: `Can I switch between these tools later?`,

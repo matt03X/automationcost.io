@@ -25,7 +25,7 @@ Covers OpenAI (GPT), Anthropic (Claude), Google (Gemini), DeepSeek, xAI (Grok) a
 
 - Prices come from official public pricing pages and are verified by a human before publishing; pages show the month of the last review.
 - Enterprise/custom tiers without a public price are estimated by scaling the largest public plan sublinearly — always marked with "~" and the word "estimate".
-- Self-hosted open-source tools are free software; the cost shown is the server hardware (your VPS, not a tool fee), scaling with volume from ≈ $8/mo (small VPS) to ≈ $66/mo (high volume), marked "self-hosted*".
+- Self-hosted open-source tools are free software; the cost shown is the server infrastructure (VPS + database, not a tool fee), scaling from ≈ $8/mo (small VPS, low volume) to ≈ $150/mo (high volume, needs Postgres + Redis), marked "self-hosted*". This assumes lightweight workflows and excludes the operator's own time to set up, patch, monitor and back up the server.
 - Some outbound links are affiliate links (marked as sponsored). Affiliate status never affects rankings or computed costs.
 
 ## Citing
