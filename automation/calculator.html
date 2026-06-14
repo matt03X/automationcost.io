@@ -620,12 +620,20 @@
 
     <div class="inputs-grid">
       <div>
-        <label for="ops">Operations / tasks per month <span class="auto-badge" id="ops-auto" hidden>✦ auto-estimated</span></label>
+        <label for="ops">Workflow runs per month <span class="auto-badge" id="ops-auto" hidden>✦ auto-estimated</span></label>
         <div class="budget-row" style="margin-top:8px">
           <div class="budget-val" id="ops-display">5,000</div>
           <input type="range" id="ops" min="0" max="11" step="1" value="4" oninput="updateOpsDisplay()">
         </div>
-        <div class="hint">ops/mo · Each app action = 1 op. A 3-step workflow triggered 1,000×/mo = 3,000 ops.</div>
+        <div class="hint">runs/mo · How many times your automations fire. Each tool bills this differently — we convert it per vendor (see results).</div>
+      </div>
+      <div>
+        <label for="steps">Steps per workflow <span class="auto-badge" id="steps-auto" hidden>✦ auto-estimated</span></label>
+        <div class="budget-row" style="margin-top:8px">
+          <div class="budget-val" id="steps-display">3</div>
+          <input type="range" id="steps" min="0" max="8" step="1" value="2" oninput="updateStepsDisplay()">
+        </div>
+        <div class="hint">steps · Actions per run. Matters because Make bills every step, Zapier skips triggers/filters, n8n &amp; Pipedream bill per run.</div>
       </div>
       <div>
         <label for="workflows">Active workflows <span class="auto-badge" id="wf-auto" hidden>✦ auto-estimated</span></label>
@@ -1834,7 +1842,7 @@ const INTEGRATIONS = [
 /* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
 const TOOLS = [
   {
-    slug: "n8n", name: "n8n", selfHostable: true, aiFeatures: true, integrations: 400,
+    slug: "n8n", name: "n8n", unitModel: "runs", selfHostable: true, aiFeatures: true, integrations: 400,
     homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
@@ -1853,7 +1861,7 @@ const TOOLS = [
       { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
   {
-    slug: "make", name: "Make", selfHostable: false, aiFeatures: true, integrations: 1500,
+    slug: "make", name: "Make", unitModel: "modules", selfHostable: false, aiFeatures: true, integrations: 1500,
     homepage: "https://www.make.com", affiliateUrl: "https://www.make.com/en/register?pc=wizardcost", hasAffiliate: true,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 1000, workflowLimit: Infinity, note: "Free tier" },
@@ -1878,7 +1886,7 @@ const TOOLS = [
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "pipedream", name: "Pipedream", selfHostable: false, aiFeatures: true, integrations: 2000,
+    slug: "pipedream", name: "Pipedream", unitModel: "runs", selfHostable: false, aiFeatures: true, integrations: 2000,
     homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, overage: null, note: "Free tier" },
@@ -1888,7 +1896,7 @@ const TOOLS = [
       { custom: true, name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "zapier", name: "Zapier", selfHostable: false, aiFeatures: true, integrations: 9000,
+    slug: "zapier", name: "Zapier", unitModel: "actions", selfHostable: false, aiFeatures: true, integrations: 9000,
     homepage: "https://zapier.com", affiliateUrl: "https://zapier.com", hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity, overage: null, note: "Free tier" },
@@ -1913,7 +1921,7 @@ const TOOLS = [
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "activepieces", name: "Activepieces", selfHostable: true, aiFeatures: true, integrations: 747,
+    slug: "activepieces", name: "Activepieces", unitModel: "runs", selfHostable: true, aiFeatures: true, integrations: 747,
     homepage: "https://www.activepieces.com", affiliateUrl: "https://www.activepieces.com", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
@@ -1922,13 +1930,13 @@ const TOOLS = [
       { name: "Standard (30 flows)", monthlyUsd: 100, opsIncluded: Infinity, workflowLimit: 30, note: "$5/active flow after 10 free — priced at 30 flows" },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
   {
-    slug: "automatisch", name: "Automatisch", selfHostable: true, aiFeatures: false, integrations: 50,
+    slug: "automatisch", name: "Automatisch", unitModel: "runs", selfHostable: true, aiFeatures: false, integrations: 50,
     homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 100000, usd: 18 }, { upTo: 500000, usd: 33 }, { upTo: Infinity, usd: 66 }] },
   {
-    slug: "node-red", name: "Node-RED", selfHostable: true, aiFeatures: false, integrations: 5000,
+    slug: "node-red", name: "Node-RED", unitModel: "runs", selfHostable: true, aiFeatures: false, integrations: 5000,
     homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server hardware only (not a tool fee)" },
@@ -2039,6 +2047,42 @@ function selfHostHwCost(tool, ops) {
 function creditBandRate(bands, credits) {
   for (const [upTo, pc] of bands) { if (upTo === null || credits <= upTo) return pc; }
   return bands[bands.length - 1][1];
+}
+
+// ── Unit conversion ───────────────────────────────────────────────────────────
+// KAŽDÝ vendor měří objem jinou jednotkou. Uživatel zadá runs (běhy workflow/mo)
+// a steps (kroky na workflow); tahle funkce to přepočítá na to, co vendor reálně
+// účtuje. unitModel pochází z tools.json:
+//   runs    — 1 jednotka za běh, bez ohledu na kroky (n8n execution, Pipedream
+//             credit = 30s compute/běh → většina běhů 1 credit)
+//   modules — 1 jednotka za KAŽDÝ krok (Make: každý modul = 1 credit) = runs×steps
+//   actions — Zapier task = úspěšná akce; trigger + filtry + paths + Formatter
+//             jsou ZDARMA → ~ runs × (steps−1) × 0.8 (konzervativní: −trigger,
+//             −~20 % utility kroků). Pravidla: help.zapier.com task usage.
+// Odhady jsou přiznané (per-vendor disclaimer v UI) — jednotky nejsou 1:1.
+function vendorUnits(tool, runs, steps) {
+  const s = Math.max(1, steps);
+  switch (tool.unitModel) {
+    case "modules": return runs * s;
+    case "actions": return Math.round(runs * Math.max(1, s - 1) * 0.8);
+    case "runs":
+    default:        return runs;
+  }
+}
+// Krátké vysvětlení do karty: kolik vendorových jednotek z runs×steps vyšlo + jak měří.
+// Vrací "" pro self-host/per-flow nástroje, kde objem cenu neřídí.
+const UNIT_NAME = { n8n: "executions", pipedream: "credits", make: "credits", zapier: "tasks" };
+const UNIT_HOW = {
+  runs: "1 per run, any # of steps",
+  modules: "every step = 1 credit",
+  actions: "triggers, filters & paths are free",
+};
+function unitExplain(tool, costResult) {
+  if (costResult.hwOnly || costResult.units == null) return "";
+  const name = UNIT_NAME[tool.slug];
+  if (!name) return ""; // self-host / per-flow → objem nerozhoduje
+  const how = tool.slug === "pipedream" ? "1 credit/run, runs ≤30s" : (UNIT_HOW[tool.unitModel] || "");
+  return `≈ ${costResult.units.toLocaleString()} ${name}/mo · ${how}`;
 }
 
 // ── Wizard navigation ─────────────────────────────────────────────────────────
@@ -2162,13 +2206,19 @@ function toggleDiagram(event, id) {
 }
 
 // ── Step 3 inputs ─────────────────────────────────────────────────────────────
-const CALC_OPS_STEPS = [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
+// "runs" = kolikrát se workflow za měsíc spustí (frekvence). "steps" = průměrný
+// počet kroků na workflow. Z runs×steps engine spočítá vendorovu jednotku
+// (vendorUnits) — proto NE jeden univerzální "ops" slider (vendoři měří různě).
+const CALC_RUNS_STEPS = [100, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
+const CALC_STEP_COUNTS = [1, 2, 3, 4, 5, 7, 10, 15, 20];
 const CALC_WF_STEPS  = [1, 3, 5, 10, 15, 20, 50, 100];
-function getCalcOps() { return CALC_OPS_STEPS[parseInt(document.getElementById("ops").value)]; }
-function getCalcWf()  { return CALC_WF_STEPS[parseInt(document.getElementById("workflows").value)]; }
+function getCalcRuns()  { return CALC_RUNS_STEPS[parseInt(document.getElementById("ops").value)]; }
+function getCalcSteps() { return CALC_STEP_COUNTS[parseInt(document.getElementById("steps").value)]; }
+function getCalcWf()    { return CALC_WF_STEPS[parseInt(document.getElementById("workflows").value)]; }
 function findClosestIdx(arr, val) { return arr.reduce((b,v,i) => Math.abs(v-val) < Math.abs(arr[b]-val) ? i : b, 0); }
-function updateOpsDisplay() { document.getElementById("ops-display").textContent = getCalcOps().toLocaleString(); }
-function updateWfDisplay()  { document.getElementById("wf-display").textContent  = getCalcWf(); }
+function updateOpsDisplay()  { document.getElementById("ops-display").textContent  = getCalcRuns().toLocaleString(); }
+function updateStepsDisplay(){ document.getElementById("steps-display").textContent = getCalcSteps(); }
+function updateWfDisplay()   { document.getElementById("wf-display").textContent   = getCalcWf(); }
 
 function updateBudget(v) {
   maxBudget = parseInt(v);
@@ -2216,8 +2266,12 @@ function estimateVolumeBudget() {
   // so values above the top step simply clamp to it. budget is a continuous
   // slider — clamp here so the displayed $ never exceeds the track.
   const BUDGET_MAX = 500;
+  // steps: kód-těžké role mívají delší workflow (víc kroků), jednoduché míň.
+  // Hrubý default — uživatel doladí. base.ops je nově runs/mo (frekvence běhů).
+  const roleSteps = { developer: 5, operations: 4, ecommerce: 4, marketing: 3, finance: 3, hr: 2, legal: 2, other: 3 };
   return {
-    ops:       Math.round(base.ops * rs * wfMult),
+    ops:       Math.round(base.ops * rs * wfMult),   // runs/mo (slider id="ops")
+    steps:     roleSteps[selectedRole] || 3,
     workflows: Math.round(base.workflows * rw * Math.sqrt(wfCount)),
     budget:    Math.min(BUDGET_MAX, Math.round(base.budget * rb)),
   };
@@ -2230,9 +2284,14 @@ function estimateVolumeBudget() {
 function applyEstimate(est) {
   est = est || {};
   if (typeof est.ops === "number") {
-    document.getElementById("ops").value = findClosestIdx(CALC_OPS_STEPS, est.ops);
+    document.getElementById("ops").value = findClosestIdx(CALC_RUNS_STEPS, est.ops);
     updateOpsDisplay();
     document.getElementById("ops-auto").hidden = false;
+  }
+  if (typeof est.steps === "number") {
+    document.getElementById("steps").value = findClosestIdx(CALC_STEP_COUNTS, est.steps);
+    updateStepsDisplay();
+    document.getElementById("steps-auto").hidden = false;
   }
   if (typeof est.workflows === "number") {
     document.getElementById("workflows").value = findClosestIdx(CALC_WF_STEPS, est.workflows);
@@ -2249,14 +2308,14 @@ function applyEstimate(est) {
 }
 
 // Manual drag clears the "auto-estimated" flag on that slider (visual feedback only).
-[["ops","ops-auto"],["workflows","wf-auto"],["budget","budget-auto"]].forEach(function (pair) {
+[["ops","ops-auto"],["steps","steps-auto"],["workflows","wf-auto"],["budget","budget-auto"]].forEach(function (pair) {
   const el = document.getElementById(pair[0]);
   if (!el) return;
   el.addEventListener("input", function () {
     const badge = document.getElementById(pair[1]);
     if (badge) badge.hidden = true;
     const note = document.getElementById("estimate-note");
-    const allHidden = ["ops-auto","wf-auto","budget-auto"].every(function (id) {
+    const allHidden = ["ops-auto","steps-auto","wf-auto","budget-auto"].every(function (id) {
       const b = document.getElementById(id); return !b || b.hidden;
     });
     if (note && allHidden) note.hidden = true;
@@ -2324,7 +2383,9 @@ function toolSupportsAll(slug) {
     return app && app.s[slug] === 1;
   });
 }
-function calcCost(tool, ops, workflows) {
+function calcCost(tool, runs, steps, workflows) {
+  // runs×steps → vendorova billable jednotka (n8n běhy, Make moduly, Zapier akce…)
+  const ops = vendorUnits(tool, runs, steps);
   if (hostPref === "cloud" && tool.selfHostable && !tool.plans.some(p => !p.selfHostOnly)) return null;
   if (hostPref === "selfhost" && !tool.selfHostable) return null;
   if (aiPref === "yes" && !tool.aiFeatures) return null;
@@ -2381,6 +2442,8 @@ function calcCost(tool, ops, workflows) {
       }
     }
   }
+  // přilož přepočtenou jednotku, ať render umí vysvětlit "X runs → Y <jednotka>"
+  if (best) { best.units = ops; best.unitModel = tool.unitModel; }
   return best;
 }
 
@@ -2438,7 +2501,8 @@ function costClass(cost) {
 
 // ── Render results ────────────────────────────────────────────────────────────
 function renderResults() {
-  const ops = getCalcOps();
+  const runs = getCalcRuns();
+  const steps = getCalcSteps();
   const workflows = getCalcWf();
   const role = selectedRole || "other";
   const wf = WORKFLOWS.find(w => w.id === selectedWorkflow);
@@ -2448,7 +2512,7 @@ function renderResults() {
   document.getElementById("profile-summary").innerHTML = [
     `<div class="profile-chip">Role: <span>${roleLabel[role] || role}</span></div>`,
     wf ? `<div class="profile-chip">Workflow: <span>${wf.title}</span></div>` : "",
-    `<div class="profile-chip">Volume: <span>${ops.toLocaleString()} ops · ${workflows} workflows</span></div>`,
+    `<div class="profile-chip">Volume: <span>${runs.toLocaleString()} runs/mo · ${steps} steps · ${workflows} workflows</span></div>`,
     maxBudget > 0 ? `<div class="profile-chip">Budget: <span>$${maxBudget}/mo</span></div>` : "",
     billing === "annual" ? `<div class="profile-chip">Billing: <span>Annual</span></div>` : "",
     hostPref !== "any" ? `<div class="profile-chip">Hosting: <span>${hostPref === "selfhost" ? "Self-hosted" : "Cloud only"}</span></div>` : "",
@@ -2456,7 +2520,7 @@ function renderResults() {
   ].join("");
 
   const items = TOOLS.map(tool => {
-    const costResult = calcCost(tool, ops, workflows);
+    const costResult = calcCost(tool, runs, steps, workflows);
     const score = computeMatchScore(tool, costResult);
     return { tool, costResult, score };
   }).filter(r => r.costResult !== null);
@@ -2524,6 +2588,7 @@ function renderResults() {
             <span class="match-badge ${label.cls}">${label.text}</span>
           </div>
           <div class="result-plan">${costResult.plan.note}${overBudget ? `  <span style="color:var(--red);font-weight:700;">Over budget</span>` : ""}</div>
+          ${unitExplain(tool, costResult) ? `<div class="result-plan" style="opacity:.8">${unitExplain(tool, costResult)}</div>` : ""}
           <button class="result-expand-btn" onclick="toggleExpand('${tool.slug}')">
             <span id="expand-icon-${tool.slug}">▸</span> Why this score?
           </button>
@@ -2551,14 +2616,16 @@ function renderResults() {
         </div>
       </div>
     </div>`;
-  }).join("") + (items.some(r => r.costResult.estimated)
-    ? `<div style="font-size:12px;color:var(--muted);margin:10px 2px 0;">~ Estimated price — derived from the vendor's public pricing; actual enterprise quotes may differ. Always verify on the vendor's site.</div>`
+  }).join("")
+    + `<div style="font-size:12px;color:var(--muted);margin:14px 2px 0;line-height:1.6;">⚖ <b>Each tool measures volume differently</b> — we convert your ${runs.toLocaleString()} runs/mo × ${steps} steps into each vendor's own unit: n8n bills per run (executions), Make bills every step (credits), Zapier bills actions but triggers/filters/paths are free (tasks), Pipedream bills compute time (~1 credit/run under 30s). Conversions are conservative estimates — your real usage depends on workflow shape.</div>`
+    + (items.some(r => r.costResult.estimated)
+    ? `<div style="font-size:12px;color:var(--muted);margin:8px 2px 0;">~ Estimated price — derived from the vendor's public pricing; actual enterprise quotes may differ. Always verify on the vendor's site.</div>`
     : "");
 
   // Persist a lightweight profile so compare.html "Best for me" can use it.
   try {
     localStorage.setItem("ac_profile", JSON.stringify({
-      ops: getCalcOps(), workflows: getCalcWf(), budget: maxBudget,
+      ops: getCalcRuns(), steps: getCalcSteps(), workflows: getCalcWf(), budget: maxBudget,
       hostPref: hostPref, aiPref: aiPref, billing: billing, role: selectedRole, companySize: selectedCompanySize,
       workflowsSel: selectedWorkflows.slice(),
       topTool: items.length ? items[0].tool.slug : null,
@@ -2590,6 +2657,7 @@ function buildShareQuery() {
   if (selectedRole) p.set("r", selectedRole);
   if (selectedWorkflows.length) p.set("w", selectedWorkflows.join("."));
   p.set("o", document.getElementById("ops").value);
+  p.set("st", document.getElementById("steps").value);
   p.set("f", document.getElementById("workflows").value);
   p.set("b", String(maxBudget));
   if (billing === "annual") p.set("bi", "a");
@@ -2636,7 +2704,7 @@ function profileFromParams(qs) {
   return {
     size: p.get("s"), role: p.get("r"),
     wfs: p.get("w") ? p.get("w").split(".") : [],
-    opsIdx: num(p.get("o"), 4), wfIdx: num(p.get("f"), 2), budget: num(p.get("b"), 50),
+    opsIdx: num(p.get("o"), 4), stepsIdx: num(p.get("st"), 2), wfIdx: num(p.get("f"), 2), budget: num(p.get("b"), 50),
     billing: p.get("bi") === "a" ? "annual" : "monthly",
     host: p.get("h") || "any",
     ai: p.get("ai") === "y" ? "yes" : "any",
@@ -2653,7 +2721,8 @@ function profileFromStored() {
     if (!p.ts || Date.now() - p.ts > 30 * 24 * 3600 * 1000) return null; // stale after 30 days
     return {
       size: p.companySize, role: p.role, wfs: p.workflowsSel || [],
-      opsIdx: findClosestIdx(CALC_OPS_STEPS, p.ops || 5000),
+      opsIdx: findClosestIdx(CALC_RUNS_STEPS, p.ops || 5000),
+      stepsIdx: findClosestIdx(CALC_STEP_COUNTS, p.steps || 3),
       wfIdx: findClosestIdx(CALC_WF_STEPS, p.workflows || 5),
       budget: typeof p.budget === "number" ? p.budget : 50,
       billing: p.billing === "annual" ? "annual" : "monthly",
@@ -2678,8 +2747,12 @@ function restoreProfile(prof) {
 
   // Sliders get the restored values directly; matching lastEstimateSig stops
   // goStep(4) from re-estimating over them when the user navigates back.
-  document.getElementById("ops").value = String(Math.max(0, Math.min(CALC_OPS_STEPS.length - 1, prof.opsIdx)));
+  document.getElementById("ops").value = String(Math.max(0, Math.min(CALC_RUNS_STEPS.length - 1, prof.opsIdx)));
   updateOpsDisplay();
+  if (typeof prof.stepsIdx === "number") {
+    document.getElementById("steps").value = String(Math.max(0, Math.min(CALC_STEP_COUNTS.length - 1, prof.stepsIdx)));
+    updateStepsDisplay();
+  }
   document.getElementById("workflows").value = String(Math.max(0, Math.min(CALC_WF_STEPS.length - 1, prof.wfIdx)));
   updateWfDisplay();
   document.getElementById("budget").value = String(maxBudget);
