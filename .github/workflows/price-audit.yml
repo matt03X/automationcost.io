@@ -70,6 +70,8 @@ jobs:
             echo "Žádná auto-aplikovatelná cenová změna — PR se netvoří."
             exit 0
           fi
+          # before/after PNG ceníků vendorů (vizuální důkaz) do popisu PR
+          node scripts/pr-image-block.js "automation/data/audit/changes-${DATE}.json" "$GITHUB_REPOSITORY" "$BR" >> /tmp/pr-body.md || true
           git add automation/data/tools.json
           git commit -m "auto: cenová data ${DATE} (návrh z auditu)"
           # přegeneruj výstupy z tools.json (kalkulačka, compare, changelog, feedy, homepage demo)

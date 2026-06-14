@@ -86,6 +86,12 @@ async function billingLines(page) {
   try { return extractBillingLines(await page.evaluate(() => document.body.innerText)); }
   catch { return []; }
 }
+// fullPage PNG ceníku vendora — vizuální důkaz změny do PR (starý vs nový).
+// Vrací Buffer | null (selhání screenshotu nesmí shodit scrape).
+async function shoot(page) {
+  try { return await page.screenshot({ fullPage: true, type: "png" }); }
+  catch { return null; }
+}
 
 // ── scrape jednotlivých vendorů ─────────────────────────────────────────────
 let _browser = null;
@@ -107,6 +113,7 @@ async function scrapeZapier() {
   if (!res || !res.ok()) throw new Error(`HTTP ${res ? res.status() : "?"}`);
   const html = await page.content();
   const bl = await billingLines(page);
+  const shot = await shoot(page);
   await page.close();
   const re = /\{"planType":"([^"]+)","tasks":(\d+),"id":\d+,"name":"[^"]*","shortName":"[^"]*","amount":(\d+),"actions":\d+,"interval":"([^"]+)"\}/g;
   const byI = { month: {}, year: {} };
@@ -119,7 +126,7 @@ async function scrapeZapier() {
   }
   if (!n) throw new Error("matice nenalezena (změna formátu?)");
   const rows = (o) => Object.keys(o).map(Number).sort((a, b) => a - b).map((u) => ({ units: u, plans: o[u] }));
-  return { html, prices: { unit: "tasks", monthly: rows(byI.month), annually: rows(byI.year), points: n, billingLines: bl } };
+  return { html, prices: { unit: "tasks", monthly: rows(byI.month), annually: rows(byI.year), points: n, billingLines: bl }, shot };
 }
 
 // Make: slider 0..18, ceny generuje JS lokálně → projet pozice pro monthly i annually.
@@ -187,8 +194,9 @@ async function scrapeMake() {
   let annually = [];
   if (await setPeriod("pay annually")) annually = await sweep();
   const bl = await billingLines(page);
+  const shot = await shoot(page);
   await page.close();
-  return { html, prices: { unit: "credits", monthly, annually, billingLines: bl } };
+  return { html, prices: { unit: "credits", monthly, annually, billingLines: bl }, shot };
 }
 
 // Pipedream: 3 slidery (Basic/Advanced/Connect). Cena = STUPŇOVITÁ TARIFNÍ TABULKA
@@ -276,8 +284,9 @@ async function scrapePipedream() {
     plans[meta.name] = { base: meta.base, includedCredits: meta.includedCredits, bands };
   }
   const bl = await billingLines(page);
+  const shot = await shoot(page);
   await page.close();
-  return { html, prices: { unit: "credits", model: "per-credit-bands", plans, billingLines: bl } };
+  return { html, prices: { unit: "credits", model: "per-credit-bands", plans, billingLines: bl }, shot };
 }
 
 // n8n: Starter má fixní objem, ale Pro a Business mají DROPDOWN selektor objemu
@@ -352,9 +361,10 @@ async function scrapeN8n() {
   const annuallyOk = await setBilling("annually");
   const annually = { starter: await starterEur(), billingOk: annuallyOk, dropdowns: await readDropdowns() };
   const bl = await billingLines(page);
+  const shot = await shoot(page);
   await page.close();
   if (!monthly.dropdowns.length) throw new Error("n8n: žádné dropdown options (změna struktury?)");
-  return { html, prices: { unit: "executions", currency: "EUR", model: "dropdown-volume", monthly, annually, billingLines: bl } };
+  return { html, prices: { unit: "executions", currency: "EUR", model: "dropdown-volume", monthly, annually, billingLines: bl }, shot };
 }
 
 // Fixní ceníky: ulož HTML + vytáhni $N /mo ceny z viditelného textu jako hrubý otisk.
@@ -365,10 +375,11 @@ async function scrapeFixed(v) {
   const html = await page.content();
   const text = await page.evaluate(() => document.body.innerText);
   const bl = extractBillingLines(text);
+  const shot = await shoot(page);
   await page.close();
   const prices = [...new Set([...text.matchAll(/\$\s?([\d,]+(?:\.\d{2})?)/g)].map((m) => Number(m[1].replace(/,/g, ""))))]
     .filter((n) => n > 0).sort((a, b) => a - b);
-  return { html, prices: { unit: VENDORS[v].unit, model: "fixed", listedPrices: prices, billingLines: bl } };
+  return { html, prices: { unit: VENDORS[v].unit, model: "fixed", listedPrices: prices, billingLines: bl }, shot };
 }
 
 async function scrapeVendor(v) {
@@ -500,7 +511,7 @@ async function main() {
     process.stdout.write(`→ ${v} … `);
     try {
       const prev = NO_DIFF ? null : previousSnapshot(v);
-      const { html, prices } = await scrapeVendorRetry(v);
+      const { html, prices, shot } = await scrapeVendorRetry(v);
       const dir = vendorDir(v);
       // normalizovaná cenová data — vždy (malé, 24 KB/den celkem)
       const snap = { vendor: v, scrapedAt: new Date().toISOString(), url: VENDORS[v].url, ...prices };
@@ -518,6 +529,8 @@ async function main() {
         const gz = zlib.gzipSync(Buffer.from(html, "utf8"));
         fs.writeFileSync(path.join(dir, `${TODAY}.html.gz`), gz);
         htmlNote = `HTML uloženo ${Math.round(gz.length / 1024)} KB gz`;
+        // PNG ceníku vendora = vizuální důkaz pro PR (starý=předchozí snapshot, nový=dnešní)
+        if (shot) { fs.writeFileSync(path.join(dir, `${TODAY}.png`), shot); htmlNote += ` + PNG`; }
       }
       console.log(`OK (${htmlNote} · ${changed.length} změn vs ${prev ? prev.date : "—"})`);
     } catch (e) {
