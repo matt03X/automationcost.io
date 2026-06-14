@@ -47,10 +47,11 @@ DEMO_WARN = "/* generováno build.py z automation/data/tools.json — needituj r
 # Hero demo: které objemy (RUNS/mo) a nástroje homepage ukazuje. DEMO_STEPS =
 # předpokládané kroky/workflow pro převod runs → vendorova jednotka (musí sedět
 # s verify-demo.js, který volá JS calcCost se stejnými steps).
-DEMO_VOLUMES = [1000, 5000, 20000, 100000]
+DEMO_VOLUMES = [1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000]  # runs/mo (slider)
+DEMO_STEPS_OPTS = [1, 2, 3, 5, 8]  # kroky/workflow (slider)
 DEMO_TOOLS = [("n8n", "n8n"), ("make", "Make"), ("pipedream", "Pipedream"), ("zapier", "Zapier")]
 DEMO_WORKFLOWS = 3
-DEMO_STEPS = 3
+DEMO_STEPS = 3  # výchozí pro single-arg volání cheapest_monthly (vs-pages)
 DEMO_FOOT_TEXT = "*self-hosted = server hardware, not a tool fee · units differ per tool (we convert runs→each vendor's unit) · ~ estimated custom tier"
 
 AN_START = "<!-- ANALYTICS (build.py) -->"
@@ -93,7 +94,10 @@ def js_selfhosthw(tiers) -> str:
     """selfHostHw = stupňovité VPS prahy podle objemu (upTo == null → Infinity)."""
     if not tiers:
         return "null"
-    cells = ", ".join(f"{{ upTo: {js_limit(t.get('upTo'))}, usd: {t['usd']} }}" for t in tiers)
+    cells = ", ".join(
+        f"{{ upTo: {js_limit(t.get('upTo'))}, usd: {t['usd']}" +
+        (f", spec: {js_str(t['spec'])}" if t.get('spec') else "") + " }"
+        for t in tiers)
     return f"[{cells}]"
 
 
@@ -226,8 +230,9 @@ def vendor_units(tool: dict, runs: int, steps: int) -> int:
     return runs
 
 
-def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: int = DEMO_WORKFLOWS) -> dict | None:
-    """Nejlevnější měsíční cena nástroje při daném objemu (hostPref=any, monthly).
+def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: int = DEMO_WORKFLOWS,
+                     prefer_cloud: bool = False) -> dict | None:
+    """Nejlevnější měsíční cena nástroje při daném objemu (monthly).
 
     runs = běhy workflow/měsíc, steps = kroky na workflow → engine přepočítá na
     vendorovu jednotku (vendor_units) a teprve pak počítá cenu. Zrcadlí calcCost():
@@ -235,9 +240,15 @@ def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: 
     - overage: ceil((ops - included) / per) * usd; creditBands flat-per-band
     - custom odhad: kotva = největší veřejný cloud plán; exponent 0.7
     - shoda ceny: pro label preferuj placený plán bez overage (Core, ne Free+ops)
+
+    prefer_cloud=True (homepage DEMO, zrcadlí calcCost hostPref="any"): self-host
+    plány se vyloučí z headline (cloud je fér srovnání s managed konkurencí);
+    self-host se použije jen když nástroj nemá cloud plán. vs-stránky volají
+    prefer_cloud=False (absolutně nejlevnější vč. self-host, konzistentní s verdikty).
     """
     ops = vendor_units(tool, runs, steps)
-    best = None  # (cost, label_pref, plan, overage_usd)
+    best = None          # (cost, label_pref, plan, overage_usd)
+    selfhost_best = None  # fallback pro nástroje bez cloud plánu (Automatisch/Node-RED)
     for p in tool["plans"]:
         if p.get("monthlyUsd") is None:
             continue
@@ -277,6 +288,11 @@ def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: 
             label_pref = 1
         else:
             label_pref = 2
+        # prefer_cloud: self-host plány nejdou do headline (drží se jako fallback)
+        if prefer_cloud and p.get("selfHostOnly"):
+            if selfhost_best is None or (cost, label_pref) < (selfhost_best[0], selfhost_best[1]):
+                selfhost_best = (cost, label_pref, p, over)
+            continue
         if best is None or (cost, label_pref) < (best[0], best[1]):
             best = (cost, label_pref, p, over)
 
@@ -294,6 +310,9 @@ def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: 
                 if best is None or (beyond_public and est < best[0]):
                     return {"cost": est, "label": custom["name"], "est": True}
 
+    # prefer_cloud: nemá-li nástroj cloud plán (jen self-host), použij self-host
+    if best is None and selfhost_best is not None:
+        best = selfhost_best
     if best is None:
         return None
     cost, _, plan, over = best
@@ -305,20 +324,28 @@ def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: 
 
 
 def render_demo(tools: list[dict]) -> str:
+    """2D matice DEMO[runs][steps] — homepage má slider runs + slider steps.
+    Předpočítáno (zrcadlí calcCost hostPref=any, prefer_cloud), paritu hlídá
+    verify-demo.js. Self-host vyloučen z headline (cloud je fér srovnání)."""
     by_slug = {t["slug"]: t for t in tools}
     lines = ["const DEMO = {"]
-    for vol in DEMO_VOLUMES:
-        rows = []
-        for slug, display in DEMO_TOOLS:
-            r = cheapest_monthly(by_slug[slug], vol)
-            if r is None:
-                raise SystemExit(f"CHYBA: {slug} nemá ocenitelný plán pro {vol} ops — uprav DEMO_TOOLS/DEMO_VOLUMES.")
-            row = f'{{n:{js_str(display)}, c:{r["cost"]}, note:{js_str(r["label"])}'
-            if r["est"]:
-                row += ", est:1"
-            rows.append(row + "}")
-        lines.append(f"  {vol}: [ " + ", ".join(rows) + " ],")
+    for runs in DEMO_VOLUMES:
+        lines.append(f"  {runs}: {{")
+        for steps in DEMO_STEPS_OPTS:
+            rows = []
+            for slug, display in DEMO_TOOLS:
+                r = cheapest_monthly(by_slug[slug], runs, steps, prefer_cloud=True)
+                if r is None:
+                    raise SystemExit(f"CHYBA: {slug} nemá ocenitelný plán pro {runs} runs × {steps} steps.")
+                row = f'{{n:{js_str(display)}, c:{r["cost"]}, note:{js_str(r["label"])}'
+                if r["est"]:
+                    row += ", est:1"
+                rows.append(row + "}")
+            lines.append(f"    {steps}: [ " + ", ".join(rows) + " ],")
+        lines.append("  },")
     lines.append("};")
+    lines.append(f"const DEMO_RUNS = [{', '.join(str(v) for v in DEMO_VOLUMES)}];")
+    lines.append(f"const DEMO_STEP_OPTS = [{', '.join(str(s) for s in DEMO_STEPS_OPTS)}];")
     lines.append(f"const DEMO_FOOT = {js_str(DEMO_FOOT_TEXT)};")
     return "\n".join(lines)
 

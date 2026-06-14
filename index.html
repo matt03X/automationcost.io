@@ -114,21 +114,23 @@
     .demo-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
     .demo-title { font-family: var(--display); font-size: 1.2rem; font-weight: 800; }
     .demo-note { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
-    .vol-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
-    .vol-chip { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text2); background: var(--surface2); border: 1px solid var(--border2); border-radius: 99px; padding: 9px 18px; cursor: pointer; transition: all 0.15s; min-height: 40px; }
-    .vol-chip:hover { border-color: var(--accent); color: var(--text); }
-    .vol-chip.on { background: rgba(124,77,255,0.16); border-color: var(--accent); color: var(--accent); font-weight: 700; }
+    .demo-sliders { display: flex; gap: 28px; flex-wrap: wrap; margin-bottom: 26px; }
+    .demo-slider { flex: 1 1 240px; }
+    .demo-slider label { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--mono); font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+    .demo-slider label b { color: var(--accent); font-size: 14px; }
+    .demo-slider input[type=range] { width: 100%; accent-color: var(--accent); height: 4px; cursor: pointer; }
     .price-rows { display: flex; flex-direction: column; gap: 13px; margin-bottom: 22px; }
-    .price-row { display: grid; grid-template-columns: 120px 1fr 110px; align-items: center; gap: 16px; }
+    .price-row { display: grid; grid-template-columns: 120px 1fr minmax(110px, max-content); align-items: center; gap: 16px; }
     .pr-name { font-family: var(--display); font-size: 14.5px; font-weight: 700; text-align: right; color: var(--text2); display: flex; align-items: center; justify-content: flex-end; gap: 7px; }
     .pr-name .win-tag { font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; color: var(--green); border: 1px solid rgba(22,209,140,0.45); background: rgba(22,209,140,0.1); padding: 2px 7px; border-radius: 99px; }
     .pr-track { height: 30px; background: rgba(255,255,255,0.025); border-radius: 7px; overflow: hidden; }
     .pr-bar { height: 100%; border-radius: 7px; background: linear-gradient(90deg, #3d3367, #5b4a9e); transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1); min-width: 3px; }
     .pr-bar.win { background: linear-gradient(90deg, #0ea66e, #2fe39c); box-shadow: 0 0 14px rgba(22,209,140,0.3); }
     .pr-bar.worst { background: linear-gradient(90deg, #8a3d3d, #c25555); }
-    .pr-cost { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--text); white-space: nowrap; }
+    .pr-cost { font-family: var(--mono); font-size: 15px; font-weight: 700; color: var(--text); white-space: nowrap; text-align: right; }
     .pr-cost small { font-size: 11px; color: var(--muted); font-weight: 500; }
-    .pr-cost small.plan::before { content: " · "; }
+    /* plán pod cenu (block) → dlouhé názvy ("Professional 100k") se nikdy neořežou o okraj karty */
+    .pr-cost small.plan { display: block; white-space: normal; line-height: 1.35; margin-top: 2px; }
     .demo-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 20px; }
     .demo-save { font-family: var(--mono); font-size: 13.5px; color: var(--muted); }
     .demo-save b { color: var(--green); font-weight: 700; }
@@ -283,7 +285,16 @@
       <div class="demo-title">What does automation cost per month?</div>
       <div class="demo-note">live sample · June 2026 prices · from the Automation wizard</div>
     </div>
-    <div class="vol-chips" role="tablist" aria-label="Operations per month" id="vol-chips"></div>
+    <div class="demo-sliders">
+      <div class="demo-slider">
+        <label for="demo-runs">Workflow runs / mo <b id="demo-runs-val">5,000</b></label>
+        <input type="range" id="demo-runs" min="0" max="9" step="1" value="2" aria-label="Workflow runs per month">
+      </div>
+      <div class="demo-slider">
+        <label for="demo-steps">Steps / workflow <b id="demo-steps-val">3</b></label>
+        <input type="range" id="demo-steps" min="0" max="4" step="1" value="2" aria-label="Steps per workflow">
+      </div>
+    </div>
     <div class="price-rows" id="price-rows"></div>
     <div class="demo-foot">
       <div class="demo-save" id="demo-save"></div>
@@ -477,16 +488,85 @@
 //    est:1 = estimated custom-tier price, rendered with ~ prefix.
 /* DATA:DEMO:START */ /* generováno build.py z automation/data/tools.json — needituj ručně */
 const DEMO = {
-  1000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:29, note:"Basic"}, {n:"Zapier", c:73.5, note:"Professional 2k"} ],
-  5000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:18.82, note:"Core 20k"}, {n:"Pipedream", c:59.0, note:"Basic +ops"}, {n:"Zapier", c:193.5, note:"Professional 10k"} ],
-  20000: [ {n:"n8n", c:25, note:"self-hosted*"}, {n:"Make", c:64.71, note:"Core 80k"}, {n:"Pipedream", c:137.0, note:"Basic +ops"}, {n:"Zapier", c:433.5, note:"Professional 50k"} ],
-  100000: [ {n:"n8n", c:45, note:"self-hosted*"}, {n:"Make", c:214.31, note:"Core 300k"}, {n:"Pipedream", c:293.6, note:"Basic +ops"}, {n:"Zapier", c:1149, note:"Professional 200k"} ],
+  1000: {
+    1: [ {n:"n8n", c:24, note:"Cloud Starter"}, {n:"Make", c:0, note:"Free"}, {n:"Pipedream", c:29, note:"Basic"}, {n:"Zapier", c:58.5, note:"Professional 1k"} ],
+    2: [ {n:"n8n", c:24, note:"Cloud Starter"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:29, note:"Basic"}, {n:"Zapier", c:58.5, note:"Professional 1k"} ],
+    3: [ {n:"n8n", c:24, note:"Cloud Starter"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:29, note:"Basic"}, {n:"Zapier", c:73.5, note:"Professional 2k"} ],
+    5: [ {n:"n8n", c:24, note:"Cloud Starter"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:29, note:"Basic"}, {n:"Zapier", c:133.5, note:"Professional 5k"} ],
+    8: [ {n:"n8n", c:24, note:"Cloud Starter"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:29, note:"Basic"}, {n:"Zapier", c:193.5, note:"Professional 10k"} ],
+  },
+  2500: {
+    1: [ {n:"n8n", c:24, note:"Cloud Starter"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:34.0, note:"Basic +ops"}, {n:"Zapier", c:73.5, note:"Professional 2k"} ],
+    2: [ {n:"n8n", c:24, note:"Cloud Starter"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:34.0, note:"Basic +ops"}, {n:"Zapier", c:73.5, note:"Professional 2k"} ],
+    3: [ {n:"n8n", c:24, note:"Cloud Starter"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:34.0, note:"Basic +ops"}, {n:"Zapier", c:133.5, note:"Professional 5k"} ],
+    5: [ {n:"n8n", c:24, note:"Cloud Starter"}, {n:"Make", c:18.82, note:"Core 20k"}, {n:"Pipedream", c:34.0, note:"Basic +ops"}, {n:"Zapier", c:193.5, note:"Professional 10k"} ],
+    8: [ {n:"n8n", c:24, note:"Cloud Starter"}, {n:"Make", c:18.82, note:"Core 20k"}, {n:"Pipedream", c:34.0, note:"Basic +ops"}, {n:"Zapier", c:283.5, note:"Professional 20k"} ],
+  },
+  5000: {
+    1: [ {n:"n8n", c:60, note:"Cloud Pro 10k"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:59.0, note:"Basic +ops"}, {n:"Zapier", c:133.5, note:"Professional 5k"} ],
+    2: [ {n:"n8n", c:60, note:"Cloud Pro 10k"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:59.0, note:"Basic +ops"}, {n:"Zapier", c:133.5, note:"Professional 5k"} ],
+    3: [ {n:"n8n", c:60, note:"Cloud Pro 10k"}, {n:"Make", c:18.82, note:"Core 20k"}, {n:"Pipedream", c:59.0, note:"Basic +ops"}, {n:"Zapier", c:193.5, note:"Professional 10k"} ],
+    5: [ {n:"n8n", c:60, note:"Cloud Pro 10k"}, {n:"Make", c:34.12, note:"Core 40k"}, {n:"Pipedream", c:59.0, note:"Basic +ops"}, {n:"Zapier", c:283.5, note:"Professional 20k"} ],
+    8: [ {n:"n8n", c:60, note:"Cloud Pro 10k"}, {n:"Make", c:34.12, note:"Core 40k"}, {n:"Pipedream", c:59.0, note:"Basic +ops"}, {n:"Zapier", c:433.5, note:"Professional 50k"} ],
+  },
+  10000: {
+    1: [ {n:"n8n", c:60, note:"Cloud Pro 10k"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:99, note:"Connect"}, {n:"Zapier", c:193.5, note:"Professional 10k"} ],
+    2: [ {n:"n8n", c:60, note:"Cloud Pro 10k"}, {n:"Make", c:18.82, note:"Core 20k"}, {n:"Pipedream", c:99, note:"Connect"}, {n:"Zapier", c:193.5, note:"Professional 10k"} ],
+    3: [ {n:"n8n", c:60, note:"Cloud Pro 10k"}, {n:"Make", c:34.12, note:"Core 40k"}, {n:"Pipedream", c:99, note:"Connect"}, {n:"Zapier", c:283.5, note:"Professional 20k"} ],
+    5: [ {n:"n8n", c:60, note:"Cloud Pro 10k"}, {n:"Make", c:64.71, note:"Core 80k"}, {n:"Pipedream", c:99, note:"Connect"}, {n:"Zapier", c:433.5, note:"Professional 50k"} ],
+    8: [ {n:"n8n", c:60, note:"Cloud Pro 10k"}, {n:"Make", c:64.71, note:"Core 80k"}, {n:"Pipedream", c:99, note:"Connect"}, {n:"Zapier", c:733.5, note:"Professional 100k"} ],
+  },
+  25000: {
+    1: [ {n:"n8n", c:144, note:"Cloud Pro 50k"}, {n:"Make", c:34.12, note:"Core 40k"}, {n:"Pipedream", c:167.0, note:"Basic +ops"}, {n:"Zapier", c:283.5, note:"Professional 20k"} ],
+    2: [ {n:"n8n", c:144, note:"Cloud Pro 50k"}, {n:"Make", c:64.71, note:"Core 80k"}, {n:"Pipedream", c:167.0, note:"Basic +ops"}, {n:"Zapier", c:283.5, note:"Professional 20k"} ],
+    3: [ {n:"n8n", c:144, note:"Cloud Pro 50k"}, {n:"Make", c:64.71, note:"Core 80k"}, {n:"Pipedream", c:167.0, note:"Basic +ops"}, {n:"Zapier", c:433.5, note:"Professional 50k"} ],
+    5: [ {n:"n8n", c:144, note:"Cloud Pro 50k"}, {n:"Make", c:116.47, note:"Core 150k"}, {n:"Pipedream", c:167.0, note:"Basic +ops"}, {n:"Zapier", c:733.5, note:"Professional 100k"} ],
+    8: [ {n:"n8n", c:144, note:"Cloud Pro 50k"}, {n:"Make", c:214.31, note:"Core 300k"}, {n:"Pipedream", c:167.0, note:"Basic +ops"}, {n:"Zapier", c:1149, note:"Professional 200k"} ],
+  },
+  50000: {
+    1: [ {n:"n8n", c:144, note:"Cloud Pro 50k"}, {n:"Make", c:64.71, note:"Core 80k"}, {n:"Pipedream", c:230.6, note:"Basic +ops"}, {n:"Zapier", c:433.5, note:"Professional 50k"} ],
+    2: [ {n:"n8n", c:144, note:"Cloud Pro 50k"}, {n:"Make", c:116.47, note:"Core 150k"}, {n:"Pipedream", c:230.6, note:"Basic +ops"}, {n:"Zapier", c:433.5, note:"Professional 50k"} ],
+    3: [ {n:"n8n", c:144, note:"Cloud Pro 50k"}, {n:"Make", c:116.47, note:"Core 150k"}, {n:"Pipedream", c:230.6, note:"Basic +ops"}, {n:"Zapier", c:733.5, note:"Professional 100k"} ],
+    5: [ {n:"n8n", c:144, note:"Cloud Pro 50k"}, {n:"Make", c:214.31, note:"Core 300k"}, {n:"Pipedream", c:230.6, note:"Basic +ops"}, {n:"Zapier", c:1149, note:"Professional 200k"} ],
+    8: [ {n:"n8n", c:144, note:"Cloud Pro 50k"}, {n:"Make", c:482.67, note:"Pro 500k"}, {n:"Pipedream", c:230.6, note:"Basic +ops"}, {n:"Zapier", c:1599, note:"Professional 300k"} ],
+  },
+  100000: {
+    1: [ {n:"n8n", c:1726, note:"Business 100k"}, {n:"Make", c:116.47, note:"Core 150k"}, {n:"Pipedream", c:293.6, note:"Basic +ops"}, {n:"Zapier", c:733.5, note:"Professional 100k"} ],
+    2: [ {n:"n8n", c:1726, note:"Business 100k"}, {n:"Make", c:214.31, note:"Core 300k"}, {n:"Pipedream", c:293.6, note:"Basic +ops"}, {n:"Zapier", c:733.5, note:"Professional 100k"} ],
+    3: [ {n:"n8n", c:1726, note:"Business 100k"}, {n:"Make", c:214.31, note:"Core 300k"}, {n:"Pipedream", c:293.6, note:"Basic +ops"}, {n:"Zapier", c:1149, note:"Professional 200k"} ],
+    5: [ {n:"n8n", c:1726, note:"Business 100k"}, {n:"Make", c:482.67, note:"Pro 500k"}, {n:"Pipedream", c:293.6, note:"Basic +ops"}, {n:"Zapier", c:1899, note:"Professional 400k"} ],
+    8: [ {n:"n8n", c:1726, note:"Business 100k"}, {n:"Make", c:880.86, note:"Pro 1M"}, {n:"Pipedream", c:293.6, note:"Basic +ops"}, {n:"Zapier", c:2999, note:"Professional 750k"} ],
+  },
+  250000: {
+    1: [ {n:"n8n", c:3512, note:"Business 300k"}, {n:"Make", c:214.31, note:"Core 300k"}, {n:"Pipedream", c:574.6, note:"Basic +ops"}, {n:"Zapier", c:1149, note:"Professional 200k"} ],
+    2: [ {n:"n8n", c:3512, note:"Business 300k"}, {n:"Make", c:482.67, note:"Pro 500k"}, {n:"Pipedream", c:574.6, note:"Basic +ops"}, {n:"Zapier", c:1149, note:"Professional 200k"} ],
+    3: [ {n:"n8n", c:3512, note:"Business 300k"}, {n:"Make", c:678.75, note:"Pro 750k"}, {n:"Pipedream", c:574.6, note:"Basic +ops"}, {n:"Zapier", c:1899, note:"Professional 400k"} ],
+    5: [ {n:"n8n", c:3512, note:"Business 300k"}, {n:"Make", c:1268.44, note:"Pro 1.5M"}, {n:"Pipedream", c:574.6, note:"Basic +ops"}, {n:"Zapier", c:3299, note:"Professional 1M"} ],
+    8: [ {n:"n8n", c:3512, note:"Business 300k"}, {n:"Make", c:1620.79, note:"Pro 2M"}, {n:"Pipedream", c:574.6, note:"Basic +ops"}, {n:"Zapier", c:4499, note:"Professional 1.5M"} ],
+  },
+  500000: {
+    1: [ {n:"n8n", c:5245, note:"Business 500k"}, {n:"Make", c:482.67, note:"Pro 500k"}, {n:"Pipedream", c:825.8, note:"Basic +ops"}, {n:"Zapier", c:1899, note:"Professional 400k"} ],
+    2: [ {n:"n8n", c:5245, note:"Business 500k"}, {n:"Make", c:880.86, note:"Pro 1M"}, {n:"Pipedream", c:825.8, note:"Basic +ops"}, {n:"Zapier", c:1899, note:"Professional 400k"} ],
+    3: [ {n:"n8n", c:5245, note:"Business 500k"}, {n:"Make", c:1268.44, note:"Pro 1.5M"}, {n:"Pipedream", c:825.8, note:"Basic +ops"}, {n:"Zapier", c:3299, note:"Professional 1M"} ],
+    5: [ {n:"n8n", c:5245, note:"Business 500k"}, {n:"Make", c:2001.32, note:"Pro 2.5M"}, {n:"Pipedream", c:825.8, note:"Basic +ops"}, {n:"Zapier", c:4799, note:"Professional 1.8M"} ],
+    8: [ {n:"n8n", c:5245, note:"Business 500k"}, {n:"Make", c:3028.93, note:"Pro 4M"}, {n:"Pipedream", c:825.8, note:"Basic +ops"}, {n:"Zapier", c:6630, note:"Enterprise", est:1} ],
+  },
+  1000000: {
+    1: [ {n:"n8n", c:8520, note:"Cloud Enterprise", est:1}, {n:"Make", c:880.86, note:"Pro 1M"}, {n:"Pipedream", c:1027.0, note:"Basic +ops"}, {n:"Zapier", c:3299, note:"Professional 1M"} ],
+    2: [ {n:"n8n", c:8520, note:"Cloud Enterprise", est:1}, {n:"Make", c:1620.79, note:"Pro 2M"}, {n:"Pipedream", c:1027.0, note:"Basic +ops"}, {n:"Zapier", c:3299, note:"Professional 1M"} ],
+    3: [ {n:"n8n", c:8520, note:"Cloud Enterprise", est:1}, {n:"Make", c:2333.94, note:"Pro 3M"}, {n:"Pipedream", c:1027.0, note:"Basic +ops"}, {n:"Zapier", c:4799, note:"Professional 1.8M"} ],
+    5: [ {n:"n8n", c:8520, note:"Cloud Enterprise", est:1}, {n:"Make", c:3710.44, note:"Pro 5M"}, {n:"Pipedream", c:1027.0, note:"Basic +ops"}, {n:"Zapier", c:7085, note:"Enterprise", est:1} ],
+    8: [ {n:"n8n", c:8520, note:"Cloud Enterprise", est:1}, {n:"Make", c:5660.47, note:"Pro 8M"}, {n:"Pipedream", c:1027.0, note:"Basic +ops"}, {n:"Zapier", c:10485, note:"Enterprise", est:1} ],
+  },
 };
+const DEMO_RUNS = [1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
+const DEMO_STEP_OPTS = [1, 2, 3, 5, 8];
 const DEMO_FOOT = "*self-hosted = server hardware, not a tool fee · units differ per tool (we convert runs→each vendor's unit) · ~ estimated custom tier";
 /* DATA:DEMO:END */
 
-function renderDemo(vol) {
-  const rows = DEMO[vol];
+function renderDemo(runs, steps) {
+  const rows = (DEMO[runs] || {})[steps];
+  if (!rows) return;
   const max = Math.max(...rows.map(r => r.c));
   const min = Math.min(...rows.map(r => r.c));
   const container = document.getElementById("price-rows");
@@ -518,19 +598,21 @@ function renderDemo(vol) {
     saveYr > 0 ? `Cheapest vs priciest at this volume: <b>${isEst ? "~" : ""}$${saveYr.toLocaleString()}/yr</b> difference &nbsp;·&nbsp; ${DEMO_FOOT}` : "";
 }
 
-// ── Volume chips — generated from DEMO keys so build.py controls volumes too
-const DEFAULT_VOL = Object.keys(DEMO).map(Number).includes(5000) ? 5000 : Math.min(...Object.keys(DEMO).map(Number));
-document.getElementById("vol-chips").innerHTML = Object.keys(DEMO).map(Number).sort((a, b) => a - b)
-  .map(v => `<button class="vol-chip${v === DEFAULT_VOL ? ' on' : ''}" data-vol="${v}">${v.toLocaleString()} runs/mo</button>`).join("");
-
-document.querySelectorAll(".vol-chip").forEach(chip => {
-  chip.addEventListener("click", () => {
-    document.querySelectorAll(".vol-chip").forEach(c => c.classList.remove("on"));
-    chip.classList.add("on");
-    renderDemo(+chip.dataset.vol);
-  });
-});
-renderDemo(DEFAULT_VOL);
+// ── Volume + steps sliders — index into 2D DEMO[runs][steps] (build.py řídí stopy)
+const runsEl = document.getElementById("demo-runs");
+const stepsEl = document.getElementById("demo-steps");
+runsEl.max = String(DEMO_RUNS.length - 1);
+stepsEl.max = String(DEMO_STEP_OPTS.length - 1);
+function demoUpdate() {
+  const runs = DEMO_RUNS[+runsEl.value];
+  const steps = DEMO_STEP_OPTS[+stepsEl.value];
+  document.getElementById("demo-runs-val").textContent = runs.toLocaleString() + " runs/mo";
+  document.getElementById("demo-steps-val").textContent = steps + (steps === 1 ? " step" : " steps");
+  renderDemo(runs, steps);
+}
+runsEl.addEventListener("input", demoUpdate);
+stepsEl.addEventListener("input", demoUpdate);
+demoUpdate();
 
 // ── Scroll reveal (respects prefers-reduced-motion via CSS gate) ──
 document.documentElement.classList.add("js-reveal");

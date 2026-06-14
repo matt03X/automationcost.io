@@ -158,23 +158,33 @@
       "selfHostHw": [
         {
           "upTo": 10000,
-          "usd": 8
+          "usd": 8,
+          "spec": "1 vCPU, 2GB, SQLite"
         },
         {
           "upTo": 50000,
-          "usd": 25
+          "usd": 25,
+          "spec": "2 vCPU, 4GB + Postgres"
         },
         {
           "upTo": 100000,
-          "usd": 45
+          "usd": 45,
+          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)"
+        },
+        {
+          "upTo": 250000,
+          "usd": 70,
+          "spec": "4 vCPU, 16GB, queue + 1 worker"
         },
         {
           "upTo": 500000,
-          "usd": 90
+          "usd": 120,
+          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB"
         },
         {
           "upTo": null,
-          "usd": 150
+          "usd": 200,
+          "spec": "8+ vCPU, 32GB, HA Postgres+Redis, cluster"
         }
       ],
       "pros": [
@@ -283,7 +293,7 @@
           "note": "Pro — 750,000 credits/mo ($678.75)"
         },
         {
-          "name": "Pro 1000k",
+          "name": "Pro 1M",
           "monthlyUsd": 880.86,
           "opsIncluded": 1000000,
           "workflowLimit": null,
@@ -291,7 +301,7 @@
           "note": "Pro — 1,000,000 credits/mo ($880.86)"
         },
         {
-          "name": "Pro 1500k",
+          "name": "Pro 1.5M",
           "monthlyUsd": 1268.44,
           "opsIncluded": 1500000,
           "workflowLimit": null,
@@ -299,7 +309,7 @@
           "note": "Pro — 1,500,000 credits/mo ($1268.44)"
         },
         {
-          "name": "Pro 2000k",
+          "name": "Pro 2M",
           "monthlyUsd": 1620.79,
           "opsIncluded": 2000000,
           "workflowLimit": null,
@@ -307,7 +317,7 @@
           "note": "Pro — 2,000,000 credits/mo ($1620.79)"
         },
         {
-          "name": "Pro 2500k",
+          "name": "Pro 2.5M",
           "monthlyUsd": 2001.32,
           "opsIncluded": 2500000,
           "workflowLimit": null,
@@ -315,7 +325,7 @@
           "note": "Pro — 2,500,000 credits/mo ($2001.32)"
         },
         {
-          "name": "Pro 3000k",
+          "name": "Pro 3M",
           "monthlyUsd": 2333.94,
           "opsIncluded": 3000000,
           "workflowLimit": null,
@@ -323,7 +333,7 @@
           "note": "Pro — 3,000,000 credits/mo ($2333.94)"
         },
         {
-          "name": "Pro 4000k",
+          "name": "Pro 4M",
           "monthlyUsd": 3028.93,
           "opsIncluded": 4000000,
           "workflowLimit": null,
@@ -331,7 +341,7 @@
           "note": "Pro — 4,000,000 credits/mo ($3028.93)"
         },
         {
-          "name": "Pro 5000k",
+          "name": "Pro 5M",
           "monthlyUsd": 3710.44,
           "opsIncluded": 5000000,
           "workflowLimit": null,
@@ -339,7 +349,7 @@
           "note": "Pro — 5,000,000 credits/mo ($3710.44)"
         },
         {
-          "name": "Pro 6000k",
+          "name": "Pro 6M",
           "monthlyUsd": 4361.66,
           "opsIncluded": 6000000,
           "workflowLimit": null,
@@ -347,7 +357,7 @@
           "note": "Pro — 6,000,000 credits/mo ($4361.66)"
         },
         {
-          "name": "Pro 7000k",
+          "name": "Pro 7M",
           "monthlyUsd": 5028.39,
           "opsIncluded": 7000000,
           "workflowLimit": null,
@@ -355,7 +365,7 @@
           "note": "Pro — 7,000,000 credits/mo ($5028.39)"
         },
         {
-          "name": "Pro 8000k",
+          "name": "Pro 8M",
           "monthlyUsd": 5660.47,
           "opsIncluded": 8000000,
           "workflowLimit": null,
@@ -787,7 +797,7 @@
           "note": "Professional — 750,000 tasks/mo ($2999)"
         },
         {
-          "name": "Professional 1000k",
+          "name": "Professional 1M",
           "monthlyUsd": 3299,
           "opsIncluded": 1000000,
           "workflowLimit": null,
@@ -795,7 +805,7 @@
           "note": "Professional — 1,000,000 tasks/mo ($3299)"
         },
         {
-          "name": "Professional 1250k",
+          "name": "Professional 1.2M",
           "monthlyUsd": 3899,
           "opsIncluded": 1250000,
           "workflowLimit": null,
@@ -803,7 +813,7 @@
           "note": "Professional — 1,250,000 tasks/mo ($3899)"
         },
         {
-          "name": "Professional 1500k",
+          "name": "Professional 1.5M",
           "monthlyUsd": 4499,
           "opsIncluded": 1500000,
           "workflowLimit": null,
@@ -811,7 +821,7 @@
           "note": "Professional — 1,500,000 tasks/mo ($4499)"
         },
         {
-          "name": "Professional 1750k",
+          "name": "Professional 1.8M",
           "monthlyUsd": 4799,
           "opsIncluded": 1750000,
           "workflowLimit": null,
@@ -819,7 +829,7 @@
           "note": "Professional — 1,750,000 tasks/mo ($4799)"
         },
         {
-          "name": "Professional 2000k",
+          "name": "Professional 2M",
           "monthlyUsd": 5099,
           "opsIncluded": 2000000,
           "workflowLimit": null,
@@ -903,23 +913,33 @@
       "selfHostHw": [
         {
           "upTo": 10000,
-          "usd": 8
+          "usd": 8,
+          "spec": "1 vCPU, 2GB, SQLite"
         },
         {
           "upTo": 50000,
-          "usd": 25
+          "usd": 25,
+          "spec": "2 vCPU, 4GB + Postgres"
         },
         {
           "upTo": 100000,
-          "usd": 45
+          "usd": 45,
+          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)"
+        },
+        {
+          "upTo": 250000,
+          "usd": 70,
+          "spec": "4 vCPU, 16GB, queue + 1 worker"
         },
         {
           "upTo": 500000,
-          "usd": 90
+          "usd": 120,
+          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB"
         },
         {
           "upTo": null,
-          "usd": 150
+          "usd": 200,
+          "spec": "8+ vCPU, 32GB, HA Postgres+Redis, cluster"
         }
       ],
       "pros": [
@@ -970,23 +990,33 @@
       "selfHostHw": [
         {
           "upTo": 10000,
-          "usd": 8
+          "usd": 8,
+          "spec": "1 vCPU, 2GB, SQLite"
         },
         {
           "upTo": 50000,
-          "usd": 25
+          "usd": 25,
+          "spec": "2 vCPU, 4GB + Postgres"
         },
         {
           "upTo": 100000,
-          "usd": 45
+          "usd": 45,
+          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)"
+        },
+        {
+          "upTo": 250000,
+          "usd": 70,
+          "spec": "4 vCPU, 16GB, queue + 1 worker"
         },
         {
           "upTo": 500000,
-          "usd": 90
+          "usd": 120,
+          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB"
         },
         {
           "upTo": null,
-          "usd": 150
+          "usd": 200,
+          "spec": "8+ vCPU, 32GB, HA Postgres+Redis, cluster"
         }
       ],
       "pros": [
@@ -1037,23 +1067,33 @@
       "selfHostHw": [
         {
           "upTo": 10000,
-          "usd": 8
+          "usd": 8,
+          "spec": "1 vCPU, 2GB, SQLite"
         },
         {
           "upTo": 50000,
-          "usd": 25
+          "usd": 25,
+          "spec": "2 vCPU, 4GB + Postgres"
         },
         {
           "upTo": 100000,
-          "usd": 45
+          "usd": 45,
+          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)"
+        },
+        {
+          "upTo": 250000,
+          "usd": 70,
+          "spec": "4 vCPU, 16GB, queue + 1 worker"
         },
         {
           "upTo": 500000,
-          "usd": 90
+          "usd": 120,
+          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB"
         },
         {
           "upTo": null,
-          "usd": 150
+          "usd": 200,
+          "spec": "8+ vCPU, 32GB, HA Postgres+Redis, cluster"
         }
       ],
       "pros": [

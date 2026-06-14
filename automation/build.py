@@ -77,7 +77,10 @@ def js_selfhosthw(tiers) -> str:
     Chybí-li klíč, vrací 'null' (tool nemá self-host nebo používá fixní plán)."""
     if not tiers:
         return "null"
-    cells = ", ".join(f"{{ upTo: {js_limit(t.get('upTo'))}, usd: {t['usd']} }}" for t in tiers)
+    cells = ", ".join(
+        f"{{ upTo: {js_limit(t.get('upTo'))}, usd: {t['usd']}" +
+        (f", spec: {js_str(t['spec'])}" if t.get('spec') else "") + " }"
+        for t in tiers)
     return f"[{cells}]"
 
 
