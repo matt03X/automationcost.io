@@ -160,37 +160,43 @@
           "upTo": 10000,
           "usd": 8,
           "home": 3,
-          "spec": "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite"
+          "spec": "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite",
+          "hwOneOff": 90
         },
         {
           "upTo": 50000,
           "usd": 25,
           "home": 3,
-          "spec": "2 vCPU, 4GB + Postgres (mini PC)"
+          "spec": "2 vCPU, 4GB + Postgres (mini PC)",
+          "hwOneOff": 200
         },
         {
           "upTo": 100000,
           "usd": 45,
           "home": 5,
-          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)"
+          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)",
+          "hwOneOff": 350
         },
         {
           "upTo": 250000,
           "usd": 70,
           "home": 7,
-          "spec": "4 vCPU, 16GB, queue + 1 worker"
+          "spec": "4 vCPU, 16GB, queue + 1 worker",
+          "hwOneOff": 550
         },
         {
           "upTo": 500000,
           "usd": 120,
           "home": 11,
-          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB"
+          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB",
+          "hwOneOff": 900
         },
         {
           "upTo": null,
           "usd": 200,
           "home": 18,
-          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)"
+          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)",
+          "hwOneOff": 1800
         }
       ],
       "pros": [
@@ -921,37 +927,43 @@
           "upTo": 10000,
           "usd": 8,
           "home": 3,
-          "spec": "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite"
+          "spec": "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite",
+          "hwOneOff": 90
         },
         {
           "upTo": 50000,
           "usd": 25,
           "home": 3,
-          "spec": "2 vCPU, 4GB + Postgres (mini PC)"
+          "spec": "2 vCPU, 4GB + Postgres (mini PC)",
+          "hwOneOff": 200
         },
         {
           "upTo": 100000,
           "usd": 45,
           "home": 5,
-          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)"
+          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)",
+          "hwOneOff": 350
         },
         {
           "upTo": 250000,
           "usd": 70,
           "home": 7,
-          "spec": "4 vCPU, 16GB, queue + 1 worker"
+          "spec": "4 vCPU, 16GB, queue + 1 worker",
+          "hwOneOff": 550
         },
         {
           "upTo": 500000,
           "usd": 120,
           "home": 11,
-          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB"
+          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB",
+          "hwOneOff": 900
         },
         {
           "upTo": null,
           "usd": 200,
           "home": 18,
-          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)"
+          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)",
+          "hwOneOff": 1800
         }
       ],
       "pros": [
@@ -1004,37 +1016,43 @@
           "upTo": 10000,
           "usd": 8,
           "home": 3,
-          "spec": "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite"
+          "spec": "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite",
+          "hwOneOff": 90
         },
         {
           "upTo": 50000,
           "usd": 25,
           "home": 3,
-          "spec": "2 vCPU, 4GB + Postgres (mini PC)"
+          "spec": "2 vCPU, 4GB + Postgres (mini PC)",
+          "hwOneOff": 200
         },
         {
           "upTo": 100000,
           "usd": 45,
           "home": 5,
-          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)"
+          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)",
+          "hwOneOff": 350
         },
         {
           "upTo": 250000,
           "usd": 70,
           "home": 7,
-          "spec": "4 vCPU, 16GB, queue + 1 worker"
+          "spec": "4 vCPU, 16GB, queue + 1 worker",
+          "hwOneOff": 550
         },
         {
           "upTo": 500000,
           "usd": 120,
           "home": 11,
-          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB"
+          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB",
+          "hwOneOff": 900
         },
         {
           "upTo": null,
           "usd": 200,
           "home": 18,
-          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)"
+          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)",
+          "hwOneOff": 1800
         }
       ],
       "pros": [
@@ -1087,37 +1105,43 @@
           "upTo": 10000,
           "usd": 8,
           "home": 3,
-          "spec": "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite"
+          "spec": "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite",
+          "hwOneOff": 90
         },
         {
           "upTo": 50000,
           "usd": 25,
           "home": 3,
-          "spec": "2 vCPU, 4GB + Postgres (mini PC)"
+          "spec": "2 vCPU, 4GB + Postgres (mini PC)",
+          "hwOneOff": 200
         },
         {
           "upTo": 100000,
           "usd": 45,
           "home": 5,
-          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)"
+          "spec": "2-4 vCPU, 8GB + Postgres + Redis (queue mode)",
+          "hwOneOff": 350
         },
         {
           "upTo": 250000,
           "usd": 70,
           "home": 7,
-          "spec": "4 vCPU, 16GB, queue + 1 worker"
+          "spec": "4 vCPU, 16GB, queue + 1 worker",
+          "hwOneOff": 550
         },
         {
           "upTo": 500000,
           "usd": 120,
           "home": 11,
-          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB"
+          "spec": "4-8 vCPU, 16GB, 2-3 workers, managed DB",
+          "hwOneOff": 900
         },
         {
           "upTo": null,
           "usd": 200,
           "home": 18,
-          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)"
+          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)",
+          "hwOneOff": 1800
         }
       ],
       "pros": [
