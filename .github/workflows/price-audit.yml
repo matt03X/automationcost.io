@@ -39,6 +39,17 @@ jobs:
           ./node_modules/.bin/playwright install --with-deps chromium
       - name: Spustit cenový audit (exit 1 jen při tvrdé chybě; bot-wall = WARN)
         run: NODE_PATH=/tmp/pw/node_modules node scripts/price-audit.js
+      - name: SHADOW autopilot — vyhodnotit poslední pojistku + zalogovat (NIC nemění/neposílá)
+        if: always()
+        continue-on-error: true
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          node scripts/shadow-decide.js --date "$DATE" || true
+          F="automation/data/audit/shadow-${DATE}.json"
+          if [ -f "$F" ]; then
+            echo "### 🕶 Shadow autopilot (jen log — nic se nemění ani neposílá)" >> "$GITHUB_STEP_SUMMARY"
+            node -e "try{require('./'+process.argv[1]).decisions.forEach(d=>console.log('- ['+d.verdict+'] '+d.desc+' — '+d.reasons.join('; ')))}catch{}" "$F" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+          fi
       - name: Commit snapshotů a změn (vždy — ať se důkazy uloží i při změně)
         if: always()
         run: |
