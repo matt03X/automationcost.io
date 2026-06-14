@@ -81,6 +81,12 @@ def js_selfhosthw(tiers) -> str:
     return f"[{cells}]"
 
 
+def js_creditbands(bands) -> str:
+    """creditBands = [[upTo, perCredit], …] tarifní tabulka (Pipedream).
+    upTo == null → Infinity (poslední neomezené pásmo). Pole dvojic."""
+    return "[" + ", ".join(f"[{js_limit(upto)}, {pc}]" for upto, pc in bands) + "]"
+
+
 # ---------------------------------------------------------------------------
 # Render plánu
 # ---------------------------------------------------------------------------
@@ -102,6 +108,8 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
     if "overage" in plan:
         # per-plan override tool-level overage; null = plán nemá pay-as-you-go
         parts.append(f'overage: {js_overage(plan["overage"])}')
+    if plan.get("creditBands"):
+        parts.append(f'creditBands: {js_creditbands(plan["creditBands"])}')
     if include_note and plan.get("note"):
         parts.append(f'note: {js_str(plan["note"])}')
     return "{ " + ", ".join(parts) + " }"

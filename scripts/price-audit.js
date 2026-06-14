@@ -166,16 +166,17 @@ async function scrapeMake() {
   return { html, prices: { unit: "credits", monthly, annually } };
 }
 
-// Pipedream: 3 nezávislé slidery (Basic/Advanced/Connect), každý 0..~1800.
-// Základní cena plánu je fixní ($29/$49/$99), ale slider posouvá objem kreditů
-// a dopočítává klesající sazbu "$X per credit" (množstevní sleva). Pro každý plán
-// projedeme slider a sbíráme křivku {credits, perCredit}. Plný měsíční odhad si
-// engine spočítá: základ plánu + (objem nad zahrnuté kredity) × perCredit.
+// Pipedream: 3 slidery (Basic/Advanced/Connect). Cena = STUPŇOVITÁ TARIFNÍ TABULKA
+// (ne vzorec — ověřeno hustým sweepem, mocninný fit selhal 667 %). Sazba
+// "$X per credit" je konstantní v pásmu a klesá s objemem (množstevní sleva).
+// Reprezentace: bands = [{upTo, perCredit}, …], upTo = horní hranice objemu
+// (kredity <= upTo → tato sazba); poslední pásmo upTo:null = neomezeno.
 const PD_PLANS = [
   { name: "Basic", base: 29, includedCredits: 2000 },
   { name: "Advanced", base: 49, includedCredits: 2000 },
   { name: "Connect", base: 99, includedCredits: 10000 },
 ];
+
 async function scrapePipedream() {
   const page = await newPage();
   await page.goto(VENDORS.pipedream.url, { waitUntil: "domcontentloaded", timeout: 60000 });
@@ -185,7 +186,6 @@ async function scrapePipedream() {
   const sliderCount = await page.$$eval("input[type=range]", (els) => els.length);
   if (sliderCount < 3) throw new Error(`čekal 3 slidery, našel ${sliderCount}`);
 
-  // přečte (credits/mo, $/credit) z karty patřící slideru `idx`
   async function readCard(idx) {
     return await page.evaluate((i) => {
       const s = document.querySelectorAll("input[type=range]")[i];
@@ -202,7 +202,7 @@ async function scrapePipedream() {
         credits: credits ? Number(credits.replace(/,/g, "")) : null,
         perCredit: perCredit ? Number(perCredit) : null,
       };
-    }, idx);
+    }, idx).catch(() => null);
   }
   function setSlider(idx, val) {
     return page.evaluate(({ i, v }) => {
@@ -213,29 +213,45 @@ async function scrapePipedream() {
       el.dispatchEvent(new Event("change", { bubbles: true }));
     }, { i: idx, v: val });
   }
-
+  // HUSTÝ SWEEP každého slideru: projedeme všechny pozice 0..max a sbíráme
+  // přechody sazby. `upTo` pásma = POSLEDNÍ objem před změnou sazby (horní
+  // hranice). Cílený scrape na "prahy" zaváděl chyby (posun o pásmo, ztráta
+  // nejvyššího $0.0003 pásma) — hustý sweep je jediný 100% přesný způsob.
+  // Slider má ~1800 pozic; čteme rychle a ukládáme jen přechody.
   const plans = {};
   for (let i = 0; i < PD_PLANS.length; i++) {
     const meta = PD_PLANS[i];
-    const slider = (await page.$$("input[type=range]"))[i];
-    const max = Number(await slider.getAttribute("max")) || 1800;
-    const curve = [];
-    const seen = new Set();
-    // ~30 vzorků přes celý rozsah stačí na hladkou klesající křivku
-    for (let v = 0; v <= max; v += Math.ceil(max / 30)) {
-      await setSlider(i, v);
-      await page.waitForTimeout(300);
-      const row = await readCard(i);
-      if (row.credits && row.perCredit && !seen.has(row.credits)) {
-        seen.add(row.credits);
-        curve.push(row);
+    const max = Number(await (await page.$$("input[type=range]"))[i].getAttribute("max")) || 1800;
+    const ascending = []; // {credits, perCredit} jen rostoucí část (slider se na max vrací)
+    let lastCredits = -1;
+    for (let pos = 0; pos <= max; pos++) {
+      await setSlider(i, pos);
+      await page.waitForTimeout(14);
+      const r = await readCard(i);
+      if (!r || !r.credits || !r.perCredit) continue;
+      if (r.credits < lastCredits) break; // slider se začal vracet → konec rostoucí části
+      lastCredits = r.credits;
+      const prev = ascending[ascending.length - 1];
+      if (!prev || prev.credits !== r.credits) ascending.push(r);
+    }
+    // sbal do pásem: každé pásmo = {upTo: poslední objem se sazbou, perCredit}.
+    // poslední pásmo dostane upTo:null (neomezeno). Sazby pod included kredity
+    // patří do base plánu, ne do overage → vyfiltruj.
+    const bands = [];
+    for (let k = 0; k < ascending.length; k++) {
+      const cur = ascending[k];
+      const next = ascending[k + 1];
+      if (!next || next.perCredit !== cur.perCredit) {
+        if (cur.credits > meta.includedCredits) {
+          bands.push({ upTo: next ? cur.credits : null, perCredit: cur.perCredit });
+        }
       }
     }
-    if (curve.length < 4) throw new Error(`${meta.name}: jen ${curve.length} bodů křivky`);
-    plans[meta.name] = { base: meta.base, includedCredits: meta.includedCredits, curve };
+    if (bands.length < 8) throw new Error(`${meta.name}: jen ${bands.length} pásem (sweep selhal?)`);
+    plans[meta.name] = { base: meta.base, includedCredits: meta.includedCredits, bands };
   }
   await page.close();
-  return { html, prices: { unit: "credits", model: "per-credit-slider", plans } };
+  return { html, prices: { unit: "credits", model: "per-credit-bands", plans } };
 }
 
 // Fixní ceníky: ulož HTML + vytáhni $N /mo ceny z viditelného textu jako hrubý otisk.
@@ -269,17 +285,22 @@ function diffPrices(vendor, oldP, newP) {
     if (a !== b) changes.push({ vendor, kind: "listedPrices", old: oldP.listedPrices, neu: newP.listedPrices });
     return changes;
   }
-  if (model === "per-credit-slider") {
-    // Pipedream: porovnej základ plánu + sazbu $/credit při stejných objemech.
+  if (model === "per-credit-bands") {
+    // Pipedream: porovnej základ plánu + sazbu $/credit v každém pásmu (dle upTo).
     for (const name of Object.keys(newP.plans || {})) {
       const nu = newP.plans[name], od = (oldP.plans || {})[name];
       if (!od) continue;
       if (od.base !== nu.base) changes.push({ vendor, plan: name, kind: "base", old: od.base, neu: nu.base });
-      const oldCurve = Object.fromEntries((od.curve || []).map((r) => [r.credits, r.perCredit]));
-      for (const r of nu.curve || []) {
-        if (oldCurve[r.credits] !== undefined && oldCurve[r.credits] !== r.perCredit) {
-          changes.push({ vendor, plan: name, kind: "perCredit", credits: r.credits, old: oldCurve[r.credits], neu: r.perCredit });
+      const oldBands = Object.fromEntries((od.bands || []).map((b) => [String(b.upTo), b.perCredit]));
+      for (const b of nu.bands || []) {
+        const k = String(b.upTo);
+        if (oldBands[k] !== undefined && oldBands[k] !== b.perCredit) {
+          changes.push({ vendor, plan: name, kind: "perCredit", upTo: b.upTo, old: oldBands[k], neu: b.perCredit });
         }
+      }
+      // změna počtu/hranic pásem = strukturální změna ceníku
+      if ((od.bands || []).length !== (nu.bands || []).length) {
+        changes.push({ vendor, plan: name, kind: "bandStructure", old: (od.bands || []).length, neu: (nu.bands || []).length });
       }
     }
     return changes;

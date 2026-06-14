@@ -1858,9 +1858,9 @@ const TOOLS = [
     homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, overage: null, note: "Free tier" },
-      { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 10, note: "Basic — 2k credits + 20M AI tokens/mo, 10 workflows" },
-      { name: "Advanced", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity, note: "Advanced — 2k credits + 50M AI tokens/mo, unlimited workflows" },
-      { name: "Connect", monthlyUsd: 99, opsIncluded: 10000, workflowLimit: Infinity, note: "Connect — 10k credits (developer plan)" },
+      { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 10, creditBands: [[10000, 0.01], [25000, 0.006], [50000, 0.0042], [99000, 0.0034], [199000, 0.0027], [299000, 0.0022], [399000, 0.0019], [499000, 0.0017], [599000, 0.0016], [748000, 0.0014], [997000, 0.0012], [1990000, 0.001], [2990000, 0.0006], [3990000, 0.0005], [9950000, 0.0004], [Infinity, 0.0003]], note: "Basic — 2k credits + 20M AI tokens/mo, 10 workflows" },
+      { name: "Advanced", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity, creditBands: [[10000, 0.015], [25000, 0.009], [50000, 0.0063], [99000, 0.005], [199000, 0.004], [299000, 0.0032], [399000, 0.0029], [499000, 0.0026], [599000, 0.0024], [748000, 0.0021], [997000, 0.0018], [1990000, 0.00153], [2990000, 0.0009], [3990000, 0.0007], [9950000, 0.0006], [Infinity, 0.0004]], note: "Advanced — 2k credits + 50M AI tokens/mo, unlimited workflows" },
+      { name: "Connect", monthlyUsd: 99, opsIncluded: 10000, workflowLimit: Infinity, creditBands: [[25000, 0.012], [50000, 0.0084], [99000, 0.0067], [199000, 0.0054], [299000, 0.0043], [399000, 0.0039], [499000, 0.0035], [599000, 0.0031], [748000, 0.0028], [997000, 0.0024], [1990000, 0.002], [2990000, 0.0012], [3990000, 0.001], [4990000, 0.0008], [9950000, 0.0007], [Infinity, 0.0006]], note: "Connect — 10k credits (developer plan)" },
       { custom: true, name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
@@ -1989,6 +1989,16 @@ function selfHostHwCost(tool, ops) {
     if (t.upTo === Infinity || ops <= t.upTo) return t.usd;
   }
   return tool.selfHostHw[tool.selfHostHw.length - 1].usd;
+}
+
+// Pipedream-style credit pricing: $/credit klesá po pevných pásmech (creditBands
+// v tools.json = [[upTo, perCredit], …], scrapnuto hustým sweepem živé kalkulačky).
+// upTo = horní hranice objemu pásma (kredity ≤ upTo → tato sazba); poslední pásmo
+// upTo = null (Infinity) = neomezeno. Celý placený objem (nad included) se účtuje
+// sazbou pásma, do kterého spadá (flat-per-band) — ověřeno proti webu.
+function creditBandRate(bands, credits) {
+  for (const [upTo, pc] of bands) { if (upTo === null || credits <= upTo) return pc; }
+  return bands[bands.length - 1][1];
 }
 
 // ── Wizard navigation ─────────────────────────────────────────────────────────
@@ -2292,10 +2302,16 @@ function calcCost(tool, ops, workflows) {
     let cost = hwPlan ? selfHostHwCost(tool, ops) : plan.monthlyUsd;
     if (billing === "annual" && !plan.selfHostOnly && plan.monthlyUsd > 0) cost = Math.round(cost * ANNUAL_DISCOUNT);
     if (!plan.selfHostOnly && ops > plan.opsIncluded) {
-      // per-plan overage přebíjí tool-level; null = plán nemá pay-as-you-go
-      const ov = plan.overage !== undefined ? plan.overage : tool.overage;
-      if (ov) cost = Math.round((cost + Math.ceil((ops - plan.opsIncluded) / ov.per) * ov.usd) * 100) / 100; // na centy ($19.99 + $25 ≠ 44.9899…)
-      else continue;
+      if (plan.creditBands) {
+        // Pipedream: base + (kredity nad included) × sazba pásma dle objemu.
+        const rate = creditBandRate(plan.creditBands, ops);
+        cost = Math.round((cost + (ops - plan.opsIncluded) * rate) * 100) / 100;
+      } else {
+        // per-plan overage přebíjí tool-level; null = plán nemá pay-as-you-go
+        const ov = plan.overage !== undefined ? plan.overage : tool.overage;
+        if (ov) cost = Math.round((cost + Math.ceil((ops - plan.opsIncluded) / ov.per) * ov.usd) * 100) / 100; // na centy ($19.99 + $25 ≠ 44.9899…)
+        else continue;
+      }
     }
     if (best === null || cost < best.cost) best = { cost, plan, hwOnly: !!hwPlan };
   }

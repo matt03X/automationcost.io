@@ -688,9 +688,9 @@ const TOOLS = {
     hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, overage: null },
-      { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 10 },
-      { name: "Advanced", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity },
-      { name: "Connect", monthlyUsd: 99, opsIncluded: 10000, workflowLimit: Infinity },
+      { name: "Basic", monthlyUsd: 29, opsIncluded: 2000, workflowLimit: 10, creditBands: [[10000, 0.01], [25000, 0.006], [50000, 0.0042], [99000, 0.0034], [199000, 0.0027], [299000, 0.0022], [399000, 0.0019], [499000, 0.0017], [599000, 0.0016], [748000, 0.0014], [997000, 0.0012], [1990000, 0.001], [2990000, 0.0006], [3990000, 0.0005], [9950000, 0.0004], [Infinity, 0.0003]] },
+      { name: "Advanced", monthlyUsd: 49, opsIncluded: 2000, workflowLimit: Infinity, creditBands: [[10000, 0.015], [25000, 0.009], [50000, 0.0063], [99000, 0.005], [199000, 0.004], [299000, 0.0032], [399000, 0.0029], [499000, 0.0026], [599000, 0.0024], [748000, 0.0021], [997000, 0.0018], [1990000, 0.00153], [2990000, 0.0009], [3990000, 0.0007], [9950000, 0.0006], [Infinity, 0.0004]] },
+      { name: "Connect", monthlyUsd: 99, opsIncluded: 10000, workflowLimit: Infinity, creditBands: [[25000, 0.012], [50000, 0.0084], [99000, 0.0067], [199000, 0.0054], [299000, 0.0043], [399000, 0.0039], [499000, 0.0035], [599000, 0.0031], [748000, 0.0028], [997000, 0.0024], [1990000, 0.002], [2990000, 0.0012], [3990000, 0.001], [4990000, 0.0008], [9950000, 0.0007], [Infinity, 0.0006]] },
       { custom: true, name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ],
     overage: null,

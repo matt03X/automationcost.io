@@ -94,6 +94,12 @@ def js_selfhosthw(tiers) -> str:
     return f"[{cells}]"
 
 
+def js_creditbands(bands) -> str:
+    """creditBands = [[upTo, perCredit], …] tarifní tabulka (Pipedream).
+    upTo == null → Infinity (poslední neomezené pásmo)."""
+    return "[" + ", ".join(f"[{js_limit(upto)}, {pc}]" for upto, pc in bands) + "]"
+
+
 # ---------------------------------------------------------------------------
 # Render plánu
 # ---------------------------------------------------------------------------
@@ -110,6 +116,8 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
     if "overage" in plan:
         # per-plan override tool-level overage; null = plán nemá pay-as-you-go
         parts.append(f'overage: {js_overage(plan["overage"])}')
+    if plan.get("creditBands"):
+        parts.append(f'creditBands: {js_creditbands(plan["creditBands"])}')
     if include_note and plan.get("note"):
         parts.append(f'note: {js_str(plan["note"])}')
     return "{ " + ", ".join(parts) + " }"
@@ -227,12 +235,23 @@ def cheapest_monthly(tool: dict, ops: int, workflows: int = DEMO_WORKFLOWS) -> d
         over = 0
         inc = p.get("opsIncluded")  # None = unlimited
         if not p.get("selfHostOnly") and inc is not None and ops > inc:
-            # per-plan overage přebíjí tool-level; null = plán nemá pay-as-you-go
-            ov = p["overage"] if "overage" in p else tool.get("overage")
-            if not ov:
-                continue
-            over = math.ceil((ops - inc) / ov["per"]) * ov["usd"]
-            cost = round(cost + over, 2)  # na centy — zrcadlí JS ($19.99 + $25 ≠ 44.9899…)
+            if p.get("creditBands"):
+                # Pipedream: base + (kredity nad included) × sazba pásma. Zrcadlí
+                # JS creditBandRate: pásmo s upTo (None=Infinity) >= ops. Flat-per-band.
+                rate = p["creditBands"][-1][1]
+                for upto, pc in p["creditBands"]:
+                    if upto is None or ops <= upto:
+                        rate = pc
+                        break
+                over = (ops - inc) * rate
+                cost = round(cost + over, 2)
+            else:
+                # per-plan overage přebíjí tool-level; null = plán nemá pay-as-you-go
+                ov = p["overage"] if "overage" in p else tool.get("overage")
+                if not ov:
+                    continue
+                over = math.ceil((ops - inc) / ov["per"]) * ov["usd"]
+                cost = round(cost + over, 2)  # na centy — zrcadlí JS ($19.99 + $25 ≠ 44.9899…)
         # při shodě ceny preferuj pro label placený plán bez overage, pak placený
         # s overage, až nakonec free tier ("Core +ops" čitelnější než "Free +ops")
         if over == 0 and p["monthlyUsd"] > 0:
