@@ -1,0 +1,7 @@
+# Cloudflare Worker config (deploy přes CLI: `wrangler deploy`).
+# Deploy jde i bez CLI – přes web dashboard, viz README.md.
+# SECRETS se NIKDY nepíšou sem – nastav je přes `wrangler secret put` nebo v
+# dashboardu (Settings → Variables and Secrets). Tenhle soubor je veřejný.
+name = "wizardcost-alerts"
+main = "worker.js"
+compatibility_date = "2026-06-01"
