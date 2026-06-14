@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Vytvořit MailerLite draft z nových alertů (NEodesílá)
+      - name: Vytvořit MailerLite draft z nových alertů (JEN ze scrape pipeline, NEodesílá)
         env:
           MAILERLITE_API_TOKEN: ${{ secrets.MAILERLITE_API_TOKEN }}
         run: |
@@ -33,4 +33,12 @@ jobs:
             echo "::warning::MAILERLITE_API_TOKEN secret chybí — draft se nevytvoří. Přidej ho v repo Settings → Secrets → Actions."
             exit 0
           fi
-          python scripts/draft-on-merge.py --site automation
+          # POJISTKA: draft jen když alerts.xml změnil auto-PR ze scrape pipeline (reálná
+          # vendor změna), NE naše ruční editace čísel. Marker hledáme v posledním commitu:
+          # merge commit nese jméno větve "auto/price-update", squash nese titul "auto-návrh",
+          # rebase nese "auto: cenová/rebuild". Ruční commit nic z toho nemá → žádný draft.
+          if git log -1 --format=%B HEAD | grep -qiE "auto/price-update|auto-návrh|auto: (cenová|rebuild)"; then
+            python scripts/draft-on-merge.py --site automation
+          else
+            echo "alerts.xml se změnila mimo scrape pipeline (ruční editace čísel) → žádný draft (správně, žádný šum)."
+          fi
