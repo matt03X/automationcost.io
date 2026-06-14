@@ -1,0 +1,19 @@
+{
+  "date": "2026-06-15",
+  "generatedAt": "2026-06-14T00:00:00.000Z",
+  "_note": "DOČASNÝ TEST plného řetězce (auto-PR → merge → draft → send). Po testu smazat. Vytvořeno ručně, ne auditem.",
+  "changeCount": 1,
+  "priceChanges": 1,
+  "billingChanges": 0,
+  "changes": [
+    {
+      "vendor": "zapier",
+      "interval": "monthly",
+      "units": 2000,
+      "plan": "Professional",
+      "old": 73.5,
+      "neu": 80,
+      "desc": "[TEST] zapier Professional @2 000 (monthly): $73.5 → $80"
+    }
+  ]
+}
