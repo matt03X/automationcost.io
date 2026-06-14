@@ -36,6 +36,9 @@ DATA = ROOT / "data" / "tools.json"
 AUTOMATION_DATA = ROOT / "automation" / "data" / "tools.json"
 SITE = ROOT / "data" / "site.json"
 
+sys.path.insert(0, str(ROOT / "automation"))
+from build_hosting import apply_fx  # noqa: E402  (n8n EUR→USD, jediný zdroj s automation/build.py)
+
 START = "/* DATA:TOOLS:START */"
 END = "/* DATA:TOOLS:END */"
 WARN = "/* generováno build.py z data/tools.json — needituj ručně */"
@@ -515,6 +518,7 @@ def main() -> int:
     if DATA.exists():
         data = json.loads(DATA.read_text(encoding="utf-8"))
         tools = data["tools"]
+        apply_fx(tools)  # n8n EUR→USD
         candidates = {
             ROOT / "calculator.html": render_calculator,
             ROOT / "compare.html": render_compare,
@@ -526,6 +530,7 @@ def main() -> int:
     demo_src = AUTOMATION_DATA if AUTOMATION_DATA.exists() else DATA
     if index_page.exists() and demo_src.exists() and DEMO_START in index_page.read_text(encoding="utf-8"):
         demo_tools = json.loads(demo_src.read_text(encoding="utf-8"))["tools"]
+        apply_fx(demo_tools)  # n8n EUR→USD (shodně s automation/build.py → parita drží)
         jobs.append((index_page, render_demo(demo_tools), DEMO_START, DEMO_END, DEMO_WARN))
 
     if args.check:

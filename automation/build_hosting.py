@@ -29,6 +29,36 @@ ELEKTŘINU. Jednorázové HW = `hw_tier_for(variant, runs)["hwOneOff"]` + `["spe
 """
 from __future__ import annotations
 import copy
+import json
+from pathlib import Path
+
+
+def load_fx() -> float:
+    """EUR→USD kurz z automation/data/fx.json (aktualizuje denní audit). Fallback 1.0."""
+    try:
+        p = Path(__file__).resolve().parent / "data" / "fx.json"
+        return float(json.loads(p.read_text(encoding="utf-8")).get("eur_usd", 1.0))
+    except Exception:
+        return 1.0
+
+
+def apply_fx(tools: list[dict], eur_usd: float | None = None) -> list[dict]:
+    """Převede ceny EUR-účtujících toolů (currency=='EUR') na USD kurzem eur_usd.
+    JEN cloud plány (ne selfHostOnly) a JEN monthlyUsd/annualUsd — self-host (VPS,
+    elektřina, HW) jsou naše USD odhady, nemění se. Mutuje in-place; volej JEDNOU
+    po načtení (jinak dvojí konverze). Idempotenci hlídá _fxApplied flag."""
+    rate = eur_usd if eur_usd is not None else load_fx()
+    for t in tools:
+        if t.get("currency") != "EUR" or t.get("_fxApplied"):
+            continue
+        for p in t.get("plans", []):
+            if p.get("selfHostOnly"):
+                continue
+            for k in ("monthlyUsd", "annualUsd"):
+                if isinstance(p.get(k), (int, float)):
+                    p[k] = round(p[k] * rate, 2)
+        t["_fxApplied"] = True
+    return tools
 
 
 def cloud_plans(tool: dict) -> list[dict]:

@@ -25,7 +25,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from build_hosting import expand_hosting_variants  # noqa: E402
+from build_hosting import expand_hosting_variants, apply_fx  # noqa: E402
 from build_pricing import build_pricing_pages  # noqa: E402
 from build_catalog import build_catalog_pages  # noqa: E402
 
@@ -1284,6 +1284,7 @@ def main() -> int:
     if DATA.exists():
         data = json.loads(DATA.read_text(encoding="utf-8"))
         tools = data["tools"]
+        apply_fx(tools)  # n8n (EUR) → USD kurzem z fx.json, než cokoli rendruje/počítá
         candidates = {
             ROOT / "calculator.html": render_calculator,
             ROOT / "compare.html": render_compare,
