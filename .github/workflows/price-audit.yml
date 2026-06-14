@@ -1,11 +1,14 @@
-# Denní cenový AUDIT: stáhne HTML+ceny všech ceníků, uloží snapshot do
-# automation/data/audit/<vendor>/<datum>.{html,json}, zdiffuje proti předchozímu
-# dni a commitne výsledek. price-history.jsonl = zdroj grafů o změnách cen.
-# Doplňuje price-watch.yml (ten jen hlídá a maily; tenhle sbírá důkazy a historii).
+# Denní cenový AUDIT + ALARM (jediný monitor cen; price-watch zrušen 2026-06-14,
+# protože sentinel string-match dával falešné poplachy na dynamických cenících).
+# Aktivně scrapuje reálné ceny (slidery/toggly), uloží snapshot do
+# automation/data/audit/<vendor>/<datum>.{json,html.gz}, zdiffuje proti
+# předchozímu dni → changes-<datum>.json + price-history.jsonl (grafy).
+# Mail ownerovi (job fail) přijde JEN při REÁLNÉ změně ceny (changeCount > 0)
+# nebo tvrdé chybě scrape — ne při bot-wallu (ten je tolerován jako WARN).
 name: price-audit
 on:
   schedule:
-    - cron: "30 6 * * *"   # denně 06:30 UTC (po price-watch v 06:00)
+    - cron: "30 6 * * *"   # denně 06:30 UTC
   workflow_dispatch:
 permissions:
   contents: write          # commit snapshotů zpět do repa
@@ -28,9 +31,10 @@ jobs:
           npm init -y > /dev/null
           npm install playwright@1 > /dev/null
           ./node_modules/.bin/playwright install --with-deps chromium
-      - name: Spustit cenový audit
+      - name: Spustit cenový audit (exit 1 jen při tvrdé chybě; bot-wall = WARN)
         run: NODE_PATH=/tmp/pw/node_modules node scripts/price-audit.js
-      - name: Commit snapshotů a změn
+      - name: Commit snapshotů a změn (vždy — ať se důkazy uloží i při změně)
+        if: always()
         run: |
           git config user.name  "price-audit-bot"
           git config user.email "actions@users.noreply.github.com"
@@ -43,3 +47,17 @@ jobs:
             git commit -m "audit: cenové snapshoty ${DATE} (${CHANGES} změn)"
             git push
           fi
+      - name: ALARM — fail (= mail ownerovi) jen při REÁLNÉ změně ceny
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          F="automation/data/audit/changes-${DATE}.json"
+          CHANGES=$(node -e "try{console.log(require('./'+process.argv[1]).changeCount)}catch{console.log(0)}" "$F" 2>/dev/null || echo 0)
+          echo "Detekováno změn cen: ${CHANGES}"
+          if [ "$CHANGES" -gt 0 ]; then
+            echo "## ⚠ Cenová změna detekována ($CHANGES)" >> "$GITHUB_STEP_SUMMARY"
+            node -e "try{require('./'+process.argv[1]).changes.forEach(c=>console.log('· '+JSON.stringify(c)))}catch{}" "$F" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo "Další krok: node calc-test/verify-pricing-live.js <slug> → ověřit → revize tools.json."
+            exit 1
+          fi
+          echo "Ceny beze změny — žádný alarm."
