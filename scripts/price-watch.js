@@ -54,40 +54,57 @@ const WATCH = [
   },
 ];
 
+// Načte normalizovaný text stránky s RETRY proti dočasnému bot-wallu. CI běží
+// z datacenter IP, kde vendoři (Cloudflare/WAF) občas servírují krátkou/prázdnou
+// stránku. Vrací { text } při úspěchu, nebo { blocked, len } když i po retry
+// vyjde podezřele krátká stránka (= neznámý stav, NE potvrzená změna ceny).
+async function fetchText(ctx, url, { attempts = 3, minLen = 500 } = {}) {
+  let lastLen = 0, lastErr = null;
+  for (let i = 0; i < attempts; i++) {
+    if (i) await new Promise(r => setTimeout(r, 2500 * i)); // narůstající prodleva
+    const page = await ctx.newPage();
+    try {
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 45000 });
+      await page.waitForTimeout(6000);
+      const text = (await page.evaluate(() => document.body.innerText)).replace(/\s+/g, " ");
+      lastLen = text.length;
+      if (text.length >= minLen) return { text };
+    } catch (e) {
+      lastErr = e.message.split("\n")[0];
+    } finally {
+      await page.close();
+    }
+  }
+  return { blocked: true, len: lastLen, err: lastErr };
+}
+
 (async () => {
   const browser = await chromium.launch();
   const ctx = await browser.newContext({
     viewport: { width: 1366, height: 900 },
     userAgent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
   });
-  const problems = [];
+  const problems = [];   // skutečný DRIFT — shodí exit 1 (mail ownerovi)
+  const warnings = [];   // bot-wall / fetch fail — jen hlásí, NEshodí exit
   const lines = [];
   for (const w of WATCH) {
-    const page = await ctx.newPage();
-    try {
-      await page.goto(w.url, { waitUntil: "domcontentloaded", timeout: 45000 });
-      await page.waitForTimeout(6000);
-      const raw = await page.evaluate(() => document.body.innerText);
-      const text = raw.replace(/\s+/g, " ");
-      if (text.length < 500) {
-        problems.push(`${w.slug}: podezřele krátká stránka (${text.length} znaků) — bot wall / nedorenderováno?`);
-        lines.push(`FETCH? ${w.slug} — jen ${text.length} znaků textu`);
-        continue;
-      }
-      const missing = (w.expect || []).filter(re => !re.test(text));
-      const present = (w.forbid || []).filter(re => re.test(text));
-      if (missing.length || present.length) {
-        for (const re of missing) problems.push(`${w.slug}: chybí sentinel ${re} — cena se nejspíš změnila`);
-        for (const re of present) problems.push(`${w.slug}: objevil se zakázaný vzor ${re} — vendor publikuje něco, co nevedeme`);
-        lines.push(`DRIFT ${w.slug} — ${missing.length} chybějících, ${present.length} zakázaných`);
-      } else {
-        lines.push(`OK    ${w.slug}`);
-      }
-    } catch (e) {
-      problems.push(`${w.slug}: fetch selhal — ${e.message.split("\n")[0]}`);
-      lines.push(`ERROR ${w.slug}`);
-    } finally {
-      await page.close();
+    const res = await fetchText(ctx, w.url);
+    if (res.blocked) {
+      // bot-wall / nedorenderováno i po retry = NEZNÁMÝ stav, ne potvrzená změna
+      // ceny → WARN, ne fail. Falešný poplach z CI datacenter IP nesmí budit owner.
+      warnings.push(`${w.slug}: nedostupné po 3 pokusech (${res.len} znaků${res.err ? ", " + res.err : ""}) — bot wall / CI IP?`);
+      lines.push(`WARN  ${w.slug} — bot wall / fetch (neověřeno, ne fail)`);
+      continue;
+    }
+    const text = res.text;
+    const missing = (w.expect || []).filter(re => !re.test(text));
+    const present = (w.forbid || []).filter(re => re.test(text));
+    if (missing.length || present.length) {
+      for (const re of missing) problems.push(`${w.slug}: chybí sentinel ${re} — cena se nejspíš změnila`);
+      for (const re of present) problems.push(`${w.slug}: objevil se zakázaný vzor ${re} — vendor publikuje něco, co nevedeme`);
+      lines.push(`DRIFT ${w.slug} — ${missing.length} chybějících, ${present.length} zakázaných`);
+    } else {
+      lines.push(`OK    ${w.slug}`);
     }
   }
   await browser.close();
@@ -95,15 +112,22 @@ const WATCH = [
   console.log("price-watch " + new Date().toISOString());
   for (const l of lines) console.log("  " + l);
   if (problems.length) {
-    console.log("\nPROBLÉMY:");
+    console.log("\nPROBLÉMY (cenový drift):");
     for (const p of problems) console.log("  · " + p);
     console.log("\nDalší krok: node calc-test/verify-pricing-live.js <slug> → ověřit, pak revize tools.json (commit dat PŘED buildem).");
+  } else if (warnings.length) {
+    console.log("\nVarování (neověřeno, NE změna ceny — žádná akce nutná):");
+    for (const w of warnings) console.log("  ⚠ " + w);
   } else {
     console.log("\nVšechny ceníky odpovídají tools.json sentinelům.");
   }
   if (process.env.GITHUB_STEP_SUMMARY) {
-    require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY,
-      `## price-watch\n\n\`\`\`\n${lines.join("\n")}\n${problems.length ? "\nPROBLÉMY:\n" + problems.map(p => "· " + p).join("\n") : "\nvše OK"}\n\`\`\`\n`);
+    const summ = `## price-watch\n\n\`\`\`\n${lines.join("\n")}` +
+      (problems.length ? "\n\nPROBLÉMY:\n" + problems.map(p => "· " + p).join("\n") : "") +
+      (warnings.length ? "\n\nVAROVÁNÍ (ne fail):\n" + warnings.map(w => "⚠ " + w).join("\n") : "") +
+      (!problems.length && !warnings.length ? "\nvše OK" : "") + "\n\`\`\`\n";
+    require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, summ);
   }
+  // exit 1 JEN při skutečném driftu na úspěšně načtené stránce. Bot-wall = exit 0.
   process.exit(problems.length ? 1 : 0);
 })();

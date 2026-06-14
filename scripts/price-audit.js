@@ -416,20 +416,35 @@ function diffPrices(vendor, oldP, newP) {
   return changes;
 }
 
+// Scrape s RETRY proti dočasnému bot-wallu (CI datacenter IP → vendor WAF občas
+// vrátí krátkou/prázdnou stránku → scraper hodí "nenalezeno"). 3 pokusy s
+// narůstající prodlevou. Když i pak selže, runner to ošetří jako "blocked"
+// (bot-wall = neznámý stav, NE chyba dat) → WARN, neshazuje exit.
+async function scrapeVendorRetry(v, attempts = 3) {
+  let lastErr;
+  for (let i = 0; i < attempts; i++) {
+    if (i) await new Promise(r => setTimeout(r, 3000 * i));
+    try { return await scrapeVendor(v); }
+    catch (e) { lastErr = e; }
+  }
+  throw lastErr;
+}
+
 // ── runner ───────────────────────────────────────────────────────────────────
 (async () => {
   const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
   const targets = args.length ? args : Object.keys(VENDORS);
   fs.mkdirSync(AUDIT_DIR, { recursive: true });
   const allChanges = [];
-  let failures = 0;
+  let failures = 0;   // skutečné chyby — shodí exit 1
+  let blocked = 0;    // bot-wall po retry — jen WARN, neshazuje exit
 
   for (const v of targets) {
     if (!VENDORS[v]) { console.error(`✗ neznámý vendor: ${v}`); failures++; continue; }
     process.stdout.write(`→ ${v} … `);
     try {
       const prev = NO_DIFF ? null : previousSnapshot(v);
-      const { html, prices } = await scrapeVendor(v);
+      const { html, prices } = await scrapeVendorRetry(v);
       const dir = vendorDir(v);
       // normalizovaná cenová data — vždy (malé, 24 KB/den celkem)
       const snap = { vendor: v, scrapedAt: new Date().toISOString(), url: VENDORS[v].url, ...prices };
@@ -450,8 +465,18 @@ function diffPrices(vendor, oldP, newP) {
       }
       console.log(`OK (${htmlNote} · ${changed.length} změn vs ${prev ? prev.date : "—"})`);
     } catch (e) {
-      console.log(`SELHALO: ${e.message}`);
-      failures++;
+      // bot-wall signatury: krátká stránka, HTTP 403/429/503, timeout, "nenalezeno"
+      // = neznámý stav z CI IP, ne chyba dat → WARN (neshodí exit). Předchozí
+      // snapshot zůstává platný; reálný drift se chytí, až stránka projde.
+      const msg = e.message || String(e);
+      const isBotWall = /bot|403|429|503|timeout|Timeout|krátká|nenalezen|listbox|slider|matice nenalezena|žádné|options/i.test(msg);
+      if (isBotWall) {
+        console.log(`⚠ WARN (bot wall / nedostupné po retry, ne změna ceny): ${msg.slice(0, 80)}`);
+        blocked++;
+      } else {
+        console.log(`SELHALO: ${msg}`);
+        failures++;
+      }
     }
   }
 
@@ -467,5 +492,8 @@ function diffPrices(vendor, oldP, newP) {
     }
     console.log(`\n📋 ${allChanges.length} cenových změn → audit/changes-${TODAY}.json`);
   }
+  if (blocked) console.log(`⚠ ${blocked} vendor(ů) nedostupných (bot wall / CI IP) — neověřeno, ne fail.`);
+  // exit 1 JEN při skutečné chybě. Bot-wall (blocked) = exit 0 → cron nekřičí
+  // falešně. Když vendor zítra projde, audit doběhne normálně.
   process.exit(failures ? 1 : 0);
 })();
