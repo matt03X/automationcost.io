@@ -12,6 +12,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write          # commit snapshotů zpět do repa
+  pull-requests: write     # auto-PR s návrhem cenové aktualizace
 concurrency:
   group: price-audit
   cancel-in-progress: false
@@ -24,6 +25,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - name: Install Playwright (mimo repo checkout)
         run: |
           mkdir -p /tmp/pw
@@ -47,6 +51,35 @@ jobs:
             git commit -m "audit: cenové snapshoty ${DATE} (${CHANGES} změn)"
             git push
           fi
+      - name: Auto-návrh cenového PATCHe → Pull Request ke schválení (1-tap merge)
+        if: always()
+        continue-on-error: true   # bonus navíc — NIKDY nesmí shodit audit/alarm
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name  "price-audit-bot"
+          git config user.email "actions@users.noreply.github.com"
+          DATE=$(date -u +%Y-%m-%d)
+          BR="auto/price-update-${DATE}"
+          git checkout -B "$BR"
+          # patcher zapíše do tools.json JEN jisté změny (cena==old self-check) + popis PR
+          node scripts/propose-price-updates.js --write --summary /tmp/pr-body.md || true
+          if git diff --quiet automation/data/tools.json; then
+            echo "Žádná auto-aplikovatelná cenová změna — PR se netvoří."
+            exit 0
+          fi
+          git add automation/data/tools.json
+          git commit -m "auto: cenová data ${DATE} (návrh z auditu)"
+          # přegeneruj výstupy z tools.json (kalkulačka, compare, changelog, feedy, homepage demo)
+          python automation/build.py || true
+          python build.py || true
+          git add -A
+          git commit -m "auto: rebuild po cenové aktualizaci ${DATE}" || true
+          git push -u origin "$BR" --force
+          gh pr create --base master --head "$BR" \
+            --title "Cenová aktualizace ${DATE} (auto-návrh — zkontroluj a merge)" \
+            --body-file /tmp/pr-body.md \
+            || gh pr edit "$BR" --body-file /tmp/pr-body.md || true
       - name: ALARM — fail (= mail ownerovi) jen při REÁLNÉ změně (cena NEBO billing)
         if: always()
         run: |
