@@ -16,7 +16,7 @@
       "make: vendor renamed operations -> credits (prices unchanged, 1 module action = 1 credit; code execution 2 credits/sec) — watch copy on pages",
       "selfHostHw: VPS hardware cost scales with volume (selfHostHw tiers) — derived from Elestio/Netcup list (NC-MEDIUM 2C/4G $18, NC-LARGE 4C/8G $33, NC-XLARGE 8C/16G $66). Re-check when those list prices move."
     ],
-    "last_reviewed": "2026-06-14"
+    "last_reviewed": "2026-06-15"
   },
   "tools": [
     {
@@ -399,7 +399,7 @@
     {
       "slug": "pipedream",
       "unitModel": "runs",
-      "annualFactor": 1.0,
+      "annualFactor": 1,
       "name": "Pipedream",
       "tagline": "Code-first automation platform for developers",
       "selfHostable": false,
@@ -716,7 +716,7 @@
         },
         {
           "name": "Professional 2k",
-          "monthlyUsd": 73.5,
+          "monthlyUsd": 80,
           "opsIncluded": 2000,
           "workflowLimit": null,
           "overage": null,
@@ -864,7 +864,7 @@
     {
       "slug": "activepieces",
       "unitModel": "runs",
-      "annualFactor": 1.0,
+      "annualFactor": 1,
       "name": "Activepieces",
       "tagline": "MIT-licensed open-source automation, Zapier-like UI",
       "selfHostable": true,
@@ -968,7 +968,7 @@
     {
       "slug": "automatisch",
       "unitModel": "runs",
-      "annualFactor": 1.0,
+      "annualFactor": 1,
       "name": "Automatisch",
       "tagline": "Simple EU-friendly open-source automation",
       "selfHostable": true,
@@ -1051,7 +1051,7 @@
     {
       "slug": "node-red",
       "unitModel": "runs",
-      "annualFactor": 1.0,
+      "annualFactor": 1,
       "name": "Node-RED",
       "tagline": "Event-driven automation for IoT and hardware",
       "selfHostable": true,
