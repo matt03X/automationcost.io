@@ -18,7 +18,7 @@
     },
     "make": {
       "opDef": "In Make, one operation = one module execution, counted per module across the scenario.",
-      "ctaBlurb": "1,000 free ops a month, unlimited scenarios — enough to run a real pilot before paying anything."
+      "ctaBlurb": "1,000 free runs a month, unlimited scenarios — enough to run a real pilot before paying anything."
     },
     "n8n": {
       "opDef": "n8n Cloud counts workflow executions — one run is one execution regardless of step count; self-hosted n8n has no metering at all.",
@@ -47,12 +47,12 @@
       "b": "make",
       "winner": "make",
       "stripNote": "at every volume we track",
-      "verdict": "<b class=\"win\">Make is 14–24× cheaper at paid volumes</b> — and its free tier covers 1,000 ops/mo outright; <b>Zapier wins on integration count — 9,000+ vs 1,500+</b>. If your apps exist in both ecosystems, Make is the value pick. If you depend on a long-tail integration only Zapier has, that decides it.",
+      "verdict": "<b class=\"win\">Make is 14–24× cheaper at paid volumes</b> — and its free tier covers 1,000 runs/mo outright; <b>Zapier wins on integration count — 9,000+ vs 1,500+</b>. If your apps exist in both ecosystems, Make is the value pick. If you depend on a long-tail integration only Zapier has, that decides it.",
       "whyLoser": "Integrations. With 9,000+ supported apps versus Make's 1,500+, Zapier is often the only tool that connects a niche CRM or legacy system. If the integration you need exists only there, the price premium is the cost of admission.",
       "faq": [
         {
           "q": "Is Make cheaper than Zapier?",
-          "a": "At every volume we track, yes — from $0 vs $58.50 at 1,000 ops/mo to $116.47 vs $733.50 at 100,000. Make's volume pricing scales far more gently than Zapier's per-task tiers, so the gap widens as you grow."
+          "a": "At every volume we track, yes — from $0 vs $58.50 at 1,000 runs/mo to $116.47 vs $733.50 at 100,000. Make's volume pricing scales far more gently than Zapier's per-task tiers, so the gap widens as you grow."
         },
         {
           "q": "What counts as an operation on each?",
@@ -84,8 +84,8 @@
       "a": "make",
       "b": "n8n",
       "winner": "n8n",
-      "verdict": "<b>Price barely separates these two</b> — Make's free tier wins at 1,000 ops, n8n self-hosted (from ~$8/mo) wins above it, and at 5,000 ops the gap is roughly a dollar. <b class=\"win\">The real decision is whether you want to run a server</b>: happy to self-host → n8n; want a managed cloud with a visual builder → Make. Either way, you won't overpay by much.",
-      "whyLoser": "Because self-hosting isn't free in practice — n8n runs on a VPS you patch, back up and monitor yourself, and its cost climbs with volume ($8–66/mo). Make is fully managed, its free tier covers 1,000 ops/mo outright, and even at 100,000 ops it's ~$45/mo. If nobody on the team wants server keys, Make is the sane default — you're paying a few dollars for zero ops burden."
+      "verdict": "<b>Price barely separates these two</b> — Make's free tier wins at 1,000 runs, n8n self-hosted (from ~$8/mo) wins above it, and at 5,000 runs the gap is roughly a dollar. <b class=\"win\">The real decision is whether you want to run a server</b>: happy to self-host → n8n; want a managed cloud with a visual builder → Make. Either way, you won't overpay by much.",
+      "whyLoser": "Because self-hosting isn't free in practice — n8n runs on a VPS you patch, back up and monitor yourself, and its cost climbs with volume ($8–66/mo). Make is fully managed, its free tier covers 1,000 runs/mo outright, and even at 100,000 runs it's ~$45/mo. If nobody on the team wants server keys, Make is the sane default — you're paying a few dollars for zero ops burden."
     },
     {
       "a": "zapier",
@@ -116,14 +116,14 @@
       "b": "pipedream",
       "winner": "make",
       "stripNote": "at every volume we track",
-      "verdict": "<b class=\"win\">Make is 5–9× cheaper at every volume we track</b> — and this time the no-code tool is the cheap one; <b>Pipedream is the developer's pick</b>. Make's free tier covers 1,000 ops/mo outright and even 100,000 ops runs ~$45 vs ~$400. Choose Pipedream only if your team wants to write Node or Python steps — then the premium buys real programmability.",
+      "verdict": "<b class=\"win\">Make is 5–9× cheaper at every volume we track</b> — and this time the no-code tool is the cheap one; <b>Pipedream is the developer's pick</b>. Make's free tier covers 1,000 runs/mo outright and even 100,000 runs ~$45 vs ~$400. Choose Pipedream only if your team wants to write Node or Python steps — then the premium buys real programmability.",
       "whyLoser": "Because Pipedream is built for engineers: workflows are code steps in Node or Python with full access to npm and PyPI packages, an event-data inspector, and 2,000+ integrations behind an API-first design. Make's visual builder hits a ceiling when logic gets genuinely complex — at that point Pipedream's premium is buying capability Make simply doesn't have."
     },
     {
       "a": "make",
       "b": "activepieces",
       "winner": "activepieces",
-      "verdict": "<b>Both start at $0 for light usage</b> — at 1,000 ops/mo it's a dead heat; above that, <b class=\"win\">Activepieces stays free while Make starts charging</b> — though never much ($9 to ~$45/mo). The trade: Activepieces is open-source and self-hostable but free only up to 10 active flows (we price 3); Make has the bigger catalog (1,500+ integrations vs 747+) and the more mature cloud. Pick by catalog coverage first — at these prices, money is the tiebreaker, not the decider.",
+      "verdict": "<b>Both start at $0 for light usage</b> — at 1,000 runs/mo it's a dead heat; above that, <b class=\"win\">Activepieces stays free while Make starts charging</b> — though never much ($9 to ~$45/mo). The trade: Activepieces is open-source and self-hostable but free only up to 10 active flows (we price 3); Make has the bigger catalog (1,500+ integrations vs 747+) and the more mature cloud. Pick by catalog coverage first — at these prices, money is the tiebreaker, not the decider.",
       "whyLoser": "Because Make's costs are modest and predictable while its platform is the more mature one — a bigger integration catalog (1,500+ vs 747+), a more polished scenario builder, and a larger template and community pool. Activepieces' $0 also has a ceiling: 10 active flows, then $5 per flow. A growing team can outgrow it — and at $9–~$45/mo, Make was never a budget risk to begin with."
     },
     {

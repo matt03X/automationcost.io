@@ -3,44 +3,65 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Make.com Pricing 2026 — Plans, Operations & True Cost</title>
-  <meta name="description" content="Make.com pricing: Free (1k ops), Core $9/mo (10k ops), Pro $16/mo, Teams $29/mo. Overage $9/10k ops. Best cloud value for automation.">
+  <!-- generováno build_pricing.py z data/tools.json + data/pricing-editorial.json — needituj ručně -->
+  <title>Make Pricing 2026 — Plans, Run Limits &amp; Real Cost | AutomationCost.io</title>
+  <meta name="description" content="Make pricing 2026: $10.59 at 1,000 runs, $64.71 at 20,000 runs, $214.31 at 100,000 runs. Real plans, self-host options and how Make compares on cost per run.">
   <link rel="canonical" href="https://wizardcost.com/automation/make-pricing.html">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Make.com Pricing 2026 — Plans, Operations & True Cost">
-  <meta property="og:description" content="Make.com pricing: Free (1k ops), Core $9/mo (10k ops), Pro $16/mo, Teams $29/mo. Is Make cheaper than Zapier or n8n?">
+  <meta property="og:site_name" content="AutomationCost.io">
+  <meta property="og:title" content="Make Pricing 2026 — Plans, Run Limits &amp; Real Cost">
+  <meta property="og:description" content="Make pricing 2026: $10.59 at 1,000 runs, $64.71 at 20,000 runs, $214.31 at 100,000 runs. Real plans, self-host options and how Make compares on cost per run.">
   <meta property="og:url" content="https://wizardcost.com/automation/make-pricing.html">
+  <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.png">
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How much does Make.com cost?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Make has a free plan with 1,000 ops/month. Paid plans: Core $9/mo (10,000 ops), Pro $16/mo (10,000 ops + advanced features), Teams $29/mo (10,000 ops + collaboration). Additional ops cost $9 per 10,000."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is Make cheaper than Zapier?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Make Core at $9/mo (10,000 ops) is significantly cheaper than Zapier Professional at $19.99/mo billed annually (750 tasks). For equivalent volume, Make costs 5–10x less than Zapier. Make also has a more generous free tier (1,000 ops vs Zapier's 100 tasks)."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What are Make.com operations?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "In Make, each module (app step) execution counts as one operation. A scenario with 4 modules that runs 1,000 times = 4,000 ops. The trigger module is included in the count. Make renamed operations to credits on its pricing page in 2026 — same unit, same prices (code execution bills 2 credits per second)."
-        }
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does Make cost per month?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On the cheapest qualifying plan (3-step workflows, monthly billing) Make runs $10.59 at 1,000 runs, $18.82 at 5,000 runs, $64.71 at 20,000 runs and $214.31 at 100,000 runs. See the plans and comparison table above for the full breakdown."
       }
-    ]
-  }
+    },
+    {
+      "@type": "Question",
+      "name": "What is cheaper than Make?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "At 20,000 runs/month the cheapest pick we track is <a href=\"activepieces-pricing.html\">Activepieces</a> at $0 vs Make at $64.71. Use the calculator for your exact volume."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is an operation (credit) on Make?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each module action in a scenario consumes one credit; code-execution steps count double. We express this as <strong>runs &times; steps</strong> so a 3-step scenario that fires 1,000 times is comparable across every tool on this site."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Make cheaper than Zapier?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For the same workflow volume, Make is typically several times cheaper per run because it prices by credit pool rather than per task. See the comparison table above for the gap at your volume."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate are these prices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Taken from official pricing pages and verified by hand. Values marked ~ are estimates for custom enterprise tiers. Every change we record lands in the <a href=\"changelog.html\">price changelog</a>."
+      }
+    }
+  ]
+}
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,7 +69,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg: #0a0e17; --surface: #111827; --surface2: #1a2236; --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99; --accent: #10b981; --accent-br: #16d18c; --accent-dim: rgba(16,185,129,0.09); --accent-glow: rgba(16,185,129,0.20); --ink: #04130d; --link: #6f9bff; --green: #10b981; --yellow: #f59e0b; --radius: 14px; --radius-sm: 9px; --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; }
+    :root { --bg: #0a0e17; --surface: #111827; --surface2: #1a2236; --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99; --accent: #10b981; --accent-br: #16d18c; --accent-dim: rgba(16,185,129,0.09); --accent-glow: rgba(16,185,129,0.20); --ink: #04130d; --link: #6f9bff; --green: #10b981; --yellow: #f59e0b; --orange: #f59e0b; --radius: 14px; --radius-sm: 9px; --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; }
     body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; padding-top: 100px; }
     a { color: var(--link); text-decoration: none; }
     a:hover { color: #9fbcff; }
@@ -64,37 +85,42 @@
     .logo .io { color: var(--muted); font-weight: 600; }
     .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
     .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); }
-    .wrap { max-width: 860px; margin: 0 auto; padding: 0 32px; }
-    .page-hero { padding: 56px 0 40px; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+    .page-hero { padding: 56px 0 36px; }
     .tool-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 20px; }
     .tool-badge img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 1px; }
     .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
     .page-hero p { color: var(--muted); font-size: 1.05rem; max-width: 640px; margin-bottom: 28px; }
     .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
-    .hero-trust { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 48px; }
+    .hero-trust { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .hero-trust strong { color: var(--accent-br); }
     .btn-primary { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 24px; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 6px 20px rgba(16,185,129,0.26); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
     .btn-primary:hover { background: var(--accent-br); transform: translateY(-1px); text-decoration: none; box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 10px 28px rgba(16,185,129,0.36); }
     .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.15s; }
     .btn-secondary:hover { border-color: var(--accent); text-decoration: none; }
     .section { margin-bottom: 48px; }
-    .section h2 { font-size: 1.45rem; font-weight: 800; margin-bottom: 20px; }
-    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 16px; }
+    .section h2 { font-size: 1.45rem; font-weight: 800; margin-bottom: 6px; }
+    .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; max-width: 680px; }
+    .variant-head { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-br); margin: 22px 0 10px; }
+    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; margin-bottom: 8px; }
     .plan-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-    .plan-card.highlight { border-color: var(--accent); }
     .plan-name { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-    .plan-price { font-family: var(--mono); font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
-    .plan-price span { font-size: 14px; font-weight: 400; color: var(--muted); }
+    .plan-price { font-family: var(--mono); font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .plan-price span { font-size: 13px; font-weight: 400; color: var(--muted); }
     .plan-detail { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
     .plan-detail li { list-style: none; padding: 2px 0; }
     .plan-detail li::before { content: "·"; margin-right: 6px; color: var(--accent); }
-    .plan-tag { display: inline-block; font-size: 11px; background: rgba(16,185,129,0.15); color: var(--accent); border-radius: 4px; padding: 2px 7px; margin-bottom: 10px; }
+    .plan-detail li.spec { color: var(--text2); font-style: italic; }
+    .plan-note { font-size: 12.5px; color: var(--muted); margin: 4px 0 0; max-width: 660px; }
     .comparison-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .comparison-table th { font-family: var(--mono); text-align: left; padding: 12px 14px; color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .comparison-table th { text-align: left; padding: 10px 14px; color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
     .comparison-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
     .comparison-table tr:last-child td { border-bottom: none; }
     .comparison-table tr:hover td { background: var(--surface2); }
+    .comparison-table .price-cell { font-family: var(--mono); font-weight: 700; }
     .tag-yes { color: var(--green); font-weight: 700; }
     .tag-no { color: var(--muted); }
+    .tag-warn { color: var(--orange); font-weight: 700; }
     .faq-item { border-bottom: 1px solid var(--border); }
     .faq-q { width: 100%; background: none; border: none; color: var(--text); font-family: inherit; font-size: 15px; font-weight: 600; text-align: left; padding: 18px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .faq-q:hover { color: var(--accent); }
@@ -102,46 +128,45 @@
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
     .faq-a { display: none; color: var(--muted); font-size: 14px; line-height: 1.7; padding-bottom: 18px; }
     .faq-item.open .faq-a { display: block; }
-    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
     .related-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-decoration: none; color: var(--text); display: block; transition: border-color 0.15s; }
     .related-card:hover { border-color: var(--accent); text-decoration: none; }
     .related-card-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
     .related-card-desc { font-size: 12px; color: var(--muted); }
-    .overage-note { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--muted); margin-top: 16px; }
-    .overage-note strong { color: var(--text); }
-    .nav-dropdown { position: relative; display: flex; align-items: center; flex-shrink: 0; }
-    .nav-dropdown-btn { background: none; border: none; color: var(--muted); font-family: inherit; font-size: 14px; padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s; }
-    .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text); }
-    .nav-dropdown-menu { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); min-width: 200px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.4); padding: 6px 0; }
-    .nav-dropdown.open .nav-dropdown-menu { display: block; }
-    .nav-dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 13px; font-weight: 500; color: var(--text); text-decoration: none; transition: background 0.1s; border-bottom: none !important; }
-    .nav-dropdown-menu a:hover { background: var(--surface2); }
-    .nav-dropdown-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }
-    footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 64px; }
+    .warning-box { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+    .warning-box strong { color: var(--orange); }
+    .warning-box em { color: var(--text2); font-style: normal; }
+    .price-alerts { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 48px; }
+    .pa-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-br); margin-bottom: 8px; }
+    .pa-title { font-family: var(--display); font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+    .pa-sub { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    .pa-form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pa-input { flex: 1; min-width: 220px; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; }
+    .pa-input:focus { outline: none; border-color: var(--accent); }
+    .pa-btn { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 22px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .pa-btn:hover { background: var(--accent-br); }
+    .pa-btn:disabled { opacity: 0.6; cursor: default; }
+    .pa-msg { display: none; align-items: center; gap: 8px; font-size: 13px; margin-top: 12px; }
+    .pa-msg.show { display: flex; }
+    .pa-msg.ok { color: var(--green); }
+    .pa-msg.err { color: var(--orange); }
+    .pa-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+    .price-alerts.subscribed .pa-form { display: none; }
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 64px; }
     footer a { color: var(--muted); }
     .funnel-fab { position: fixed; right: 22px; bottom: 22px; z-index: 90; display: inline-flex; align-items: center; gap: 9px; background: var(--accent); color: var(--ink); font-family: var(--font); font-size: 14px; font-weight: 700; padding: 13px 20px; border-radius: 100px; text-decoration: none; box-shadow: 0 10px 30px rgba(16,185,129,0.4), 0 0 0 1px rgba(16,185,129,0.5); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
     .funnel-fab:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-2px); text-decoration: none; box-shadow: 0 14px 38px rgba(16,185,129,0.5); }
-    @media (max-width: 560px) { .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; } }
-  
-    /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
     @media (max-width: 760px) {
       .wrap { padding-left: 18px; padding-right: 18px; }
       .nav-top { padding-left: 18px; padding-right: 18px; }
       .nav-bottom { padding-left: 8px; padding-right: 8px; }
       .nav-bottom a { padding: 13px 14px; }
     }
-    @media (max-width: 620px) {
-      .nav-badge { display: none; }
-      .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 460px) {
-      .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
-    }
-  
-    /* AC-CTA-STACK ── stack hero/CTA button rows full-width on small phones */
+    @media (max-width: 620px) { .nav-badge { display: none; } }
     @media (max-width: 520px) {
       .cta-row { flex-direction: column; align-items: stretch; }
       .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+      .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; }
     }
   </style>
 <!-- ANALYTICS (build.py) -->
@@ -173,18 +198,6 @@
     <a href="limits.html">Pricing & Limits</a>
     <a href="tools.html">Tools</a>
     <a href="changelog.html">Changelog</a>
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-btn">Pricing Guides <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="nav-dropdown-menu">
-        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
-        <a href="make-pricing.html" style="color:var(--text);font-weight:600"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
-        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
-        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
-        <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
-        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
-        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
-      </div>
-    </div>
   </nav>
 </header>
 
@@ -192,136 +205,152 @@
 
   <div class="page-hero">
     <div class="tool-badge"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=64" alt="Make">Make</div>
-    <h1>Make.com Pricing 2026 — Plans & True Cost</h1>
-    <p>Make is the most affordable cloud automation platform for mid-volume users. Here's the complete breakdown of plans, operations, and overage costs.</p>
+    <h1>Make (Integromat) Pricing 2026 — Plans & Real Cost per Run</h1>
+    <p>Make is the volume-pricing favourite — the same cloud experience as Zapier at a fraction of the per-run cost. Here's what each plan really costs as your run count grows.</p>
     <div class="cta-row">
-      <a href="https://www.make.com" target="_blank" rel="noopener sponsored" class="btn-primary">Try Make free →</a>
+      <a href="https://www.make.com/en/register?pc=wizardcost" target="_blank" rel="noopener sponsored" class="btn-primary">Try Make free →</a>
       <a href="calculator.html" class="btn-secondary">Calculate my Make cost</a>
-      <a href="compare.html?tools=make,n8n" class="btn-secondary">Compare Make vs n8n</a>
-      <a href="compare.html?tools=make,zapier" class="btn-secondary">Compare Make vs Zapier</a>
+      <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
     </div>
-    <div class="hero-trust">Prices verified June 2026 · taken from Make’s official pricing page</div>
+    <div class="hero-trust">Prices verified June 2026 · taken from Make's official pricing · all figures per <strong>run</strong></div>
   </div>
 
+  <div class="warning-box"><strong>Heads up:</strong> Make meters credits (formerly "operations"): one module action = one credit, code execution counts double. The headline plan price covers a fixed credit pool — overshoot it and you move up a tier, so size your plan to your real run volume.</div>
+
   <div class="section">
-    <h2>Make Plans & Pricing</h2>
+    <h2>Make plans &amp; real cost</h2>
+    <p class="section-sub">Cheapest qualifying plan at four typical run volumes (3-step workflows, monthly billing) — prices generated live from our data, never hand-typed.</p>
+    <h3 class="variant-head">Cloud</h3>
     <div class="plans-grid">
       <div class="plan-card">
-        <div class="plan-name">Free</div>
-        <div class="plan-price">$0<span>/mo</span></div>
+        <div class="plan-name">1,000 runs</div>
+        <div class="plan-price">$10.59<span>/mo</span></div>
         <ul class="plan-detail">
-          <li>1,000 ops/month</li>
-          <li>Unlimited scenarios</li>
-          <li>2 active scenarios</li>
-          <li>15-min scheduling</li>
-          <li>30-day log history</li>
-        </ul>
-      </div>
-      <div class="plan-card highlight">
-        <div class="plan-name">Core</div>
-        <div class="plan-price">$9<span>/mo</span></div>
-        <div class="plan-tag">Best value</div>
-        <ul class="plan-detail">
-          <li>10,000 ops/month</li>
-          <li>Unlimited scenarios</li>
-          <li>1-min scheduling</li>
-          <li>30-day log history</li>
-          <li>+$9 per 10k extra ops</li>
+          <li>1,000 runs / month</li>
+          <li>Core 10k</li>
         </ul>
       </div>
       <div class="plan-card">
-        <div class="plan-name">Pro</div>
-        <div class="plan-price">$16<span>/mo</span></div>
+        <div class="plan-name">5,000 runs</div>
+        <div class="plan-price">$18.82<span>/mo</span></div>
         <ul class="plan-detail">
-          <li>10,000 ops/month</li>
-          <li>Custom variables</li>
-          <li>Full-text search in history</li>
-          <li>Priority execution</li>
-          <li>+$9 per 10k extra ops</li>
+          <li>5,000 runs / month</li>
+          <li>Core 20k</li>
         </ul>
       </div>
       <div class="plan-card">
-        <div class="plan-name">Teams</div>
-        <div class="plan-price">$29<span>/mo</span></div>
+        <div class="plan-name">20,000 runs</div>
+        <div class="plan-price">$64.71<span>/mo</span></div>
         <ul class="plan-detail">
-          <li>10,000 ops/month</li>
-          <li>Team collaboration</li>
-          <li>Role-based permissions</li>
-          <li>+$9 per 10k extra ops</li>
+          <li>20,000 runs / month</li>
+          <li>Core 80k</li>
         </ul>
       </div>
       <div class="plan-card">
-        <div class="plan-name">Enterprise</div>
-        <div class="plan-price">Custom</div>
+        <div class="plan-name">100,000 runs</div>
+        <div class="plan-price">$214.31<span>/mo</span></div>
         <ul class="plan-detail">
-          <li>Custom ops volume</li>
-          <li>SSO / SAML</li>
-          <li>Dedicated support</li>
-          <li>SLA</li>
+          <li>100,000 runs / month</li>
+          <li>Core 300k</li>
         </ul>
       </div>
     </div>
-    <div class="overage-note"><strong>Overage pricing:</strong> $9 per additional 10,000 operations. That's $0.0009/op — the cheapest overage rate of any cloud automation tool.</div>
+    
   </div>
 
   <div class="section">
-    <h2>Make vs Zapier — Cost at Different Volumes</h2>
+    <h2>Make vs alternatives</h2>
+    <p class="section-sub">Price for 20,000 runs / month across every tool we track.</p>
     <table class="comparison-table">
-      <thead><tr><th>Monthly Ops</th><th>Make Cost</th><th>Zapier Cost</th><th>You Save</th></tr></thead>
+      <thead><tr><th>Tool</th><th>Price for 20,000 runs</th><th>Integrations</th><th>Self-host</th></tr></thead>
       <tbody>
-        <tr><td>1,000</td><td>$0 (Free)</td><td>$0 (Free, 100 tasks)</td><td>—</td></tr>
-        <tr><td>2,000</td><td>$9 (Core)</td><td>$49 (Professional)</td><td><strong style="color:var(--green)">$40/mo</strong></td></tr>
-        <tr><td>5,000</td><td>$9 (Core)</td><td>$49 (Professional)</td><td><strong style="color:var(--green)">$40/mo</strong></td></tr>
-        <tr><td>10,000</td><td>$9 (Core)</td><td>$69 (Team)</td><td><strong style="color:var(--green)">$60/mo</strong></td></tr>
-        <tr><td>25,000</td><td>$24 (Core + overages)</td><td>$139+ (Team + overages)</td><td><strong style="color:var(--green)">$115+/mo</strong></td></tr>
+        <tr><td><strong>Make</strong></td><td class="price-cell">$64.71</td><td>1,500+</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><a href="zapier-pricing.html">Zapier</a></td><td class="price-cell">$433.5</td><td>9,000+</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><a href="n8n-pricing.html">n8n</a></td><td class="price-cell">$25</td><td>400+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
+        <tr><td><a href="pipedream-pricing.html">Pipedream</a></td><td class="price-cell">$137</td><td>2,000+</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><a href="activepieces-pricing.html">Activepieces</a></td><td class="price-cell">$0</td><td>747+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
+        <tr><td><a href="automatisch-pricing.html">Automatisch</a></td><td class="price-cell">$25</td><td>50+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
+        <tr><td><a href="node-red-pricing.html">Node-RED</a></td><td class="price-cell">$25</td><td>5,000+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
       </tbody>
     </table>
-    <p style="margin-top:12px"><a href="compare.html?tools=make,zapier">Interactive Make vs Zapier comparison →</a></p>
+    <p style="margin-top:12px"><a href="compare.html">Full interactive comparison →</a></p>
   </div>
 
   <div class="section">
-    <h2>Frequently Asked Questions</h2>
+    <h2>When Make is worth it</h2>
+    <table class="comparison-table">
+      <thead><tr><th>Use case</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Want cloud convenience without Zapier's price</td><td class="tag-yes">Use Make</td></tr>
+        <tr><td>High run volume on a budget</td><td class="tag-yes">Make scales cheaply</td></tr>
+        <tr><td>Comfortable with a visual scenario builder</td><td class="tag-yes">Use Make</td></tr>
+        <tr><td>Need an integration Make doesn't have</td><td class="tag-warn">Check Zapier's larger catalog</td></tr>
+        <tr><td>Want to eliminate the monthly bill entirely</td><td class="tag-warn">Self-host n8n or Activepieces</td></tr>
+        <tr><td>Need strict EU data residency on managed hosting</td><td class="tag-warn">Confirm region or self-host</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Is Make cheaper than Zapier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Yes, significantly. Make Core at $9/mo gives 10,000 ops. Zapier Professional at $19.99/mo (billed annually) gives just 750 tasks. For the same volume Make is 5–10x cheaper, and the gap widens with scale — at 100,000 ops/mo Make runs about $116 vs Zapier's ~$733.</div>
+  <!-- EMAILCAP:HTML:START — price-drop alerts (pricing copy variant, generováno).
+       Disclosure text schválen ownerem 2026-06-11 — NEMĚNIT bez jeho OK. -->
+  <section class="price-alerts" id="price-alerts">
+    <div class="pa-label">Price-drop alerts</div>
+    <div class="pa-title">Get an email when Make changes pricing.</div>
+    <p class="pa-sub">Every change is verified by hand and published to the <a href="changelog.html">changelog</a> — you get one email per confirmed change.</p>
+    <form class="pa-form" id="pa-form" action="https://assets.mailerlite.com/jsonp/2426816/forms/190009354045359550/subscribe" method="post" novalidate>
+      <label for="pa-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+      <input class="pa-input" id="pa-email" name="fields[email]" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
+      <input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button class="pa-btn" id="pa-btn" type="submit">Get price alerts</button>
+    </form>
+    <div class="pa-msg" id="pa-msg" role="status" aria-live="polite"></div>
+    <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
+  </section>
+  <!-- EMAILCAP:HTML:END -->
+
+  <div class="section">
+    <h2>Frequently asked questions</h2>
+    <div class="faq" style="margin-top:8px;">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How much does Make cost per month?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">On the cheapest qualifying plan (3-step workflows, monthly billing) Make runs $10.59 at 1,000 runs, $18.82 at 5,000 runs, $64.71 at 20,000 runs and $214.31 at 100,000 runs. See the plans and comparison table above for the full breakdown.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What is cheaper than Make?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">At 20,000 runs/month the cheapest pick we track is <a href="activepieces-pricing.html">Activepieces</a> at $0 vs Make at $64.71. Use the calculator for your exact volume.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What is an operation (credit) on Make?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Each module action in a scenario consumes one credit; code-execution steps count double. We express this as <strong>runs &times; steps</strong> so a 3-step scenario that fires 1,000 times is comparable across every tool on this site.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is Make cheaper than Zapier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">For the same workflow volume, Make is typically several times cheaper per run because it prices by credit pool rather than per task. See the comparison table above for the gap at your volume.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Taken from official pricing pages and verified by hand. Values marked ~ are estimates for custom enterprise tiers. Every change we record lands in the <a href="changelog.html">price changelog</a>.</div>
+      </div>
     </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Can I self-host Make?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">No. Make is cloud-only. If you need self-hosting, consider <a href="n8n-pricing.html">n8n</a> (free self-hosted, 400+ integrations) or <a href="activepieces-pricing.html">Activepieces</a> (MIT license, similar visual UI).</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">What's the difference between Make Core and Pro?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Both include 10,000 ops/month. Pro ($16/mo) adds: custom variables, full-text execution history search, priority execution, and advanced scheduling. Core ($9/mo) is sufficient for most solo users and small teams.</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Does Make have a free plan?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Yes. Make's free plan includes 1,000 ops/month with unlimited scenarios (2 active at a time) and 30-day log history. It's the most generous free cloud automation tier available.</div>
-    </div>
-
   </div>
 
   <div class="section">
     <h2>Compare Make to other tools</h2>
     <div class="related-grid">
-      <a href="compare.html?tools=make,n8n" class="related-card">
-        <div class="related-card-name">Make vs n8n</div>
-        <div class="related-card-desc">Cloud value, self-hosting, ops limits</div>
-      </a>
       <a href="compare.html?tools=make,zapier" class="related-card">
         <div class="related-card-name">Make vs Zapier</div>
-        <div class="related-card-desc">Price per op, integrations, ease of use</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
+      </a>
+      <a href="compare.html?tools=make,n8n" class="related-card">
+        <div class="related-card-name">Make vs n8n</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
       </a>
       <a href="compare.html?tools=make,pipedream" class="related-card">
         <div class="related-card-name">Make vs Pipedream</div>
-        <div class="related-card-desc">Visual builder vs code-first</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
       </a>
-      <a href="compare.html?tools=make,n8n,zapier,pipedream" class="related-card">
+      <a href="compare.html?tools=make,zapier,n8n,pipedream" class="related-card">
         <div class="related-card-name">All tools vs Make</div>
-        <div class="related-card-desc">Full 4-tool comparison</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
       </a>
     </div>
   </div>
@@ -329,27 +358,51 @@
 </div>
 
 <footer>
-  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io. All rights reserved.</div>
-  <div>AutomationCost.io · Independent, data-driven comparisons</div>
+  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
+  <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified June 2026</div>
   <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
-  <div style="margin-top:6px">Prices verified June 2026 · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+  <div style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
 </footer>
 
 <script>
-function toggleFaq(btn) {
-  btn.closest(".faq-item").classList.toggle("open");
-}
-</script>
-<script>
-document.querySelector(".nav-dropdown-btn").addEventListener("click", function(e) {
-  e.stopPropagation();
-  var dd = this.closest(".nav-dropdown");
-  var r = this.getBoundingClientRect(), m = dd.querySelector(".nav-dropdown-menu"); m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 224)) + "px"; m.style.top = (r.bottom + 8) + "px";
-  dd.classList.toggle("open");
-});
-document.addEventListener("click", function() {
-  document.querySelectorAll(".nav-dropdown.open").forEach(d => d.classList.remove("open"));
-});
+function toggleFaq(el) { el.closest(".faq-item").classList.toggle("open"); }
+
+/* ── EMAILCAP:JS:START — wire every .price-alerts form on the page ── */
+(function () {
+  var OK_MSG  = 'Check your inbox to confirm your subscription.';
+  var ERR_MSG = 'Something went wrong — please try again.';
+  var OK_ICON  = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+  var ERR_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  function show(msgEl, ok, text) {
+    msgEl.className = 'pa-msg show ' + (ok ? 'ok' : 'err');
+    msgEl.innerHTML = (ok ? OK_ICON : ERR_ICON) + '<span>' + text + '</span>';
+  }
+  document.querySelectorAll('.price-alerts form.pa-form').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var card  = form.closest('.price-alerts');
+      var input = form.querySelector('.pa-input');
+      var btn   = form.querySelector('.pa-btn');
+      var msgEl = card.querySelector('.pa-msg');
+      if (!input.value || input.validity.typeMismatch || input.value.indexOf('@') < 1) {
+        show(msgEl, false, 'Please enter a valid email address.');
+        input.focus();
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Subscribing…';
+      fetch(form.action, { method: 'POST', body: new FormData(form) })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); })
+        .then(function () { card.classList.add('subscribed'); show(msgEl, true, OK_MSG); })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Get price alerts';
+          show(msgEl, false, ERR_MSG);
+        });
+    });
+  });
+})();
+/* ── EMAILCAP:JS:END ── */
 </script>
 <a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="17" height="17" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#04130d"/></svg> Find my best tool</a>
 </body>

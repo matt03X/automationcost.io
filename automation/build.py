@@ -24,6 +24,11 @@ import json
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from build_hosting import expand_hosting_variants  # noqa: E402
+from build_pricing import build_pricing_pages  # noqa: E402
+from build_catalog import build_catalog_pages  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "tools.json"
 SITE = ROOT / "data" / "site.json"
@@ -80,6 +85,7 @@ def js_selfhosthw(tiers) -> str:
     cells = ", ".join(
         f"{{ upTo: {js_limit(t.get('upTo'))}, usd: {t['usd']}" +
         (f", home: {t['home']}" if t.get('home') is not None else "") +
+        (f", hwOneOff: {t['hwOneOff']}" if t.get('hwOneOff') is not None else "") +
         (f", spec: {js_str(t['spec'])}" if t.get('spec') else "") + " }"
         for t in tiers)
     return f"[{cells}]"
@@ -153,10 +159,13 @@ def render_calculator(tools: list[dict]) -> str:
 # ---------------------------------------------------------------------------
 
 def render_compare(tools: list[dict]) -> str:
+    # expanze hosting variant (Cloud / VPS / vlastní server) — compare ukazuje
+    # každou variantu jako samostatný "tool" (n8n 3×, atd.). Viz build_hosting.py.
     lines = ["const TOOLS = {"]
-    for t in tools:
+    for t in expand_hosting_variants(tools):
         lines.append(f'  {js_str(t["slug"])}: {{')
         lines.append(f'    slug: {js_str(t["slug"])}, name: {js_str(t["name"])}, unitModel: {js_str(t.get("unitModel", "runs"))}, annualFactor: {t.get("annualFactor", 1)},')
+        lines.append(f'    hostingKind: {js_str(t.get("hostingKind", "saas"))}, variantOf: {js_str(t.get("variantOf", t["slug"]))},')
         lines.append(f'    tagline: {js_str(t["tagline"])},')
         lines.append(
             f'    selfHostable: {js_bool(t["selfHostable"])}, '
@@ -206,7 +215,7 @@ def _fmt_count(v) -> str:
 
 
 def _fmt_overage(ov) -> str:
-    return "none" if ov is None else f"${ov['usd']}/{ov['per']:,} ops"
+    return "none" if ov is None else f"${ov['usd']}/{ov['per']:,} runs"
 
 
 def tools_history() -> list[tuple[str, dict]]:
@@ -273,7 +282,7 @@ def diff_tools(old: dict, new: dict, date: str) -> list[dict]:
                 direction = "info" if (a is None or b is None) else ("up" if b > a else "down")
                 add(p["name"], _fmt_money(a), _fmt_money(b), direction)
             if q.get("opsIncluded") != p.get("opsIncluded"):
-                add(f"{p['name']} — included ops", _fmt_count(q.get("opsIncluded")), _fmt_count(p.get("opsIncluded")), "info")
+                add(f"{p['name']} — included runs", _fmt_count(q.get("opsIncluded")), _fmt_count(p.get("opsIncluded")), "info")
             if q.get("workflowLimit") != p.get("workflowLimit"):
                 add(f"{p['name']} — workflow limit", _fmt_count(q.get("workflowLimit")), _fmt_count(p.get("workflowLimit")), "info")
     return entries
@@ -384,7 +393,7 @@ def _overage_rate(ov):
 def _vs_features():
     def fmt_overage(t):
         ov = t.get("overage")
-        return f"+${ov['usd']} per {ov['per']:,} ops" if ov else "none — upgrade only"
+        return f"+${ov['usd']} per {ov['per']:,} runs" if ov else "none — upgrade only"
 
     def win_overage(ta, tb):
         ra, rb = _overage_rate(ta.get("overage")), _overage_rate(tb.get("overage"))
@@ -439,11 +448,11 @@ def _vs_auto_faq(pair, ta, tb, costs, volumes):
         faq.append({
             "q": f"Is {wt['name']} cheaper than {lt_['name']}?",
             "a": (f"At every volume we track, yes — from {_fmt_usd(w0['cost'], w0['est'])} vs "
-                  f"{_fmt_usd(l0['cost'], l0['est'])} at {volumes[0]:,} ops/mo to "
+                  f"{_fmt_usd(l0['cost'], l0['est'])} at {volumes[0]:,} runs/mo to "
                   f"{_fmt_usd(wN['cost'], wN['est'])} vs {_fmt_usd(lN['cost'], lN['est'])} at "
                   f"{volumes[-1]:,}. Prices include overage where it applies — see the table above.")})
     else:
-        parts = [f"{volumes[i]:,} ops: {(ta if w == 'a' else tb)['name']}"
+        parts = [f"{volumes[i]:,} runs: {(ta if w == 'a' else tb)['name']}"
                  for i, w in enumerate(wins) if w != "tie"]
         faq.append({
             "q": f"Which is cheaper, {a_name} or {b_name}?",
@@ -489,7 +498,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
     for vol in volumes:
         ra, rb = engine.cheapest_monthly(ta, vol), engine.cheapest_monthly(tb, vol)
         if ra is None or rb is None:
-            raise SystemExit(f"CHYBA: {slug} — nástroj nemá ocenitelný plán pro {vol} ops.")
+            raise SystemExit(f"CHYBA: {slug} — nástroj nemá ocenitelný plán pro {vol} runs.")
         costs.append((ra, rb))
     wins = [("a" if ca["cost"] < cb["cost"] else ("b" if cb["cost"] < ca["cost"] else "tie"))
             for ca, cb in costs]
@@ -600,7 +609,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
 
     title = f"{a_name} vs {b_name}: Pricing &amp; Cost Comparison 2026 | AutomationCost.io"
     desc = (f"{a_name} vs {b_name} priced at " + " / ".join(f"{v:,}" for v in volumes)
-            + " ops per month — real plans, overage math, feature differences and which one is "
+            + " runs per month — real plans, overage math, feature differences and which one is "
               "cheaper for your usage.")
     canonical = f"{prefix}/{slug}.html"
 
@@ -680,7 +689,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>ops / month</th><th>{a_name}</th><th>{b_name}</th></tr>
+          <tr><th>runs / month</th><th>{a_name}</th><th>{b_name}</th></tr>
         </thead>
         <tbody>
 {chr(10).join(rows)}
@@ -694,7 +703,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
   <div class="calc-cta" data-screen-label="Calculator CTA">
     <div class="calc-cta-text">
       <h2>Get the number for <em style="font-style:normal; color:var(--accent-br);">your</em> exact volume.</h2>
-      <p>30 seconds, no signup — your ops, your workflows, all 7 tools ranked.</p>
+      <p>30 seconds, no signup — your runs, your workflows, all 7 tools ranked.</p>
     </div>
     <a href="calculator.html" class="btn-primary-lg">Open the calculator →</a>
   </div>
@@ -1115,7 +1124,7 @@ def _entry_kind(e: dict) -> str:
     item = e["item"].lower()
     if "integrations" in item:
         return "Catalog update"
-    if "included ops" in item or "workflow limit" in item:
+    if "included runs" in item or "workflow limit" in item:
         return "Plan limits update"
     if "overage" in item:
         return "Overage pricing update"
@@ -1133,7 +1142,7 @@ def _alert_meta(e: dict) -> str:
     'Price change · verified June 11, 2026' | 'Plan limit change · verified …'."""
     import datetime as _dt
     item = e["item"].lower()
-    kind = "Plan limit change" if ("included ops" in item or "workflow limit" in item) else "Price change"
+    kind = "Plan limit change" if ("included runs" in item or "workflow limit" in item) else "Price change"
     dt = _dt.datetime.strptime(e["d"], "%Y-%m-%d")
     return f"{kind} · verified {dt:%B} {dt.day}, {dt.year}"
 
@@ -1296,6 +1305,8 @@ def main() -> int:
                 dirty.append(path.name)
         if DATA.exists():
             dirty += build_vs_pages(data["tools"], site, data.get("_meta", {}), check=True)
+            dirty += build_pricing_pages(data["tools"], site, data.get("_meta", {}), check=True)
+            dirty += build_catalog_pages(data["tools"], site, data.get("_meta", {}), check=True)
         if dirty:
             print(f"[build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python build.py`.")
             return 1
@@ -1310,6 +1321,8 @@ def main() -> int:
         # vs-stránky generovat PŘED sitemap/analytics — nové soubory se tak
         # hned dostanou do sitemapy i GA4 injektoru
         changed += build_vs_pages(data["tools"], site, data.get("_meta", {}), check=False)
+        changed += build_pricing_pages(data["tools"], site, data.get("_meta", {}), check=False)
+        changed += build_catalog_pages(data["tools"], site, data.get("_meta", {}), check=False)
 
     # site-wide artefakty
     domain = site.get("domain", "automationcost.io")

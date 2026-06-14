@@ -3,44 +3,65 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pipedream Pricing 2026 — Credits, Plans & True Cost for Developers</title>
-  <meta name="description" content="Pipedream pricing: Free (100 credits), Basic $29/mo (2k credits), Advanced $49/mo, Connect $99/mo (10k credits). Code-first automation for developers. Is Pipedream worth it?">
+  <!-- generováno build_pricing.py z data/tools.json + data/pricing-editorial.json — needituj ručně -->
+  <title>Pipedream Pricing 2026 — Plans, Run Limits &amp; Real Cost | AutomationCost.io</title>
+  <meta name="description" content="Pipedream pricing 2026: $29 at 1,000 runs, $137 at 20,000 runs, $293.6 at 100,000 runs. Real plans, self-host options and how Pipedream compares on cost per run.">
   <link rel="canonical" href="https://wizardcost.com/automation/pipedream-pricing.html">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Pipedream Pricing 2026 — Credits, Plans & True Cost">
-  <meta property="og:description" content="Pipedream pricing explained: what credits are, plan breakdown, and when Pipedream beats Zapier or Make.">
+  <meta property="og:site_name" content="AutomationCost.io">
+  <meta property="og:title" content="Pipedream Pricing 2026 — Plans, Run Limits &amp; Real Cost">
+  <meta property="og:description" content="Pipedream pricing 2026: $29 at 1,000 runs, $137 at 20,000 runs, $293.6 at 100,000 runs. Real plans, self-host options and how Pipedream compares on cost per run.">
   <meta property="og:url" content="https://wizardcost.com/automation/pipedream-pricing.html">
+  <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.png">
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "How much does Pipedream cost?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Pipedream free: 100 credits/month, 3 workflows. Basic: $29/mo (2,000 credits, 10 workflows). Advanced: $49/mo (2,000 credits, unlimited workflows). Connect: $99/mo (10,000 credits). Overage: $10 per 1,000 additional credits."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What are Pipedream credits?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Pipedream credits are consumed per workflow execution step. Each action step costs 1 credit. A workflow with 4 steps that runs 500 times = 2,000 credits. Compute-intensive steps (like running Node.js code) may consume more credits based on execution time."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is Pipedream cheaper than Zapier?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, at equal volume. Pipedream Basic at $29/mo includes 2,000 credits; getting 2,000 tasks on Zapier requires the Team plan at $69/mo (Professional's $19.99/mo base tier includes only 750 tasks). Pipedream also lets you run Node.js and Python code natively, which Zapier does not."
-        }
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does Pipedream cost per month?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On the cheapest qualifying plan (3-step workflows, monthly billing) Pipedream runs $29 at 1,000 runs, $59 at 5,000 runs, $137 at 20,000 runs and $293.6 at 100,000 runs. See the plans and comparison table above for the full breakdown."
       }
-    ]
-  }
+    },
+    {
+      "@type": "Question",
+      "name": "What is cheaper than Pipedream?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "At 20,000 runs/month the cheapest pick we track is <a href=\"activepieces-pricing.html\">Activepieces</a> at $0 vs Pipedream at $137. Use the calculator for your exact volume."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Pipedream's credit pricing work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each workflow execution consumes credits based on compute time; paid plans include a monthly credit pool. We normalise this to <strong>runs &times; steps</strong> so it lines up with the other tools in the table above."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Pipedream good for non-developers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It's developer-first — the real power is in code steps and APIs. If you want a drag-and-drop no-code builder, Make or Activepieces will feel friendlier."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate are these prices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Taken from official pricing pages and verified by hand. Values marked ~ are estimates for custom enterprise tiers. Every change we record lands in the <a href=\"changelog.html\">price changelog</a>."
+      }
+    }
+  ]
+}
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,7 +69,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg: #0a0e17; --surface: #111827; --surface2: #1a2236; --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99; --accent: #10b981; --accent-br: #16d18c; --accent-dim: rgba(16,185,129,0.09); --accent-glow: rgba(16,185,129,0.20); --ink: #04130d; --link: #6f9bff; --green: #10b981; --yellow: #f59e0b; --radius: 14px; --radius-sm: 9px; --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; }
+    :root { --bg: #0a0e17; --surface: #111827; --surface2: #1a2236; --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99; --accent: #10b981; --accent-br: #16d18c; --accent-dim: rgba(16,185,129,0.09); --accent-glow: rgba(16,185,129,0.20); --ink: #04130d; --link: #6f9bff; --green: #10b981; --yellow: #f59e0b; --orange: #f59e0b; --radius: 14px; --radius-sm: 9px; --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; }
     body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; padding-top: 100px; }
     a { color: var(--link); text-decoration: none; }
     a:hover { color: #9fbcff; }
@@ -64,37 +85,42 @@
     .logo .io { color: var(--muted); font-weight: 600; }
     .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
     .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); }
-    .wrap { max-width: 860px; margin: 0 auto; padding: 0 32px; }
-    .page-hero { padding: 56px 0 40px; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+    .page-hero { padding: 56px 0 36px; }
     .tool-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 20px; }
     .tool-badge img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 1px; }
     .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
     .page-hero p { color: var(--muted); font-size: 1.05rem; max-width: 640px; margin-bottom: 28px; }
     .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
-    .hero-trust { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 48px; }
+    .hero-trust { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .hero-trust strong { color: var(--accent-br); }
     .btn-primary { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 24px; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 6px 20px rgba(16,185,129,0.26); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
     .btn-primary:hover { background: var(--accent-br); transform: translateY(-1px); text-decoration: none; box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 10px 28px rgba(16,185,129,0.36); }
     .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.15s; }
     .btn-secondary:hover { border-color: var(--accent); text-decoration: none; }
     .section { margin-bottom: 48px; }
-    .section h2 { font-size: 1.45rem; font-weight: 800; margin-bottom: 20px; }
-    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px; }
+    .section h2 { font-size: 1.45rem; font-weight: 800; margin-bottom: 6px; }
+    .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; max-width: 680px; }
+    .variant-head { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-br); margin: 22px 0 10px; }
+    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; margin-bottom: 8px; }
     .plan-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-    .plan-card.highlight { border-color: var(--accent); }
     .plan-name { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-    .plan-price { font-family: var(--mono); font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
-    .plan-price span { font-size: 14px; font-weight: 400; color: var(--muted); }
+    .plan-price { font-family: var(--mono); font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .plan-price span { font-size: 13px; font-weight: 400; color: var(--muted); }
     .plan-detail { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
     .plan-detail li { list-style: none; padding: 2px 0; }
     .plan-detail li::before { content: "·"; margin-right: 6px; color: var(--accent); }
-    .plan-tag { display: inline-block; font-size: 11px; background: rgba(16,185,129,0.15); color: var(--accent); border-radius: 4px; padding: 2px 7px; margin-bottom: 10px; }
+    .plan-detail li.spec { color: var(--text2); font-style: italic; }
+    .plan-note { font-size: 12.5px; color: var(--muted); margin: 4px 0 0; max-width: 660px; }
     .comparison-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .comparison-table th { font-family: var(--mono); text-align: left; padding: 12px 14px; color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .comparison-table th { text-align: left; padding: 10px 14px; color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
     .comparison-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
     .comparison-table tr:last-child td { border-bottom: none; }
     .comparison-table tr:hover td { background: var(--surface2); }
+    .comparison-table .price-cell { font-family: var(--mono); font-weight: 700; }
     .tag-yes { color: var(--green); font-weight: 700; }
     .tag-no { color: var(--muted); }
+    .tag-warn { color: var(--orange); font-weight: 700; }
     .faq-item { border-bottom: 1px solid var(--border); }
     .faq-q { width: 100%; background: none; border: none; color: var(--text); font-family: inherit; font-size: 15px; font-weight: 600; text-align: left; padding: 18px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .faq-q:hover { color: var(--accent); }
@@ -102,44 +128,45 @@
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
     .faq-a { display: none; color: var(--muted); font-size: 14px; line-height: 1.7; padding-bottom: 18px; }
     .faq-item.open .faq-a { display: block; }
-    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
     .related-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-decoration: none; color: var(--text); display: block; transition: border-color 0.15s; }
     .related-card:hover { border-color: var(--accent); text-decoration: none; }
     .related-card-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
     .related-card-desc { font-size: 12px; color: var(--muted); }
-    .nav-dropdown { position: relative; display: flex; align-items: center; flex-shrink: 0; }
-    .nav-dropdown-btn { background: none; border: none; color: var(--muted); font-family: inherit; font-size: 14px; padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s; }
-    .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text); }
-    .nav-dropdown-menu { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); min-width: 200px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.4); padding: 6px 0; }
-    .nav-dropdown.open .nav-dropdown-menu { display: block; }
-    .nav-dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 13px; font-weight: 500; color: var(--text); text-decoration: none; transition: background 0.1s; border-bottom: none !important; }
-    .nav-dropdown-menu a:hover { background: var(--surface2); }
-    .nav-dropdown-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }
-    footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 64px; }
+    .warning-box { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+    .warning-box strong { color: var(--orange); }
+    .warning-box em { color: var(--text2); font-style: normal; }
+    .price-alerts { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 48px; }
+    .pa-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-br); margin-bottom: 8px; }
+    .pa-title { font-family: var(--display); font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+    .pa-sub { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    .pa-form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pa-input { flex: 1; min-width: 220px; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; }
+    .pa-input:focus { outline: none; border-color: var(--accent); }
+    .pa-btn { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 22px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .pa-btn:hover { background: var(--accent-br); }
+    .pa-btn:disabled { opacity: 0.6; cursor: default; }
+    .pa-msg { display: none; align-items: center; gap: 8px; font-size: 13px; margin-top: 12px; }
+    .pa-msg.show { display: flex; }
+    .pa-msg.ok { color: var(--green); }
+    .pa-msg.err { color: var(--orange); }
+    .pa-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+    .price-alerts.subscribed .pa-form { display: none; }
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 64px; }
     footer a { color: var(--muted); }
     .funnel-fab { position: fixed; right: 22px; bottom: 22px; z-index: 90; display: inline-flex; align-items: center; gap: 9px; background: var(--accent); color: var(--ink); font-family: var(--font); font-size: 14px; font-weight: 700; padding: 13px 20px; border-radius: 100px; text-decoration: none; box-shadow: 0 10px 30px rgba(16,185,129,0.4), 0 0 0 1px rgba(16,185,129,0.5); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
     .funnel-fab:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-2px); text-decoration: none; box-shadow: 0 14px 38px rgba(16,185,129,0.5); }
-    @media (max-width: 560px) { .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; } }
-  
-    /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
     @media (max-width: 760px) {
       .wrap { padding-left: 18px; padding-right: 18px; }
       .nav-top { padding-left: 18px; padding-right: 18px; }
       .nav-bottom { padding-left: 8px; padding-right: 8px; }
       .nav-bottom a { padding: 13px 14px; }
     }
-    @media (max-width: 620px) {
-      .nav-badge { display: none; }
-      .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 460px) {
-      .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
-    }
-  
-    /* AC-CTA-STACK ── stack hero/CTA button rows full-width on small phones */
+    @media (max-width: 620px) { .nav-badge { display: none; } }
     @media (max-width: 520px) {
       .cta-row { flex-direction: column; align-items: stretch; }
       .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+      .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; }
     }
   </style>
 <!-- ANALYTICS (build.py) -->
@@ -171,18 +198,6 @@
     <a href="limits.html">Pricing & Limits</a>
     <a href="tools.html">Tools</a>
     <a href="changelog.html">Changelog</a>
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-btn">Pricing Guides <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="nav-dropdown-menu">
-        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
-        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
-        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
-        <a href="pipedream-pricing.html" style="color:var(--text);font-weight:600"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
-        <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
-        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
-        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
-      </div>
-    </div>
   </nav>
 </header>
 
@@ -190,137 +205,152 @@
 
   <div class="page-hero">
     <div class="tool-badge"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=64" alt="Pipedream">Pipedream</div>
-    <h1>Pipedream Pricing 2026 — Credits, Plans & True Cost</h1>
-    <p>Pipedream is built for developers who need to run real code in their automations. Here's what credits cost, how plans compare, and when Pipedream beats the alternatives.</p>
+    <h1>Pipedream Pricing 2026 — Credits & Real Cost per Run</h1>
+    <p>Pipedream is the developer-first automation platform that prices on compute credits. Here's what each plan costs as your run volume climbs, and where it lands against the alternatives.</p>
     <div class="cta-row">
-      <a href="https://pipedream.com" target="_blank" rel="noopener sponsored" class="btn-primary">Try Pipedream free →</a>
+      <a href="https://pipedream.com" target="_blank" rel="noopener" class="btn-primary">Visit Pipedream →</a>
       <a href="calculator.html" class="btn-secondary">Calculate my Pipedream cost</a>
-      <a href="compare.html?tools=pipedream,make" class="btn-secondary">Compare Pipedream vs Make</a>
-      <a href="compare.html?tools=pipedream,zapier" class="btn-secondary">Compare Pipedream vs Zapier</a>
+      <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
     </div>
-    <div class="hero-trust">Prices verified June 2026 · taken from Pipedream’s official pricing page</div>
+    <div class="hero-trust">Prices verified June 2026 · taken from Pipedream's official pricing · all figures per <strong>run</strong></div>
   </div>
 
+  <div class="warning-box"><strong>Heads up:</strong> Pipedream meters credits per workflow execution, and the public per-credit overage rate has been pulled from the pricing page — high-volume overage is now a sales conversation. The Business tier carries the over-volume estimate. Size your plan carefully.</div>
+
   <div class="section">
-    <h2>Pipedream Plans & Pricing</h2>
+    <h2>Pipedream plans &amp; real cost</h2>
+    <p class="section-sub">Cheapest qualifying plan at four typical run volumes (3-step workflows, monthly billing) — prices generated live from our data, never hand-typed.</p>
+    <h3 class="variant-head">Cloud</h3>
     <div class="plans-grid">
       <div class="plan-card">
-        <div class="plan-name">Free</div>
-        <div class="plan-price">$0<span>/mo</span></div>
-        <ul class="plan-detail">
-          <li>100 credits/month</li>
-          <li>3 active workflows</li>
-          <li>30-sec execution timeout</li>
-          <li>24-hour log history</li>
-          <li>Shared workers</li>
-        </ul>
-      </div>
-      <div class="plan-card highlight">
-        <div class="plan-name">Basic</div>
+        <div class="plan-name">1,000 runs</div>
         <div class="plan-price">$29<span>/mo</span></div>
-        <div class="plan-tag">Best for devs</div>
         <ul class="plan-detail">
-          <li>2,000 credits/month</li>
-          <li>10 active workflows</li>
-          <li>12-min execution timeout</li>
-          <li>Dedicated workers</li>
-          <li>+$10 per 1k extra credits</li>
+          <li>1,000 runs / month</li>
+          <li>Basic</li>
         </ul>
       </div>
       <div class="plan-card">
-        <div class="plan-name">Advanced</div>
-        <div class="plan-price">$49<span>/mo</span></div>
+        <div class="plan-name">5,000 runs</div>
+        <div class="plan-price">$59<span>/mo</span></div>
         <ul class="plan-detail">
-          <li>2,000 credits/month</li>
-          <li>Unlimited workflows</li>
-          <li>Custom domains</li>
-          <li>Concurrent executions</li>
-          <li>+$10 per 1k extra credits</li>
+          <li>5,000 runs / month</li>
+          <li>Basic + overage</li>
         </ul>
       </div>
       <div class="plan-card">
-        <div class="plan-name">Connect</div>
-        <div class="plan-price">$99<span>/mo</span></div>
+        <div class="plan-name">20,000 runs</div>
+        <div class="plan-price">$137<span>/mo</span></div>
         <ul class="plan-detail">
-          <li>10,000 credits/month</li>
-          <li>Unlimited workflows</li>
-          <li>Everything in Advanced</li>
-          <li>Managed auth for 100 users</li>
-          <li>Developer / integration plan</li>
+          <li>20,000 runs / month</li>
+          <li>Basic + overage</li>
         </ul>
       </div>
       <div class="plan-card">
-        <div class="plan-name">Business</div>
-        <div class="plan-price">Custom</div>
+        <div class="plan-name">100,000 runs</div>
+        <div class="plan-price">$293.6<span>/mo</span></div>
         <ul class="plan-detail">
-          <li>Custom credit volume</li>
-          <li>SLA</li>
-          <li>SSO</li>
-          <li>Dedicated support</li>
+          <li>100,000 runs / month</li>
+          <li>Basic + overage</li>
         </ul>
       </div>
     </div>
+    
   </div>
 
   <div class="section">
-    <h2>Pipedream vs Make vs Zapier — Developer View</h2>
+    <h2>Pipedream vs alternatives</h2>
+    <p class="section-sub">Price for 20,000 runs / month across every tool we track.</p>
     <table class="comparison-table">
-      <thead><tr><th>Feature</th><th>Pipedream</th><th>Make</th><th>Zapier</th></tr></thead>
+      <thead><tr><th>Tool</th><th>Price for 20,000 runs</th><th>Integrations</th><th>Self-host</th></tr></thead>
       <tbody>
-        <tr><td>Run Node.js / Python code</td><td class="tag-yes">Yes (native)</td><td class="tag-no">No</td><td class="tag-no">No</td></tr>
-        <tr><td>Price at 2,000 ops/mo</td><td>$29/mo</td><td>$9/mo</td><td>$69/mo</td></tr>
-        <tr><td>Execution timeout</td><td>12 min (paid)</td><td>40 min</td><td>15 min</td></tr>
-        <tr><td>Integrations</td><td>2,000+</td><td>1,500+</td><td>9,000+</td></tr>
-        <tr><td>Self-hosting</td><td class="tag-no">No</td><td class="tag-no">No</td><td class="tag-no">No</td></tr>
-        <tr><td>Free tier</td><td>100 credits</td><td>1,000 ops</td><td>100 tasks</td></tr>
+        <tr><td><strong>Pipedream</strong></td><td class="price-cell">$137</td><td>2,000+</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><a href="zapier-pricing.html">Zapier</a></td><td class="price-cell">$433.5</td><td>9,000+</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><a href="make-pricing.html">Make</a></td><td class="price-cell">$64.71</td><td>1,500+</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><a href="n8n-pricing.html">n8n</a></td><td class="price-cell">$25</td><td>400+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
+        <tr><td><a href="activepieces-pricing.html">Activepieces</a></td><td class="price-cell">$0</td><td>747+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
+        <tr><td><a href="automatisch-pricing.html">Automatisch</a></td><td class="price-cell">$25</td><td>50+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
+        <tr><td><a href="node-red-pricing.html">Node-RED</a></td><td class="price-cell">$25</td><td>5,000+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
       </tbody>
     </table>
-    <p style="margin-top:12px"><a href="compare.html?tools=pipedream,make,zapier">Interactive 3-way comparison →</a></p>
+    <p style="margin-top:12px"><a href="compare.html">Full interactive comparison →</a></p>
   </div>
 
   <div class="section">
-    <h2>Frequently Asked Questions</h2>
+    <h2>When Pipedream is worth it</h2>
+    <table class="comparison-table">
+      <thead><tr><th>Use case</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Developer who lives in code steps</td><td class="tag-yes">Use Pipedream</td></tr>
+        <tr><td>Event-driven, low-to-mid volume</td><td class="tag-yes">Pipedream fits well</td></tr>
+        <tr><td>Want a generous component / API catalog</td><td class="tag-yes">Use Pipedream</td></tr>
+        <tr><td>Very high volume</td><td class="tag-warn">Compare against self-host</td></tr>
+        <tr><td>Non-technical, want a visual builder</td><td class="tag-warn">Make or Activepieces is friendlier</td></tr>
+        <tr><td>Need to eliminate the monthly bill</td><td class="tag-warn">Self-host n8n</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">What are Pipedream credits?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Pipedream credits are consumed per workflow execution step. Each action step costs 1 credit. A workflow with 4 steps running 500 times = 2,000 credits. Code steps running longer may consume extra credits based on compute time.</div>
+  <!-- EMAILCAP:HTML:START — price-drop alerts (pricing copy variant, generováno).
+       Disclosure text schválen ownerem 2026-06-11 — NEMĚNIT bez jeho OK. -->
+  <section class="price-alerts" id="price-alerts">
+    <div class="pa-label">Price-drop alerts</div>
+    <div class="pa-title">Get an email when Pipedream changes pricing.</div>
+    <p class="pa-sub">Every change is verified by hand and published to the <a href="changelog.html">changelog</a> — you get one email per confirmed change.</p>
+    <form class="pa-form" id="pa-form" action="https://assets.mailerlite.com/jsonp/2426816/forms/190009354045359550/subscribe" method="post" novalidate>
+      <label for="pa-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+      <input class="pa-input" id="pa-email" name="fields[email]" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
+      <input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button class="pa-btn" id="pa-btn" type="submit">Get price alerts</button>
+    </form>
+    <div class="pa-msg" id="pa-msg" role="status" aria-live="polite"></div>
+    <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
+  </section>
+  <!-- EMAILCAP:HTML:END -->
+
+  <div class="section">
+    <h2>Frequently asked questions</h2>
+    <div class="faq" style="margin-top:8px;">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How much does Pipedream cost per month?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">On the cheapest qualifying plan (3-step workflows, monthly billing) Pipedream runs $29 at 1,000 runs, $59 at 5,000 runs, $137 at 20,000 runs and $293.6 at 100,000 runs. See the plans and comparison table above for the full breakdown.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What is cheaper than Pipedream?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">At 20,000 runs/month the cheapest pick we track is <a href="activepieces-pricing.html">Activepieces</a> at $0 vs Pipedream at $137. Use the calculator for your exact volume.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How does Pipedream's credit pricing work?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Each workflow execution consumes credits based on compute time; paid plans include a monthly credit pool. We normalise this to <strong>runs &times; steps</strong> so it lines up with the other tools in the table above.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is Pipedream good for non-developers?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">It's developer-first — the real power is in code steps and APIs. If you want a drag-and-drop no-code builder, Make or Activepieces will feel friendlier.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Taken from official pricing pages and verified by hand. Values marked ~ are estimates for custom enterprise tiers. Every change we record lands in the <a href="changelog.html">price changelog</a>.</div>
+      </div>
     </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Is Pipedream cheaper than Zapier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Yes, at equal volume. Pipedream Basic at $29/mo includes 2,000 credits; getting 2,000 tasks on Zapier requires the $69/mo Team plan (Professional's $19.99/mo base tier includes only 750 tasks). Pipedream also includes native code steps, longer execution timeouts, and dedicated workers.</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Is Pipedream or Make better for developers?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Pipedream if you need to run real Node.js or Python code. Make if you want a visual builder and don't need code steps — Make is also 3x cheaper per op. For maximum control + self-hosting, <a href="n8n-pricing.html">n8n</a> beats both.</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Does Pipedream have a free plan?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Yes, but it's limited: 100 credits/month, 3 workflows, 30-second timeout, shared workers. Good for testing and hobby projects. For production use, Basic at $29/mo is the minimum viable plan.</div>
-    </div>
-
   </div>
 
   <div class="section">
     <h2>Compare Pipedream to other tools</h2>
     <div class="related-grid">
+      <a href="compare.html?tools=pipedream,zapier" class="related-card">
+        <div class="related-card-name">Pipedream vs Zapier</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
+      </a>
       <a href="compare.html?tools=pipedream,make" class="related-card">
         <div class="related-card-name">Pipedream vs Make</div>
-        <div class="related-card-desc">Code-first vs visual builder, cost</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
       </a>
       <a href="compare.html?tools=pipedream,n8n" class="related-card">
         <div class="related-card-name">Pipedream vs n8n</div>
-        <div class="related-card-desc">Cloud vs self-hosted developer tools</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
       </a>
-      <a href="compare.html?tools=pipedream,zapier" class="related-card">
-        <div class="related-card-name">Pipedream vs Zapier</div>
-        <div class="related-card-desc">Price, integrations, dev features</div>
-      </a>
-      <a href="compare.html?tools=pipedream,make,n8n,zapier" class="related-card">
+      <a href="compare.html?tools=pipedream,zapier,make,n8n" class="related-card">
         <div class="related-card-name">All tools vs Pipedream</div>
-        <div class="related-card-desc">Full 4-tool comparison</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
       </a>
     </div>
   </div>
@@ -328,27 +358,51 @@
 </div>
 
 <footer>
-  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io. All rights reserved.</div>
-  <div>AutomationCost.io · Independent, data-driven comparisons</div>
+  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
+  <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified June 2026</div>
   <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
-  <div style="margin-top:6px">Prices verified June 2026 · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+  <div style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
 </footer>
 
 <script>
-function toggleFaq(btn) {
-  btn.closest(".faq-item").classList.toggle("open");
-}
-</script>
-<script>
-document.querySelector(".nav-dropdown-btn").addEventListener("click", function(e) {
-  e.stopPropagation();
-  var dd = this.closest(".nav-dropdown");
-  var r = this.getBoundingClientRect(), m = dd.querySelector(".nav-dropdown-menu"); m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 224)) + "px"; m.style.top = (r.bottom + 8) + "px";
-  dd.classList.toggle("open");
-});
-document.addEventListener("click", function() {
-  document.querySelectorAll(".nav-dropdown.open").forEach(d => d.classList.remove("open"));
-});
+function toggleFaq(el) { el.closest(".faq-item").classList.toggle("open"); }
+
+/* ── EMAILCAP:JS:START — wire every .price-alerts form on the page ── */
+(function () {
+  var OK_MSG  = 'Check your inbox to confirm your subscription.';
+  var ERR_MSG = 'Something went wrong — please try again.';
+  var OK_ICON  = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+  var ERR_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  function show(msgEl, ok, text) {
+    msgEl.className = 'pa-msg show ' + (ok ? 'ok' : 'err');
+    msgEl.innerHTML = (ok ? OK_ICON : ERR_ICON) + '<span>' + text + '</span>';
+  }
+  document.querySelectorAll('.price-alerts form.pa-form').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var card  = form.closest('.price-alerts');
+      var input = form.querySelector('.pa-input');
+      var btn   = form.querySelector('.pa-btn');
+      var msgEl = card.querySelector('.pa-msg');
+      if (!input.value || input.validity.typeMismatch || input.value.indexOf('@') < 1) {
+        show(msgEl, false, 'Please enter a valid email address.');
+        input.focus();
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Subscribing…';
+      fetch(form.action, { method: 'POST', body: new FormData(form) })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); })
+        .then(function () { card.classList.add('subscribed'); show(msgEl, true, OK_MSG); })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Get price alerts';
+          show(msgEl, false, ERR_MSG);
+        });
+    });
+  });
+})();
+/* ── EMAILCAP:JS:END ── */
 </script>
 <a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="17" height="17" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#04130d"/></svg> Find my best tool</a>
 </body>

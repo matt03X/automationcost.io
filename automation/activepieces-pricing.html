@@ -3,44 +3,57 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Activepieces Pricing 2026 — Free Self-Hosted Open Source Automation</title>
-  <meta name="description" content="Activepieces pricing 2026: free self-hosted (MIT license), Cloud free up to 10 active flows with unlimited runs, then $5 per active flow. The open-source Zapier alternative.">
+  <!-- generováno build_pricing.py z data/tools.json + data/pricing-editorial.json — needituj ručně -->
+  <title>Activepieces Pricing 2026 — Plans, Run Limits &amp; Real Cost | AutomationCost.io</title>
+  <meta name="description" content="Activepieces pricing 2026: $0 at 1,000 runs, $0 at 20,000 runs, $0 at 100,000 runs. Real plans, self-host options and how Activepieces compares on cost per run.">
   <link rel="canonical" href="https://wizardcost.com/automation/activepieces-pricing.html">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Activepieces Pricing 2026 — Free Self-Hosted Open Source Automation">
-  <meta property="og:description" content="Activepieces is free to self-host (MIT license). Cloud is free up to 10 active flows — unlimited runs — then $5 per flow. The best Zapier alternative for GDPR and cost-conscious teams.">
+  <meta property="og:site_name" content="AutomationCost.io">
+  <meta property="og:title" content="Activepieces Pricing 2026 — Plans, Run Limits &amp; Real Cost">
+  <meta property="og:description" content="Activepieces pricing 2026: $0 at 1,000 runs, $0 at 20,000 runs, $0 at 100,000 runs. Real plans, self-host options and how Activepieces compares on cost per run.">
   <meta property="og:url" content="https://wizardcost.com/automation/activepieces-pricing.html">
+  <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.png">
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Is Activepieces free?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes. Activepieces Community Edition is free and MIT-licensed — you can self-host it with no ops limits, no workflow caps, and no fees. Activepieces Cloud is also free up to 10 active flows with unlimited runs; beyond that it costs $5 per active flow per month."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What is the difference between Activepieces and n8n?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Both are free self-hosted automation tools. n8n has AI/LLM nodes, code steps and a developer focus. Activepieces has 747+ integrations, a simpler no-code UI closer to Zapier, and a more permissive MIT license. n8n is better for developers; Activepieces is better for non-technical teams that want full data control."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Is Activepieces a good Zapier alternative?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Yes, especially for GDPR compliance and cost savings. Activepieces has a similar visual drag-and-drop interface to Zapier, but is self-hostable (MIT license) and cloud plans cost 5x less than Zapier."
-        }
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does Activepieces cost per month?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "On the cheapest qualifying plan (3-step workflows, monthly billing) Activepieces runs $0 at 1,000 runs, $0 at 5,000 runs, $0 at 20,000 runs and $0 at 100,000 runs. See the plans and comparison table above for the full breakdown."
       }
-    ]
-  }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Activepieces really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The software is MIT-licensed and free to self-host. On Cloud you pay per active flow above the free allowance. Self-hosting on a VPS or your own hardware costs only infrastructure, shown below."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Activepieces priced — per run or per flow?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cloud bills per active flow, not per run, so heavy-volume workflows don't inflate the price the way per-task tools do. We still show a normalised <strong>runs</strong> cost in the table above for a like-for-like comparison."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate are these prices?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Taken from official pricing pages and verified by hand. Values marked ~ are estimates for custom enterprise tiers. Every change we record lands in the <a href=\"changelog.html\">price changelog</a>."
+      }
+    }
+  ]
+}
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,7 +61,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --bg: #0a0e17; --surface: #111827; --surface2: #1a2236; --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99; --accent: #10b981; --accent-br: #16d18c; --accent-dim: rgba(16,185,129,0.09); --accent-glow: rgba(16,185,129,0.20); --ink: #04130d; --link: #6f9bff; --green: #10b981; --yellow: #f59e0b; --radius: 14px; --radius-sm: 9px; --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; }
+    :root { --bg: #0a0e17; --surface: #111827; --surface2: #1a2236; --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99; --accent: #10b981; --accent-br: #16d18c; --accent-dim: rgba(16,185,129,0.09); --accent-glow: rgba(16,185,129,0.20); --ink: #04130d; --link: #6f9bff; --green: #10b981; --yellow: #f59e0b; --orange: #f59e0b; --radius: 14px; --radius-sm: 9px; --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; }
     body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; padding-top: 100px; }
     a { color: var(--link); text-decoration: none; }
     a:hover { color: #9fbcff; }
@@ -64,37 +77,42 @@
     .logo .io { color: var(--muted); font-weight: 600; }
     .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
     .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); }
-    .wrap { max-width: 860px; margin: 0 auto; padding: 0 32px; }
-    .page-hero { padding: 56px 0 40px; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+    .page-hero { padding: 56px 0 36px; }
     .tool-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 20px; }
     .tool-badge img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 1px; }
     .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
     .page-hero p { color: var(--muted); font-size: 1.05rem; max-width: 640px; margin-bottom: 28px; }
     .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
-    .hero-trust { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 48px; }
+    .hero-trust { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .hero-trust strong { color: var(--accent-br); }
     .btn-primary { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 24px; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 6px 20px rgba(16,185,129,0.26); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
     .btn-primary:hover { background: var(--accent-br); transform: translateY(-1px); text-decoration: none; box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 10px 28px rgba(16,185,129,0.36); }
     .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.15s; }
     .btn-secondary:hover { border-color: var(--accent); text-decoration: none; }
     .section { margin-bottom: 48px; }
-    .section h2 { font-size: 1.45rem; font-weight: 800; margin-bottom: 20px; }
-    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; margin-bottom: 16px; }
+    .section h2 { font-size: 1.45rem; font-weight: 800; margin-bottom: 6px; }
+    .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; max-width: 680px; }
+    .variant-head { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-br); margin: 22px 0 10px; }
+    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; margin-bottom: 8px; }
     .plan-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-    .plan-card.highlight { border-color: var(--accent); }
     .plan-name { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-    .plan-price { font-family: var(--mono); font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
-    .plan-price span { font-size: 14px; font-weight: 400; color: var(--muted); }
+    .plan-price { font-family: var(--mono); font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .plan-price span { font-size: 13px; font-weight: 400; color: var(--muted); }
     .plan-detail { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
     .plan-detail li { list-style: none; padding: 2px 0; }
     .plan-detail li::before { content: "·"; margin-right: 6px; color: var(--accent); }
-    .plan-tag { display: inline-block; font-size: 11px; background: rgba(16,185,129,0.15); color: var(--green); border-radius: 4px; padding: 2px 7px; margin-bottom: 10px; }
+    .plan-detail li.spec { color: var(--text2); font-style: italic; }
+    .plan-note { font-size: 12.5px; color: var(--muted); margin: 4px 0 0; max-width: 660px; }
     .comparison-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    .comparison-table th { font-family: var(--mono); text-align: left; padding: 12px 14px; color: var(--muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; background: var(--surface2); border-bottom: 1px solid var(--border); }
+    .comparison-table th { text-align: left; padding: 10px 14px; color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
     .comparison-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
     .comparison-table tr:last-child td { border-bottom: none; }
     .comparison-table tr:hover td { background: var(--surface2); }
+    .comparison-table .price-cell { font-family: var(--mono); font-weight: 700; }
     .tag-yes { color: var(--green); font-weight: 700; }
     .tag-no { color: var(--muted); }
+    .tag-warn { color: var(--orange); font-weight: 700; }
     .faq-item { border-bottom: 1px solid var(--border); }
     .faq-q { width: 100%; background: none; border: none; color: var(--text); font-family: inherit; font-size: 15px; font-weight: 600; text-align: left; padding: 18px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .faq-q:hover { color: var(--accent); }
@@ -102,44 +120,45 @@
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
     .faq-a { display: none; color: var(--muted); font-size: 14px; line-height: 1.7; padding-bottom: 18px; }
     .faq-item.open .faq-a { display: block; }
-    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
     .related-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-decoration: none; color: var(--text); display: block; transition: border-color 0.15s; }
     .related-card:hover { border-color: var(--accent); text-decoration: none; }
     .related-card-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
     .related-card-desc { font-size: 12px; color: var(--muted); }
-    .nav-dropdown { position: relative; display: flex; align-items: center; flex-shrink: 0; }
-    .nav-dropdown-btn { background: none; border: none; color: var(--muted); font-family: inherit; font-size: 14px; padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s; }
-    .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text); }
-    .nav-dropdown-menu { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); min-width: 200px; z-index: 200; box-shadow: 0 8px 24px rgba(0,0,0,0.4); padding: 6px 0; }
-    .nav-dropdown.open .nav-dropdown-menu { display: block; }
-    .nav-dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 9px 16px; font-size: 13px; font-weight: 500; color: var(--text); text-decoration: none; transition: background 0.1s; border-bottom: none !important; }
-    .nav-dropdown-menu a:hover { background: var(--surface2); }
-    .nav-dropdown-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }
-    footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 64px; }
+    .warning-box { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+    .warning-box strong { color: var(--orange); }
+    .warning-box em { color: var(--text2); font-style: normal; }
+    .price-alerts { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 48px; }
+    .pa-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-br); margin-bottom: 8px; }
+    .pa-title { font-family: var(--display); font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+    .pa-sub { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    .pa-form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pa-input { flex: 1; min-width: 220px; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; }
+    .pa-input:focus { outline: none; border-color: var(--accent); }
+    .pa-btn { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 22px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .pa-btn:hover { background: var(--accent-br); }
+    .pa-btn:disabled { opacity: 0.6; cursor: default; }
+    .pa-msg { display: none; align-items: center; gap: 8px; font-size: 13px; margin-top: 12px; }
+    .pa-msg.show { display: flex; }
+    .pa-msg.ok { color: var(--green); }
+    .pa-msg.err { color: var(--orange); }
+    .pa-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+    .price-alerts.subscribed .pa-form { display: none; }
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 64px; }
     footer a { color: var(--muted); }
     .funnel-fab { position: fixed; right: 22px; bottom: 22px; z-index: 90; display: inline-flex; align-items: center; gap: 9px; background: var(--accent); color: var(--ink); font-family: var(--font); font-size: 14px; font-weight: 700; padding: 13px 20px; border-radius: 100px; text-decoration: none; box-shadow: 0 10px 30px rgba(16,185,129,0.4), 0 0 0 1px rgba(16,185,129,0.5); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
     .funnel-fab:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-2px); text-decoration: none; box-shadow: 0 14px 38px rgba(16,185,129,0.5); }
-    @media (max-width: 560px) { .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; } }
-  
-    /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
     @media (max-width: 760px) {
       .wrap { padding-left: 18px; padding-right: 18px; }
       .nav-top { padding-left: 18px; padding-right: 18px; }
       .nav-bottom { padding-left: 8px; padding-right: 8px; }
       .nav-bottom a { padding: 13px 14px; }
     }
-    @media (max-width: 620px) {
-      .nav-badge { display: none; }
-      .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 460px) {
-      .plan-compare-grid.cols-2, .plan-compare-grid.cols-3, .plan-compare-grid.cols-4 { grid-template-columns: 1fr; }
-    }
-  
-    /* AC-CTA-STACK ── stack hero/CTA button rows full-width on small phones */
+    @media (max-width: 620px) { .nav-badge { display: none; } }
     @media (max-width: 520px) {
       .cta-row { flex-direction: column; align-items: stretch; }
       .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+      .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; }
     }
   </style>
 <!-- ANALYTICS (build.py) -->
@@ -171,18 +190,6 @@
     <a href="limits.html">Pricing & Limits</a>
     <a href="tools.html">Tools</a>
     <a href="changelog.html">Changelog</a>
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-btn">Pricing Guides <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="nav-dropdown-menu">
-        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
-        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
-        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
-        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
-        <a href="activepieces-pricing.html" style="color:var(--text);font-weight:600"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
-        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
-        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
-      </div>
-    </div>
   </nav>
 </header>
 
@@ -190,116 +197,228 @@
 
   <div class="page-hero">
     <div class="tool-badge"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=64" alt="Activepieces">Activepieces</div>
-    <h1>Activepieces Pricing 2026 — Free Open Source Automation</h1>
-    <p>Activepieces is MIT-licensed — free forever for self-hosting, with no restrictions. Cloud is free up to 10 active flows (unlimited runs), then $5 per active flow per month. Here's everything you need to know.</p>
+    <h1>Activepieces Pricing 2026 — Cloud vs Self-Hosted Cost</h1>
+    <p>Activepieces is the MIT-licensed open-source automation tool with a Zapier-like no-code UI. You can use managed Cloud, run it on a VPS, or self-host on your own hardware. Here's the real cost of each path.</p>
     <div class="cta-row">
-      <a href="https://www.activepieces.com" target="_blank" rel="noopener sponsored" class="btn-primary">Try Activepieces free →</a>
-      <a href="compare.html?tools=activepieces,n8n" class="btn-secondary">Compare Activepieces vs n8n</a>
-      <a href="compare.html?tools=activepieces,zapier" class="btn-secondary">Compare Activepieces vs Zapier</a>
+      <a href="https://www.activepieces.com" target="_blank" rel="noopener" class="btn-primary">Visit Activepieces →</a>
+      <a href="calculator.html" class="btn-secondary">Calculate my Activepieces cost</a>
+      <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
     </div>
-    <div class="hero-trust">Prices verified June 2026 · taken from Activepieces’s official pricing page</div>
+    <div class="hero-trust">Prices verified June 2026 · taken from Activepieces's official pricing · all figures per <strong>run</strong></div>
   </div>
 
+  <div class="warning-box"><strong>Heads up:</strong> Activepieces is genuinely MIT-licensed — the self-hosted figures below are <em>infrastructure</em> cost (server / electricity), not a licence fee. Cloud is priced per active flow rather than per run, so flow count drives the bill.</div>
+
   <div class="section">
-    <h2>Activepieces Plans & Pricing</h2>
+    <h2>Activepieces plans &amp; real cost</h2>
+    <p class="section-sub">Cheapest qualifying plan at four typical run volumes (3-step workflows, monthly billing) — prices generated live from our data, never hand-typed.</p>
+    <h3 class="variant-head">Cloud</h3>
     <div class="plans-grid">
-      <div class="plan-card highlight">
-        <div class="plan-name">Self-Hosted</div>
-        <div class="plan-price">Free</div>
-        <div class="plan-tag">MIT License</div>
+      <div class="plan-card">
+        <div class="plan-name">1,000 runs</div>
+        <div class="plan-price">$0<span>/mo</span></div>
         <ul class="plan-detail">
-          <li>Unlimited ops</li>
-          <li>Unlimited workflows</li>
-          <li>Full data control</li>
-          <li>Commercial use allowed</li>
-          <li>~$4–$8/mo server cost</li>
+          <li>1,000 runs / month</li>
+          <li>Cloud Free</li>
         </ul>
       </div>
       <div class="plan-card">
-        <div class="plan-name">Cloud Standard</div>
-        <div class="plan-price">$0<span> for 10 flows</span></div>
+        <div class="plan-name">5,000 runs</div>
+        <div class="plan-price">$0<span>/mo</span></div>
         <ul class="plan-detail">
-          <li>10 free active flows</li>
-          <li>Unlimited runs</li>
-          <li>Then $5 per active flow/mo</li>
-          <li>AI agents, tables &amp; MCP servers</li>
+          <li>5,000 runs / month</li>
+          <li>Cloud Free</li>
         </ul>
       </div>
       <div class="plan-card">
-        <div class="plan-name">Cloud Ultimate</div>
-        <div class="plan-price">Custom</div>
+        <div class="plan-name">20,000 runs</div>
+        <div class="plan-price">$0<span>/mo</span></div>
         <ul class="plan-detail">
-          <li>Annual contract</li>
-          <li>SSO &amp; custom RBAC</li>
-          <li>Audit logs</li>
-          <li>Piece access controls</li>
+          <li>20,000 runs / month</li>
+          <li>Cloud Free</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">100,000 runs</div>
+        <div class="plan-price">$0<span>/mo</span></div>
+        <ul class="plan-detail">
+          <li>100,000 runs / month</li>
+          <li>Cloud Free</li>
         </ul>
       </div>
     </div>
-    <p style="font-size:13px;color:var(--muted);margin-top:8px">MIT license means you can use, modify, and distribute commercially without restrictions — unlike n8n's Sustainable Use License.</p>
+    
+    <h3 class="variant-head">Self-host · VPS</h3>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-name">1,000 runs</div>
+        <div class="plan-price">$8<span>/mo</span></div>
+        <ul class="plan-detail">
+          <li>1,000 runs / month</li>
+          <li>self-hosted*</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">5,000 runs</div>
+        <div class="plan-price">$8<span>/mo</span></div>
+        <ul class="plan-detail">
+          <li>5,000 runs / month</li>
+          <li>self-hosted*</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">20,000 runs</div>
+        <div class="plan-price">$25<span>/mo</span></div>
+        <ul class="plan-detail">
+          <li>20,000 runs / month</li>
+          <li>self-hosted*</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">100,000 runs</div>
+        <div class="plan-price">$45<span>/mo</span></div>
+        <ul class="plan-detail">
+          <li>100,000 runs / month</li>
+          <li>self-hosted*</li>
+        </ul>
+      </div>
+    </div>
+    <p class="plan-note">Monthly figure is the rented server (VPS + database) that scales with volume — the software itself is free.</p>
+    <h3 class="variant-head">Self-host · own server</h3>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-name">1,000 runs</div>
+        <div class="plan-price">$3<span>/mo electricity</span></div>
+        <ul class="plan-detail">
+          <li>1,000 runs / month</li>
+          <li>self-hosted*</li>
+          <li>+ ~$90 hardware (one-off)</li>
+          <li class="spec">1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">5,000 runs</div>
+        <div class="plan-price">$3<span>/mo electricity</span></div>
+        <ul class="plan-detail">
+          <li>5,000 runs / month</li>
+          <li>self-hosted*</li>
+          <li>+ ~$90 hardware (one-off)</li>
+          <li class="spec">1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">20,000 runs</div>
+        <div class="plan-price">$3<span>/mo electricity</span></div>
+        <ul class="plan-detail">
+          <li>20,000 runs / month</li>
+          <li>self-hosted*</li>
+          <li>+ ~$200 hardware (one-off)</li>
+          <li class="spec">2 vCPU, 4GB + Postgres (mini PC)</li>
+        </ul>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">100,000 runs</div>
+        <div class="plan-price">$5<span>/mo electricity</span></div>
+        <ul class="plan-detail">
+          <li>100,000 runs / month</li>
+          <li>self-hosted*</li>
+          <li>+ ~$350 hardware (one-off)</li>
+          <li class="spec">2-4 vCPU, 8GB + Postgres + Redis (queue mode)</li>
+        </ul>
+      </div>
+    </div>
+    <p class="plan-note">Monthly figure is electricity only — the software is free. One-off hardware cost (a mini PC or Pi you keep) is shown per volume.</p>
   </div>
 
   <div class="section">
-    <h2>Activepieces vs n8n vs Zapier</h2>
+    <h2>Activepieces vs alternatives</h2>
+    <p class="section-sub">Price for 20,000 runs / month across every tool we track.</p>
     <table class="comparison-table">
-      <thead><tr><th>Feature</th><th>Activepieces</th><th>n8n</th><th>Zapier</th></tr></thead>
+      <thead><tr><th>Tool</th><th>Price for 20,000 runs</th><th>Integrations</th><th>Self-host</th></tr></thead>
       <tbody>
-        <tr><td>Self-hostable</td><td class="tag-yes">Yes (MIT)</td><td class="tag-yes">Yes (SUL)</td><td class="tag-no">No</td></tr>
-        <tr><td>Cloud entry price</td><td class="tag-yes">Free (10 flows)</td><td>$20/mo</td><td>$19.99/mo</td></tr>
-        <tr><td>Cloud ops at entry</td><td class="tag-yes">Unlimited runs</td><td>2,500</td><td>750</td></tr>
-        <tr><td>License</td><td class="tag-yes">MIT (commercial OK)</td><td>Sustainable Use</td><td>Proprietary</td></tr>
-        <tr><td>Code steps</td><td class="tag-no">No</td><td class="tag-yes">Yes</td><td class="tag-no">No</td></tr>
-        <tr><td>Integrations</td><td>747+</td><td>400+</td><td>9,000+</td></tr>
-        <tr><td>Visual no-code UI</td><td class="tag-yes">Yes (like Zapier)</td><td class="tag-yes">Yes</td><td class="tag-yes">Yes</td></tr>
-        <tr><td>GDPR-friendly</td><td class="tag-yes">Yes (EU self-host)</td><td class="tag-yes">Yes (EU self-host)</td><td class="tag-no">No (US servers)</td></tr>
+        <tr><td><strong>Activepieces</strong></td><td class="price-cell">$0</td><td>747+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
+        <tr><td><a href="zapier-pricing.html">Zapier</a></td><td class="price-cell">$433.5</td><td>9,000+</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><a href="make-pricing.html">Make</a></td><td class="price-cell">$64.71</td><td>1,500+</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><a href="n8n-pricing.html">n8n</a></td><td class="price-cell">$25</td><td>400+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
+        <tr><td><a href="pipedream-pricing.html">Pipedream</a></td><td class="price-cell">$137</td><td>2,000+</td><td><span class="tag-no">No</span></td></tr>
+        <tr><td><a href="automatisch-pricing.html">Automatisch</a></td><td class="price-cell">$25</td><td>50+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
+        <tr><td><a href="node-red-pricing.html">Node-RED</a></td><td class="price-cell">$25</td><td>5,000+</td><td><span class="tag-yes">Yes (free SW)</span></td></tr>
       </tbody>
     </table>
-    <p style="margin-top:12px"><a href="compare.html?tools=activepieces,n8n,zapier">Full interactive comparison →</a></p>
+    <p style="margin-top:12px"><a href="compare.html">Full interactive comparison →</a></p>
   </div>
 
   <div class="section">
-    <h2>Frequently Asked Questions</h2>
+    <h2>When Activepieces is worth it</h2>
+    <table class="comparison-table">
+      <thead><tr><th>Use case</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Want a no-code UI you can also self-host</td><td class="tag-yes">Use Activepieces</td></tr>
+        <tr><td>Care about a truly permissive (MIT) licence</td><td class="tag-yes">Use Activepieces</td></tr>
+        <tr><td>Developer who wants near-free at scale</td><td class="tag-yes">Self-host on your own server</td></tr>
+        <tr><td>Need code steps</td><td class="tag-warn">Look at n8n or Pipedream</td></tr>
+        <tr><td>Need a large third-party app catalog</td><td class="tag-warn">Zapier leads on breadth</td></tr>
+        <tr><td>Run a very large number of active flows on Cloud</td><td class="tag-warn">Self-host to escape per-flow pricing</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Is Activepieces really free?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Yes. Activepieces Community Edition is MIT-licensed — free to self-host with no ops limits, no workflow caps, and no restrictions on commercial use. You only pay for the server (~$4–$8/mo).</div>
+  <!-- EMAILCAP:HTML:START — price-drop alerts (pricing copy variant, generováno).
+       Disclosure text schválen ownerem 2026-06-11 — NEMĚNIT bez jeho OK. -->
+  <section class="price-alerts" id="price-alerts">
+    <div class="pa-label">Price-drop alerts</div>
+    <div class="pa-title">Get an email when Activepieces changes pricing.</div>
+    <p class="pa-sub">Every change is verified by hand and published to the <a href="changelog.html">changelog</a> — you get one email per confirmed change.</p>
+    <form class="pa-form" id="pa-form" action="https://assets.mailerlite.com/jsonp/2426816/forms/190009354045359550/subscribe" method="post" novalidate>
+      <label for="pa-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
+      <input class="pa-input" id="pa-email" name="fields[email]" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
+      <input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button class="pa-btn" id="pa-btn" type="submit">Get price alerts</button>
+    </form>
+    <div class="pa-msg" id="pa-msg" role="status" aria-live="polite"></div>
+    <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
+  </section>
+  <!-- EMAILCAP:HTML:END -->
+
+  <div class="section">
+    <h2>Frequently asked questions</h2>
+    <div class="faq" style="margin-top:8px;">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How much does Activepieces cost per month?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">On the cheapest qualifying plan (3-step workflows, monthly billing) Activepieces runs $0 at 1,000 runs, $0 at 5,000 runs, $0 at 20,000 runs and $0 at 100,000 runs. See the plans and comparison table above for the full breakdown.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is Activepieces really free?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">The software is MIT-licensed and free to self-host. On Cloud you pay per active flow above the free allowance. Self-hosting on a VPS or your own hardware costs only infrastructure, shown below.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How is Activepieces priced — per run or per flow?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Cloud bills per active flow, not per run, so heavy-volume workflows don't inflate the price the way per-task tools do. We still show a normalised <strong>runs</strong> cost in the table above for a like-for-like comparison.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Taken from official pricing pages and verified by hand. Values marked ~ are estimates for custom enterprise tiers. Every change we record lands in the <a href="changelog.html">price changelog</a>.</div>
+      </div>
     </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">What's the difference between Activepieces and n8n?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Both are free self-hosted tools. n8n has AI/LLM nodes, code steps and a developer focus. Activepieces has 747+ integrations, a simpler UI closer to Zapier and uses MIT license (more permissive than n8n's Sustainable Use License). Choose n8n for developers, Activepieces for non-technical teams.</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Is Activepieces better than Zapier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Activepieces is much cheaper and self-hostable (great for GDPR). Zapier has 9,000+ integrations vs Activepieces' 747+. If the integrations you need are available in Activepieces, it's the better choice on cost and data control.</div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">Does Activepieces cloud have a free plan?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">Yes, twice over: the self-hosted community edition is completely free (MIT license), and Activepieces Cloud is free up to 10 active flows with unlimited runs. Beyond 10 flows, cloud pricing is $5 per active flow per month.</div>
-    </div>
-
   </div>
 
   <div class="section">
     <h2>Compare Activepieces to other tools</h2>
     <div class="related-grid">
-      <a href="compare.html?tools=activepieces,n8n" class="related-card">
-        <div class="related-card-name">Activepieces vs n8n</div>
-        <div class="related-card-desc">Open-source alternatives, licenses</div>
-      </a>
       <a href="compare.html?tools=activepieces,zapier" class="related-card">
         <div class="related-card-name">Activepieces vs Zapier</div>
-        <div class="related-card-desc">Cost, GDPR, self-hosting</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
       </a>
       <a href="compare.html?tools=activepieces,make" class="related-card">
         <div class="related-card-name">Activepieces vs Make</div>
-        <div class="related-card-desc">Visual no-code builders compared</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
       </a>
-      <a href="compare.html?tools=activepieces,n8n,zapier,make" class="related-card">
+      <a href="compare.html?tools=activepieces,n8n" class="related-card">
+        <div class="related-card-name">Activepieces vs n8n</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
+      </a>
+      <a href="compare.html?tools=activepieces,zapier,make,n8n" class="related-card">
         <div class="related-card-name">All tools vs Activepieces</div>
-        <div class="related-card-desc">Full 4-tool comparison</div>
+        <div class="related-card-desc">Price per run, features, free tier</div>
       </a>
     </div>
   </div>
@@ -307,27 +426,51 @@
 </div>
 
 <footer>
-  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io. All rights reserved.</div>
-  <div>AutomationCost.io · Independent, data-driven comparisons</div>
+  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
+  <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified June 2026</div>
   <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
-  <div style="margin-top:6px">Prices verified June 2026 · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Use</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+  <div style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
 </footer>
 
 <script>
-function toggleFaq(btn) {
-  btn.closest(".faq-item").classList.toggle("open");
-}
-</script>
-<script>
-document.querySelector(".nav-dropdown-btn").addEventListener("click", function(e) {
-  e.stopPropagation();
-  var dd = this.closest(".nav-dropdown");
-  var r = this.getBoundingClientRect(), m = dd.querySelector(".nav-dropdown-menu"); m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 224)) + "px"; m.style.top = (r.bottom + 8) + "px";
-  dd.classList.toggle("open");
-});
-document.addEventListener("click", function() {
-  document.querySelectorAll(".nav-dropdown.open").forEach(d => d.classList.remove("open"));
-});
+function toggleFaq(el) { el.closest(".faq-item").classList.toggle("open"); }
+
+/* ── EMAILCAP:JS:START — wire every .price-alerts form on the page ── */
+(function () {
+  var OK_MSG  = 'Check your inbox to confirm your subscription.';
+  var ERR_MSG = 'Something went wrong — please try again.';
+  var OK_ICON  = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+  var ERR_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  function show(msgEl, ok, text) {
+    msgEl.className = 'pa-msg show ' + (ok ? 'ok' : 'err');
+    msgEl.innerHTML = (ok ? OK_ICON : ERR_ICON) + '<span>' + text + '</span>';
+  }
+  document.querySelectorAll('.price-alerts form.pa-form').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var card  = form.closest('.price-alerts');
+      var input = form.querySelector('.pa-input');
+      var btn   = form.querySelector('.pa-btn');
+      var msgEl = card.querySelector('.pa-msg');
+      if (!input.value || input.validity.typeMismatch || input.value.indexOf('@') < 1) {
+        show(msgEl, false, 'Please enter a valid email address.');
+        input.focus();
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Subscribing…';
+      fetch(form.action, { method: 'POST', body: new FormData(form) })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); })
+        .then(function () { card.classList.add('subscribed'); show(msgEl, true, OK_MSG); })
+        .catch(function () {
+          btn.disabled = false;
+          btn.textContent = 'Get price alerts';
+          show(msgEl, false, ERR_MSG);
+        });
+    });
+  });
+})();
+/* ── EMAILCAP:JS:END ── */
 </script>
 <a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="17" height="17" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#04130d"/></svg> Find my best tool</a>
 </body>
