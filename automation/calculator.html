@@ -1842,7 +1842,7 @@ const INTEGRATIONS = [
 /* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
 const TOOLS = [
   {
-    slug: "n8n", name: "n8n", unitModel: "runs", selfHostable: true, aiFeatures: true, integrations: 400,
+    slug: "n8n", name: "n8n", unitModel: "runs", annualFactor: 0.8333, selfHostable: true, aiFeatures: true, integrations: 400,
     homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
@@ -1861,7 +1861,7 @@ const TOOLS = [
       { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }] },
   {
-    slug: "make", name: "Make", unitModel: "modules", selfHostable: false, aiFeatures: true, integrations: 1500,
+    slug: "make", name: "Make", unitModel: "modules", annualFactor: 0.85, selfHostable: false, aiFeatures: true, integrations: 1500,
     homepage: "https://www.make.com", affiliateUrl: "https://www.make.com/en/register?pc=wizardcost", hasAffiliate: true,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 1000, workflowLimit: Infinity, note: "Free tier" },
@@ -1886,7 +1886,7 @@ const TOOLS = [
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "pipedream", name: "Pipedream", unitModel: "runs", selfHostable: false, aiFeatures: true, integrations: 2000,
+    slug: "pipedream", name: "Pipedream", unitModel: "runs", annualFactor: 1.0, selfHostable: false, aiFeatures: true, integrations: 2000,
     homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, overage: null, note: "Free tier" },
@@ -1896,7 +1896,7 @@ const TOOLS = [
       { custom: true, name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "zapier", name: "Zapier", unitModel: "actions", selfHostable: false, aiFeatures: true, integrations: 9000,
+    slug: "zapier", name: "Zapier", unitModel: "actions", annualFactor: 0.6667, selfHostable: false, aiFeatures: true, integrations: 9000,
     homepage: "https://zapier.com", affiliateUrl: "https://zapier.com", hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity, overage: null, note: "Free tier" },
@@ -1921,7 +1921,7 @@ const TOOLS = [
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "activepieces", name: "Activepieces", unitModel: "runs", selfHostable: true, aiFeatures: true, integrations: 747,
+    slug: "activepieces", name: "Activepieces", unitModel: "runs", annualFactor: 1.0, selfHostable: true, aiFeatures: true, integrations: 747,
     homepage: "https://www.activepieces.com", affiliateUrl: "https://www.activepieces.com", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
@@ -1930,13 +1930,13 @@ const TOOLS = [
       { name: "Standard (30 flows)", monthlyUsd: 100, opsIncluded: Infinity, workflowLimit: 30, note: "$5/active flow after 10 free — priced at 30 flows" },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }] },
   {
-    slug: "automatisch", name: "Automatisch", unitModel: "runs", selfHostable: true, aiFeatures: false, integrations: 50,
+    slug: "automatisch", name: "Automatisch", unitModel: "runs", annualFactor: 1.0, selfHostable: true, aiFeatures: false, integrations: 50,
     homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8 }, { upTo: 50000, usd: 25 }, { upTo: 100000, usd: 45 }, { upTo: 500000, usd: 90 }, { upTo: Infinity, usd: 150 }] },
   {
-    slug: "node-red", name: "Node-RED", unitModel: "runs", selfHostable: true, aiFeatures: false, integrations: 5000,
+    slug: "node-red", name: "Node-RED", unitModel: "runs", annualFactor: 1.0, selfHostable: true, aiFeatures: false, integrations: 5000,
     homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
@@ -2025,7 +2025,10 @@ let hostPref = "any", aiPref = "any", billing = "monthly";
 let maxBudget = 50;
 let selectedIntegrations = [];
 let lastEstimateSig = null; // profile the sliders were last auto-estimated for
-const ANNUAL_DISCOUNT = 0.8;
+// Roční sleva je PER VENDOR (z naškrábaných annually cen), ne generická — Zapier
+// dává 33 %, Make 15 %, n8n 17 %, Pipedream 0 %. tool.annualFactor = annually/monthly.
+const ANNUAL_DISCOUNT = 0.8; // fallback, když tool nemá annualFactor
+function annualFactor(tool) { return (tool && typeof tool.annualFactor === "number") ? tool.annualFactor : ANNUAL_DISCOUNT; }
 
 // Self-host hardware cost scales with volume: a busier instance needs a bigger
 // VPS. selfHostHw (tools.json) = tiers {upTo, usd} from Elestio/Netcup list
@@ -2401,7 +2404,7 @@ function calcCost(tool, runs, steps, workflows) {
     // keep their own price and are left untouched.
     const hwPlan = plan.selfHostOnly && plan.monthlyUsd <= 8 && tool.selfHostHw;
     let cost = hwPlan ? selfHostHwCost(tool, ops) : plan.monthlyUsd;
-    if (billing === "annual" && !plan.selfHostOnly && plan.monthlyUsd > 0) cost = Math.round(cost * ANNUAL_DISCOUNT);
+    if (billing === "annual" && !plan.selfHostOnly && plan.monthlyUsd > 0) cost = Math.round(cost * annualFactor(tool) * 100) / 100;
     if (!plan.selfHostOnly && ops > plan.opsIncluded) {
       if (plan.creditBands) {
         // Pipedream: base + (kredity nad included) × sazba pásma dle objemu.
@@ -2430,7 +2433,7 @@ function calcCost(tool, runs, steps, workflows) {
     const wfOk = customPlan.workflowLimit === Infinity || customPlan.workflowLimit >= workflows;
     if (anchor && wfOk && ops > anchor.opsIncluded) {
       let est = anchor.monthlyUsd * Math.max(1.3, Math.pow(ops / anchor.opsIncluded, 0.7));
-      if (billing === "annual") est *= ANNUAL_DISCOUNT;
+      if (billing === "annual") est *= annualFactor(tool);
       est = Math.max(5, Math.round(est / 5) * 5);
       // Use the estimate when public plans can't cover the volume at all, or
       // when we're clearly beyond the public ladder (2× the largest tier) and

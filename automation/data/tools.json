@@ -22,6 +22,7 @@
     {
       "slug": "n8n",
       "unitModel": "runs",
+      "annualFactor": 0.8333,
       "name": "n8n",
       "tagline": "Open-source automation for developers & self-hosters",
       "selfHostable": true,
@@ -189,6 +190,7 @@
     {
       "slug": "make",
       "unitModel": "modules",
+      "annualFactor": 0.85,
       "name": "Make",
       "tagline": "Visual automation builder with the best cloud value",
       "selfHostable": false,
@@ -381,6 +383,7 @@
     {
       "slug": "pipedream",
       "unitModel": "runs",
+      "annualFactor": 1.0,
       "name": "Pipedream",
       "tagline": "Code-first automation platform for developers",
       "selfHostable": false,
@@ -650,6 +653,7 @@
     {
       "slug": "zapier",
       "unitModel": "actions",
+      "annualFactor": 0.6667,
       "name": "Zapier",
       "tagline": "The most integrations, built for non-technical users",
       "selfHostable": false,
@@ -844,6 +848,7 @@
     {
       "slug": "activepieces",
       "unitModel": "runs",
+      "annualFactor": 1.0,
       "name": "Activepieces",
       "tagline": "MIT-licensed open-source automation, Zapier-like UI",
       "selfHostable": true,
@@ -931,6 +936,7 @@
     {
       "slug": "automatisch",
       "unitModel": "runs",
+      "annualFactor": 1.0,
       "name": "Automatisch",
       "tagline": "Simple EU-friendly open-source automation",
       "selfHostable": true,
@@ -997,6 +1003,7 @@
     {
       "slug": "node-red",
       "unitModel": "runs",
+      "annualFactor": 1.0,
       "name": "Node-RED",
       "tagline": "Event-driven automation for IoT and hardware",
       "selfHostable": true,

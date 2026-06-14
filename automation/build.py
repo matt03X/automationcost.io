@@ -127,7 +127,7 @@ def render_calculator(tools: list[dict]) -> str:
         lines.append("  {")
         lines.append(
             f'    slug: {js_str(t["slug"])}, name: {js_str(t["name"])}, '
-            f'unitModel: {js_str(t.get("unitModel", "runs"))}, '
+            f'unitModel: {js_str(t.get("unitModel", "runs"))}, annualFactor: {t.get("annualFactor", 1)}, '
             f'selfHostable: {js_bool(t["selfHostable"])}, aiFeatures: {js_bool(t["aiFeatures"])}, '
             f'integrations: {t["integrations"]},'
         )
@@ -152,7 +152,7 @@ def render_compare(tools: list[dict]) -> str:
     lines = ["const TOOLS = {"]
     for t in tools:
         lines.append(f'  {js_str(t["slug"])}: {{')
-        lines.append(f'    slug: {js_str(t["slug"])}, name: {js_str(t["name"])}, unitModel: {js_str(t.get("unitModel", "runs"))},')
+        lines.append(f'    slug: {js_str(t["slug"])}, name: {js_str(t["name"])}, unitModel: {js_str(t.get("unitModel", "runs"))}, annualFactor: {t.get("annualFactor", 1)},')
         lines.append(f'    tagline: {js_str(t["tagline"])},')
         lines.append(
             f'    selfHostable: {js_bool(t["selfHostable"])}, '

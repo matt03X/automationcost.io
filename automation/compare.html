@@ -631,7 +631,7 @@ const LOGOS = {
 /* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
 const TOOLS = {
   "n8n": {
-    slug: "n8n", name: "n8n", unitModel: "runs",
+    slug: "n8n", name: "n8n", unitModel: "runs", annualFactor: 0.8333,
     tagline: "Open-source automation for developers & self-hosters",
     selfHostable: true, aiFeatures: true, integrations: 400,
     license: "Sustainable Use",
@@ -663,7 +663,7 @@ const TOOLS = {
     cons: ["Setup required for self-host", "Big jump from Pro to Business tier"],
   },
   "make": {
-    slug: "make", name: "Make", unitModel: "modules",
+    slug: "make", name: "Make", unitModel: "modules", annualFactor: 0.85,
     tagline: "Visual automation builder with the best cloud value",
     selfHostable: false, aiFeatures: true, integrations: 1500,
     license: "Proprietary (cloud)",
@@ -701,7 +701,7 @@ const TOOLS = {
     cons: ["No self-hosting", "No native code steps"],
   },
   "pipedream": {
-    slug: "pipedream", name: "Pipedream", unitModel: "runs",
+    slug: "pipedream", name: "Pipedream", unitModel: "runs", annualFactor: 1.0,
     tagline: "Code-first automation platform for developers",
     selfHostable: false, aiFeatures: true, integrations: 2000,
     license: "Proprietary (cloud)",
@@ -724,7 +724,7 @@ const TOOLS = {
     cons: ["Overage no longer public — quote only", "Very limited free tier", "No self-host"],
   },
   "zapier": {
-    slug: "zapier", name: "Zapier", unitModel: "actions",
+    slug: "zapier", name: "Zapier", unitModel: "actions", annualFactor: 0.6667,
     tagline: "The most integrations, built for non-technical users",
     selfHostable: false, aiFeatures: true, integrations: 9000,
     license: "Proprietary (cloud)",
@@ -762,7 +762,7 @@ const TOOLS = {
     cons: ["Most expensive per op", "Free tier severely limited", "No self-host"],
   },
   "activepieces": {
-    slug: "activepieces", name: "Activepieces", unitModel: "runs",
+    slug: "activepieces", name: "Activepieces", unitModel: "runs", annualFactor: 1.0,
     tagline: "MIT-licensed open-source automation, Zapier-like UI",
     selfHostable: true, aiFeatures: true, integrations: 747,
     license: "MIT",
@@ -784,7 +784,7 @@ const TOOLS = {
     cons: ["Fewer integrations than Zapier (747+)", "Smaller community than n8n", "No code steps"],
   },
   "automatisch": {
-    slug: "automatisch", name: "Automatisch", unitModel: "runs",
+    slug: "automatisch", name: "Automatisch", unitModel: "runs", annualFactor: 1.0,
     tagline: "Simple EU-friendly open-source automation",
     selfHostable: true, aiFeatures: false, integrations: 50,
     license: "AGPL-3.0",
@@ -803,7 +803,7 @@ const TOOLS = {
     cons: ["Only ~50 integrations", "No AI nodes", "Smallest community"],
   },
   "node-red": {
-    slug: "node-red", name: "Node-RED", unitModel: "runs",
+    slug: "node-red", name: "Node-RED", unitModel: "runs", annualFactor: 1.0,
     tagline: "Event-driven automation for IoT and hardware",
     selfHostable: true, aiFeatures: false, integrations: 5000,
     license: "Apache 2.0",
