@@ -6,19 +6,5 @@
   <description>Price and plan-limit changes only — the feed behind WizardCost email alerts. Catalog updates (integration counts) live in the full changelog feed.</description>
   <language>en</language>
   <atom:link href="https://wizardcost.com/automation/alerts.xml" rel="self" type="application/rss+xml"/>
-  <item>
-    <title>Pipedream — Overage: $10/1,000 ops → none</title>
-    <link>https://wizardcost.com/automation/changelog.html</link>
-    <guid isPermaLink="false">2026-06-14-pipedream-overage</guid>
-    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
-    <description>Price change · verified June 14, 2026</description>
-  </item>
-  <item>
-    <title>n8n — Cloud Starter: $20/mo → $24/mo</title>
-    <link>https://wizardcost.com/automation/changelog.html</link>
-    <guid isPermaLink="false">2026-06-14-n8n-cloud-starter</guid>
-    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
-    <description>Price change · verified June 14, 2026</description>
-  </item>
 </channel>
 </rss>
