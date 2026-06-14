@@ -381,21 +381,29 @@ function diffPrices(vendor, oldP, newP) {
     return changes;
   }
   if (model === "per-credit-bands") {
-    // Pipedream: porovnej základ plánu + sazbu $/credit v každém pásmu (dle upTo).
+    // Pipedream: hustý sweep dává proměnlivý POČET pásem (15 vs 16) i drobný jitter
+    // hranic mezi běhy → diff podle raw struktury byl ŠUM (falešný "bandStructure"
+    // alarm). Robustní signál = efektivní $/credit na FIXNÍCH probe objemech. Když
+    // se sazba na probu nezmění, je to jen jitter pásem (žádný alarm). Když ano,
+    // je to reálná cenová změna.
+    const PROBES = [25000, 100000, 500000, 2000000, 8000000];
+    const rateAt = (bands, c) => {
+      for (const b of bands || []) { if (b.upTo === null || c <= b.upTo) return b.perCredit; }
+      return (bands && bands.length) ? bands[bands.length - 1].perCredit : null;
+    };
     for (const name of Object.keys(newP.plans || {})) {
       const nu = newP.plans[name], od = (oldP.plans || {})[name];
       if (!od) continue;
+      // pojistka: starší snapshoty měly jiný formát pásem ({threshold} místo {upTo})
+      // → neporovnatelné, NEhlásit jako změnu (jinak by migrace formátu = falešný alarm)
+      const fmtOk = (b) => (b || []).length && b.every((x) => "upTo" in x);
+      if (!fmtOk(od.bands) || !fmtOk(nu.bands)) continue;
       if (od.base !== nu.base) changes.push({ vendor, plan: name, kind: "base", old: od.base, neu: nu.base });
-      const oldBands = Object.fromEntries((od.bands || []).map((b) => [String(b.upTo), b.perCredit]));
-      for (const b of nu.bands || []) {
-        const k = String(b.upTo);
-        if (oldBands[k] !== undefined && oldBands[k] !== b.perCredit) {
-          changes.push({ vendor, plan: name, kind: "perCredit", upTo: b.upTo, old: oldBands[k], neu: b.perCredit });
+      for (const probe of PROBES) {
+        const o = rateAt(od.bands, probe), n = rateAt(nu.bands, probe);
+        if (o != null && n != null && o !== n) {
+          changes.push({ vendor, plan: name, kind: "perCredit", atCredits: probe, old: o, neu: n });
         }
-      }
-      // změna počtu/hranic pásem = strukturální změna ceníku
-      if ((od.bands || []).length !== (nu.bands || []).length) {
-        changes.push({ vendor, plan: name, kind: "bandStructure", old: (od.bands || []).length, neu: (nu.bands || []).length });
       }
     }
     return changes;

@@ -1,21 +1,6 @@
 {
   "date": "2026-06-14",
-  "generatedAt": "2026-06-14T10:05:37.631Z",
-  "changeCount": 2,
-  "changes": [
-    {
-      "vendor": "pipedream",
-      "plan": "Basic",
-      "kind": "bandStructure",
-      "old": 15,
-      "neu": 16
-    },
-    {
-      "vendor": "pipedream",
-      "plan": "Connect",
-      "kind": "bandStructure",
-      "old": 14,
-      "neu": 16
-    }
-  ]
+  "generatedAt": "2026-06-14T14:00:56.172Z",
+  "changeCount": 0,
+  "changes": []
 }
