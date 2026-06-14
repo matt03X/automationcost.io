@@ -1,0 +1,314 @@
+{
+  "vendor": "make",
+  "scrapedAt": "2026-06-13T23:27:39.158Z",
+  "url": "https://www.make.com/en/pricing",
+  "unit": "credits",
+  "monthly": [
+    {
+      "units": 10000,
+      "plans": {
+        "Core": 10.59,
+        "Pro": 18.82,
+        "Teams": 34.12
+      }
+    },
+    {
+      "units": 20000,
+      "plans": {
+        "Core": 18.82,
+        "Pro": 34.12,
+        "Teams": 62.35
+      }
+    },
+    {
+      "units": 40000,
+      "plans": {
+        "Core": 34.12,
+        "Pro": 62.35,
+        "Teams": 116.47
+      }
+    },
+    {
+      "units": 80000,
+      "plans": {
+        "Core": 64.71,
+        "Pro": 107.06,
+        "Teams": 203.41
+      }
+    },
+    {
+      "units": 150000,
+      "plans": {
+        "Core": 116.47,
+        "Pro": 180.53,
+        "Teams": 343.01
+      }
+    },
+    {
+      "units": 300000,
+      "plans": {
+        "Core": 214.31,
+        "Pro": 315.93,
+        "Teams": 600.26
+      }
+    },
+    {
+      "units": 500000,
+      "plans": {
+        "Core": null,
+        "Pro": 482.67,
+        "Teams": 917.06
+      }
+    },
+    {
+      "units": 750000,
+      "plans": {
+        "Core": null,
+        "Pro": 678.75,
+        "Teams": 1289.62
+      }
+    },
+    {
+      "units": 1000000,
+      "plans": {
+        "Core": null,
+        "Pro": 880.86,
+        "Teams": 1647.85
+      }
+    },
+    {
+      "units": 1500000,
+      "plans": {
+        "Core": null,
+        "Pro": 1268.44,
+        "Teams": 2317.29
+      }
+    },
+    {
+      "units": 2000000,
+      "plans": {
+        "Core": null,
+        "Pro": 1620.79,
+        "Teams": 2883.74
+      }
+    },
+    {
+      "units": 2500000,
+      "plans": {
+        "Core": null,
+        "Pro": 2001.32,
+        "Teams": 3540
+      }
+    },
+    {
+      "units": 3000000,
+      "plans": {
+        "Core": null,
+        "Pro": 2333.94,
+        "Teams": 4055.26
+      }
+    },
+    {
+      "units": 4000000,
+      "plans": {
+        "Core": null,
+        "Pro": 3028.93,
+        "Teams": 5181.72
+      }
+    },
+    {
+      "units": 5000000,
+      "plans": {
+        "Core": null,
+        "Pro": 3710.44,
+        "Teams": 6274.73
+      }
+    },
+    {
+      "units": 6000000,
+      "plans": {
+        "Core": null,
+        "Pro": 4361.66,
+        "Teams": 7461.67
+      }
+    },
+    {
+      "units": 7000000,
+      "plans": {
+        "Core": null,
+        "Pro": 5028.39,
+        "Teams": 8503.52
+      }
+    },
+    {
+      "units": 8000000,
+      "plans": {
+        "Core": null,
+        "Pro": 5660.47,
+        "Teams": 9683.59
+      }
+    },
+    {
+      "units": null,
+      "plans": {
+        "Core": null,
+        "Pro": null,
+        "Teams": null
+      }
+    }
+  ],
+  "annually": [
+    {
+      "units": 10000,
+      "plans": {
+        "Core": 9,
+        "Pro": 16,
+        "Teams": 29
+      }
+    },
+    {
+      "units": 20000,
+      "plans": {
+        "Core": 16,
+        "Pro": 29,
+        "Teams": 53
+      }
+    },
+    {
+      "units": 40000,
+      "plans": {
+        "Core": 29,
+        "Pro": 53,
+        "Teams": 99
+      }
+    },
+    {
+      "units": 80000,
+      "plans": {
+        "Core": 55,
+        "Pro": 91,
+        "Teams": 172
+      }
+    },
+    {
+      "units": 150000,
+      "plans": {
+        "Core": 99,
+        "Pro": 153.45,
+        "Teams": 291.56
+      }
+    },
+    {
+      "units": 300000,
+      "plans": {
+        "Core": 182.16,
+        "Pro": 268.54,
+        "Teams": 510.22
+      }
+    },
+    {
+      "units": 500000,
+      "plans": {
+        "Core": null,
+        "Pro": 410.27,
+        "Teams": 779
+      }
+    },
+    {
+      "units": 750000,
+      "plans": {
+        "Core": null,
+        "Pro": 576.94,
+        "Teams": 1096.18
+      }
+    },
+    {
+      "units": 1000000,
+      "plans": {
+        "Core": null,
+        "Pro": 748.73,
+        "Teams": 1400.67
+      }
+    },
+    {
+      "units": 1500000,
+      "plans": {
+        "Core": null,
+        "Pro": 1078.18,
+        "Teams": 1969
+      }
+    },
+    {
+      "units": 2000000,
+      "plans": {
+        "Core": null,
+        "Pro": 1377.67,
+        "Teams": 2451.18
+      }
+    },
+    {
+      "units": 2500000,
+      "plans": {
+        "Core": null,
+        "Pro": 1701.13,
+        "Teams": 3009.26
+      }
+    },
+    {
+      "units": 3000000,
+      "plans": {
+        "Core": null,
+        "Pro": 1983.85,
+        "Teams": 3446.97
+      }
+    },
+    {
+      "units": 4000000,
+      "plans": {
+        "Core": null,
+        "Pro": 2574.59,
+        "Teams": 4404.46
+      }
+    },
+    {
+      "units": 5000000,
+      "plans": {
+        "Core": null,
+        "Pro": 3153.88,
+        "Teams": 5333.52
+      }
+    },
+    {
+      "units": 6000000,
+      "plans": {
+        "Core": null,
+        "Pro": 3707.41,
+        "Teams": 6342.42
+      }
+    },
+    {
+      "units": 7000000,
+      "plans": {
+        "Core": null,
+        "Pro": 4274.13,
+        "Teams": 7227.99
+      }
+    },
+    {
+      "units": 8000000,
+      "plans": {
+        "Core": null,
+        "Pro": 4811,
+        "Teams": 8231.05
+      }
+    },
+    {
+      "units": null,
+      "plans": {
+        "Core": null,
+        "Pro": null,
+        "Teams": null
+      }
+    }
+  ]
+}

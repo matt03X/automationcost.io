@@ -25,7 +25,7 @@
       "name": "Is n8n cheaper than Zapier?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "At every volume we track, yes — from $8 vs $44.99 at 1,000 ops/mo to $8 vs ~$1,065 at 100,000. Prices include overage where it applies — see the table above."
+        "text": "At every volume we track, yes — from $8 vs $58.5 at 1,000 ops/mo to $18 vs $733.5 at 100,000. Prices include overage where it applies — see the table above."
       }
     },
     {
@@ -49,7 +49,7 @@
       "name": "Why would anyone pick Zapier, then?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Because n8n's $8 assumes you run it yourself — installing, updating, backing up and monitoring your own server. If that's not your team, the realistic alternative is n8n Cloud at $20–50/mo with execution quotas. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys."
+        "text": "Because n8n's low price assumes you run it yourself — installing, updating, backing up and monitoring your own server, whose cost grows with volume ($8–66/mo). If that's not your team, the realistic alternative is n8n Cloud at $20–50/mo with execution quotas. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys."
       }
     },
     {
@@ -264,7 +264,7 @@
       <span style="color:var(--muted); font-weight:500;">at every volume we track — self-hosted</span>
     </div>
     <div class="verdict">
-      <b class="win">n8n runs at a flat ~$8/mo at every volume</b> — but only if you self-host it; <b>Zapier is the no-code path with 9,000+ integrations</b>. The $8 is Community Edition on a VPS you maintain yourself — if nobody on your team wants to own a server, compare against n8n Cloud ($20–50/mo, with execution quotas) instead: still cheaper than Zapier's ~$130–$1,065, but no longer a rout.
+      <b class="win">n8n self-hosted is the cheaper option at every volume we track</b> — but only if you self-host it; <b>Zapier is the no-code path with 9,000+ integrations</b>. n8n's Community Edition software is free; you pay only for the server, which scales from ~$8/mo on a small VPS up to ~$66/mo for high volume — hardware, not a tool fee. If nobody on your team wants to own a server, compare against n8n Cloud ($24–60/mo at low volume) instead: still cheaper than Zapier's $73–$733 across the same range, but no longer a rout.
     </div>
   </div>
 
@@ -281,28 +281,28 @@
         <tbody>
           <tr>
             <td class="vol">1,000</td>
-            <td><span class="price">$44.99<small>Professional +ops</small></span></td>
+            <td><span class="price">$58.5<small>Professional 1k</small></span></td>
             <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
           <tr>
             <td class="vol">5,000</td>
-            <td><span class="price">~$130<small>Enterprise (estimate)</small></span></td>
+            <td><span class="price">$133.5<small>Professional 5k</small></span></td>
             <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
           <tr>
             <td class="vol">20,000</td>
-            <td><span class="price">~$345<small>Enterprise (estimate)</small></span></td>
-            <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
+            <td><span class="price">$283.5<small>Professional 20k</small></span></td>
+            <td class="cheap"><span class="price">$18 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
           <tr>
             <td class="vol">100,000</td>
-            <td><span class="price">~$1,065<small>Enterprise (estimate)</small></span></td>
-            <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
+            <td><span class="price">$733.5<small>Professional 100k</small></span></td>
+            <td class="cheap"><span class="price">$18 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="tbl-note">~ = estimated custom-tier pricing (vendor quotes individually; calibrated against public list prices). Assumes 3 workflows, monthly billing, cheapest qualifying plan. Prices verified June 2026 — see the <a href="changelog.html">price changelog</a>. * self-hosted = open-source edition + ~$8/mo VPS.</p>
+    <p class="tbl-note">~ = estimated custom-tier pricing (vendor quotes individually; calibrated against public list prices). Assumes 3 workflows, monthly billing, cheapest qualifying plan. Prices verified June 2026 — see the <a href="changelog.html">price changelog</a>. * self-hosted = free open-source software; the figure is the server hardware (your VPS, not a tool fee), scaling ~$8–66/mo with volume.</p>
   </div>
 
   <!-- 3 ── Calculator CTA -->
@@ -325,7 +325,6 @@
         <tbody>
           <tr><td>Integrations</td><td><span class="diff-win">9,000+</span></td><td>400+</td></tr>
           <tr><td>Free tier</td><td>100 tasks/mo · Unlimited (within task limit)</td><td>Unlimited* · Unlimited*</td></tr>
-          <tr><td>Overage model</td><td>+$25 per 1,000 ops</td><td>none — upgrade only</td></tr>
           <tr><td>Steps per workflow</td><td>2 steps (free)</td><td><span class="diff-win">Unlimited</span></td></tr>
           <tr><td>Execution timeout</td><td>15 min</td><td><span class="diff-win">No limit*</span></td></tr>
           <tr><td>Log history</td><td>15 min delay (free)</td><td>7 days (cloud)</td></tr>
@@ -336,7 +335,7 @@
         </tbody>
       </table>
     </div>
-    <p class="diff-same">Same on both: ai features · multi-user · api access · webhooks.</p>
+    <p class="diff-same">Same on both: overage model · ai features · multi-user · api access · webhooks.</p>
   </div>
 
   <!-- 5 ── Pros / cons -->
@@ -397,7 +396,7 @@
     <div class="faq" style="margin-top:16px;">
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Is n8n cheaper than Zapier?</button>
-        <div class="faq-a">At every volume we track, yes — from $8 vs $44.99 at 1,000 ops/mo to $8 vs ~$1,065 at 100,000. Prices include overage where it applies — see the table above.</div>
+        <div class="faq-a">At every volume we track, yes — from $8 vs $58.5 at 1,000 ops/mo to $18 vs $733.5 at 100,000. Prices include overage where it applies — see the table above.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">What counts as an operation on each?</button>
@@ -409,7 +408,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Why would anyone pick Zapier, then?</button>
-        <div class="faq-a">Because n8n's $8 assumes you run it yourself — installing, updating, backing up and monitoring your own server. If that's not your team, the realistic alternative is n8n Cloud at $20–50/mo with execution quotas. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys.</div>
+        <div class="faq-a">Because n8n's low price assumes you run it yourself — installing, updating, backing up and monitoring your own server, whose cost grows with volume ($8–66/mo). If that's not your team, the realistic alternative is n8n Cloud at $20–50/mo with execution quotas. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?</button>

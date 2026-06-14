@@ -52,7 +52,7 @@
       "faq": [
         {
           "q": "Is Make cheaper than Zapier?",
-          "a": "At every volume we track, yes — from $0 vs $44.99 at 1,000 ops/mo to ~$45 vs ~$1,065 at 100,000. Zapier's free tier has no pay-as-you-go, so any real volume starts on a paid plan — and its overage ($25 per 1,000 tasks) is roughly 28× Make's ($9 per 10,000 ops), so the gap grows with volume."
+          "a": "At every volume we track, yes — from $0 vs $58.50 at 1,000 ops/mo to $116.47 vs $733.50 at 100,000. Make's volume pricing scales far more gently than Zapier's per-task tiers, so the gap widens as you grow."
         },
         {
           "q": "What counts as an operation on each?",
@@ -77,15 +77,15 @@
       "b": "n8n",
       "winner": "n8n",
       "stripNote": "at every volume we track — self-hosted",
-      "verdict": "<b class=\"win\">n8n runs at a flat ~$8/mo at every volume</b> — but only if you self-host it; <b>Zapier is the no-code path with 9,000+ integrations</b>. The $8 is Community Edition on a VPS you maintain yourself — if nobody on your team wants to own a server, compare against n8n Cloud ($20–50/mo, with execution quotas) instead: still cheaper than Zapier's ~$130–$1,065, but no longer a rout.",
-      "whyLoser": "Because n8n's $8 assumes you run it yourself — installing, updating, backing up and monitoring your own server. If that's not your team, the realistic alternative is n8n Cloud at $20–50/mo with execution quotas. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys."
+      "verdict": "<b class=\"win\">n8n self-hosted is the cheaper option at every volume we track</b> — but only if you self-host it; <b>Zapier is the no-code path with 9,000+ integrations</b>. n8n's Community Edition software is free; you pay only for the server, which scales from ~$8/mo on a small VPS up to ~$66/mo for high volume — hardware, not a tool fee. If nobody on your team wants to own a server, compare against n8n Cloud ($24–60/mo at low volume) instead: still cheaper than Zapier's $73–$733 across the same range, but no longer a rout.",
+      "whyLoser": "Because n8n's low price assumes you run it yourself — installing, updating, backing up and monitoring your own server, whose cost grows with volume ($8–66/mo). If that's not your team, the realistic alternative is n8n Cloud at $20–50/mo with execution quotas. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys."
     },
     {
       "a": "make",
       "b": "n8n",
       "winner": "n8n",
-      "verdict": "<b>Price barely separates these two</b> — Make's free tier wins at 1,000 ops, n8n's flat ~$8/mo self-hosted wins above it, and at 5,000 ops the gap is exactly $1. <b class=\"win\">The real decision is whether you want to run a server</b>: happy to self-host → n8n; want a managed cloud with a visual builder → Make. Either way, you won't overpay by much.",
-      "whyLoser": "Because self-hosting isn't free in practice — n8n's $8 is a VPS you patch, back up and monitor yourself. Make is fully managed, its free tier covers 1,000 ops/mo outright, and even at 100,000 ops it's ~$45/mo. If nobody on the team wants server keys, Make is the sane default — you're paying a few dollars for zero ops burden."
+      "verdict": "<b>Price barely separates these two</b> — Make's free tier wins at 1,000 ops, n8n self-hosted (from ~$8/mo) wins above it, and at 5,000 ops the gap is roughly a dollar. <b class=\"win\">The real decision is whether you want to run a server</b>: happy to self-host → n8n; want a managed cloud with a visual builder → Make. Either way, you won't overpay by much.",
+      "whyLoser": "Because self-hosting isn't free in practice — n8n runs on a VPS you patch, back up and monitor yourself, and its cost climbs with volume ($8–66/mo). Make is fully managed, its free tier covers 1,000 ops/mo outright, and even at 100,000 ops it's ~$45/mo. If nobody on the team wants server keys, Make is the sane default — you're paying a few dollars for zero ops burden."
     },
     {
       "a": "zapier",
@@ -100,15 +100,15 @@
       "b": "activepieces",
       "winner": "activepieces",
       "stripNote": "at every volume we track — up to 10 active flows",
-      "verdict": "<b class=\"win\">Activepieces Cloud runs this at $0</b> — unlimited runs, free up to 10 active flows (we price 3); <b>n8n is the deeper toolkit once automations get complex</b>. Both are open-source and self-hostable, so philosophy doesn't decide this one: start free on Activepieces if 10 flows is enough, move to n8n (~$8/mo self-hosted) when you need its bigger node ecosystem and heavier workflow logic.",
-      "whyLoser": "Because the $0 has a ceiling: 10 active flows on Activepieces Cloud, then $5 per extra flow. n8n self-hosted stays ~$8/mo no matter how many workflows you run, and its larger ecosystem and more mature advanced logic (branching, error handling, code nodes) start to matter once automations get serious. Heavy or complex usage tips the math back to n8n."
+      "verdict": "<b class=\"win\">Activepieces Cloud runs this at $0</b> — unlimited runs, free up to 10 active flows (we price 3); <b>n8n is the deeper toolkit once automations get complex</b>. Both are open-source and self-hostable, so philosophy doesn't decide this one: start free on Activepieces if 10 flows is enough, move to n8n (self-hosted from ~$8/mo, scaling with volume) when you need its bigger node ecosystem and heavier workflow logic.",
+      "whyLoser": "Because the $0 has a ceiling: 10 active flows on Activepieces Cloud, then $5 per extra flow. n8n self-hosted has no workflow cap — you pay only for the server (from ~$8/mo, more at high volume) — and its larger ecosystem and more mature advanced logic (branching, error handling, code nodes) start to matter once automations get serious. Heavy or complex usage tips the math back to n8n."
     },
     {
       "a": "zapier",
       "b": "activepieces",
       "winner": "activepieces",
       "stripNote": "at every volume we track — up to 10 active flows",
-      "verdict": "<b class=\"win\">Activepieces runs this at $0 at every volume</b> — free up to 10 active flows (we price 3), then $5 per flow; <b>Zapier's case is its catalog — 9,000+ integrations vs 747+</b>. If your apps are covered in Activepieces' smaller catalog, the price gap ($0 vs $44.99–$1,065) is impossible to argue with. If they aren't, no discount fixes a missing integration.",
+      "verdict": "<b class=\"win\">Activepieces runs this at $0 at every volume</b> — free up to 10 active flows (we price 3), then $5 per flow; <b>Zapier's case is its catalog — 9,000+ integrations vs 747+</b>. If your apps are covered in Activepieces' smaller catalog, the price gap ($0 vs $58–$733) is impossible to argue with. If they aren't, no discount fixes a missing integration.",
       "whyLoser": "Because 747+ integrations covers the popular apps, not the long tail — Zapier's 9,000+ catalog is the deepest in the market, and if your workflow depends on a niche CRM or a regional tool, Zapier is often the only one that has it. Add the most mature template library and a no-code editor honed for non-technical users, and the premium buys certainty that your stack is supported."
     },
     {
@@ -131,8 +131,8 @@
       "b": "pipedream",
       "winner": "n8n",
       "stripNote": "at every volume we track — self-hosted",
-      "verdict": "<b class=\"win\">n8n holds a flat ~$8/mo at every volume — if you self-host it</b>; <b>Pipedream is the managed path for the same developer audience</b>. This isn't no-code vs code — both are dev-friendly. It's your server + open-source vs managed cloud + code steps: if running a VPS is routine for your team, n8n wins on price outright ($8 vs $10–~$400). If you'd rather never touch infrastructure, Pipedream's premium is the hosting bill.",
-      "whyLoser": "Because the ~$8 assumes you operate n8n yourself — and n8n Cloud, the managed alternative, runs $20–50/mo with execution quotas. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server."
+      "verdict": "<b class=\"win\">n8n self-hosted is cheaper at every volume we track — if you run it yourself</b>; <b>Pipedream is the managed path for the same developer audience</b>. This isn't no-code vs code — both are dev-friendly. It's your server + open-source vs managed cloud + code steps: if running a VPS is routine for your team, n8n wins on price outright (a server bill of ~$8–66/mo vs Pipedream's $29–~$400+). If you'd rather never touch infrastructure, Pipedream's premium is the hosting bill.",
+      "whyLoser": "Because n8n's low price assumes you operate it yourself — the server bill scales with volume ($8–66/mo) and n8n Cloud, the managed alternative, runs $20–50/mo with execution quotas. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server."
     }
   ]
 }

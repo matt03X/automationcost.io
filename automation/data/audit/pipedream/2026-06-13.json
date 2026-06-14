@@ -1,0 +1,272 @@
+{
+  "vendor": "pipedream",
+  "scrapedAt": "2026-06-13T23:52:59.620Z",
+  "url": "https://pipedream.com/pricing",
+  "unit": "credits",
+  "model": "per-credit-bands",
+  "thresholds": [
+    10000,
+    25000,
+    50000,
+    100000,
+    200000,
+    300000,
+    400000,
+    500000,
+    600000,
+    750000,
+    1000000,
+    2000000,
+    3000000,
+    4000000,
+    5000000,
+    10000000
+  ],
+  "plans": {
+    "Basic": {
+      "base": 29,
+      "includedCredits": 2000,
+      "bands": [
+        {
+          "threshold": 10000,
+          "atCredits": 10000,
+          "perCredit": 0.01
+        },
+        {
+          "threshold": 25000,
+          "atCredits": 25000,
+          "perCredit": 0.006
+        },
+        {
+          "threshold": 50000,
+          "atCredits": 50000,
+          "perCredit": 0.0042
+        },
+        {
+          "threshold": 100000,
+          "atCredits": 100000,
+          "perCredit": 0.0027
+        },
+        {
+          "threshold": 200000,
+          "atCredits": 200000,
+          "perCredit": 0.0022
+        },
+        {
+          "threshold": 300000,
+          "atCredits": 300000,
+          "perCredit": 0.0019
+        },
+        {
+          "threshold": 400000,
+          "atCredits": 400000,
+          "perCredit": 0.0017
+        },
+        {
+          "threshold": 500000,
+          "atCredits": 500000,
+          "perCredit": 0.0016
+        },
+        {
+          "threshold": 600000,
+          "atCredits": 600000,
+          "perCredit": 0.0014
+        },
+        {
+          "threshold": 750000,
+          "atCredits": 750000,
+          "perCredit": 0.0012
+        },
+        {
+          "threshold": 1000000,
+          "atCredits": 1000000,
+          "perCredit": 0.001
+        },
+        {
+          "threshold": 2000000,
+          "atCredits": 2000000,
+          "perCredit": 0.0006
+        },
+        {
+          "threshold": 3000000,
+          "atCredits": 3000000,
+          "perCredit": 0.0005
+        },
+        {
+          "threshold": 4000000,
+          "atCredits": 4000000,
+          "perCredit": 0.0004
+        },
+        {
+          "threshold": 5000000,
+          "atCredits": 5000000,
+          "perCredit": 0.0004
+        }
+      ]
+    },
+    "Advanced": {
+      "base": 49,
+      "includedCredits": 2000,
+      "bands": [
+        {
+          "threshold": 10000,
+          "atCredits": 10000,
+          "perCredit": 0.015
+        },
+        {
+          "threshold": 25000,
+          "atCredits": 25000,
+          "perCredit": 0.009
+        },
+        {
+          "threshold": 50000,
+          "atCredits": 50000,
+          "perCredit": 0.0063
+        },
+        {
+          "threshold": 100000,
+          "atCredits": 100000,
+          "perCredit": 0.004
+        },
+        {
+          "threshold": 200000,
+          "atCredits": 200000,
+          "perCredit": 0.0032
+        },
+        {
+          "threshold": 300000,
+          "atCredits": 300000,
+          "perCredit": 0.0029
+        },
+        {
+          "threshold": 400000,
+          "atCredits": 400000,
+          "perCredit": 0.0026
+        },
+        {
+          "threshold": 500000,
+          "atCredits": 500000,
+          "perCredit": 0.0024
+        },
+        {
+          "threshold": 600000,
+          "atCredits": 600000,
+          "perCredit": 0.0021
+        },
+        {
+          "threshold": 750000,
+          "atCredits": 750000,
+          "perCredit": 0.0018
+        },
+        {
+          "threshold": 1000000,
+          "atCredits": 1000000,
+          "perCredit": 0.00153
+        },
+        {
+          "threshold": 2000000,
+          "atCredits": 2000000,
+          "perCredit": 0.0009
+        },
+        {
+          "threshold": 3000000,
+          "atCredits": 3000000,
+          "perCredit": 0.0007
+        },
+        {
+          "threshold": 4000000,
+          "atCredits": 4000000,
+          "perCredit": 0.0006
+        },
+        {
+          "threshold": 5000000,
+          "atCredits": 5000000,
+          "perCredit": 0.0006
+        },
+        {
+          "threshold": 10000000,
+          "atCredits": 100,
+          "perCredit": 0.0006
+        }
+      ]
+    },
+    "Connect": {
+      "base": 99,
+      "includedCredits": 10000,
+      "bands": [
+        {
+          "threshold": 25000,
+          "atCredits": 25000,
+          "perCredit": 0.012
+        },
+        {
+          "threshold": 50000,
+          "atCredits": 50000,
+          "perCredit": 0.0084
+        },
+        {
+          "threshold": 100000,
+          "atCredits": 100000,
+          "perCredit": 0.0054
+        },
+        {
+          "threshold": 200000,
+          "atCredits": 200000,
+          "perCredit": 0.0043
+        },
+        {
+          "threshold": 300000,
+          "atCredits": 300000,
+          "perCredit": 0.0039
+        },
+        {
+          "threshold": 400000,
+          "atCredits": 400000,
+          "perCredit": 0.0035
+        },
+        {
+          "threshold": 500000,
+          "atCredits": 500000,
+          "perCredit": 0.0031
+        },
+        {
+          "threshold": 600000,
+          "atCredits": 600000,
+          "perCredit": 0.0028
+        },
+        {
+          "threshold": 750000,
+          "atCredits": 750000,
+          "perCredit": 0.0024
+        },
+        {
+          "threshold": 1000000,
+          "atCredits": 1000000,
+          "perCredit": 0.002
+        },
+        {
+          "threshold": 2000000,
+          "atCredits": 2000000,
+          "perCredit": 0.0012
+        },
+        {
+          "threshold": 3000000,
+          "atCredits": 3000000,
+          "perCredit": 0.001
+        },
+        {
+          "threshold": 4000000,
+          "atCredits": 4000000,
+          "perCredit": 0.0008
+        },
+        {
+          "threshold": 5000000,
+          "atCredits": 5000000,
+          "perCredit": 0.0007
+        }
+      ]
+    }
+  },
+  "integrityOk": true,
+  "integrityFlags": []
+}

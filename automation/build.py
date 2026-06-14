@@ -72,6 +72,21 @@ def js_overage(ov) -> str:
     return f"{{ per: {ov['per']}, usd: {ov['usd']} }}"
 
 
+def js_selfhosthw(tiers) -> str:
+    """selfHostHw = stupňovité VPS prahy podle objemu (upTo == null → Infinity).
+    Chybí-li klíč, vrací 'null' (tool nemá self-host nebo používá fixní plán)."""
+    if not tiers:
+        return "null"
+    cells = ", ".join(f"{{ upTo: {js_limit(t.get('upTo'))}, usd: {t['usd']} }}" for t in tiers)
+    return f"[{cells}]"
+
+
+def js_creditbands(bands) -> str:
+    """creditBands = [[upTo, perCredit], …] tarifní tabulka (Pipedream).
+    upTo == null → Infinity (poslední neomezené pásmo). Pole dvojic."""
+    return "[" + ", ".join(f"[{js_limit(upto)}, {pc}]" for upto, pc in bands) + "]"
+
+
 # ---------------------------------------------------------------------------
 # Render plánu
 # ---------------------------------------------------------------------------
@@ -93,6 +108,8 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
     if "overage" in plan:
         # per-plan override tool-level overage; null = plán nemá pay-as-you-go
         parts.append(f'overage: {js_overage(plan["overage"])}')
+    if plan.get("creditBands"):
+        parts.append(f'creditBands: {js_creditbands(plan["creditBands"])}')
     if include_note and plan.get("note"):
         parts.append(f'note: {js_str(plan["note"])}')
     return "{ " + ", ".join(parts) + " }"
@@ -120,7 +137,8 @@ def render_calculator(tools: list[dict]) -> str:
         lines.append("    plans: [")
         for p in priced:
             lines.append("      " + render_plan(p, include_note=True) + ",")
-        lines.append(f"    ], overage: {js_overage(t.get('overage'))} }},")
+        lines.append(f"    ], overage: {js_overage(t.get('overage'))}, "
+                     f"selfHostHw: {js_selfhosthw(t.get('selfHostHw'))} }},")
     lines.append("];")
     return "\n".join(lines)
 
@@ -160,6 +178,7 @@ def render_compare(tools: list[dict]) -> str:
             lines.append("      " + render_plan(p, include_note=False) + ",")
         lines.append("    ],")
         lines.append(f"    overage: {js_overage(t.get('overage'))},")
+        lines.append(f"    selfHostHw: {js_selfhosthw(t.get('selfHostHw'))},")
         lines.append(f'    pros: [{", ".join(js_str(x) for x in t["pros"])}],')
         lines.append(f'    cons: [{", ".join(js_str(x) for x in t["cons"])}],')
         lines.append("  },")
@@ -509,7 +528,8 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
                 "public list prices). Assumes 3 workflows, monthly billing, cheapest qualifying plan. "
                 f"Prices verified {month_year} — see the <a href=\"changelog.html\">price changelog</a>.")
     if any_selfhost_star:
-        tbl_note += " * self-hosted = open-source edition + ~$8/mo VPS."
+        tbl_note += (" * self-hosted = free open-source software; the figure is the server "
+                     "hardware (your VPS, not a tool fee), scaling ~$8–66/mo with volume.")
 
     # feature diff — jen rozdílové řádky; shody do věty pod tabulkou
     diff_rows, same = [], []

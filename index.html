@@ -477,12 +477,12 @@
 //    est:1 = estimated custom-tier price, rendered with ~ prefix.
 /* DATA:DEMO:START */ /* generováno build.py z automation/data/tools.json — needituj ručně */
 const DEMO = {
-  1000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:0, note:"Free"}, {n:"Pipedream", c:29, note:"Basic"}, {n:"Zapier", c:44.99, note:"Professional +ops"} ],
-  5000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:9, note:"Core"}, {n:"Pipedream", c:59, note:"Basic +ops"}, {n:"Zapier", c:130, note:"Enterprise", est:1} ],
-  20000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:18, note:"Core +ops"}, {n:"Pipedream", c:199, note:"Connect +ops"}, {n:"Zapier", c:345, note:"Enterprise", est:1} ],
-  100000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:45, note:"Enterprise", est:1}, {n:"Pipedream", c:495, note:"Business", est:1}, {n:"Zapier", c:1065, note:"Enterprise", est:1} ],
+  1000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:0, note:"Free"}, {n:"Pipedream", c:29, note:"Basic"}, {n:"Zapier", c:58.5, note:"Professional 1k"} ],
+  5000: [ {n:"n8n", c:8, note:"self-hosted*"}, {n:"Make", c:10.59, note:"Core 10k"}, {n:"Pipedream", c:59.0, note:"Basic +ops"}, {n:"Zapier", c:133.5, note:"Professional 5k"} ],
+  20000: [ {n:"n8n", c:18, note:"self-hosted*"}, {n:"Make", c:18.82, note:"Core 20k"}, {n:"Pipedream", c:137.0, note:"Basic +ops"}, {n:"Zapier", c:283.5, note:"Professional 20k"} ],
+  100000: [ {n:"n8n", c:18, note:"self-hosted*"}, {n:"Make", c:116.47, note:"Core 150k"}, {n:"Pipedream", c:293.6, note:"Basic +ops"}, {n:"Zapier", c:733.5, note:"Professional 100k"} ],
 };
-const DEMO_FOOT = "*n8n ≈ $8/mo VPS · ~ price estimated (custom tier)";
+const DEMO_FOOT = "*self-hosted = server hardware, not a tool fee (~$8–66/mo by volume) · ~ price estimated (custom tier)";
 /* DATA:DEMO:END */
 
 function renderDemo(vol) {

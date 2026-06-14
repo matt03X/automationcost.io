@@ -49,7 +49,7 @@
       "name": "Why would anyone pick Make, then?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Because self-hosting isn't free in practice — n8n's $8 is a VPS you patch, back up and monitor yourself. Make is fully managed, its free tier covers 1,000 ops/mo outright, and even at 100,000 ops it's ~$45/mo. If nobody on the team wants server keys, Make is the sane default — you're paying a few dollars for zero ops burden."
+        "text": "Because self-hosting isn't free in practice — n8n runs on a VPS you patch, back up and monitor yourself, and its cost climbs with volume ($8–66/mo). Make is fully managed, its free tier covers 1,000 ops/mo outright, and even at 100,000 ops it's ~$45/mo. If nobody on the team wants server keys, Make is the sane default — you're paying a few dollars for zero ops burden."
       }
     },
     {
@@ -263,7 +263,7 @@
       <span class="who"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=64" alt="n8n logo">n8n</span>
     </div>
     <div class="verdict">
-      <b>Price barely separates these two</b> — Make's free tier wins at 1,000 ops, n8n's flat ~$8/mo self-hosted wins above it, and at 5,000 ops the gap is exactly $1. <b class="win">The real decision is whether you want to run a server</b>: happy to self-host → n8n; want a managed cloud with a visual builder → Make. Either way, you won't overpay by much.
+      <b>Price barely separates these two</b> — Make's free tier wins at 1,000 ops, n8n self-hosted (from ~$8/mo) wins above it, and at 5,000 ops the gap is roughly a dollar. <b class="win">The real decision is whether you want to run a server</b>: happy to self-host → n8n; want a managed cloud with a visual builder → Make. Either way, you won't overpay by much.
     </div>
   </div>
 
@@ -285,23 +285,23 @@
           </tr>
           <tr>
             <td class="vol">5,000</td>
-            <td><span class="price">$9<small>Core</small></span></td>
+            <td><span class="price">$10.59<small>Core 10k</small></span></td>
             <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
           <tr>
             <td class="vol">20,000</td>
-            <td><span class="price">$18<small>Core +ops</small></span></td>
-            <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
+            <td><span class="price">$18.82<small>Core 20k</small></span></td>
+            <td class="cheap"><span class="price">$18 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
           <tr>
             <td class="vol">100,000</td>
-            <td><span class="price">~$45<small>Enterprise (estimate)</small></span></td>
-            <td class="cheap"><span class="price">$8 <span class="ok">✓</span><small>self-hosted*</small></span></td>
+            <td><span class="price">$116.47<small>Core 150k</small></span></td>
+            <td class="cheap"><span class="price">$18 <span class="ok">✓</span><small>self-hosted*</small></span></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="tbl-note">~ = estimated custom-tier pricing (vendor quotes individually; calibrated against public list prices). Assumes 3 workflows, monthly billing, cheapest qualifying plan. Prices verified June 2026 — see the <a href="changelog.html">price changelog</a>. * self-hosted = open-source edition + ~$8/mo VPS.</p>
+    <p class="tbl-note">~ = estimated custom-tier pricing (vendor quotes individually; calibrated against public list prices). Assumes 3 workflows, monthly billing, cheapest qualifying plan. Prices verified June 2026 — see the <a href="changelog.html">price changelog</a>. * self-hosted = free open-source software; the figure is the server hardware (your VPS, not a tool fee), scaling ~$8–66/mo with volume.</p>
   </div>
 
   <!-- 3 ── Calculator CTA -->
@@ -324,7 +324,6 @@
         <tbody>
           <tr><td>Integrations</td><td><span class="diff-win">1,500+</span></td><td>400+</td></tr>
           <tr><td>Free tier</td><td>1,000/mo · Unlimited</td><td>Unlimited* · Unlimited*</td></tr>
-          <tr><td>Overage model</td><td>+$9 per 10,000 ops</td><td>none — upgrade only</td></tr>
           <tr><td>Execution timeout</td><td>40 min</td><td><span class="diff-win">No limit*</span></td></tr>
           <tr><td>Log history</td><td>30 days</td><td>7 days (cloud)</td></tr>
           <tr><td>Self-hosting</td><td><span class="cross">✗</span></td><td><span class="diff-win"><span class="check">✓</span></span></td></tr>
@@ -333,7 +332,7 @@
         </tbody>
       </table>
     </div>
-    <p class="diff-same">Same on both: steps per workflow · gdpr-friendly · ai features · multi-user · api access · webhooks.</p>
+    <p class="diff-same">Same on both: overage model · steps per workflow · gdpr-friendly · ai features · multi-user · api access · webhooks.</p>
   </div>
 
   <!-- 5 ── Pros / cons -->
@@ -405,7 +404,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Why would anyone pick Make, then?</button>
-        <div class="faq-a">Because self-hosting isn't free in practice — n8n's $8 is a VPS you patch, back up and monitor yourself. Make is fully managed, its free tier covers 1,000 ops/mo outright, and even at 100,000 ops it's ~$45/mo. If nobody on the team wants server keys, Make is the sane default — you're paying a few dollars for zero ops burden.</div>
+        <div class="faq-a">Because self-hosting isn't free in practice — n8n runs on a VPS you patch, back up and monitor yourself, and its cost climbs with volume ($8–66/mo). Make is fully managed, its free tier covers 1,000 ops/mo outright, and even at 100,000 ops it's ~$45/mo. If nobody on the team wants server keys, Make is the sane default — you're paying a few dollars for zero ops burden.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?</button>

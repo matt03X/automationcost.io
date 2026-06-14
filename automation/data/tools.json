@@ -10,11 +10,13 @@
       "currency": "monthlyUsd = face value; n8n bills in EUR (annual-billing price recorded, € label in plan note). No FX conversion — a rate change would fake a changelog entry."
     },
     "todo": [
-      "pipedream: additional-credit (overage) rate is no longer public on the pricing page — current $10/1k kept from earlier verification, re-verify against billing docs",
-      "automatisch: Cloud plan removed 2026-06-12 — price no longer published anywhere public (homepage only says 'affordable cloud solution'); restore only with a verifiable price",
-      "make: vendor renamed operations -> credits (prices unchanged, 1 module action = 1 credit; code execution 2 credits/sec) — watch copy on pages"
+      "pipedream: additional-credit (overage) rate removed from public pricing page (verified 2026-06-13 against saved pricing snapshot) — overage now Contact Sales only, tool-level overage=null; Business=custom tier carries the over-volume estimate. Free 100cr/3wf still exists in-app but is 'discontinued' for new signups.",
+      "pipedream: pricing page now also meters AI tokens (Basic 20M/mo, Advanced+Connect 50M/mo) on top of credits — not modeled (we price on credits/ops only); noted in plan notes.",
+      "automatisch: Cloud plan removed 2026-06-12 — Elestio managed hosting is the only paid option ($18/mo NC-MEDIUM 2C/4G and up); self-host + VPS remains the modeled cost.",
+      "make: vendor renamed operations -> credits (prices unchanged, 1 module action = 1 credit; code execution 2 credits/sec) — watch copy on pages",
+      "selfHostHw: VPS hardware cost scales with volume (selfHostHw tiers) — derived from Elestio/Netcup list (NC-MEDIUM 2C/4G $18, NC-LARGE 4C/8G $33, NC-XLARGE 8C/16G $66). Re-check when those list prices move."
     ],
-    "last_reviewed": "2026-06-12"
+    "last_reviewed": "2026-06-14"
   },
   "tools": [
     {
@@ -45,29 +47,103 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted + VPS (~$8/mo)"
+          "note": "Self-hosted — server hardware only (not a tool fee)"
         },
         {
           "name": "Cloud Starter",
-          "monthlyUsd": 20,
+          "monthlyUsd": 24,
           "opsIncluded": 2500,
           "workflowLimit": null,
-          "note": "Cloud Starter (€20/mo billed annually)"
+          "overage": null,
+          "note": "Cloud Starter (€24/mo monthly, 2.5k executions)"
         },
         {
-          "name": "Cloud Pro",
-          "monthlyUsd": 50,
+          "name": "Cloud Pro 10k",
+          "monthlyUsd": 60,
           "opsIncluded": 10000,
           "workflowLimit": null,
-          "note": "Cloud Pro (€50/mo billed annually)"
+          "overage": null,
+          "note": "Cloud Pro — 10k executions (€60/mo monthly)"
         },
         {
-          "name": "Business",
-          "monthlyUsd": 667,
+          "name": "Cloud Pro 50k",
+          "monthlyUsd": 144,
+          "opsIncluded": 50000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Cloud Pro — 50k executions (€144/mo monthly)"
+        },
+        {
+          "name": "Business 40k",
+          "monthlyUsd": 800,
           "opsIncluded": 40000,
           "workflowLimit": null,
-          "selfHostOnly": true,
-          "note": "Business — self-hosted license (€667/mo billed annually)"
+          "overage": null,
+          "note": "Business — 40k executions (€800/mo monthly)"
+        },
+        {
+          "name": "Business 50k",
+          "monthlyUsd": 985,
+          "opsIncluded": 50000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 50k executions (€985/mo monthly)"
+        },
+        {
+          "name": "Business 75k",
+          "monthlyUsd": 1456,
+          "opsIncluded": 75000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 75k executions (€1456/mo monthly)"
+        },
+        {
+          "name": "Business 100k",
+          "monthlyUsd": 1726,
+          "opsIncluded": 100000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 100k executions (€1726/mo monthly)"
+        },
+        {
+          "name": "Business 150k",
+          "monthlyUsd": 2189,
+          "opsIncluded": 150000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 150k executions (€2189/mo monthly)"
+        },
+        {
+          "name": "Business 200k",
+          "monthlyUsd": 2639,
+          "opsIncluded": 200000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 200k executions (€2639/mo monthly)"
+        },
+        {
+          "name": "Business 300k",
+          "monthlyUsd": 3512,
+          "opsIncluded": 300000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 300k executions (€3512/mo monthly)"
+        },
+        {
+          "name": "Business 400k",
+          "monthlyUsd": 4381,
+          "opsIncluded": 400000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 400k executions (€4381/mo monthly)"
+        },
+        {
+          "name": "Business 500k",
+          "monthlyUsd": 5245,
+          "opsIncluded": 500000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Business — 500k executions (€5245/mo monthly)"
         },
         {
           "name": "Cloud Enterprise",
@@ -77,6 +153,24 @@
         }
       ],
       "overage": null,
+      "selfHostHw": [
+        {
+          "upTo": 10000,
+          "usd": 8
+        },
+        {
+          "upTo": 100000,
+          "usd": 18
+        },
+        {
+          "upTo": 500000,
+          "usd": 33
+        },
+        {
+          "upTo": null,
+          "usd": 66
+        }
+      ],
       "pros": [
         "Truly unlimited self-hosted",
         "Best AI/LLM nodes",
@@ -117,25 +211,148 @@
           "note": "Free tier"
         },
         {
-          "name": "Core",
-          "monthlyUsd": 9,
+          "name": "Core 10k",
+          "monthlyUsd": 10.59,
           "opsIncluded": 10000,
           "workflowLimit": null,
-          "note": "Core plan"
+          "overage": null,
+          "note": "Core — 10,000 credits/mo ($10.59)"
         },
         {
-          "name": "Pro",
-          "monthlyUsd": 16,
-          "opsIncluded": 10000,
+          "name": "Core 20k",
+          "monthlyUsd": 18.82,
+          "opsIncluded": 20000,
           "workflowLimit": null,
-          "note": "Pro plan"
+          "overage": null,
+          "note": "Core — 20,000 credits/mo ($18.82)"
         },
         {
-          "name": "Teams",
-          "monthlyUsd": 29,
-          "opsIncluded": 10000,
+          "name": "Core 40k",
+          "monthlyUsd": 34.12,
+          "opsIncluded": 40000,
           "workflowLimit": null,
-          "note": "Teams plan"
+          "overage": null,
+          "note": "Core — 40,000 credits/mo ($34.12)"
+        },
+        {
+          "name": "Core 80k",
+          "monthlyUsd": 64.71,
+          "opsIncluded": 80000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Core — 80,000 credits/mo ($64.71)"
+        },
+        {
+          "name": "Core 150k",
+          "monthlyUsd": 116.47,
+          "opsIncluded": 150000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Core — 150,000 credits/mo ($116.47)"
+        },
+        {
+          "name": "Core 300k",
+          "monthlyUsd": 214.31,
+          "opsIncluded": 300000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Core — 300,000 credits/mo ($214.31)"
+        },
+        {
+          "name": "Pro 500k",
+          "monthlyUsd": 482.67,
+          "opsIncluded": 500000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 500,000 credits/mo ($482.67)"
+        },
+        {
+          "name": "Pro 750k",
+          "monthlyUsd": 678.75,
+          "opsIncluded": 750000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 750,000 credits/mo ($678.75)"
+        },
+        {
+          "name": "Pro 1000k",
+          "monthlyUsd": 880.86,
+          "opsIncluded": 1000000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 1,000,000 credits/mo ($880.86)"
+        },
+        {
+          "name": "Pro 1500k",
+          "monthlyUsd": 1268.44,
+          "opsIncluded": 1500000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 1,500,000 credits/mo ($1268.44)"
+        },
+        {
+          "name": "Pro 2000k",
+          "monthlyUsd": 1620.79,
+          "opsIncluded": 2000000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 2,000,000 credits/mo ($1620.79)"
+        },
+        {
+          "name": "Pro 2500k",
+          "monthlyUsd": 2001.32,
+          "opsIncluded": 2500000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 2,500,000 credits/mo ($2001.32)"
+        },
+        {
+          "name": "Pro 3000k",
+          "monthlyUsd": 2333.94,
+          "opsIncluded": 3000000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 3,000,000 credits/mo ($2333.94)"
+        },
+        {
+          "name": "Pro 4000k",
+          "monthlyUsd": 3028.93,
+          "opsIncluded": 4000000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 4,000,000 credits/mo ($3028.93)"
+        },
+        {
+          "name": "Pro 5000k",
+          "monthlyUsd": 3710.44,
+          "opsIncluded": 5000000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 5,000,000 credits/mo ($3710.44)"
+        },
+        {
+          "name": "Pro 6000k",
+          "monthlyUsd": 4361.66,
+          "opsIncluded": 6000000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 6,000,000 credits/mo ($4361.66)"
+        },
+        {
+          "name": "Pro 7000k",
+          "monthlyUsd": 5028.39,
+          "opsIncluded": 7000000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 7,000,000 credits/mo ($5028.39)"
+        },
+        {
+          "name": "Pro 8000k",
+          "monthlyUsd": 5660.47,
+          "opsIncluded": 8000000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Pro — 8,000,000 credits/mo ($5660.47)"
         },
         {
           "name": "Enterprise",
@@ -144,10 +361,7 @@
           "workflowLimit": null
         }
       ],
-      "overage": {
-        "per": 10000,
-        "usd": 9
-      },
+      "overage": null,
       "pros": [
         "Best price per op in cloud",
         "30-day log history on free",
@@ -193,21 +407,219 @@
           "monthlyUsd": 29,
           "opsIncluded": 2000,
           "workflowLimit": 10,
-          "note": "Basic plan"
+          "note": "Basic — 2k credits + 20M AI tokens/mo, 10 workflows",
+          "creditBands": [
+            [
+              10000,
+              0.01
+            ],
+            [
+              25000,
+              0.006
+            ],
+            [
+              50000,
+              0.0042
+            ],
+            [
+              99000,
+              0.0034
+            ],
+            [
+              199000,
+              0.0027
+            ],
+            [
+              299000,
+              0.0022
+            ],
+            [
+              399000,
+              0.0019
+            ],
+            [
+              499000,
+              0.0017
+            ],
+            [
+              599000,
+              0.0016
+            ],
+            [
+              748000,
+              0.0014
+            ],
+            [
+              997000,
+              0.0012
+            ],
+            [
+              1990000,
+              0.001
+            ],
+            [
+              2990000,
+              0.0006
+            ],
+            [
+              3990000,
+              0.0005
+            ],
+            [
+              9950000,
+              0.0004
+            ],
+            [
+              null,
+              0.0003
+            ]
+          ]
         },
         {
           "name": "Advanced",
           "monthlyUsd": 49,
           "opsIncluded": 2000,
           "workflowLimit": null,
-          "note": "Advanced plan"
+          "note": "Advanced — 2k credits + 50M AI tokens/mo, unlimited workflows",
+          "creditBands": [
+            [
+              10000,
+              0.015
+            ],
+            [
+              25000,
+              0.009
+            ],
+            [
+              50000,
+              0.0063
+            ],
+            [
+              99000,
+              0.005
+            ],
+            [
+              199000,
+              0.004
+            ],
+            [
+              299000,
+              0.0032
+            ],
+            [
+              399000,
+              0.0029
+            ],
+            [
+              499000,
+              0.0026
+            ],
+            [
+              599000,
+              0.0024
+            ],
+            [
+              748000,
+              0.0021
+            ],
+            [
+              997000,
+              0.0018
+            ],
+            [
+              1990000,
+              0.00153
+            ],
+            [
+              2990000,
+              0.0009
+            ],
+            [
+              3990000,
+              0.0007
+            ],
+            [
+              9950000,
+              0.0006
+            ],
+            [
+              null,
+              0.0004
+            ]
+          ]
         },
         {
           "name": "Connect",
           "monthlyUsd": 99,
           "opsIncluded": 10000,
           "workflowLimit": null,
-          "note": "Connect — 10k credits (developer plan)"
+          "note": "Connect — 10k credits (developer plan)",
+          "creditBands": [
+            [
+              25000,
+              0.012
+            ],
+            [
+              50000,
+              0.0084
+            ],
+            [
+              99000,
+              0.0067
+            ],
+            [
+              199000,
+              0.0054
+            ],
+            [
+              299000,
+              0.0043
+            ],
+            [
+              399000,
+              0.0039
+            ],
+            [
+              499000,
+              0.0035
+            ],
+            [
+              599000,
+              0.0031
+            ],
+            [
+              748000,
+              0.0028
+            ],
+            [
+              997000,
+              0.0024
+            ],
+            [
+              1990000,
+              0.002
+            ],
+            [
+              2990000,
+              0.0012
+            ],
+            [
+              3990000,
+              0.001
+            ],
+            [
+              4990000,
+              0.0008
+            ],
+            [
+              9950000,
+              0.0007
+            ],
+            [
+              null,
+              0.0006
+            ]
+          ]
         },
         {
           "name": "Business",
@@ -216,17 +628,14 @@
           "workflowLimit": null
         }
       ],
-      "overage": {
-        "per": 1000,
-        "usd": 10
-      },
+      "overage": null,
       "pros": [
         "Run Node.js/Python in workflows",
         "Most integrations (2,000+)",
         "Best for devs"
       ],
       "cons": [
-        "Expensive overage",
+        "Overage no longer public — quote only",
         "Very limited free tier",
         "No self-host"
       ]
@@ -262,18 +671,148 @@
           "note": "Free tier"
         },
         {
-          "name": "Professional",
-          "monthlyUsd": 19.99,
+          "name": "Professional 750",
+          "monthlyUsd": 29.99,
           "opsIncluded": 750,
           "workflowLimit": null,
-          "note": "Professional (750 tasks, billed annually)"
+          "overage": null,
+          "note": "Professional — 750 tasks/mo ($29.99)"
         },
         {
-          "name": "Team",
-          "monthlyUsd": 69,
+          "name": "Professional 1k",
+          "monthlyUsd": 58.5,
+          "opsIncluded": 1500,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 1,500 tasks/mo ($58.5)"
+        },
+        {
+          "name": "Professional 2k",
+          "monthlyUsd": 73.5,
           "opsIncluded": 2000,
           "workflowLimit": null,
-          "note": "Team (2,000 tasks, billed annually)"
+          "overage": null,
+          "note": "Professional — 2,000 tasks/mo ($73.5)"
+        },
+        {
+          "name": "Professional 5k",
+          "monthlyUsd": 133.5,
+          "opsIncluded": 5000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 5,000 tasks/mo ($133.5)"
+        },
+        {
+          "name": "Professional 10k",
+          "monthlyUsd": 193.5,
+          "opsIncluded": 10000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 10,000 tasks/mo ($193.5)"
+        },
+        {
+          "name": "Professional 20k",
+          "monthlyUsd": 283.5,
+          "opsIncluded": 20000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 20,000 tasks/mo ($283.5)"
+        },
+        {
+          "name": "Professional 50k",
+          "monthlyUsd": 433.5,
+          "opsIncluded": 50000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 50,000 tasks/mo ($433.5)"
+        },
+        {
+          "name": "Professional 100k",
+          "monthlyUsd": 733.5,
+          "opsIncluded": 100000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 100,000 tasks/mo ($733.5)"
+        },
+        {
+          "name": "Professional 200k",
+          "monthlyUsd": 1149,
+          "opsIncluded": 200000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 200,000 tasks/mo ($1149)"
+        },
+        {
+          "name": "Professional 300k",
+          "monthlyUsd": 1599,
+          "opsIncluded": 300000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 300,000 tasks/mo ($1599)"
+        },
+        {
+          "name": "Professional 400k",
+          "monthlyUsd": 1899,
+          "opsIncluded": 400000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 400,000 tasks/mo ($1899)"
+        },
+        {
+          "name": "Professional 500k",
+          "monthlyUsd": 2199,
+          "opsIncluded": 500000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 500,000 tasks/mo ($2199)"
+        },
+        {
+          "name": "Professional 750k",
+          "monthlyUsd": 2999,
+          "opsIncluded": 750000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 750,000 tasks/mo ($2999)"
+        },
+        {
+          "name": "Professional 1000k",
+          "monthlyUsd": 3299,
+          "opsIncluded": 1000000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 1,000,000 tasks/mo ($3299)"
+        },
+        {
+          "name": "Professional 1250k",
+          "monthlyUsd": 3899,
+          "opsIncluded": 1250000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 1,250,000 tasks/mo ($3899)"
+        },
+        {
+          "name": "Professional 1500k",
+          "monthlyUsd": 4499,
+          "opsIncluded": 1500000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 1,500,000 tasks/mo ($4499)"
+        },
+        {
+          "name": "Professional 1750k",
+          "monthlyUsd": 4799,
+          "opsIncluded": 1750000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 1,750,000 tasks/mo ($4799)"
+        },
+        {
+          "name": "Professional 2000k",
+          "monthlyUsd": 5099,
+          "opsIncluded": 2000000,
+          "workflowLimit": null,
+          "overage": null,
+          "note": "Professional — 2,000,000 tasks/mo ($5099)"
         },
         {
           "name": "Enterprise",
@@ -282,10 +821,7 @@
           "workflowLimit": null
         }
       ],
-      "overage": {
-        "per": 1000,
-        "usd": 25
-      },
+      "overage": null,
       "pros": [
         "9,000+ integrations — most of any tool",
         "Easiest for non-technical users",
@@ -325,7 +861,7 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted + VPS (~$8/mo)"
+          "note": "Self-hosted — server hardware only (not a tool fee)"
         },
         {
           "name": "Cloud Free",
@@ -350,6 +886,24 @@
         }
       ],
       "overage": null,
+      "selfHostHw": [
+        {
+          "upTo": 10000,
+          "usd": 8
+        },
+        {
+          "upTo": 100000,
+          "usd": 18
+        },
+        {
+          "upTo": 500000,
+          "usd": 33
+        },
+        {
+          "upTo": null,
+          "usd": 66
+        }
+      ],
       "pros": [
         "True MIT license — no restrictions",
         "No-code UI like Zapier",
@@ -389,10 +943,28 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted + VPS (~$8/mo)"
+          "note": "Self-hosted — server hardware only (not a tool fee)"
         }
       ],
       "overage": null,
+      "selfHostHw": [
+        {
+          "upTo": 10000,
+          "usd": 8
+        },
+        {
+          "upTo": 100000,
+          "usd": 18
+        },
+        {
+          "upTo": 500000,
+          "usd": 33
+        },
+        {
+          "upTo": null,
+          "usd": 66
+        }
+      ],
       "pros": [
         "Simplest setup",
         "Full data control (GDPR)",
@@ -432,10 +1004,28 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted + VPS (~$8/mo)"
+          "note": "Self-hosted — server hardware only (not a tool fee)"
         }
       ],
       "overage": null,
+      "selfHostHw": [
+        {
+          "upTo": 10000,
+          "usd": 8
+        },
+        {
+          "upTo": 100000,
+          "usd": 18
+        },
+        {
+          "upTo": 500000,
+          "usd": 33
+        },
+        {
+          "upTo": null,
+          "usd": 66
+        }
+      ],
       "pros": [
         "Apache 2.0 — completely free",
         "Node.js code steps",
