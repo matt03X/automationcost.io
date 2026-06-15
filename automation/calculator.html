@@ -323,6 +323,14 @@
     .score-label { font-size: 12px; color: var(--muted); width: 120px; flex-shrink: 0; }
     .score-bar-wrap { flex: 1; height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
     .score-fill { height: 100%; border-radius: 3px; background: var(--accent); }
+
+    /* ── "How price / why rank" explainer ── */
+    .score-explain { display: grid; gap: 10px; margin-top: 14px; margin-bottom: 4px; }
+    .se-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 12.5px; color: var(--text2); line-height: 1.55; }
+    .se-box b { display: block; color: var(--text); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+    .se-parts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .se-chip { font-size: 11.5px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; color: var(--muted); }
+    .se-chip b { display: inline; margin: 0; text-transform: none; letter-spacing: 0; font-size: 11.5px; color: var(--green); }
     .score-fill.green { background: var(--green); }
     .score-fill.yellow { background: var(--yellow); }
     .score-fill.red { background: var(--red); }
@@ -2363,6 +2371,32 @@ function unitExplain(tool, costResult) {
   return `≈ ${costResult.units.toLocaleString()} ${name}/mo · ${how}`;
 }
 
+// "How is this price calculated" — plain-language derivation for the expanded result card.
+function costBreakdown(tool, cr, runs, steps, workflows) {
+  const p = cr.plan;
+  if (cr.hwOnly) return `Self-hosted — the cost is a VPS or your own hardware sized to the volume (infrastructure, not a per-task fee)${cr.spec ? `. Min spec: ${cr.spec}` : ""}.`;
+  if (p.pricePerFlowUsd) {
+    const free = p.freeFlows || 0, billed = Math.max(0, workflows - free);
+    return billed === 0
+      ? `${workflows} active flow${workflows !== 1 ? "s" : ""} ≤ ${free} free → $0/mo · runs are unlimited (Activepieces bills per active flow, not per task or run).`
+      : `${workflows} active flows − ${free} free = ${billed} × $${p.pricePerFlowUsd}/flow = $${cr.cost}/mo · runs are unlimited.`;
+  }
+  if (cr.estimated) return `Your volume is above the public plans, so this is an estimate — scaled from the largest published tier (enterprise deals grow sub-linearly). Treat it as a ballpark, confirm with sales.`;
+  const units = cr.units != null ? cr.units : vendorUnits(tool, runs, steps);
+  const uname = UNIT_NAME[tool.slug] || "units";
+  const annual = (billing === "annual" && annualDiscountPct(p) > 0) ? ` · billed annually (−${annualDiscountPct(p)}%)` : "";
+  if (tool.slug === "n8n") return `${runs.toLocaleString()} runs = ${units.toLocaleString()} executions — steps are free on n8n, so only the run count matters. Cheapest tier that covers it: ${p.name} = $${cr.cost}/mo${annual}.`;
+  if (tool.slug === "pipedream") return `${runs.toLocaleString()} runs ≈ ${units.toLocaleString()} credits (1 credit per run for runs ≤30s) → ${p.name} = $${cr.cost}/mo${annual}.`;
+  const inc = p.opsIncluded;
+  let s = `${runs.toLocaleString()} runs × ${steps} steps → ~${units.toLocaleString()} ${uname}`;
+  if (inc != null && isFinite(inc)) {
+    s += units > inc
+      ? ` · ${p.name} includes ${inc.toLocaleString()}; the extra ${(units - inc).toLocaleString()} is charged as overage`
+      : ` · covered by ${p.name} (${inc.toLocaleString()} included)`;
+  } else { s += ` · ${p.name}`; }
+  return `${s} = $${cr.cost}/mo${annual}.`;
+}
+
 // ── Wizard navigation ─────────────────────────────────────────────────────────
 function goStep(n) {
   document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
@@ -2820,13 +2854,15 @@ function calcCost(tool, runs, steps, workflows) {
 }
 
 // ── Match score engine ────────────────────────────────────────────────────────
-function computeMatchScore(tool, costResult) {
+// Final score = feature fit 0.52 + price fit 0.26 + ecosystem maturity 0.12 (+ workflow
+// bonus). scoreParts is the single source of truth — computeMatchScore AND the "why this
+// rank" breakdown in the results UI both read from it (no drift).
+const SCORE_W = { feature: 0.52, price: 0.26, maturity: 0.12 };
+function scoreParts(tool, costResult) {
   const role = selectedRole || "other";
   const wf = WORKFLOWS.find(w => w.id === selectedWorkflow);
   const weights = ROLE_WEIGHTS[role];
   const caps = TOOL_SCORES[tool.slug];
-
-  // Feature scores
   const featureScore = (
     caps.noCode       * weights.noCode +
     caps.codeAccess   * weights.codeAccess +
@@ -2835,27 +2871,24 @@ function computeMatchScore(tool, costResult) {
     caps.gdpr         * weights.gdpr +
     caps.integrations * weights.integrations
   );
-
-  // Workflow fit bonus
   let wfBonus = 0;
   if (wf) {
     if (wf.needsAI && tool.aiFeatures) wfBonus += 0.05;
-    if (wf.needsNoCode && TOOL_SCORES[tool.slug].noCode > 0.7) wfBonus += 0.04;
+    if (wf.needsNoCode && caps.noCode > 0.7) wfBonus += 0.04;
     if (wf.roles.includes(role)) wfBonus += 0.03;
   }
-
-  // Price score — relative to budget
   let priceScore = 1;
   if (maxBudget > 0 && costResult !== null) {
     const ratio = costResult.cost / maxBudget;
     priceScore = ratio <= 1 ? 1 - ratio * 0.3 : Math.max(0, 1 - ratio * 0.6);
   }
-
-  // feature 0.52 + price 0.26 + ecosystem maturity 0.12 (+ wfBonus). Maturity weight
-  // keeps cost-cheap niche tools from out-ranking established leaders on price alone.
   const maturity = (caps.maturity != null) ? caps.maturity : 0.5;
+  return { featureScore, priceScore, maturity, wfBonus };
+}
+function computeMatchScore(tool, costResult) {
+  const p = scoreParts(tool, costResult);
   const normalised = Math.min(1, Math.max(0,
-    featureScore * 0.52 + priceScore * 0.26 + maturity * 0.12 + wfBonus
+    p.featureScore * SCORE_W.feature + p.priceScore * SCORE_W.price + p.maturity * SCORE_W.maturity + p.wfBonus
   ));
   return Math.round(normalised * 100);
 }
@@ -2959,7 +2992,16 @@ function renderResults() {
       { label: "Self-hosting",  val: TOOL_SCORES[tool.slug].selfHost },
       { label: "GDPR / privacy",val: TOOL_SCORES[tool.slug].gdpr },
       { label: "Integrations",  val: TOOL_SCORES[tool.slug].integrations },
+      { label: "Ecosystem maturity", val: TOOL_SCORES[tool.slug].maturity },
     ];
+    const parts = scoreParts(tool, costResult);
+    const contrib = [
+      { label: "Feature fit", v: Math.round(parts.featureScore * SCORE_W.feature * 100) },
+      { label: "Price fit",   v: Math.round(parts.priceScore   * SCORE_W.price    * 100) },
+      { label: "Ecosystem",   v: Math.round(parts.maturity     * SCORE_W.maturity * 100) },
+    ];
+    if (parts.wfBonus > 0) contrib.push({ label: "Workflow fit", v: Math.round(parts.wfBonus * 100) });
+    const priceHow = costBreakdown(tool, costResult, runs, steps, workflows);
 
     const cardClass = isTop ? "top-pick" : (score >= 60 ? "good-fit" : "");
 
@@ -2993,6 +3035,10 @@ function renderResults() {
         </div>
       </div>
       <div class="result-scores">
+        <div class="score-explain">
+          <div class="se-box"><b>How the price is calculated</b>${priceHow}</div>
+          <div class="se-box"><b>Why it ranks #${i + 1} · ${score}% match</b>A blend of feature fit for your role, price vs your budget, and ecosystem maturity — here's what made up the score:<div class="se-parts">${contrib.map(c => `<span class="se-chip">${c.label} <b>+${c.v}</b></span>`).join("")}</div></div>
+        </div>
         ${dimScores.map(d => {
           const pct = Math.round(d.val * 100);
           const cls = pct >= 70 ? "green" : pct >= 40 ? "" : "red";
