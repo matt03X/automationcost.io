@@ -857,15 +857,18 @@ const ROLE_WEIGHTS = {
   other:       { noCode:0.15, codeAccess:0.15, aiNodes:0.15, selfHost:0.10, gdpr:0.10, integrations:0.15, lowPrice:0.20 },
 };
 
-// Tool capability scores (0–1) per dimension
+// Tool capability scores (0–1) per dimension.
+// maturity = ecosystem standing (community size, longevity, reliability) — editorial
+// judgment like the other dims (NOT integration count: n8n has few native integrations
+// but a huge community). Stops a cheap niche tool out-ranking established leaders on cost alone.
 const TOOL_SCORES = {
-  n8n:          { noCode:0.60, codeAccess:0.95, aiNodes:0.98, selfHost:1.00, gdpr:0.90, integrations:0.75 },
-  make:         { noCode:0.95, codeAccess:0.20, aiNodes:0.70, selfHost:0.00, gdpr:0.80, integrations:0.95 },
-  pipedream:    { noCode:0.30, codeAccess:1.00, aiNodes:0.80, selfHost:0.00, gdpr:0.30, integrations:0.90 },
-  zapier:       { noCode:1.00, codeAccess:0.25, aiNodes:0.70, selfHost:0.00, gdpr:0.50, integrations:1.00 },
-  activepieces: { noCode:0.85, codeAccess:0.40, aiNodes:0.65, selfHost:1.00, gdpr:0.90, integrations:0.40 },
-  automatisch:  { noCode:0.80, codeAccess:0.20, aiNodes:0.05, selfHost:1.00, gdpr:1.00, integrations:0.20 },
-  "node-red":   { noCode:0.10, codeAccess:0.90, aiNodes:0.15, selfHost:1.00, gdpr:0.95, integrations:0.50 },
+  n8n:          { noCode:0.60, codeAccess:0.95, aiNodes:0.98, selfHost:1.00, gdpr:0.90, integrations:0.75, maturity:0.85 },
+  make:         { noCode:0.95, codeAccess:0.20, aiNodes:0.70, selfHost:0.00, gdpr:0.80, integrations:0.95, maturity:0.90 },
+  pipedream:    { noCode:0.30, codeAccess:1.00, aiNodes:0.80, selfHost:0.00, gdpr:0.30, integrations:0.90, maturity:0.70 },
+  zapier:       { noCode:1.00, codeAccess:0.25, aiNodes:0.70, selfHost:0.00, gdpr:0.50, integrations:1.00, maturity:1.00 },
+  activepieces: { noCode:0.85, codeAccess:0.40, aiNodes:0.65, selfHost:1.00, gdpr:0.90, integrations:0.40, maturity:0.55 },
+  automatisch:  { noCode:0.80, codeAccess:0.20, aiNodes:0.05, selfHost:1.00, gdpr:1.00, integrations:0.20, maturity:0.30 },
+  "node-red":   { noCode:0.10, codeAccess:0.90, aiNodes:0.15, selfHost:1.00, gdpr:0.95, integrations:0.50, maturity:0.65 },
 };
 
 // ── Workflow templates (role-specific, with rich node definitions) ────────────
@@ -2848,8 +2851,11 @@ function computeMatchScore(tool, costResult) {
     priceScore = ratio <= 1 ? 1 - ratio * 0.3 : Math.max(0, 1 - ratio * 0.6);
   }
 
+  // feature 0.52 + price 0.26 + ecosystem maturity 0.12 (+ wfBonus). Maturity weight
+  // keeps cost-cheap niche tools from out-ranking established leaders on price alone.
+  const maturity = (caps.maturity != null) ? caps.maturity : 0.5;
   const normalised = Math.min(1, Math.max(0,
-    featureScore * 0.60 + priceScore * 0.30 + wfBonus
+    featureScore * 0.52 + priceScore * 0.26 + maturity * 0.12 + wfBonus
   ));
   return Math.round(normalised * 100);
 }
