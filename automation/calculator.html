@@ -2601,10 +2601,18 @@ function estimateVolumeBudget() {
   // steps: kód-těžké role mívají delší workflow (víc kroků), jednoduché míň.
   // Hrubý default — uživatel doladí. base.ops je nově runs/mo (frekvence běhů).
   const roleSteps = { developer: 5, operations: 4, ecommerce: 4, marketing: 3, sales: 4, support: 3, finance: 3, hr: 3, legal: 3, other: 3 };
+  // Soft-cap the compounded intensity (role × workflow-weight × business-model). The
+  // validated mid/low range (≤4×, ≈ size-band top) is untouched; only the runaway top
+  // (heavy size+role+bizmodel+wf stacking) gets dampened so estimates don't pile onto the
+  // slider ceiling. Monotonic + order-independent (flat-slope transform of wfMult above 4).
+  let intensity = rs * wfMult * bm;
+  if (intensity > 4) intensity = 4 + (intensity - 4) * 0.5;
+  // workflows: gentler boost from # selected types (^0.5 → ^0.4) so mid/large don't pile on the 100-flow cap
+  const wfBoost = Math.pow(wfCount, 0.4);
   return {
-    ops:       Math.round(base.ops * rs * wfMult * bm), // runs/mo (slider id="ops") — bm = business-model multiplier
+    ops:       Math.round(base.ops * intensity), // runs/mo (slider id="ops")
     steps:     roleSteps[selectedRole] || 3,
-    workflows: Math.round(base.workflows * rw * Math.sqrt(wfCount)),
+    workflows: Math.round(base.workflows * rw * wfBoost),
     budget:    Math.min(BUDGET_MAX, Math.round(base.budget * rb)),
   };
 }
