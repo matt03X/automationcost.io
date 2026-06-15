@@ -2293,6 +2293,7 @@ let hostPref = "any", aiPref = "any", billing = "monthly";
 let maxBudget = 50;
 let selectedIntegrations = [];
 let lastEstimateSig = null; // profile the sliders were last auto-estimated for
+let lastWfDefaultsSig = null; // (size|role) the workflow step was last default-selected for
 // Roční sleva je PER VENDOR (z naškrábaných annually cen), ne generická — Zapier
 // dává 33 %, Make 15 %, n8n 17 %, Pipedream 0 %. tool.annualFactor = annually/monthly.
 const ANNUAL_DISCOUNT = 0.8; // fallback, když tool nemá annualFactor
@@ -2423,11 +2424,42 @@ function updateStep1Next() {
   document.getElementById("btn-next-0").disabled = !(selectedCompanySize && selectedBizModel);
 }
 
+// ── Size-aware workflow defaults (research adoption matrix, 2026-06-15) ────────
+// Which workflows a team of a given size typically has automated → pre-checked
+// when the user reaches the workflow step. Sources: calc-test/workflow-research-2026-06.md §10.
+const SIZE_BUCKET = { solo: "small", small: "small", growing: "small", midmarket: "mid", enterprise: "large" };
+const WORKFLOW_DEFAULTS = {
+  hr:         { small: ["hr-onboarding", "hr-leave"], mid: ["hr-onboarding", "hr-leave", "hr-benefits"], large: ["hr-onboarding", "hr-leave", "hr-benefits"] },
+  marketing:  { small: ["mktg-lead"], mid: ["mktg-lead", "mktg-ai-content", "mktg-utm-report"], large: ["mktg-lead", "mktg-ai-content", "mktg-mentions"] },
+  operations: { small: ["ops-meeting-notes", "ops-data-sync"], mid: ["ops-approval", "ops-data-sync", "ops-meeting-notes"], large: ["ops-approval", "ops-data-sync", "ops-incident"] },
+  developer:  { small: ["dev-monitoring", "dev-cicd"], mid: ["dev-monitoring", "dev-cicd", "dev-dependency"], large: ["dev-monitoring", "dev-cicd", "dev-dependency"] },
+  finance:    { small: ["fin-expense"], mid: ["fin-invoice", "fin-expense"], large: ["fin-invoice", "fin-expense", "fin-saas-audit"] },
+  ecommerce:  { small: ["ecom-cart"], mid: ["ecom-cart", "ecom-order"], large: ["ecom-cart", "ecom-order", "ecom-return"] },
+  sales:      { small: ["sales-lead-routing", "sales-crm-sync"], mid: ["sales-lead-routing", "sales-crm-sync", "sales-outreach"], large: ["sales-crm-sync", "sales-outreach", "sales-deal-stage"] },
+  support:    { small: ["support-autoreply"], mid: ["support-routing", "support-autoreply", "support-csat"], large: ["support-routing", "support-autoreply", "support-escalation"] },
+  legal:      { small: ["legal-contract"], mid: ["legal-contract", "legal-nda"], large: ["legal-contract", "legal-nda", "legal-gdpr"] },
+  other:      { small: ["other-generic"], mid: ["other-generic", "other-form-router"], large: ["other-generic", "other-form-router", "other-scheduled-report"] },
+};
+
 // ── Step 2: Workflow stack ────────────────────────────────────────────────────
 function renderWorkflowGrid() {
   const wfs = getFilteredWorkflows();
   const roleLabels = { marketing:"Marketing", operations:"Operations", developer:"Developer", finance:"Finance", legal:"Legal", hr:"HR", ecommerce:"E-commerce", sales:"Sales", support:"Support", other:"General" };
   const role = selectedRole || "other";
+
+  // Pre-select the workflows a team of this size typically automates (adoption
+  // matrix). Applied once per (size|role) so manual edits survive back/forward;
+  // changing size or role re-applies the size-appropriate set.
+  const wfDefaultsSig = selectedCompanySize + "|" + role;
+  if (wfDefaultsSig !== lastWfDefaultsSig) {
+    const bucket = SIZE_BUCKET[selectedCompanySize] || "small";
+    const picks = ((WORKFLOW_DEFAULTS[role] || {})[bucket] || []).filter(id => wfs.some(w => w.id === id));
+    selectedWorkflows = picks.slice();
+    selectedWorkflow = selectedWorkflows.length ? selectedWorkflows[selectedWorkflows.length - 1] : null;
+    if (selectedWorkflows.some(id => { const w = WORKFLOWS.find(x => x.id === id); return w && w.needsAI; })) aiPref = "yes";
+    lastWfDefaultsSig = wfDefaultsSig;
+  }
+
   document.getElementById("step2-sub").textContent =
     `${wfs.length} pipeline${wfs.length !== 1 ? "s" : ""} for ${roleLabels[role] || "your role"} — pick one or more to combine them.`;
 
@@ -3105,6 +3137,7 @@ function restoreProfile(prof) {
   document.getElementById("budget").value = String(maxBudget);
   updateBudget(maxBudget);
   lastEstimateSig = selectedCompanySize + "|" + selectedBizModel + "|" + selectedRole + "|" + selectedWorkflows.slice().sort().join(",");
+  lastWfDefaultsSig = selectedCompanySize + "|" + (selectedRole || "other"); // don't overwrite restored workflow selection
 
   // Reflect the restored answers in the UI so navigating back looks right.
   try {
