@@ -616,6 +616,16 @@
         <div class="role-name">E-commerce</div>
         <div class="role-desc">Order processing, inventory sync, customer notifications</div>
       </div>
+      <div class="role-card" data-role="sales" onclick="selectRole(this)">
+        <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
+        <div class="role-name">Sales</div>
+        <div class="role-desc">Lead routing, CRM sync, outreach sequences, deal-stage automation</div>
+      </div>
+      <div class="role-card" data-role="support" onclick="selectRole(this)">
+        <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><path d="M20 15a2 2 0 0 1-2 2h-2v-5h2a2 2 0 0 1 2 2z"/><path d="M4 15a2 2 0 0 0 2 2h2v-5H6a2 2 0 0 0-2 2z"/><path d="M18 17a4 4 0 0 1-4 3h-2"/></svg></div>
+        <div class="role-name">Customer Support</div>
+        <div class="role-desc">Ticket routing, AI deflection, SLA monitoring, CSAT surveys</div>
+      </div>
       <div class="role-card" data-role="other" onclick="selectRole(this)">
         <div class="role-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></div>
         <div class="role-name">Other / Mixed</div>
@@ -975,7 +985,7 @@ const WORKFLOWS = [
     id: "mktg-ai-content", roles: ["marketing"],
     title: "AI content pipeline", icon: "🤖",
     subtitle: "Trigger topic → AI draft → human review gate → schedule post → track performance",
-    defaultOps: 2000, defaultWorkflows: 3, needsNoCode: false, needsAI: true,
+    defaultOps: 500, defaultWorkflows: 3, needsNoCode: false, needsAI: true,
     nodes: [
       { id: "a", label: "Topic trigger", sublabel: "Airtable / webhook",  icon: "💡", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
       { id: "b", label: "AI draft",      sublabel: "Claude / GPT-4",      icon: "🤖", color: "#a855f7", type: "ai",     x: 200, y: 110 },
@@ -1142,9 +1152,9 @@ const WORKFLOWS = [
   // ── Other / mixed ─────────────────────────────────────────────────────────
   {
     id: "other-iot", roles: ["other"],
-    title: "IoT monitoring", icon: "📡",
-    subtitle: "Sensor reading → threshold check → alert on-call → log to DB",
-    defaultOps: 50000, defaultWorkflows: 10, needsNoCode: false, needsAI: false,
+    title: "IoT event alerts", icon: "📡",
+    subtitle: "Device threshold breach / offline → alert on-call → log to DB (event-driven alerts, not raw telemetry)",
+    defaultOps: 6000, defaultWorkflows: 4, needsNoCode: false, needsAI: false,
     nodes: [
       { id: "a", label: "MQTT sensor", sublabel: "Raspberry Pi / edge",  icon: "📡", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
       { id: "b", label: "Threshold",   sublabel: "Compare rule",         icon: "⚖️",  color: "#f59e0b", type: "condition", x: 220, y: 110 },
@@ -1723,6 +1733,220 @@ const WORKFLOWS = [
       { from: "b", to: "c", color: "#2f6bff", animated: true },
       { from: "b", to: "d", color: "#10b981", animated: true },
       { from: "b", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+  // ── Sales (research 2026-06-15: gradient.works / sopro / growthspree) ────────
+  {
+    id: "sales-lead-routing", roles: ["sales"],
+    title: "Lead capture & routing", icon: "🎯",
+    subtitle: "Form / ad lead → dedupe → create in CRM → round-robin assign rep → Slack notify",
+    defaultOps: 1500, defaultWorkflows: 3, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "New lead",     sublabel: "Form / Lead Ad",      icon: "🎯", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Dedupe check", sublabel: "Existing contact?",   icon: "🔁", color: "#6b7a99", type: "condition", x: 200, y: 110 },
+      { id: "c", label: "CRM create",   sublabel: "HubSpot / Salesforce",icon: "👤", color: "#2f6bff", type: "action",    x: 360, y: 110 },
+      { id: "d", label: "Assign owner", sublabel: "Round-robin rep",     icon: "🧑‍💼", color: "#2f6bff", type: "action",  x: 520, y: 110 },
+      { id: "e", label: "Notify rep",   sublabel: "Slack DM",            icon: "💬", color: "#10b981", type: "output",    x: 660, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "c", to: "d", color: "#2f6bff", animated: true },
+      { from: "d", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "sales-enrichment", roles: ["sales"],
+    title: "Lead enrichment & scoring", icon: "🔍",
+    subtitle: "New lead → enrich firmographics → AI ICP fit score → update CRM → flag hot leads",
+    defaultOps: 1500, defaultWorkflows: 2, needsNoCode: false, needsAI: true,
+    nodes: [
+      { id: "a", label: "New lead",    sublabel: "CRM contact created", icon: "🆕", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Enrich",      sublabel: "Clearbit / Apollo",   icon: "🔍", color: "#2f6bff", type: "action",  x: 200, y: 110 },
+      { id: "c", label: "AI ICP score",sublabel: "Fit vs ideal profile",icon: "🤖", color: "#a855f7", type: "ai",      x: 360, y: 110 },
+      { id: "d", label: "Update CRM",  sublabel: "Write score + fields",icon: "📝", color: "#2f6bff", type: "action",  x: 520, y: 110 },
+      { id: "e", label: "Flag hot",    sublabel: "Notify if high fit",  icon: "🔥", color: "#ef4444", type: "output",  x: 660, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#a855f7", animated: true },
+      { from: "c", to: "d", color: "#2f6bff", animated: true },
+      { from: "d", to: "e", color: "#ef4444", animated: true },
+    ]
+  },
+  {
+    id: "sales-crm-sync", roles: ["sales"],
+    title: "CRM two-way sync", icon: "🔄",
+    subtitle: "Record change in CRM ↔ app → transform fields → upsert both sides → log (per-record, high volume)",
+    defaultOps: 3000, defaultWorkflows: 4, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Record change", sublabel: "CRM or app update", icon: "🔄", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Transform",     sublabel: "Map fields",        icon: "🧬", color: "#f59e0b", type: "action",  x: 240, y: 110 },
+      { id: "c", label: "Upsert",        sublabel: "Write to other side",icon: "📤", color: "#2f6bff", type: "action", x: 440, y: 110 },
+      { id: "d", label: "Log",           sublabel: "Sync audit row",    icon: "🗒", color: "#10b981", type: "output",  x: 620, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "c", to: "d", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "sales-outreach", roles: ["sales"],
+    title: "Outreach sequence", icon: "✉️",
+    subtitle: "New prospect → email touch → replied? → book meeting / advance to next touch",
+    defaultOps: 1200, defaultWorkflows: 3, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "New prospect", sublabel: "Added to cadence",   icon: "🧑", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Email touch",  sublabel: "Send + wait",        icon: "✉️", color: "#f59e0b", type: "action",    x: 200, y: 110 },
+      { id: "c", label: "Replied?",     sublabel: "Track open / reply",  icon: "👁", color: "#6b7a99", type: "condition", x: 360, y: 110 },
+      { id: "d", label: "Book meeting", sublabel: "Notify rep",         icon: "📅", color: "#10b981", type: "output",    x: 520, y: 50  },
+      { id: "e", label: "Next touch",   sublabel: "Advance step",       icon: "➡️", color: "#2f6bff", type: "action",    x: 520, y: 170 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#f59e0b", animated: true },
+      { from: "c", to: "d", color: "#10b981", animated: true, label: "Yes" },
+      { from: "c", to: "e", color: "#2f6bff", animated: false, label: "No" },
+    ]
+  },
+  {
+    id: "sales-meeting", roles: ["sales"],
+    title: "Demo scheduling", icon: "📅",
+    subtitle: "Calendly booking → create/update lead → add to nurture → notify rep + calendar invite",
+    defaultOps: 400, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Booking",      sublabel: "Calendly / Chili",   icon: "📅", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Lead record",  sublabel: "Create / update CRM", icon: "👤", color: "#2f6bff", type: "action", x: 240, y: 110 },
+      { id: "c", label: "Add nurture",  sublabel: "Pre-demo sequence",  icon: "📨", color: "#f59e0b", type: "action", x: 440, y: 110 },
+      { id: "d", label: "Notify + cal", sublabel: "Slack + invite",     icon: "💬", color: "#10b981", type: "output", x: 620, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#f59e0b", animated: true },
+      { from: "c", to: "d", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "sales-deal-stage", roles: ["sales"],
+    title: "Deal-stage automation", icon: "📈",
+    subtitle: "Deal stage changes → branch by stage → create tasks → notify + follow-up reminder",
+    defaultOps: 800, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Stage change", sublabel: "Deal moved",         icon: "📈", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Branch stage", sublabel: "Which stage?",       icon: "🔀", color: "#f59e0b", type: "condition", x: 240, y: 110 },
+      { id: "c", label: "Create tasks", sublabel: "Next-step actions",  icon: "✅", color: "#2f6bff", type: "action",    x: 440, y: 110 },
+      { id: "d", label: "Notify",       sublabel: "Slack + reminder",   icon: "🔔", color: "#10b981", type: "output",    x: 620, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "c", to: "d", color: "#10b981", animated: true },
+    ]
+  },
+  // ── Customer Support (research 2026-06-15: Zendesk / Intercom / companysights) ─
+  {
+    id: "support-routing", roles: ["support"],
+    title: "Ticket routing & triage", icon: "🎫",
+    subtitle: "New ticket → AI classify intent → set group + priority → assign agent → internal note",
+    defaultOps: 3000, defaultWorkflows: 3, needsNoCode: false, needsAI: true,
+    nodes: [
+      { id: "a", label: "New ticket",   sublabel: "Email / chat / form", icon: "🎫", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "AI classify",  sublabel: "Intent + sentiment",  icon: "🤖", color: "#a855f7", type: "ai",      x: 190, y: 110 },
+      { id: "c", label: "Set group",    sublabel: "Priority + queue",    icon: "🏷", color: "#f59e0b", type: "action",  x: 350, y: 110 },
+      { id: "d", label: "Assign agent", sublabel: "Skill-based route",   icon: "🧑‍💻", color: "#2f6bff", type: "action",x: 510, y: 110 },
+      { id: "e", label: "Note",         sublabel: "Context for agent",   icon: "🗒", color: "#10b981", type: "output",  x: 660, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#a855f7", animated: true },
+      { from: "b", to: "c", color: "#f59e0b", animated: true },
+      { from: "c", to: "d", color: "#2f6bff", animated: true },
+      { from: "d", to: "e", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "support-autoreply", roles: ["support"],
+    title: "Auto-reply & acknowledgment", icon: "💬",
+    subtitle: "New ticket → AI draft contextual reply → send acknowledgment (fires on every ticket)",
+    defaultOps: 3000, defaultWorkflows: 2, needsNoCode: false, needsAI: true,
+    nodes: [
+      { id: "a", label: "New ticket",  sublabel: "Inbound message",     icon: "📥", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "AI draft",    sublabel: "Contextual reply",    icon: "🤖", color: "#a855f7", type: "ai",      x: 280, y: 110 },
+      { id: "c", label: "Send ack",    sublabel: "Auto-acknowledge",    icon: "✉️", color: "#10b981", type: "output",  x: 520, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#a855f7", animated: true },
+      { from: "b", to: "c", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "support-deflection", roles: ["support"],
+    title: "AI chatbot deflection", icon: "🤖",
+    subtitle: "Customer query → KB / RAG lookup → AI answer → solved? resolve / escalate to ticket",
+    defaultOps: 4500, defaultWorkflows: 2, needsNoCode: false, needsAI: true,
+    nodes: [
+      { id: "a", label: "Query",      sublabel: "Chat / help widget",  icon: "💬", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "KB lookup",  sublabel: "RAG over docs",       icon: "📚", color: "#2f6bff", type: "action",    x: 190, y: 110 },
+      { id: "c", label: "AI answer",  sublabel: "Generate reply",      icon: "🤖", color: "#a855f7", type: "ai",        x: 340, y: 110 },
+      { id: "d", label: "Solved?",    sublabel: "Confidence check",    icon: "❓", color: "#6b7a99", type: "condition", x: 490, y: 110 },
+      { id: "e", label: "Resolved",   sublabel: "Deflected",           icon: "✅", color: "#10b981", type: "output",    x: 640, y: 50  },
+      { id: "f", label: "Escalate",   sublabel: "Create ticket",       icon: "⬆️", color: "#ef4444", type: "output",    x: 640, y: 170 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#2f6bff", animated: true },
+      { from: "b", to: "c", color: "#a855f7", animated: true },
+      { from: "c", to: "d", color: "#6b7a99", animated: true },
+      { from: "d", to: "e", color: "#10b981", animated: true, label: "Yes" },
+      { from: "d", to: "f", color: "#ef4444", animated: false, label: "No" },
+    ]
+  },
+  {
+    id: "support-sla", roles: ["support"],
+    title: "SLA breach monitoring", icon: "⏱️",
+    subtitle: "Scheduled check open tickets → past SLA? → escalate → alert manager (≈2× ticket volume)",
+    defaultOps: 6000, defaultWorkflows: 2, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Check tickets",sublabel: "Scheduled poll",     icon: "⏱️", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Over SLA?",    sublabel: "Deadline vs now",    icon: "⚠️", color: "#f59e0b", type: "condition", x: 240, y: 110 },
+      { id: "c", label: "Escalate",     sublabel: "Bump priority",      icon: "⬆️", color: "#2f6bff", type: "action",    x: 440, y: 110 },
+      { id: "d", label: "Alert mgr",    sublabel: "Slack + log breach", icon: "🔔", color: "#ef4444", type: "output",    x: 620, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true, label: "Breach" },
+      { from: "c", to: "d", color: "#ef4444", animated: true },
+    ]
+  },
+  {
+    id: "support-csat", roles: ["support"],
+    title: "CSAT survey", icon: "⭐",
+    subtitle: "Ticket resolved → send CSAT/NPS survey → log response to dashboard",
+    defaultOps: 1500, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Resolved",    sublabel: "Ticket closed",       icon: "✅", color: "#6366f1", type: "trigger", x: 40,  y: 110 },
+      { id: "b", label: "Send survey", sublabel: "Delighted / Typeform",icon: "⭐", color: "#f59e0b", type: "action",  x: 280, y: 110 },
+      { id: "c", label: "Log response",sublabel: "Dashboard + CRM",     icon: "📊", color: "#10b981", type: "output",  x: 520, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#f59e0b", animated: true },
+      { from: "b", to: "c", color: "#10b981", animated: true },
+    ]
+  },
+  {
+    id: "support-escalation", roles: ["support"],
+    title: "Ticket escalation", icon: "⬆️",
+    subtitle: "Priority / SLA flag → evaluate → reassign to Tier 2 → notify manager (~10% of tickets)",
+    defaultOps: 300, defaultWorkflows: 1, needsNoCode: true, needsAI: false,
+    nodes: [
+      { id: "a", label: "Flag",        sublabel: "Priority / SLA",      icon: "🚩", color: "#6366f1", type: "trigger",   x: 40,  y: 110 },
+      { id: "b", label: "Evaluate",    sublabel: "Severity check",      icon: "🔎", color: "#f59e0b", type: "condition", x: 240, y: 110 },
+      { id: "c", label: "Reassign T2", sublabel: "Specialist queue",    icon: "🧑‍🔧", color: "#2f6bff", type: "action",  x: 440, y: 110 },
+      { id: "d", label: "Notify mgr",  sublabel: "Slack escalation",    icon: "🔔", color: "#10b981", type: "output",    x: 620, y: 110 },
+    ],
+    edges: [
+      { from: "a", to: "b", color: "#6366f1", animated: true },
+      { from: "b", to: "c", color: "#2f6bff", animated: true },
+      { from: "c", to: "d", color: "#10b981", animated: true },
     ]
   },
 ];
