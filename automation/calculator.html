@@ -331,6 +331,12 @@
     .se-parts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
     .se-chip { font-size: 11.5px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 3px 8px; color: var(--muted); }
     .se-chip b { display: inline; margin: 0; text-transform: none; letter-spacing: 0; font-size: 11.5px; color: var(--green); }
+
+    /* ── Per-workflow runs (hybrid Step 4) ── */
+    .wf-per-list { margin-top: 8px; display: grid; gap: 12px; padding: 12px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; }
+    .wf-per-row { display: grid; gap: 3px; }
+    .wf-per-name { font-size: 12.5px; color: var(--text); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .wf-per-steps { font-size: 10.5px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1px 6px; }
     .score-fill.green { background: var(--green); }
     .score-fill.yellow { background: var(--yellow); }
     .score-fill.red { background: var(--red); }
@@ -685,6 +691,10 @@
           <input type="range" id="ops" min="0" max="11" step="1" value="4" oninput="updateOpsDisplay()">
         </div>
         <div class="hint">runs/mo · How many times your automations fire. Each tool bills this differently — we convert it per vendor (see results).</div>
+        <div id="wf-per-wrap" hidden>
+          <button type="button" class="result-expand-btn" id="wf-per-toggle" onclick="toggleWfPer()" style="margin-top:8px"><span id="wf-per-icon">▸</span> Set runs per workflow (exact — no averaging)</button>
+          <div id="wf-per-list" class="wf-per-list" hidden></div>
+        </div>
       </div>
       <div>
         <label for="steps">Steps per workflow <span class="auto-badge" id="steps-auto" hidden>✦ auto-estimated</span></label>
@@ -2303,6 +2313,8 @@ let maxBudget = 50;
 let selectedIntegrations = [];
 let lastEstimateSig = null; // profile the sliders were last auto-estimated for
 let lastWfDefaultsSig = null; // (size|role) the workflow step was last default-selected for
+let wfRuns = {};          // per-workflow runs override {id: runs/mo} (hybrid Step 4)
+let wfPerActive = false;  // true = cost uses per-workflow runs × each workflow's own steps (no averaging)
 // Roční sleva je PER VENDOR (z naškrábaných annually cen), ne generická — Zapier
 // dává 33 %, Make 15 %, n8n 17 %, Pipedream 0 %. tool.annualFactor = annually/monthly.
 const ANNUAL_DISCOUNT = 0.8; // fallback, když tool nemá annualFactor
@@ -2372,7 +2384,7 @@ function unitExplain(tool, costResult) {
 }
 
 // "How is this price calculated" — plain-language derivation for the expanded result card.
-function costBreakdown(tool, cr, runs, steps, workflows) {
+function costBreakdown(tool, cr, runs, steps, workflows, perWf) {
   const p = cr.plan;
   if (cr.hwOnly) return `Self-hosted — the cost is a VPS or your own hardware sized to the volume (infrastructure, not a per-task fee)${cr.spec ? `. Min spec: ${cr.spec}` : ""}.`;
   if (p.pricePerFlowUsd) {
@@ -2382,6 +2394,11 @@ function costBreakdown(tool, cr, runs, steps, workflows) {
       : `${workflows} active flows − ${free} free = ${billed} × $${p.pricePerFlowUsd}/flow = $${cr.cost}/mo · runs are unlimited.`;
   }
   if (cr.estimated) return `Your volume is above the public plans, so this is an estimate — scaled from the largest published tier (enterprise deals grow sub-linearly). Treat it as a ballpark, confirm with sales.`;
+  if (perWf && perWf.length) {
+    const detail = perWf.map(x => `${x.runs.toLocaleString()}×${x.steps}st`).join(" + ");
+    const uname = UNIT_NAME[tool.slug] || "units";
+    return `Per workflow: ${detail} → ${(cr.units || 0).toLocaleString()} ${uname} total → ${p.name} = $${cr.cost}/mo (exact sum, no averaging).`;
+  }
   const units = cr.units != null ? cr.units : vendorUnits(tool, runs, steps);
   const uname = UNIT_NAME[tool.slug] || "units";
   const annual = (billing === "annual" && annualDiscountPct(p) > 0) ? ` · billed annually (−${annualDiscountPct(p)}%)` : "";
@@ -2680,8 +2697,67 @@ function applyEstimate(est) {
     updateBudget(est.budget);
     document.getElementById("budget-auto").hidden = false;
   }
+  // Pre-distribute the aggregate runs across selected workflows (for the per-workflow
+  // expander), but keep aggregate as the default mode (wfPerActive=false → no change).
+  distributeWfRuns(typeof est.ops === "number" ? est.ops : getCalcRuns());
+  wfPerActive = false;
+  refreshWfPerWrap();
+  const _wfl = document.getElementById("wf-per-list"); if (_wfl) _wfl.hidden = true;
+  const _wfi = document.getElementById("wf-per-icon"); if (_wfi) _wfi.textContent = "▸";
   const note = document.getElementById("estimate-note");
   if (note) note.hidden = false;
+}
+
+// ── Hybrid: per-workflow runs (Step 4) ────────────────────────────────────────
+// Default Step 4 stays aggregate (runs × steps sliders, unchanged). When the user opens
+// "Set runs per workflow", costing switches to EXACT per-workflow: each selected workflow
+// keeps its own runs + its own step count (from its diagram); every tool's cost is the
+// SUM of per-workflow vendor units — no averaging/rounding.
+function wfStepCount(id) { const w = WORKFLOWS.find(x => x.id === id); return (w && w.nodes && w.nodes.length) ? w.nodes.length : 3; }
+function distributeWfRuns(total) {
+  const sel = selectedWorkflows.map(id => WORKFLOWS.find(w => w.id === id)).filter(Boolean);
+  const sum = sel.reduce((s, w) => s + (w.defaultOps || 1), 0) || 1;
+  wfRuns = {};
+  sel.forEach(w => { wfRuns[w.id] = Math.max(1, Math.round((total || 0) * (w.defaultOps || 1) / sum)); });
+}
+function perWfList() { return selectedWorkflows.map(id => ({ id, runs: wfRuns[id] || 0, steps: wfStepCount(id) })); }
+function wfRunsTotal() { return selectedWorkflows.reduce((s, id) => s + (wfRuns[id] || 0), 0); }
+function refreshWfPerWrap() {
+  const wrap = document.getElementById("wf-per-wrap");
+  if (wrap) wrap.hidden = selectedWorkflows.length < 2; // per-workflow only meaningful with 2+
+}
+function renderWfPerList() {
+  const box = document.getElementById("wf-per-list"); if (!box) return;
+  box.innerHTML = selectedWorkflows.map(id => {
+    const w = WORKFLOWS.find(x => x.id === id); if (!w) return "";
+    const idx = findClosestIdx(CALC_RUNS_STEPS, wfRuns[id] || 0);
+    return `<div class="wf-per-row">
+      <div class="wf-per-name">${w.icon || "⚙️"} ${w.title} <span class="wf-per-steps">${wfStepCount(id)} steps</span></div>
+      <div class="budget-row" style="margin-top:4px"><div class="budget-val" id="wfr-val-${id}">${(wfRuns[id] || 0).toLocaleString()}</div>
+        <input type="range" min="0" max="${CALC_RUNS_STEPS.length - 1}" step="1" value="${idx}" oninput="setWfRun('${id}', this.value)"></div>
+    </div>`;
+  }).join("");
+}
+function setWfRun(id, idx) {
+  wfRuns[id] = CALC_RUNS_STEPS[parseInt(idx)];
+  wfPerActive = true;
+  const v = document.getElementById("wfr-val-" + id); if (v) v.textContent = wfRuns[id].toLocaleString();
+  const od = document.getElementById("ops-display"); if (od) od.textContent = wfRunsTotal().toLocaleString() + " (Σ per-workflow)";
+}
+function toggleWfPer() {
+  wfPerActive = !wfPerActive;
+  const list = document.getElementById("wf-per-list"), icon = document.getElementById("wf-per-icon");
+  if (wfPerActive) {
+    if (!wfRunsTotal()) distributeWfRuns(getCalcRuns());
+    renderWfPerList();
+    if (list) list.hidden = false;
+    if (icon) icon.textContent = "▾";
+    const od = document.getElementById("ops-display"); if (od) od.textContent = wfRunsTotal().toLocaleString() + " (Σ per-workflow)";
+  } else {
+    if (list) list.hidden = true;
+    if (icon) icon.textContent = "▸";
+    updateOpsDisplay();
+  }
 }
 
 // Manual drag clears the "auto-estimated" flag on that slider (visual feedback only).
@@ -2768,9 +2844,13 @@ function toolSupportsAll(slug) {
     return app && app.s[slug] === 1;
   });
 }
-function calcCost(tool, runs, steps, workflows) {
-  // runs×steps → vendorova billable jednotka (n8n běhy, Make moduly, Zapier akce…)
-  const ops = vendorUnits(tool, runs, steps);
+function calcCost(tool, runs, steps, workflows, perWf) {
+  // runs×steps → vendorova billable jednotka (n8n běhy, Make moduly, Zapier akce…).
+  // perWf (volitelné, hybrid Step 4): pole {runs, steps} per workflow → PŘESNÝ součet
+  // vendor-units per workflow (žádné průměrování). Bez perWf = agregát (beze změny → parita).
+  const ops = (perWf && perWf.length)
+    ? perWf.reduce((s, x) => s + vendorUnits(tool, x.runs, x.steps), 0)
+    : vendorUnits(tool, runs, steps);
   if (hostPref === "cloud" && tool.selfHostable && !tool.plans.some(p => !p.selfHostOnly)) return null;
   if (hostPref === "selfhost" && !tool.selfHostable) return null;
   if (aiPref === "yes" && !tool.aiFeatures) return null;
@@ -2921,6 +3001,8 @@ function renderResults() {
   const runs = getCalcRuns();
   const steps = getCalcSteps();
   const workflows = getCalcWf();
+  const perWf = wfPerActive ? perWfList() : null;        // hybrid: exact per-workflow costing
+  const effRuns = wfPerActive ? wfRunsTotal() : runs;    // total runs shown / used
   const role = selectedRole || "other";
   const wf = WORKFLOWS.find(w => w.id === selectedWorkflow);
 
@@ -2931,7 +3013,7 @@ function renderResults() {
     selectedBizModel ? `<div class="profile-chip">Company: <span>${bizLabel[selectedBizModel] || selectedBizModel}</span></div>` : "",
     `<div class="profile-chip">Role: <span>${roleLabel[role] || role}</span></div>`,
     wf ? `<div class="profile-chip">Workflow: <span>${wf.title}</span></div>` : "",
-    `<div class="profile-chip">Volume: <span>${runs.toLocaleString()} runs/mo · ${steps} steps · ${workflows} workflows</span></div>`,
+    `<div class="profile-chip">Volume: <span>${effRuns.toLocaleString()} runs/mo · ${perWf ? `${perWf.length} workflows (per-workflow runs)` : `${steps} steps · ${workflows} workflows`}</span></div>`,
     maxBudget > 0 ? `<div class="profile-chip">Budget: <span>$${maxBudget}/mo</span></div>` : "",
     billing === "annual" ? `<div class="profile-chip">Billing: <span>Annual</span></div>` : "",
     hostPref !== "any" ? `<div class="profile-chip">Hosting: <span>${hostPref === "selfhost" ? "Self-hosted" : "Cloud only"}</span></div>` : "",
@@ -2939,7 +3021,7 @@ function renderResults() {
   ].join("");
 
   const items = TOOLS.map(tool => {
-    const costResult = calcCost(tool, runs, steps, workflows);
+    const costResult = calcCost(tool, effRuns, steps, workflows, perWf);
     const score = computeMatchScore(tool, costResult);
     return { tool, costResult, score };
   }).filter(r => r.costResult !== null);
@@ -3001,7 +3083,7 @@ function renderResults() {
       { label: "Ecosystem",   v: Math.round(parts.maturity     * SCORE_W.maturity * 100) },
     ];
     if (parts.wfBonus > 0) contrib.push({ label: "Workflow fit", v: Math.round(parts.wfBonus * 100) });
-    const priceHow = costBreakdown(tool, costResult, runs, steps, workflows);
+    const priceHow = costBreakdown(tool, costResult, effRuns, steps, workflows, perWf);
 
     const cardClass = isTop ? "top-pick" : (score >= 60 ? "good-fit" : "");
 
@@ -3093,6 +3175,7 @@ function buildShareQuery() {
   if (selectedBizModel) p.set("ct", selectedBizModel);
   if (selectedRole) p.set("r", selectedRole);
   if (selectedWorkflows.length) p.set("w", selectedWorkflows.join("."));
+  if (wfPerActive && selectedWorkflows.length) p.set("wr", selectedWorkflows.map(id => id + "~" + (wfRuns[id] || 0)).join("."));
   p.set("o", document.getElementById("ops").value);
   p.set("st", document.getElementById("steps").value);
   p.set("f", document.getElementById("workflows").value);
@@ -3142,6 +3225,7 @@ function profileFromParams(qs) {
     size: p.get("s"), role: p.get("r"),
     bizModel: p.get("ct") || "services", // old links without "ct" → services (1.0×), identical to before
     wfs: p.get("w") ? p.get("w").split(".") : [],
+    wfRuns: p.get("wr") ? Object.fromEntries(p.get("wr").split(".").map(s => { const x = s.split("~"); return [x[0], parseInt(x[1], 10) || 0]; })) : null,
     opsIdx: num(p.get("o"), 4), stepsIdx: num(p.get("st"), 2), wfIdx: num(p.get("f"), 2), budget: num(p.get("b"), 50),
     billing: p.get("bi") === "a" ? "annual" : "monthly",
     host: p.get("h") || "any",
@@ -3198,6 +3282,18 @@ function restoreProfile(prof) {
   updateBudget(maxBudget);
   lastEstimateSig = selectedCompanySize + "|" + selectedBizModel + "|" + selectedRole + "|" + selectedWorkflows.slice().sort().join(",");
   lastWfDefaultsSig = selectedCompanySize + "|" + (selectedRole || "other"); // don't overwrite restored workflow selection
+
+  // Restore per-workflow runs (hybrid) if the share link carried them.
+  if (prof.wfRuns) {
+    wfRuns = {};
+    selectedWorkflows.forEach(id => { if (prof.wfRuns[id] != null) wfRuns[id] = prof.wfRuns[id]; });
+    if (wfRunsTotal() > 0) {
+      wfPerActive = true;
+      refreshWfPerWrap(); renderWfPerList();
+      const _l = document.getElementById("wf-per-list"); if (_l) _l.hidden = false;
+      const _i = document.getElementById("wf-per-icon"); if (_i) _i.textContent = "▾";
+    }
+  }
 
   // Reflect the restored answers in the UI so navigating back looks right.
   try {
