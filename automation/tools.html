@@ -145,6 +145,15 @@
     .var-card h3 { font-size: 1.05rem; font-weight: 800; }
     .price-line { font-family: var(--mono); font-weight: 700; font-size: 1.5rem; color: var(--accent-br); margin: 4px 0 2px; }
     .price-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 4px; }
+    .price-save { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 5px; margin-top: 2px; background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+    /* Monthly/Annual toggle — default monthly; body[data-billing=annual] flips it */
+    .bill-annual { display: none; }
+    body[data-billing="annual"] .bill-monthly { display: none; }
+    body[data-billing="annual"] .bill-annual { display: block; }
+    .bill-toggle { display: inline-flex; align-items: stretch; gap: 0; background: var(--surface); border: 1px solid var(--border2); border-radius: 100px; padding: 3px; margin-bottom: 28px; }
+    .bill-toggle button { font-family: var(--font); font-size: 13px; font-weight: 700; color: var(--muted); background: transparent; border: 0; cursor: pointer; padding: 8px 18px; border-radius: 100px; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .bill-toggle button.active { background: var(--accent); color: var(--ink); }
+    .bill-toggle .save-hint { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--green); padding: 8px 4px 8px 12px; align-self: center; }
     .hw-line { font-size: 12.5px; color: var(--text2); margin-top: 6px; }
     .hw-line .hw-cost { font-family: var(--mono); font-weight: 700; color: var(--text); }
     .spec-line { font-size: 11.5px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
@@ -232,7 +241,13 @@
     <a href="#automatisch" style="display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;color:var(--muted)"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=64" alt="Automatisch" style="width:18px;height:18px;border-radius:4px;background:#fff;padding:1px">Automatisch</a>
     <a href="#node-red" style="display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;color:var(--muted)"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=64" alt="Node-RED" style="width:18px;height:18px;border-radius:4px;background:#fff;padding:1px">Node-RED</a>
   </div>
-  <p class="tbl-note">Cheapest qualifying plan at 5,000 runs/mo, 3 steps per workflow, monthly billing — computed live from each vendor's real plans. Self-host VPS = rented server (scales with volume); own server = home electricity (monthly) plus a one-off hardware cost. Values marked ~ are estimates for custom tiers. Verified June 2026 — see the <a href="changelog.html">price changelog</a>.</p>
+  <p class="tbl-note">Cheapest qualifying plan at 5,000 runs/mo, 3 steps per workflow — computed live from each vendor's real plans. Toggle <strong>Monthly / Annual</strong> to see the billed-yearly price (real $/mo paid annually) and the saving where a vendor offers one. Self-host VPS = rented server (scales with volume); own server = home electricity (monthly) plus a one-off hardware cost. Values marked ~ are estimates for custom tiers. Verified June 2026 — see the <a href="changelog.html">price changelog</a>.</p>
+
+  <div class="bill-toggle" role="group" aria-label="Billing period">
+    <button type="button" data-bill="monthly" class="active" aria-pressed="true">Monthly</button>
+    <button type="button" data-bill="annual" aria-pressed="false">Annual</button>
+    <span class="save-hint">save up to 33% paid yearly</span>
+  </div>
 
   <div class="group" id="n8n">
     <div class="group-head">
@@ -246,7 +261,7 @@
           <h3>n8n Cloud</h3>
           <span class="badge badge-blue">Cloud</span>
         </div>
-        <div class="price-line">$69.4<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div><div class="price-sub">per mo @ 5,000 runs · Cloud Pro 10k</div>
+        <div class="bill-monthly"><div class="price-line">$69.4<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div><div class="price-sub">per mo @ 5,000 runs · Cloud Pro 10k</div></div><div class="bill-annual"><div class="price-line">$57.84<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div><div class="price-sub">billed annually @ 5,000 runs · Cloud Pro 10k</div><div class="price-save">save 17% vs monthly</div></div>
         
         <ul class="feat">
           <li>400+ integrations</li>
@@ -306,7 +321,7 @@
           <h3>Make</h3>
           <span class="badge badge-blue">Cloud</span>
         </div>
-        <div class="price-line">$18.82<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div><div class="price-sub">per mo @ 5,000 runs · Core 20k</div>
+        <div class="bill-monthly"><div class="price-line">$18.82<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div><div class="price-sub">per mo @ 5,000 runs · Core 20k</div></div><div class="bill-annual"><div class="price-line">$16<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div><div class="price-sub">billed annually @ 5,000 runs · Core 20k</div><div class="price-save">save 15% vs monthly</div></div>
         
         <ul class="feat">
           <li>1,500+ integrations</li>
@@ -358,7 +373,7 @@
           <h3>Zapier</h3>
           <span class="badge badge-blue">Cloud</span>
         </div>
-        <div class="price-line">$193.5<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div><div class="price-sub">per mo @ 5,000 runs · Professional 10k</div>
+        <div class="bill-monthly"><div class="price-line">$193.5<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div><div class="price-sub">per mo @ 5,000 runs · Professional 10k</div></div><div class="bill-annual"><div class="price-line">$129<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div><div class="price-sub">billed annually @ 5,000 runs · Professional 10k</div><div class="price-save">save 33% vs monthly</div></div>
         
         <ul class="feat">
           <li>9,000+ integrations</li>
@@ -555,6 +570,25 @@
 <script>
 function toggleFaq(el) { el.parentElement.classList.toggle("open"); }
 
+/* ── BILLING TOGGLE — monthly/annual price switch (tools.html) ── */
+(function () {
+  var toggle = document.querySelector('.bill-toggle');
+  if (!toggle) return;
+  var btns = toggle.querySelectorAll('button[data-bill]');
+  toggle.addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-bill]');
+    if (!btn) return;
+    var bill = btn.getAttribute('data-bill');
+    if (bill === 'annual') document.body.setAttribute('data-billing', 'annual');
+    else document.body.removeAttribute('data-billing');
+    btns.forEach(function (b) {
+      var on = b === btn;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  });
+})();
+/* ── /BILLING TOGGLE ── */
 /* ── EMAILCAP:JS:START — wire every .price-alerts form on the page ── */
 (function () {
   var OK_MSG  = 'Check your inbox to confirm your subscription.';

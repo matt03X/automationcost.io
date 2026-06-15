@@ -32,7 +32,7 @@ import json
 import sys
 from pathlib import Path
 
-from build_hosting import expand_hosting_variants, hw_tier_for
+from build_hosting import expand_hosting_variants, hw_tier_for, apply_fx
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "tools.json"
@@ -198,6 +198,15 @@ _TOOLS_CSS = _BASE_HEAD_CSS + """
     .var-card h3 { font-size: 1.05rem; font-weight: 800; }
     .price-line { font-family: var(--mono); font-weight: 700; font-size: 1.5rem; color: var(--accent-br); margin: 4px 0 2px; }
     .price-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 4px; }
+    .price-save { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 5px; margin-top: 2px; background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+    /* Monthly/Annual toggle — default monthly; body[data-billing=annual] flips it */
+    .bill-annual { display: none; }
+    body[data-billing="annual"] .bill-monthly { display: none; }
+    body[data-billing="annual"] .bill-annual { display: block; }
+    .bill-toggle { display: inline-flex; align-items: stretch; gap: 0; background: var(--surface); border: 1px solid var(--border2); border-radius: 100px; padding: 3px; margin-bottom: 28px; }
+    .bill-toggle button { font-family: var(--font); font-size: 13px; font-weight: 700; color: var(--muted); background: transparent; border: 0; cursor: pointer; padding: 8px 18px; border-radius: 100px; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .bill-toggle button.active { background: var(--accent); color: var(--ink); }
+    .bill-toggle .save-hint { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--green); padding: 8px 4px 8px 12px; align-self: center; }
     .hw-line { font-size: 12.5px; color: var(--text2); margin-top: 6px; }
     .hw-line .hw-cost { font-family: var(--mono); font-weight: 700; color: var(--text); }
     .spec-line { font-size: 11.5px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
@@ -383,6 +392,30 @@ _EMAILCAP_JS = """
 /* ── EMAILCAP:JS:END ── */"""
 
 
+# Monthly/Annual přepínač — vanilla JS, flipne body[data-billing]; CSS udělá zbytek.
+# Default monthly (žádný atribut). Bez závislostí, no-op když toggle na stránce není.
+_BILLING_JS = """
+/* ── BILLING TOGGLE — monthly/annual price switch (tools.html) ── */
+(function () {
+  var toggle = document.querySelector('.bill-toggle');
+  if (!toggle) return;
+  var btns = toggle.querySelectorAll('button[data-bill]');
+  toggle.addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-bill]');
+    if (!btn) return;
+    var bill = btn.getAttribute('data-bill');
+    if (bill === 'annual') document.body.setAttribute('data-billing', 'annual');
+    else document.body.removeAttribute('data-billing');
+    btns.forEach(function (b) {
+      var on = b === btn;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  });
+})();
+/* ── /BILLING TOGGLE ── */"""
+
+
 def _footer(month_year: str) -> str:
     return f"""
 <footer>
@@ -426,23 +459,47 @@ def _feat_items(variant: dict) -> list[tuple[str, bool]]:
 # tools.html — přehled (varianty seskupené pod base nástrojem)
 # ---------------------------------------------------------------------------
 
+def _price_block(r, kind: str, billing: str) -> str:
+    """Jeden cenový blok (monthly nebo annual) z výsledku enginu pro daný billing.
+    r = engine.cheapest_monthly(...) pro tento billing; None → pomlčka."""
+    if r is None:
+        return '<div class="price-line">—</div>'
+    price = _fmt_usd(r["cost"], r["est"])
+    # engine label může nést "+ops" (vendorův přepočet) — na webu jednotka = runs
+    plan_label = r["label"].replace("+ops", "+ overage")
+    if kind == "own":
+        sub = f"electricity / mo @ {DEFAULT_VOLUME:,} runs"
+    else:
+        bill_word = "billed annually" if billing == "annual" else "per mo"
+        sub = f"{bill_word} @ {DEFAULT_VOLUME:,} runs · {_html_escape(plan_label)}"
+    return (f'<div class="price-line">{price}<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div>'
+            f'<div class="price-sub">{sub}</div>')
+
+
 def _render_var_card(variant: dict, engine) -> str:
     kind = variant.get("hostingKind", "saas")
     kind_label, badge_cls = _kind_badge(kind)
     base = _base_slug(variant)
-    r = engine.cheapest_monthly(variant, DEFAULT_VOLUME, DEFAULT_STEPS)
-    if r is None:
-        price_block = '<div class="price-line">—</div>'
+    rm = engine.cheapest_monthly(variant, DEFAULT_VOLUME, DEFAULT_STEPS)
+    # annual = reálné $/mo placeno ročně; engine vrací monthly cenu, když plán nemá annualUsd
+    ra = engine.cheapest_monthly(variant, DEFAULT_VOLUME, DEFAULT_STEPS, billing="annual")
+
+    # sleva jen když annual reálně < monthly (jinak žádná vymyšlená sleva)
+    has_annual = (rm is not None and ra is not None
+                  and isinstance(rm.get("cost"), (int, float))
+                  and isinstance(ra.get("cost"), (int, float))
+                  and ra["cost"] < rm["cost"])
+
+    monthly_block = _price_block(rm, kind, "monthly")
+    if has_annual:
+        save = round((1 - ra["cost"] / rm["cost"]) * 100)
+        annual_block = (_price_block(ra, kind, "annual")
+                        + f'<div class="price-save">save {save}% vs monthly</div>')
+        # data-billing přepíná .bill-monthly/.bill-annual; default monthly
+        price_block = (f'<div class="bill-monthly">{monthly_block}</div>'
+                       f'<div class="bill-annual">{annual_block}</div>')
     else:
-        price = _fmt_usd(r["cost"], r["est"])
-        # engine label může nést "+ops" (vendorův přepočet) — na webu jednotka = runs
-        plan_label = r["label"].replace("+ops", "+ overage")
-        if kind == "own":
-            sub = f"electricity / mo @ {DEFAULT_VOLUME:,} runs"
-        else:
-            sub = f"per mo @ {DEFAULT_VOLUME:,} runs · {_html_escape(plan_label)}"
-        price_block = (f'<div class="price-line">{price}<span style="font-size:0.9rem;color:var(--muted);font-weight:600">/mo</span></div>'
-                       f'<div class="price-sub">{sub}</div>')
+        price_block = monthly_block
 
     hw_block = ""
     if kind == "own":
@@ -538,12 +595,31 @@ def _render_tools_html(tools: list[dict], variants: list[dict], site: dict,
         toc_inline = (f'  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px">\n'
                       f'{chips}\n  </div>\n')
 
+    # přepínač Monthly/Annual má smysl jen když aspoň jeden tool reálně nabízí annualUsd
+    any_annual = any(
+        (lambda rm, ra: rm is not None and ra is not None
+         and isinstance(rm.get("cost"), (int, float))
+         and isinstance(ra.get("cost"), (int, float)) and ra["cost"] < rm["cost"])(
+            engine.cheapest_monthly(v, DEFAULT_VOLUME, DEFAULT_STEPS),
+            engine.cheapest_monthly(v, DEFAULT_VOLUME, DEFAULT_STEPS, billing="annual"))
+        for v in variants)
+
+    bill_toggle = ""
+    if any_annual:
+        bill_toggle = (
+            '  <div class="bill-toggle" role="group" aria-label="Billing period">\n'
+            '    <button type="button" data-bill="monthly" class="active" aria-pressed="true">Monthly</button>\n'
+            '    <button type="button" data-bill="annual" aria-pressed="false">Annual</button>\n'
+            '    <span class="save-hint">save up to 33% paid yearly</span>\n'
+            '  </div>\n')
+
     note = (f"Cheapest qualifying plan at {DEFAULT_VOLUME:,} runs/mo, {DEFAULT_STEPS} steps per "
-            "workflow, monthly billing — computed live from each vendor's real plans. "
-            "Self-host VPS = rented server (scales with volume); own server = home electricity "
-            "(monthly) plus a one-off hardware cost. Values marked ~ are estimates for "
-            f"custom tiers. Verified {month_year} — see the "
-            '<a href="changelog.html">price changelog</a>.')
+            "workflow — computed live from each vendor's real plans. Toggle "
+            "<strong>Monthly / Annual</strong> to see the billed-yearly price (real $/mo paid "
+            "annually) and the saving where a vendor offers one. Self-host VPS = rented server "
+            "(scales with volume); own server = home electricity (monthly) plus a one-off "
+            "hardware cost. Values marked ~ are estimates for custom tiers. Verified "
+            f"{month_year} — see the <a href=\"changelog.html\">price changelog</a>.")
 
     body = f"""
 <div class="wrap">
@@ -558,6 +634,7 @@ def _render_tools_html(tools: list[dict], variants: list[dict], site: dict,
 
 {toc_inline}  <p class="tbl-note">{note}</p>
 
+{bill_toggle}
 {chr(10).join(groups)}
 
 {_finder_cta("Not sure which one fits?", "Skip the reading — answer 4 quick questions and get your cheapest-fit tool ranked at your exact volume in 30 seconds.")}
@@ -571,6 +648,7 @@ def _render_tools_html(tools: list[dict], variants: list[dict], site: dict,
             + body
             + _footer(month_year)
             + "\n<script>\nfunction toggleFaq(el) { el.parentElement.classList.toggle(\"open\"); }\n"
+            + _BILLING_JS
             + _EMAILCAP_JS
             + "\n</script>\n\n</body>\n</html>\n")
 
@@ -829,6 +907,7 @@ def main() -> int:
 
     data = json.loads(DATA.read_text(encoding="utf-8"))
     tools = data["tools"]
+    apply_fx(tools)  # n8n (EUR) → USD, shodně s automation/build.py → standalone == produkční výstup
     site = _load_site()
     tools_meta = data.get("_meta", {})
 

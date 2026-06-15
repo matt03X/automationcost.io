@@ -258,6 +258,17 @@
     .pc-slider-group { display: flex; align-items: center; gap: 12px; flex: 1 1 320px; min-width: 260px; }
     @media (max-width: 560px) { .pc-slider-group { flex-basis: 100%; } }
 
+    /* ── Monthly / Annual billing toggle (segmented) ── */
+    .pc-billing-group { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .billing-seg { display: inline-flex; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 3px; gap: 2px; }
+    .billing-seg button { background: transparent; border: none; color: var(--muted); font-family: inherit; font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: background 0.15s, color 0.15s; white-space: nowrap; }
+    .billing-seg button:hover { color: var(--text); }
+    .billing-seg button.active { background: var(--accent); color: var(--ink); }
+    .billing-seg .seg-save { font-size: 10px; opacity: 0.85; margin-left: 4px; }
+    /* discount badge shown on annual plans */
+    .disc-badge { display: inline-block; font-size: 10px; font-weight: 800; background: rgba(16,185,129,0.16); border: 1px solid rgba(16,185,129,0.4); color: var(--green); border-radius: 4px; padding: 1px 5px; margin-left: 5px; vertical-align: middle; white-space: nowrap; }
+    .no-disc-note { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+
     /* ── Best-for-me toggle ── */
     .bfm-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
     .bfm-toggle { display: inline-flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--border2); border-radius: 100px; padding: 8px 16px 8px 11px; font-family: var(--font); font-size: 13.5px; font-weight: 700; color: var(--text2); cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s, box-shadow 0.15s; }
@@ -556,6 +567,13 @@
         <span class="ops-val" id="pc-steps-val">3</span>
         <input type="range" class="ops-range" id="pc-steps-range" min="0" max="11" value="2" step="1"
                oninput="pcStepsChanged()">
+      </div>
+      <div class="pc-billing-group">
+        <label>Billing</label>
+        <div class="billing-seg" id="pc-billing-seg">
+          <button type="button" class="active" data-pcbilling="monthly" onclick="setPcBilling('monthly')">Monthly</button>
+          <button type="button" data-pcbilling="annual" onclick="setPcBilling('annual')">Annual<span class="seg-save">save</span></button>
+        </div>
       </div>
       <span style="font-size:11px;color:var(--muted);flex-basis:100%;">Workflow runs/mo × steps per run. Each tool's billing unit differs (Make bills every step, Zapier skips triggers, n8n &amp; Pipedream bill per run) — we convert it per vendor. The <a href="calculator.html">calculator</a> goes deeper.</span>
       <span style="font-size:12px;color:var(--muted)">Drag to find the cheapest plan at your volume</span>
@@ -965,6 +983,35 @@ const MAX_SLOTS = 4;
 
 // ── State ─────────────────────────────────────────────────────────────────────
 let selected = [];
+// Billing cycle for all cost calcs across the 3 views ("monthly" | "annual").
+// Annual uses plan.annualUsd (real billed-annually $/mo) when present; otherwise monthly.
+let pcBilling = "monthly";
+
+// Real per-plan annual discount %, only when a genuine annualUsd < monthlyUsd exists.
+// No invented discount: returns 0 when annualUsd is missing or not cheaper.
+function cmpDiscountPct(plan) {
+  if (!plan || plan.selfHostOnly) return 0;
+  if (typeof plan.annualUsd !== "number" || typeof plan.monthlyUsd !== "number" || plan.monthlyUsd <= 0) return 0;
+  if (plan.annualUsd >= plan.monthlyUsd) return 0;
+  return Math.round((1 - plan.annualUsd / plan.monthlyUsd) * 100);
+}
+
+// Base monthly-equivalent price for a plan under the current billing cycle.
+// Annual → plan.annualUsd when it's a real number and not self-host; else monthlyUsd.
+function cmpPlanBase(plan, billing) {
+  if (billing === "annual" && !plan.selfHostOnly && typeof plan.annualUsd === "number") return plan.annualUsd;
+  return plan.monthlyUsd;
+}
+
+// Flip billing cycle and re-render whichever view is showing (state is global).
+function setPcBilling(v) {
+  pcBilling = (v === "annual") ? "annual" : "monthly";
+  document.querySelectorAll("#pc-billing-seg [data-pcbilling]").forEach(b =>
+    b.classList.toggle("active", b.dataset.pcbilling === pcBilling));
+  if (currentView === "tools")    renderResults();
+  if (currentView === "plancomp") pcRenderGrid(pcGetOps());
+  if (currentView === "allplans") renderPlansTable();
+}
 
 // ── URL params ────────────────────────────────────────────────────────────────
 function readUrl() {
@@ -1094,13 +1141,13 @@ function cmpHwCost(tool, ops) {
   return tool.selfHostHw[tool.selfHostHw.length - 1].usd;
 }
 const CMP_STEPS = 3; // předpokládané kroky/workflow pro převod (compare zjednodušení)
-function cheapestPlan(tool, runs = 5000, steps = CMP_STEPS) {
+function cheapestPlan(tool, runs = 5000, steps = CMP_STEPS, billing = pcBilling) {
   const ops = cmpVendorUnits(tool, runs, steps);
   let best = null;
   for (const plan of tool.plans) {
     if (plan.monthlyUsd === null) continue;
     const hwPlan = plan.selfHostOnly && plan.monthlyUsd <= 8 && tool.selfHostHw;
-    let cost = hwPlan ? cmpHwCost(tool, ops) : plan.monthlyUsd;
+    let cost = hwPlan ? cmpHwCost(tool, ops) : cmpPlanBase(plan, billing);
     if (!plan.selfHostOnly && ops > plan.opsIncluded) {
       if (plan.creditBands) {
         cost = Math.round((cost + (ops - plan.opsIncluded) * cmpCreditRate(plan.creditBands, ops)) * 100) / 100;
@@ -1119,7 +1166,8 @@ function cheapestPlan(tool, runs = 5000, steps = CMP_STEPS) {
     const maxInc = anchors.length ? Math.max(...anchors.map(p => p.opsIncluded)) : 0;
     const anchor = anchors.filter(p => p.opsIncluded === maxInc).sort((a, b) => a.monthlyUsd - b.monthlyUsd)[0];
     if (anchor && ops > anchor.opsIncluded) {
-      let est = Math.max(5, Math.round(anchor.monthlyUsd * Math.max(1.3, Math.pow(ops / anchor.opsIncluded, 0.7)) / 5) * 5);
+      const anchorBase = cmpPlanBase(anchor, billing);
+      let est = Math.max(5, Math.round(anchorBase * Math.max(1.3, Math.pow(ops / anchor.opsIncluded, 0.7)) / 5) * 5);
       if (best === null || (ops > anchor.opsIncluded * 2 && est < best.cost)) best = { cost: est, plan: customPlan, estimated: true };
     }
   }
@@ -1129,11 +1177,11 @@ function cheapestPlan(tool, runs = 5000, steps = CMP_STEPS) {
 // Per-plan monthly cost in $ at (runs, steps) — mirrors cheapestPlan's inner branch
 // for ONE plan so the grid can price every visible plan steps-aware. Returns null
 // for custom plans (no public price) or plans that can't absorb overage at volume.
-function planCostAt(tool, plan, runs, steps) {
+function planCostAt(tool, plan, runs, steps, billing = pcBilling) {
   if (plan.monthlyUsd === null) return null;
   const ops = cmpVendorUnits(tool, runs, steps);
   const hwPlan = plan.selfHostOnly && plan.monthlyUsd <= 8 && tool.selfHostHw;
-  let cost = hwPlan ? cmpHwCost(tool, ops) : plan.monthlyUsd;
+  let cost = hwPlan ? cmpHwCost(tool, ops) : cmpPlanBase(plan, billing);
   if (!plan.selfHostOnly && ops > plan.opsIncluded) {
     if (plan.creditBands) {
       cost = Math.round((cost + (ops - plan.opsIncluded) * cmpCreditRate(plan.creditBands, ops)) * 100) / 100;
@@ -1346,7 +1394,12 @@ function renderPrice(costObj, tool) {
     const hw = pcHwOneOff(tool, 5000, 3);
     if (hw) hwNote = `<div class="price-note">+ ~$${hw.hwOneOff} one-off hardware</div>`;
   }
-  return `<span class="price-tag">${costObj.estimated ? "~" : ""}$${costObj.cost}<small>/mo</small></span><div class="price-note">${costObj.plan.name}</div>${hwNote}`;
+  // Annual: real discount badge inline, or a quiet "no annual discount" note (no invented %).
+  const pct = cmpDiscountPct(costObj.plan);
+  const showAnnual = pcBilling === "annual" && costObj.plan && !costObj.plan.selfHostOnly && costObj.plan.monthlyUsd !== null;
+  const badgeHtml   = (showAnnual && pct > 0) ? `<span class="disc-badge">−${pct}%</span>` : "";
+  const noDiscHtml  = (showAnnual && pct === 0) ? `<div class="no-disc-note">no annual discount</div>` : "";
+  return `<span class="price-tag">${costObj.estimated ? "~" : ""}$${costObj.cost}<small>/mo</small></span>${badgeHtml}<div class="price-note">${costObj.plan.name}</div>${noDiscHtml}${hwNote}`;
 }
 
 function renderPlans(tool) {
@@ -1620,8 +1673,10 @@ function pcRenderGrid(ops) {
   const wRow = document.getElementById("pc-winner");
   if (winPlan && winActive) {
     wRow.style.display = "";
+    const winPct = cmpDiscountPct(winPlan);
+    const winDisc = (pcBilling === "annual" && winPct > 0) ? ` <span class="disc-badge">−${winPct}% annual</span>` : "";
     const priceTxt = winActive.cost === 0 ? "Free"
-                   : `${winActive.estimated ? "~" : ""}$${winActive.cost}/mo`;
+                   : `${winActive.estimated ? "~" : ""}$${winActive.cost}/mo${winDisc}`;
     const hostBit = pcHostingLabel(winTool) ? ` · ${pcHostingLabel(winTool)}` : "";
     wRow.innerHTML = `
       <div>
@@ -1673,13 +1728,18 @@ function pcRenderGrid(ops) {
 
       // Steps-aware monthly price for this plan ($). null = custom / can't absorb volume.
       const cost = planCostAt(tool, plan, runs, steps);
+      // Annual: real discount badge, or quiet note when this plan has no annual price.
+      const pct = cmpDiscountPct(plan);
+      const showAnnual = pcBilling === "annual" && !isCustom && !isSelf;
+      const discBadge = (showAnnual && pct > 0) ? ` <span class="disc-badge">−${pct}%</span>` : "";
+      const noDiscNote = (showAnnual && pct === 0 && cost !== null && cost !== 0) ? `<div class="no-disc-note">no annual discount</div>` : "";
       const priceHtml = isCustom
         ? `<div class="plan-card-price"><span style="color:var(--muted);font-size:1rem">Custom</span></div>`
         : cost === 0
         ? `<div class="plan-card-price" style="color:var(--accent)">Free</div>`
         : cost === null
         ? `<div class="plan-card-price"><span style="color:var(--muted);font-size:1rem">—</span></div>`
-        : `<div class="plan-card-price">$${cost}<small>/mo</small></div>`;
+        : `<div class="plan-card-price">$${cost}<small>/mo</small>${discBadge}</div>${noDiscNote}`;
 
       // Self-host "own server": monthly = electricity (from engine); HW one-off shown separately.
       let hwHtml = "";
@@ -1787,8 +1847,8 @@ function renderPlansTable() {
   // Sort
   if (sortBy === "price") {
     rows.sort((a, b) => {
-      const pa = a.plan.monthlyUsd === null ? 99999 : a.plan.monthlyUsd;
-      const pb = b.plan.monthlyUsd === null ? 99999 : b.plan.monthlyUsd;
+      const pa = a.plan.monthlyUsd === null ? 99999 : cmpPlanBase(a.plan, pcBilling);
+      const pb = b.plan.monthlyUsd === null ? 99999 : cmpPlanBase(b.plan, pcBilling);
       return pa - pb;
     });
   } else if (sortBy === "ops") {
@@ -1826,7 +1886,12 @@ function renderPlansTable() {
     } else if (plan.monthlyUsd === 0) {
       priceCell = `<span class="pill-free">Free</span>`;
     } else {
-      priceCell = `<strong>$${plan.monthlyUsd}</strong>`;
+      // Annual: show real billed-annually $/mo + discount badge; else monthly (no invented discount).
+      const pct = cmpDiscountPct(plan);
+      const base = cmpPlanBase(plan, pcBilling);
+      const discBadge = (pcBilling === "annual" && pct > 0) ? ` <span class="disc-badge">−${pct}%</span>` : "";
+      const noDisc = (pcBilling === "annual" && pct === 0) ? ` <span style="color:var(--muted);font-size:11px">monthly = annual</span>` : "";
+      priceCell = `<strong>$${base}</strong>${discBadge}${noDisc}`;
     }
 
     const opsCell = plan.opsIncluded === Infinity

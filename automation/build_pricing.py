@@ -102,9 +102,25 @@ _KIND_LABEL = {
 }
 
 
-def _engine_cost(engine, variant: dict, runs: int):
+def _engine_cost(engine, variant: dict, runs: int, billing: str = "monthly"):
     """cheapest_monthly → dict {cost,label,est}; chyba → None (přeskočí kartu/řádek)."""
-    return engine.cheapest_monthly(variant, runs, STEPS)
+    return engine.cheapest_monthly(variant, runs, STEPS, billing=billing)
+
+
+def _engine_costs(engine, variant: dict, runs: int):
+    """Vrátí (monthly, annual) dvojici dictů; annual může == monthly (žádná sleva)."""
+    m = _engine_cost(engine, variant, runs, "monthly")
+    a = _engine_cost(engine, variant, runs, "annual")
+    return m, a
+
+
+def _discount_pct(monthly: float, annual: float) -> int | None:
+    """Sleva % roční vs měsíční účtování; None když roční sleva neexistuje."""
+    if not isinstance(monthly, (int, float)) or not isinstance(annual, (int, float)):
+        return None
+    if monthly <= 0 or annual >= monthly:
+        return None
+    return round((1 - annual / monthly) * 100)
 
 
 def _label_runs(label: str) -> str:
@@ -113,14 +129,20 @@ def _label_runs(label: str) -> str:
 
 
 def _plan_cards_for_variant(engine, variant: dict) -> str:
-    """Karty: pro každý VOLUME jedna karta s reálnou cenou. U 'own' přidá HW one-off + spec."""
+    """Karty: pro každý VOLUME jedna karta s reálnou cenou (monthly + roční, je-li).
+
+    Cena nese data-month/data-annual atributy → JS toggle přepíná zobrazení.
+    Default = monthly. Plán bez annualUsd → annual == monthly (žádná roční řádka)."""
     kind = variant.get("hostingKind", "saas")
     cards = []
     for runs in VOLUMES:
-        r = _engine_cost(engine, variant, runs)
+        r, ra = _engine_costs(engine, variant, runs)
         if r is None:
             continue
-        price = _fmt_usd(r["cost"], r["est"])
+        price_m = _fmt_usd(r["cost"], r["est"])
+        price_a = _fmt_usd(ra["cost"], ra["est"]) if ra else price_m
+        suffix = "/mo electricity" if kind == "own" else "/mo"
+        pct = _discount_pct(r["cost"], ra["cost"]) if ra else None
         detail = [f"<li>{runs:,} runs / month</li>", f"<li>{_html_escape(_label_runs(r['label']))}</li>"]
         if kind == "own":
             tier = hw_tier_for(variant, runs)
@@ -128,11 +150,22 @@ def _plan_cards_for_variant(engine, variant: dict) -> str:
                 detail.append(f"<li>+ ~${tier.get('hwOneOff', 0):,} hardware (one-off)</li>")
                 if tier.get("spec"):
                     detail.append(f'<li class="spec">{_html_escape(tier["spec"])}</li>')
-        suffix = "/mo electricity" if kind == "own" else "/mo"
+        # roční řádek pod cenou: jen když plán reálně nabízí roční slevu
+        if pct is not None:
+            annual_note = (f'        <div class="plan-annual" data-month="" '
+                           f'data-annual="{price_a}{suffix} billed annually — save {pct}%">'
+                           f'</div>\n')
+        elif kind not in ("own", "vps") and not variant.get("selfHostOnly"):
+            annual_note = ('        <div class="plan-annual" data-month="" '
+                           'data-annual="No annual pricing tracked yet"></div>\n')
+        else:
+            annual_note = ""
         cards.append(
             '      <div class="plan-card">\n'
             f'        <div class="plan-name">{runs:,} runs</div>\n'
-            f'        <div class="plan-price">{price}<span>{suffix}</span></div>\n'
+            f'        <div class="plan-price"><span class="price-num" data-month="{price_m}" '
+            f'data-annual="{price_a}">{price_m}</span><span class="price-suffix">{suffix}</span></div>\n'
+            f'{annual_note}'
             f'        <ul class="plan-detail">\n          ' + "\n          ".join(detail) + "\n"
             "        </ul>\n      </div>")
     return "\n".join(cards)
@@ -157,7 +190,10 @@ def _variant_section(engine, variant: dict) -> str:
 
 
 def _comparison_table(engine, by_slug: dict, focus_slug: str, vol: int) -> str:
-    """„<Tool> vs alternativy" na daném runs objemu — ceny VŠECH 7 toolů z enginu."""
+    """„<Tool> vs alternativy" na daném runs objemu — ceny VŠECH 7 toolů z enginu.
+
+    Price cell nese data-month/data-annual → JS toggle přepíná i tabulku.
+    Plán bez roční slevy: annual == monthly (cell se nemění)."""
     rows = []
     ordered = [focus_slug] + [s for s in PRICING_SLUGS if s != focus_slug]
     for s in ordered:
@@ -165,7 +201,9 @@ def _comparison_table(engine, by_slug: dict, focus_slug: str, vol: int) -> str:
         r = engine.cheapest_monthly(t, vol, STEPS)
         if r is None:
             continue
-        price = _fmt_usd(r["cost"], r["est"])
+        ra = engine.cheapest_monthly(t, vol, STEPS, billing="annual")
+        price_m = _fmt_usd(r["cost"], r["est"])
+        price_a = _fmt_usd(ra["cost"], ra["est"]) if ra else price_m
         is_focus = s == focus_slug
         name = (f'<strong>{t["name"]}</strong>' if is_focus
                 else f'<a href="{s}-pricing.html">{t["name"]}</a>')
@@ -173,7 +211,8 @@ def _comparison_table(engine, by_slug: dict, focus_slug: str, vol: int) -> str:
               else '<span class="tag-no">No</span>')
         rows.append(
             f"        <tr><td>{name}</td>"
-            f'<td class="price-cell">{price}</td>'
+            f'<td class="price-cell"><span class="price-num" data-month="{price_m}" '
+            f'data-annual="{price_a}">{price_m}</span></td>'
             f'<td>{t["integrations"]:,}+</td>'
             f"<td>{sh}</td></tr>")
     return "\n".join(rows)
@@ -363,15 +402,19 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
 
   <div class="section">
     <h2>{name} plans &amp; real cost</h2>
-    <p class="section-sub">Cheapest qualifying plan at four typical run volumes (3-step workflows, monthly billing) — prices generated live from our data, never hand-typed.</p>
+    <p class="section-sub">Cheapest qualifying plan at four typical run volumes (3-step workflows) — prices generated live from our data, never hand-typed. Toggle to see prices when billed annually.</p>
+    <div class="billing-toggle" role="group" aria-label="Billing period">
+      <button type="button" class="bt-opt is-active" data-billing="month" aria-pressed="true">Monthly</button>
+      <button type="button" class="bt-opt" data-billing="annual" aria-pressed="false">Annual</button>
+    </div>
 {plan_sections}
   </div>
 
   <div class="section">
     <h2>{name} vs alternatives</h2>
-    <p class="section-sub">Price for {cmp_vol:,} runs / month across every tool we track.</p>
+    <p class="section-sub">Price for {cmp_vol:,} runs / month across every tool we track. Use the Monthly / Annual toggle above to switch how the prices are billed.</p>
     <table class="comparison-table">
-      <thead><tr><th>Tool</th><th>Price for {cmp_vol:,} runs</th><th>Integrations</th><th>Self-host</th></tr></thead>
+      <thead><tr><th>Tool</th><th>Price for {cmp_vol:,} runs <span class="th-billing" data-month="(monthly)" data-annual="(billed annually)">(monthly)</span></th><th>Integrations</th><th>Self-host</th></tr></thead>
       <tbody>
 {cmp_rows}
       </tbody>
@@ -430,6 +473,27 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
 
 <script>
 function toggleFaq(el) {{ el.closest(".faq-item").classList.toggle("open"); }}
+
+/* ── billing Monthly/Annual toggle — vanilla, default monthly ── */
+(function () {{
+  var toggle = document.querySelector(".billing-toggle");
+  if (!toggle) return;
+  function apply(period) {{
+    var attr = period === "annual" ? "data-annual" : "data-month";
+    document.querySelectorAll("[" + attr + "]").forEach(function (el) {{
+      if (el.classList.contains("bt-opt")) return;
+      el.textContent = el.getAttribute(attr) || "";
+    }});
+    toggle.querySelectorAll(".bt-opt").forEach(function (b) {{
+      var on = b.getAttribute("data-billing") === period;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    }});
+  }}
+  toggle.querySelectorAll(".bt-opt").forEach(function (b) {{
+    b.addEventListener("click", function () {{ apply(b.getAttribute("data-billing")); }});
+  }});
+}})();
 
 /* ── EMAILCAP:JS:START — wire every .price-alerts form on the page ── */
 (function () {{
@@ -544,12 +608,19 @@ _PRICING_CSS = """    *, *::before, *::after { box-sizing: border-box; margin: 0
     .section { margin-bottom: 48px; }
     .section h2 { font-size: 1.45rem; font-weight: 800; margin-bottom: 6px; }
     .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; max-width: 680px; }
+    .billing-toggle { display: inline-flex; background: var(--surface); border: 1px solid var(--border2); border-radius: 999px; padding: 3px; gap: 2px; margin: 0 0 20px; }
+    .bt-opt { background: none; border: none; color: var(--muted); font-family: var(--font); font-size: 13px; font-weight: 700; padding: 7px 18px; border-radius: 999px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .bt-opt:hover { color: var(--text); }
+    .bt-opt.is-active { background: var(--accent); color: var(--ink); }
     .variant-head { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-br); margin: 22px 0 10px; }
     .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; margin-bottom: 8px; }
     .plan-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
     .plan-name { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
     .plan-price { font-family: var(--mono); font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
-    .plan-price span { font-size: 13px; font-weight: 400; color: var(--muted); }
+    .plan-price .price-suffix { font-size: 13px; font-weight: 400; color: var(--muted); }
+    .plan-annual { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--accent-br); min-height: 16px; margin-bottom: 4px; }
+    .plan-annual:empty { min-height: 0; margin-bottom: 0; }
+    .th-billing { font-family: var(--mono); font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--muted); }
     .plan-detail { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
     .plan-detail li { list-style: none; padding: 2px 0; }
     .plan-detail li::before { content: "·"; margin-right: 6px; color: var(--accent); }

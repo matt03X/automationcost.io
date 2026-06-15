@@ -298,6 +298,7 @@
     .result-cost.c-mid { color: var(--yellow); }
     .result-cost.c-exp { color: var(--red); }
     .result-cost-note { font-size: 11px; color: var(--muted); }
+    .disc-badge { display: inline-block; font-size: 10px; font-weight: 800; background: rgba(16,185,129,0.16); border: 1px solid rgba(16,185,129,0.4); color: var(--green); border-radius: 4px; padding: 1px 5px; margin-left: 5px; vertical-align: middle; white-space: nowrap; }
     .result-cta-col { flex-shrink: 0; }
     .visit-btn { display: inline-block; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 7px; text-decoration: none; transition: border-color 0.15s; white-space: nowrap; }
     .visit-btn:hover { border-color: var(--accent); text-decoration: none; }
@@ -2332,7 +2333,15 @@ function applyEstimate(est) {
 function setHost(v, btn) { hostPref = v; document.querySelectorAll("[data-host]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
 function toggleFaq(btn) { btn.closest(".faq-item").classList.toggle("open"); }
 function setAI(v, btn)   { aiPref  = v; document.querySelectorAll("[data-ai]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
-function setBilling(v, btn) { billing = v; document.querySelectorAll("[data-billing]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
+function setBilling(v, btn) {
+  billing = v;
+  document.querySelectorAll("[data-billing]").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  else document.querySelectorAll("[data-billing]").forEach(b => b.classList.toggle("active", b.dataset.billing === v));
+  // If results are already on screen, re-price them live with the new billing cycle.
+  const r = document.getElementById("step-5");
+  if (r && r.classList.contains("active")) renderResults();
+}
 
 // ── Integration picker ────────────────────────────────────────────────────────
 const integSearch  = document.getElementById("integ-search");
@@ -2526,6 +2535,15 @@ function costClass(cost) {
   return "c-exp";
 }
 
+// Real per-plan annual discount % — only when a genuine annualUsd < monthlyUsd exists.
+// No invented discount: returns 0 when annualUsd is missing or not actually cheaper.
+function annualDiscountPct(plan) {
+  if (!plan || plan.selfHostOnly) return 0;
+  if (typeof plan.annualUsd !== "number" || typeof plan.monthlyUsd !== "number" || plan.monthlyUsd <= 0) return 0;
+  if (plan.annualUsd >= plan.monthlyUsd) return 0;
+  return Math.round((1 - plan.annualUsd / plan.monthlyUsd) * 100);
+}
+
 // ── Render results ────────────────────────────────────────────────────────────
 function renderResults() {
   const runs = getCalcRuns();
@@ -2623,8 +2641,8 @@ function renderResults() {
           </button>
         </div>
         <div class="result-cost-col">
-          <div class="result-cost ${costClass(cost)}">${cost === 0 ? "Free" : (costResult.estimated ? "~$" : "$") + cost + "/mo"}</div>
-          <div class="result-cost-note">${costResult.hwOnly ? "server hardware · not a tool fee" : costResult.plan.name + (costResult.estimated ? " · estimate" : "")}</div>
+          <div class="result-cost ${costClass(cost)}">${cost === 0 ? "Free" : (costResult.estimated ? "~$" : "$") + cost + "/mo"}${(billing === "annual" && !costResult.estimated && annualDiscountPct(costResult.plan) > 0) ? `<span class="disc-badge">−${annualDiscountPct(costResult.plan)}%</span>` : ""}</div>
+          <div class="result-cost-note">${costResult.hwOnly ? "server hardware · not a tool fee" : costResult.plan.name + (costResult.estimated ? " · estimate" : "") + (billing === "annual" ? (annualDiscountPct(costResult.plan) > 0 ? " · billed annually" : (!costResult.hwOnly && !costResult.estimated ? " · no annual discount" : "")) : "")}</div>
         </div>
         <div class="result-cta-col">
           <a href="${tool.affiliateUrl}" target="_blank" rel="noopener${tool.hasAffiliate ? " sponsored" : ""}"
