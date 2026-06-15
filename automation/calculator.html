@@ -384,8 +384,8 @@
     /* ────────────────────────────────────────────────────────────────────
        Mobile readability (added) + auto-advance UI cleanup
        ──────────────────────────────────────────────────────────────────── */
-    /* Single-select steps auto-advance, so their Next button is redundant */
-    #step-1 .step-nav { display: none; }
+    /* Single-select steps auto-advance, so their Next button is redundant.
+       Step 1 has TWO questions (size + business type) → keep its Next button. */
     #btn-next-1 { display: none; }
 
     @media (max-width: 760px) {
@@ -3197,24 +3197,33 @@ function resumeStoredProfile() {
 /* ── EMAILCAP:JS:END ── */
 </script>
 
-<!-- Auto-advance single-select wizard steps (company size, role) so no extra
-     confirm click is needed. Wraps the existing globals without touching them. -->
+<!-- Auto-advance wizard steps so no extra confirm click is needed. Wraps the
+     existing globals without touching them. Step 1 has TWO questions (company
+     size + business type): it advances only once BOTH are answered (or via its
+     visible Next button) — never on the first selection alone. -->
 <script>
 (function () {
-  function autoAdvance(fnName, nextStep) {
+  function advance(nextStep) {
+    clearTimeout(window.__acAutoAdvance);
+    // brief beat so the green "selected" state is visible before moving on
+    window.__acAutoAdvance = setTimeout(function () {
+      if (typeof goStep === "function") goStep(nextStep);
+    }, 240);
+  }
+  function wrap(fnName, after) {
     var original = window[fnName];
     if (typeof original !== "function") return;
-    window[fnName] = function (card) {
-      original.call(this, card);
-      clearTimeout(window.__acAutoAdvance);
-      // brief beat so the green "selected" state is visible before moving on
-      window.__acAutoAdvance = setTimeout(function () {
-        if (typeof goStep === "function") goStep(nextStep);
-      }, 240);
-    };
+    window[fnName] = function (card) { original.call(this, card); after(); };
   }
-  autoAdvance("selectCompanySize", 2); // step 1 → step 2
-  autoAdvance("selectRole", 3);        // step 2 → step 3
+  // Step 1 → step 2: only when size AND business type are both picked. The Next
+  // button's enabled state (set by updateStep1Next) is the single source of truth.
+  function step1MaybeAdvance() {
+    var btn = document.getElementById("btn-next-0");
+    if (btn && !btn.disabled) advance(2);
+  }
+  wrap("selectCompanySize", step1MaybeAdvance);
+  wrap("selectBizModel", step1MaybeAdvance);
+  wrap("selectRole", function () { advance(3); }); // step 2 → step 3 (single-select)
 })();
 </script>
 </body>
