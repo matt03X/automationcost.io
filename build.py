@@ -122,6 +122,11 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
         f'opsIncluded: {js_limit(plan.get("opsIncluded"))}',
         f'workflowLimit: {js_limit(plan.get("workflowLimit"))}',
     ]
+    # per-active-flow billing (Activepieces cloud): cost = max(0, flows - freeFlows) * pricePerFlowUsd
+    if plan.get("pricePerFlowUsd"):
+        parts.append(f'pricePerFlowUsd: {plan["pricePerFlowUsd"]}')
+    if plan.get("freeFlows") is not None:
+        parts.append(f'freeFlows: {plan["freeFlows"]}')
     if plan.get("selfHostOnly"):
         parts.append("selfHostOnly: true")
     if "overage" in plan:
@@ -267,6 +272,9 @@ def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: 
         # roční účtování: reálná annualUsd ($/mo billed-annually); chybí-li → annual = monthly (žádná vymyšlená sleva)
         if billing == "annual" and not p.get("selfHostOnly") and isinstance(p.get("annualUsd"), (int, float)):
             cost = p["annualUsd"]
+        # per-active-flow billing (Activepieces cloud): unlimited runs, cost scales with # workflows
+        if p.get("pricePerFlowUsd"):
+            cost = cost + max(0, workflows - (p.get("freeFlows") or 0)) * p["pricePerFlowUsd"]
         over = 0
         inc = p.get("opsIncluded")  # None = unlimited
         if not p.get("selfHostOnly") and inc is not None and ops > inc:

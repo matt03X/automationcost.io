@@ -117,6 +117,11 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
     # chybí-li (pipedream/activepieces zatím nescrapováno) → annual = monthly (žádná vymyšlená sleva)
     if isinstance(plan.get("annualUsd"), (int, float)):
         parts.append(f'annualUsd: {plan["annualUsd"]}')
+    # per-active-flow billing (Activepieces cloud): cost = max(0, flows - freeFlows) * pricePerFlowUsd
+    if plan.get("pricePerFlowUsd"):
+        parts.append(f'pricePerFlowUsd: {plan["pricePerFlowUsd"]}')
+    if plan.get("freeFlows") is not None:
+        parts.append(f'freeFlows: {plan["freeFlows"]}')
     if plan.get("selfHostOnly"):
         parts.append("selfHostOnly: true")
     if "overage" in plan:

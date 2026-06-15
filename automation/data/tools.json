@@ -952,25 +952,13 @@
           "note": "Self-hosted — server + DB only, light workflows (your ops time not included)"
         },
         {
-          "name": "Cloud Free",
+          "name": "Cloud",
           "monthlyUsd": 0,
           "opsIncluded": null,
-          "workflowLimit": 10,
-          "note": "10 free active flows, unlimited runs"
-        },
-        {
-          "name": "Standard (20 flows)",
-          "monthlyUsd": 50,
-          "opsIncluded": null,
-          "workflowLimit": 20,
-          "note": "$5/active flow after 10 free — priced at 20 flows"
-        },
-        {
-          "name": "Standard (30 flows)",
-          "monthlyUsd": 100,
-          "opsIncluded": null,
-          "workflowLimit": 30,
-          "note": "$5/active flow after 10 free — priced at 30 flows"
+          "workflowLimit": null,
+          "freeFlows": 10,
+          "pricePerFlowUsd": 5,
+          "note": "10 active flows free, then $5/active flow/mo · unlimited runs (cloud bills per active flow, not per task/run)"
         }
       ],
       "overage": null,
