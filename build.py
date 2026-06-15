@@ -235,7 +235,7 @@ def vendor_units(tool: dict, runs: int, steps: int) -> int:
 
 
 def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: int = DEMO_WORKFLOWS,
-                     prefer_cloud: bool = False) -> dict | None:
+                     prefer_cloud: bool = False, billing: str = "monthly") -> dict | None:
     """Nejlevnější měsíční cena nástroje při daném objemu (monthly).
 
     runs = běhy workflow/měsíc, steps = kroky na workflow → engine přepočítá na
@@ -264,6 +264,9 @@ def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: 
         # si drží vlastní cenu. Zrcadlí JS hwPlan větev v calcCost().
         hw_plan = p.get("selfHostOnly") and p["monthlyUsd"] <= 8 and tool.get("selfHostHw")
         cost = self_host_hw_cost(tool, ops) if hw_plan else p["monthlyUsd"]
+        # roční účtování: reálná annualUsd ($/mo billed-annually); chybí-li → annual = monthly (žádná vymyšlená sleva)
+        if billing == "annual" and not p.get("selfHostOnly") and isinstance(p.get("annualUsd"), (int, float)):
+            cost = p["annualUsd"]
         over = 0
         inc = p.get("opsIncluded")  # None = unlimited
         if not p.get("selfHostOnly") and inc is not None and ops > inc:
@@ -308,7 +311,8 @@ def cheapest_monthly(tool: dict, runs: int, steps: int = DEMO_STEPS, workflows: 
             max_inc = max(p["opsIncluded"] for p in anchors)
             anchor = min((p for p in anchors if p["opsIncluded"] == max_inc), key=lambda p: p["monthlyUsd"])
             if ops > anchor["opsIncluded"]:
-                est = anchor["monthlyUsd"] * max(1.3, (ops / anchor["opsIncluded"]) ** 0.7)
+                anchor_base = anchor["annualUsd"] if (billing == "annual" and isinstance(anchor.get("annualUsd"), (int, float))) else anchor["monthlyUsd"]
+                est = anchor_base * max(1.3, (ops / anchor["opsIncluded"]) ** 0.7)
                 est = max(5, int(est / 5 + 0.5) * 5)
                 beyond_public = ops > anchor["opsIncluded"] * 2
                 if best is None or (beyond_public and est < best[0]):

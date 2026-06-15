@@ -113,6 +113,10 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
         f'opsIncluded: {js_limit(plan.get("opsIncluded"))}',
         f'workflowLimit: {js_limit(plan.get("workflowLimit"))}',
     ]
+    # reálná roční cena (billed-annually $/mo) — engine ji použije při billing=annual;
+    # chybí-li (pipedream/activepieces zatím nescrapováno) → annual = monthly (žádná vymyšlená sleva)
+    if isinstance(plan.get("annualUsd"), (int, float)):
+        parts.append(f'annualUsd: {plan["annualUsd"]}')
     if plan.get("selfHostOnly"):
         parts.append("selfHostOnly: true")
     if "overage" in plan:
