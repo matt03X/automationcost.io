@@ -467,7 +467,7 @@
         },
         {
           "name": "Basic",
-          "monthlyUsd": 29,
+          "monthlyUsd": 45,
           "opsIncluded": 2000,
           "workflowLimit": 10,
           "note": "Basic — 2k credits + 20M AI tokens/mo, 10 workflows",
@@ -536,11 +536,12 @@
               null,
               0.0003
             ]
-          ]
+          ],
+          "annualUsd": 29
         },
         {
           "name": "Advanced",
-          "monthlyUsd": 49,
+          "monthlyUsd": 74,
           "opsIncluded": 2000,
           "workflowLimit": null,
           "note": "Advanced — 2k credits + 50M AI tokens/mo, unlimited workflows",
@@ -609,11 +610,12 @@
               null,
               0.0004
             ]
-          ]
+          ],
+          "annualUsd": 49
         },
         {
           "name": "Connect",
-          "monthlyUsd": 99,
+          "monthlyUsd": 150,
           "opsIncluded": 10000,
           "workflowLimit": null,
           "note": "Connect — 10k credits (developer plan)",
@@ -682,7 +684,8 @@
               null,
               0.0006
             ]
-          ]
+          ],
+          "annualUsd": 99
         },
         {
           "name": "Business",

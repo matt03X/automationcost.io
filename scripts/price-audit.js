@@ -204,10 +204,14 @@ async function scrapeMake() {
 // "$X per credit" je konstantní v pásmu a klesá s objemem (množstevní sleva).
 // Reprezentace: bands = [{upTo, perCredit}, …], upTo = horní hranice objemu
 // (kredity <= upTo → tato sazba); poslední pásmo upTo:null = neomezeno.
+// base = měsíční předplatné (billed monthly), baseAnnual = billed-annually $/mo.
+// Pipedream má roční slevu ~34–36 % (Basic $45→$29, Advanced $74→$49, Connect $150→$99,
+// ověřeno proklikem toggle Monthly/Annual 2026-06-15). Base je hardcoded (scraper
+// sweepuje jen credit bands z sliderů, ne subscription base).
 const PD_PLANS = [
-  { name: "Basic", base: 29, includedCredits: 2000 },
-  { name: "Advanced", base: 49, includedCredits: 2000 },
-  { name: "Connect", base: 99, includedCredits: 10000 },
+  { name: "Basic", base: 45, baseAnnual: 29, includedCredits: 2000 },
+  { name: "Advanced", base: 74, baseAnnual: 49, includedCredits: 2000 },
+  { name: "Connect", base: 150, baseAnnual: 99, includedCredits: 10000 },
 ];
 
 async function scrapePipedream() {
@@ -281,7 +285,7 @@ async function scrapePipedream() {
       }
     }
     if (bands.length < 8) throw new Error(`${meta.name}: jen ${bands.length} pásem (sweep selhal?)`);
-    plans[meta.name] = { base: meta.base, includedCredits: meta.includedCredits, bands };
+    plans[meta.name] = { base: meta.base, baseAnnual: meta.baseAnnual, includedCredits: meta.includedCredits, bands };
   }
   const bl = await billingLines(page);
   const shot = await shoot(page);
