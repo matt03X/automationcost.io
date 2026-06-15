@@ -1,0 +1,23 @@
+{
+  "pipedream|Basic|-": {
+    "vendor": "pipedream",
+    "plan": "Basic",
+    "old": 29,
+    "neu": 45,
+    "firstSeen": "2026-06-15"
+  },
+  "pipedream|Advanced|-": {
+    "vendor": "pipedream",
+    "plan": "Advanced",
+    "old": 49,
+    "neu": 74,
+    "firstSeen": "2026-06-15"
+  },
+  "pipedream|Connect|-": {
+    "vendor": "pipedream",
+    "plan": "Connect",
+    "old": 99,
+    "neu": 150,
+    "firstSeen": "2026-06-15"
+  }
+}
