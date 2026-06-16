@@ -5,7 +5,24 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WizardCost — root landing v5 (animated)</title>
+<title>WizardCost — Real automation &amp; LLM API pricing, side by side</title>
+<meta name="description" content="Free calculators that price real automation tools (Zapier, Make, n8n, Pipedream) and LLM APIs (GPT, Claude, Gemini) at your real usage — and name the cheapest pick. Verified prices, no signup, no sponsored rankings.">
+<link rel="canonical" href="https://wizardcost.com/">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0b0a12">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="WizardCost">
+<meta property="og:title" content="WizardCost — real automation &amp; LLM API pricing, side by side">
+<meta property="og:description" content="Free calculators that price real tools at your real usage and name the cheapest pick. Automation + LLM APIs. No signup, no sponsored rankings.">
+<meta property="og:url" content="https://wizardcost.com/">
+<meta property="og:image" content="https://wizardcost.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WizardCost — real automation &amp; LLM API pricing">
+<meta name="twitter:description" content="Free calculators that price real tools at your real usage and name the cheapest pick. No signup, no sponsored rankings.">
+<meta name="twitter:image" content="https://wizardcost.com/og-image.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"WizardCost","url":"https://wizardcost.com/","description":"Free pricing calculators for automation tools and LLM APIs — real verified prices at your real usage.","publisher":{"@type":"Organization","name":"WizardCost","url":"https://wizardcost.com/","logo":"https://wizardcost.com/og-image.png"}}</script>
 <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@700;800;900&amp;family=JetBrains+Mono:wght@500;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <style>
   :root{
@@ -302,7 +319,14 @@
     a.wcard:hover .wbadge{animation:fxpulse 1.6s ease-in-out infinite;}
   }
 </style>
-</head>
+<!-- ANALYTICS (build.py) -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
+  <!-- /ANALYTICS -->
+  <!-- GA4 (build.py) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-6LGJVD931P"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-6LGJVD931P");</script>
+  <!-- /GA4 -->
+  </head>
 <body class="anim">
 <div id="progress"></div>
 
@@ -311,7 +335,7 @@
   <div class="links"><a href="#automation">Automation</a><a href="#llm">LLM</a><a href="#wizards">Wizards</a><a class="nav-cta" href="/automation/">Get your number</a></div>
 </nav>
 
-<header class="hero" data-screen-label="v4 hero">
+<header class="hero">
   <div class="hero-glow"></div>
   <div class="eyebrow rv"><i></i>FREE · NO SIGNUP · PRICES VERIFIED JUN 2026</div>
   <h1 class="rv d1">Software pricing is a maze.<br><em>We do the math.</em></h1>
@@ -323,7 +347,7 @@
 </header>
 
 <!-- ── Automation gap line chart (cost vs volume) ── -->
-<section class="block wrap" id="automation" data-screen-label="v4 automation gap">
+<section class="block wrap" id="automation">
   <div class="kicker rv">Automation · live sample</div>
   <h2 class="rv d1">Watch the gap open as you scale.</h2>
   <p class="sub rv d2">Same automation workload, four tools, June 2026 advertised prices. The lines aren't close — and this chart is drawn from the same engine that powers the calculator.</p>
@@ -346,13 +370,13 @@
     <div class="verdict-card rv d3">
       <div class="v-label">The gap, annualized · 5,000 runs</div>
       <div class="v-num"><span id="countup">$0</span><small>/yr</small></div>
-      <div class="v-cap">between <b>Make ($9/mo)</b> and <b>Zapier (~$130/mo)</b> — found in 60 seconds, no signup.</div>
+      <div class="v-cap">between <b>n8n self-hosted ($8/mo)</b> and <b>Zapier ($194/mo)</b> — found in 60 seconds, no signup.</div>
       <a class="v-cta" href="/automation/calculator.html">Get your exact number →</a>
     </div>
   </div>
 
-  <!-- AUTOMATION_CALC — interactive live sample. PLACEHOLDER pricing model in script;
-       engine owns real per-tier math + parity test (same as Automation wizard). -->
+  <!-- AUTOMATION_CALC — interactive live sample. Prices read from #calc-data (root
+       build.py, shared cost engine); parity guarded by calc-test/verify-landing.js. -->
   <div class="calc rv d2" id="calc">
     <div class="calc-head">
       <span class="t">What does automation cost per month?</span>
@@ -387,9 +411,9 @@
 </section>
 
 <!-- ── LLM landscape scatter (the headline data viz) ── -->
-<section class="block wrap" id="llm" data-screen-label="v4 llm scatter">
+<section class="block wrap" id="llm">
   <div class="kicker rv">LLM · the pricing landscape</div>
-  <h2 class="rv d1">The same task can cost 500× more, model to model.</h2>
+  <h2 class="rv d1">The same task can cost 663× more, model to model.</h2>
   <p class="sub rv d2">Every model we track, plotted by its two real per-token prices. Bubble size is the monthly bill for a chatbot at 100k req/mo. Above the dashed line, long answers get expensive.</p>
 
   <div class="scard rv d2">
@@ -432,7 +456,7 @@
 </section>
 
 <!-- ── Wizards ── -->
-<section class="block wrap" id="wizards" data-screen-label="v4 wizards">
+<section class="block wrap" id="wizards">
   <div class="kicker rv">Pick your category</div>
   <h2 class="rv d1">One wizard per software niche.</h2>
   <div class="wiz-grid">
@@ -459,24 +483,20 @@
 
 <footer>
   <span>© 2026 WizardCost</span>
-  <span class="fl"><a href="#">Changelog</a><a href="#">Privacy</a></span>
+  <span class="fl"><a href="/automation/changelog.html">Changelog</a><a href="/automation/privacy.html">Privacy</a><a href="/automation/terms.html">Terms</a><a href="/automation/affiliate.html">Affiliate</a></span>
 </footer>
 
-<!-- LLM_SCATTER_DATA:START — engine injects from models.json. Row = [name, inputPer1M, outputPer1M, monthlyCost, tier, companyKey]. -->
+<!-- LLM_SCATTER_DATA:START --> <!-- auto-generated by build.py · needitovat ručně -->
 <script id="scatter-data" type="application/json">
-[["DeepSeek V4 Flash",0.14,0.28,17.2,"bud","deepseek"],["GPT-5.4 nano",0.2,1.25,52.3,"bud","openai"],["Gemini 3.1 Flash-Lite",0.25,1.5,63.5,"bud","google"],["Claude Haiku 4.5",1,5,224,"bud","anthropic"],["DeepSeek V4 Pro",0.435,0.87,52.7,"mid","deepseek"],["Gemini 3 Flash Preview",0.5,3,127,"mid","google"],["GPT-5.4 mini",0.75,4.5,191,"mid","openai"],["Grok Build 0.1",1,2,260,"mid","xai"],["Gemini 3.5 Flash",1.5,9,381,"mid","google"],["Claude Sonnet 4.6",3,15,672,"mid","anthropic"],["Grok 4.3",1.25,2.5,325,"fro","xai"],["Gemini 3.1 Pro Preview",2,12,508,"fro","google"],["Mistral Large",2,6,580,"fro","mistral"],["GPT-5.4",2.5,15,635,"fro","openai"],["Claude Opus 4.8",5,25,1120,"fro","anthropic"],["GPT-5.5",5,30,1270,"fro","openai"],["Claude Fable 5",10,50,2240,"fro","anthropic"],["GPT-5.5 Pro",30,180,11400,"fro","openai"]]
+[["DeepSeek V4 Flash",0.14,0.28,17.19,"bud","deepseek"],["GPT-5.4 nano",0.2,1.25,52.3,"bud","openai"],["DeepSeek V4 Pro",0.435,0.87,52.71,"mid","deepseek"],["Gemini 3.1 Flash-Lite",0.25,1.5,63.5,"bud","google"],["Gemini 3 Flash Preview",0.5,3.0,127.0,"mid","google"],["GPT-5.4 mini",0.75,4.5,190.5,"mid","openai"],["Claude Haiku 4.5",1.0,5.0,224.0,"bud","anthropic"],["Grok Build 0.1",1.0,2.0,260.0,"mid","xai"],["Grok 4.3",1.25,2.5,325.0,"fro","xai"],["Gemini 3.5 Flash",1.5,9.0,381.0,"mid","google"],["Gemini 3.1 Pro Preview",2.0,12.0,508.0,"fro","google"],["Mistral Large",2.0,6.0,580.0,"fro","mistral"],["GPT-5.4",2.5,15.0,635.0,"fro","openai"],["Claude Sonnet 4.6",3.0,15.0,672.0,"mid","anthropic"],["Claude Opus 4.8",5.0,25.0,1120.0,"fro","anthropic"],["GPT-5.5",5.0,30.0,1270.0,"fro","openai"],["Claude Fable 5",10.0,50.0,2240.0,"fro","anthropic"],["GPT-5.5 Pro",30.0,180.0,11400.0,"fro","openai"]]
 </script>
 <!-- LLM_SCATTER_DATA:END -->
 
-<!-- AUTOMATION_GAP_DATA — engine fills from tools.json. vols + per-series price[]/est[] across 1k/5k/20k/100k ops -->
+<!-- AUTOMATION_GAP_DATA:START --> <!-- auto-generated by build.py · needitovat ručně -->
 <script id="gap-data" type="application/json">
-{"vols":[1000,5000,20000,100000,1000000],"series":[
-  {"name":"Zapier","color":"#FF4F00","pts":[44.99,130,345,1065,8500],"est":[false,true,true,true,true]},
-  {"name":"Pipedream","color":"#3b82f6","pts":[10,49,130,400,3200],"est":[false,false,true,true,true]},
-  {"name":"Make","color":"#B02DE9","pts":[0,9,18,45,380],"est":[false,false,false,true,true]},
-  {"name":"n8n","color":"#EA4B71","pts":[8,8,8,8,8],"est":[false,false,false,false,false]}
-],"verdict":{"label":"The gap, annualized · 5,000 runs","amount":1452}}
+{"vols":[1000,5000,20000,100000,1000000],"series":[{"name":"Zapier","color":"#FF4F00","pts":[73.5,193.5,433.5,1149,4799],"est":[false,false,false,false,false]},{"name":"Pipedream","color":"#3b82f6","pts":[45,75.0,153.0,309.6,1043.0],"est":[false,false,false,false,false]},{"name":"Make","color":"#B02DE9","pts":[10.59,18.82,64.71,214.31,2333.94],"est":[false,false,false,false,false]},{"name":"n8n","color":"#EA4B71","pts":[8,8,25,45,200],"est":[false,false,false,false,false]}],"verdict":{"label":"The gap, annualized · 5,000 runs","amount":2226}}
 </script>
+<!-- AUTOMATION_GAP_DATA:END -->
 
 <script>
 (function(){
@@ -663,27 +683,27 @@
 })();
 </script>
 
+<!-- CALC_DATA:START --> <!-- auto-generated by build.py · needitovat ručně -->
+<script id="calc-data" type="application/json">
+{"tools":["n8n (Cloud)","Make","Pipedream","Zapier","n8n (self-host)","Automatisch","Node-RED","Self-host (VPS)","Self-host (own server + power)"],"runs":[1000,5000,10000,25000,50000,100000,250000,500000,1000000],"steps":[1,2,3,5,10,20,50,100],"m":[[[[27.8,"Cloud Starter",0],[27.8,"Cloud Starter",0],[27.8,"Cloud Starter",0],[27.8,"Cloud Starter",0],[27.8,"Cloud Starter",0],[27.8,"Cloud Starter",0],[27.8,"Cloud Starter",0],[27.8,"Cloud Starter",0]],[[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0]],[[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0],[69.51,"Cloud Pro 10k",0]],[[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0]],[[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0],[166.82,"Cloud Pro 50k",0]],[[1999.57,"Business 100k",0],[1999.57,"Business 100k",0],[1999.57,"Business 100k",0],[1999.57,"Business 100k",0],[1999.57,"Business 100k",0],[1999.57,"Business 100k",0],[1999.57,"Business 100k",0],[1999.57,"Business 100k",0]],[[4068.65,"Business 300k",0],[4068.65,"Business 300k",0],[4068.65,"Business 300k",0],[4068.65,"Business 300k",0],[4068.65,"Business 300k",0],[4068.65,"Business 300k",0],[4068.65,"Business 300k",0],[4068.65,"Business 300k",0]],[[6076.33,"Business 500k",0],[6076.33,"Business 500k",0],[6076.33,"Business 500k",0],[6076.33,"Business 500k",0],[6076.33,"Business 500k",0],[6076.33,"Business 500k",0],[6076.33,"Business 500k",0],[6076.33,"Business 500k",0]],[[9870,"Cloud Enterprise",1],[9870,"Cloud Enterprise",1],[9870,"Cloud Enterprise",1],[9870,"Cloud Enterprise",1],[9870,"Cloud Enterprise",1],[9870,"Cloud Enterprise",1],[9870,"Cloud Enterprise",1],[9870,"Cloud Enterprise",1]]],[[[0,"Free",0],[10.59,"Core 10k",0],[10.59,"Core 10k",0],[10.59,"Core 10k",0],[10.59,"Core 10k",0],[18.82,"Core 20k",0],[64.71,"Core 80k",0],[116.47,"Core 150k",0]],[[10.59,"Core 10k",0],[10.59,"Core 10k",0],[18.82,"Core 20k",0],[34.12,"Core 40k",0],[64.71,"Core 80k",0],[116.47,"Core 150k",0],[214.31,"Core 300k",0],[482.67,"Pro 500k",0]],[[10.59,"Core 10k",0],[18.82,"Core 20k",0],[34.12,"Core 40k",0],[64.71,"Core 80k",0],[116.47,"Core 150k",0],[214.31,"Core 300k",0],[482.67,"Pro 500k",0],[880.86,"Pro 1M",0]],[[34.12,"Core 40k",0],[64.71,"Core 80k",0],[64.71,"Core 80k",0],[116.47,"Core 150k",0],[214.31,"Core 300k",0],[482.67,"Pro 500k",0],[1268.44,"Pro 1.5M",0],[2001.32,"Pro 2.5M",0]],[[64.71,"Core 80k",0],[116.47,"Core 150k",0],[116.47,"Core 150k",0],[214.31,"Core 300k",0],[482.67,"Pro 500k",0],[880.86,"Pro 1M",0],[2001.32,"Pro 2.5M",0],[3710.44,"Pro 5M",0]],[[116.47,"Core 150k",0],[214.31,"Core 300k",0],[214.31,"Core 300k",0],[482.67,"Pro 500k",0],[880.86,"Pro 1M",0],[1620.79,"Pro 2M",0],[3710.44,"Pro 5M",0],[7360,"Enterprise",1]],[[214.31,"Core 300k",0],[482.67,"Pro 500k",0],[678.75,"Pro 750k",0],[1268.44,"Pro 1.5M",0],[2001.32,"Pro 2.5M",0],[3710.44,"Pro 5M",0],[7735,"Enterprise",1],[12565,"Enterprise",1]],[[482.67,"Pro 500k",0],[880.86,"Pro 1M",0],[1268.44,"Pro 1.5M",0],[2001.32,"Pro 2.5M",0],[3710.44,"Pro 5M",0],[7360,"Enterprise",1],[12565,"Enterprise",1],[20415,"Enterprise",1]],[[880.86,"Pro 1M",0],[1620.79,"Pro 2M",0],[2333.94,"Pro 3M",0],[3710.44,"Pro 5M",0],[7360,"Enterprise",1],[10750,"Enterprise",1],[20415,"Enterprise",1],[33165,"Enterprise",1]]],[[[45,"Basic",0],[45,"Basic",0],[45,"Basic",0],[45,"Basic",0],[45,"Basic",0],[45,"Basic",0],[45,"Basic",0],[45,"Basic",0]],[[75.0,"Basic +ops",0],[75.0,"Basic +ops",0],[75.0,"Basic +ops",0],[75.0,"Basic +ops",0],[75.0,"Basic +ops",0],[75.0,"Basic +ops",0],[75.0,"Basic +ops",0],[75.0,"Basic +ops",0]],[[125.0,"Basic +ops",0],[125.0,"Basic +ops",0],[125.0,"Basic +ops",0],[125.0,"Basic +ops",0],[125.0,"Basic +ops",0],[125.0,"Basic +ops",0],[125.0,"Basic +ops",0],[125.0,"Basic +ops",0]],[[183.0,"Basic +ops",0],[183.0,"Basic +ops",0],[183.0,"Basic +ops",0],[183.0,"Basic +ops",0],[183.0,"Basic +ops",0],[183.0,"Basic +ops",0],[183.0,"Basic +ops",0],[183.0,"Basic +ops",0]],[[246.6,"Basic +ops",0],[246.6,"Basic +ops",0],[246.6,"Basic +ops",0],[246.6,"Basic +ops",0],[246.6,"Basic +ops",0],[246.6,"Basic +ops",0],[246.6,"Basic +ops",0],[246.6,"Basic +ops",0]],[[309.6,"Basic +ops",0],[309.6,"Basic +ops",0],[309.6,"Basic +ops",0],[309.6,"Basic +ops",0],[309.6,"Basic +ops",0],[309.6,"Basic +ops",0],[309.6,"Basic +ops",0],[309.6,"Basic +ops",0]],[[590.6,"Basic +ops",0],[590.6,"Basic +ops",0],[590.6,"Basic +ops",0],[590.6,"Basic +ops",0],[590.6,"Basic +ops",0],[590.6,"Basic +ops",0],[590.6,"Basic +ops",0],[590.6,"Basic +ops",0]],[[841.8,"Basic +ops",0],[841.8,"Basic +ops",0],[841.8,"Basic +ops",0],[841.8,"Basic +ops",0],[841.8,"Basic +ops",0],[841.8,"Basic +ops",0],[841.8,"Basic +ops",0],[841.8,"Basic +ops",0]],[[1043.0,"Basic +ops",0],[1043.0,"Basic +ops",0],[1043.0,"Basic +ops",0],[1043.0,"Basic +ops",0],[1043.0,"Basic +ops",0],[1043.0,"Basic +ops",0],[1043.0,"Basic +ops",0],[1043.0,"Basic +ops",0]]],[[[58.5,"Professional 1k",0],[58.5,"Professional 1k",0],[73.5,"Professional 2k",0],[133.5,"Professional 5k",0],[193.5,"Professional 10k",0],[283.5,"Professional 20k",0],[433.5,"Professional 50k",0],[733.5,"Professional 100k",0]],[[133.5,"Professional 5k",0],[133.5,"Professional 5k",0],[193.5,"Professional 10k",0],[283.5,"Professional 20k",0],[433.5,"Professional 50k",0],[733.5,"Professional 100k",0],[1149,"Professional 200k",0],[1899,"Professional 400k",0]],[[193.5,"Professional 10k",0],[193.5,"Professional 10k",0],[283.5,"Professional 20k",0],[433.5,"Professional 50k",0],[733.5,"Professional 100k",0],[1149,"Professional 200k",0],[1899,"Professional 400k",0],[3299,"Professional 1M",0]],[[283.5,"Professional 20k",0],[283.5,"Professional 20k",0],[433.5,"Professional 50k",0],[733.5,"Professional 100k",0],[1149,"Professional 200k",0],[1899,"Professional 400k",0],[3299,"Professional 1M",0],[5099,"Professional 2M",0]],[[433.5,"Professional 50k",0],[433.5,"Professional 50k",0],[733.5,"Professional 100k",0],[1149,"Professional 200k",0],[1899,"Professional 400k",0],[3299,"Professional 1M",0],[5099,"Professional 2M",0],[8225,"Enterprise",1]],[[733.5,"Professional 100k",0],[733.5,"Professional 100k",0],[1149,"Professional 200k",0],[1899,"Professional 400k",0],[2999,"Professional 750k",0],[4799,"Professional 1.8M",0],[8165,"Enterprise",1],[13360,"Enterprise",1]],[[1149,"Professional 200k",0],[1149,"Professional 200k",0],[1899,"Professional 400k",0],[3299,"Professional 1M",0],[5099,"Professional 2M",0],[7990,"Enterprise",1],[15510,"Enterprise",1],[25375,"Enterprise",1]],[[1899,"Professional 400k",0],[1899,"Professional 400k",0],[3299,"Professional 1M",0],[4799,"Professional 1.8M",0],[7695,"Enterprise",1],[12980,"Enterprise",1],[25195,"Enterprise",1],[41225,"Enterprise",1]],[[3299,"Professional 1M",0],[3299,"Professional 1M",0],[4799,"Professional 1.8M",0],[7085,"Enterprise",1],[12500,"Enterprise",1],[21090,"Enterprise",1],[40930,"Enterprise",1],[66970,"Enterprise",1]]],[[[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0]],[[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0]],[[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0]],[[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0]],[[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0]],[[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0]],[[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0]],[[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0]],[[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0]]],[[[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0]],[[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0]],[[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0]],[[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0]],[[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0]],[[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0]],[[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0]],[[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0]],[[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0]]],[[[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0]],[[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0]],[[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0],[8,"self-host VPS",0]],[[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0]],[[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0],[25,"self-host VPS",0]],[[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0],[45,"self-host VPS",0]],[[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0],[70,"self-host VPS",0]],[[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0],[120,"self-host VPS",0]],[[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0],[200,"self-host VPS",0]]],[[[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0]],[[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0]],[[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0],[8,"VPS only",0]],[[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0]],[[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0],[25,"VPS only",0]],[[45,"VPS only",0],[45,"VPS only",0],[45,"VPS only",0],[45,"VPS only",0],[45,"VPS only",0],[45,"VPS only",0],[45,"VPS only",0],[45,"VPS only",0]],[[70,"VPS only",0],[70,"VPS only",0],[70,"VPS only",0],[70,"VPS only",0],[70,"VPS only",0],[70,"VPS only",0],[70,"VPS only",0],[70,"VPS only",0]],[[120,"VPS only",0],[120,"VPS only",0],[120,"VPS only",0],[120,"VPS only",0],[120,"VPS only",0],[120,"VPS only",0],[120,"VPS only",0],[120,"VPS only",0]],[[200,"VPS only",0],[200,"VPS only",0],[200,"VPS only",0],[200,"VPS only",0],[200,"VPS only",0],[200,"VPS only",0],[200,"VPS only",0],[200,"VPS only",0]]],[[[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0]],[[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0]],[[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0],[6,"hardware + power",0]],[[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0]],[[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0],[9,"hardware + power",0]],[[15,"hardware + power",0],[15,"hardware + power",0],[15,"hardware + power",0],[15,"hardware + power",0],[15,"hardware + power",0],[15,"hardware + power",0],[15,"hardware + power",0],[15,"hardware + power",0]],[[22,"hardware + power",0],[22,"hardware + power",0],[22,"hardware + power",0],[22,"hardware + power",0],[22,"hardware + power",0],[22,"hardware + power",0],[22,"hardware + power",0],[22,"hardware + power",0]],[[36,"hardware + power",0],[36,"hardware + power",0],[36,"hardware + power",0],[36,"hardware + power",0],[36,"hardware + power",0],[36,"hardware + power",0],[36,"hardware + power",0],[36,"hardware + power",0]],[[68,"hardware + power",0],[68,"hardware + power",0],[68,"hardware + power",0],[68,"hardware + power",0],[68,"hardware + power",0],[68,"hardware + power",0],[68,"hardware + power",0],[68,"hardware + power",0]]]]}
+</script>
+<!-- CALC_DATA:END -->
 <script>
 (function(){
-  /* PLACEHOLDER pricing model — illustrative; the engine owns real per-tier math + parity test. */
-  var RUN_STOPS=[1000,5000,10000,25000,50000,100000,250000,500000,1000000];
-  var STEP_STOPS=[1,2,3,5,10,20,50,100];
+  /* Calculator matrix is generated by root build.py from automation/data/tools.json via
+     the shared cost engine (cheapest_monthly + self-host) — see #calc-data above.
+     9 rows × runs × steps; each cell = [price, plan label, est(0|1)]. Do not hand-edit. */
+  var CALC=JSON.parse(document.getElementById('calc-data').textContent);
+  var RUN_STOPS=CALC.runs, STEP_STOPS=CALC.steps;
   var fmt=function(v){ return (Math.round(v*100)/100).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:2}); };
-  var tools=[
-    {name:'n8n',fn:function(runs,ops){ if(runs<=2500)return{p:20,plan:'Cloud Starter 2.5k'}; if(runs<=10000)return{p:60,plan:'Cloud Pro 10k'}; if(runs<=50000)return{p:120,plan:'Cloud Pro 50k'}; return{p:240,plan:'Cloud Power'}; }},
-    {name:'Make',fn:function(runs,ops){ return{p:ops*0.0012547,plan:'Core '+(Math.ceil(ops/10000)*10)+'k'}; }},
-    {name:'Pipedream',fn:function(runs,ops){ return{p:ops*0.0039327,plan:'Basic +ops'}; }},
-    {name:'Zapier',fn:function(runs,ops){ return{p:ops*0.0129,plan:'Professional '+Math.ceil(runs/1000)+'k'}; }},
-    {name:'Activepieces',fn:function(runs,ops){ return{p:ops*0.00035,plan:ops<=50000?'Cloud Free':'Cloud'}; }},
-    {name:'Automatisch',fn:function(runs,ops){ return{p:10,plan:'self-hosted*'}; }},
-    {name:'Node-RED',fn:function(runs,ops){ return{p:8,plan:'self-hosted*'}; }},
-    {name:'Self-host (VPS)',fn:function(runs,ops){ return{p:12,plan:'VPS only'}; }},
-    {name:'Self-host (own server + power)',fn:function(runs,ops){ return{p:5,plan:'hardware + power'}; }}
-  ];
+  var tools=CALC.tools.map(function(n){ return {name:n}; });
   var runsEl=document.getElementById('runs'),stepsEl=document.getElementById('steps');
   var runsVal=document.getElementById('runs-val'),stepsVal=document.getElementById('steps-val');
   var rowsBox=document.getElementById('calc-rows'),note=document.getElementById('calc-note');
   if(!runsEl) return;
+  runsEl.max=RUN_STOPS.length-1; stepsEl.max=STEP_STOPS.length-1;
+  if(+runsEl.value>RUN_STOPS.length-1) runsEl.value=RUN_STOPS.length-1;
+  if(+stepsEl.value>STEP_STOPS.length-1) stepsEl.value=STEP_STOPS.length-1;
   function fillTrack(el){ var pct=(el.value-el.min)/(el.max-el.min)*100; el.style.background='linear-gradient(90deg,var(--acc-deep) '+pct+'%,var(--surface2) '+pct+'%)'; }
   var rowEls=null;
   function buildRows(){
@@ -701,24 +721,25 @@
     rowEls.forEach(function(e,i){ e.nm.textContent=tools[i].name; });
   }
   function render(){
-    var runs=RUN_STOPS[+runsEl.value], steps=STEP_STOPS[+stepsEl.value], ops=runs*steps;
+    var ri=+runsEl.value, si=+stepsEl.value;
+    var runs=RUN_STOPS[ri], steps=STEP_STOPS[si];
     runsVal.textContent=runs.toLocaleString('en-US')+' runs/mo';
     stepsVal.textContent=steps+(steps>1?' steps':' step');
     fillTrack(runsEl); fillTrack(stepsEl);
     if(!rowEls) buildRows();
-    var res=tools.map(function(t){ var r=t.fn(runs,ops); return {price:r.p,plan:r.plan}; });
+    var res=tools.map(function(t,i){ var c=CALC.m[i][ri][si]; return {price:c[0],plan:c[1],est:!!c[2]}; });
     var prices=res.map(function(r){return r.price;});
     var min=Math.min.apply(null,prices), max=Math.max.apply(null,prices);
     res.forEach(function(r,i){
       var e=rowEls[i], cheap=r.price===min, pricey=r.price===max;
       e.bar.style.background=cheap?'linear-gradient(90deg,#10b981,#0ea371)':(pricey?'linear-gradient(90deg,#fb6a7f,#e0556f)':'linear-gradient(90deg,#8b6df0,#6f4ce0)');
       e.bar.style.width=Math.max(4,r.price/max*100)+'%';
-      e.val.textContent='$'+fmt(r.price);
+      e.val.textContent=(r.est?'~$':'$')+fmt(r.price);
       e.plan.textContent=r.plan;
       e.badge.style.display=cheap?'':'none';
     });
     var diff=(max-min)*12;
-    note.innerHTML='Cheapest vs priciest at this volume: <b>$'+fmt(diff)+'/yr</b> difference · units differ per tool (we convert runs → each vendor’s unit) · ~ estimated custom tier · placeholder, live numbers from the engine';
+    note.innerHTML='Cheapest vs priciest at this volume: <b>$'+fmt(diff)+'/yr</b> difference · units differ per tool (we convert runs → each vendor’s unit) · ~ = estimated tier · live numbers from the engine';
   }
   runsEl.addEventListener('input',render); stepsEl.addEventListener('input',render);
   render();
