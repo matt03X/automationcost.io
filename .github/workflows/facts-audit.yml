@@ -1,13 +1,15 @@
-# Týdenní AUDIT NE-cenových faktů (počet integrací atd.) — sourozenec price-audit.
-# Aktivně scrapuje oficiální stránky vendorů (Playwright, page.goto kvůli rozbitému
-# node-fetch TLS), uloží snapshot do automation/data/facts-audit/<vendor>/<datum>.json,
-# zdiffuje proti claimedValue v tools.json → changes-<datum>.json.
-# Mail ownerovi (job fail) JEN při reálném rozporu (changeCount>0) nebo tvrdé chybě.
-# EVIDENCE-ONLY: tools.json updatuje člověk po revizi (stejný princip jako price-audit).
+# Denní AUDIT vs-stránek (sourozenec price-audit):
+#  (1) PROSE GUARD — multiplikátory v pairs.json próze vs cenová tabulka na stránce
+#      (= engine output); bez Playwrightu, chytá NADhodnocení výhody = favors_us.
+#  (2) NE-cenová FAKTA — scrape oficiálních stránek (Playwright, page.goto kvůli
+#      rozbitému node-fetch TLS) → snapshot automation/data/facts-audit/<vendor>/<datum>.json,
+#      diff proti claimedValue v tools.json → changes-<datum>.json.
+# Mail ownerovi (job fail) JEN při reálném rozporu (changeCount>0 / prose drift / tvrdé chybě).
+# EVIDENCE-ONLY: tools.json/pairs.json updatuje člověk po revizi (jako price-audit).
 name: facts-audit
 on:
   schedule:
-    - cron: "30 7 * * 1"   # každé pondělí 07:30 UTC (po denním price-auditu)
+    - cron: "30 7 * * *"   # DENNĚ 07:30 UTC (po denním price-auditu v 06:30)
   workflow_dispatch:
 permissions:
   contents: write          # commit snapshotů zpět do repa
@@ -61,3 +63,9 @@ jobs:
             exit 1
           fi
           echo "Fakta sedí — žádný alarm."
+      - name: PROSE GUARD — multiplikátory v próze vs cenová tabulka (fail = drift)
+        if: always()
+        run: |
+          set -o pipefail
+          echo "## Prose guard (pairs.json multiplikátory vs engine cenová tabulka)" >> "$GITHUB_STEP_SUMMARY"
+          node scripts/check-vs-prose.js | tee -a "$GITHUB_STEP_SUMMARY"
