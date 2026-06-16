@@ -1,0 +1,52 @@
+{
+  "date": "2026-06-16",
+  "generatedAt": "2026-06-16T11:43:32.392Z",
+  "mode": "SHADOW",
+  "decisions": [
+    {
+      "key": "pipedream|Basic|-",
+      "desc": "pipedream Basic @undefined: $29→$45",
+      "deltaPct": 55.2,
+      "checks": {
+        "scalar": true,
+        "sanity": false,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "HUMAN",
+      "reasons": [
+        "Δ 55% mimo mez → na ownera"
+      ]
+    },
+    {
+      "key": "pipedream|Advanced|-",
+      "desc": "pipedream Advanced @undefined: $49→$74",
+      "deltaPct": 51,
+      "checks": {
+        "scalar": true,
+        "sanity": false,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "HUMAN",
+      "reasons": [
+        "Δ 51% mimo mez → na ownera"
+      ]
+    },
+    {
+      "key": "pipedream|Connect|-",
+      "desc": "pipedream Connect @undefined: $99→$150",
+      "deltaPct": 51.5,
+      "checks": {
+        "scalar": true,
+        "sanity": false,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "HUMAN",
+      "reasons": [
+        "Δ 52% mimo mez → na ownera"
+      ]
+    }
+  ]
+}
