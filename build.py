@@ -431,16 +431,16 @@ def render_gap(tools: list[dict]) -> str:
     return ('<script id="gap-data" type="application/json">\n'
             + json.dumps(obj, separators=(",", ":"), ensure_ascii=False) + '\n</script>')
 
-# kalkulačka: 9 řádků × runs × steps, ceny z enginu. Activepieces (per-flow, nesedí
-# na runs/steps osu) → nahrazen n8n self-host; zůstává ve wizardu s workflows sliderem.
+# kalkulačka: 4 CLOUDOVÉ řádky × runs × steps, ceny z enginu (cloud-vs-cloud).
+# Self-host řádky (n8n self-host / Automatisch / Node-RED / VPS / own-server) ODEBRÁNY
+# 2026-06-16 (owner: vycházely cenově skoro identicky = vizuální duplicita; self-host
+# story nese gap chart výš). _calc_cell selfhost/vps/ownserver větve ponechány pro
+# případný budoucí re-add.
 CALC_RUN_STOPS = [1000, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000]
 CALC_STEP_STOPS = [1, 2, 3, 5, 10, 20, 50, 100]
 CALC_ROWS = [
     ("n8n (Cloud)", "n8n", "cloud"), ("Make", "make", "cloud"),
     ("Pipedream", "pipedream", "cloud"), ("Zapier", "zapier", "cloud"),
-    ("n8n (self-host)", "n8n", "selfhost"), ("Automatisch", "automatisch", "selfhost"),
-    ("Node-RED", "node-red", "selfhost"), ("Self-host (VPS)", "n8n", "vps"),
-    ("Self-host (own server + power)", "n8n", "ownserver"),
 ]
 
 def _sh_tier(tool, ops):
