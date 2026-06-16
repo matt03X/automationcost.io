@@ -188,20 +188,7 @@
   </a>
 
   <!-- EMAILCAP:HTML:START — LLM varianta (skupina price-drop-alerts-llm; action = EMAILCAP_ACTION_LLM v build.py) -->
-  <section class="price-alerts" data-screen-label="Price-drop alerts">
-    <div class="pa-label">Price-drop alerts</div>
-    <div class="pa-title">Get an email when any tracked LLM provider changes pricing.</div>
-    <p class="pa-sub">Every change is verified by hand and published to the <a href="changelog.html">changelog</a> — you get one email per confirmed change.</p>
-    <form class="pa-form" action="{{CAPTURE_ACTION}}" method="post" novalidate>
-      <label for="pa-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
-      <input class="pa-input" id="pa-email" name="fields[email]" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
-      <input type="hidden" name="ml-submit" value="1">
-      <input type="hidden" name="anticsrf" value="true">
-      <button class="pa-btn" type="submit">Get price alerts</button>
-    </form>
-    <div class="pa-msg" role="status" aria-live="polite"></div>
-    <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="/automation/privacy.html">Privacy</a></p>
-  </section>
+  <!-- price-drop alerts e-mail form disabled 2026-06-16 — compliance: no e-mail collection while the project stays faceless (no MailerLite signup, no consent banner needed). Previous markup is in git history; re-enable by restoring the price-alerts section + EMAILCAP_ACTION_LLM. -->
   <!-- EMAILCAP:HTML:END -->
 
   <div class="cross" data-screen-label="Cross-links">
@@ -212,6 +199,7 @@
 <footer>
   <div class="wrap">
     <span>WizardCost · independent — not affiliated with any vendor</span>
+    <span><a href="/automation/privacy.html">Privacy</a> · <a href="/automation/terms.html">Terms</a> · <a href="/automation/affiliate.html">Affiliate</a></span>
     <span>Prices verified {{VERIFIED_MONTH}}</span>
   </div>
 </footer>
