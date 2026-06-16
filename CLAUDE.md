@@ -31,14 +31,14 @@ LLM provider stránky (`llm/<provider>-pricing.html`, slugy gemini/grok = produk
 - `calcCost`: custom/„contact sales" plány (`monthlyUsd: null`, flag `custom: true` z buildu) se oceňují odhadem — kotva = největší veřejný cloud plán, škálování exponentem **0.7** (kalibrováno na veřejný Zapier ceník), minimum 1.3× kotvy, zaokrouhlení na $5. Odhad se použije, když veřejné plány objem nepokryjí, nebo nad 2× kotvy, když je levnější než lineární overage (čisté `min()` → cenová křivka je monotónní). Odhady se zobrazují `~$X` + „estimate" + disclaimer.
 - **Overage je per-tool s per-plan overridem:** volitelný klíč `overage` na plánu v tools.json přebíjí tool-level; `null` = plán nemá pay-as-you-go a engine ho při překročení `opsIncluded` přeskočí (Zapier Free). Logika žije na **4 místech** — calcCost (calculator), cheapestPlan (compare), cheapest_monthly (root build.py), render_plan (oba build.py) — měnit synchronně. Cena s overagem se zaokrouhluje na centy ($19.99 + $25 jinak dá 44.9899…). POZOR: changelog plan-level overage záměrně nediffuje (oprava našeho modelu ≠ změna vendor ceníku) — případnou reálnou změnu vendor PAYG zapiš do changelogu ručně úpravou tool-level overage.
 - `estimateVolumeBudget`: workflow multiplikátor = `clamp((Σ defaultOps / 5000)^0.8, 0.5, 5)` — záměrně **monotónní** (přidání workflow nikdy nesníží odhad) a **nezávislý na pořadí** kliknutí. Neměnit bez spuštění test sady.
-- **Python port** enginu žije v root `build.py` (`cheapest_monthly`) kvůli generování DATA:DEMO. Při změně JS enginu uprav i port — paritu hlídá `calc-test/verify-demo.js` (musí být 16/16).
+- **Python port** enginu žije v root `build.py` (`cheapest_monthly`) kvůli generování homepage bloků (scatter/gap/calc). Při změně JS enginu uprav i port — paritu hlídá `calc-test/verify-landing.js` (scatter+gap+calc ↔ JS engine; calc CLOUD řádky = nadmnožina starého DEMO bloku). Hero DATA:DEMO blok je legacy (homepage v5 ho nemá).
 - `goStep(4)` re-estimuje slidery jen při změně profilu (signature guard) — ruční úpravy uživatele přežívají navigaci.
 
 ## Testy (`../../calc-test`, mimo repo)
 
 | Skript | Kdy spustit |
 |---|---|
-| `verify-demo.js` | po každé změně enginu, dat nebo Python portu (parita DEMO ↔ JS engine) |
+| `verify-landing.js` | po každé změně enginu, dat, Python portu nebo homepage bloků (parita scatter/gap/calc ↔ JS engine) |
 | `test-ops-estimate.js`, `test-200-firem.js` | po změně estimate matematiky (plausibilita doporučení, monotonie, pořadí) |
 | `test-smoke-flow.js` | po změně wizardu (end-to-end přes DOM stub) |
 | `test-share-restore.js` | po změně share URL / restore logiky kalkulátoru (round-trip, resume banner, validace) |

@@ -348,7 +348,7 @@ PAIRS = ROOT / "data" / "pairs.json"
 
 def _root_engine():
     """Importuje root build.py kvůli cheapest_monthly — JEDINÁ kopie cost logiky
-    (parita s JS hlídá verify-demo.js); třetí port by se rozjel."""
+    (parita s JS hlídá verify-landing.js); třetí port by se rozjel."""
     import importlib.util
     spec = importlib.util.spec_from_file_location("_rootbuild", ROOT.parent / "build.py")
     mod = importlib.util.module_from_spec(spec)
