@@ -64,6 +64,24 @@ jobs:
             git commit -m "audit: cenové snapshoty ${DATE} (${CHANGES} změn)"
             git push
           fi
+      - name: Rebuild generovaných stránek (drží n8n EUR→USD i stránky v sync s fx.json)
+        # fx.json se refreshuje denně z audit kroku; bez rebuildu by calculator/compare/
+        # pricing/homepage zůstaly na starém kurzu (parita Python↔JS by driftovala).
+        # Přegeneruj OBA buildy a commitni JEN když to reálně změní stránky (no-op dny tichý).
+        if: always()
+        run: |
+          git config user.name  "price-audit-bot"
+          git config user.email "actions@users.noreply.github.com"
+          python automation/build.py || true
+          python build.py || true
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Generované stránky beze změny (FX/data bez dopadu) — nic k commitu."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            git commit -m "build: rebuild generovaných stránek — FX/data sync ${DATE}"
+            git push
+          fi
       - name: Auto-návrh cenového PATCHe → Pull Request ke schválení (1-tap merge)
         if: always()
         continue-on-error: true   # bonus navíc — NIKDY nesmí shodit audit/alarm
