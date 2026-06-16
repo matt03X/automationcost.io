@@ -33,7 +33,7 @@
       "name": "What counts as an operation on each?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "In Zapier, one task = one action step — a 3-step Zap triggered 100 times consumes 300 tasks. In Pipedream, one credit ≈ 30 seconds of compute per step — a multi-step workflow typically consumes several credits per run."
+        "text": "In Zapier, one task = one action step — a 3-step Zap triggered 100 times consumes 300 tasks. In Pipedream, one credit ≈ 30 seconds of compute time (at 256 MB) — billed on execution time, not step count, so a typical run is about one credit."
       }
     },
     {
@@ -264,7 +264,7 @@
       <span style="color:var(--muted); font-weight:500;">at every volume we track</span>
     </div>
     <div class="verdict">
-      <b class="win">Pipedream is roughly 3–4× cheaper at every volume we track</b>; <b>the catch is who it's built for</b> — Pipedream is code-first (Node/Python steps), Zapier is no-code. If your team writes code, Pipedream gives you more power for a fraction of the price. If "add a code step" sounds like a blocker, Zapier's 9,000+ integrations and point-and-click editor are what you're paying for.
+      <b class="win">Pipedream is roughly 2–4× cheaper, and the gap widens with volume</b>; <b>the catch is who it's built for</b> — Pipedream is code-first (Node/Python steps), Zapier is no-code. If your team writes code, Pipedream gives you more power for a fraction of the price. If "add a code step" sounds like a blocker, Zapier's 9,000+ integrations and point-and-click editor are what you're paying for.
     </div>
   </div>
 
@@ -323,7 +323,7 @@
       <table class="diff-table">
         <thead><tr><th>Feature</th><th>Zapier</th><th>Pipedream</th></tr></thead>
         <tbody>
-          <tr><td>Integrations</td><td><span class="diff-win">9,000+</span></td><td>2,000+</td></tr>
+          <tr><td>Integrations</td><td><span class="diff-win">9,000+</span></td><td>3,000+</td></tr>
           <tr><td>Free tier</td><td>100 tasks/mo · Unlimited (within task limit)</td><td>100 credits/mo · 3</td></tr>
           <tr><td>Steps per workflow</td><td>2 steps (free)</td><td><span class="diff-win">Unlimited</span></td></tr>
           <tr><td>Execution timeout</td><td><span class="diff-win">15 min</span></td><td>30 sec (free) / 12 min (paid)</td></tr>
@@ -398,7 +398,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">What counts as an operation on each?</button>
-        <div class="faq-a">In Zapier, one task = one action step — a 3-step Zap triggered 100 times consumes 300 tasks. In Pipedream, one credit ≈ 30 seconds of compute per step — a multi-step workflow typically consumes several credits per run.</div>
+        <div class="faq-a">In Zapier, one task = one action step — a 3-step Zap triggered 100 times consumes 300 tasks. In Pipedream, one credit ≈ 30 seconds of compute time (at 256 MB) — billed on execution time, not step count, so a typical run is about one credit.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Can I self-host either of them?</button>

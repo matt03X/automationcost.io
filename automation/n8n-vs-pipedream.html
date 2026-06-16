@@ -33,7 +33,7 @@
       "name": "What counts as an operation on each?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "n8n Cloud counts workflow executions — one run is one execution regardless of step count; self-hosted n8n has no metering at all. In Pipedream, one credit ≈ 30 seconds of compute per step — a multi-step workflow typically consumes several credits per run."
+        "text": "n8n Cloud counts workflow executions — one run is one execution regardless of step count; self-hosted n8n has no metering at all. In Pipedream, one credit ≈ 30 seconds of compute time (at 256 MB) — billed on execution time, not step count, so a typical run is about one credit."
       }
     },
     {
@@ -49,7 +49,7 @@
       "name": "Why would anyone pick Pipedream, then?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Because n8n's low price assumes you operate it yourself — the server bill scales with volume ($8–66/mo) and n8n Cloud, the managed alternative, runs $20–50/mo with execution quotas. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server."
+        "text": "Because n8n's low price assumes you operate it yourself — the server bill scales with volume ($8–66/mo) and n8n Cloud, the managed alternative, runs $28–70/mo with execution quotas. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server."
       }
     },
     {
@@ -264,7 +264,7 @@
       <span style="color:var(--muted); font-weight:500;">at every volume we track — self-hosted</span>
     </div>
     <div class="verdict">
-      <b class="win">n8n self-hosted is cheaper at every volume we track — if you run it yourself</b>; <b>Pipedream is the managed path for the same developer audience</b>. This isn't no-code vs code — both are dev-friendly. It's your server + open-source vs managed cloud + code steps: if running a VPS is routine for your team, n8n wins on price outright (a server bill of ~$8–66/mo vs Pipedream's $29–~$400+). If you'd rather never touch infrastructure, Pipedream's premium is the hosting bill.
+      <b class="win">n8n self-hosted is cheaper at every volume we track — if you run it yourself</b>; <b>Pipedream is the managed path for the same developer audience</b>. This isn't no-code vs code — both are dev-friendly. It's your server + open-source vs managed cloud + code steps: if running a VPS is routine for your team, n8n wins on price outright (a server bill of ~$8–66/mo vs Pipedream's ~$45–$310). If you'd rather never touch infrastructure, Pipedream's premium is the hosting bill.
     </div>
   </div>
 
@@ -323,7 +323,7 @@
       <table class="diff-table">
         <thead><tr><th>Feature</th><th>n8n</th><th>Pipedream</th></tr></thead>
         <tbody>
-          <tr><td>Integrations</td><td>400+</td><td><span class="diff-win">2,000+</span></td></tr>
+          <tr><td>Integrations</td><td>1,868+</td><td><span class="diff-win">3,000+</span></td></tr>
           <tr><td>Free tier</td><td>Unlimited* · Unlimited*</td><td>100 credits/mo · 3</td></tr>
           <tr><td>Execution timeout</td><td><span class="diff-win">No limit*</span></td><td>30 sec (free) / 12 min (paid)</td></tr>
           <tr><td>Log history</td><td>7 days (cloud)</td><td>24 hours (free)</td></tr>
@@ -398,7 +398,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">What counts as an operation on each?</button>
-        <div class="faq-a">n8n Cloud counts workflow executions — one run is one execution regardless of step count; self-hosted n8n has no metering at all. In Pipedream, one credit ≈ 30 seconds of compute per step — a multi-step workflow typically consumes several credits per run.</div>
+        <div class="faq-a">n8n Cloud counts workflow executions — one run is one execution regardless of step count; self-hosted n8n has no metering at all. In Pipedream, one credit ≈ 30 seconds of compute time (at 256 MB) — billed on execution time, not step count, so a typical run is about one credit.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Can I self-host either of them?</button>
@@ -406,7 +406,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Why would anyone pick Pipedream, then?</button>
-        <div class="faq-a">Because n8n's low price assumes you operate it yourself — the server bill scales with volume ($8–66/mo) and n8n Cloud, the managed alternative, runs $20–50/mo with execution quotas. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server.</div>
+        <div class="faq-a">Because n8n's low price assumes you operate it yourself — the server bill scales with volume ($8–66/mo) and n8n Cloud, the managed alternative, runs $28–70/mo with execution quotas. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?</button>

@@ -1,0 +1,63 @@
+# Týdenní AUDIT NE-cenových faktů (počet integrací atd.) — sourozenec price-audit.
+# Aktivně scrapuje oficiální stránky vendorů (Playwright, page.goto kvůli rozbitému
+# node-fetch TLS), uloží snapshot do automation/data/facts-audit/<vendor>/<datum>.json,
+# zdiffuje proti claimedValue v tools.json → changes-<datum>.json.
+# Mail ownerovi (job fail) JEN při reálném rozporu (changeCount>0) nebo tvrdé chybě.
+# EVIDENCE-ONLY: tools.json updatuje člověk po revizi (stejný princip jako price-audit).
+name: facts-audit
+on:
+  schedule:
+    - cron: "30 7 * * 1"   # každé pondělí 07:30 UTC (po denním price-auditu)
+  workflow_dispatch:
+permissions:
+  contents: write          # commit snapshotů zpět do repa
+concurrency:
+  group: facts-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright (mimo repo checkout)
+        run: |
+          mkdir -p /tmp/pw
+          cd /tmp/pw
+          npm init -y > /dev/null
+          npm install playwright@1 > /dev/null
+          ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Spustit facts-audit (exit 1 jen tvrdá chyba; bot-wall = WARN)
+        run: NODE_PATH=/tmp/pw/node_modules node scripts/facts-audit.js
+      - name: Commit snapshotů a změn (vždy — ať se důkazy uloží)
+        if: always()
+        run: |
+          git config user.name  "facts-audit-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add automation/data/facts-audit
+          if git diff --cached --quiet; then
+            echo "Žádné nové facts snapshoty — nic k commitu."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            CHANGES=$(D="$DATE" node -e "try{console.log(require('./automation/data/facts-audit/changes-'+process.env.D+'.json').changeCount)}catch{console.log(0)}")
+            git commit -m "facts-audit: snapshoty ${DATE} (${CHANGES} rozporů)"
+            git push
+          fi
+      - name: ALARM — fail (= mail ownerovi) jen při REÁLNÉM faktickém rozporu
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          F="automation/data/facts-audit/changes-${DATE}.json"
+          CHANGES=$(node -e "try{console.log(require('./'+process.argv[1]).changeCount)}catch{console.log(0)}" "$F" 2>/dev/null || echo 0)
+          echo "Faktických rozporů: ${CHANGES}"
+          if [ "$CHANGES" -gt 0 ]; then
+            echo "## ⚠ Fakta na vs-stránkách nesedí s realitou — ${CHANGES} rozporů" >> "$GITHUB_STEP_SUMMARY"
+            node -e "try{require('./'+process.argv[1]).changes.forEach(c=>console.log('- '+c.desc))}catch{}" "$F" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Další krok: revize automation/data/tools.json + pairs.json prózy (viz docs/vs-audit-report.md)." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "Fakta sedí — žádný alarm."

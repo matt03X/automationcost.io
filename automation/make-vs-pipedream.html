@@ -33,7 +33,7 @@
       "name": "What counts as an operation on each?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "In Make, one operation = one module execution, counted per module across the scenario. In Pipedream, one credit ≈ 30 seconds of compute per step — a multi-step workflow typically consumes several credits per run."
+        "text": "In Make, one operation = one module execution, counted per module across the scenario. In Pipedream, one credit ≈ 30 seconds of compute time (at 256 MB) — billed on execution time, not step count, so a typical run is about one credit."
       }
     },
     {
@@ -49,7 +49,7 @@
       "name": "Why would anyone pick Pipedream, then?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Because Pipedream is built for engineers: workflows are code steps in Node or Python with full access to npm and PyPI packages, an event-data inspector, and 2,000+ integrations behind an API-first design. Make's visual builder hits a ceiling when logic gets genuinely complex — at that point Pipedream's premium is buying capability Make simply doesn't have."
+        "text": "Because Pipedream is built for engineers: workflows are code steps in Node or Python with full access to npm and PyPI packages, an event-data inspector, and 3,000+ integrations behind an API-first design. Make's visual builder hits a ceiling when logic gets genuinely complex — at that point Pipedream's premium is buying capability Make simply doesn't have."
       }
     },
     {
@@ -264,7 +264,7 @@
       <span style="color:var(--muted); font-weight:500;">at every volume we track</span>
     </div>
     <div class="verdict">
-      <b class="win">Make is 5–9× cheaper at every volume we track</b> — and this time the no-code tool is the cheap one; <b>Pipedream is the developer's pick</b>. Make's free tier covers 1,000 runs/mo outright and even 100,000 runs ~$45 vs ~$400. Choose Pipedream only if your team wants to write Node or Python steps — then the premium buys real programmability.
+      <b class="win">Make is 1.4–4× cheaper at the volumes we track</b> — and this time the no-code tool is the cheap one; <b>Pipedream is the developer's pick</b>. Make's free tier includes 1,000 ops/mo and at 100,000 runs it's ~$214 vs ~$310. Choose Pipedream only if your team wants to write Node or Python steps — then the premium buys real programmability.
     </div>
   </div>
 
@@ -323,8 +323,7 @@
       <table class="diff-table">
         <thead><tr><th>Feature</th><th>Make</th><th>Pipedream</th></tr></thead>
         <tbody>
-          <tr><td>Integrations</td><td>1,500+</td><td><span class="diff-win">2,000+</span></td></tr>
-          <tr><td>Free tier</td><td>1,000/mo · Unlimited</td><td>100 credits/mo · 3</td></tr>
+          <tr><td>Free tier</td><td>1,000/mo · 2 active</td><td>100 credits/mo · 3</td></tr>
           <tr><td>Execution timeout</td><td><span class="diff-win">40 min</span></td><td>30 sec (free) / 12 min (paid)</td></tr>
           <tr><td>Log history</td><td>30 days</td><td>24 hours (free)</td></tr>
           <tr><td>GDPR-friendly</td><td><span class="diff-win"><span class="check">✓</span></span></td><td><span class="cross">✗</span></td></tr>
@@ -332,7 +331,7 @@
         </tbody>
       </table>
     </div>
-    <p class="diff-same">Same on both: overage model · steps per workflow · self-hosting · ai features · multi-user · api access · webhooks · license.</p>
+    <p class="diff-same">Same on both: integrations · overage model · steps per workflow · self-hosting · ai features · multi-user · api access · webhooks · license.</p>
   </div>
 
   <!-- 5 ── Pros / cons -->
@@ -397,7 +396,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">What counts as an operation on each?</button>
-        <div class="faq-a">In Make, one operation = one module execution, counted per module across the scenario. In Pipedream, one credit ≈ 30 seconds of compute per step — a multi-step workflow typically consumes several credits per run.</div>
+        <div class="faq-a">In Make, one operation = one module execution, counted per module across the scenario. In Pipedream, one credit ≈ 30 seconds of compute time (at 256 MB) — billed on execution time, not step count, so a typical run is about one credit.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Can I self-host either of them?</button>
@@ -405,7 +404,7 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">Why would anyone pick Pipedream, then?</button>
-        <div class="faq-a">Because Pipedream is built for engineers: workflows are code steps in Node or Python with full access to npm and PyPI packages, an event-data inspector, and 2,000+ integrations behind an API-first design. Make's visual builder hits a ceiling when logic gets genuinely complex — at that point Pipedream's premium is buying capability Make simply doesn't have.</div>
+        <div class="faq-a">Because Pipedream is built for engineers: workflows are code steps in Node or Python with full access to npm and PyPI packages, an event-data inspector, and 3,000+ integrations behind an API-first design. Make's visual builder hits a ceiling when logic gets genuinely complex — at that point Pipedream's premium is buying capability Make simply doesn't have.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?</button>
@@ -421,7 +420,7 @@
     <div class="out-grid" style="margin-top:18px;">
       <div class="out-card winner">
         <div class="out-head"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=64" alt="Make logo">Make</div>
-        <p>1,000 free runs a month, unlimited scenarios — enough to run a real pilot before paying anything.</p>
+        <p>1,000 free ops a month (2 active scenarios) — enough to run a real pilot before paying anything.</p>
         <a href="https://www.make.com/en/register?pc=wizardcost" target="_blank" rel="noopener sponsored" class="out-btn aff">Try Make free →</a>
         <span class="aff-note">Affiliate link — never affects our rankings.</span>
       </div>
