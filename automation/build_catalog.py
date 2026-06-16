@@ -310,21 +310,11 @@ def _nav(active: str, month_year: str) -> str:
 
 
 def _emailcap(title: str, sub: str) -> str:
-    return f"""
-  <!-- EMAILCAP:HTML:START — price-drop alerts (catalog variant, generováno).
-       Disclosure text schválen ownerem 2026-06-11 — NEMĚNIT bez jeho OK. -->
-  <section class="price-alerts" id="price-alerts">
-    <div class="pa-label">Price-drop alerts</div>
-    <div class="pa-title">{title}</div>
-    <p class="pa-sub">{sub}</p>
-    <form class="pa-form" id="pa-form" action="{EMAILCAP_ACTION}" method="post" novalidate>
-      <label for="pa-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Email address</label>
-      <input class="pa-input" id="pa-email" name="fields[email]" type="email" inputmode="email" autocomplete="email" required placeholder="you@company.com">
-      <input type="hidden" name="ml-submit" value="1"><input type="hidden" name="anticsrf" value="true"><button class="pa-btn" id="pa-btn" type="submit">Get price alerts</button>
-    </form>
-    <div class="pa-msg" id="pa-msg" role="status" aria-live="polite"></div>
-    <p class="pa-note">Price-change alerts only. No newsletter, unsubscribe anytime. <a href="privacy.html">Privacy</a></p>
-  </section>
+    # e-mail capture form disabled 2026-06-16 (compliance: faceless, no e-mail collection).
+    # title/sub kept for call-site signature compatibility; re-enable by restoring the form below.
+    return """
+  <!-- EMAILCAP:HTML:START — price-drop alerts (catalog variant). -->
+  <!-- price-drop alerts e-mail form disabled 2026-06-16 — compliance: no e-mail collection while the project stays faceless (no MailerLite signup, no consent banner needed). Previous markup is in git history; re-enable by restoring the price-alerts section + EMAILCAP_ACTION. -->
   <!-- EMAILCAP:HTML:END -->"""
 
 
