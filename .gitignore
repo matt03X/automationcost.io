@@ -8,6 +8,7 @@ PORTFOLIO.md
 Thumbs.db
 desktop.ini
 automation/data/drift-report.md
+automation/data/.llm-cache/
 __pycache__/
 scripts/.alerts-sent*.json
 

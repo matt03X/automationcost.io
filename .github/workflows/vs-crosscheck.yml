@@ -1,0 +1,78 @@
+# TÝDENNÍ cross-check NAŠICH vs-stránek proti VENDORSKÝM „X vs Y" marketing stránkám
+# (n8n.io/vs/*, make.com/en/compare/*, zapier.com/compare/*). Vendorské srovnávačky
+# jsou ZAUJATÝ signál (marketing, navzájem si protiřečí) → NE zdroj pravdy.
+# Scrape přes Playwright (page.goto kvůli rozbitému node-fetch TLS) → snapshot
+# automation/data/vs-crosscheck/<pair>/<datum>.{json,html.gz}.
+#
+# Dva druhy nálezů (viz scripts/vs-crosscheck.js):
+#   changes         = vendor ZMĚNIL své tvrzení od minula → ALARM (mail ownerovi).
+#   reviewVsOurData = vendor ≠ naše tools.json data → EVIDENCE-ONLY (NEspouští alarm,
+#                     hodně z toho je známý marketing rounding; řeší lidský úsudek).
+# Frekvence týdně — vendorský marketing se mění zřídka. EVIDENCE-ONLY: tools.json
+# ani pairs.json se NIKDY needitují automaticky.
+name: vs-crosscheck
+on:
+  schedule:
+    - cron: "45 7 * * 1"   # PONDĚLÍ 07:45 UTC (týdně, po denním facts-auditu)
+  workflow_dispatch:
+permissions:
+  contents: write          # commit snapshotů zpět do repa
+concurrency:
+  group: vs-crosscheck
+  cancel-in-progress: false
+jobs:
+  crosscheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright (mimo repo checkout)
+        run: |
+          mkdir -p /tmp/pw
+          cd /tmp/pw
+          npm init -y > /dev/null
+          npm install playwright@1 > /dev/null
+          ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Spustit vs-crosscheck (exit 1 jen tvrdá chyba; nedostupná URL = WARN)
+        # ANTHROPIC_API_KEY je VOLITELNÝ — bez něj LLM extrakce degraduje na regex.
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: NODE_PATH=/tmp/pw/node_modules node scripts/vs-crosscheck.js
+      - name: Commit snapshotů a změn (vždy — ať se důkazy uloží)
+        if: always()
+        run: |
+          git config user.name  "vs-crosscheck-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add automation/data/vs-crosscheck
+          if git diff --cached --quiet; then
+            echo "Žádné nové vs-crosscheck snapshoty — nic k commitu."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            CHANGES=$(D="$DATE" node -e "try{console.log(require('./automation/data/vs-crosscheck/changes-'+process.env.D+'.json').changeCount)}catch{console.log(0)}")
+            git commit -m "vs-crosscheck: snapshoty ${DATE} (${CHANGES} vendor-changes)"
+            git push
+          fi
+      - name: ALARM — fail (= mail ownerovi) jen když VENDOR ZMĚNIL marketing
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          F="automation/data/vs-crosscheck/changes-${DATE}.json"
+          CHANGES=$(node -e "try{console.log(require('./'+process.argv[1]).changeCount)}catch{console.log(0)}" "$F" 2>/dev/null || echo 0)
+          REVIEW=$(node -e "try{console.log(require('./'+process.argv[1]).reviewCount)}catch{console.log(0)}" "$F" 2>/dev/null || echo 0)
+          echo "Vendor-changes: ${CHANGES} · review-vs-naše-data: ${REVIEW}"
+          if [ "$REVIEW" -gt 0 ]; then
+            echo "## ℹ️ ${REVIEW} rozporů vendor-marketing vs naše data (EVIDENCE-ONLY, bez alarmu)" >> "$GITHUB_STEP_SUMMARY"
+            node -e "try{require('./'+process.argv[1]).reviewVsOurData.forEach(c=>console.log('- '+c.desc))}catch{}" "$F" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "$CHANGES" -gt 0 ]; then
+            echo "## ⚠ Vendor změnil svou 'X vs Y' marketing stránku — ${CHANGES} změn" >> "$GITHUB_STEP_SUMMARY"
+            node -e "try{require('./'+process.argv[1]).changes.forEach(c=>console.log('- '+c.desc))}catch{}" "$F" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Další krok: zkontrolovat, jestli změna nereflektuje reálnou změnu (cenu/integrace) k ověření přes facts-audit/price-audit. ZAUJATÝ signál — NEpřejímat framing." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "Vendoři nezměnili marketing — žádný alarm."
