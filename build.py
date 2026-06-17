@@ -450,25 +450,39 @@ def _sh_tier(tool, ops):
     return (tool.get("selfHostHw") or [None])[-1]
 
 def _calc_cell(by, slug, kind, runs, steps):
+    # cell = [monthly $/mo, annual $/mo (billed annually, real vendor discount), plan, est(0|1)]
     tool = by[slug]
     if kind == "cloud":
-        r = cheapest_monthly(tool, runs, steps, GAP_WF, prefer_cloud=True)
-        return [round(r["cost"], 2), r["label"], 1 if r["est"] else 0] if r else [0, "—", 0]
+        rm = cheapest_monthly(tool, runs, steps, GAP_WF, prefer_cloud=True, billing="monthly")
+        ra = cheapest_monthly(tool, runs, steps, GAP_WF, prefer_cloud=True, billing="annual")
+        if not rm:
+            return [0, 0, "—", 0]
+        return [round(rm["cost"], 2), round((ra or rm)["cost"], 2), rm["label"], 1 if rm["est"] else 0]
     ops = vendor_units(tool, runs, steps)
     if kind in ("selfhost", "vps"):
-        c = self_host_hw_cost(tool, ops)
-        return [c if c is not None else 0, "self-host VPS" if kind == "selfhost" else "VPS only", 0]
+        c = self_host_hw_cost(tool, ops) or 0
+        return [c, c, "self-host VPS" if kind == "selfhost" else "VPS only", 0]
     if kind == "ownserver":
         t = _sh_tier(tool, ops)
-        return [round((t.get("home") or 0) + (t.get("hwOneOff") or 0) / 36), "hardware + power", 0] if t else [0, "—", 0]
-    return [0, "—", 0]
+        v = round((t.get("home") or 0) + (t.get("hwOneOff") or 0) / 36) if t else 0
+        return [v, v, "hardware + power", 0]
+    return [0, 0, "—", 0]
+
+# per-tool billing unit (pro rozpad výpočtu „jak je cena spočítaná"): label + model
+# (model = jak runs×steps → vendorova jednotka, zrcadlí vendor_units).
+_CALC_UNIT = {"n8n": ("executions", "runs"), "make": ("operations", "modules"),
+              "pipedream": ("credits", "runs"), "zapier": ("tasks", "actions")}
 
 def render_calc(tools: list[dict]) -> str:
     by = {t["slug"]: t for t in tools}
     m = [[[_calc_cell(by, slug, kind, runs, steps) for steps in CALC_STEP_STOPS]
           for runs in CALC_RUN_STOPS] for label, slug, kind in CALC_ROWS]
+    meta = [{"name": label, "slug": slug,
+             "unit": _CALC_UNIT.get(slug, ("ops", by[slug].get("unitModel", "runs")))[0],
+             "model": _CALC_UNIT.get(slug, ("ops", by[slug].get("unitModel", "runs")))[1]}
+            for label, slug, kind in CALC_ROWS]
     obj = {"tools": [r[0] for r in CALC_ROWS], "runs": CALC_RUN_STOPS,
-           "steps": CALC_STEP_STOPS, "m": m}
+           "steps": CALC_STEP_STOPS, "m": m, "meta": meta}
     return ('<script id="calc-data" type="application/json">\n'
             + json.dumps(obj, separators=(",", ":"), ensure_ascii=False) + '\n</script>')
 
