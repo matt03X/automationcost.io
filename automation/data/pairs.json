@@ -1,13 +1,12 @@
 {
   "_meta": {
-    "note": "Editorial data for generated X-vs-Y pages (render_vs_pages in build.py). Pricing numbers ALWAYS come from tools.json via the engine - never write prices here. Verdict/stripNote/whyLoser are hand-written per pair (design drafts, owner approves, inserted verbatim incl. HTML).",
+    "note": "Editorial data for generated X-vs-Y pages (render_vs_page in build.py). NEUTRAL / fair-comparison framing (2026-06-16): no winner/value-pick language, no savings hooks, symmetric strengths, objective + verifiable. Pricing numbers ALWAYS come from tools.json via the engine — never write prices here (point to the price table instead). EU 2006/114/EC + Czech §2976+/§2984 + US Lanham: objective, verifiable, representative, non-denigrating.",
     "conventions": {
       "pair order": "slug 'a' = more searched tool (zapier > make > n8n > pipedream > activepieces > automatisch > node-red); page slug = '<a>-vs-<b>.html'; array order = production priority (cross-links pick nearest published pairs from the top)",
-      "winner": "slug of the overall value pick from the verdict - gets the .winner outbound card",
-      "stripNote": "optional tagline after the vs-strip (e.g. 'at every volume we track') - only when the winner is uniform across volumes; omit when winners flip",
-      "verdict": "verbatim HTML for the hero verdict box (may contain <b class=\"win\">)",
-      "faq": "optional full FAQ override [{q, a-html}]; when absent the generator builds standard FAQs from data + whyLoser",
-      "whyLoser": "editorial answer to 'Why would anyone pick <loser>, then?' - used by auto-FAQ when faq override absent"
+      "winner": "slug of the lower-cost tool at the tracked volumes (objective fact from the engine) — used only to phrase the 'When is <other> the better fit?' FAQ. NOT rendered as a badge/recommendation.",
+      "verdict": "neutral objective summary for the hero box — state the factual price position + the other tool's genuine strength + the real trade-off; NO 'winner/value pick', NO 'X× cheaper'/savings hooks; point to the price table for figures. May contain plain HTML.",
+      "whyLoser": "answer to 'When is <the other tool> the better fit?' — that tool's genuine strengths, symmetric and non-denigrating.",
+      "faq": "optional full FAQ override [{q, a-html}]; when absent the generator builds neutral FAQs from data + whyLoser"
     },
     "volumes": [1000, 5000, 20000, 100000]
   },
@@ -46,13 +45,12 @@
       "a": "zapier",
       "b": "make",
       "winner": "make",
-      "stripNote": "at every volume we track",
-      "verdict": "<b class=\"win\">Make is 5–10× cheaper at paid volumes</b> — and its free tier includes 1,000 ops/mo; <b>Zapier wins on integration count — 9,000+ vs 3,000+</b>. If your apps exist in both ecosystems, Make is the value pick. If you depend on a long-tail integration only Zapier has, that decides it.",
-      "whyLoser": "Integrations. With 9,000+ supported apps versus Make's 3,000+, Zapier is often the only tool that connects a niche CRM or legacy system. If the integration you need exists only there, the price premium is the cost of admission.",
+      "verdict": "Across the volumes we track, Make is the lower-cost option, while Zapier carries the larger app catalog (9,000+ vs 3,000+) and a simpler point-and-click editor. Make trades a steeper learning curve for more visual, field-level control. See the price table below for exact figures — which one fits comes down to whether you need a Zapier-only integration or prefer Make's lower cost and flexibility.",
+      "whyLoser": "When breadth or simplicity matters most. With 9,000+ apps versus Make's 3,000+, Zapier is often the only tool that connects a niche CRM or legacy system, and its point-and-click editor plus large template library get non-technical users running fastest.",
       "faq": [
         {
-          "q": "Is Make cheaper than Zapier?",
-          "a": "At every volume we track, yes — from $10.59 vs $73.50 at 1,000 runs/mo to $214.31 vs $1,149 at 100,000. Make's volume pricing scales far more gently than Zapier's per-task tiers, so the dollar gap widens as you grow."
+          "q": "How do Make and Zapier compare on price?",
+          "a": "Across the volumes we track, Make is the lower-cost option — see the price table above for the exact figures at each level. Zapier bills per task and Make per operation, so both scale with workflow complexity; the per-unit difference is what drives the gap. Prices are taken from each vendor's public pricing page (June 2026)."
         },
         {
           "q": "What counts as an operation on each?",
@@ -63,8 +61,8 @@
           "a": "No — both are cloud-only. If self-hosting matters to you (cost control, GDPR, data residency), look at n8n or Activepieces instead — see the <a href=\"compare.html\">compare tool</a>."
         },
         {
-          "q": "Why would anyone pick Zapier, then?",
-          "a": "Integrations. With 9,000+ supported apps versus Make's 3,000+, Zapier is often the only tool that connects a niche CRM or legacy system. If the integration you need exists only there, the price premium is the cost of admission."
+          "q": "When is Zapier the better fit?",
+          "a": "When breadth or simplicity matters most: 9,000+ apps (often the only tool that connects a niche CRM or legacy system), a point-and-click editor, and the largest template library get non-technical users running fastest."
         },
         {
           "q": "How accurate are these prices?",
@@ -76,63 +74,57 @@
       "a": "zapier",
       "b": "n8n",
       "winner": "n8n",
-      "stripNote": "at every volume we track — self-hosted",
-      "verdict": "<b class=\"win\">n8n self-hosted is the cheaper option at every volume we track</b> — but only if you self-host it; <b>Zapier is the no-code path with 9,000+ integrations</b>. n8n's Community Edition software is free; you pay only for the server, which scales from ~$8/mo on a small VPS up to ~$66/mo for high volume — hardware, not a tool fee. If nobody on your team wants to own a server, compare against n8n Cloud ($28–70/mo at low volume) instead: still cheaper than Zapier's $74–$1,149 across the same range, but no longer a rout.",
-      "whyLoser": "Because n8n's low price assumes you run it yourself — installing, updating, backing up and monitoring your own server, whose cost grows with volume ($8–66/mo). If that's not your team, the realistic alternative is n8n Cloud at $28–70/mo with execution quotas. Zapier's no-code editor and 9,000+ integrations mean a non-technical person can build and own automations without engineering — that convenience is what the premium buys."
+      "verdict": "n8n self-hosted is the lower-cost option across these volumes — but only if you run the server yourself: n8n's Community Edition software is free and you pay for hosting (~$8/mo on a small VPS up to ~$66/mo at high volume — infrastructure, not a tool fee). Zapier is the fully-managed, no-code path with the larger catalog (9,000+ apps) and nothing to host. If nobody on the team wants to run a server, n8n Cloud is the managed comparison. See the table for figures — the real choice is self-host vs managed.",
+      "whyLoser": "When you'd rather not run infrastructure. Zapier is fully managed with a no-code editor and 9,000+ integrations, so a non-technical person can build and own automations without engineering — that convenience is what the price covers."
     },
     {
       "a": "make",
       "b": "n8n",
       "winner": "n8n",
-      "verdict": "<b>Price barely separates these two</b> — n8n self-hosted (from ~$8/mo) edges it at every volume we track, but the gap is small: ~$8 vs ~$11 at 1,000 runs. <b class=\"win\">The real decision is whether you want to run a server</b>: happy to self-host → n8n; want a managed cloud with a visual builder → Make. Either way, you won't overpay by much.",
-      "whyLoser": "Because self-hosting isn't free in practice — n8n runs on a VPS you patch, back up and monitor yourself, and its cost climbs with volume ($8–66/mo). Make is fully managed, its free tier includes 1,000 ops/mo, and at 100,000 runs it's ~$214/mo. If nobody on the team wants server keys, Make is the sane default — you're paying a little extra for zero ops burden."
+      "verdict": "Price barely separates these two — n8n self-hosted (from ~$8/mo) is marginally lower across the volumes we track, but the gap is small at low volume. The real decision is whether you want to run a server: happy to self-host → n8n (free software + your hosting); prefer a fully-managed cloud with a visual builder → Make. See the price table for figures; either way you won't overpay by much.",
+      "whyLoser": "When you'd rather not run infrastructure. Make is fully managed, its free tier covers light use, and even at higher volume it stays modest — you trade a few dollars for zero ops burden and a polished visual builder."
     },
     {
       "a": "zapier",
       "b": "pipedream",
       "winner": "pipedream",
-      "stripNote": "at every volume we track",
-      "verdict": "<b class=\"win\">Pipedream is roughly 2–4× cheaper, and the gap widens with volume</b>; <b>the catch is who it's built for</b> — Pipedream is code-first (Node/Python steps), Zapier is no-code. If your team writes code, Pipedream gives you more power for a fraction of the price. If \"add a code step\" sounds like a blocker, Zapier's 9,000+ integrations and point-and-click editor are what you're paying for.",
-      "whyLoser": "Because Pipedream's price assumes someone on the team is comfortable in code — workflows lean on Node/Python steps and the whole UI is aimed at developers. With Zapier, a marketer or ops person can ship an automation alone: no-code editor, 9,000+ integrations, huge template library. If that's who's building, Zapier earns its premium."
+      "verdict": "Pipedream is the lower-cost option here, but the two are built for different people: Pipedream is code-first (Node/Python steps), Zapier is no-code with a point-and-click editor and 9,000+ integrations. If your team writes code, Pipedream offers more control for less; if \"add a code step\" is a blocker, Zapier's no-code approach is what the price covers. See the price table for figures.",
+      "whyLoser": "When the people building automations don't code. Zapier's no-code editor, 9,000+ integrations and large template library let a marketer or ops person ship an automation alone — no engineering required."
     },
     {
       "a": "n8n",
       "b": "activepieces",
       "winner": "activepieces",
-      "stripNote": "at every volume we track — up to 10 active flows",
-      "verdict": "<b class=\"win\">Activepieces Cloud runs this at $0</b> — unlimited runs, free up to 10 active flows (we price 3); <b>n8n is the deeper toolkit once automations get complex</b>. Both are open-source and self-hostable, so philosophy doesn't decide this one: start free on Activepieces if 10 flows is enough, move to n8n (self-hosted from ~$8/mo, scaling with volume) when you need its bigger node ecosystem and heavier workflow logic.",
-      "whyLoser": "Because the $0 has a ceiling: 10 active flows on Activepieces Cloud, then $5 per extra flow. n8n self-hosted has no workflow cap — you pay only for the server (from ~$8/mo, more at high volume) — and its larger ecosystem and more mature advanced logic (branching, error handling, code nodes) start to matter once automations get serious. Heavy or complex usage tips the math back to n8n."
+      "verdict": "Both are open-source and self-hostable, so philosophy doesn't separate them. Activepieces Cloud runs this at $0 (free up to 10 active flows, then $5 per flow, unlimited runs); n8n has the larger node ecosystem and more mature advanced logic, self-hosted from ~$8/mo. Start free on Activepieces if 10 flows is enough; move to n8n when you need its bigger toolkit. See the price table for figures.",
+      "whyLoser": "When automations get complex or numerous. n8n has no workflow cap (you pay only for the server), a larger node ecosystem, and more mature branching, error handling and code nodes — which start to matter once usage gets heavy."
     },
     {
       "a": "zapier",
       "b": "activepieces",
       "winner": "activepieces",
-      "stripNote": "at every volume we track — up to 10 active flows",
-      "verdict": "<b class=\"win\">Activepieces runs this at $0 at every volume</b> — free up to 10 active flows (we price 3), then $5 per flow; <b>Zapier's case is its catalog — 9,000+ integrations vs 747+</b>. If your apps are covered in Activepieces' smaller catalog, the price gap ($0 vs $74–$1,149) is impossible to argue with. If they aren't, no discount fixes a missing integration.",
-      "whyLoser": "Because 747+ integrations covers the popular apps, not the long tail — Zapier's 9,000+ catalog is the deepest in the market, and if your workflow depends on a niche CRM or a regional tool, Zapier is often the only one that has it. Add the most mature template library and a no-code editor honed for non-technical users, and the premium buys certainty that your stack is supported."
+      "verdict": "Activepieces runs this at $0 (free up to 10 active flows, then $5 per flow, unlimited runs); Zapier's strength is its catalog — 9,000+ integrations vs about 750. If your apps are covered by Activepieces' smaller, open-source catalog, it's the lower-cost option by a wide margin; if you need a niche integration only Zapier has, no discount replaces it. See the price table for figures.",
+      "whyLoser": "When you need breadth or polish. About 750 integrations cover the popular apps, but Zapier's 9,000+ catalog is the deepest here — often the only one with a niche or regional tool — plus the largest template library and a no-code editor tuned for non-technical users."
     },
     {
       "a": "make",
       "b": "pipedream",
       "winner": "make",
-      "stripNote": "at every volume we track",
-      "verdict": "<b class=\"win\">Make is 1.4–4× cheaper at the volumes we track</b> — and this time the no-code tool is the cheap one; <b>Pipedream is the developer's pick</b>. Make's free tier includes 1,000 ops/mo and at 100,000 runs it's ~$214 vs ~$310. Choose Pipedream only if your team wants to write Node or Python steps — then the premium buys real programmability.",
-      "whyLoser": "Because Pipedream is built for engineers: workflows are code steps in Node or Python with full access to npm and PyPI packages, an event-data inspector, and 3,000+ integrations behind an API-first design. Make's visual builder hits a ceiling when logic gets genuinely complex — at that point Pipedream's premium is buying capability Make simply doesn't have."
+      "verdict": "Make is the lower-cost option across these volumes, and this time the no-code tool is the cheaper one. Pipedream is built for developers — workflows are Node/Python code steps with full npm/PyPI access — so it offers programmability Make's visual builder doesn't. Choose Pipedream if your team wants to write code; otherwise Make covers most needs for less. See the price table for figures.",
+      "whyLoser": "When you want real code. Pipedream runs Node/Python steps with npm and PyPI packages, an event-data inspector and an API-first design — capability that matters when logic gets genuinely complex."
     },
     {
       "a": "make",
       "b": "activepieces",
       "winner": "activepieces",
-      "verdict": "<b class=\"win\">Activepieces runs this at $0</b> — free up to 10 active flows (we price 3) with unlimited runs — while Make starts at ~$11/mo and rises to ~$214 at 100,000 runs: never huge, but never free. The trade: Activepieces is open-source and self-hostable but free only up to 10 active flows; Make has the bigger catalog (3,000+ integrations vs 747+) and the more mature cloud. Pick by catalog coverage first — at these prices, money is the tiebreaker, not the decider.",
-      "whyLoser": "Because Make's costs are modest and predictable while its platform is the more mature one — a bigger integration catalog (3,000+ vs 747+), a more polished scenario builder, and a larger template and community pool. Activepieces' $0 also has a ceiling: 10 active flows, then $5 per flow. A growing team can outgrow it — and at ~$11–$214/mo across our volumes, Make stays modest."
+      "verdict": "Activepieces runs this at $0 (free up to 10 active flows with unlimited runs), while Make starts low and rises modestly with volume. The trade-off: Activepieces is open-source and self-hostable but free only up to 10 active flows; Make has the larger catalog (3,000+ vs about 750) and a more mature cloud. Pick by catalog coverage first — at these prices, cost is the tiebreaker, not the decider. See the price table for figures.",
+      "whyLoser": "When you want a bigger catalog and a polished, managed platform. Make has more integrations (3,000+ vs about 750), a more refined scenario builder, and a larger template and community pool, with modest, predictable costs."
     },
     {
       "a": "n8n",
       "b": "pipedream",
       "winner": "n8n",
-      "stripNote": "at every volume we track — self-hosted",
-      "verdict": "<b class=\"win\">n8n self-hosted is cheaper at every volume we track — if you run it yourself</b>; <b>Pipedream is the managed path for the same developer audience</b>. This isn't no-code vs code — both are dev-friendly. It's your server + open-source vs managed cloud + code steps: if running a VPS is routine for your team, n8n wins on price outright (a server bill of ~$8–66/mo vs Pipedream's ~$45–$310). If you'd rather never touch infrastructure, Pipedream's premium is the hosting bill.",
-      "whyLoser": "Because n8n's low price assumes you operate it yourself — the server bill scales with volume ($8–66/mo) and n8n Cloud, the managed alternative, runs $28–70/mo with execution quotas. Pipedream is fully managed, scales without your attention, and its code-step model (Node/Python, npm/PyPI) is arguably the more powerful developer experience. Teams that count engineering hours often find Pipedream's fee cheaper than owning a server."
+      "verdict": "Both are developer-friendly, so this isn't no-code vs code — it's your server + open-source vs managed cloud + code steps. n8n self-hosted is the lower-cost option if running a VPS is routine for your team (~$8–66/mo); Pipedream is fully managed with Node/Python code steps and event sources, so you never touch infrastructure. n8n Cloud is the managed comparison if you'd rather not self-host. See the price table for figures.",
+      "whyLoser": "When you'd rather not run infrastructure. Pipedream is fully managed and scales without your attention, and its code-step model (Node/Python, npm/PyPI) is a powerful developer experience — teams that count engineering hours often prefer it to operating a server."
     }
   ]
 }

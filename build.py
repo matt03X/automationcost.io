@@ -426,8 +426,8 @@ def render_gap(tools: list[dict]) -> str:
     i5 = GAP_VOLS.index(5000)
     at5 = [s["pts"][i5] for s in series]
     obj = {"vols": GAP_VOLS, "series": series,
-           "verdict": {"label": "The gap, annualized · 5,000 runs",
-                       "amount": round((max(at5) - min(at5)) * 12)}}
+           "verdict": {"label": "Monthly cost range · 5,000 runs",
+                       "low": round(min(at5), 2), "high": round(max(at5), 2)}}
     return ('<script id="gap-data" type="application/json">\n'
             + json.dumps(obj, separators=(",", ":"), ensure_ascii=False) + '\n</script>')
 

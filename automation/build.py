@@ -455,17 +455,18 @@ def _vs_auto_faq(pair, ta, tb, costs, volumes):
         wt, lt_ = (ta, tb) if uniform == "a" else (tb, ta)
         (w0, l0), (wN, lN) = (costs[0], costs[-1]) if uniform == "a" else (costs[0][::-1], costs[-1][::-1])
         faq.append({
-            "q": f"Is {wt['name']} cheaper than {lt_['name']}?",
-            "a": (f"At every volume we track, yes — from {_fmt_usd(w0['cost'], w0['est'])} vs "
-                  f"{_fmt_usd(l0['cost'], l0['est'])} at {volumes[0]:,} runs/mo to "
-                  f"{_fmt_usd(wN['cost'], wN['est'])} vs {_fmt_usd(lN['cost'], lN['est'])} at "
-                  f"{volumes[-1]:,}. Prices include overage where it applies — see the table above.")})
+            "q": f"How do {a_name} and {b_name} compare on price?",
+            "a": (f"From published pricing, {wt['name']} is the lower-cost option across the volumes we track — "
+                  f"{_fmt_usd(w0['cost'], w0['est'])} vs {_fmt_usd(l0['cost'], l0['est'])} at {volumes[0]:,} runs/mo, "
+                  f"and {_fmt_usd(wN['cost'], wN['est'])} vs {_fmt_usd(lN['cost'], lN['est'])} at {volumes[-1]:,}. "
+                  "Figures include overage where it applies — see the table above. Price is one factor; the "
+                  "feature and trade-off sections cover the rest.")})
     else:
         parts = [f"{volumes[i]:,} runs: {(ta if w == 'a' else tb)['name']}"
                  for i, w in enumerate(wins) if w != "tie"]
         faq.append({
-            "q": f"Which is cheaper, {a_name} or {b_name}?",
-            "a": "It depends on volume — the cheaper pick flips: " + " · ".join(parts)
+            "q": f"How do {a_name} and {b_name} compare on price?",
+            "a": "It depends on volume — the lower-cost option changes: " + " · ".join(parts)
                  + ". Check the table above for your usage level."})
     od = (pair_tools := pair.get("_tools_meta", {}))  # naplněno v render_vs_page
     faq.append({"q": "What counts as an operation on each?",
@@ -482,9 +483,9 @@ def _vs_auto_faq(pair, ta, tb, costs, volumes):
               "data residency), look at n8n or Activepieces instead — see the "
               '<a href="compare.html">compare tool</a>.')
     faq.append({"q": "Can I self-host either of them?", "a": sh})
-    loser = tb if pair.get("winner") == ta["slug"] else ta
+    other = tb if pair.get("winner") == ta["slug"] else ta
     if pair.get("whyLoser"):
-        faq.append({"q": f"Why would anyone pick {loser['name']}, then?", "a": pair["whyLoser"]})
+        faq.append({"q": f"When is {other['name']} the better fit?", "a": pair["whyLoser"]})
     faq.append({"q": "How accurate are these prices?",
                 "a": "Taken from official pricing pages and verified "
                      f"{pair.get('_month_year', 'June 2026')}. Values marked ~ are estimates for "
@@ -519,18 +520,10 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
     pair["_month_year"] = month_year
     faq = pair.get("faq") or _vs_auto_faq(pair, ta, tb, costs, volumes)
 
-    # vs-strip: jednoznačný vítěz → "W < L (+ stripNote)"; jinak neutrální "A vs B"
-    if uniform:
-        w, l = (ta, tb) if uniform == "a" else (tb, ta)
-        strip = (f'<span class="who"><img src="{_logo(w["slug"])}" alt="{w["name"]} logo">{w["name"]}</span>\n'
-                 f'      <span class="lt">&lt;</span>\n'
-                 f'      <span class="who"><img src="{_logo(l["slug"])}" alt="{l["name"]} logo">{l["name"]}</span>')
-        if pair.get("stripNote"):
-            strip += f'\n      <span style="color:var(--muted); font-weight:500;">{pair["stripNote"]}</span>'
-    else:
-        strip = (f'<span class="who"><img src="{_logo(ta["slug"])}" alt="{a_name} logo">{a_name}</span>\n'
-                 f'      <span class="lt">vs</span>\n'
-                 f'      <span class="who"><img src="{_logo(tb["slug"])}" alt="{b_name} logo">{b_name}</span>')
+    # vs-strip: VŽDY neutrální "A vs B" (žádný winner "<" — fair-competition neutralita 2026-06-16)
+    strip = (f'<span class="who"><img src="{_logo(ta["slug"])}" alt="{a_name} logo">{a_name}</span>\n'
+             f'      <span class="lt">vs</span>\n'
+             f'      <span class="who"><img src="{_logo(tb["slug"])}" alt="{b_name} logo">{b_name}</span>')
 
     # cenová tabulka — td.cheap per řádek (vítěz se může mezi objemy přehoupnout)
     rows = []
@@ -579,20 +572,18 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
 
     # outbound CTA — affiliate jen s hasAffiliate (sponsored + ?pc v affiliateUrl)
     def out_card(t):
-        winner_cls = " winner" if t["slug"] == pair.get("winner") else ""
         blurb = pairs_data.get("tools", {}).get(t["slug"], {}).get("ctaBlurb", "")
         if t["hasAffiliate"]:
             btn = (f'<a href="{t["affiliateUrl"]}" target="_blank" rel="noopener sponsored" '
-                   f'class="out-btn aff">Try {t["name"]} free →</a>\n'
-                   f'        <span class="aff-note">Affiliate link — never affects our rankings.</span>')
+                   f'class="out-btn aff">Visit {t["name"]} (affiliate) →</a>\n'
+                   f'        <span class="aff-note">We earn a commission if you sign up via this link — it never affects the comparison (rankings come purely from public pricing).</span>')
         else:
             btn = (f'<a href="{t["homepage"]}" target="_blank" rel="noopener" '
                    f'class="out-btn plain">Visit {t["name"]} →</a>')
-        return (f'      <div class="out-card{winner_cls}">\n        <div class="out-head">'
+        return (f'      <div class="out-card">\n        <div class="out-head">'
                 f'<img src="{_logo(t["slug"])}" alt="{t["name"]} logo">{t["name"]}</div>\n'
                 f'        <p>{blurb}</p>\n        {btn}\n      </div>')
-    # winner karta první
-    out_cards = sorted([ta, tb], key=lambda t: t["slug"] != pair.get("winner"))
+    out_cards = [ta, tb]  # rovnocenné pořadí (žádná "winner" karta) — fair-competition neutralita
 
     # cross-linky: pricing obou + compare + až 3 nejbližší publikované páry
     xlinks = [f'<a class="xlink" href="{ta["slug"]}-pricing.html">{a_name} pricing in detail</a>',
@@ -618,8 +609,8 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
 
     title = f"{a_name} vs {b_name}: Pricing &amp; Cost Comparison 2026 | AutomationCost.io"
     desc = (f"{a_name} vs {b_name} priced at " + " / ".join(f"{v:,}" for v in volumes)
-            + " runs per month — real plans, overage math, feature differences and which one is "
-              "cheaper for your usage.")
+            + " runs per month — real plans, overage math, feature differences and how the "
+              "pricing compares for your usage.")
     canonical = f"{prefix}/{slug}.html"
 
     css = _VS_CSS  # sdílená šablona stylů (port z _vs-example.html)
@@ -681,7 +672,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
   <!-- 1 ── Hero verdict -->
   <div class="hero" data-screen-label="VS hero">
     <div class="hero-badge">prices verified {month_year.lower()} · 3 workflows · monthly billing</div>
-    <h1>{a_name} vs {b_name} — <em>which costs less?</em></h1>
+    <h1>{a_name} vs {b_name} — <em>pricing &amp; features compared</em></h1>
     <div class="vs-strip">
       {strip}
     </div>
@@ -765,6 +756,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
 {out_card(out_cards[0])}
 {out_card(out_cards[1])}
     </div>
+    <p class="tbl-note">An objective cost comparison from each vendor's public pricing pages ({month_year}) — not a recommendation; rankings reflect price only, so verify current pricing before deciding. We run an affiliate link for Make (the only one of these tools with a public referral program); the others don't offer one, so those are plain links — affiliate status never affects the comparison. See our <a href="affiliate.html">affiliate disclosure</a>.</p>
   </div>
 
   <!-- 8 ── Cross-links -->
