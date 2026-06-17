@@ -433,7 +433,7 @@ def _vs_features():
          if (ta["maxSteps"].lower().startswith("unlimited") != tb["maxSteps"].lower().startswith("unlimited")) else None),
         ("Execution timeout", lambda t: t["timeout"], win_timeout),
         ("Log history", lambda t: t["logHistory"], lambda ta, tb: None),
-        ("GDPR-friendly", lambda t: bool_cell(t["gdprFriendly"]), win_bool("gdprFriendly")),
+        ("EU data residency", lambda t: bool_cell(t["gdprFriendly"]), win_bool("gdprFriendly")),
         ("Self-hosting", lambda t: bool_cell(t["selfHostable"]), win_bool("selfHostable")),
         ("AI features", lambda t: bool_cell(t["aiFeatures"]), win_bool("aiFeatures")),
         ("Multi-user", lambda t: bool_cell(t["multiUser"]), win_bool("multiUser")),

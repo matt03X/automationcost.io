@@ -88,7 +88,7 @@
       "a": "zapier",
       "b": "pipedream",
       "winner": "pipedream",
-      "verdict": "Pipedream is the lower-cost option here, but the two are built for different people: Pipedream is code-first (Node/Python steps), Zapier is no-code with a point-and-click editor and 9,000+ integrations. If your team writes code, Pipedream offers more control for less; if \"add a code step\" is a blocker, Zapier's no-code approach is what the price covers. See the price table for figures.",
+      "verdict": "Pipedream is the lower-cost option here, but the two lead with different defaults: Pipedream is code-first (every step can be Node/Python with full npm/PyPI access), while Zapier leads with a no-code point-and-click editor and 9,000+ integrations — it also has Code by Zapier (Python/JS) when you need a script. If your team writes code throughout, Pipedream offers more control for less; if you prefer building visually with code as the exception, Zapier's approach is what the price covers. See the price table for figures.",
       "whyLoser": "When the people building automations don't code. Zapier's no-code editor, 9,000+ integrations and large template library let a marketer or ops person ship an automation alone — no engineering required."
     },
     {
