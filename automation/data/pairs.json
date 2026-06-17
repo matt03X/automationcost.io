@@ -125,6 +125,87 @@
       "winner": "n8n",
       "verdict": "Both are developer-friendly, so this isn't no-code vs code — it's your server + open-source vs managed cloud + code steps. n8n self-hosted is the lower-cost option if running a VPS is routine for your team (~$8–66/mo); Pipedream is fully managed with Node/Python code steps and event sources, so you never touch infrastructure. n8n Cloud is the managed comparison if you'd rather not self-host. See the price table for figures.",
       "whyLoser": "When you'd rather not run infrastructure. Pipedream is fully managed and scales without your attention, and its code-step model (Node/Python, npm/PyPI) is a powerful developer experience — teams that count engineering hours often prefer it to operating a server."
+    },
+    {
+      "a": "zapier",
+      "b": "automatisch",
+      "winner": "automatisch",
+      "verdict": "These two sit at opposite ends of the market. Automatisch is open-source and self-hosted, so across the volumes we track its cost is just the server it runs on, while Zapier is a fully managed cloud service priced per task with by far the larger catalog (9,000+ apps vs about 50). Automatisch trades breadth and convenience for data control and a flat running cost; Zapier trades higher pricing for reach and a no-code editor anyone can use. See the price table below for figures.",
+      "whyLoser": "When breadth and zero setup matter most. Zapier connects 9,000+ apps — often the only tool that supports a niche or legacy system — and its point-and-click editor and template library let a non-technical person ship automations without running any infrastructure."
+    },
+    {
+      "a": "zapier",
+      "b": "node-red",
+      "winner": "node-red",
+      "verdict": "A managed SaaS service versus self-hosted software, for different audiences. Node-RED is open-source (Apache 2.0) and runs on your own hardware, so its cost is just that server; Zapier is hosted and priced per task, with a 9,000+ app catalog and a no-code editor. Node-RED suits developers and IoT/hardware flows wired together in its visual editor; Zapier suits non-technical users connecting SaaS apps with nothing to host. See the price table below for figures.",
+      "whyLoser": "When you're connecting SaaS apps without writing code or running servers. Zapier's 9,000+ integrations and point-and-click builder get non-technical users live fastest, with nothing to host or maintain."
+    },
+    {
+      "a": "make",
+      "b": "automatisch",
+      "winner": "automatisch",
+      "verdict": "Both lean visual, but the hosting model differs. Automatisch is open-source and self-hosted, so its cost is your server bill at any volume, while Make is a managed cloud builder priced per operation with a far larger app catalog (3,000+ vs about 50) and a polished drag-and-drop canvas. Automatisch trades integrations and convenience for data control and a flat cost; Make trades self-hosting for breadth and a richer editor. See the price table below for figures.",
+      "whyLoser": "When you want breadth and a polished builder without running servers. Make connects 3,000+ apps with a visual, field-level editor and keeps a managed cloud running for you — a non-technical team can build complex scenarios without touching infrastructure."
+    },
+    {
+      "a": "make",
+      "b": "node-red",
+      "winner": "node-red",
+      "verdict": "Two visual tools with different roots. Node-RED is open-source (Apache 2.0), self-hosted and built for event-driven and IoT/hardware flows, so its cost is just your server; Make is a managed cloud platform priced per operation with 3,000+ SaaS integrations and a drag-and-drop canvas. Node-RED fits developers wiring devices and APIs; Make fits teams automating SaaS apps without hosting anything. See the price table below for figures.",
+      "whyLoser": "When you're automating SaaS apps and would rather not host or code. Make's 3,000+ integrations, visual builder and managed infrastructure suit non-technical teams, where Node-RED's strengths are hardware, events and self-hosting."
+    },
+    {
+      "a": "n8n",
+      "b": "automatisch",
+      "verdict": "Both are open-source and self-hosted, so on our figures they cost the same — the server they run on (see the table). The difference is scope: n8n carries a much larger node ecosystem (1,868 integrations), native AI/LLM nodes and code steps, while Automatisch is deliberately minimal (about 50 integrations, no AI), AGPL-licensed and quick to stand up. Pick n8n for depth, Automatisch for simplicity and a lean footprint. See the price table below for figures.",
+      "whyLoser": "When your automations get complex or numerous. n8n has the larger node library, native AI/LLM steps, code nodes and more mature branching and error handling — depth that pays off once usage grows beyond simple flows."
+    },
+    {
+      "a": "n8n",
+      "b": "node-red",
+      "verdict": "Both are open-source, self-hosted and free software, so our figures put them at the same cost — your server (see the table). They serve different builders: n8n is a general-purpose automation tool with 1,868 app integrations, AI/LLM nodes and a visual editor aimed at business workflows, while Node-RED (Apache 2.0) is event-driven and excels at IoT/hardware, wired in a flow editor with Node.js function nodes. Pick n8n for SaaS automation, Node-RED for devices and events. See the price table below for figures.",
+      "whyLoser": "When you're automating SaaS apps and APIs rather than hardware. n8n's 1,868 integrations, native AI nodes and business-oriented editor cover that ground, where Node-RED leans toward IoT, events and low-level wiring."
+    },
+    {
+      "a": "pipedream",
+      "b": "activepieces",
+      "winner": "activepieces",
+      "verdict": "Both are developer-friendly, but the cost and hosting models differ. Activepieces is MIT-licensed and runs free on its cloud free tier or self-hosted (cost is your server), while Pipedream is a managed cloud platform priced in credits once you pass its small free tier. Pipedream offers deeper code-first workflows (Node.js/Python with npm/PyPI); Activepieces offers a Zapier-like no-code UI plus self-hosting and an open license. See the price table below for figures.",
+      "whyLoser": "When your team writes code and wants a fully managed platform. Pipedream runs Node.js/Python steps with npm/PyPI packages, an event-data inspector and an API-first design — a powerful developer experience with no infrastructure to operate."
+    },
+    {
+      "a": "pipedream",
+      "b": "automatisch",
+      "winner": "automatisch",
+      "verdict": "A code-first cloud platform versus a minimal self-hosted one. Automatisch is open-source and self-hosted, so its cost is your server bill, while Pipedream is managed and priced in credits, built for developers who write Node.js/Python in their workflows. Automatisch keeps things simple and EU-friendly with about 50 integrations and no metering; Pipedream trades self-hosting for programmability and a larger catalog. See the price table below for figures.",
+      "whyLoser": "When you want managed, code-first automation. Pipedream lets developers run Node.js/Python with npm/PyPI, inspect event data and build API-first — without hosting or maintaining a server."
+    },
+    {
+      "a": "pipedream",
+      "b": "node-red",
+      "winner": "node-red",
+      "verdict": "Both speak to developers, from different angles. Node-RED is open-source (Apache 2.0), self-hosted and event/IoT-oriented, so its cost is just your server; Pipedream is a managed cloud platform priced in credits, with Node.js/Python steps and a large SaaS catalog. Node-RED fits hardware and on-prem event flows; Pipedream fits cloud-hosted, code-first SaaS automation with nothing to operate. See the price table below for figures.",
+      "whyLoser": "When you want managed code-first workflows for SaaS. Pipedream runs Node.js/Python with npm/PyPI and connects a large app catalog without you hosting anything — where Node-RED's strengths are IoT, events and self-hosting."
+    },
+    {
+      "a": "activepieces",
+      "b": "automatisch",
+      "winner": "activepieces",
+      "verdict": "Two open-source, self-hostable tools with different reach. Activepieces pairs an MIT license with a Zapier-like no-code UI and about 747 integrations, and is free on its cloud free tier; Automatisch is AGPL-licensed, deliberately minimal (about 50 integrations, no AI) and simple to self-host. On our figures Activepieces runs at no cost on its free tier while Automatisch's cost is your server bill — see the table. Choose Activepieces for breadth and UI, Automatisch for a lean, EU-friendly footprint. See the price table below for figures.",
+      "whyLoser": "When you want the simplest possible self-hosted setup with full data control. Automatisch is quick to stand up, AGPL-licensed and unmetered — a lean fit when you only need a handful of integrations and want everything on your own server."
+    },
+    {
+      "a": "activepieces",
+      "b": "node-red",
+      "winner": "activepieces",
+      "verdict": "Both are open-source and self-hostable, aimed at different builders. Activepieces offers a Zapier-like no-code UI, about 747 SaaS integrations and an MIT license, and is free on its cloud free tier; Node-RED (Apache 2.0) is a developer/IoT tool wired in a flow editor with Node.js function nodes. On our figures Activepieces runs at no cost on its free tier and Node-RED's cost is your server — see the table. Pick Activepieces for no-code SaaS automation, Node-RED for hardware and events. See the price table below for figures.",
+      "whyLoser": "When you're working with IoT, hardware or event-driven flows. Node-RED's flow editor, Node.js function nodes and Apache 2.0 license make it the natural fit for device and on-prem automation, where Activepieces focuses on SaaS apps and a no-code UI."
+    },
+    {
+      "a": "automatisch",
+      "b": "node-red",
+      "verdict": "Both are free, open-source and self-hosted, so our figures put them at the same cost — your server (see the table). They aim at different users: Automatisch is a simple, EU-friendly tool for basic SaaS automation (about 50 integrations, AGPL), while Node-RED (Apache 2.0) is a developer/IoT tool with a flow editor and Node.js function nodes. Pick Automatisch for simple flows you host yourself, Node-RED for hardware, events and code. See the price table below for figures.",
+      "whyLoser": "When you want the simplest self-hosted setup for a few SaaS integrations. Automatisch is fast to stand up, EU-friendly and unmetered — a lean choice when you don't need code or hardware support and value data control."
     }
   ]
 }
