@@ -461,6 +461,15 @@ def _vs_auto_faq(pair, ta, tb, costs, volumes):
                   f"and {_fmt_usd(wN['cost'], wN['est'])} vs {_fmt_usd(lN['cost'], lN['est'])} at {volumes[-1]:,}. "
                   "Figures include overage where it applies — see the table above. Price is one factor; the "
                   "feature and trade-off sections cover the rest.")})
+    elif not any(w != "tie" for w in wins):
+        # úplná shoda na všech objemech (typicky self-host vs self-host — stejná
+        # VPS škála): cena není rozhodující, rozdíl je ve funkcích
+        faq.append({
+            "q": f"How do {a_name} and {b_name} compare on price?",
+            "a": (f"They come out to the same cost across the volumes we track — both are free "
+                  f"open-source software, so the figure is just your server bill (see the table above). "
+                  "Price isn't the deciding factor here; the feature and trade-off sections below "
+                  "cover what separates them.")})
     else:
         parts = [f"{volumes[i]:,} runs: {(ta if w == 'a' else tb)['name']}"
                  for i, w in enumerate(wins) if w != "tie"]
