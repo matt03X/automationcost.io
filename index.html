@@ -707,10 +707,15 @@
     stepsVal.textContent=steps+(steps>1?' steps':' step');
     fillTrack(runsEl); fillTrack(stepsEl);
     if(!rowEls) buildRows();
-    var unit = billMode==='monthly' ? '/mo' : '/yr';
-    var res=tools.map(function(t,i){ var c=CALC.m[i][ri][si]; var monthly=c[0], annual=c[1];
-      var price = billMode==='monthly' ? monthly : (billMode==='yearly' ? annual*12 : monthly*12);
-      return {price:price, plan:c[2], est:!!c[3]};
+    var unit = billMode==='yearly_nodisc' ? '/yr' : '/mo';
+    var res=tools.map(function(t,i){ var c=CALC.m[i][ri][si]; var monthly=c[0], annual=c[1], plan=c[2], est=!!c[3];
+      var price, sub;
+      if(billMode==='yearly'){ price=annual;  /* per-month billed annually */
+        var disc=monthly>0?Math.round((1-annual/monthly)*100):0;
+        sub=plan+(disc>0?' · billed yearly · save '+disc+'%':' · no annual discount'); }
+      else if(billMode==='yearly_nodisc'){ price=monthly*12; sub=plan+' · billed monthly'; }
+      else { price=monthly; sub=plan; }
+      return {price:price, plan:sub, est:est};
     });
     var prices=res.map(function(r){return r.price;});
     var min=Math.min.apply(null,prices), max=Math.max.apply(null,prices);
@@ -722,7 +727,7 @@
       e.plan.textContent=r.plan;
       e.badge.style.display=cheap?'':'none';
     });
-    var billNote = billMode==='yearly' ? ' · annual billing (vendor discount applied)' : (billMode==='yearly_nodisc' ? ' · monthly billing × 12 (no annual discount)' : '');
+    var billNote = billMode==='yearly' ? ' · per-month price billed annually (real vendor discount)' : (billMode==='yearly_nodisc' ? ' · annual total at the monthly rate (no discount)' : '');
     note.innerHTML='Lowest vs highest at this volume: <b>$'+fmt(min)+'</b> – <b>$'+fmt(max)+unit+'</b>'+billNote+' · units differ per tool (we convert runs → each vendor’s unit) · ~ = estimated tier · public pricing';
   }
   runsEl.addEventListener('input',render); stepsEl.addEventListener('input',render);
