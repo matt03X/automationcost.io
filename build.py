@@ -468,12 +468,21 @@ def _calc_cell(by, slug, kind, runs, steps):
         return [v, v, "hardware + power", 0]
     return [0, 0, "—", 0]
 
+# per-tool billing unit (pro rozpad výpočtu „jak je cena spočítaná"): label + model
+# (model = jak runs×steps → vendorova jednotka, zrcadlí vendor_units).
+_CALC_UNIT = {"n8n": ("executions", "runs"), "make": ("operations", "modules"),
+              "pipedream": ("credits", "runs"), "zapier": ("tasks", "actions")}
+
 def render_calc(tools: list[dict]) -> str:
     by = {t["slug"]: t for t in tools}
     m = [[[_calc_cell(by, slug, kind, runs, steps) for steps in CALC_STEP_STOPS]
           for runs in CALC_RUN_STOPS] for label, slug, kind in CALC_ROWS]
+    meta = [{"name": label, "slug": slug,
+             "unit": _CALC_UNIT.get(slug, ("ops", by[slug].get("unitModel", "runs")))[0],
+             "model": _CALC_UNIT.get(slug, ("ops", by[slug].get("unitModel", "runs")))[1]}
+            for label, slug, kind in CALC_ROWS]
     obj = {"tools": [r[0] for r in CALC_ROWS], "runs": CALC_RUN_STOPS,
-           "steps": CALC_STEP_STOPS, "m": m}
+           "steps": CALC_STEP_STOPS, "m": m, "meta": meta}
     return ('<script id="calc-data" type="application/json">\n'
             + json.dumps(obj, separators=(",", ":"), ensure_ascii=False) + '\n</script>')
 
