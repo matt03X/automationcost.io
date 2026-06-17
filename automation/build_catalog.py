@@ -441,7 +441,7 @@ def _feat_items(variant: dict) -> list[tuple[str, bool]]:
     ]
     items.append(("AI / LLM nodes", variant.get("aiFeatures", False)))
     items.append(("Code steps", variant.get("codeSteps", False)))
-    items.append(("GDPR-friendly", variant.get("gdprFriendly", False)))
+    items.append(("EU data residency", variant.get("gdprFriendly", False)))
     return items
 
 

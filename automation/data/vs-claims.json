@@ -7,7 +7,7 @@
     "lastAudit": "2026-06-16",
     "summary": { "registryEntries": 38, "match": 14, "mismatch": 12, "unverifiable": 6, "opinion": 6, "favors_us_mismatch": 6, "note": "Některé entry jsou agregované přes 7 vendorů (SH-all, LIC-all, AI-all, STEPS/TIMEOUT/LOG/GDPR/MULTIUSER/API/WEBHOOK/CODE-all) → ~90 atomických tvrzení. Registry teď pokrývá VŠECHNA objektivní pole _vs_features (integrations/free tier/overage/steps/timeout/log/GDPR/self-host/AI/multi-user/API/webhooks/code/license)." },
     "auditLayers": "DVĚ vrstvy automatizace pod tímhle registrem: (A) scripts/facts-audit.js = AUTORITATIVNÍ deterministický audit (integrations vs oficiální stránka, license vs GitHub spdx, self-host vs existence repa, free-tier evidence z ceníku) → diff vs tools.json, alarm při rozporu. (B) scripts/vs-crosscheck.js = ZAUJATÝ signál z vendorských 'X vs Y' marketing stránek (n8n.io/vs/*, make.com/compare/*, zapier.com/compare/*) → snapshot + diff den-proti-dni (vendor změnil marketing = alarm) + reviewVsOurData (vendor ≠ naše data = EVIDENCE-ONLY, NEopravovat auto). Pole, co nejdou deterministicky (timeout/log/gdpr/code/api flagy), řeší LLM (scripts/facts-extract-llm.js, haiku, volitelný) + tahle human-review registry.",
-    "openReviewItems_2026-06-17": "Nové entry STEPS/TIMEOUT/LOG/GDPR/MULTIUSER/API/WEBHOOK/CODE-all přidány jako tracked claims se zdroji. VYŽADUJÍ lidskou revizi (status unverifiable/opinion): GDPR-all (Zapier/Pipedream '✗' je zjednodušení — mají DPA, jen US data; zvážit label 'EU data residency'), CODE-all (Zapier má Code by Zapier, Activepieces code piece — '✗' možná podhodnocuje konkurenta = favors_us), API-all (doověřit Automatisch). Tyto NEzměněny v tools.json — čeká revize ownera.",
+    "resolution_2026-06-17": "Owner OK 2026-06-17, 3 opravy provedeny: (1) LIC-all — ověřeno čtením LICENSE, že activepieces/automatisch jsou open-core (MIT/AGPL jádro + ee/ komerční); naše labely správné, jen GitHub spdx=NOASSERTION → facts-audit hlásí note (ne alarm). (2) GDPR-all — řádek přejmenován 'GDPR-friendly'→'EU data residency' (build.py), hodnoty beze změny → odstraněno favors_us zlehčování. (3) CODE-all — zapier+activepieces codeSteps false→true (ověřeno Code by Zapier + Code piece); próza zapier-vs-pipedream změkčena. Changelog nedotčen (diff_tools netrackuje feature flagy). ZBÝVÁ low-priority: API-all (doověřit Automatisch public API), TIMEOUT/LOG-all (plan-dependent, LLM/human review).",
     "resolution_2026-06-16": "VŠECHNY mismatche schváleny a opraveny (owner OK 2026-06-16): tools.json integrations n8n 400→1868, make 1500→3000, pipedream 2000→3000, make freeWorkflows Unlimited→'2 active'; pairs.json próza přepsána na reálné multiplikátory/ceny z enginu (PRC-*), opraven Pipedream credit opDef (FEA-pd-credit) a Make 'unlimited scenarios'→'2 active' (FT-make-freeops, primárně ověřeno na make.com/pricing). baseline_until posunut na 2026-06-16 (korekce našich dat, ne vendor změny). Durable guard přidán do calc-test/test-vs-pages.js (multiplikátory v próze vs cenová tabulka). facts-audit po opravě = 0 rozporů. Status u jednotlivých entry odráží NÁLEZ při auditu (před opravou)."
   },
 
@@ -80,10 +80,10 @@
     { "id": "LIC-all", "vendor": "all", "type": "feature",
       "claimText": "License: n8n 'Sustainable Use', activepieces 'MIT', automatisch 'AGPL-3.0', node-red 'Apache 2.0', make/pd/zapier 'Proprietary (cloud)'",
       "sourceFile": "tools.json", "claimedValue": "viz výše",
-      "officialSourceUrl": "GitHub LICENSE jednotlivých repo", "verifiedValue": "shodné (vysoká důvěra z veřejných repozitářů)",
+      "officialSourceUrl": "GitHub LICENSE jednotlivých repo", "verifiedValue": "shodné pro OSS jádro; activepieces a automatisch jsou OPEN-CORE (dual license) — ověřeno čtením LICENSE 2026-06-17",
       "status": "match", "direction": "neutral", "severity": "low",
-      "lastChecked": "2026-06-16", "confidence": "medium",
-      "evidence": "n8n Sustainable Use License (fair-code), Activepieces MIT, Automatisch AGPL-3.0, Node-RED Apache-2.0. Deterministický facts-scraper může číst přímo LICENSE soubor pro 100% jistotu." },
+      "lastChecked": "2026-06-17", "confidence": "high",
+      "evidence": "Node-RED Apache-2.0 (GitHub spdx potvrdil). n8n Sustainable Use (fair-code, GitHub vrací NOASSERTION = očekávané). Activepieces = MIT pro vše KROMĚ packages/ee/ (komerční); Automatisch = AGPL-3.0 pro vše KROMĚ '.ee.' souborů (LICENSE.enterprise) → GitHub u obou hlásí NOASSERTION kvůli dual-licenci, ale naše labely 'MIT'/'AGPL-3.0' jsou pro self-hostovatelné jádro SPRÁVNÉ. facts-audit.js to chytá jako note (ne alarm)." },
 
     { "id": "AI-all", "vendor": "all", "type": "feature",
       "claimText": "aiFeatures: automatisch=false, node-red=false, ostatní=true",
@@ -284,10 +284,10 @@
       "claimText": "GDPR-friendly row: pipedream=✗, zapier=✗, ostatní=✓",
       "sourceFile": "tools.json", "claimedValue": "pipedream=F, zapier=F, n8n/make/activepieces/automatisch/node-red=T",
       "officialSourceUrl": "trust/legal stránky vendorů + self-host (EU data residency)",
-      "verifiedValue": "ČÁSTEČNĚ ÚSUDEK: self-host nástroje + EU-based (Make) = ✓ snadno; US cloud (Zapier/Pipedream) označeno ✗ jako zjednodušení (oba MAJÍ GDPR/DPA, ale data v US)",
-      "status": "opinion", "direction": "favors_us", "severity": "medium",
-      "lastChecked": "2026-06-17", "confidence": "low",
-      "evidence": "POZOR: 'GDPR-friendly=✗' u Zapieru/Pipedreamu je ZJEDNODUŠENÍ — oba nabízejí DPA a jsou GDPR-compliant, jen hostují data v US. Tvrdit '✗' může působit jako dehonestace (favors_us riziko). Zvážit přeznačit na 'EU data residency' label (✓ jen pro self-host/EU), ať je řádek objektivní a ne hodnotící. Doověřit + případně přeformulovat label." },
+      "verifiedValue": "VYŘEŠENO 2026-06-17: řádek přejmenován 'GDPR-friendly' → 'EU data residency'. Hodnoty (zapier ✗, pipedream ✗, zbytek ✓) přesně odpovídají dostupnosti EU data residency (self-host + EU cloud regiony Make/n8n; Zapier/Pipedream US-only).",
+      "status": "match", "direction": "neutral", "severity": "low",
+      "lastChecked": "2026-06-17", "confidence": "high",
+      "evidence": "Label 'GDPR-friendly ✗' u Zapier/Pipedream byl hodnotící (implikoval ne-compliance — nepravda, oba mají DPA). Přejmenováno na objektivní 'EU data residency' (build.py _vs_features); hodnoty beze změny. Tím odstraněno favors_us riziko (zlehčování). Calculator pros/cons ('US cloud — GDPR concern') ponechány — jsou to vyvážené pro/proti, ne ✓/✗ verdikt." },
 
     { "id": "MULTIUSER-all", "vendor": "all", "type": "feature",
       "claimText": "Multi-user row: automatisch=✗, node-red=✗, ostatní=✓",
@@ -319,11 +319,11 @@
     { "id": "CODE-all", "vendor": "all", "type": "feature",
       "claimText": "Code steps row: n8n/pipedream/node-red=✓, make/zapier/activepieces/automatisch=✗",
       "sourceFile": "tools.json", "claimedValue": "n8n=T,pipedream=T,node-red=T; make=F,zapier=F,activepieces=F,automatisch=F",
-      "officialSourceUrl": "docs jednotlivých vendorů (code/function step)",
-      "verifiedValue": "ČÁSTEČNĚ SPORNÉ: Make MÁ custom JS (code) přes 'Tools > Run JS'? Zapier MÁ Code by Zapier (Python/JS). Activepieces MÁ code piece.",
-      "status": "unverifiable", "direction": "favors_us", "severity": "medium",
-      "lastChecked": "2026-06-17", "confidence": "low",
-      "evidence": "POZOR: Zapier má 'Code by Zapier' (Python/JS), Activepieces má 'Code' piece, Make má JS přes app. Označit je 'code steps=✗' může PODHODNOTIT funkce konkurenta (favors_us riziko). Doověřit definici 'code steps' (nativní libovolný kód vs omezený) a případně opravit na ✓/poznámku. Vysoká priorita revize." }
+      "officialSourceUrl": "zapier.com/apps/code/integrations (Code by Zapier) · activepieces.com/pieces/code (Code piece)",
+      "verifiedValue": "VYŘEŠENO 2026-06-17: zapier.codeSteps a activepieces.codeSteps opraveny false→true (oba ověřeni). Make/Automatisch zůstávají false (nemají nativní krok pro libovolný kód).",
+      "status": "match", "direction": "neutral", "severity": "low",
+      "lastChecked": "2026-06-17", "confidence": "high",
+      "evidence": "Ověřeno scrapem: Zapier 'Code by Zapier' (Python/JS) status 200, Activepieces 'Code' piece (TypeScript) status 200. Předtím '✗' podhodnocovalo konkurenta (favors_us). Opraveno v tools.json + změkčena próza zapier-vs-pipedream verdict (zmiňuje Code by Zapier). Make nemá first-class code step (jen workarounds) → false obhajitelné." }
 
   ]
 }
