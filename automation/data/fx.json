@@ -1,7 +1,7 @@
 {
   "_note": "EUR→USD FX (free API). Aktualizuje denní audit. Build převádí n8n (EUR)→USD.",
-  "eur_usd": 1.1597,
-  "date": "Tue, 16 Jun 2026 00:02:31 +0000",
+  "eur_usd": 1.161,
+  "date": "Wed, 17 Jun 2026 00:02:31 +0000",
   "source": "open.er-api.com",
-  "fetchedAt": "2026-06-16T11:40:04.075Z"
+  "fetchedAt": "2026-06-17T11:20:49.931Z"
 }
