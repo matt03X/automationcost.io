@@ -201,6 +201,14 @@
     .wf-skip .wf-skip-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
     .wf-skip svg { color: var(--muted); flex-shrink: 0; transition: transform 0.15s, color 0.15s; }
     .wf-skip:hover svg { color: var(--accent-br); transform: translateX(3px); }
+    /* Cross-functional: pull in workflows from other areas (engine already sums any mix) */
+    .wf-other { display: flex; flex-direction: column; gap: 16px; }
+    .wf-other-toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; padding: 14px 20px; background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius-sm, 9px); color: var(--text2); font: inherit; font-size: 14.5px; font-weight: 600; cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s; }
+    .wf-other-toggle:hover { border-color: var(--accent); color: var(--text); background: rgba(16,185,129,0.04); }
+    .wf-other-toggle svg { flex-shrink: 0; transition: transform 0.2s; }
+    .wf-other-toggle.open svg { transform: rotate(180deg); }
+    .wf-other-wrap { display: flex; flex-direction: column; gap: 16px; }
+    .wf-group-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 6px 0 -4px; }
 
     /* ── Big workflow diagram ── */
     .wf-stage {
@@ -2500,8 +2508,13 @@ function renderWorkflowGrid() {
   document.getElementById("step2-sub").textContent =
     `${wfs.length} pipeline${wfs.length !== 1 ? "s" : ""} for ${roleLabels[role] || "your role"} — pick one or more to combine them.`;
 
-  const stack = document.getElementById("wf-stack");
-  stack.innerHTML = wfs.map(wf =>
+  // workflowy z OSTATNÍCH oblastí — role je jen primární lens (kdo jsi), ale
+  // automatizovat se dá napříč odděleními (marketing + finance apod.). Engine
+  // (estimateVolumeBudget) sčítá libovolný mix sublineárně, takže stačí UI je
+  // zpřístupnit. Schované pod toggle, ať default zůstane čistý.
+  const others = WORKFLOWS.filter(w => !w.roles.includes(role));
+
+  const cardHTML = wf =>
     `<div class="wf-card${selectedWorkflows.includes(wf.id) ? " selected" : ""}" id="wfc-${wf.id}" onclick="selectWorkflow('${wf.id}')">
       <div class="wf-card-header">
         <div class="wf-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></svg></div>
@@ -2515,11 +2528,34 @@ function renderWorkflowGrid() {
       <div class="wf-card-diagram">
         <svg class="wf-big-svg" id="wf-svg-${wf.id}" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-height:220px;"></svg>
       </div>
-    </div>`
-  ).join("");
+    </div>`;
 
-  // Render all diagrams
+  // pokud už je vybraný workflow z jiné oblasti (návrat v průvodci), sekci rovnou
+  // otevři, ať výběr není schovaný
+  const otherSelected = others.some(w => selectedWorkflows.includes(w.id));
+
+  const stack = document.getElementById("wf-stack");
+  let html = wfs.map(cardHTML).join("");
+  if (others.length) {
+    const groups = {};
+    others.forEach(w => { (groups[w.roles[0]] = groups[w.roles[0]] || []).push(w); });
+    const otherCards = Object.keys(groups).map(r =>
+      `<div class="wf-group-label">${roleLabels[r] || r}</div>` + groups[r].map(cardHTML).join("")
+    ).join("");
+    html += `<div class="wf-other">
+      <button type="button" class="wf-other-toggle${otherSelected ? " open" : ""}" onclick="toggleOtherAreas(this)" aria-expanded="${otherSelected ? "true" : "false"}">
+        <span>Automating across teams? Add workflows from other areas (${others.length})</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="wf-other-wrap" id="wf-other-wrap"${otherSelected ? ' data-rendered="1"' : " hidden"}>${otherCards}</div>
+    </div>`;
+  }
+  stack.innerHTML = html;
+
+  // primární diagramy hned; diagramy ostatních oblastí lazy až při rozbalení
+  // (nebo hned, když je sekce otevřená kvůli už vybranému cross-area workflow)
   wfs.forEach(wf => renderBigDiagram(wf, `wf-svg-${wf.id}`));
+  if (otherSelected) others.forEach(wf => renderBigDiagram(wf, `wf-svg-${wf.id}`));
   var _wfstack = document.getElementById("wf-stack");
   if (_wfstack) { _wfstack.insertAdjacentHTML("beforeend", `<div class="wf-card wf-skip" onclick="selectedWorkflow=null; selectedWorkflows=[]; goStep(4);"><div><div class="wf-skip-title">Other / I don't know yet</div><div class="wf-skip-sub">Skip this step — we'll match you on your volume &amp; budget instead</div></div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>`); }
 
@@ -2563,6 +2599,22 @@ function toggleDiagram(event, id) {
   event.stopPropagation();
   const card = document.getElementById("wfc-" + id);
   if (card) card.classList.toggle("diagram-open");
+}
+
+// Rozbalí workflowy z ostatních oblastí (cross-funkční výběr). Diagramy se
+// renderují lazy až tady, ať se na vstupu do kroku 3 nepočítá ~40 SVG zbytečně.
+function toggleOtherAreas(btn) {
+  const wrap = document.getElementById("wf-other-wrap");
+  if (!wrap) return;
+  const opening = wrap.hidden;
+  wrap.hidden = !opening;
+  btn.classList.toggle("open", opening);
+  btn.setAttribute("aria-expanded", opening ? "true" : "false");
+  if (opening && !wrap.dataset.rendered) {
+    const role = selectedRole || "other";
+    WORKFLOWS.filter(w => !w.roles.includes(role)).forEach(wf => renderBigDiagram(wf, `wf-svg-${wf.id}`));
+    wrap.dataset.rendered = "1";
+  }
 }
 
 // ── Step 3 inputs ─────────────────────────────────────────────────────────────
