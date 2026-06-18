@@ -1,0 +1,9 @@
+{
+  "date": "2026-06-18",
+  "vendor": "make",
+  "url": "https://www.make.com/en/integrations",
+  "integrations": null,
+  "warnings": [
+    "integrations scrape selhal: HTTP 403"
+  ]
+}

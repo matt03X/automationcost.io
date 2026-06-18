@@ -1,0 +1,20 @@
+{
+  "date": "2026-06-18",
+  "vendor": "pipedream",
+  "url": "https://pipedream.com/apps",
+  "integrations": 3000,
+  "openSourceSignal": true,
+  "evidence": "3,000+\napps",
+  "freeTier": {
+    "snippets": [
+      "100 credits",
+      "2,000 credits",
+      "10,000 credits"
+    ],
+    "numbers": [
+      100,
+      2000,
+      10000
+    ]
+  }
+}
