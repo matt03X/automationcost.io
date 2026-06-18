@@ -1,0 +1,249 @@
+{
+  "vendor": "pipedream",
+  "scrapedAt": "2026-06-18T10:54:09.680Z",
+  "url": "https://pipedream.com/pricing",
+  "unit": "credits",
+  "model": "per-credit-bands",
+  "plans": {
+    "Basic": {
+      "base": 45,
+      "baseAnnual": 29,
+      "includedCredits": 2000,
+      "bands": [
+        {
+          "upTo": 10000,
+          "perCredit": 0.01
+        },
+        {
+          "upTo": 25000,
+          "perCredit": 0.006
+        },
+        {
+          "upTo": 50000,
+          "perCredit": 0.0042
+        },
+        {
+          "upTo": 99000,
+          "perCredit": 0.0034
+        },
+        {
+          "upTo": 199000,
+          "perCredit": 0.0027
+        },
+        {
+          "upTo": 299000,
+          "perCredit": 0.0022
+        },
+        {
+          "upTo": 399000,
+          "perCredit": 0.0019
+        },
+        {
+          "upTo": 499000,
+          "perCredit": 0.0017
+        },
+        {
+          "upTo": 599000,
+          "perCredit": 0.0016
+        },
+        {
+          "upTo": 748000,
+          "perCredit": 0.0014
+        },
+        {
+          "upTo": 997000,
+          "perCredit": 0.0012
+        },
+        {
+          "upTo": 1990000,
+          "perCredit": 0.001
+        },
+        {
+          "upTo": 2990000,
+          "perCredit": 0.0006
+        },
+        {
+          "upTo": 3990000,
+          "perCredit": 0.0005
+        },
+        {
+          "upTo": 9950000,
+          "perCredit": 0.0004
+        },
+        {
+          "upTo": null,
+          "perCredit": 0.0003
+        }
+      ]
+    },
+    "Advanced": {
+      "base": 74,
+      "baseAnnual": 49,
+      "includedCredits": 2000,
+      "bands": [
+        {
+          "upTo": 10000,
+          "perCredit": 0.015
+        },
+        {
+          "upTo": 25000,
+          "perCredit": 0.009
+        },
+        {
+          "upTo": 50000,
+          "perCredit": 0.0063
+        },
+        {
+          "upTo": 99000,
+          "perCredit": 0.005
+        },
+        {
+          "upTo": 199000,
+          "perCredit": 0.004
+        },
+        {
+          "upTo": 299000,
+          "perCredit": 0.0032
+        },
+        {
+          "upTo": 399000,
+          "perCredit": 0.0029
+        },
+        {
+          "upTo": 499000,
+          "perCredit": 0.0026
+        },
+        {
+          "upTo": 599000,
+          "perCredit": 0.0024
+        },
+        {
+          "upTo": 748000,
+          "perCredit": 0.0021
+        },
+        {
+          "upTo": 997000,
+          "perCredit": 0.0018
+        },
+        {
+          "upTo": 1990000,
+          "perCredit": 0.00153
+        },
+        {
+          "upTo": 2990000,
+          "perCredit": 0.0009
+        },
+        {
+          "upTo": 3990000,
+          "perCredit": 0.0007
+        },
+        {
+          "upTo": 9950000,
+          "perCredit": 0.0006
+        },
+        {
+          "upTo": null,
+          "perCredit": 0.0004
+        }
+      ]
+    },
+    "Connect": {
+      "base": 150,
+      "baseAnnual": 99,
+      "includedCredits": 10000,
+      "bands": [
+        {
+          "upTo": 25000,
+          "perCredit": 0.012
+        },
+        {
+          "upTo": 50000,
+          "perCredit": 0.0084
+        },
+        {
+          "upTo": 99000,
+          "perCredit": 0.0067
+        },
+        {
+          "upTo": 199000,
+          "perCredit": 0.0054
+        },
+        {
+          "upTo": 299000,
+          "perCredit": 0.0043
+        },
+        {
+          "upTo": 399000,
+          "perCredit": 0.0039
+        },
+        {
+          "upTo": 499000,
+          "perCredit": 0.0035
+        },
+        {
+          "upTo": 599000,
+          "perCredit": 0.0031
+        },
+        {
+          "upTo": 748000,
+          "perCredit": 0.0028
+        },
+        {
+          "upTo": 997000,
+          "perCredit": 0.0024
+        },
+        {
+          "upTo": 1990000,
+          "perCredit": 0.002
+        },
+        {
+          "upTo": 2990000,
+          "perCredit": 0.0012
+        },
+        {
+          "upTo": 3990000,
+          "perCredit": 0.001
+        },
+        {
+          "upTo": 4990000,
+          "perCredit": 0.0008
+        },
+        {
+          "upTo": 9950000,
+          "perCredit": 0.0007
+        },
+        {
+          "upTo": null,
+          "perCredit": 0.0006
+        }
+      ]
+    }
+  },
+  "billingLines": [
+    "$0/mo",
+    "$2 per additional user",
+    "$29/mo",
+    "$49/mo",
+    "$99/mo",
+    "10 active workflows",
+    "10,000/mo",
+    "100/mo",
+    "1m ai tokens",
+    "2 gb",
+    "2,000/mo",
+    "20m ai tokens",
+    "20m/mo",
+    "3 active workflows",
+    "50m ai tokens",
+    "50m/mo",
+    "9,900,000 credits/mo",
+    "auth for 100 external users",
+    "no usage limit (2k credits included)",
+    "unlimited connected accounts",
+    "unlimited in preview",
+    "unlimited workflow testing",
+    "unlimited workflows",
+    "up to 10 gb",
+    "up to 100 credits/mo"
+  ]
+}
