@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "version": "1.1.0",
+    "last_reviewed": "2026-06-18",
+    "calibration": "ai-research-2026-06-18",
+    "calibration_source": "scoring-calibration-2026-06.json",
+    "note": "Skorovaci model recommendation enginu kalkulacky. Feature fit = roleWeights[role] . toolScores[tool] (skalarni soucin pres dimensions); finalni match = featureScore*scoreWeights.feature + priceScore*scoreWeights.price + maturity*scoreWeights.maturity (+ workflow bonus, drzen v kodu). ZDROJ PRAVDY pro vahy je tento soubor; calculator.html je cte pres marker /* DATA:SCORING:START|END */ generovany automation/build.py -> tam NEEDITUJ rucne. v1.1.0: toolScores kalibrovany 4-agent web researchem (dimension-per-agent, relativni kalibrace, citace per bunka v calibration_source); 26/49 cel potvrzeno presne, zbytek drobne upraveno, ranking dopad ~nulovy (top pick + persony beze zmeny). roleWeights + scoreWeights ZATIM nekalibrovany (subjektivnejsi, samostatny editorial pass).",
+    "scale": "Vsechny vahy a skore jsou 0..1. roleWeights[role] by mely v idealu davat soucet ~1 pres skorovaci dimenze (lowPrice je REZERVOVANY/zatim nepouzity v engine featureScore - cenu resi samostatny priceScore). toolScores.maturity je editorialni postaveni ekosystemu (komunita, dlouhovekost, spolehlivost), NE pocet integraci.",
+    "dimensions": ["noCode", "codeAccess", "aiNodes", "selfHost", "gdpr", "integrations"]
+  },
+
+  "scoreWeights": { "feature": 0.52, "price": 0.26, "maturity": 0.12 },
+
+  "roleWeights": {
+    "marketing":  { "noCode": 0.30, "codeAccess": 0.05, "aiNodes": 0.15, "selfHost": 0.05, "gdpr": 0.05, "integrations": 0.20, "lowPrice": 0.20 },
+    "operations": { "noCode": 0.25, "codeAccess": 0.10, "aiNodes": 0.10, "selfHost": 0.10, "gdpr": 0.10, "integrations": 0.15, "lowPrice": 0.20 },
+    "developer":  { "noCode": 0.05, "codeAccess": 0.35, "aiNodes": 0.20, "selfHost": 0.15, "gdpr": 0.05, "integrations": 0.10, "lowPrice": 0.10 },
+    "finance":    { "noCode": 0.20, "codeAccess": 0.05, "aiNodes": 0.10, "selfHost": 0.20, "gdpr": 0.20, "integrations": 0.10, "lowPrice": 0.15 },
+    "legal":      { "noCode": 0.15, "codeAccess": 0.05, "aiNodes": 0.05, "selfHost": 0.30, "gdpr": 0.30, "integrations": 0.05, "lowPrice": 0.10 },
+    "hr":         { "noCode": 0.30, "codeAccess": 0.05, "aiNodes": 0.10, "selfHost": 0.10, "gdpr": 0.15, "integrations": 0.15, "lowPrice": 0.15 },
+    "ecommerce":  { "noCode": 0.20, "codeAccess": 0.10, "aiNodes": 0.10, "selfHost": 0.05, "gdpr": 0.05, "integrations": 0.30, "lowPrice": 0.20 },
+    "sales":      { "noCode": 0.25, "codeAccess": 0.05, "aiNodes": 0.15, "selfHost": 0.05, "gdpr": 0.10, "integrations": 0.25, "lowPrice": 0.15 },
+    "support":    { "noCode": 0.25, "codeAccess": 0.05, "aiNodes": 0.20, "selfHost": 0.10, "gdpr": 0.10, "integrations": 0.15, "lowPrice": 0.15 },
+    "other":      { "noCode": 0.15, "codeAccess": 0.15, "aiNodes": 0.15, "selfHost": 0.10, "gdpr": 0.10, "integrations": 0.15, "lowPrice": 0.20 }
+  },
+
+  "toolScores": {
+    "n8n":          { "noCode": 0.55, "codeAccess": 0.90, "aiNodes": 0.98, "selfHost": 1.00, "gdpr": 0.90, "integrations": 0.75, "maturity": 0.88 },
+    "make":         { "noCode": 0.92, "codeAccess": 0.22, "aiNodes": 0.78, "selfHost": 0.00, "gdpr": 0.78, "integrations": 0.95, "maturity": 0.90 },
+    "pipedream":    { "noCode": 0.30, "codeAccess": 1.00, "aiNodes": 0.82, "selfHost": 0.00, "gdpr": 0.30, "integrations": 0.90, "maturity": 0.68 },
+    "zapier":       { "noCode": 1.00, "codeAccess": 0.30, "aiNodes": 0.75, "selfHost": 0.00, "gdpr": 0.50, "integrations": 1.00, "maturity": 1.00 },
+    "activepieces": { "noCode": 0.85, "codeAccess": 0.45, "aiNodes": 0.68, "selfHost": 0.95, "gdpr": 0.90, "integrations": 0.42, "maturity": 0.52 },
+    "automatisch":  { "noCode": 0.72, "codeAccess": 0.10, "aiNodes": 0.05, "selfHost": 0.80, "gdpr": 1.00, "integrations": 0.20, "maturity": 0.30 },
+    "node-red":     { "noCode": 0.20, "codeAccess": 0.85, "aiNodes": 0.15, "selfHost": 1.00, "gdpr": 0.92, "integrations": 0.50, "maturity": 0.66 }
+  }
+}

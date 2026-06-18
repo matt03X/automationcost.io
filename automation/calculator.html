@@ -72,6 +72,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Make the `hidden` attribute reliable: author display rules (e.g. display:grid on
+       .wf-other-wrap / .persona-row) otherwise override the UA [hidden]{display:none}
+       and leak collapsed sections. */
+    [hidden] { display: none !important; }
     :root {
       --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
       --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99;
@@ -178,7 +182,7 @@
     .results-next-cta:hover .rnc-arrow { background: var(--accent-br); }
 
     /* ── Workflow stack ── */
-    .wf-stack { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+    .wf-stack { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 32px; align-items: start; }
     .wf-card {
       background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
       cursor: pointer; overflow: hidden; transition: border-color 0.18s, box-shadow 0.18s;
@@ -186,29 +190,34 @@
     .wf-card:hover { border-color: rgba(16,185,129,0.5); background: rgba(16,185,129,0.04); box-shadow: 0 4px 24px rgba(16,185,129,0.08); }
     .wf-card.selected { border-color: var(--accent); background: linear-gradient(160deg, rgba(16,185,129,0.13), rgba(16,185,129,0.02)); box-shadow: 0 0 0 1px var(--accent), 0 10px 28px rgba(16,185,129,0.13); }
     .wf-card-header {
-      padding: 28px 24px 18px; display: flex; align-items: flex-start; gap: 14px; position: relative;
+      padding: 16px 18px 12px; display: flex; align-items: flex-start; gap: 12px; position: relative;
     }
     .wf-check { margin-left: auto; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--border2); display: flex; align-items: center; justify-content: center; color: transparent; flex-shrink: 0; transition: background 0.15s, border-color 0.15s, color 0.15s; }
     .wf-card:hover .wf-check { border-color: var(--accent); }
     .wf-card.selected .wf-check { background: var(--accent); border-color: var(--accent); color: var(--ink); }
     .wf-count-chip { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(16,185,129,0.3); border-radius: 20px; padding: 6px 14px; align-self: center; }
     .wf-card-icon { color: var(--accent-br); flex-shrink: 0; line-height: 1; margin-top: 1px; display: flex; }
-    .wf-card-title { font-size: 17px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.01em; }
-    .wf-card-sub { font-size: 14px; color: var(--text2); line-height: 1.55; }
-    .wf-card-diagram { padding: 0 16px 18px; }
-    .wf-skip { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; border-style: dashed; }
+    .wf-card-title { font-size: 15.5px; font-weight: 800; margin-bottom: 3px; letter-spacing: -0.01em; }
+    .wf-card-sub { font-size: 13px; color: var(--text2); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    /* Diagram is opt-in everywhere (was always-on desktop → step scrolled for screens).
+       Collapsed cards sit 2-up; opening one lazy-renders its SVG and spans full width. */
+    .wf-card-diagram { display: none; padding: 0 16px 18px; }
+    .wf-card.diagram-open { grid-column: 1 / -1; }
+    .wf-card.diagram-open .wf-card-diagram { display: block; }
+    .wf-card.diagram-open .wf-card-sub { -webkit-line-clamp: unset; overflow: visible; }
+    .wf-skip { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; border-style: dashed; }
     .wf-skip .wf-skip-title { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
     .wf-skip .wf-skip-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
     .wf-skip svg { color: var(--muted); flex-shrink: 0; transition: transform 0.15s, color 0.15s; }
     .wf-skip:hover svg { color: var(--accent-br); transform: translateX(3px); }
     /* Cross-functional: pull in workflows from other areas (engine already sums any mix) */
-    .wf-other { display: flex; flex-direction: column; gap: 16px; }
+    .wf-other { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 12px; }
     .wf-other-toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; text-align: left; padding: 14px 20px; background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius-sm, 9px); color: var(--text2); font: inherit; font-size: 14.5px; font-weight: 600; cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s; }
     .wf-other-toggle:hover { border-color: var(--accent); color: var(--text); background: rgba(16,185,129,0.04); }
     .wf-other-toggle svg { flex-shrink: 0; transition: transform 0.2s; }
     .wf-other-toggle.open svg { transform: rotate(180deg); }
-    .wf-other-wrap { display: flex; flex-direction: column; gap: 16px; }
-    .wf-group-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 6px 0 -4px; }
+    .wf-other-wrap { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; align-items: start; }
+    .wf-group-label { grid-column: 1 / -1; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 6px 0 -4px; }
 
     /* ── Big workflow diagram ── */
     .wf-stage {
@@ -356,6 +365,32 @@
     .match-badge.ok { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.3); }
     .match-badge.poor { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
 
+    /* ── Persona picks (Best value / Cheapest / Most powerful / Self-host) ── */
+    .persona-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0 0 16px; }
+    @media (max-width: 760px) { .persona-row { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 420px) { .persona-row { grid-template-columns: 1fr; } }
+    .persona-card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 14px 12px; display: flex; flex-direction: column; gap: 7px; transition: border-color .15s, transform .15s; }
+    .persona-card:hover { transform: translateY(-2px); border-color: var(--border2); }
+    .persona-card.is-rec { border-color: var(--green); box-shadow: 0 0 0 1px var(--green), 0 6px 24px -10px var(--accent-glow); background: linear-gradient(165deg, var(--accent-dim), var(--surface) 60%); }
+    .persona-top { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .03em; }
+    .persona-icon { font-size: 15px; }
+    .persona-star { margin-left: auto; font-size: 10px; font-weight: 800; color: var(--ink); background: var(--green); border-radius: 20px; padding: 2px 8px; letter-spacing: .02em; text-transform: none; }
+    .persona-tool { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-size: 1.05rem; font-weight: 800; color: var(--text); }
+    .persona-tool img { width: 20px; height: 20px; border-radius: 5px; }
+    .persona-metric { font-family: var(--mono); font-size: 1.12rem; font-weight: 700; color: var(--text); }
+    .persona-metric.c-free { color: var(--green); } .persona-metric.c-cheap { color: #86efac; }
+    .persona-metric.c-mid { color: var(--yellow); } .persona-metric.c-exp { color: var(--red); }
+    .persona-sub { font-size: 11px; color: var(--muted); margin-top: -3px; }
+    .persona-sub.same { color: var(--green); }
+    .persona-tip { font-size: 12px; color: var(--muted); line-height: 1.45; flex-grow: 1; }
+    .persona-jump { margin-top: 4px; align-self: flex-start; background: none; border: none; padding: 0; font-size: 12px; font-weight: 700; color: var(--link); cursor: pointer; font-family: var(--font); }
+    .persona-jump:hover { text-decoration: underline; }
+
+    /* ── Crossover / sensitivity insight ── */
+    .crossover-box { display: flex; align-items: flex-start; gap: 11px; background: linear-gradient(160deg, rgba(245,158,11,0.10), var(--surface) 72%); border: 1px solid rgba(245,158,11,0.34); border-radius: var(--radius-sm); padding: 12px 16px; margin: 0 0 22px; font-size: 13.5px; color: var(--text2); line-height: 1.5; }
+    .crossover-box svg { flex-shrink: 0; color: var(--yellow); margin-top: 1px; }
+    .crossover-box b { color: var(--text); } .crossover-box b.tool { font-family: var(--mono); color: var(--yellow); }
+
     .why-list { margin-top: 12px; padding: 12px 14px; background: var(--surface2); border-radius: 8px; }
     .why-item { font-size: 13px; color: var(--muted); display: flex; gap: 8px; margin-bottom: 5px; }
     .why-item:last-child { margin-bottom: 0; }
@@ -416,9 +451,8 @@
       .nav-bottom { padding-left: 8px; padding-right: 8px; }
       .nav-bottom a { padding: 12px 14px; }
     }
-    /* Hidden on desktop — diagrams are always visible there. MUST precede the
-       620px media block: same specificity, so source order decides on mobile. */
-    .wf-diagram-toggle { display: none; align-items: center; gap: 6px; background: none; border: none; color: var(--muted); font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; padding: 0 16px 14px; }
+    /* Diagram opt-in on every viewport (toggle always shown; diagram lazy-rendered). */
+    .wf-diagram-toggle { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--muted); font-size: 12px; font-weight: 600; font-family: inherit; cursor: pointer; padding: 0 18px 14px; }
     .wf-diagram-toggle svg { transition: transform 0.2s; }
     .wf-card.diagram-open .wf-diagram-toggle svg { transform: rotate(180deg); }
 
@@ -433,15 +467,11 @@
       .step-nav { flex-wrap: wrap; gap: 10px; margin-top: 26px; }
       .step-nav .btn-primary { padding: 13px 20px; }
       .role-card, .size-card { padding: 18px 16px; }
-      .wf-card-header { padding: 20px 16px 14px; }
+      .wf-card-header { padding: 16px 16px 12px; }
       .wf-card-diagram { padding: 0 10px 14px; }
       footer { padding: 30px 18px; }
-      /* Diagrams collapsed on phones — 5+ cards × 220px SVG would push the
-         Next button several screens down. Card tap still selects; the toggle
-         only reveals the diagram. */
-      .wf-card-diagram { display: none; }
-      .wf-card.diagram-open .wf-card-diagram { display: block; }
-      .wf-diagram-toggle { display: inline-flex; }
+      /* Single column on phones (diagram collapse is already the global default). */
+      .wf-stack, .wf-other-wrap { grid-template-columns: 1fr; }
     }
 
     /* ── Resume banner (shown when a recent profile is in localStorage) ── */
@@ -768,7 +798,7 @@
     <div class="results-header">
       <div>
         <h2>Your personalized recommendations</h2>
-        <p>Ranked by match score — a weighted mix of feature fit for your role, workflow type, price vs your budget, and capabilities.</p>
+        <p>Four ways to choose — pick the priority that fits you, then see the full ranked breakdown below. Same data, same formula for every tool.</p>
       </div>
       <button class="share-btn" id="share-btn" onclick="copyShareLink(this)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -777,6 +807,8 @@
     </div>
     <div class="profile-summary" id="profile-summary"></div>
     <div class="savings-banner" id="savings-banner" hidden></div>
+    <div class="persona-row" id="persona-picks" hidden></div>
+    <div class="crossover-box" id="crossover-insight" hidden></div>
     <div id="results-list"></div>
     <div id="no-results-msg" class="no-results" style="display:none">
       No tool supports <strong>all</strong> your selected integrations with these settings. Try removing one, or note that most platforms support any app via custom HTTP requests.
@@ -853,34 +885,172 @@ const LOGOS = {
   "node-red":     "https://www.google.com/s2/favicons?domain=nodered.org&sz=64",
 };
 
-// Role → which tool dimensions matter most
-// Keys: noCode, codeAccess, aiNodes, selfHost, gdpr, integrations, lowPrice
+// ── Scoring model (recommendation engine weights) ──────────────────────────────
+// SCORE_W + ROLE_WEIGHTS + TOOL_SCORES jsou GENEROVÁNY z data/scoring-model.json
+// (build.py, marker DATA:SCORING) — needituj je tady ručně, edituj JSON.
+//   ROLE_WEIGHTS: role → které dimenze nástroje váží (lowPrice rezervovaný, viz priceScore)
+//   TOOL_SCORES:  nástroj → schopnost 0–1 per dimenze; maturity = postavení ekosystému
+//                 (komunita/dlouhověkost/spolehlivost, NE počet integrací)
+/* DATA:SCORING:START */ /* generováno build.py z data/scoring-model.json — needituj ručně, edituj JSON */
+const SCORE_W = {"feature": 0.52, "price": 0.26, "maturity": 0.12};
 const ROLE_WEIGHTS = {
-  marketing:   { noCode:0.30, codeAccess:0.05, aiNodes:0.15, selfHost:0.05, gdpr:0.05, integrations:0.20, lowPrice:0.20 },
-  operations:  { noCode:0.25, codeAccess:0.10, aiNodes:0.10, selfHost:0.10, gdpr:0.10, integrations:0.15, lowPrice:0.20 },
-  developer:   { noCode:0.05, codeAccess:0.35, aiNodes:0.20, selfHost:0.15, gdpr:0.05, integrations:0.10, lowPrice:0.10 },
-  finance:     { noCode:0.20, codeAccess:0.05, aiNodes:0.10, selfHost:0.20, gdpr:0.20, integrations:0.10, lowPrice:0.15 },
-  legal:       { noCode:0.15, codeAccess:0.05, aiNodes:0.05, selfHost:0.30, gdpr:0.30, integrations:0.05, lowPrice:0.10 },
-  hr:          { noCode:0.30, codeAccess:0.05, aiNodes:0.10, selfHost:0.10, gdpr:0.15, integrations:0.15, lowPrice:0.15 },
-  ecommerce:   { noCode:0.20, codeAccess:0.10, aiNodes:0.10, selfHost:0.05, gdpr:0.05, integrations:0.30, lowPrice:0.20 },
-  sales:       { noCode:0.25, codeAccess:0.05, aiNodes:0.15, selfHost:0.05, gdpr:0.10, integrations:0.25, lowPrice:0.15 },
-  support:     { noCode:0.25, codeAccess:0.05, aiNodes:0.20, selfHost:0.10, gdpr:0.10, integrations:0.15, lowPrice:0.15 },
-  other:       { noCode:0.15, codeAccess:0.15, aiNodes:0.15, selfHost:0.10, gdpr:0.10, integrations:0.15, lowPrice:0.20 },
+  "marketing": {
+    "noCode": 0.3,
+    "codeAccess": 0.05,
+    "aiNodes": 0.15,
+    "selfHost": 0.05,
+    "gdpr": 0.05,
+    "integrations": 0.2,
+    "lowPrice": 0.2
+  },
+  "operations": {
+    "noCode": 0.25,
+    "codeAccess": 0.1,
+    "aiNodes": 0.1,
+    "selfHost": 0.1,
+    "gdpr": 0.1,
+    "integrations": 0.15,
+    "lowPrice": 0.2
+  },
+  "developer": {
+    "noCode": 0.05,
+    "codeAccess": 0.35,
+    "aiNodes": 0.2,
+    "selfHost": 0.15,
+    "gdpr": 0.05,
+    "integrations": 0.1,
+    "lowPrice": 0.1
+  },
+  "finance": {
+    "noCode": 0.2,
+    "codeAccess": 0.05,
+    "aiNodes": 0.1,
+    "selfHost": 0.2,
+    "gdpr": 0.2,
+    "integrations": 0.1,
+    "lowPrice": 0.15
+  },
+  "legal": {
+    "noCode": 0.15,
+    "codeAccess": 0.05,
+    "aiNodes": 0.05,
+    "selfHost": 0.3,
+    "gdpr": 0.3,
+    "integrations": 0.05,
+    "lowPrice": 0.1
+  },
+  "hr": {
+    "noCode": 0.3,
+    "codeAccess": 0.05,
+    "aiNodes": 0.1,
+    "selfHost": 0.1,
+    "gdpr": 0.15,
+    "integrations": 0.15,
+    "lowPrice": 0.15
+  },
+  "ecommerce": {
+    "noCode": 0.2,
+    "codeAccess": 0.1,
+    "aiNodes": 0.1,
+    "selfHost": 0.05,
+    "gdpr": 0.05,
+    "integrations": 0.3,
+    "lowPrice": 0.2
+  },
+  "sales": {
+    "noCode": 0.25,
+    "codeAccess": 0.05,
+    "aiNodes": 0.15,
+    "selfHost": 0.05,
+    "gdpr": 0.1,
+    "integrations": 0.25,
+    "lowPrice": 0.15
+  },
+  "support": {
+    "noCode": 0.25,
+    "codeAccess": 0.05,
+    "aiNodes": 0.2,
+    "selfHost": 0.1,
+    "gdpr": 0.1,
+    "integrations": 0.15,
+    "lowPrice": 0.15
+  },
+  "other": {
+    "noCode": 0.15,
+    "codeAccess": 0.15,
+    "aiNodes": 0.15,
+    "selfHost": 0.1,
+    "gdpr": 0.1,
+    "integrations": 0.15,
+    "lowPrice": 0.2
+  }
 };
-
-// Tool capability scores (0–1) per dimension.
-// maturity = ecosystem standing (community size, longevity, reliability) — editorial
-// judgment like the other dims (NOT integration count: n8n has few native integrations
-// but a huge community). Stops a cheap niche tool out-ranking established leaders on cost alone.
 const TOOL_SCORES = {
-  n8n:          { noCode:0.60, codeAccess:0.95, aiNodes:0.98, selfHost:1.00, gdpr:0.90, integrations:0.75, maturity:0.85 },
-  make:         { noCode:0.95, codeAccess:0.20, aiNodes:0.70, selfHost:0.00, gdpr:0.80, integrations:0.95, maturity:0.90 },
-  pipedream:    { noCode:0.30, codeAccess:1.00, aiNodes:0.80, selfHost:0.00, gdpr:0.30, integrations:0.90, maturity:0.70 },
-  zapier:       { noCode:1.00, codeAccess:0.25, aiNodes:0.70, selfHost:0.00, gdpr:0.50, integrations:1.00, maturity:1.00 },
-  activepieces: { noCode:0.85, codeAccess:0.40, aiNodes:0.65, selfHost:1.00, gdpr:0.90, integrations:0.40, maturity:0.55 },
-  automatisch:  { noCode:0.80, codeAccess:0.20, aiNodes:0.05, selfHost:1.00, gdpr:1.00, integrations:0.20, maturity:0.30 },
-  "node-red":   { noCode:0.10, codeAccess:0.90, aiNodes:0.15, selfHost:1.00, gdpr:0.95, integrations:0.50, maturity:0.65 },
+  "n8n": {
+    "noCode": 0.55,
+    "codeAccess": 0.9,
+    "aiNodes": 0.98,
+    "selfHost": 1.0,
+    "gdpr": 0.9,
+    "integrations": 0.75,
+    "maturity": 0.88
+  },
+  "make": {
+    "noCode": 0.92,
+    "codeAccess": 0.22,
+    "aiNodes": 0.78,
+    "selfHost": 0.0,
+    "gdpr": 0.78,
+    "integrations": 0.95,
+    "maturity": 0.9
+  },
+  "pipedream": {
+    "noCode": 0.3,
+    "codeAccess": 1.0,
+    "aiNodes": 0.82,
+    "selfHost": 0.0,
+    "gdpr": 0.3,
+    "integrations": 0.9,
+    "maturity": 0.68
+  },
+  "zapier": {
+    "noCode": 1.0,
+    "codeAccess": 0.3,
+    "aiNodes": 0.75,
+    "selfHost": 0.0,
+    "gdpr": 0.5,
+    "integrations": 1.0,
+    "maturity": 1.0
+  },
+  "activepieces": {
+    "noCode": 0.85,
+    "codeAccess": 0.45,
+    "aiNodes": 0.68,
+    "selfHost": 0.95,
+    "gdpr": 0.9,
+    "integrations": 0.42,
+    "maturity": 0.52
+  },
+  "automatisch": {
+    "noCode": 0.72,
+    "codeAccess": 0.1,
+    "aiNodes": 0.05,
+    "selfHost": 0.8,
+    "gdpr": 1.0,
+    "integrations": 0.2,
+    "maturity": 0.3
+  },
+  "node-red": {
+    "noCode": 0.2,
+    "codeAccess": 0.85,
+    "aiNodes": 0.15,
+    "selfHost": 1.0,
+    "gdpr": 0.92,
+    "integrations": 0.5,
+    "maturity": 0.66
+  }
 };
+/* DATA:SCORING:END */
 
 // ── Workflow templates (role-specific, with rich node definitions) ────────────
 // Each node: { id, label, sublabel, icon, color, type: "trigger"|"action"|"condition"|"ai"|"output" }
@@ -2552,10 +2722,10 @@ function renderWorkflowGrid() {
   }
   stack.innerHTML = html;
 
-  // primární diagramy hned; diagramy ostatních oblastí lazy až při rozbalení
-  // (nebo hned, když je sekce otevřená kvůli už vybranému cross-area workflow)
-  wfs.forEach(wf => renderBigDiagram(wf, `wf-svg-${wf.id}`));
-  if (otherSelected) others.forEach(wf => renderBigDiagram(wf, `wf-svg-${wf.id}`));
+  // Diagramy se renderují LAZY až při kliknutí na „View workflow diagram" (toggleDiagram).
+  // Karty jsou defaultně kompaktní (jen header), takže na vstupu do kroku 3 se nepočítá
+  // žádné SVG zbytečně — dřív se na desktopu renderovalo všech ~6-8 hned a stránka byla
+  // dlouhá několik obrazovek.
   var _wfstack = document.getElementById("wf-stack");
   if (_wfstack) { _wfstack.insertAdjacentHTML("beforeend", `<div class="wf-card wf-skip" onclick="selectedWorkflow=null; selectedWorkflows=[]; goStep(4);"><div><div class="wf-skip-title">Other / I don't know yet</div><div class="wf-skip-sub">Skip this step — we'll match you on your volume &amp; budget instead</div></div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>`); }
 
@@ -2598,11 +2768,21 @@ function updateWfSelectedCount() {
 function toggleDiagram(event, id) {
   event.stopPropagation();
   const card = document.getElementById("wfc-" + id);
-  if (card) card.classList.toggle("diagram-open");
+  if (!card) return;
+  // Lazy-render the SVG the first time this card's diagram is opened.
+  if (!card.classList.contains("diagram-open")) {
+    const svg = document.getElementById("wf-svg-" + id);
+    if (svg && !svg.innerHTML.trim()) {
+      const wf = WORKFLOWS.find(w => w.id === id);
+      if (wf) renderBigDiagram(wf, "wf-svg-" + id);
+    }
+  }
+  card.classList.toggle("diagram-open");
 }
 
-// Rozbalí workflowy z ostatních oblastí (cross-funkční výběr). Diagramy se
-// renderují lazy až tady, ať se na vstupu do kroku 3 nepočítá ~40 SVG zbytečně.
+// Rozbalí workflowy z ostatních oblastí (cross-funkční výběr). Jen odhalí sekci —
+// diagramy každé karty se renderují lazy per-karta v toggleDiagram (žádný hromadný
+// render ~40 SVG při otevření sekce).
 function toggleOtherAreas(btn) {
   const wrap = document.getElementById("wf-other-wrap");
   if (!wrap) return;
@@ -2610,11 +2790,6 @@ function toggleOtherAreas(btn) {
   wrap.hidden = !opening;
   btn.classList.toggle("open", opening);
   btn.setAttribute("aria-expanded", opening ? "true" : "false");
-  if (opening && !wrap.dataset.rendered) {
-    const role = selectedRole || "other";
-    WORKFLOWS.filter(w => !w.roles.includes(role)).forEach(wf => renderBigDiagram(wf, `wf-svg-${wf.id}`));
-    wrap.dataset.rendered = "1";
-  }
 }
 
 // ── Step 3 inputs ─────────────────────────────────────────────────────────────
@@ -2974,7 +3149,7 @@ function calcCost(tool, runs, steps, workflows, perWf) {
 // Final score = feature fit 0.52 + price fit 0.26 + ecosystem maturity 0.12 (+ workflow
 // bonus). scoreParts is the single source of truth — computeMatchScore AND the "why this
 // rank" breakdown in the results UI both read from it (no drift).
-const SCORE_W = { feature: 0.52, price: 0.26, maturity: 0.12 };
+// SCORE_W je definováno v bloku DATA:SCORING výše (generováno z data/scoring-model.json).
 function scoreParts(tool, costResult) {
   const role = selectedRole || "other";
   const wf = WORKFLOWS.find(w => w.id === selectedWorkflow);
@@ -3008,6 +3183,130 @@ function computeMatchScore(tool, costResult) {
     p.featureScore * SCORE_W.feature + p.priceScore * SCORE_W.price + p.maturity * SCORE_W.maturity + p.wfBonus
   ));
   return Math.round(normalised * 100);
+}
+
+// ── Recommendation personas (Skyscanner-style "best / cheapest / …" lenses) ─────
+// Each persona ranks the SAME available tools through ONE objective, so the user sees
+// the trade-off instead of a single opaque winner. The deterministic engine stays the
+// source of truth — a persona is only a re-weighting/sort over results it already
+// produced. "Best value" === the list's #1 (both sort by match score), so the persona
+// row never contradicts the ranking below. Picks may overlap (cheapest == best value)
+// — honest signal, not a bug; we label the overlap.
+function personaPowerScore(slug) {
+  const c = TOOL_SCORES[slug];   // capability ceiling — price ignored
+  return c.codeAccess*0.27 + c.aiNodes*0.24 + c.integrations*0.21 + c.maturity*0.20 + c.noCode*0.08;
+}
+function personaControlScore(slug) {
+  const c = TOOL_SCORES[slug];   // data control + compliance
+  return c.selfHost*0.46 + c.gdpr*0.39 + c.maturity*0.15;
+}
+const PERSONAS = [
+  { id:"value", label:"Best value", icon:"⭐", rec:true,
+    tip:"Best balance of price, capability and ecosystem for your role — what we'd pick.",
+    sort:(a,b)=> b.score - a.score },
+  { id:"cheapest", label:"Cheapest", icon:"💸",
+    tip:"Lowest monthly cost at your volume. Features come second.",
+    sort:(a,b)=> a.costResult.cost - b.costResult.cost || b.score - a.score },
+  { id:"power", label:"Most powerful", icon:"🚀",
+    tip:"Deepest code & AI, most integrations, strongest ecosystem — ready to scale.",
+    sort:(a,b)=> personaPowerScore(b.tool.slug) - personaPowerScore(a.tool.slug) || b.score - a.score },
+  { id:"control", label:"Self-host & GDPR", icon:"🛡️",
+    tip:"Maximum data control and compliance — best for regulated or privacy-first work.",
+    sort:(a,b)=> personaControlScore(b.tool.slug) - personaControlScore(a.tool.slug) || b.score - a.score },
+];
+
+function fmtCost(cr) {
+  if (!cr || cr.cost == null) return "—";
+  if (cr.cost === 0) return "Free";
+  return (cr.estimated ? "~$" : "$") + cr.cost + "/mo";
+}
+
+// Crossover / sensitivity: at the user's volume one tool is cheapest; as volume grows it
+// often gets expensive and another tool overtakes it. We sweep a volume grid (respecting
+// the user's current host/AI/integration filters & billing via calcCost) and report the
+// first MATERIAL switch above the current volume — i.e. the current pick actually climbs
+// in price and a rival is meaningfully cheaper there (≥ $5 and ≥ 15% gap). A "$0 → $0"
+// switch between two free tiers is suppressed (no real insight). Returns null when the
+// cheapest pick stays competitive to 1M runs — then no box is shown.
+const XOVER_GRID = [100,250,500,1000,2500,5000,10000,25000,50000,100000,250000,500000,1000000];
+function cheapestAtVolume(v, steps, workflows) {
+  let best = null;
+  for (const t of TOOLS) {
+    const c = calcCost(t, v, steps, workflows, null);
+    if (c && (best === null || c.cost < best.cost)) best = { slug:t.slug, name:t.name, cost:c.cost, estimated:!!c.estimated };
+  }
+  return best;
+}
+function crossoverInsight(cur, steps, workflows) {
+  if (!(cur < 1000000)) return null;
+  const now = cheapestAtVolume(cur, steps, workflows);
+  if (!now) return null;
+  const nowTool = TOOLS.find(t => t.slug === now.slug);
+  for (const v of XOVER_GRID) {
+    if (v <= cur) continue;
+    const sV = calcCost(nowTool, v, steps, workflows, null);   // current pick's cost if volume grew to v
+    if (!sV || sV.cost <= now.cost) continue;                  // pick didn't get pricier → no growth penalty
+    let other = null;                                          // cheapest DIFFERENT tool at v
+    for (const t of TOOLS) {
+      if (t.slug === now.slug) continue;
+      const c = calcCost(t, v, steps, workflows, null);
+      if (c && (other === null || c.cost < other.cost)) other = { slug:t.slug, name:t.name, cost:c.cost, estimated:!!c.estimated };
+    }
+    if (!other) continue;
+    const margin = Math.max(5, sV.cost * 0.15);
+    if (other.cost + margin <= sV.cost) {
+      return { at:v, now: { name:now.name, cost:now.cost, estimated:now.estimated },
+               nowAt: { cost:sV.cost, estimated:!!sV.estimated }, to:other };
+    }
+  }
+  return null;
+}
+
+function renderPersonas(items) {
+  const row = document.getElementById("persona-picks");
+  if (!row) return;
+  if (items.length < 2) { row.hidden = true; row.innerHTML = ""; return; }
+  const valueSlug = items.slice().sort(PERSONAS[0].sort)[0].tool.slug;
+  row.innerHTML = PERSONAS.map(p => {
+    const pick = items.slice().sort(p.sort)[0];
+    const cr = pick.costResult;
+    const sameAsValue = p.id !== "value" && pick.tool.slug === valueSlug;
+    const sub = p.id === "value" ? pick.score + "% match"
+      : sameAsValue ? "also your best-value pick"
+      : p.id === "cheapest" ? "lowest at your volume"
+      : p.id === "power" ? "highest capability ceiling"
+      : "best data control";
+    return `<div class="persona-card ${p.rec ? "is-rec" : ""}">
+      <div class="persona-top"><span class="persona-icon">${p.icon}</span>${p.label}${p.rec ? `<span class="persona-star">Recommended</span>` : ""}</div>
+      <div class="persona-tool"><img src="${LOGOS[pick.tool.slug]}" alt="" onerror="this.style.display='none'">${pick.tool.name}</div>
+      <div class="persona-metric ${costClass(cr.cost)}">${fmtCost(cr)}</div>
+      <div class="persona-sub ${sameAsValue ? "same" : ""}">${sub}</div>
+      <div class="persona-tip">${p.tip}</div>
+      <button class="persona-jump" onclick="scrollToCard('${pick.tool.slug}')">See details ↓</button>
+    </div>`;
+  }).join("");
+  row.hidden = false;
+}
+
+function renderCrossover(cur, steps, workflows) {
+  const box = document.getElementById("crossover-insight");
+  if (!box) return;
+  const x = crossoverInsight(cur, steps, workflows);
+  if (!x) { box.hidden = true; box.innerHTML = ""; return; }
+  box.innerHTML =
+    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>` +
+    `<div><b>Heads-up as you scale:</b> at your <b>${cur.toLocaleString("en-US")} runs/mo</b>, <b class="tool">${x.now.name}</b> is cheapest (${fmtCost(x.now)}). But around <b>~${x.at.toLocaleString("en-US")} runs/mo</b> it climbs to ${fmtCost(x.nowAt)}, where <b class="tool">${x.to.name}</b> is cheaper at ${fmtCost(x.to)} — worth knowing before you commit.</div>`;
+  box.hidden = false;
+}
+
+function scrollToCard(slug) {
+  const card = document.getElementById("rc-" + slug);
+  if (!card) return;
+  if (!card.classList.contains("expanded")) toggleExpand(slug);
+  if (card.scrollIntoView) card.scrollIntoView({ behavior: "smooth", block: "center" });
+  card.style.transition = "box-shadow .3s";
+  card.style.boxShadow = "0 0 0 2px var(--green)";
+  setTimeout(() => { card.style.boxShadow = ""; }, 1400);
 }
 
 function matchLabel(score) {
@@ -3073,6 +3372,8 @@ function renderResults() {
     list.innerHTML = "";
     noMsg.style.display = "block";
     if (savings) savings.hidden = true;
+    const pr = document.getElementById("persona-picks"); if (pr) pr.hidden = true;
+    const cx = document.getElementById("crossover-insight"); if (cx) cx.hidden = true;
     return;
   }
   noMsg.style.display = "none";
@@ -3094,6 +3395,10 @@ function renderResults() {
   }
 
   syncShareUrl();
+
+  // Persona picks + crossover insight (Phase B): same engine, different lenses.
+  renderPersonas(items);
+  renderCrossover(effRuns, steps, workflows);
 
   const whyData = TOOL_WHY;
   list.innerHTML = items.map((r, i) => {

@@ -41,6 +41,11 @@ CLOG_START = "/* DATA:CHANGELOG:START */"
 CLOG_END = "/* DATA:CHANGELOG:END */"
 CLOG_WARN = "/* generováno build.py z git historie data/tools.json — needituj ručně */"
 
+SCORING = ROOT / "data" / "scoring-model.json"
+SCORING_START = "/* DATA:SCORING:START */"
+SCORING_END = "/* DATA:SCORING:END */"
+SCORING_WARN = "/* generováno build.py z data/scoring-model.json — needituj ručně, edituj JSON */"
+
 AN_START = "<!-- ANALYTICS (build.py) -->"
 AN_END = "<!-- /ANALYTICS -->"
 
@@ -1265,6 +1270,23 @@ def apply_ga4(measurement_id: str, pages: list[Path]) -> list[str]:
     return changed
 
 
+def render_scoring(model: dict) -> str:
+    """JS const blok ze scoring-model.json (váhy recommendation enginu kalkulačky).
+    JSON je nadmnožinou JS object-literálu (klíče v uvozovkách jsou validní JS),
+    takže stačí json.dumps. Čísla 0..1 se serializují čistě (0.3, 1.0, …).
+    SCORE_W / ROLE_WEIGHTS / TOOL_SCORES čte scoreParts()/computeMatchScore()
+    v calculator.html — pořadí mezi top-level consty nehraje roli (užívají se až
+    za běhu uvnitř funkcí). Fáze C: research-armáda přepíše hodnoty v JSON."""
+    sw = json.dumps(model["scoreWeights"], ensure_ascii=False)
+    rw = json.dumps(model["roleWeights"], ensure_ascii=False, indent=2)
+    ts = json.dumps(model["toolScores"], ensure_ascii=False, indent=2)
+    return (
+        f"const SCORE_W = {sw};\n"
+        f"const ROLE_WEIGHTS = {rw};\n"
+        f"const TOOL_SCORES = {ts};"
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Inject data/tools.json into static pages.")
     parser.add_argument("--check", action="store_true",
@@ -1296,6 +1318,15 @@ def main() -> int:
         if clog_page.exists() and CLOG_START in clog_page.read_text(encoding="utf-8"):
             jobs.append((clog_page, render_changelog(tools, clog_entries, clog_genesis),
                          CLOG_START, CLOG_END, CLOG_WARN))
+
+    # scoring-model injection — recommendation engine weights (calculator.html only).
+    # Nezávislé na tools.json: zdroj pravdy pro váhy je data/scoring-model.json.
+    if SCORING.exists():
+        model = json.loads(SCORING.read_text(encoding="utf-8"))
+        calc_page = ROOT / "calculator.html"
+        if calc_page.exists() and SCORING_START in calc_page.read_text(encoding="utf-8"):
+            jobs.append((calc_page, render_scoring(model),
+                         SCORING_START, SCORING_END, SCORING_WARN))
 
     if args.check:
         dirty = []
