@@ -305,12 +305,27 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
           'stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>\n'
         f'        <div class="faq-a">{f["a"]}</div>\n      </div>' for f in faq)
 
-    # ── related compare ──
+    # ── related compare → dedikované X-vs-Y stránky (interní linky pro SEO) ──
+    # Linkujeme všech 6 head-to-head stránek tohoto nástroje (slug v pořadí
+    # PRICING_SLUGS — všechny páry existují) místo jen compare.html?tools.
+    def _vs_slug(a, b):
+        return f"{a}-vs-{b}" if PRICING_SLUGS.index(a) < PRICING_SLUGS.index(b) else f"{b}-vs-{a}"
     related = "\n".join(
-        f'      <a href="compare.html?tools={r["tools"]}" class="related-card">\n'
-        f'        <div class="related-card-name">{_html_escape(r["label"])}</div>\n'
-        f'        <div class="related-card-desc">Price per run, features, free tier</div>\n'
-        f"      </a>" for r in ed.get("relatedCompare", []))
+        f'      <a href="{_vs_slug(slug, o)}.html" class="related-card">\n'
+        f'        <div class="related-card-name">{_html_escape(name)} vs {_html_escape(by_slug[o]["name"])}</div>\n'
+        f'        <div class="related-card-desc">Pricing &amp; features compared</div>\n'
+        f"      </a>" for o in PRICING_SLUGS if o != slug)
+
+    # ── breadcrumb JSON-LD (SERP breadcrumbs + topická struktura) ──
+    home_url = f"https://{site.get('domain', 'wizardcost.com')}/"
+    breadcrumb_ld = json.dumps({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": home_url},
+            {"@type": "ListItem", "position": 2, "name": "Automation tools", "item": f"{prefix}/tools.html"},
+            {"@type": "ListItem", "position": 3, "name": f"{name} pricing", "item": canonical},
+        ],
+    }, ensure_ascii=False, indent=2)
 
     # ── outbound CTA (affiliate jen s hasAffiliate) ──
     if tool.get("hasAffiliate"):
@@ -351,6 +366,9 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
   <meta name="twitter:image" content="{prefix}/og-image.png">
   <script type="application/ld+json">
 {faq_ld}
+  </script>
+  <script type="application/ld+json">
+{breadcrumb_ld}
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -419,7 +437,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
 {cmp_rows}
       </tbody>
     </table>
-    <p style="margin-top:12px"><a href="compare.html">Full interactive comparison →</a></p>
+    <p style="margin-top:12px"><a href="{slug}-alternatives.html">See all {name} alternatives →</a> · <a href="cheapest-automation-tool.html">Cheapest automation tool →</a> · <a href="compare.html">Full interactive comparison →</a></p>
   </div>
 
   <div class="section">
@@ -445,7 +463,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
   </div>
 
   <div class="section">
-    <h2>Compare {name} to other tools</h2>
+    <h2>Compare {name} head-to-head</h2>
     <div class="related-grid">
 {related}
     </div>
@@ -559,6 +577,324 @@ def build_pricing_pages(tools: list[dict], site: dict, tools_meta: dict,
         elif dirty:
             target.write_text(rendered, encoding="utf-8")
             out.append(target.name)
+    return out
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# Programmatic long-tail SEO stránky (data-driven, engine ceny):
+#   <slug>-alternatives.html   — „best <Tool> alternatives" (7×)
+#   cheapest-automation-tool.html — „cheapest automation tool" (1×)
+# Sdílí shell/CSS/nav/footer s pricing stránkami. Fair-competition neutral:
+# řazení podle CENY (objektivní fakt z enginu), žádné „X× cheaper"/zlehčování;
+# ceny VŽDY z enginu. Jen interní odkazy (žádný affiliate placement tady).
+# ════════════════════════════════════════════════════════════════════════════
+ALT_VOL = 20000   # reprezentativní objem pro alternatives ranking
+
+def _seo_breadcrumb_ld(site: dict, prefix: str, leaf: str, canonical: str) -> str:
+    return json.dumps({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home",
+             "item": f"https://{site.get('domain', 'wizardcost.com')}/"},
+            {"@type": "ListItem", "position": 2, "name": "Automation tools", "item": f"{prefix}/tools.html"},
+            {"@type": "ListItem", "position": 3, "name": leaf, "item": canonical},
+        ],
+    }, ensure_ascii=False, indent=2)
+
+
+def _seo_faq(faq: list[dict]) -> tuple[str, str]:
+    faq_ld = json.dumps({
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": [{"@type": "Question", "name": f["q"],
+                        "acceptedAnswer": {"@type": "Answer", "text": f["a"]}} for f in faq],
+    }, ensure_ascii=False, indent=2)
+    faq_html = "\n".join(
+        '      <div class="faq-item">\n'
+        '        <button class="faq-q" onclick="toggleFaq(this)">' + f["q"]
+        + '<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" '
+          'stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>\n'
+        f'        <div class="faq-a">{f["a"]}</div>\n      </div>' for f in faq)
+    return faq_ld, faq_html
+
+
+def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
+               body_html, faq_ld, breadcrumb_ld, faq_html) -> str:
+    css = _PRICING_CSS
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- generováno build_pricing.py (build_seo_pages) z data/tools.json — needituj ručně -->
+  <title>{title}</title>
+  <meta name="description" content="{_html_escape(desc)}">
+  <link rel="canonical" href="{canonical}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AutomationCost.io">
+  <meta property="og:title" content="{_html_escape(title.split(' | ')[0].replace('&amp;', '&'))}">
+  <meta property="og:description" content="{_html_escape(desc)}">
+  <meta property="og:url" content="{canonical}">
+  <meta property="og:image" content="{prefix}/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{prefix}/og-image.png">
+  <script type="application/ld+json">
+{faq_ld}
+  </script>
+  <script type="application/ld+json">
+{breadcrumb_ld}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+{css}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a href="/" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
+      </svg>
+      Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+    </a>
+    <span class="nav-badge">Updated {month_year} · Real pricing data</span>
+  </div>
+  <nav class="nav-bottom">
+    <a href="index.html">Home</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="compare.html">Compare</a>
+    <a href="limits.html">Pricing & Limits</a>
+    <a href="tools.html">Tools</a>
+    <a href="changelog.html">Changelog</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <div class="page-hero">
+    <h1>{h1}</h1>
+    <p>{intro_html}</p>
+    <div class="cta-row">
+      <a href="calculator.html" class="btn-primary">Find my cheapest tool →</a>
+      <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
+    </div>
+    <div class="hero-trust">Prices generated live from our data · verified {month_year} · all figures per <strong>run</strong>, 3-step workflows</div>
+  </div>
+
+{body_html}
+
+  <div class="section">
+    <h2>Frequently asked questions</h2>
+    <div class="faq" style="margin-top:8px;">
+{faq_html}
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
+  <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified {month_year}</div>
+  <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
+  <div style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+</footer>
+
+<script>
+function toggleFaq(el) {{ el.closest(".faq-item").classList.toggle("open"); }}
+</script>
+<a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="17" height="17" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#04130d"/></svg> Find my best tool</a>
+</body>
+</html>
+"""
+
+
+def _vs_slug(a: str, b: str) -> str:
+    return f"{a}-vs-{b}" if PRICING_SLUGS.index(a) < PRICING_SLUGS.index(b) else f"{b}-vs-{a}"
+
+
+def render_alternatives_page(slug: str, by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
+    tool = by_slug[slug]
+    name = tool["name"]
+    month_year = _month_year(tools_meta)
+    prefix = _site_prefix(site.get("domain", "wizardcost.com"), site.get("base_path", ""))
+    canonical = f"{prefix}/{slug}-alternatives.html"
+
+    # ostatní nástroje seřazené podle ceny @ALT_VOL (objektivní fakt z enginu)
+    others = [s for s in PRICING_SLUGS if s != slug]
+    priced = []
+    for s in others:
+        r = engine.cheapest_monthly(by_slug[s], ALT_VOL, STEPS)
+        if r:
+            priced.append((s, r))
+    priced.sort(key=lambda x: x[1]["cost"])
+    cheapest_name = by_slug[priced[0][0]]["name"] if priced else ""
+    oss = [by_slug[s]["name"] for s in others if by_slug[s].get("selfHostable")]
+
+    # alternative karty (řádky tabulky) — cena, integrace, self-host, why + odkazy
+    rows = []
+    for s, r in priced:
+        t = by_slug[s]
+        sh = '<span class="tag-yes">Yes (free SW)</span>' if t.get("selfHostable") else '<span class="tag-no">No</span>'
+        rows.append(
+            f"        <tr><td><a href=\"{s}-pricing.html\"><strong>{_html_escape(t['name'])}</strong></a><br>"
+            f"<span style=\"color:var(--muted);font-size:13px\">{_html_escape(t['tagline'])}</span></td>"
+            f"<td class=\"price-cell\">{_fmt_usd(r['cost'], r['est'])}</td>"
+            f"<td>{t['integrations']:,}+</td><td>{sh}</td>"
+            f"<td><a href=\"{_vs_slug(slug, s)}.html\">{_html_escape(name)} vs {_html_escape(t['name'])} →</a></td></tr>")
+    table = "\n".join(rows)
+
+    oss_sentence = (f" For the open-source, self-hostable route like {name}, look at "
+                    + ", ".join(oss[:-1]) + (f" or {oss[-1]}" if len(oss) > 1 else (oss[0] if oss else "")) + "."
+                    ) if oss else ""
+    intro = (f"Looking for a {name} alternative? We priced every tool we track at "
+             f"{ALT_VOL:,} runs/month so you can compare on real cost, not marketing. "
+             f"At that volume the lowest-cost option is <strong>{cheapest_name}</strong> — "
+             f"but the closest fit depends on whether you want no-code, code-first or self-hosted.{oss_sentence} "
+             "Full ranked prices and head-to-head links below.")
+
+    body = f"""  <div class="section">
+    <h2>{_html_escape(name)} alternatives, ranked by cost</h2>
+    <p class="section-sub">Every alternative priced at {ALT_VOL:,} runs / month (cheapest qualifying plan, 3-step workflows) — generated live from our data. Self-hosted tools show the server bill, not a tool fee.</p>
+    <table class="comparison-table">
+      <thead><tr><th>Tool</th><th>Price at {ALT_VOL:,} runs/mo</th><th>Integrations</th><th>Self-host</th><th>Head-to-head</th></tr></thead>
+      <tbody>
+{table}
+      </tbody>
+    </table>
+    <p style="margin-top:12px"><a href="{slug}-pricing.html">{_html_escape(name)} pricing in detail →</a> · <a href="compare.html">Full interactive comparison →</a></p>
+  </div>"""
+
+    faq = [
+        {"q": f"What is the cheapest {name} alternative?",
+         "a": (f"At {ALT_VOL:,} runs/month the lowest-cost alternative we track is {cheapest_name} "
+               f"({_fmt_usd(priced[0][1]['cost'], priced[0][1]['est'])}/mo on its cheapest qualifying plan). "
+               "Self-hosted tools can be lower still — their cost is just the server. See the ranked table above; "
+               'your real number depends on volume — try the <a href="calculator.html">calculator</a>.')},
+        {"q": f"Is there a free or open-source {name} alternative?",
+         "a": ((f"Yes — {', '.join(oss)} are open-source and self-hostable, so beyond a server bill they're effectively free. "
+                "Activepieces also has a cloud free tier (10 active flows, unlimited runs).") if oss
+               else "Several tools offer free tiers — see the comparison for current limits.")},
+        {"q": f"How accurate are these prices?",
+         "a": ("Every figure is generated from each vendor's official pricing via our cost engine, verified "
+               f"{month_year}. Values marked ~ are estimates for custom enterprise tiers. See the "
+               '<a href="changelog.html">price changelog</a> for every change we record.')},
+    ]
+    faq_ld, faq_html = _seo_faq(faq)
+    title = f"{name} Alternatives 2026 — Priced &amp; Compared | AutomationCost.io"
+    desc = (f"The best {name} alternatives in 2026, priced at real run volumes. "
+            f"{cheapest_name} is the lowest-cost option we track at {ALT_VOL:,} runs/mo — "
+            f"compare every alternative on cost, integrations and self-hosting.")
+    breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, f"{name} alternatives", canonical)
+    return _seo_shell(title=title, desc=desc, canonical=canonical, prefix=prefix,
+                      month_year=month_year, h1=f"The best {_html_escape(name)} alternatives in 2026",
+                      intro_html=intro, body_html=body, faq_ld=faq_ld,
+                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html)
+
+
+def render_cheapest_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
+    month_year = _month_year(tools_meta)
+    prefix = _site_prefix(site.get("domain", "wizardcost.com"), site.get("base_path", ""))
+    canonical = f"{prefix}/cheapest-automation-tool.html"
+
+    # matice tool × volume (cena z enginu), + nejlevnější per objem
+    costs = {}   # slug -> {vol: r}
+    for s in PRICING_SLUGS:
+        costs[s] = {v: engine.cheapest_monthly(by_slug[s], v, STEPS) for v in VOLUMES}
+    cheapest_per_vol = {}
+    for v in VOLUMES:
+        best = min((s for s in PRICING_SLUGS if costs[s][v]), key=lambda s: costs[s][v]["cost"])
+        cheapest_per_vol[v] = best
+    # řazení řádků podle ceny na největším objemu
+    order = sorted(PRICING_SLUGS, key=lambda s: (costs[s][VOLUMES[-1]]["cost"] if costs[s][VOLUMES[-1]] else 9e9))
+
+    head_cells = "".join(f"<th>{v:,} runs</th>" for v in VOLUMES)
+    rows = []
+    for s in order:
+        t = by_slug[s]
+        cells = []
+        for v in VOLUMES:
+            r = costs[s][v]
+            cheap = ' class="cheap"' if cheapest_per_vol[v] == s else ""
+            cells.append(f"<td{cheap}>{_fmt_usd(r['cost'], r['est']) if r else '—'}</td>")
+        rows.append(f"        <tr><td><a href=\"{s}-pricing.html\">{_html_escape(t['name'])}</a></td>{''.join(cells)}</tr>")
+    table = "\n".join(rows)
+
+    lo, hi = VOLUMES[0], VOLUMES[-1]
+    lo_name = by_slug[cheapest_per_vol[lo]]["name"]
+    hi_name = by_slug[cheapest_per_vol[hi]]["name"]
+    intro = (f"The cheapest automation tool depends on your volume and whether you'll self-host. "
+             f"At {lo:,} runs/month the lowest price we track is <strong>{lo_name}</strong>; at "
+             f"{hi:,} runs it's <strong>{hi_name}</strong>. Self-hosted, open-source tools "
+             "(n8n, Activepieces, Automatisch, Node-RED) cost only the server they run on — effectively "
+             "the floor at any volume. The full ranked matrix is below; prices come straight from each "
+             "vendor's pricing, generated live.")
+
+    summary = " · ".join(f"{v:,} runs: <strong>{_html_escape(by_slug[cheapest_per_vol[v]]['name'])}</strong>" for v in VOLUMES)
+    body = f"""  <div class="section">
+    <h2>Cheapest automation tool at each volume</h2>
+    <p class="section-sub">Lowest-cost qualifying plan per tool, 3-step workflows, generated live from our data. Cheapest per column is highlighted.</p>
+    <table class="comparison-table">
+      <thead><tr><th>Tool</th>{head_cells}</tr></thead>
+      <tbody>
+{table}
+      </tbody>
+    </table>
+    <p style="margin-top:12px">Cheapest at each volume — {summary}.</p>
+    <div class="warning-box" style="margin-top:16px"><strong>Note:</strong> self-hosted figures are the server bill (VPS + DB), not a tool fee — the software is free and open-source. Activepieces is $0 on its cloud free tier (up to 10 active flows). Values marked ~ are estimates for custom enterprise tiers.</div>
+    <p style="margin-top:14px"><a href="calculator.html">Get your exact cheapest tool from the calculator →</a></p>
+  </div>"""
+
+    faq = [
+        {"q": "What is the cheapest automation tool?",
+         "a": (f"It depends on volume. Among cloud tools, the lowest published price we track at {lo:,} runs/month "
+               f"is {lo_name}, and at {hi:,} runs it's {hi_name}. Open-source self-hosted tools (n8n, Activepieces, "
+               "Automatisch, Node-RED) are cheaper still — you pay only for the server. See the matrix above.")},
+        {"q": "What is the cheapest cloud (no self-host) automation tool?",
+         "a": ("Among fully managed cloud tools, the lowest cost shifts with volume — check the highlighted cells "
+               'in the table for your run level, or use the <a href="calculator.html">calculator</a> for your exact numbers.')},
+        {"q": "Is there a free automation tool?",
+         "a": ("Yes. Activepieces has a cloud free tier (10 active flows, unlimited runs), and n8n, Activepieces, "
+               "Automatisch and Node-RED are free open-source software you can self-host for just a server cost.")},
+        {"q": "How accurate are these prices?",
+         "a": ("They're generated from each vendor's official pricing via our cost engine, verified "
+               f"{month_year}; see the <a href=\"changelog.html\">price changelog</a> for every recorded change.")},
+    ]
+    faq_ld, faq_html = _seo_faq(faq)
+    title = "The Cheapest Automation Tool in 2026 (Real Prices) | AutomationCost.io"
+    desc = (f"The cheapest automation tool in 2026, priced at every volume. At {lo:,} runs/mo it's {lo_name}; "
+            f"at {hi:,} runs {hi_name}. Self-hosted tools run at just a server bill — see the full ranked matrix.")
+    breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, "Cheapest automation tool", canonical)
+    return _seo_shell(title=title, desc=desc, canonical=canonical, prefix=prefix,
+                      month_year=month_year, h1="The cheapest automation tool in 2026",
+                      intro_html=intro, body_html=body, faq_ld=faq_ld,
+                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html)
+
+
+def build_seo_pages(tools: list[dict], site: dict, tools_meta: dict, *, check: bool = False) -> list[str]:
+    """Vygeneruje long-tail SEO stránky (alternatives ×7 + cheapest ×1)."""
+    engine = _root_engine()
+    by_slug = {t["slug"]: t for t in tools}
+    out = []
+    targets = [(f"{s}-alternatives.html", lambda s=s: render_alternatives_page(s, by_slug, site, tools_meta, engine))
+               for s in PRICING_SLUGS if s in by_slug]
+    targets.append(("cheapest-automation-tool.html", lambda: render_cheapest_page(by_slug, site, tools_meta, engine)))
+    for fname, render in targets:
+        target = ROOT / fname
+        rendered = render()
+        existing = target.read_text(encoding="utf-8") if target.exists() else None
+        dirty = existing is None or _strip_injected(existing) != rendered
+        if check:
+            if dirty:
+                out.append(fname)
+        elif dirty:
+            target.write_text(rendered, encoding="utf-8")
+            out.append(fname)
     return out
 
 

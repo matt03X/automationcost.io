@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_hosting import expand_hosting_variants, apply_fx  # noqa: E402
-from build_pricing import build_pricing_pages  # noqa: E402
+from build_pricing import build_pricing_pages, build_seo_pages  # noqa: E402
 from build_catalog import build_catalog_pages  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
@@ -612,6 +612,16 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
         "mainEntity": [{"@type": "Question", "name": f["q"],
                         "acceptedAnswer": {"@type": "Answer", "text": f["a"]}} for f in faq],
     }, ensure_ascii=False, indent=2)
+    # breadcrumb JSON-LD (SERP breadcrumbs + topická struktura)
+    _home_url = f"https://{site.get('domain', 'wizardcost.com')}/"
+    breadcrumb_ld = json.dumps({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": _home_url},
+            {"@type": "ListItem", "position": 2, "name": "Automation tools", "item": f"{prefix}/tools.html"},
+            {"@type": "ListItem", "position": 3, "name": f"{a_name} vs {b_name}", "item": f"{prefix}/{slug}.html"},
+        ],
+    }, ensure_ascii=False, indent=2)
     faq_html = "\n".join(
         f'      <div class="faq-item">\n        <button class="faq-q" onclick="toggleFaq(this)">{f["q"]}</button>\n'
         f'        <div class="faq-a">{f["a"]}</div>\n      </div>' for f in faq)
@@ -643,6 +653,9 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
   <meta name="twitter:image" content="{prefix}/og-image.png">
   <script type="application/ld+json">
 {faq_ld}
+  </script>
+  <script type="application/ld+json">
+{breadcrumb_ld}
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1306,6 +1319,7 @@ def main() -> int:
         if DATA.exists():
             dirty += build_vs_pages(data["tools"], site, data.get("_meta", {}), check=True)
             dirty += build_pricing_pages(data["tools"], site, data.get("_meta", {}), check=True)
+            dirty += build_seo_pages(data["tools"], site, data.get("_meta", {}), check=True)
             dirty += build_catalog_pages(data["tools"], site, data.get("_meta", {}), check=True)
         if dirty:
             print(f"[build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python build.py`.")
@@ -1322,6 +1336,7 @@ def main() -> int:
         # hned dostanou do sitemapy i GA4 injektoru
         changed += build_vs_pages(data["tools"], site, data.get("_meta", {}), check=False)
         changed += build_pricing_pages(data["tools"], site, data.get("_meta", {}), check=False)
+        changed += build_seo_pages(data["tools"], site, data.get("_meta", {}), check=False)
         changed += build_catalog_pages(data["tools"], site, data.get("_meta", {}), check=False)
 
     # site-wide artefakty
