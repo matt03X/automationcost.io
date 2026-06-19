@@ -3,16 +3,24 @@
 // Drží MailerLite token jako Worker SECRET (NIKDY v kódu/repu) a umožní z iPhonu:
 //   GET  /status?site=automation  → { draft:{id,subject}|null, subscribers:N }
 //   POST /send?site=automation    → { sent:true, subject } | { sent:false, reason }
+//   POST /digest?site=automation  → uloží digest (cloud routine ho sem pošle)
+//   GET  /digest?site=automation  → { date, summary, actions[], full } | { digest:null }
 // Vše vyžaduje hlavičku:  Authorization: Bearer <SHORTCUT_SECRET>
 //
-// Posílá EXISTUJÍCÍ draft, který založí scripts/send_price_alerts.py při revizi
+// /send posílá EXISTUJÍCÍ draft, který založí scripts/send_price_alerts.py při revizi
 // (draft = naše kampaň "Price alert (<site>) — …"). Telefon je jen finální
 // potvrzovací tlačítko → bezpečné (cenu ověřuješ u PC, odešleš až z mobilu).
+//
+// /digest = „ping na iPhone" pro týdenní SEO digest: cloud routine (machine-off) udělá
+// POST /digest se shrnutím; iPhone Shortcut (Po ráno) udělá GET /digest a ukáže notifikaci.
+// Data drží Cloudflare KV (binding DIGEST) za authem → privátní, nic veřejného.
 //
 // SECRETS (Cloudflare → Worker → Settings → Variables and Secrets, typ Secret):
 //   MAILERLITE_API_TOKEN  — MailerLite → Integrations → API → generate token
 //   SHORTCUT_SECRET       — náhodný řetězec, stejný vložíš do Shortcutu
 //   LLM_GROUP_ID          — (volitelné) id MailerLite skupiny pro LLM site
+// KV BINDING (Settings → Variables → KV Namespace Bindings, nebo wrangler.toml):
+//   DIGEST                — KV namespace pro uložený digest (per site)
 
 const ML = "https://connect.mailerlite.com/api";
 
@@ -86,6 +94,36 @@ export default {
         if (!draft) return json({ sent: false, reason: "Žádný čekající draft k odeslání." });
         await ml(env, `/campaigns/${draft.id}/schedule`, "POST", { delivery: "instant" });
         return json({ sent: true, subject: subjectOf(draft) });
+      }
+
+      // --- Digest (ping na iPhone): cloud routine zapisuje, telefon čte ---
+      if (url.pathname === "/digest") {
+        if (!env.DIGEST) return json({ error: "KV binding 'DIGEST' není nakonfigurováno" }, 500);
+        const key = `latest:${site}`;
+
+        if (request.method === "POST") {
+          let body = {};
+          try {
+            body = await request.json();
+          } catch {
+            return json({ ok: false, reason: "tělo není JSON" }, 400);
+          }
+          const rec = {
+            site,
+            savedAt: new Date().toISOString(),
+            date: typeof body.date === "string" ? body.date : new Date().toISOString().slice(0, 10),
+            summary: typeof body.summary === "string" ? body.summary.slice(0, 500) : "",
+            actions: Array.isArray(body.actions) ? body.actions.slice(0, 5).map((a) => String(a).slice(0, 200)) : [],
+            full: typeof body.full === "string" ? body.full.slice(0, 20000) : "",
+          };
+          await env.DIGEST.put(key, JSON.stringify(rec));
+          return json({ ok: true, site, date: rec.date });
+        }
+
+        if (request.method === "GET") {
+          const raw = await env.DIGEST.get(key);
+          return json(raw ? JSON.parse(raw) : { site, digest: null });
+        }
       }
 
       return json({ error: "not found" }, 404);
