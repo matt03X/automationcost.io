@@ -53,8 +53,13 @@
           },
           {
             "@type": "Question",
+            "name": "How are the match scores calculated?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Each tool gets a 0–100 rating on seven features — no-code UI, code access, AI nodes, self-hosting, GDPR, integrations and ecosystem maturity. We weight those to your selected role, then blend feature fit (52%), price against your budget (26%) and ecosystem maturity (12%), plus a small workflow-fit bonus. The per-feature ratings are WizardCost's own editorial assessment, based on public documentation and sources we record internally — they are considered judgements, not measured benchmarks or vendor-supplied numbers. Treat the scores as guidance for comparison, not exact metrics." }
+          },
+          {
+            "@type": "Question",
             "name": "Is WizardCost affiliated with any of these vendors?",
-            "acceptedAnswer": { "@type": "Answer", "text": "No — we're independent. Some outbound links are affiliate links (marked as sponsored) and we may earn a commission at no extra cost to you, but affiliate status never affects match scores or rankings: every tool is ranked by the same formula on the same data. See the <a href=\"https://wizardcost.com/automation/affiliate.html\">affiliate disclosure</a>." }
+            "acceptedAnswer": { "@type": "Answer", "text": "No — we're editorially independent. Some outbound links are affiliate links (marked as sponsored) and we may earn a commission at no extra cost to you, but affiliate status never affects match scores or rankings: every tool is ranked by the same formula, and the per-feature scores are our own editorial judgement applied equally to all of them. See the <a href=\"https://wizardcost.com/automation/affiliate.html\">affiliate disclosure</a>." }
           },
           {
             "@type": "Question",
@@ -820,7 +825,7 @@
     <div class="results-header">
       <div>
         <h2>Your personalized recommendations</h2>
-        <p>Four ways to choose — pick the priority that fits you, then see the full ranked breakdown below. Same data, same formula for every tool.</p>
+        <p>Four ways to choose — pick the priority that fits you, then see the full ranked breakdown below. The same formula ranks every tool — no paid placement.</p>
       </div>
       <button class="share-btn" id="share-btn" onclick="copyShareLink(this)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -831,6 +836,7 @@
     <div class="savings-banner" id="savings-banner" hidden></div>
     <div class="persona-row" id="persona-picks" hidden></div>
     <div class="crossover-box" id="crossover-insight" hidden></div>
+    <p data-i18n="results.scores_note" style="font-size:12px;color:var(--muted);margin:6px 2px 14px;line-height:1.6;">Match scores blend feature fit (52%), price vs your budget (26%) and ecosystem maturity (12%), plus a small workflow-fit bonus. The per-feature ratings (0–100) are WizardCost's own editorial assessment from public sources — not measured benchmarks or vendor-supplied figures. <a href="#faq-scores">How we score →</a></p>
     <div id="results-list"></div>
     <div id="no-results-msg" class="no-results" style="display:none">
       No tool supports <strong>all</strong> your selected integrations with these settings. Try removing one, or note that most platforms support any app via custom HTTP requests.
@@ -875,9 +881,13 @@
       <button class="faq-q" onclick="toggleFaq(this)">Which tools does the calculator cover?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="faq-a">n8n, Make, Zapier, Pipedream, Activepieces, Automatisch and Node-RED — cloud plans and self-hosted options alike. You can also put them side by side on the <a href="compare.html">compare page</a>.</div>
     </div>
+    <div class="faq-item" id="faq-scores">
+      <button class="faq-q" onclick="toggleFaq(this)"><span data-i18n="faq.q_scores">How are the match scores calculated?</span><svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a" data-i18n="faq.a_scores">Each tool gets a 0–100 rating on seven features — no-code UI, code access, AI nodes, self-hosting, GDPR, integrations and ecosystem maturity. We weight those to your selected role, then blend feature fit (52%), price against your budget (26%) and ecosystem maturity (12%), plus a small workflow-fit bonus. The per-feature ratings are WizardCost's own editorial assessment, based on public documentation and sources we record internally — they are considered judgements, not measured benchmarks or vendor-supplied numbers. Treat the scores as guidance for comparison, not exact metrics.</div>
+    </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Is WizardCost affiliated with any of these vendors?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">No — we're independent. Some outbound links are affiliate links (marked as sponsored) and we may earn a commission at no extra cost to you, but affiliate status never affects match scores or rankings: every tool is ranked by the same formula on the same data. See the <a href="affiliate.html">affiliate disclosure</a>.</div>
+      <div class="faq-a">No — we're editorially independent. Some outbound links are affiliate links (marked as sponsored) and we may earn a commission at no extra cost to you, but affiliate status never affects match scores or rankings: every tool is ranked by the same formula, and the per-feature scores are our own editorial judgement applied equally to all of them. See the <a href="affiliate.html">affiliate disclosure</a>.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Why does n8n often rank cheapest?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
