@@ -133,11 +133,12 @@
     .step-heading p { color: var(--muted); font-size: 0.95rem; }
 
     /* ── Role chips ── */
-    .role-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .role-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-bottom: 32px; }
     .role-card {
       background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius);
-      padding: 22px 20px; cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
+      padding: 20px 18px; cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
       display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+      flex: 1 1 185px; max-width: 220px;
     }
     .role-card:hover { border-color: var(--accent); background: rgba(16,185,129,0.05); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
     .role-card:hover .role-icon, .role-card.selected .role-icon { color: var(--accent-br); }
@@ -147,8 +148,8 @@
     .role-desc { font-size: 13.5px; color: var(--text2); line-height: 1.55; }
 
     /* ── Company size cards ── */
-    .size-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(212px, 1fr)); gap: 16px; margin-bottom: 32px; }
-    .size-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 20px; cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s; display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
+    .size-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-bottom: 32px; }
+    .size-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 18px; cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s; display: flex; flex-direction: column; align-items: flex-start; gap: 9px; flex: 1 1 190px; max-width: 215px; }
     .size-card:hover { border-color: var(--accent); background: rgba(16,185,129,0.05); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
     .size-card:hover .size-icon, .size-card.selected .size-icon { color: var(--accent-br); }
     .size-card.selected { border-color: var(--accent); background: linear-gradient(160deg, rgba(16,185,129,0.15), rgba(16,185,129,0.04)); box-shadow: 0 0 0 1px var(--accent), 0 10px 28px rgba(16,185,129,0.14); }
@@ -158,8 +159,8 @@
     .size-meta { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
     /* ── Step 1 sub-sections: company size + business type ── */
     .subfield-label { font-size: 12.5px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.07em; margin: 2px 2px 14px; }
-    .biz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 12px; margin-bottom: 32px; }
-    .biz-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 15px; cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s; display: flex; flex-direction: column; gap: 5px; }
+    .biz-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 32px; }
+    .biz-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 15px; cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s; display: flex; flex-direction: column; gap: 5px; flex: 1 1 150px; max-width: 200px; }
     .biz-card:hover { border-color: var(--accent); background: rgba(16,185,129,0.05); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); }
     .biz-card.selected { border-color: var(--accent); background: linear-gradient(160deg, rgba(16,185,129,0.15), rgba(16,185,129,0.04)); box-shadow: 0 0 0 1px var(--accent), 0 10px 28px rgba(16,185,129,0.14); }
     .biz-name { font-size: 14.5px; font-weight: 700; letter-spacing: -0.01em; }
@@ -493,33 +494,54 @@
     .faq-item.open .faq-a { display: block; }
     .faq-a a { color: var(--accent); font-weight: 500; }
   </style>
-<!-- ANALYTICS (build.py) -->
+<link rel="stylesheet" href="app.css">
+  <!-- ANALYTICS (build.py) -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
   <!-- /ANALYTICS -->
   </head>
-<body>
+<body class="ac anim">
 
-<header>
-  <div class="nav-top">
-    <a href="/" class="logo">
-      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
-        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
-        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
-      </svg>
-      Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+<div id="ac-progress"></div>
+
+<nav class="ac-nav">
+  <a href="/" class="logo">
+    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+      <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
+    </svg>
+    Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+  </a>
+  <div class="ac-links">
+    <a href="compare.html" class="ac-hide-sm">Compare</a>
+    <a href="limits.html" class="ac-hide-sm">Pricing</a>
+    <div class="ac-dd">
+      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true">More
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="ac-dd-menu">
+        <a href="index.html">AutomationCost home</a>
+        <a href="tools.html">Tools</a>
+        <a href="changelog.html">Changelog</a>
+        <div class="ac-dd-sep">Pricing guides</div>
+        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
+        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
+        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
+        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
+        <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
+        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
+        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
+        <div class="ac-dd-sep">Other wizards</div>
+        <a href="/llm/">LLMCost <span class="ac-dd-tag">Live</span></a>
+        <span class="ac-dd-soon">EmailCost <span class="ac-dd-tag soon">Soon</span></span>
+        <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon">Soon</span></span>
+      </div>
+    </div>
+    <a href="calculator.html" class="ac-cta" aria-current="page">Calculator
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
-    <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
-  <nav class="nav-bottom">
-    <a href="index.html">Home</a>
-    <a href="calculator.html" class="active">Calculator</a>
-    <a href="compare.html">Compare</a>
-    <a href="limits.html">Pricing & Limits</a>
-    <a href="tools.html">Tools</a>
-    <a href="changelog.html">Changelog</a>
-  </nav>
-</header>
+</nav>
 
 <div class="wrap">
 
@@ -2172,17 +2194,25 @@ function renderBigDiagram(wf, svgId) {
   scaled.forEach(n => { nodeMap[n.id] = n; });
 
   // Build SVG string
-  let defs = `<defs>`;
-
-  // Animated dash patterns per edge color
+  const allColors = [...new Set([...wf.nodes.map(n => n.color), ...wf.edges.map(e => e.color)])];
   const edgeColors = [...new Set(wf.edges.map(e => e.color))];
+  let defs = `<defs>
+    <filter id="wf-shadow" x="-20%" y="-25%" width="140%" height="170%">
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#000" flood-opacity="0.42"/>
+    </filter>`;
+  allColors.forEach(c => {
+    const cid = c.replace("#", "c");
+    defs += `<linearGradient id="wfg-${cid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${c}" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="${c}" stop-opacity="0.06"/>
+    </linearGradient>`;
+  });
   edgeColors.forEach(c => {
     const cid = c.replace("#", "c");
-    defs += `<marker id="arr-${cid}" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="${c}" opacity="0.9"/>
+    defs += `<marker id="arr-${cid}" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="${c}"/>
     </marker>`;
   });
-
   defs += `</defs>`;
 
   let edgesHTML = `<g class="edges">`;
@@ -2194,19 +2224,23 @@ function renderBigDiagram(wf, svgId) {
     const cid = e.color.replace("#", "c");
 
     const d = `M ${x1} ${y1} C ${mx} ${y1}, ${mx} ${y2}, ${x2} ${y2}`;
-    const strokeW = e.animated ? 2 : 1.5;
-    const opacity = e.animated ? 0.85 : 0.45;
+    const strokeW = e.animated ? 2.4 : 1.6;
+    const opacity = e.animated ? 0.9 : 0.4;
+
+    // soft glow behind animated edges for depth
+    if (e.animated) edgesHTML += `<path d="${d}" fill="none" stroke="${e.color}" stroke-width="${strokeW + 5}" opacity="0.10" stroke-linecap="round"/>`;
 
     edgesHTML += `<path class="edge-path${e.animated ? " anim-edge" : ""}" d="${d}" fill="none"
-      stroke="${e.color}" stroke-width="${strokeW}" opacity="${opacity}"
+      stroke="${e.color}" stroke-width="${strokeW}" opacity="${opacity}" stroke-linecap="round"
       marker-end="url(#arr-${cid})"
-      stroke-dasharray="${e.animated ? "6 4" : "none"}"
+      stroke-dasharray="${e.animated ? "6 5" : "none"}"
       data-eidx="${i}" data-color="${e.color}"/>`;
 
     if (e.label) {
-      const lx = mx, ly = (y1 + y2) / 2 - 6;
-      edgesHTML += `<rect x="${lx - (e.label.length*7+20)/2}" y="${ly - 13}" width="${e.label.length*7+20}" height="21" rx="6" fill="${e.color}" opacity="0.16"/>`;
-      edgesHTML += `<text x="${lx}" y="${ly}" fill="${e.color}" font-size="11.5" font-family="'JetBrains Mono',monospace" font-weight="700" text-anchor="middle">${e.label}</text>`;
+      const lx = mx, ly = (y1 + y2) / 2 - 7;
+      const w = e.label.length * 7 + 22;
+      edgesHTML += `<rect x="${lx - w/2}" y="${ly - 14}" width="${w}" height="22" rx="11" fill="#0f1626" stroke="${e.color}" stroke-opacity="0.55"/>`;
+      edgesHTML += `<text x="${lx}" y="${ly}" fill="${e.color}" font-size="11" font-family="'JetBrains Mono',monospace" font-weight="700" text-anchor="middle">${e.label}</text>`;
     }
   });
   edgesHTML += `</g>`;
@@ -2214,16 +2248,17 @@ function renderBigDiagram(wf, svgId) {
   let nodesHTML = `<g class="nodes">`;
   scaled.forEach(n => {
     const c = n.color;
+    const cid = c.replace("#", "c");
     const typeLabel = TYPE_LABELS[n.type] || "";
     nodesHTML += `
       <g class="wf-node-g" transform="translate(${n.x},${n.y})">
-        <rect width="${NODE_W}" height="${NODE_H}" rx="12" fill="${c}" opacity="0.14" stroke="${c}" stroke-width="1.5"/>
-        <rect x="0" y="0" width="${NODE_W}" height="6" rx="12" fill="${c}" opacity="0.6"/>
-        <rect x="0" y="5" width="${NODE_W}" height="0" fill="${c}" opacity="0.55"/>
-        <g transform="translate(${NODE_W/2 - 9}, 10) scale(0.75)" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">${TYPE_ICONS[n.type]||""}</g>
-        <text x="${NODE_W/2}" y="49" text-anchor="middle" fill="#e8edf5" font-size="14.5" font-family="'Plus Jakarta Sans',system-ui,sans-serif" font-weight="700">${n.label}</text>
-        <text x="${NODE_W/2}" y="65" text-anchor="middle" fill="#8a99b5" font-size="10.5" font-family="'Plus Jakarta Sans',system-ui,sans-serif">${n.sublabel}</text>
-        <!-- node text centered above -->
+        <rect width="${NODE_W}" height="${NODE_H}" rx="14" fill="url(#wfg-${cid})" stroke="${c}" stroke-width="1.4" stroke-opacity="0.6" filter="url(#wf-shadow)"/>
+        <rect x="0" y="13" width="4" height="${NODE_H - 26}" rx="2" fill="${c}"/>
+        <circle cx="32" cy="${NODE_H/2}" r="15" fill="${c}" fill-opacity="0.18"/>
+        <g transform="translate(23, ${NODE_H/2 - 9}) scale(0.75)" fill="none" stroke="${c}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">${TYPE_ICONS[n.type]||""}</g>
+        <text x="56" y="26" fill="${c}" font-size="8.5" font-family="'JetBrains Mono',monospace" font-weight="700" letter-spacing="1.3">${typeLabel}</text>
+        <text x="56" y="45" fill="#e8edf5" font-size="14" font-family="'Plus Jakarta Sans',system-ui,sans-serif" font-weight="700">${n.label}</text>
+        <text x="56" y="61" fill="#8a99b5" font-size="9.5" font-family="'Plus Jakarta Sans',system-ui,sans-serif">${n.sublabel}</text>
       </g>`;
   });
   nodesHTML += `</g>`;
@@ -3757,5 +3792,6 @@ function resumeStoredProfile() {
   wrap("selectRole", function () { advance(3); }); // step 2 → step 3 (single-select)
 })();
 </script>
+<script src="app.js"></script>
 </body>
 </html>
