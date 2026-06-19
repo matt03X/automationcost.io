@@ -1,2 +1,0 @@
-{"d":"2026-06-16","vendor":"make","field":"integrations","claimed":1500,"scraped":3000,"deltaPct":100,"desc":"make: tools.json uvádí 1500 integrací, oficiální stránka 3000 (100 % rozdíl) — revidovat"}
-{"d":"2026-06-16","vendor":"n8n","field":"integrations","claimed":400,"scraped":1868,"deltaPct":367,"desc":"n8n: tools.json uvádí 400 integrací, oficiální stránka 1868 (367 % rozdíl) — revidovat"}
