@@ -82,8 +82,46 @@ Apple Watch a přes Siri („Hej Siri, WizardCost Alert").
 
 ---
 
+## 3) Týdenní SEO digest — „ping na iPhone" (cloud routine → telefon)
+
+Druhý tok, opačný směr než alerty: **cloud routine** (Claude Code na Anthropic cloudu,
+běží i s vypnutým noťasem) jednou týdně vyrobí SEO digest a uloží ho do Workeru; telefon
+ho ráno vyzvedne a ukáže notifikaci.
+
+```
+Cloud routine ──POST /digest──► Worker (KV, za authem) ◄──GET /digest── iPhone Shortcut
+ (machine-off)   shrnutí+akce                                            (Po ráno → notifikace)
+```
+
+### a) Zapni KV storage (jednorázově)
+- **Dashboard:** Workers & Pages → **KV** → *Create namespace* (název třeba `wizardcost-digest`).
+  Pak Worker `wizardcost-alerts` → **Settings → Variables → KV Namespace Bindings → Add**:
+  Variable name = `DIGEST`, vyber namespace → **Deploy**.
+- **Nebo CLI:** `wrangler kv namespace create DIGEST` → vypsané `id` vlož do `wrangler.toml`
+  (placeholder `REPLACE_WITH_KV_NAMESPACE_ID`) → `wrangler deploy`.
+- **Test:** `GET …/digest` bez klíče → 401; s klíčem a prázdným KV → `{"site":"automation","digest":null}`.
+
+### b) iPhone Shortcut „WizardCost Digest" + týdenní automatizace
+Nový Shortcut (akce v pořadí):
+1. **Get Contents of URL** → `https://wizardcost-alerts.<subdomain>.workers.dev/digest`,
+   Method `GET`, Header `Authorization` = `Bearer <SHORTCUT_SECRET>`.
+2. **Get Dictionary Value** → key `summary` (a volitelně `date`, `actions`).
+3. **If** `summary` *has any value* → **Show Notification** s textem `Summary` (+ `Date`).
+   Jinak **Show Notification** „Digest zatím není".
+
+Pak **Zkratky → Automatizace → +** → spouštěč **Čas** (např. Po 09:30) → akce *Spustit zkratku*
+„WizardCost Digest" → vypni „Před spuštěním se zeptat". Telefon ti tak v pondělí sám bzikne digest.
+
+### c) Cloud routine, která digest plní
+Viz runbook [`docs/architect-mode.md`](../../docs/architect-mode.md) — sekce „Fáze 3". V kostce:
+routine přes `/schedule` (Po ~08:00 UTC, po `marketing-snapshot`) spustí `/seo-digest` a na konci
+udělá `POST /digest` se `summary` + `actions`. Read-only, nic veřejného.
+
+---
+
 ## Bezpečnost
 - **Token** je jen v Cloudflare secret — nikdy v repu ani v telefonu.
+- **Digest** je v KV jen za `SHORTCUT_SECRET` authem → privátní (žádná veřejná raw URL).
 - Bez správného `SHORTCUT_SECRET` Worker vrátí **401** a nic neudělá.
 - Shortcut se **ptá na potvrzení** (předmět + počet odběratelů) → žádné omylem
   odeslané maily. Sedí to s pravidlem „ceny = stop-and-confirm".
