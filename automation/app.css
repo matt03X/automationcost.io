@@ -1,0 +1,183 @@
+/* ============================================================================
+   AutomationCost — shared design system (app.css)
+   Ported from the WizardCost umbrella homepage scaffold (single-row nav,
+   content rhythm, scroll reveal + v5 flourishes) but kept in the AutomationCost
+   GREEN palette. Re-uses each page's :root tokens (--accent, --bg, --text…).
+
+   GATING: chrome is scoped under `body.ac` so a page only opts in once its
+   <body> carries class "ac" (+ "anim" for scroll reveal) and the new .ac-nav
+   markup. Pages without it are untouched — safe for a phased rollout.
+
+   Link this LAST in <head> (after the page's inline <style>) so it wins for
+   shared selectors. Pair with app.js (reveal observer, progress, nav condense).
+   ========================================================================== */
+
+/* ── content width: match the homepage rhythm ───────────────────────────── */
+body.ac { padding-top: 58px; }
+body.ac .wrap { max-width: 1100px; margin: 0 auto; padding-left: 36px; padding-right: 36px; }
+
+/* ── scroll progress bar ─────────────────────────────────────────────────── */
+#ac-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-br));
+  z-index: 120; box-shadow: 0 0 12px rgba(16,185,129,.55);
+  transition: width .1s linear;
+}
+
+/* ── single-row nav ──────────────────────────────────────────────────────── */
+.ac-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 36px;
+  background: rgba(10,14,23,.72);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(31,45,69,.7);
+  transition: padding .35s ease, background .35s ease, box-shadow .35s ease;
+}
+.ac-nav.scrolled {
+  padding-top: 9px; padding-bottom: 9px;
+  background: rgba(10,14,23,.92);
+  box-shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+/* nav links never underline — utility pages lack the global a{} reset */
+.ac-nav a, .ac-cta, .ac-dd-menu a, .ac-dd-btn { text-decoration: none; }
+.ac-nav .logo {
+  display: flex; align-items: center; gap: 0;
+  font-family: var(--display); font-weight: 800; font-size: 1.08rem;
+  color: var(--text); letter-spacing: -0.01em; white-space: nowrap;
+}
+.ac-nav .logo:hover { color: var(--text); }
+.ac-nav .logo .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 9px; }
+.ac-nav .logo span { color: var(--accent); }
+.ac-nav .logo .io { color: var(--muted); font-weight: 600; }
+
+.ac-nav .ac-links {
+  display: flex; align-items: center; gap: 22px;
+  font-size: 13.5px; font-weight: 600; color: var(--text2);
+}
+.ac-nav .ac-links > a:not(.ac-cta) { color: var(--text2); transition: color .15s; white-space: nowrap; }
+.ac-nav .ac-links > a:not(.ac-cta):hover { color: var(--text); }
+.ac-nav .ac-links > a.active { color: var(--text); }
+.ac-nav .ac-links > a.active::after {
+  content: ""; display: block; height: 2px; border-radius: 2px;
+  background: var(--accent); margin-top: 3px;
+}
+
+.ac-cta {
+  background: var(--accent); color: #04130d;
+  font-weight: 800; font-size: 13px; padding: 9px 18px;
+  border-radius: 10px; white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(16,185,129,.30);
+  position: relative; overflow: hidden;
+  transition: transform .28s, box-shadow .35s;
+}
+.ac-cta:hover { color: #04130d; transform: translateY(-1px); box-shadow: 0 8px 28px rgba(16,185,129,.5); }
+.ac-cta svg { transition: transform .32s cubic-bezier(.2,.8,.2,1); }
+.ac-cta:hover svg { transform: translateX(4px); }
+.ac-cta::after {
+  content: ""; position: absolute; top: 0; left: -70%; width: 45%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.4), transparent);
+  transform: skewX(-20deg); pointer-events: none;
+}
+
+/* dropdown ("More" — secondary pages + pricing guides) */
+.ac-dd { position: relative; display: flex; align-items: center; }
+.ac-dd-btn {
+  background: none; border: none; color: var(--text2);
+  font-family: var(--font); font-size: 13.5px; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; gap: 5px;
+  white-space: nowrap; transition: color .15s; padding: 0;
+}
+.ac-dd-btn:hover, .ac-dd.open .ac-dd-btn { color: var(--text); }
+.ac-dd-btn svg { transition: transform .2s; }
+.ac-dd.open .ac-dd-btn svg { transform: rotate(180deg); }
+.ac-dd-menu {
+  display: none; position: fixed;
+  background: var(--surface); border: 1px solid var(--border2);
+  border-radius: var(--radius); min-width: 220px; z-index: 200;
+  box-shadow: 0 16px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.03);
+  padding: 6px 0;
+}
+.ac-dd.open .ac-dd-menu { display: block; }
+.ac-dd-menu a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; font-size: 13px; font-weight: 600;
+  color: var(--text2); transition: background .1s, color .1s;
+}
+.ac-dd-menu a:hover { background: var(--surface2); color: var(--text); }
+.ac-dd-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; flex-shrink: 0; }
+.ac-dd-sep {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); padding: 9px 16px 5px; margin-top: 4px; border-top: 1px solid var(--border);
+}
+.ac-dd-soon { display: flex; align-items: center; gap: 8px; padding: 9px 16px; font-size: 13px; font-weight: 600; color: var(--muted); opacity: .65; cursor: default; }
+.ac-dd-tag { margin-left: auto; font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 99px; color: var(--accent); border: 1px solid rgba(16,185,129,.45); }
+.ac-dd-tag.soon { color: var(--muted); border-color: var(--border2); }
+
+/* ── hero typography: match homepage treatment (kept green) ──────────────── */
+body.ac .hero h1 {
+  font-family: var(--display);
+  font-size: clamp(44px, 6.4vw, 84px); font-weight: 900;
+  letter-spacing: -0.034em; line-height: 0.98;
+  max-width: 1040px; margin: 0 auto 22px; text-wrap: balance;
+}
+body.ac .hero p { font-size: 1.16rem; }
+body.ac .hero h1 em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--accent) 16%, var(--accent-br) 50%, var(--accent) 84%);
+  background-size: 220% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+body.ac .hero p { max-width: 600px; }
+
+/* ── scroll reveal (homepage .rv system) ────────────────────────────────── */
+.rv { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  body.ac.anim .rv { opacity: 0; transform: translateY(24px); }
+  body.ac.anim .rv.in {
+    opacity: 1; transform: none;
+    transition: opacity .7s cubic-bezier(.2,.6,.2,1), transform .7s cubic-bezier(.2,.6,.2,1);
+  }
+  body.ac.anim .rv.d1.in { transition-delay: .07s; }
+  body.ac.anim .rv.d2.in { transition-delay: .14s; }
+  body.ac.anim .rv.d3.in { transition-delay: .21s; }
+}
+
+/* ── v5 flourishes (green) ──────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  body.ac.anim .hero h1 em { animation: ac-shimmer 11s linear infinite; }
+  @keyframes ac-shimmer { to { background-position: -220% center; } }
+  #ac-progress { animation: ac-prog 3.4s ease-in-out infinite; }
+  @keyframes ac-prog {
+    0%, 100% { box-shadow: 0 0 12px rgba(16,185,129,.5); }
+    50% { box-shadow: 0 0 22px rgba(16,185,129,.9); }
+  }
+  .ac-cta:hover::after { animation: ac-sheen 1.15s ease; }
+  @keyframes ac-sheen { from { left: -70%; } to { left: 130%; } }
+  /* gentle pulse on the live-status dot inside an eyebrow pill */
+  body.ac .hero-eyebrow .dot { animation: ac-pulse 3.6s ease-in-out infinite; }
+  @keyframes ac-pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--accent); }
+    50% { opacity: .5; box-shadow: 0 0 2px var(--accent); }
+  }
+}
+
+/* ── nav responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .ac-nav { padding-left: 18px; padding-right: 18px; }
+  .ac-nav .ac-links { gap: 15px; font-size: 13px; }
+  body.ac .wrap { padding-left: 20px; padding-right: 20px; }
+}
+@media (max-width: 620px) {
+  /* drop the "by WizardCost" suffix + tighten so logo · More · CTA fit one row */
+  .ac-nav .logo .io { display: none; }
+  .ac-nav .logo { font-size: 1rem; }
+  .ac-nav .ac-links .ac-hide-sm { display: none; }
+  .ac-nav .ac-links { gap: 13px; }
+  .ac-cta { padding: 8px 13px; font-size: 12.5px; }
+}
+@media (max-width: 380px) {
+  .ac-nav { padding-left: 13px; padding-right: 13px; }
+  .ac-cta svg { display: none; }
+}
