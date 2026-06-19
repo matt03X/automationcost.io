@@ -17,3 +17,10 @@ scripts/.alerts-sent*.json
 .env
 engine/.env
 .env.local
+
+# Claude Code — lokální override (env allow-flag pro guard.mjs) zůstává lokálně,
+# NIKDY se necommitne → cloud routine ho nedostane (= zůstane v block režimu)
+.claude/settings.local.json
+
+# lokální výstup marketing konektorů (analytika — NIKDY na veřejný web)
+_marketing-out/

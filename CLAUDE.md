@@ -15,6 +15,7 @@ LLM provider stránky (`llm/<provider>-pricing.html`, slugy gemini/grok = produk
   - `/* DATA:CHANGELOG:START|END */` v `automation/changelog.html` → `automation/build.py` (generuje z **git historie** tools.json)
 - Po změně tools.json spusť **oba** buildy: `python automation/build.py` i `python build.py` (root), commitni výsledek. `--check` = CI guard (exit 1 při zastaralých blocích).
 - **X-vs-Y stránky** (`automation/<a>-vs-<b>.html`) jsou **CELÉ generované** — `build_vs_pages()` v automation/build.py z tools.json (čísla přes root `cheapest_monthly`, import — žádná třetí kopie enginu) + `automation/data/pairs.json` (editorial: verdikt/stripNote/whyLoser/faq — ručně psané, vkládané doslovně; design navrhuje, owner schvaluje). Nikdy needitovat vygenerované soubory ručně. Pořadí slugů v URL: zapier > make > n8n > pipedream > activepieces > automatisch > node-red. Cross-linky generátor omezuje na existující páry. Vzor šablony: `_vs-example.html` (mimo sitemap).
+- **Long-tail SEO stránky** (`<tool>-alternatives.html` ×7 + `cheapest-automation-tool.html`) jsou **CELÉ generované** — `build_seo_pages()` v `automation/build_pricing.py` (čísla z importu root enginu `cheapest_monthly` — žádná třetí kopie). Breadcrumb JSON-LD (`build.py`) + interní linking = topická struktura pro SERP. LIVE od 2026-06-18. Nikdy needitovat ručně; po změně dat rebuild + `--check`.
 - **Pořadí u cenových změn:** changelog/RSS se generují z **git historie** tools.json → nejdřív commitni samotný tools.json, pak teprve buildy (jinak nový diff v changelogu nebude). Cenová změna se propisuje i do ručních textů (meta descriptions, FAQ, tabulky, TOOL_WHY v kalkulátoru, BEST_FOR v compare) — po změně grepni staré hodnoty napříč stránkami. Ověřování drift reportu: `calc-test/scout-vendor-pricing.js` / `scout-vendor-detail.js` (Playwright čte oficiální ceníky).
 - Changelog vzniká z git diffů tools.json → do tools.json patří jen **ověřené** změny. **Oprava našich dat ≠ vendor změna**: `data/changelog-overrides.json` (`baseline_until`) vylučuje bootstrap-éru diffy z changelogu i feedů — Wayback audit 2026-06-12 prokázal, že záznamy z 11.–12. 6. byly korekce chybných výchozích dat (Zapier $19.99 stabilní od 2024, Pipedream 2k/10wf od 2025-04, n8n limity zrušeny už 2025-08-07). Skutečná data vendor změn s archive evidencí patří do history vrstvy (wayback backtesting, calc-test/wayback/). Baseline posouvat jen s auditním důkazem. Drift report ze scraperu (`automation/data/drift-report.md`, netrackovaný) = neověřené nálezy, ne potvrzená fakta. Datum commitu = veřejné datum záznamu v changelogu.
 - Při změně cen aktualizuj i `_meta.last_reviewed` a nav badge „Updated <Month Year>" na stránkách.
@@ -33,6 +34,15 @@ LLM provider stránky (`llm/<provider>-pricing.html`, slugy gemini/grok = produk
 - `estimateVolumeBudget`: workflow multiplikátor = `clamp((Σ defaultOps / 5000)^0.8, 0.5, 5)` — záměrně **monotónní** (přidání workflow nikdy nesníží odhad) a **nezávislý na pořadí** kliknutí. Neměnit bez spuštění test sady.
 - **Python port** enginu žije v root `build.py` (`cheapest_monthly`) kvůli generování homepage bloků (scatter/gap/calc). Při změně JS enginu uprav i port — paritu hlídá `calc-test/verify-landing.js` (scatter+gap+calc ↔ JS engine; calc CLOUD řádky = nadmnožina starého DEMO bloku). Hero DATA:DEMO blok je legacy (homepage v5 ho nemá).
 - `goStep(4)` re-estimuje slidery jen při změně profilu (signature guard) — ruční úpravy uživatele přežívají navigaci.
+
+## Recommendation engine (calculator Step 3 — match skóre + persony)
+
+Kalkulačka neukazuje jen cenu, ale **personalizovaný match** napříč 7 nástroji (Skyscanner-style konzultant), LIVE od 2026-06-18.
+- **Zdroj pravdy vah = `automation/data/scoring-model.json`** (v1.1.0). calculator.html ho čte přes marker `/* DATA:SCORING:START|END */` generovaný `automation/build.py` → **blok v HTML needituj ručně, edituj JSON** a rebuildni.
+- Skóre: `featureScore = roleWeights[role] · toolScores[tool]` (skalární součin přes 6 dimenzí: noCode, codeAccess, aiNodes, selfHost, gdpr, integrations) → `match = feature×0.52 + price×0.26 + maturity×0.12 (+ workflow bonus držený v kódu)`. `lowPrice` v roleWeights je **REZERVOVANÝ/nepoužitý** v featureScore (cenu řeší samostatný priceScore). `toolScores.maturity` = editorial postavení ekosystému (komunita/dlouhověkost), NE počet integrací.
+- Výstup = **4 persona karty**: Best value (⭐, doporučená) · Cheapest (💸) · Most powerful (🚀) · Self-host & GDPR (🛡️) + crossover hláška (nad ~50k runs → self-host n8n/AP nejlevnější). Step 3 záměrně kompaktní.
+- **Kalibrace = stop-and-confirm jako ceny:** `toolScores` (49 buněk) kalibrovány 4-agent web researchem s citací per buňku (viz Research záznamy) — 26/49 potvrzeno přesně, ranking dopad ~nulový. `roleWeights` (60) + `scoreWeights` (3) zatím **NEkalibrované** (subjektivnější editorial pass). Nové skóre promote do scoring-model.json až po schválení ownerem.
+- Test: `test-vs-pages.js` kryje vs-stránky; po změně scoring-model.json / enginu Step 3 spusť `verify-landing.js` (parita) + smoke.
 
 ## Testy (`../../calc-test`, mimo repo)
 
@@ -70,6 +80,19 @@ LLM provider stránky (`llm/<provider>-pricing.html`, slugy gemini/grok = produk
 - Utility stránky (`privacy/terms/affiliate`) mají záměrně **redukovanou nav** — nepřidávat Tools/Changelog.
 - Git Bash `curl` má v tomhle prostředí rozbité TLS (exit 35 i na github.io) → live checky dělej přes PowerShell `Invoke-WebRequest`.
 - `findClosestIdx` snapuje na kroky slideru (`CALC_OPS_STEPS` končí 1M ops, budget $500) — odhady nad strop se clampují.
+
+## Research / evidence záznamy (canonical) — čím je co podloženo
+
+**Princip napříč všemi:** research = **EVIDENCE s citacemi, ne zdroj pravdy**. Čísla do `tools.json` i váhy do `scoring-model.json` promuje **člověk po revizi** (stop-and-confirm, jako u cen). Zdroj pravdy cen zůstává tools.json + denní price-audit; zdroj pravdy estimate/scoring vrstvy je kód + tyto kalibrace.
+
+| Research | Soubor | Co zkoumal | Status |
+|---|---|---|---|
+| **12-agent workflow research** (2026-06-15) | `calc-test/workflow-research-2026-06.md` (mimo deploy repo) | Kalibrace **estimate vrstvy**: runs/steps/scaling per role×velikost, vendor metering (units ≈ runs×steps platí jen u 2 z 5), +role **sales/support**, bizModel dimenze, crossover prahy (~5k runs = n8n self-host break-even), adoption matice (8-agent follow-up). Cost engine RESEARCH POTVRDIL správný (neměněn). | **PROMOTED** do calculator.html 2026-06-15 (parita 200/200) |
+| **4-agent scoring kalibrace** (2026-06-18) | `automation/data/scoring-calibration-2026-06.json` | 49 toolScore buněk (7 nástrojů × 7 dimenzí), **citace per buňka**. Většinou potvrdila hand-set baseline (26/49 přesně); největší posuny: automatisch.selfHost 1.0→0.8, make.aiNodes 0.70→0.78. | toolScores **PROMOTED** do scoring-model.json v1.1.0; roleWeights/scoreWeights zatím ne |
+| **vs-pages faktický audit** (2026-06-16) | `docs/vs-audit-report.md` (+ `automation/data/vs-claims.json`) | 30 položek / ~50 atomických tvrzení: 11 match, 12 mismatch. Hlavní nález: **cenová próza v pairs.json systematicky zastaralá** (psaná pro starý steps=1 model) — tabulky z enginu OK, próza jim odporovala. Evidence-only. | review items vyřešeny + nasazeny |
+| **Validační simulace** | `calc-test/report-1000-firem.md` (seed 20260615 — 99.9 % plausibilní, crossover 92 %) + `report-200-firem.md` (100 %) | Proklik enginu přes tisíce generovaných firem: plausibilita odhadu, žádné NaN/záporné, cenové anchory proti live ceníkům. | průběžně po změně enginu |
+| **Wayback cenový audit** (2026-06-12) | `calc-test/wayback/` + `data/changelog-overrides.json` | Důkaz, že bootstrap-éra diffy (11.–12. 6.) byly korekce chybných defaultů, ne vendor změny → vyloučeny z changelogu/feedů (`baseline_until`). | viz changelog sekce výš |
+| **Security review** (2026-06-11) | `docs/security-review-2026-06.md` | XSS přes URL params, secrets sken, HTTPS redirect, `rel=noopener` sweep statického webu. | čisté |
 
 ## Workflow změn
 
