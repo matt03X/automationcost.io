@@ -251,12 +251,18 @@
     .view-tab.active { background: var(--accent); border-color: var(--accent); color: var(--ink); }
 
     /* ── Plans compare (head-to-head) ── */
-    .ops-slider-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .ops-slider-row { position: sticky; top: 64px; z-index: 30; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 22px; margin-bottom: 24px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; box-shadow: 0 14px 34px rgba(0,0,0,0.45); }
     .ops-slider-row label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); white-space: nowrap; }
     .ops-val { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; color: var(--text); min-width: 70px; }
     .ops-range { flex: 1; min-width: 140px; accent-color: var(--accent); height: 4px; cursor: pointer; }
     .pc-slider-group { display: flex; align-items: center; gap: 12px; flex: 1 1 320px; min-width: 260px; }
+    /* live verdict pinned with the slider — instant answer without scrolling to the grid */
+    .pc-live-verdict { flex-basis: 100%; display: flex; align-items: center; gap: 9px; flex-wrap: wrap; font-size: 13.5px; color: var(--text2); border-top: 1px solid var(--border); padding-top: 12px; margin-top: 2px; }
+    .pc-live-verdict .pv-logo { width: 19px; height: 19px; border-radius: 4px; object-fit: contain; background: #fff; padding: 1px; }
+    .pc-live-verdict b { color: var(--accent-br); font-weight: 800; }
+    .pc-live-verdict .pv-price { color: var(--text); font-family: var(--mono); font-weight: 700; }
     @media (max-width: 560px) { .pc-slider-group { flex-basis: 100%; } }
+    @media (max-width: 820px) { .ops-slider-row { position: static; box-shadow: none; } }
 
     /* ── Monthly / Annual billing toggle (segmented) ── */
     .pc-billing-group { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
@@ -474,33 +480,54 @@
       .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
     }
   </style>
-<!-- ANALYTICS (build.py) -->
+<link rel="stylesheet" href="app.css">
+  <!-- ANALYTICS (build.py) -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
   <!-- /ANALYTICS -->
   </head>
-<body>
+<body class="ac anim">
 
-<header>
-  <div class="nav-top">
-    <a href="/" class="logo">
-      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
-        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
-        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
-      </svg>
-      Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+<div id="ac-progress"></div>
+
+<nav class="ac-nav">
+  <a href="/" class="logo">
+    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+      <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
+    </svg>
+    Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+  </a>
+  <div class="ac-links">
+    <a href="compare.html" class="active ac-hide-sm">Compare</a>
+    <a href="limits.html" class="ac-hide-sm">Pricing</a>
+    <div class="ac-dd">
+      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true">More
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="ac-dd-menu">
+        <a href="index.html">AutomationCost home</a>
+        <a href="tools.html">Tools</a>
+        <a href="changelog.html">Changelog</a>
+        <div class="ac-dd-sep">Pricing guides</div>
+        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
+        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
+        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
+        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
+        <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
+        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
+        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
+        <div class="ac-dd-sep">Other wizards</div>
+        <a href="/llm/">LLMCost <span class="ac-dd-tag">Live</span></a>
+        <span class="ac-dd-soon">EmailCost <span class="ac-dd-tag soon">Soon</span></span>
+        <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon">Soon</span></span>
+      </div>
+    </div>
+    <a href="calculator.html" class="ac-cta">Calculator
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
-    <span class="nav-badge">Updated June 2026 · Real pricing data</span>
   </div>
-  <nav class="nav-bottom">
-    <a href="index.html">Home</a>
-    <a href="calculator.html">Calculator</a>
-    <a href="compare.html" class="active">Compare</a>
-    <a href="limits.html">Pricing & Limits</a>
-    <a href="tools.html">Tools</a>
-    <a href="changelog.html">Changelog</a>
-  </nav>
-</header>
+</nav>
 
 <div class="wrap">
 
@@ -572,7 +599,7 @@
         </div>
       </div>
       <span style="font-size:11px;color:var(--muted);flex-basis:100%;">Workflow runs/mo × steps per run. Each tool's billing unit differs (Make bills every step, Zapier skips triggers, n8n &amp; Pipedream bill per run) — we convert it per vendor. The <a href="calculator.html">calculator</a> goes deeper.</span>
-      <span style="font-size:12px;color:var(--muted)">Drag to find the cheapest plan at your volume</span>
+      <div class="pc-live-verdict" id="pc-live-verdict"><span style="color:var(--muted)">Drag to find the cheapest plan at your volume</span></div>
     </div>
 
     <!-- winner row -->
@@ -1678,6 +1705,12 @@ function pcRenderGrid(ops) {
   const steps = pcGetSteps();
   const tools = pcSelected.map(s => TOOLS[s]);
 
+  // keep slider value labels in sync with what's actually computed (was stale on load)
+  const ovEl = document.getElementById("pc-ops-val");
+  if (ovEl) ovEl.textContent = runs === 0 ? "Free tier" : runs >= 1000 ? `${(runs/1000).toLocaleString()}k` : runs.toLocaleString();
+  const svEl = document.getElementById("pc-steps-val");
+  if (svEl) svEl.textContent = steps;
+
   // Active plan per tool = steps-aware cheapest plan from the locked engine.
   const actives = tools.map(t => cheapestPlan(t, runs, steps)); // { cost, plan, estimated? } | null
   // Best cloud-only plan (for the white "Best cloud" badge when distinct from active).
@@ -1716,6 +1749,19 @@ function pcRenderGrid(ops) {
          class="cta-btn">Try ${winTool.name} free →</a>`;
   } else {
     wRow.style.display = "none";
+  }
+
+  // Live verdict pinned in the sticky slider bar — instant answer without scrolling
+  const lv = document.getElementById("pc-live-verdict");
+  if (lv) {
+    if (winPlan && winActive) {
+      const pTxt = winActive.cost === 0 ? "Free" : `${winActive.estimated ? "~" : ""}$${winActive.cost}/mo`;
+      lv.innerHTML = `<span>Cheapest at <b>${fmtRuns(runs)} runs</b> · ${steps} steps:</span>`
+        + `<img class="pv-logo" src="${pcLogo(winTool)}" onerror="this.style.display='none'">`
+        + `<b>${winTool.name} ${winPlan.name}</b> <span class="pv-price">${pTxt}</span>`;
+    } else {
+      lv.innerHTML = `<span style="color:var(--muted)">Pick at least one tool to compare</span>`;
+    }
   }
 
   // Grid
@@ -2027,5 +2073,6 @@ pcRender();
 })();
 </script>
 <a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="18" height="18" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>Find my cheapest tool →</a>
+<script src="app.js"></script>
 </body>
 </html>

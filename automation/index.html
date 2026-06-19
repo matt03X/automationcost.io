@@ -172,7 +172,7 @@
     .nav-dropdown-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }
 
     /* ── Hero ── */
-    .hero { text-align: center; padding: 88px 0 68px; }
+    .hero { text-align: center; min-height: calc(100vh - 58px); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 28px 0 56px; }
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--surface2); border: 1px solid var(--border2);
@@ -221,22 +221,24 @@
     }
     .btn-secondary:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); }
 
-    /* ── Stats row ── */
-    .stats-row {
-      display: flex; align-items: center; justify-content: center;
-      gap: 0; flex-wrap: wrap; margin-bottom: 72px;
+    /* ── Tracking ledger (real tools + honest verification manifest) ── */
+    .track-strip {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden;
+      border-radius: var(--radius); padding: 22px 26px; margin-bottom: 72px;
     }
-    .stat-item {
-      flex: 1 1 160px; padding: 22px 28px; text-align: center;
-      border-right: 1px solid var(--border);
-    }
-    .stat-item:last-child { border-right: none; }
-    .stat-num { font-family: var(--mono); font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
-    .stat-num.green { color: var(--accent); }
-    .stat-num.accent { color: var(--accent); }
-    .stat-label { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 5px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; }
+    .track-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+    .track-title { display: inline-flex; align-items: center; gap: 9px; font-family: var(--display); font-weight: 700; font-size: 14.5px; color: var(--text2); }
+    .track-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 9px var(--accent); flex-shrink: 0; }
+    .track-verified { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.02em; }
+    .track-logos { display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; }
+    .track-logo { flex: 1 1 92px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 8px; border: 1px solid var(--border); border-radius: 11px; background: var(--bg); transition: border-color .15s, transform .15s, background .15s; }
+    .track-logo img { width: 26px; height: 26px; border-radius: 5px; filter: grayscale(1) opacity(0.7); transition: filter .15s; }
+    .track-logo span { font-family: var(--mono); font-size: 11px; color: var(--muted); font-weight: 500; }
+    .track-logo:hover { border-color: var(--accent); transform: translateY(-2px); background: rgba(16,185,129,0.05); }
+    .track-logo:hover img { filter: none; }
+    .track-logo:hover span { color: var(--text); }
+    .track-foot { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); text-align: center; letter-spacing: 0.01em; }
+    .track-foot b { color: var(--accent); font-weight: 700; }
 
     /* ── CTA cards ── */
     .section-label { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 18px; }
@@ -306,14 +308,26 @@
     .network {
       background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
       padding: 30px 32px; margin-bottom: 72px;
-      display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+      display: grid; grid-template-columns: 1fr 1.1fr; gap: 28px 38px; align-items: start;
     }
+    .network-intro { display: flex; flex-direction: column; gap: 12px; }
     .network-mark { display: flex; align-items: center; gap: 12px; }
     .network-mark .dots { display: flex; }
     .network-mark .dots span { width: 11px; height: 11px; border-radius: 50%; border: 2px solid var(--bg); margin-left: -4px; }
-    .network-txt h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 3px; }
-    .network-txt p { font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .network-txt b { color: var(--text2); }
+    .network-intro h3 { font-size: 1.18rem; font-weight: 800; }
+    .network-intro p { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+    .network-intro b { color: var(--text2); }
+    /* Other-wizards cross-sell rail (right) — marketing + SEO interlinking to sibling tools */
+    .wiz-rail { display: flex; flex-direction: column; gap: 10px; }
+    .wiz-rail-label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+    .wiz-tile { display: block; background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 13px 16px; transition: border-color .15s, transform .15s, box-shadow .15s; }
+    a.wiz-tile:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0,0,0,0.28); }
+    .wiz-tile-top { display: flex; align-items: center; gap: 9px; font-family: var(--display); font-weight: 800; font-size: 15px; color: var(--text); }
+    .wiz-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .wiz-tile p { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-top: 5px; }
+    .wiz-badge { margin-left: auto; font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; color: var(--accent); border: 1px solid rgba(16,185,129,0.45); }
+    .wiz-badge.soon { color: var(--muted); border-color: var(--border2); }
+    .wiz-tile.soon { opacity: 0.6; }
 
     /* ── Footer ── */
     footer {
@@ -346,11 +360,11 @@
     @media (max-width: 640px) {
       .wrap { padding: 0 20px; }
       .nav-top, .nav-bottom { padding: 0 20px; }
-      .hero { padding: 60px 0 50px; }
-      .stats-row { flex-direction: column; }
-      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
-      .stat-item:last-child { border-bottom: none; }
-      .network { flex-direction: column; align-items: flex-start; }
+      .hero { padding: 60px 0 50px; min-height: auto; justify-content: flex-start; }
+      .track-strip { padding: 18px 16px; }
+      .track-logo { flex-basis: 26%; }
+      .track-head { margin-bottom: 14px; }
+      .network { grid-template-columns: 1fr; }
     }
   
     /* AC-MOBILE-SHELL ── unified mobile readability layer (added) */
@@ -377,34 +391,36 @@
       .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
     }
   </style>
+  <link rel="stylesheet" href="app.css">
 <!-- ANALYTICS (build.py) -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
   <!-- /ANALYTICS -->
   </head>
-<body>
+<body class="ac anim">
 
-<header>
-  <div class="nav-top">
-    <a href="/" class="logo">
-      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
-        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
-        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
-      </svg>
-      Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
-    </a>
-    <span class="nav-badge">Updated June 2026 · Real pricing data</span>
-  </div>
-  <nav class="nav-bottom">
-    <a href="index.html" class="active">Home</a>
-    <a href="calculator.html">Calculator</a>
-    <a href="compare.html">Compare</a>
-    <a href="limits.html">Pricing & Limits</a>
-    <a href="tools.html">Tools</a>
-    <a href="changelog.html">Changelog</a>
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-btn">Pricing Guides <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="nav-dropdown-menu">
+<div id="ac-progress"></div>
+
+<nav class="ac-nav">
+  <a href="/" class="logo">
+    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+      <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
+    </svg>
+    Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+  </a>
+  <div class="ac-links">
+    <a href="compare.html" class="ac-hide-sm">Compare</a>
+    <a href="limits.html" class="ac-hide-sm">Pricing</a>
+    <div class="ac-dd">
+      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true">More
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="ac-dd-menu">
+        <a href="index.html">AutomationCost home</a>
+        <a href="tools.html">Tools</a>
+        <a href="changelog.html">Changelog</a>
+        <div class="ac-dd-sep">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
         <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
@@ -412,10 +428,17 @@
         <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
         <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
         <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
+        <div class="ac-dd-sep">Other wizards</div>
+        <a href="/llm/">LLMCost <span class="ac-dd-tag">Live</span></a>
+        <span class="ac-dd-soon">EmailCost <span class="ac-dd-tag soon">Soon</span></span>
+        <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon">Soon</span></span>
       </div>
     </div>
-  </nav>
-</header>
+    <a href="calculator.html" class="ac-cta">Calculator
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+</nav>
 
 <div class="wrap">
 
@@ -424,7 +447,7 @@
       <span class="dot"></span>
       Free · No signup · Updated June 2026
     </div>
-    <h1>Find the automation tool that's <em>actually cheapest</em> for you.</h1>
+    <h1>Find the automation tool<br>that's <em>actually cheapest</em>.</h1>
     <p>Real pricing for n8n, Make, Pipedream, Zapier and more — matched to your real usage, not marketing pages. Answer a few quick questions, get your pick in 30 seconds.</p>
     <div class="hero-cta">
       <a href="calculator.html" class="btn-primary">
@@ -440,23 +463,21 @@
     </div>
   </div>
 
-  <div class="stats-row reveal">
-    <div class="stat-item">
-      <div class="stat-num accent">7</div>
-      <div class="stat-label">tools tracked</div>
+  <div class="track-strip reveal">
+    <div class="track-head">
+      <span class="track-title"><span class="track-dot"></span>Tracking live prices for every major automation tool</span>
+      <span class="track-verified">verified June 2026 · re-checked weekly</span>
     </div>
-    <div class="stat-item">
-      <div class="stat-num">30+</div>
-      <div class="stat-label">pricing plans</div>
+    <div class="track-logos">
+      <a href="n8n-pricing.html" class="track-logo"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=64" alt="n8n"><span>n8n</span></a>
+      <a href="make-pricing.html" class="track-logo"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=64" alt="Make"><span>Make</span></a>
+      <a href="zapier-pricing.html" class="track-logo"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=64" alt="Zapier"><span>Zapier</span></a>
+      <a href="pipedream-pricing.html" class="track-logo"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=64" alt="Pipedream"><span>Pipedream</span></a>
+      <a href="activepieces-pricing.html" class="track-logo"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=64" alt="Activepieces"><span>Activepieces</span></a>
+      <a href="automatisch-pricing.html" class="track-logo"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=64" alt="Automatisch"><span>Automatisch</span></a>
+      <a href="node-red-pricing.html" class="track-logo"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=64" alt="Node-RED"><span>Node-RED</span></a>
     </div>
-    <div class="stat-item">
-      <div class="stat-num green">weekly</div>
-      <div class="stat-label">data refresh</div>
-    </div>
-    <div class="stat-item">
-      <div class="stat-num">$0</div>
-      <div class="stat-label">to use this site</div>
-    </div>
+    <div class="track-foot">Every plan priced from the vendor's <b>official pricing</b> — cloud, VPS &amp; self-host · free, no signup</div>
   </div>
 
   <div class="cta-grid">
@@ -544,18 +565,33 @@
   </div>
 
   <div class="network reveal">
-    <div class="network-mark">
-      <svg width="34" height="34" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="acmk2" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#b08cff"></stop><stop offset="1" stop-color="#7c4dff"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk2)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
-      <div class="dots">
-        <span style="background:#16d18c"></span>
-        <span style="background:#d97bfb"></span>
-        <span style="background:#5cb8ff"></span>
-        <span style="background:#ffa45c"></span>
+    <div class="network-intro">
+      <div class="network-mark">
+        <svg width="34" height="34" viewBox="0 0 48 48" fill="none"><defs><linearGradient id="acmk2" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#b08cff"></stop><stop offset="1" stop-color="#7c4dff"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk2)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>
+        <div class="dots">
+          <span style="background:#16d18c"></span>
+          <span style="background:#d97bfb"></span>
+          <span style="background:#5cb8ff"></span>
+          <span style="background:#ffa45c"></span>
+        </div>
       </div>
-    </div>
-    <div class="network-txt">
       <h3>Part of WizardCost</h3>
-      <p><b>AutomationCost</b> is the first of <a href="/">WizardCost</a>'s pricing wizards — live calculators with real, dated prices for a whole software category. Same honest method, no marketing fluff.</p>
+      <p><b>AutomationCost</b> is one of <a href="/">WizardCost</a>'s pricing wizards — live calculators with real, dated prices for a whole software category. Same honest method, no marketing fluff.</p>
+    </div>
+    <div class="wiz-rail">
+      <div class="wiz-rail-label">Other wizards</div>
+      <a class="wiz-tile" href="/llm/">
+        <div class="wiz-tile-top"><span class="wiz-dot" style="background:#d97bfb"></span>LLMCost<span class="wiz-badge">Live</span></div>
+        <p>Real $/token pricing for OpenAI, Anthropic, Gemini &amp; more — costed at your token volume.</p>
+      </a>
+      <div class="wiz-tile soon">
+        <div class="wiz-tile-top"><span class="wiz-dot" style="background:#5cb8ff"></span>EmailCost<span class="wiz-badge soon">Soon</span></div>
+        <p>Email-sending pricing — Mailgun, SendGrid, Postmark &amp; Resend at your send volume.</p>
+      </div>
+      <div class="wiz-tile soon">
+        <div class="wiz-tile-top"><span class="wiz-dot" style="background:#ffa45c"></span>CRMCost<span class="wiz-badge soon">Soon</span></div>
+        <p>CRM seat &amp; usage pricing — HubSpot, Salesforce, Pipedrive &amp; Attio.</p>
+      </div>
     </div>
   </div>
 
@@ -572,15 +608,6 @@
 function toggleFaq(btn) {
   btn.closest(".faq-item").classList.toggle("open");
 }
-const dd = document.querySelector(".nav-dropdown");
-if (dd) {
-  dd.querySelector(".nav-dropdown-btn").addEventListener("click", function(e) {
-    e.stopPropagation();
-    var r = this.getBoundingClientRect(), m = dd.querySelector(".nav-dropdown-menu"); m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 224)) + "px"; m.style.top = (r.bottom + 8) + "px";
-    dd.classList.toggle("open");
-  });
-  document.addEventListener("click", () => dd.classList.remove("open"));
-}
 
 // Scroll reveal — windows fade + slide up as they enter the viewport
 (function () {
@@ -594,5 +621,6 @@ if (dd) {
   els.forEach(function (el) { io.observe(el); });
 })();
 </script>
+<script src="app.js"></script>
 </body>
 </html>
