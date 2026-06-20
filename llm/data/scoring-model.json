@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "version": "0.1.0-draft",
-    "status": "DRAFT — podklad k rozhodnuti, NEzapojeno do llm/index.html. Schvalit (roleWeights + scoreWeights = editorial; tierScores/derivace = z models.json) pred jakymkoli wiringem do enginu.",
+    "version": "0.2.0",
+    "status": "ZAPOJENO do llm/index.html (DATA:SCORING marker, render_scoring v build.py). v0.2.0 kalibrace 2026-06-20: scoreWeights price 0.45->0.32, frontier 0.10->0.18, feature 0.45->0.50; roleWeights frontier zvysen u agents (0.20->0.35), coding (0.30->0.40), reasoning (0.40->0.50), rag (0.10->0.15) => capability-heavy role vedou k frontier modelum, chatbot/rag/classification zustavaji cenove vedene. Vahy jsou EDITORIAL (live-tunable: edit + python build.py). modelScores nize jsou referencni DRAFT - build.py je dopocitava z models.json (render_scoring/_model_dims), nepouzivaji se primo.",
     "last_reviewed": "2026-06-20",
     "calibration": null,
     "calibration_source": null,
@@ -19,15 +19,15 @@
     }
   },
 
-  "scoreWeights": { "feature": 0.45, "price": 0.45, "frontier": 0.10 },
+  "scoreWeights": { "feature": 0.50, "price": 0.32, "frontier": 0.18 },
 
   "roleWeights": {
     "chatbot":        { "context": 0.15, "caching": 0.35, "cheapOutput": 0.10, "batch": 0.00, "frontier": 0.15, "lowPrice": 0.25 },
-    "coding":         { "context": 0.25, "caching": 0.20, "cheapOutput": 0.15, "batch": 0.00, "frontier": 0.30, "lowPrice": 0.10 },
-    "agents":         { "context": 0.20, "caching": 0.25, "cheapOutput": 0.20, "batch": 0.00, "frontier": 0.20, "lowPrice": 0.15 },
-    "rag":            { "context": 0.40, "caching": 0.20, "cheapOutput": 0.05, "batch": 0.05, "frontier": 0.10, "lowPrice": 0.20 },
-    "classification": { "context": 0.05, "caching": 0.05, "cheapOutput": 0.25, "batch": 0.25, "frontier": 0.05, "lowPrice": 0.35 },
-    "reasoning":      { "context": 0.20, "caching": 0.05, "cheapOutput": 0.20, "batch": 0.05, "frontier": 0.40, "lowPrice": 0.10 }
+    "coding":         { "context": 0.25, "caching": 0.15, "cheapOutput": 0.10, "batch": 0.00, "frontier": 0.40, "lowPrice": 0.10 },
+    "agents":         { "context": 0.20, "caching": 0.20, "cheapOutput": 0.15, "batch": 0.00, "frontier": 0.35, "lowPrice": 0.10 },
+    "rag":            { "context": 0.40, "caching": 0.20, "cheapOutput": 0.05, "batch": 0.05, "frontier": 0.15, "lowPrice": 0.15 },
+    "classification": { "context": 0.05, "caching": 0.05, "cheapOutput": 0.25, "batch": 0.25, "frontier": 0.10, "lowPrice": 0.30 },
+    "reasoning":      { "context": 0.15, "caching": 0.05, "cheapOutput": 0.15, "batch": 0.05, "frontier": 0.50, "lowPrice": 0.10 }
   },
 
   "role_meta": {
