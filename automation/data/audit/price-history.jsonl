@@ -1,3 +1,7 @@
 {"d":"2026-06-15","vendor":"pipedream","plan":"Basic","kind":"base","old":29,"neu":45,"desc":"Pipedream Basic: základ plánu $29 → $45/mo"}
 {"d":"2026-06-15","vendor":"pipedream","plan":"Advanced","kind":"base","old":49,"neu":74,"desc":"Pipedream Advanced: základ plánu $49 → $74/mo"}
 {"d":"2026-06-15","vendor":"pipedream","plan":"Connect","kind":"base","old":99,"neu":150,"desc":"Pipedream Connect: základ plánu $99 → $150/mo"}
+{"d":"2026-06-20","vendor":"n8n","billing":"monthly","plan":"Starter","old":24,"neu":667,"desc":"n8n Starter (monthly): €24 → €667"}
+{"d":"2026-06-20","vendor":"n8n","billing":"monthly","dropdown":"40k workflow executions with u","units":50000,"old":144,"neu":821,"desc":"n8n 40k workflow executions with u @50000 exec (monthly): €144 → €821"}
+{"d":"2026-06-20","vendor":"n8n","billing":"annually","plan":"Starter","old":20,"neu":667,"desc":"n8n Starter (annually): €20 → €667"}
+{"d":"2026-06-20","vendor":"n8n","billing":"annually","dropdown":"40k workflow executions with u","units":50000,"old":120,"neu":821,"desc":"n8n 40k workflow executions with u @50000 exec (annually): €120 → €821"}

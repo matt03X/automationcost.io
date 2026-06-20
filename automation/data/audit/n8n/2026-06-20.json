@@ -1,0 +1,146 @@
+{
+  "vendor": "n8n",
+  "scrapedAt": "2026-06-20T09:51:36.983Z",
+  "url": "https://n8n.io/pricing/",
+  "unit": "executions",
+  "currency": "EUR",
+  "model": "dropdown-volume",
+  "monthly": {
+    "starter": 667,
+    "billingOk": false,
+    "dropdowns": [
+      {
+        "label": "40k workflow executions with u",
+        "options": [
+          {
+            "units": 40000,
+            "eur": 667
+          },
+          {
+            "units": 50000,
+            "eur": 821
+          },
+          {
+            "units": 75000,
+            "eur": 1213
+          },
+          {
+            "units": 100000,
+            "eur": 1438
+          },
+          {
+            "units": 150000,
+            "eur": 1824
+          },
+          {
+            "units": 200000,
+            "eur": 2199
+          },
+          {
+            "units": 300000,
+            "eur": 2927
+          },
+          {
+            "units": 400000,
+            "eur": 3651
+          },
+          {
+            "units": 500000,
+            "eur": 4371
+          }
+        ]
+      }
+    ]
+  },
+  "annually": {
+    "starter": 667,
+    "billingOk": false,
+    "dropdowns": [
+      {
+        "label": "40k workflow executions with u",
+        "options": [
+          {
+            "units": 40000,
+            "eur": 667
+          },
+          {
+            "units": 50000,
+            "eur": 821
+          },
+          {
+            "units": 75000,
+            "eur": 1213
+          },
+          {
+            "units": 100000,
+            "eur": 1438
+          },
+          {
+            "units": 150000,
+            "eur": 1824
+          },
+          {
+            "units": 200000,
+            "eur": 2199
+          },
+          {
+            "units": 300000,
+            "eur": 2927
+          },
+          {
+            "units": 400000,
+            "eur": 3651
+          },
+          {
+            "units": 500000,
+            "eur": 4371
+          }
+        ]
+      }
+    ]
+  },
+  "billingLines": [
+    ".doubleclick.net 1 year 1 month google ads targeting",
+    ".linkedin.com 5 months 4 weeks linkedin guest consent state",
+    "1 shared project",
+    "100k executions",
+    "1213€/month",
+    "1438€/month",
+    "150 ai workflow builder credits",
+    "150k executions",
+    "1824€/month",
+    "2.5 gb",
+    "20 concurrent executions",
+    "200+ concurrent executions",
+    "200k executions",
+    "2199€/month",
+    "25 gb",
+    "2927€/month",
+    "3 shared projects",
+    "30 days of insights",
+    "300k executions",
+    "365 days of insights",
+    "3651€/month",
+    "400k executions",
+    "40k executions",
+    "4371€/month",
+    "5 concurrent executions",
+    "50 ai workflow builder credits",
+    "50 gb",
+    "500k executions",
+    "50k executions",
+    "6 shared projects",
+    "667€/month",
+    "7 days of insights",
+    "75k executions",
+    "821€/month",
+    "control n8n via api",
+    "control n8n via api - additional scope control",
+    "how many executions does n8n keep, and for how long?",
+    "unlimited",
+    "unlimited shared projects",
+    "unlimited users",
+    "what’s included in the n8n free trial?",
+    "with unlimited steps"
+  ]
+}
