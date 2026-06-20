@@ -26,6 +26,7 @@ ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "models.json"
 SITE = ROOT / "data" / "site.json"
 OVERRIDES = ROOT / "data" / "changelog-overrides.json"
+EDITORIAL = ROOT / "data" / "pricing-editorial.json"
 
 START = "/* DATA:MODELS:START */"
 END = "/* DATA:MODELS:END */"
@@ -483,12 +484,89 @@ def _note_ctx(prov: dict, cfg: dict) -> str:
     return " ".join(parts)
 
 
-def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template: str) -> str:
+EDITORIAL_WORTH_CLS = {"good": "tag-yes", "warn": "tag-warn", "bad": "tag-no"}
+
+
+def load_editorial() -> dict:
+    """Per-provider editorial (intro/warn/whenWorthIt/faq) z data/pricing-editorial.json;
+    {} když soubor chybí. Texty se vkládají doslovně (owner-approved copy, vzor automation
+    pricing-editorial.json) — fakta z models.json, ceny generuje engine."""
+    if EDITORIAL.exists():
+        try:
+            return json.loads(EDITORIAL.read_text(encoding="utf-8")).get("providers", {})
+        except json.JSONDecodeError:
+            return {}
+    return {}
+
+
+def _ed_warn(ed: dict) -> str:
+    w = ed.get("warn")
+    return f'\n  <div class="warn-box"><strong>Heads up:</strong> {w}</div>' if w else ""
+
+
+def _ed_when_worth(ed: dict, family: str) -> str:
+    items = ed.get("whenWorthIt") or []
+    if not items:
+        return ""
+    rows = "\n".join(
+        f'        <tr><td>{i["case"]}</td>'
+        f'<td class="{EDITORIAL_WORTH_CLS.get(i.get("tier"), "tag-no")}">{i["verdict"]}</td></tr>'
+        for i in items)
+    return (
+        '\n  <div class="ed-section" data-screen-label="When worth it">\n'
+        f'    <h2 class="sec-h2">When {family} is worth it</h2>\n'
+        '    <div class="tbl-card"><table class="worth-table">\n'
+        '      <thead><tr><th>Use case</th><th>Verdict</th></tr></thead>\n'
+        f'      <tbody>\n{rows}\n      </tbody>\n'
+        '    </table></div>\n  </div>')
+
+
+def _ed_faq_html(ed: dict) -> str:
+    faq = ed.get("faq") or []
+    if not faq:
+        return ""
+    items = "\n".join(
+        '      <div class="faq-item">\n'
+        '        <button class="faq-q" onclick="toggleFaq(this)">' + f["q"]
+        + '<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" '
+          'stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>\n'
+        f'        <div class="faq-a">{f["a"]}</div>\n      </div>' for f in faq)
+    return (
+        '\n  <div class="ed-section" data-screen-label="FAQ">\n'
+        '    <h2 class="sec-h2">Frequently asked questions</h2>\n'
+        f'    <div class="faq">\n{items}\n    </div>\n  </div>')
+
+
+def _ed_jsonld(ed: dict, domain: str, prefix: str, canonical: str, crumb_name: str) -> str:
+    blocks = []
+    faq = ed.get("faq") or []
+    if faq:
+        faq_ld = json.dumps({
+            "@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [{"@type": "Question", "name": f["q"],
+                            "acceptedAnswer": {"@type": "Answer", "text": f["a"]}} for f in faq],
+        }, ensure_ascii=False, indent=2)
+        blocks.append(f'  <script type="application/ld+json">\n{faq_ld}\n  </script>')
+    bc = json.dumps({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": f"https://{domain}/"},
+            {"@type": "ListItem", "position": 2, "name": "LLM API pricing", "item": f"{prefix}/"},
+            {"@type": "ListItem", "position": 3, "name": crumb_name, "item": canonical},
+        ],
+    }, ensure_ascii=False, indent=2)
+    blocks.append(f'  <script type="application/ld+json">\n{bc}\n  </script>')
+    return "\n".join(blocks)
+
+
+def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template: str,
+                         editorial: dict | None = None) -> str:
     domain = site.get("domain", "wizardcost.com")
     base_path = site.get("base_path", "/llm")
     month = _verified_month(data)
     total = sum(len(p["models"]) for p in data["providers"])
     n = len(prov["models"])
+    ed = (editorial or {}).get(prov["slug"], {})
 
     mos = {m["id"]: canonical_monthly(m) for m in prov["models"]}
     best_id = min(mos, key=mos.get) if n > 1 else None
@@ -546,7 +624,7 @@ def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template
         "VERIFIED_MONTH": month,
         "CRUMB": cfg["crumb"],
         "H1": cfg["h1"],
-        "INTRO": _intro(prov, cfg),
+        "INTRO": ed.get("intro") or _intro(prov, cfg),
         "ROWS": "\n".join(rows),
         "FOOT_BATCH": foot_batch,
         "NOTE_CACHE": _note_cache(prov, cfg),
@@ -557,6 +635,11 @@ def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template
         "CROSS": "\n".join(cross),
         "CAPTURE_ACTION": EMAILCAP_ACTION_LLM,
         "NAV_DROPDOWN": nav_dropdown_html(data, prov["slug"]),
+        "WARN": _ed_warn(ed),
+        "WHEN_WORTH": _ed_when_worth(ed, cfg["family"]),
+        "FAQ": _ed_faq_html(ed),
+        "JSONLD": _ed_jsonld(ed, domain, _site_prefix(domain, base_path),
+                             f'{_site_prefix(domain, base_path)}/{cfg["page"]}', cfg["h1"]),
     }
     page = template
     for k, v in tokens.items():
@@ -581,12 +664,13 @@ def build_provider_pages(data: dict, site: dict, *, check: bool) -> list[str]:
     if not TEMPLATE.exists():
         return []
     template = TEMPLATE.read_text(encoding="utf-8")
+    editorial = load_editorial()
     out = []
     for prov in data["providers"]:
         cfg = PROVIDER_PAGES.get(prov["slug"])
         if cfg is None:
             raise SystemExit(f'CHYBA: provider {prov["slug"]} nemá záznam v PROVIDER_PAGES.')
-        rendered = render_provider_page(prov, cfg, data, site, template)
+        rendered = render_provider_page(prov, cfg, data, site, template, editorial)
         target = ROOT / cfg["page"]
         existing = target.read_text(encoding="utf-8") if target.exists() else None
         dirty = existing is None or _strip_injected(existing) != rendered

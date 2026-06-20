@@ -185,6 +185,23 @@
     .price-alerts.subscribed .pa-form, .price-alerts.subscribed .pa-note { display: none; }
     @media (max-width: 520px) { .price-alerts { padding: 20px 18px; } .pa-form { flex-direction: column; } .pa-btn { width: 100%; min-height: 44px; } }
 
+    .warn-box { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.32); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 13.5px; color: var(--text2); margin-top: 16px; line-height: 1.6; }
+    .warn-box strong { color: #f5a623; }
+    .warn-box b { color: var(--text); }
+    .ed-section { margin-top: 40px; }
+    .sec-h2 { font-family: var(--display); font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .worth-table td { text-align: left; font-family: var(--font); white-space: normal; }
+    .worth-table th { text-align: left; }
+    .worth-table td:last-child { font-weight: 700; }
+    .tag-yes { color: var(--green); } .tag-warn { color: #f5a623; } .tag-no { color: var(--muted); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; background: none; border: 0; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 700; text-align: left; padding: 16px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .faq-q:hover { color: var(--accent-br); }
+    .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.7; padding-bottom: 16px; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-a a { color: var(--link); text-decoration: underline; }
     footer { border-top: 1px solid var(--border); margin-top: 72px; padding: 28px 0 48px; }
     footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding-bottom: 0; font-size: 13px; color: var(--muted); }
   
