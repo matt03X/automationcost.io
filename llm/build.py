@@ -45,6 +45,12 @@ AN_END = "<!-- /ANALYTICS -->"
 GA_START = "<!-- GA4 (build.py) -->"
 GA_END = "<!-- /GA4 -->"
 
+# GEO:LD — Org+WebSite+WebPage @graph do <head> statických /llm/ stránek (živý
+# dateModified). HTML komentář markery → warn prázdný (jinak text mimo komentář).
+GEO_LD_START = "<!-- GEO:LD:START -->"
+GEO_LD_END = "<!-- GEO:LD:END -->"
+GEO_LD_WARN = ""
+
 
 def js_str(s: str) -> str:
     return json.dumps(s, ensure_ascii=False)
@@ -68,6 +74,56 @@ def canonical_monthly(m: dict) -> float:
     in_cost = CANON["req"] * CANON["in_tok"] / 1e6 * in_rate
     out_cost = CANON["req"] * CANON["out_tok"] / 1e6 * m["outputPerM"]
     return round(in_cost + out_cost, 4)
+
+
+# ── GEO/AI-citace: Org+WebSite+WebPage @graph (freshness + identita) ───────────
+# Duplikát z automation/build_pricing._page_graph_ld (subsite je samostatný; vzor
+# „kopírovat, neimportovat" jako jinde v repu). Sdílené @id #org/#website konsolidují
+# entitu napříč /automation/ i /llm/. Bez Offer ceny — LLM ceny per-token = scénářové.
+def _iso_date(data: dict) -> str:
+    import datetime as _dt
+    lr = (data.get("_meta") or {}).get("last_reviewed")
+    if lr:
+        try:
+            _dt.date(*[int(x) for x in lr.split("-")])
+            return lr
+        except (ValueError, TypeError):
+            pass
+    return "2026-06-01"
+
+
+def _geo_graph_ld(domain: str, canonical: str, name: str, desc: str, iso_date: str) -> str:
+    home_url = f"https://{domain}/"
+    org_id = f"{home_url}#org"
+    return json.dumps({
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "Organization", "@id": org_id, "name": "WizardCost", "url": home_url,
+             "description": ("Independent, data-driven software pricing comparisons. Prices "
+                             "verified by hand from official vendor pricing pages and dated "
+                             "in a public changelog.")},
+            {"@type": "WebSite", "@id": f"{home_url}#website", "name": "WizardCost",
+             "url": home_url, "publisher": {"@id": org_id}},
+            {"@type": "WebPage", "@id": f"{canonical}#webpage", "url": canonical,
+             "name": name, "description": desc, "inLanguage": "en",
+             "isPartOf": {"@id": f"{home_url}#website"},
+             "publisher": {"@id": org_id}, "dateModified": iso_date},
+        ],
+    }, ensure_ascii=False, indent=2)
+
+
+def _static_geo_ld(text: str, domain: str, iso_date: str) -> str:
+    """Z <head> statické stránky vytáhne canonical/title/desc → <script> GEO blok ("" když chybí canonical)."""
+    import re
+    mc = re.search(r'<link rel="canonical" href="([^"]+)"', text)
+    if not mc:
+        return ""
+    mt = re.search(r"<title[^>]*>(.*?)</title>", text, re.S)
+    md = re.search(r'<meta name="description"[^>]*\scontent="([^"]*)"', text)
+    name = (mt.group(1).strip() if mt else "").split(" | ")[0].replace("&amp;", "&")
+    desc = (md.group(1) if md else "").replace("&amp;", "&")
+    return (f'  <script type="application/ld+json">\n'
+            f'{_geo_graph_ld(domain, mc.group(1), name, desc, iso_date)}\n  </script>')
 
 
 def render_models(data: dict) -> str:
@@ -659,11 +715,13 @@ def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template
                   f'track — at your volume, token mix and cache share.')
 
     names = _join([m["name"] for m in prov["models"]])
+    _desc = (f'{names} — {cfg["vendor"]} API prices per 1M tokens, prompt caching and batch '
+             f'discounts, verified {month}.')
+    _canon = f'{_site_prefix(domain, base_path)}/{cfg["page"]}'
     tokens = {
         "TITLE": f'{cfg["h1"]} ({month}) — WizardCost',
-        "DESC": (f'{names} — {cfg["vendor"]} API prices per 1M tokens, prompt caching and batch '
-                 f'discounts, verified {month}.'),
-        "CANONICAL": f'{_site_prefix(domain, base_path)}/{cfg["page"]}',
+        "DESC": _desc,
+        "CANONICAL": _canon,
         "VERIFIED_MONTH": month,
         "CRUMB": cfg["crumb"],
         "H1": cfg["h1"],
@@ -683,6 +741,7 @@ def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template
         "FAQ": _ed_faq_html(ed),
         "JSONLD": _ed_jsonld(ed, domain, _site_prefix(domain, base_path),
                              f'{_site_prefix(domain, base_path)}/{cfg["page"]}', cfg["h1"]),
+        "PAGE_LD": _geo_graph_ld(domain, _canon, cfg["h1"], _desc, _iso_date(data)),
     }
     page = template
     for k, v in tokens.items():
@@ -815,11 +874,26 @@ def main() -> int:
     if idx.exists() and SCORING.exists() and SC_START in idx.read_text(encoding="utf-8"):
         clog_jobs.append((idx, render_scoring(data), SC_START, SC_END, SC_WARN))
 
+    # GEO:LD graf do <head> /llm/ stránek BEZ vlastního WebSite/Org (compare, changelog).
+    # index.html má WebApplication → ponechán (žádný duplicitní WebSite node).
+    _geo_iso = _iso_date(data)
+    _geo_domain = site.get("domain", "wizardcost.com")
+    geo_jobs = []
+    for _sp in ("compare.html", "changelog.html"):
+        _spp = ROOT / _sp
+        if _spp.exists() and GEO_LD_START in _spp.read_text(encoding="utf-8"):
+            _blk = _static_geo_ld(_spp.read_text(encoding="utf-8"), _geo_domain, _geo_iso)
+            if _blk:
+                geo_jobs.append((_spp, _blk, GEO_LD_START, GEO_LD_END, GEO_LD_WARN))
+
     if args.check:
         dirty = [p.name for p in targets
                  if render_block(p.read_text(encoding="utf-8"), generated, START, END, WARN)
                  != p.read_text(encoding="utf-8")]
         dirty += [p.name for p, gen, s, e, w in clog_jobs
+                  if render_block(p.read_text(encoding="utf-8"), gen, s, e, w)
+                  != p.read_text(encoding="utf-8")]
+        dirty += [p.name for p, gen, s, e, w in geo_jobs
                   if render_block(p.read_text(encoding="utf-8"), gen, s, e, w)
                   != p.read_text(encoding="utf-8")]
         dirty += build_provider_pages(data, site, check=True)
@@ -831,7 +905,7 @@ def main() -> int:
         return 0
 
     changed = [p.name for p in targets if inject(p, generated)]
-    for p, gen, s, e, w in clog_jobs:
+    for p, gen, s, e, w in clog_jobs + geo_jobs:
         text = p.read_text(encoding="utf-8")
         new_text = render_block(text, gen, s, e, w)
         if new_text != text:

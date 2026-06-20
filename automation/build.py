@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_hosting import expand_hosting_variants, apply_fx  # noqa: E402
-from build_pricing import build_pricing_pages, build_seo_pages  # noqa: E402
+from build_pricing import build_pricing_pages, build_seo_pages, _page_graph_ld, _iso_date  # noqa: E402
 from build_catalog import build_catalog_pages  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
@@ -40,6 +40,13 @@ WARN = "/* generováno build.py z data/tools.json — needituj ručně */"
 CLOG_START = "/* DATA:CHANGELOG:START */"
 CLOG_END = "/* DATA:CHANGELOG:END */"
 CLOG_WARN = "/* generováno build.py z git historie data/tools.json — needituj ručně */"
+
+# GEO:LD — Org+WebSite+WebPage @graph injektovaný do <head> statických stránek
+# (živý dateModified z last_reviewed). Markery jsou HTML komentáře → warn prázdný
+# (jinak by se text vykreslil mimo komentář).
+GEO_LD_START = "<!-- GEO:LD:START -->"
+GEO_LD_END = "<!-- GEO:LD:END -->"
+GEO_LD_WARN = ""
 
 SCORING = ROOT / "data" / "scoring-model.json"
 SCORING_START = "/* DATA:SCORING:START */"
@@ -638,6 +645,12 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
               "pricing compares for your usage.")
     canonical = f"{prefix}/{slug}.html"
 
+    # WebPage + Organization + WebSite graf (GEO/AI-citace: dateModified freshness +
+    # identita vydavatele). Bez Product/Offer ceny (stop-and-confirm).
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             f"{a_name} vs {b_name}: Pricing & Cost Comparison 2026",
+                             desc, _iso_date(tools_meta))
+
     css = _VS_CSS  # sdílená šablona stylů (port z _vs-example.html)
 
     return f"""<!DOCTYPE html>
@@ -662,6 +675,9 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
   </script>
   <script type="application/ld+json">
 {breadcrumb_ld}
+  </script>
+  <script type="application/ld+json">
+{page_ld}
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1080,6 +1096,23 @@ def render_block(text: str, generated: str, start: str, end: str, warn: str) -> 
     # zachovej odsazení markeru (mezery před START na jeho řádku)
     indent = pre[pre.rfind("\n") + 1:]
     return pre + f"{start} {warn}\n{generated}\n{indent}{end}" + post
+
+
+def _static_geo_ld(text: str, site: dict, tools_meta: dict) -> str:
+    """Z <head> statické stránky vytáhne canonical/title/desc a vrátí `<script>` blok
+    s Org+WebSite+WebPage @graph (živý dateModified z last_reviewed). Vrací "" když chybí
+    canonical. Reuse _page_graph_ld z build_pricing → konzistentní s generovanými stránkami."""
+    import re
+    mc = re.search(r'<link rel="canonical" href="([^"]+)"', text)
+    if not mc:
+        return ""
+    mt = re.search(r"<title[^>]*>(.*?)</title>", text, re.S)
+    md = re.search(r'<meta name="description"[^>]*\scontent="([^"]*)"', text)
+    name = (mt.group(1).strip() if mt else "").split(" | ")[0].replace("&amp;", "&")
+    desc = (md.group(1) if md else "").replace("&amp;", "&")
+    graph = _page_graph_ld(site.get("domain", "wizardcost.com"), mc.group(1), name, desc,
+                           _iso_date(tools_meta))
+    return f'  <script type="application/ld+json">\n{graph}\n  </script>'
 
 
 def inject(path: Path, generated: str, start: str = START, end: str = END, warn: str = WARN) -> bool:
@@ -1640,6 +1673,17 @@ def main() -> int:
         if clog_page.exists() and CLOG_START in clog_page.read_text(encoding="utf-8"):
             jobs.append((clog_page, render_changelog(tools, clog_entries, clog_genesis),
                          CLOG_START, CLOG_END, CLOG_WARN))
+
+        # GEO:LD — Org+WebSite+WebPage graf do <head> statických stránek BEZ vlastního
+        # WebSite/Org schématu (changelog, compare). Hub/calculator už WebSite/WebApplication
+        # mají → ty dostávají jen @id kotvy ručně (žádný duplicitní WebSite node).
+        _geo_meta = data.get("_meta", {})
+        for _sp in ("changelog.html", "compare.html"):
+            _spp = ROOT / _sp
+            if _spp.exists() and GEO_LD_START in _spp.read_text(encoding="utf-8"):
+                _block = _static_geo_ld(_spp.read_text(encoding="utf-8"), site, _geo_meta)
+                if _block:
+                    jobs.append((_spp, _block, GEO_LD_START, GEO_LD_END, GEO_LD_WARN))
 
     # scoring-model injection — recommendation engine weights (calculator.html only).
     # Nezávislé na tools.json: zdroj pravdy pro váhy je data/scoring-model.json.

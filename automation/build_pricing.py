@@ -71,6 +71,58 @@ def _month_year(tools_meta: dict) -> str:
     return "June 2026"
 
 
+def _iso_date(tools_meta: dict) -> str:
+    """ISO YYYY-MM-DD posledního ručního review cen → schema.org dateModified
+    (freshness signál pro AI/GEO citace). Fixní fallback drží --check deterministický."""
+    import datetime as _dt
+    lr = (tools_meta or {}).get("last_reviewed")
+    if lr:
+        try:
+            _dt.date(*[int(x) for x in lr.split("-")])  # validace formátu
+            return lr
+        except (ValueError, TypeError):
+            pass
+    return "2026-06-01"
+
+
+def _page_graph_ld(domain: str, canonical: str, name: str, desc: str, iso_date: str,
+                   about_name: str | None = None, about_url: str | None = None,
+                   offers: dict | None = None) -> str:
+    """WebPage + Organization + WebSite @graph pro GEO/AI-citace: dateModified (freshness),
+    identita vydavatele (WizardCost) + isPartOf, volitelně entita softwaru přes `about`.
+    `offers` (AggregateOffer, USD) se připne na SoftwareApplication — reálný cenový range
+    z enginu, stejná veřejná data jako v tabulkách, jen strojově čitelná (schváleno userem)."""
+    home_url = f"https://{domain}/"
+    org_id = f"{home_url}#org"
+    webpage = {
+        "@type": "WebPage", "@id": f"{canonical}#webpage", "url": canonical,
+        "name": name, "description": desc, "inLanguage": "en",
+        "isPartOf": {"@id": f"{home_url}#website"},
+        "publisher": {"@id": org_id}, "dateModified": iso_date,
+    }
+    if about_name:
+        about = {
+            "@type": "SoftwareApplication", "name": about_name,
+            "applicationCategory": "BusinessApplication", "operatingSystem": "Web",
+            "url": about_url or home_url,
+        }
+        if offers:
+            about["offers"] = offers
+        webpage["about"] = about
+    return json.dumps({
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "Organization", "@id": org_id, "name": "WizardCost", "url": home_url,
+             "description": ("Independent, data-driven software pricing comparisons. Prices "
+                             "verified by hand from official vendor pricing pages and dated "
+                             "in a public changelog.")},
+            {"@type": "WebSite", "@id": f"{home_url}#website", "name": "WizardCost",
+             "url": home_url, "publisher": {"@id": org_id}},
+            webpage,
+        ],
+    }, ensure_ascii=False, indent=2)
+
+
 def _site_prefix(domain: str, base_path: str) -> str:
     bp = (base_path or "").strip("/")
     return f"https://{domain}/{bp}".rstrip("/") if bp else f"https://{domain}"
@@ -362,6 +414,24 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
                f"{name}'s official pricing, verified by hand.{_tail}")
         key_facts_html = ('<p class="hero-facts" style="margin-top:14px;font-size:0.95rem;'
                           f'opacity:0.88;line-height:1.6;max-width:680px;">{_kf}</p>')
+    # ── AggregateOffer: reálný měsíční cost-range z enginu napříč VOLUMES (USD).
+    #    Stejná veřejná čísla jako v tabulkách/meta — jen strojově čitelná pro AI/Google
+    #    citace. offerCount = počet plánů nástroje. Odhady (~) jdou do schématu jako číslo. ──
+    _costs = [r["cost"] for vol in VOLUMES
+              if (r := engine.cheapest_monthly(tool, vol, STEPS)) is not None]
+    offers = None
+    if _costs:
+        offers = {"@type": "AggregateOffer", "priceCurrency": "USD",
+                  "lowPrice": round(min(_costs), 2), "highPrice": round(max(_costs), 2)}
+        if tool.get("plans"):
+            offers["offerCount"] = len(tool["plans"])
+
+    # ── WebPage + Organization + WebSite graf (GEO/AI-citace: freshness + identita
+    #    vydavatele + entita nástroje + cenový range). dateModified = poslední ruční review. ──
+    page_ld = _page_graph_ld(
+        site.get("domain", "wizardcost.com"), canonical,
+        f"{name} Pricing 2026 — Plans, Run Limits & Real Cost", desc, _iso_date(tools_meta),
+        about_name=name, about_url=tool.get("homepage"), offers=offers)
 
     css = _PRICING_CSS
 
@@ -387,6 +457,9 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
   </script>
   <script type="application/ld+json">
 {breadcrumb_ld}
+  </script>
+  <script type="application/ld+json">
+{page_ld}
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -660,8 +733,10 @@ def _seo_faq(faq: list[dict]) -> tuple[str, str]:
 
 
 def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
-               body_html, faq_ld, breadcrumb_ld, faq_html) -> str:
+               body_html, faq_ld, breadcrumb_ld, faq_html, page_ld="") -> str:
     css = _PRICING_CSS
+    page_ld_block = (f'  <script type="application/ld+json">\n{page_ld}\n  </script>\n'
+                     if page_ld else "")
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -685,7 +760,7 @@ def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
   <script type="application/ld+json">
 {breadcrumb_ld}
   </script>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+{page_ld_block}  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -856,10 +931,13 @@ def render_alternatives_page(slug: str, by_slug: dict, site: dict, tools_meta: d
             f"{cheapest_name} is the lowest-cost option we track at {ALT_VOL:,} runs/mo — "
             f"compare every alternative on cost, integrations and self-hosting.")
     breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, f"{name} alternatives", canonical)
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             f"{name} Alternatives 2026 — Priced & Compared", desc,
+                             _iso_date(tools_meta), about_name=name, about_url=tool.get("homepage"))
     return _seo_shell(title=title, desc=desc, canonical=canonical, prefix=prefix,
                       month_year=month_year, h1=f"The best {_html_escape(name)} alternatives in 2026",
                       intro_html=intro, body_html=body, faq_ld=faq_ld,
-                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html)
+                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html, page_ld=page_ld)
 
 
 def render_cheapest_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
@@ -935,10 +1013,13 @@ def render_cheapest_page(by_slug: dict, site: dict, tools_meta: dict, engine) ->
     desc = (f"The cheapest automation tool in 2026, priced at every volume. At {lo:,} runs/mo it's {lo_name}; "
             f"at {hi:,} runs {hi_name}. Self-hosted tools run at just a server bill — see the full ranked matrix.")
     breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, "Cheapest automation tool", canonical)
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             "The Cheapest Automation Tool in 2026 (Real Prices)", desc,
+                             _iso_date(tools_meta))
     return _seo_shell(title=title, desc=desc, canonical=canonical, prefix=prefix,
                       month_year=month_year, h1="The cheapest automation tool in 2026",
                       intro_html=intro, body_html=body, faq_ld=faq_ld,
-                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html)
+                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html, page_ld=page_ld)
 
 
 def build_seo_pages(tools: list[dict], site: dict, tools_meta: dict, *, check: bool = False) -> list[str]:
