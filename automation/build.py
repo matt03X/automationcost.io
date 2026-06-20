@@ -28,6 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_hosting import expand_hosting_variants, apply_fx  # noqa: E402
 from build_pricing import build_pricing_pages, build_seo_pages, _page_graph_ld, _iso_date  # noqa: E402
 from build_catalog import build_catalog_pages  # noqa: E402
+import build_i18n  # noqa: E402  — language layer (/de/ … mirror, hreflang, switcher)
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "tools.json"
@@ -1705,6 +1706,7 @@ def main() -> int:
             dirty += build_pricing_pages(data["tools"], site, data.get("_meta", {}), check=True)
             dirty += build_seo_pages(data["tools"], site, data.get("_meta", {}), check=True)
             dirty += build_catalog_pages(data["tools"], site, data.get("_meta", {}), check=True)
+            dirty += build_i18n.run_all(site, data["tools"], data.get("_meta", {}), check=True)
         dirty += build_price_history(site, check=True)
         if dirty:
             print(f"[build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python build.py`.")
@@ -1723,6 +1725,7 @@ def main() -> int:
         changed += build_pricing_pages(data["tools"], site, data.get("_meta", {}), check=False)
         changed += build_seo_pages(data["tools"], site, data.get("_meta", {}), check=False)
         changed += build_catalog_pages(data["tools"], site, data.get("_meta", {}), check=False)
+        changed += build_i18n.run_all(site, data["tools"], data.get("_meta", {}), check=False)
 
     # price-history je nezávislá na tools.json (vlastní zdroj price-history.json);
     # generovat PŘED sitemap, ať se nová stránka dostane do sitemapy/analytics

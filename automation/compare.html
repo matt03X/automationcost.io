@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title id="page-title">Compare Automation Tools — AutomationCost.io</title>
+  <title id="page-title" data-i18n="pages.compare.title">Compare Automation Tools — AutomationCost.io</title>
   <meta name="description" id="page-desc" content="Compare automation tools side by side — pricing, limits, features. n8n vs Make vs Pipedream vs Zapier and more.">
   <link rel="canonical" href="https://wizardcost.com/automation/compare.html">
+  <!-- HREFLANG:START --><!-- HREFLANG:END -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AutomationCost.io">
   <meta property="og:title" content="Compare Automation Tools — AutomationCost.io">
@@ -539,18 +540,18 @@
     Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
   </a>
   <div class="ac-links">
-    <a href="compare.html" class="active ac-hide-sm">Compare</a>
-    <a href="limits.html" class="ac-hide-sm">Pricing</a>
+    <a href="compare.html" class="active ac-hide-sm" data-i18n="nav.compare">Compare</a>
+    <a href="limits.html" class="ac-hide-sm" data-i18n="nav.pricing">Pricing</a>
     <div class="ac-dd">
-      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true">More
+      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true"><span data-i18n="nav.more">More</span>
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div class="ac-dd-menu">
-        <a href="index.html">AutomationCost home</a>
-        <a href="tools.html">Tools</a>
-        <a href="changelog.html">Changelog</a>
-        <a href="price-history.html">Price history</a>
-        <div class="ac-dd-sep">Pricing guides</div>
+        <a href="index.html" data-i18n="nav.home">AutomationCost home</a>
+        <a href="tools.html" data-i18n="nav.tools">Tools</a>
+        <a href="changelog.html" data-i18n="nav.changelog">Changelog</a>
+        <a href="price-history.html" data-i18n="nav.price_history">Price history</a>
+        <div class="ac-dd-sep" data-i18n="nav.sec_pricing_guides">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
         <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
@@ -558,13 +559,14 @@
         <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
         <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
         <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
-        <div class="ac-dd-sep">Other wizards</div>
-        <a href="/llm/">LLMCost <span class="ac-dd-tag">Live</span></a>
-        <span class="ac-dd-soon">EmailCost <span class="ac-dd-tag soon">Soon</span></span>
-        <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon">Soon</span></span>
+        <div class="ac-dd-sep" data-i18n="nav.sec_other_wizards">Other wizards</div>
+        <a href="/llm/">LLMCost <span class="ac-dd-tag" data-i18n="nav.tag_live">Live</span></a>
+        <span class="ac-dd-soon">EmailCost <span class="ac-dd-tag soon" data-i18n="nav.tag_soon">Soon</span></span>
+        <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon" data-i18n="nav.tag_soon">Soon</span></span>
       </div>
     </div>
-    <a href="calculator.html" class="ac-cta">Calculator
+    <!-- LANGSWITCH:START --><!-- LANGSWITCH:END -->
+    <a href="calculator.html" class="ac-cta"><span data-i18n="nav.calculator">Calculator</span>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
   </div>
@@ -573,16 +575,16 @@
 <div class="wrap">
 
   <div class="hero">
-    <div class="hero-badge">Side-by-side comparison · Updated June 2026</div>
-    <h1>Compare automation tools <em>head-to-head</em></h1>
-    <p>Compare tools side by side, or browse every plan across all tools at once.</p>
+    <div class="hero-badge" data-i18n="pages.compare.badge">Side-by-side comparison · Updated June 2026</div>
+    <h1 data-i18n="pages.compare.h1">Compare automation tools <em>head-to-head</em></h1>
+    <p data-i18n="pages.compare.hero_p">Compare tools side by side, or browse every plan across all tools at once.</p>
   </div>
 
   <!-- ── View tabs ── -->
   <div class="view-tabs">
-    <button class="view-tab active" id="tab-tools"     onclick="switchView('tools')">Compare Tools</button>
-    <button class="view-tab"        id="tab-plancomp"  onclick="switchView('plancomp')">Compare Plans</button>
-    <button class="view-tab"        id="tab-allplans"  onclick="switchView('allplans')">All Plans</button>
+    <button class="view-tab active" id="tab-tools"     onclick="switchView('tools')" data-i18n="pages.compare.tab_tools">Compare Tools</button>
+    <button class="view-tab"        id="tab-plancomp"  onclick="switchView('plancomp')" data-i18n="pages.compare.tab_plans">Compare Plans</button>
+    <button class="view-tab"        id="tab-allplans"  onclick="switchView('allplans')" data-i18n="pages.compare.tab_allplans">All Plans</button>
   </div>
 
   <!-- ── Tool compare view ── -->

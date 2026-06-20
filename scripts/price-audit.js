@@ -508,15 +508,26 @@ async function refreshFx() {
   try {
     const r = await fetch("https://open.er-api.com/v6/latest/EUR", { headers: { "User-Agent": "wizardcost-fx" } });
     const d = await r.json();
-    const rate = d && d.rates && d.rates.USD;
-    if (!rate) throw new Error("no USD rate");
+    const eurUsd = d && d.rates && d.rates.USD;        // EUR→USD
+    if (!eurUsd) throw new Error("no USD rate");
+    const eurCzk = d.rates.CZK;                         // EUR→CZK (pro USD→CZK přepočet)
+    const r4 = (x) => Math.round(x * 1e4) / 1e4;
     const out = {
       _note: "EUR→USD FX (free API). Aktualizuje denní audit. Build převádí n8n (EUR)→USD.",
-      eur_usd: Math.round(rate * 1e4) / 1e4, date: d.time_last_update_utc || "",
+      eur_usd: r4(eurUsd), date: d.time_last_update_utc || "",
       source: "open.er-api.com", fetchedAt: new Date().toISOString(),
+      // USD→X multiplikátory pro on-site měnový přepínač (display only, USD = zdroj pravdy).
+      // Build injektuje window.AC_FX. Drží se aktuální díky tomuto dennímu auditu.
+      display_rates: {
+        _note: "USD→X pro měnový přepínač. Konverze = orientační, ne fakturovaná částka.",
+        usd: 1,
+        eur: r4(1 / eurUsd),                            // USD→EUR = 1/(EUR→USD)
+        czk: eurCzk ? r4(eurCzk / eurUsd) : 21.1,       // USD→CZK = (EUR→CZK)/(EUR→USD)
+        date: d.time_last_update_utc || "",
+      },
     };
     fs.writeFileSync(path.join(REPO, "automation", "data", "fx.json"), JSON.stringify(out, null, 2) + "\n", "utf8");
-    console.log(`💱 FX aktualizováno: 1 EUR = ${out.eur_usd} USD`);
+    console.log(`💱 FX aktualizováno: 1 EUR = ${out.eur_usd} USD · USD→EUR ${out.display_rates.eur} · USD→CZK ${out.display_rates.czk}`);
   } catch (e) { console.log(`💱 FX fetch přeskočen (ponechán starý kurz): ${(e.message || e).toString().slice(0, 60)}`); }
 }
 

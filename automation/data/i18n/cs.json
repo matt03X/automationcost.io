@@ -1,0 +1,218 @@
+{
+  "_meta": {
+    "lang": "cs",
+    "name": "Čeština",
+    "dir": "ltr",
+    "reviewed": false,
+    "note": "CZ arming jako BD/paid-traffic asset (ne primárně SEO). Chrome+meta+pricing(h1/intro/warn)+pages+frame kalkulačky přeloženo; pricing whenWorthIt + editorial FAQ zatím EN fallback (doplnit). User čte česky → review přímo, bez --llm. Ceny/názvy/čísla frozen (z tools.json)."
+  },
+
+  "nav": {
+    "compare": "Porovnat",
+    "pricing": "Ceny",
+    "more": "Více",
+    "home": "AutomationCost domů",
+    "tools": "Nástroje",
+    "changelog": "Historie cen",
+    "sec_pricing_guides": "Cenové průvodce",
+    "pricing_word": "Ceny",
+    "sec_other_wizards": "Další wizardy",
+    "tag_live": "Live",
+    "tag_soon": "Brzy",
+    "calculator": "Kalkulačka",
+    "privacy": "Soukromí",
+    "terms": "Podmínky",
+    "affiliate_disclosure": "Affiliate prohlášení"
+  },
+
+  "bc": {
+    "home": "Domů",
+    "tools": "Automatizační nástroje",
+    "pricing": "{name} ceny"
+  },
+
+  "pp": {
+    "cta_try": "{name} vyzkoušet zdarma →",
+    "cta_visit": "Navštívit {name} →",
+    "cta_calc": "Spočítat moje náklady na {name}",
+    "cta_compare_all": "Porovnat všech 7 nástrojů",
+    "hero_trust": "Ceny ověřeny {month_year} · z oficiálního ceníku {name} · vše za <strong>běh (run)</strong>",
+    "heads_up": "Pozor:",
+    "h2_plans": "{name} tarify &amp; reálné náklady",
+    "plans_sub": "Nejlevnější vyhovující tarif při čtyřech typických objemech běhů (3krokové workflow) — ceny generované živě z našich dat, nikdy ručně psané. Přepni pro zobrazení cen při roční fakturaci.",
+    "monthly": "Měsíčně",
+    "annual": "Ročně",
+    "h2_vs": "{name} vs. alternativy",
+    "vs_sub": "Cena za {cmp_vol:,} běhů / měsíc napříč všemi nástroji, které sledujeme. Použij přepínač Měsíčně/Ročně nahoře pro změnu fakturace.",
+    "th_tool": "Nástroj",
+    "th_price": "Cena za {cmp_vol:,} běhů",
+    "th_integrations": "Integrace",
+    "th_selfhost": "Self-hosting",
+    "billing_monthly_paren": "(měsíčně)",
+    "billing_annual_paren": "(účtováno ročně)",
+    "see_alts": "Zobrazit všechny alternativy k {name} →",
+    "cheapest": "Nejlevnější automatizační nástroj →",
+    "full_compare": "Plné interaktivní porovnání →",
+    "h2_worth": "Kdy se {name} vyplatí",
+    "th_usecase": "Případ použití",
+    "th_verdict": "Verdikt",
+    "h2_faq": "Často kladené dotazy",
+    "h2_h2h": "{name} v přímém srovnání",
+    "related_desc": "Ceny &amp; funkce porovnané",
+    "footer_part": "&copy; 2026 AutomationCost.io · součást WizardCost",
+    "footer_tagline": "AutomationCost.io · Nezávislá, datová srovnání · Ceny ověřeny {month_year}",
+    "footer_affiliate": "Některé odkazy jsou affiliate — můžeme získat provizi bez příplatku pro tebe. Nikdy to neovlivní naše žebříčky ani doporučení.",
+    "fab": "Najít můj nejlepší nástroj",
+    "overage": "navíc",
+    "suffix_mo": "/měs",
+    "suffix_mo_elec": "/měs elektřina",
+    "runs_per_month": "{runs:,} běhů / měsíc",
+    "hardware_oneoff": "+ ~${hw:,} hardware (jednorázově)",
+    "annual_save": "{price}{suffix} účtováno ročně — ušetříš {pct}%",
+    "no_annual": "Roční ceny zatím nesledujeme",
+    "plan_runs": "{runs:,} běhů",
+    "kind_saas": "Cloud",
+    "kind_cloud": "Cloud",
+    "kind_vps": "Self-hosting · VPS",
+    "kind_own": "Self-hosting · vlastní server",
+    "kind_plans": "Tarify",
+    "note_own": "Měsíční částka je jen elektřina — software je zdarma. Jednorázové náklady na hardware (mini PC nebo Pi, které si necháš) jsou uvedené podle objemu.",
+    "note_vps": "Měsíční částka je pronajatý server (VPS + databáze), který škáluje s objemem — samotný software je zdarma.",
+    "sh_yes": "Ano (free SW)",
+    "sh_no": "Ne",
+    "cur_note": "≈ Přepočet z USD k dnešnímu kurzu — ne skutečně fakturovaná částka."
+  },
+
+  "faq": {
+    "and": "a",
+    "cost_q": "Kolik {name} stojí měsíčně?",
+    "cost_a": "V nejlevnějším vyhovujícím tarifu (3krokové workflow, měsíční fakturace) stojí {name} {prices}. Plnou rozpisku najdeš v tarifech a srovnávací tabulce výše.",
+    "cheaper_q": "Co je levnější než {name}?",
+    "cheaper_a": "Při {vol:,} bězích/měsíc je nejlevnější volbou, kterou sledujeme, {link} za {cprice} oproti {name} za {tprice}. Použij kalkulačku pro svůj přesný objem.",
+    "accuracy_q": "Jak přesné jsou tyto ceny?",
+    "accuracy_a": "Převzato z oficiálních ceníků a ručně ověřeno. Hodnoty označené ~ jsou odhady pro individuální Enterprise úrovně. Každou zaznamenanou změnu najdeš v <a href=\"changelog.html\">historii cen</a>."
+  },
+
+  "meta": {
+    "zapier-pricing":      { "title": "{name} ceny 2026 — tarify, limity běhů &amp; reálné náklady | AutomationCost.io", "description": "{name} ceny 2026: {prices}. Reálné tarify, self-hosting možnosti a jak {name} obstojí v ceně za běh." },
+    "make-pricing":        { "title": "{name} ceny 2026 — tarify, limity běhů &amp; reálné náklady | AutomationCost.io", "description": "{name} ceny 2026: {prices}. Reálné tarify, self-hosting možnosti a jak {name} obstojí v ceně za běh." },
+    "n8n-pricing":         { "title": "{name} ceny 2026 — tarify, limity běhů &amp; reálné náklady | AutomationCost.io", "description": "{name} ceny 2026: {prices}. Reálné tarify, self-hosting možnosti a jak {name} obstojí v ceně za běh." },
+    "pipedream-pricing":   { "title": "{name} ceny 2026 — tarify, limity běhů &amp; reálné náklady | AutomationCost.io", "description": "{name} ceny 2026: {prices}. Reálné tarify, self-hosting možnosti a jak {name} obstojí v ceně za běh." },
+    "activepieces-pricing":{ "title": "{name} ceny 2026 — tarify, limity běhů &amp; reálné náklady | AutomationCost.io", "description": "{name} ceny 2026: {prices}. Reálné tarify, self-hosting možnosti a jak {name} obstojí v ceně za běh." },
+    "automatisch-pricing": { "title": "{name} ceny 2026 — tarify, limity běhů &amp; reálné náklady | AutomationCost.io", "description": "{name} ceny 2026: {prices}. Reálné tarify, self-hosting možnosti a jak {name} obstojí v ceně za běh." },
+    "node-red-pricing":    { "title": "{name} ceny 2026 — tarify, limity běhů &amp; reálné náklady | AutomationCost.io", "description": "{name} ceny 2026: {prices}. Reálné tarify, self-hosting možnosti a jak {name} obstojí v ceně za běh." }
+  },
+
+  "pricing": {
+    "zapier": {
+      "h1": "Zapier ceny 2026 — Vyplatí se?",
+      "intro": "Zapier je nejznámější automatizační nástroj — a nejdražší. Tady vidíš, kolik reálně zaplatíš měsíčně a jaké levnější alternativy existují pro stejné workflow.",
+      "warn": "Zapier účtuje podle task-úrovní a cena za běh zůstává při škálování vysoká — výrazně nad objemovou cenou Make nebo self-hostovaných nástrojů. Než se upíšeš k ročnímu tarifu, zkontroluj si svou run-úroveň."
+    },
+    "make": {
+      "h1": "Make (Integromat) ceny 2026 — Tarify & reálné náklady za běh",
+      "intro": "Make je favorit objemové ceny — stejný cloudový zážitek jako Zapier za zlomek ceny za běh. Tady vidíš, kolik každý tarif reálně stojí s rostoucím počtem běhů.",
+      "warn": "Make počítá kredity (dříve „operace\"): jedna akce modulu = jeden kredit, spuštění kódu se počítá dvojnásobně. Uvedená cena tarifu pokrývá pevný balík kreditů — když ho překročíš, posuneš se o úroveň výš. Vyber tarif podle svého reálného objemu běhů."
+    },
+    "n8n": {
+      "h1": "n8n ceny 2026 — Cloud vs. self-hosting",
+      "intro": "n8n je open-source automatizační nástroj, po kterém vývojáři sahají. Můžeš platit za spravovaný Cloud, provozovat ho na levném VPS, nebo hostovat na vlastním hardwaru za cenu elektřiny. Tady jsou reálné náklady každé cesty.",
+      "warn": "n8n v self-hosting edici je zdarma open-source software — hodnoty níže pro VPS a vlastní server jsou <em>infrastrukturní</em> náklady (server, databáze, elektřina), ne licenční poplatek. Předpokládají lehká workflow a nezahrnují tvůj vlastní čas na provoz."
+    },
+    "pipedream": {
+      "h1": "Pipedream ceny 2026 — Kredity & reálné náklady za běh",
+      "intro": "Pipedream je vývojářsky orientovaná automatizační platforma, která účtuje podle compute kreditů. Tady vidíš, kolik každý tarif stojí s rostoucím objemem běhů a kde se umístí oproti alternativám.",
+      "warn": "Pipedream počítá kredity za spuštění workflow a veřejná sazba za překročení byla z ceníku stažena — překročení při vysokém objemu je teď věc obchodu. Business úroveň nese odhad pro nadobjem. Vyber tarif pečlivě."
+    },
+    "activepieces": {
+      "h1": "Activepieces ceny 2026 — Cloud vs. self-hosting",
+      "intro": "Activepieces je MIT-licencovaný open-source automatizační nástroj se Zapier-podobným no-code rozhraním. Můžeš použít spravovaný Cloud, provozovat na VPS, nebo self-hostovat na vlastním hardwaru. Tady jsou reálné náklady každé cesty.",
+      "warn": "Activepieces je skutečně MIT-licencovaný — self-hosting hodnoty níže jsou <em>infrastrukturní</em> náklady (server / elektřina), ne licenční poplatek. Cloud se účtuje za aktivní flow místo za běh, takže počet flow určuje účet."
+    },
+    "automatisch": {
+      "h1": "Automatisch ceny 2026 — Náklady na self-hosting",
+      "intro": "Automatisch je jednoduchý, EU-přívětivý open-source automatizační nástroj. Obecný cloudový tarif už neexistuje — provozuješ ho na VPS nebo vlastním hardwaru. Tady jsou reálné infrastrukturní náklady každé cesty.",
+      "warn": "Spravovaný cloud Automatisch byl ukončen; realistické možnosti jsou self-hosting na VPS nebo vlastním serveru. Hodnoty níže jsou <em>infrastrukturní</em> náklady (server / elektřina), ne licenční poplatek — je to AGPL-3.0 open-source software."
+    },
+    "node-red": {
+      "h1": "Node-RED ceny 2026 — Náklady na self-hosting",
+      "intro": "Node-RED je zdarma, flow-based programovací nástroj pro propojení zařízení, API a služeb. Je self-hosted už z principu — na VPS nebo vlastním hardwaru. Tady jsou reálné infrastrukturní náklady.",
+      "warn": "Node-RED je zdarma Apache-2.0 software bez vlastní cloudové úrovně; hodnoty níže jsou <em>infrastrukturní</em> náklady (server / elektřina), ne licenční poplatek. Vyniká u IoT a propojování událostí, méně u velkých SaaS-integračních katalogů."
+    }
+  },
+
+  "foot": {
+    "affiliate": "Některé odkazy jsou affiliate — můžeme získat provizi bez příplatku pro tebe. Nikdy to neovlivní naše žebříčky ani doporučení.",
+    "verified": "Ceny ověřeny červen 2026"
+  },
+
+  "pages": {
+    "hub": {
+      "title": "AutomationCost.io — Reálné ceny pro n8n, Make, Pipedream, Zapier",
+      "metadesc": "Porovnej reálné náklady automatizačních nástrojů. Kalkulačka zdarma, limity vedle sebe a poctivá doporučení. n8n vs. Make vs. Pipedream vs. Zapier.",
+      "eyebrow": "Zdarma · Bez registrace · Aktualizováno červen 2026",
+      "h1": "Najdi automatizační nástroj,<br>který je <em>fakt nejlevnější</em>.",
+      "hero_p": "Reálné ceny pro n8n, Make, Pipedream, Zapier a další — podle tvého skutečného využití, ne podle marketingových stránek. Odpověz na pár rychlých otázek a do 30 sekund máš svého favorita.",
+      "cta_find": "Najít můj nejlepší nástroj",
+      "cta_compare": "Porovnat nástroje →",
+      "card1_h2": "Najít můj nejlepší nástroj",
+      "card1_p": "Odpověz na pár otázek o týmu, objemu a rozpočtu — a dostaneš personalizované pořadí s nejlevnější volbou označenou.",
+      "card1_arrow": "Spustit hledání",
+      "card2_h2": "Porovnat nástroje",
+      "card2_p": "Vyber 2–4 nástroje a uvidíš ceny, limity, funkce a tarify vedle sebe. Nebo projdi všechny tarify najednou.",
+      "card2_arrow": "Porovnat nástroje",
+      "card3_h2": "Ceny &amp; limity",
+      "card3_p": "Kompletní tabulka limitů běhů, stropů workflow, timeoutů a historie logů pro každý nástroj. Filtrovatelné.",
+      "card3_arrow": "Zobrazit všechny limity",
+      "guides_label": "Cenové průvodce podle nástroje",
+      "faq_heading": "Často kladené dotazy",
+      "footer_tagline": "Nezávislá, datová cenová srovnání automatizačních nástrojů."
+    },
+    "calc": {
+      "title": "Najdi svůj nejlepší automatizační nástroj 2026 — Průvodce výběrem | AutomationCost.io",
+      "metadesc": "Odpověz na pár rychlých otázek o týmu, roli, typu workflow a rozpočtu — a dostaneš personalizované skóre shody pro n8n, Make, Pipedream, Zapier a další.",
+      "step1": "Velikost firmy",
+      "step2": "Tvoje role",
+      "step3": "Typ workflow",
+      "step4": "Objem & rozpočet",
+      "step5": "Výsledky",
+      "s1_h2": "Řekni nám o své firmě",
+      "s1_p": "Velikost a typ podnikání nám umožní předodhadnout tvůj pravděpodobný objem a rozpočet — aby posuvníky později začínaly na rozumné hodnotě místo na nule. Vždy je můžeš upravit.",
+      "s2_h2": "Jaká je tvoje role?",
+      "s2_p": "Pomáhá nám to zvážit funkce, které jsou pro tebe nejdůležitější — AI-nody, no-code rozhraní, přístup ke kódu, compliance a další.",
+      "s3_h2": "Co budeš automatizovat?",
+      "s3_p": "Pipeline pro tvou roli — vyber jednu.",
+      "s4_h2": "Objem & rozpočet",
+      "s4_p": "Spočítáme přesné náklady na nástroj a zahrneme je do tvého skóre shody.",
+      "s5_h2": "Tvoje personalizovaná doporučení",
+      "s5_p": "Čtyři způsoby výběru — vyber prioritu, která ti sedí, a uvidíš úplné pořadí níže. Stejná data, stejný vzorec pro každý nástroj.",
+      "lbl_billing": "Fakturační cyklus",
+      "billing_monthly": "Měsíčně",
+      "billing_annual": "Ročně",
+      "save_pill": "ušetři ~20%",
+      "lbl_hosting": "Preference hostingu",
+      "host_any": "Libovolné",
+      "host_cloud": "Jen cloud",
+      "host_selfhost": "Self-hosting",
+      "lbl_ai": "Potřebuješ AI/LLM nody?",
+      "ai_any": "Je mi to jedno",
+      "ai_yes": "Ano, nutné"
+    },
+    "compare": {
+      "title": "Porovnat automatizační nástroje — AutomationCost.io",
+      "metadesc": "Porovnej automatizační nástroje vedle sebe — ceny, limity, funkce. n8n vs. Make vs. Pipedream vs. Zapier a další.",
+      "badge": "Srovnání vedle sebe · Aktualizováno červen 2026",
+      "h1": "Porovnej automatizační nástroje <em>v přímém souboji</em>",
+      "hero_p": "Porovnej nástroje vedle sebe nebo projdi všechny tarify všech nástrojů najednou.",
+      "tab_tools": "Porovnat nástroje",
+      "tab_plans": "Porovnat tarify",
+      "tab_allplans": "Všechny tarify"
+    }
+  },
+
+  "js": {
+    "calc.top_pick": "Top volba",
+    "calc.recommended": "Doporučeno",
+    "calc.over_budget": "Nad rozpočet"
+  }
+}

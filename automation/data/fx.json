@@ -3,5 +3,12 @@
   "eur_usd": 1.1469,
   "date": "Sat, 20 Jun 2026 00:02:31 +0000",
   "source": "open.er-api.com",
-  "fetchedAt": "2026-06-20T09:48:09.492Z"
+  "fetchedAt": "2026-06-20T09:48:09.492Z",
+  "display_rates": {
+    "_note": "USD→X multiplikátory pro on-site měnový přepínač (DISPLAY ONLY, USD zůstává zdroj pravdy). Denní FX audit má refreshovat. Konverze = jen orientační, ne fakturovaná částka.",
+    "usd": 1,
+    "eur": 0.871791,
+    "czk": 21.100361,
+    "date": "Fri, 19 Jun 2026 00:02:32 +0000"
+  }
 }
