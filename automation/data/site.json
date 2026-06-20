@@ -7,6 +7,9 @@
   "cloudflare_analytics_token": "d92ac7950aa242fc9291b77df0ce406e",
   "ga4_measurement_id": "",
   "sitemap_exclude": [
-    "404.html"
+    "404.html",
+    "affiliate.html",
+    "privacy.html",
+    "terms.html"
   ]
 }
