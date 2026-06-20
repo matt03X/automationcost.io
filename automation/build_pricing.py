@@ -86,10 +86,12 @@ def _iso_date(tools_meta: dict) -> str:
 
 
 def _page_graph_ld(domain: str, canonical: str, name: str, desc: str, iso_date: str,
-                   about_name: str | None = None, about_url: str | None = None) -> str:
+                   about_name: str | None = None, about_url: str | None = None,
+                   offers: dict | None = None) -> str:
     """WebPage + Organization + WebSite @graph pro GEO/AI-citace: dateModified (freshness),
     identita vydavatele (WizardCost) + isPartOf, volitelně entita softwaru přes `about`.
-    ZÁMĚRNĚ bez Product/Offer ceny — emise cen do schématu = stop-and-confirm."""
+    `offers` (AggregateOffer, USD) se připne na SoftwareApplication — reálný cenový range
+    z enginu, stejná veřejná data jako v tabulkách, jen strojově čitelná (schváleno userem)."""
     home_url = f"https://{domain}/"
     org_id = f"{home_url}#org"
     webpage = {
@@ -99,11 +101,14 @@ def _page_graph_ld(domain: str, canonical: str, name: str, desc: str, iso_date: 
         "publisher": {"@id": org_id}, "dateModified": iso_date,
     }
     if about_name:
-        webpage["about"] = {
+        about = {
             "@type": "SoftwareApplication", "name": about_name,
             "applicationCategory": "BusinessApplication", "operatingSystem": "Web",
             "url": about_url or home_url,
         }
+        if offers:
+            about["offers"] = offers
+        webpage["about"] = about
     return json.dumps({
         "@context": "https://schema.org",
         "@graph": [
@@ -392,12 +397,24 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
             + f". Real plans, self-host options and how {name} compares on cost per run.")
     title = f"{name} Pricing 2026 — Plans, Run Limits &amp; Real Cost | AutomationCost.io"
 
+    # ── AggregateOffer: reálný měsíční cost-range z enginu napříč VOLUMES (USD).
+    #    Stejná veřejná čísla jako v tabulkách/meta — jen strojově čitelná pro AI/Google
+    #    citace. offerCount = počet plánů nástroje. Odhady (~) jdou do schématu jako číslo. ──
+    _costs = [r["cost"] for vol in VOLUMES
+              if (r := engine.cheapest_monthly(tool, vol, STEPS)) is not None]
+    offers = None
+    if _costs:
+        offers = {"@type": "AggregateOffer", "priceCurrency": "USD",
+                  "lowPrice": round(min(_costs), 2), "highPrice": round(max(_costs), 2)}
+        if tool.get("plans"):
+            offers["offerCount"] = len(tool["plans"])
+
     # ── WebPage + Organization + WebSite graf (GEO/AI-citace: freshness + identita
-    #    vydavatele + entita nástroje). dateModified = poslední ruční review cen. ──
+    #    vydavatele + entita nástroje + cenový range). dateModified = poslední ruční review. ──
     page_ld = _page_graph_ld(
         site.get("domain", "wizardcost.com"), canonical,
         f"{name} Pricing 2026 — Plans, Run Limits & Real Cost", desc, _iso_date(tools_meta),
-        about_name=name, about_url=tool.get("homepage"))
+        about_name=name, about_url=tool.get("homepage"), offers=offers)
 
     css = _PRICING_CSS
 
