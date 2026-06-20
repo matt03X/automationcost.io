@@ -170,6 +170,8 @@
     .model-row.win .mr-cost { color: var(--accent-br); }
     .mr-chips { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
     .cap-chip { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--muted); border: 1px solid var(--border2); background: var(--surface2); border-radius: 20px; padding: 1px 8px; }
+    .cap-chip.nofit { color: #f5a623; border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.09); }
+    .model-row.nofit { opacity: 0.5; }
     .mr-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--text2); line-height: 1.9; }
     .model-row.open .mr-detail { display: block; }
     .mr-detail b { color: var(--text); font-weight: 700; }
@@ -429,6 +431,11 @@ function ctxChip(ctx) {
   return (ctx >= 1000000 ? (ctx / 1000000) + "M" : Math.round(ctx / 1000) + "k") + " context";
 }
 
+/* fyzická vejde-se kontrola: input+output prompt se musí vejít do context okna.
+   ctx == null (neověřeno) => nehodnotíme jako „nevejde se" (nepenalizujeme neznámé) */
+function fits(m) { return m.ctx == null || (state.inTok + state.outTok) <= m.ctx; }
+function ctxShort(ctx) { return ctx >= 1000000 ? (ctx / 1000000) + 'M' : Math.round(ctx / 1000) + 'k'; }
+
 /* ── Recommendation engine (váhy z DATA:SCORING; dimenze dopočítané z dat) ──
    matchScore = featureScore*SCORE_W.feature + priceScore*SCORE_W.price + frontier*SCORE_W.frontier.
    featureScore = váhy role · per-model dimenze; priceScore = log-norm cost(m) na AKTUÁLNÍM
@@ -437,11 +444,13 @@ function recommend() {
   var role = UC_ROLE[state.uc];
   var w = role && ROLE_WEIGHTS[role];
   if (!w) return null;
-  var costs = MODELS.map(function (m) { return cost(m).total; });
+  var pool = MODELS.filter(fits);
+  if (!pool.length) return { none: true };
+  var costs = pool.map(function (m) { return cost(m).total; });
   var logs = costs.map(function (c) { return Math.log(Math.max(c, 0.01)); });
   var lo = Math.min.apply(null, logs), hi = Math.max.apply(null, logs);
   var DIMS = ['context', 'caching', 'cheapOutput', 'batch', 'frontier'];
-  var scored = MODELS.map(function (m, i) {
+  var scored = pool.map(function (m, i) {
     var ms = MODEL_SCORES[m.n] || {};
     var feat = 0;
     DIMS.forEach(function (d) { feat += (w[d] || 0) * (ms[d] || 0); });
@@ -490,17 +499,20 @@ function render() {
     html += '<div class="tier-section"><div class="tier-head">' +
       '<span class="tier-tag">' + tier.label + '</span>' +
       '<span class="tier-info" title="' + TIER_TIP + '">' + rows.length + ' models · our grouping</span></div>';
+    var winIdx = rows.findIndex(function (r) { return fits(r.m); });
     rows.forEach(function (r, idx) {
       var w = Math.max(3, Math.sqrt(r.c.total / max) * 100);
+      var ok = fits(r.m);
       var chips = '';
       var cc = ctxChip(r.m.ctx);
       if (cc) chips += '<span class="cap-chip">' + cc + '</span>';
       if (r.m.batch !== null) chips += '<span class="cap-chip">batch −' + Math.round((1 - r.m.batch) * 100) + '%</span>';
+      if (!ok) chips += '<span class="cap-chip nofit">input &gt; ' + ctxShort(r.m.ctx) + ' ctx</span>';
       var key = r.m.n;
       var cacheNote = r.c.cacheUsed
         ? ' (' + state.cache + '% cached at $' + r.m.cached + '/1M)'
         : (CACHE_RELEVANT[state.uc] && r.m.cached === null ? ' (no cache pricing published)' : '');
-      html += '<div class="model-row' + (idx === 0 ? ' win' : '') + (state.open === key ? ' open' : '') + '" data-model="' + key + '">' +
+      html += '<div class="model-row' + (idx === winIdx ? ' win' : '') + (ok ? '' : ' nofit') + (state.open === key ? ' open' : '') + '" data-model="' + key + '">' +
         '<div class="mr-top">' +
         '<span class="mr-name">' + r.m.n + '<span class="mr-provider">' + r.m.p + '</span></span>' +
         '<span class="bar-track"><span class="bar-fill" style="width:' + w.toFixed(1) + '%"></span></span>' +
@@ -519,7 +531,11 @@ function render() {
   var recEl = document.getElementById('reco');
   if (recEl) {
     var rec = recommend();
-    if (rec) {
+    if (rec && rec.none) {
+      recEl.hidden = false;
+      recEl.innerHTML = '<div class="reco-label">Heads up</div>' +
+        '<div class="reco-body">Your input of <b>' + fmtInt(state.inTok) + ' tokens</b> is larger than the context window of every model we track — none can hold this prompt. Reduce the input or split it across calls.</div>';
+    } else if (rec) {
       var ucName = USE_CASES.find(function (u) { return u.id === state.uc; }).name;
       var diff = rec.value && rec.value.m.n !== rec.top.m.n;
       var valHtml = diff
@@ -539,7 +555,7 @@ function render() {
 
   /* savings banner — vítěz vs DRUHÝ NEJLEVNĚJŠÍ v témže tieru (runner-up,
      konzistence s automation; srovnání s nejdražším by bylo inflační) */
-  var fr = MODELS.filter(function (m) { return m.t === 'frontier'; })
+  var fr = MODELS.filter(function (m) { return m.t === 'frontier' && fits(m); })
     .map(function (m) { return { m: m, c: cost(m).total }; })
     .sort(function (a, b) { return a.c - b.c; });
   var save = fr.length > 1 ? (fr[1].c - fr[0].c) * 12 : 0;
@@ -553,8 +569,9 @@ function render() {
     banner.hidden = true;
   }
 
-  /* hero demo range — ze stejných dat */
-  var all = MODELS.map(function (m) { return { m: m, c: cost(m).total }; }).sort(function (a, b) { return a.c - b.c; });
+  /* hero demo range — ze stejných dat (jen modely co se vejdou; fallback na vše) */
+  var allM = MODELS.filter(fits); if (!allM.length) allM = MODELS;
+  var all = allM.map(function (m) { return { m: m, c: cost(m).total }; }).sort(function (a, b) { return a.c - b.c; });
   document.getElementById('demo-range').innerHTML =
     '<span>' + (USE_CASES.find(function (u) { return u.id === state.uc; }).name) + ', ' + fmtReq(state.req) + ' requests/mo:</span>' +
     '<span>from <b>' + fmtMoney(all[0].c) + '/mo</b> (' + all[0].m.n + ')</span>' +
