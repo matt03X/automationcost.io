@@ -4,12 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mistral AI API Pricing (June 2026) — WizardCost</title>
-  <meta name="description" content="Mistral Large 3 — Mistral API prices per 1M tokens, prompt caching and batch discounts, verified June 2026.">
+  <meta name="description" content="Mistral Large 3, Mistral Medium 3.5, Magistral Medium, Devstral 2, Mistral Small 4, Magistral Small, Codestral, Devstral Small 2, Ministral 3 (3B), Ministral 3 (8B) and Ministral 3 (14B) — Mistral API prices per 1M tokens, prompt caching and batch discounts, verified June 2026.">
   <link rel="canonical" href="https://wizardcost.com/llm/mistral-pricing.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="WizardCost">
   <meta property="og:title" content="Mistral AI API Pricing (June 2026) — WizardCost">
-  <meta property="og:description" content="Mistral Large 3 — Mistral API prices per 1M tokens, prompt caching and batch discounts, verified June 2026.">
+  <meta property="og:description" content="Mistral Large 3, Mistral Medium 3.5, Magistral Medium, Devstral 2, Mistral Small 4, Magistral Small, Codestral, Devstral Small 2, Ministral 3 (3B), Ministral 3 (8B) and Ministral 3 (14B) — Mistral API prices per 1M tokens, prompt caching and batch discounts, verified June 2026.">
   <meta property="og:url" content="https://wizardcost.com/llm/mistral-pricing.html">
   <meta property="og:image" content="https://wizardcost.com/llm/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -158,7 +158,7 @@
 <section class="page-head wrap" data-screen-label="Provider head">
   <div class="crumb"><a href="index.html">LLM</a> / providers / mistral</div>
   <h1>Mistral AI API Pricing</h1>
-  <p>Mistral's public per-token list covers a single model — Mistral Large. Medium and Small have no public per-token price, so we track the one price we can verify against the official pricing FAQ.</p>
+  <p>Every Mistral model we track, at official per-token rates — verified by hand against Mistral's pricing page. Eleven models across all three tiers.</p>
   <div class="verify-line">Prices verified June 2026 · changes logged in the <a href="changelog.html">changelog</a></div>
 </section>
 
@@ -170,8 +170,48 @@
       </thead>
       <tbody>
         <tr>
+          <td><span class="m-name">Magistral Medium</span><span class="m-tier">FRONTIER</span></td>
+          <td>$2</td><td>$5</td><td>—</td><td>−50%</td><td>$550</td>
+        </tr>
+        <tr>
+          <td><span class="m-name">Mistral Medium 3.5</span><span class="m-tier">FRONTIER</span></td>
+          <td>$1.50</td><td>$7.50</td><td>—</td><td>−50%</td><td>$525</td>
+        </tr>
+        <tr>
+          <td><span class="m-name">Devstral 2</span><span class="m-tier">FRONTIER</span></td>
+          <td>$0.40</td><td>$2</td><td>—</td><td>−50%</td><td>$140</td>
+        </tr>
+        <tr>
           <td><span class="m-name">Mistral Large 3</span><span class="m-tier">FRONTIER</span></td>
           <td>$0.50</td><td>$1.50</td><td>$0.05</td><td>−50%</td><td>$82</td>
+        </tr>
+        <tr>
+          <td><span class="m-name">Magistral Small</span><span class="m-tier">MID</span></td>
+          <td>$0.50</td><td>$1.50</td><td>—</td><td>−50%</td><td>$145</td>
+        </tr>
+        <tr>
+          <td><span class="m-name">Codestral</span><span class="m-tier">MID</span></td>
+          <td>$0.30</td><td>$0.90</td><td>—</td><td>−50%</td><td>$87</td>
+        </tr>
+        <tr>
+          <td><span class="m-name">Mistral Small 4</span><span class="m-tier">MID</span></td>
+          <td>$0.10</td><td>$0.30</td><td>—</td><td>−50%</td><td>$29</td>
+        </tr>
+        <tr>
+          <td><span class="m-name">Ministral 3 (14B)</span><span class="m-tier">BUDGET</span></td>
+          <td>$0.20</td><td>$0.20</td><td>—</td><td>−50%</td><td>$46</td>
+        </tr>
+        <tr>
+          <td><span class="m-name">Ministral 3 (8B)</span><span class="m-tier">BUDGET</span></td>
+          <td>$0.15</td><td>$0.15</td><td>—</td><td>−50%</td><td>$34.5</td>
+        </tr>
+        <tr>
+          <td><span class="m-name">Devstral Small 2</span><span class="m-tier">BUDGET</span></td>
+          <td>$0.10</td><td>$0.30</td><td>—</td><td>−50%</td><td>$29</td>
+        </tr>
+        <tr>
+          <td><span class="m-name">Ministral 3 (3B)</span><span class="m-tier">BUDGET</span></td>
+          <td>$0.10</td><td>$0.10</td><td>—</td><td>−50%</td><td class="best">$23</td>
         </tr>
       </tbody>
     </table>
@@ -181,22 +221,22 @@
   <div class="notes" data-screen-label="Provider notes">
     <div class="note-card">
       <h3>Prompt caching</h3>
-      <p>Cached input is billed at <b>10% of the input rate</b> across all Mistral models we track — a major lever for chatbots and agents where most of the prompt repeats. The <a href="index.html">calculator</a> models this with your cache share.</p>
+      <p>Cached input is billed at <b>10% of the input rate</b> on every Mistral model with a published cache price; Mistral Medium 3.5, Magistral Medium, Devstral 2, Mistral Small 4, Magistral Small, Codestral, Devstral Small 2, Ministral 3 (3B), Ministral 3 (8B) and Ministral 3 (14B) don't list one, so the calculator charges them the full input rate. A major lever for chatbots and agents where most of the prompt repeats — the <a href="index.html">calculator</a> models this with your cache share.</p>
     </div>
     <div class="note-card">
       <h3>Batch / async</h3>
-      <p>The Batch API runs asynchronous jobs at a verified <b>−50% on both input and output</b> across Mistral Large 3 — flip the Batch toggle in the <a href="index.html">calculator</a> to model it.</p>
+      <p>The Batch API runs asynchronous jobs at a verified <b>−50% on both input and output</b> across all models we track — flip the Batch toggle in the <a href="index.html">calculator</a> to model it.</p>
     </div>
     <div class="note-card">
       <h3>Context window</h3>
-      <p>Mistral Large 3 runs a verified <b>256k-token context window</b>.</p>
+      <p>Mistral Large 3, Mistral Medium 3.5, Devstral 2, Mistral Small 4, Devstral Small 2, Ministral 3 (3B), Ministral 3 (8B) and Ministral 3 (14B) run a verified <b>256k-token context window</b>; Magistral Medium, Magistral Small and Codestral are 128k tokens.</p>
     </div>
   </div>
 
   <a class="next-cta" href="index.html">
     <div>
       <div class="nc-title">Is Mistral the right price for your workload?</div>
-      <div class="nc-sub">The calculator puts Mistral Large 3 next to the other 17 models we track — at your volume, token mix and cache share.</div>
+      <div class="nc-sub">The calculator puts these eleven models next to the other 17 we track — at your volume, token mix and cache share.</div>
     </div>
     <span class="nc-arrow">Open calculator
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
@@ -208,7 +248,7 @@
   <!-- EMAILCAP:HTML:END -->
 
   <div class="cross" data-screen-label="Cross-links">
-    <a href="compare.html">All 18 models →</a>
+    <a href="compare.html">All 28 models →</a>
     <a href="openai-pricing.html">OpenAI pricing →</a>
     <a href="anthropic-pricing.html">Anthropic pricing →</a>
     <a href="gemini-pricing.html">Gemini pricing →</a>

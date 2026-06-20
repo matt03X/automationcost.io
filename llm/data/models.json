@@ -29,7 +29,8 @@
       "xAI batchDiscount: Batch API existuje (20-50% off dle x.ai), presny nasobitel neoveren - drzime null"
     ],
     "verification_log": {
-      "2026-06-20": "Plne overeni vsech 6 provideru proti oficialnim cenikum (research armada): OpenAI/Anthropic/DeepSeek/Gemini ceny 1:1 OK; doplnen OpenAI+Gemini batchDiscount 0.5 a chybejici context windows; doplnen xAI cached 0.20; OPRAVENO Mistral Large -> Large 3 (2.00/6.00 -> 0.50/1.50, ctx 256k, cached 0.05) = nase data byla o generaci pozadu (Large 2)."
+      "2026-06-20": "Plne overeni vsech 6 provideru proti oficialnim cenikum (research armada): OpenAI/Anthropic/DeepSeek/Gemini ceny 1:1 OK; doplnen OpenAI+Gemini batchDiscount 0.5 a chybejici context windows; doplnen xAI cached 0.20; OPRAVENO Mistral Large -> Large 3 (2.00/6.00 -> 0.50/1.50, ctx 256k, cached 0.05) = nase data byla o generaci pozadu (Large 2).",
+      "2026-06-20-mistral-lineup": "Mistral lineup expanze 1 -> 11 modelu: pridano Medium 3.5, Magistral Medium/Small, Devstral 2/Small 2, Small 4, Codestral, Ministral 3 (3B/8B/14B). input/output/contextWindow/batch HIGH confidence (oficialni model cards docs.mistral.ai, 2026-06-20). cachedInputPerM=null: Mistral cached ceny nejsou per-model tabulkovane (jen dokumentovane pravidlo 10% input; per-model caching support neoveren) - drzime null krome overeneho Large 3. Korekce: Codestral=128k, Magistral M/S=128k (ne 256k). WATCH: Magistral Small mela na model card deprecation 2026-04-30 ale je stale na live ceniku -> hlida llm-facts-audit."
     },
     "last_reviewed": "2026-06-20"
   },
@@ -103,7 +104,17 @@
       "pricingUrl": "https://mistral.ai/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "mistral-large", "name": "Mistral Large 3", "tier": "frontier", "inputPerM": 0.50, "cachedInputPerM": 0.05, "outputPerM": 1.50, "batchDiscount": 0.5, "contextWindow": 256000 }
+        { "id": "mistral-large", "name": "Mistral Large 3", "tier": "frontier", "inputPerM": 0.50, "cachedInputPerM": 0.05, "outputPerM": 1.50, "batchDiscount": 0.5, "contextWindow": 256000 },
+        { "id": "mistral-medium-3-5", "name": "Mistral Medium 3.5", "tier": "frontier", "inputPerM": 1.50, "cachedInputPerM": null, "outputPerM": 7.50, "batchDiscount": 0.5, "contextWindow": 256000 },
+        { "id": "magistral-medium", "name": "Magistral Medium", "tier": "frontier", "inputPerM": 2.00, "cachedInputPerM": null, "outputPerM": 5.00, "batchDiscount": 0.5, "contextWindow": 128000 },
+        { "id": "devstral-2", "name": "Devstral 2", "tier": "frontier", "inputPerM": 0.40, "cachedInputPerM": null, "outputPerM": 2.00, "batchDiscount": 0.5, "contextWindow": 256000 },
+        { "id": "mistral-small-4", "name": "Mistral Small 4", "tier": "mid", "inputPerM": 0.10, "cachedInputPerM": null, "outputPerM": 0.30, "batchDiscount": 0.5, "contextWindow": 256000 },
+        { "id": "magistral-small", "name": "Magistral Small", "tier": "mid", "inputPerM": 0.50, "cachedInputPerM": null, "outputPerM": 1.50, "batchDiscount": 0.5, "contextWindow": 128000 },
+        { "id": "codestral", "name": "Codestral", "tier": "mid", "inputPerM": 0.30, "cachedInputPerM": null, "outputPerM": 0.90, "batchDiscount": 0.5, "contextWindow": 128000 },
+        { "id": "devstral-small-2", "name": "Devstral Small 2", "tier": "budget", "inputPerM": 0.10, "cachedInputPerM": null, "outputPerM": 0.30, "batchDiscount": 0.5, "contextWindow": 256000 },
+        { "id": "ministral-3-3b", "name": "Ministral 3 (3B)", "tier": "budget", "inputPerM": 0.10, "cachedInputPerM": null, "outputPerM": 0.10, "batchDiscount": 0.5, "contextWindow": 256000 },
+        { "id": "ministral-3-8b", "name": "Ministral 3 (8B)", "tier": "budget", "inputPerM": 0.15, "cachedInputPerM": null, "outputPerM": 0.15, "batchDiscount": 0.5, "contextWindow": 256000 },
+        { "id": "ministral-3-14b", "name": "Ministral 3 (14B)", "tier": "budget", "inputPerM": 0.20, "cachedInputPerM": null, "outputPerM": 0.20, "batchDiscount": 0.5, "contextWindow": 256000 }
       ]
     }
   ]

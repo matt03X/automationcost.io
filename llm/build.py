@@ -316,15 +316,7 @@ PROVIDER_PAGES = {
                           "we could verify — until it does, the calculator charges Grok models the "
                           "full input rate on every token."},
     "mistral": {"page": "mistral-pricing.html", "crumb": "mistral", "h1": "Mistral AI API Pricing",
-                "family": "Mistral", "vendor": "Mistral", "cross": "Mistral pricing", "nav": "Mistral", "domain": "mistral.ai",
-                "intro": "Mistral's public per-token list covers a single model — Mistral Large. "
-                         "Medium and Small have no public per-token price, so we track the one "
-                         "price we can verify against the official pricing FAQ.",
-                "cache_none": "Mistral publishes no cached-input price for Large — the calculator "
-                              "charges the full input rate. If that changes, it lands in the "
-                              '<a href="changelog.html">changelog</a>.',
-                "ctx_none": "We haven't verified an official context-window figure for Mistral "
-                            "Large yet — it's listed as “—” until we do."},
+                "family": "Mistral", "vendor": "Mistral", "cross": "Mistral pricing", "nav": "Mistral", "domain": "mistral.ai"},
 }
 
 
@@ -355,6 +347,17 @@ def nav_dropdown_html(data: dict, active_slug: str | None) -> str:
 
 def _join(names: list[str]) -> str:
     return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
+
+
+_NUM_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
+              7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"}
+
+
+def _count_word(n: int, cap: bool = False) -> str:
+    """Číslovka slovem (1–12), nad rozsah fallback na číslici — provider lineup
+    může mít >6 modelů (Mistral), takže pevná mapa {2..6} by spadla."""
+    w = _NUM_WORDS.get(n, str(n))
+    return w.capitalize() if cap else w
 
 
 def _usd(v) -> str:
@@ -389,7 +392,7 @@ def _intro(prov: dict, cfg: dict) -> str:
     if "intro" in cfg:
         return cfg["intro"]
     n = len(prov["models"])
-    count = {2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six"}[n]
+    count = _count_word(n, cap=True)
     tiers = [t for t in ("frontier", "mid", "budget") if any(m["tier"] == t for m in prov["models"])]
     tier_phrase = ("all three tiers" if len(tiers) == 3
                    else f"the {tiers[0]} and {tiers[1]} tiers" if len(tiers) == 2
@@ -530,7 +533,7 @@ def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template
         nc_sub = (f'The calculator puts {prov["models"][0]["name"]} next to the other {total - 1} '
                   f'models we track — at your volume, token mix and cache share.')
     else:
-        count = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six"}[n]
+        count = _count_word(n)
         nc_sub = (f'The calculator puts these {count} models next to the other {total - n} we '
                   f'track — at your volume, token mix and cache share.')
 
