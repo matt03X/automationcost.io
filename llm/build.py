@@ -20,9 +20,12 @@ import json
 import sys
 from pathlib import Path
 
+import build_seo  # programmatic long-tail SEO stránky (cheapest / alternatives / vs)
+
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "models.json"
 SITE = ROOT / "data" / "site.json"
+OVERRIDES = ROOT / "data" / "changelog-overrides.json"
 
 START = "/* DATA:MODELS:START */"
 END = "/* DATA:MODELS:END */"
@@ -171,11 +174,25 @@ def diff_models(old: dict, new: dict, date: str) -> list[dict]:
     return entries
 
 
+def _baseline_until() -> str | None:
+    """Datum (YYYY-MM-DD), do kterého se changelog/feed diffy ignorují — bootstrap
+    éra + opravy NAŠICH dat ≠ vendor změny (vzor automation changelog-overrides)."""
+    if OVERRIDES.exists():
+        try:
+            return json.loads(OVERRIDES.read_text(encoding="utf-8")).get("baseline_until")
+        except json.JSONDecodeError:
+            return None
+    return None
+
+
 def changelog_entries() -> tuple[list[dict], str | None]:
     hist = models_history()
     entries = []
     for (_, older), (date, newer) in zip(hist, hist[1:]):
         entries.extend(diff_models(older, newer, date))
+    baseline = _baseline_until()
+    if baseline:
+        entries = [e for e in entries if e["d"] > baseline]
     entries.sort(key=lambda e: e["d"], reverse=True)
     return entries, (hist[0][0] if hist else None)
 
@@ -502,6 +519,11 @@ def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template
         if p["slug"] != prov["slug"]:
             c = PROVIDER_PAGES[p["slug"]]
             cross.append(f'    <a href="{c["page"]}">{c["cross"]} →</a>')
+    # long-tail SEO stránky (build_seo.py) — interní linky z nejsilněji rankujících
+    # provider stránek na cheapest + alternatives téhož brandu
+    cross.append(f'    <a href="{build_seo.SEO[prov["slug"]]["alt"]}.html">'
+                 f'{build_seo.SEO[prov["slug"]]["brand"]} alternatives →</a>')
+    cross.append('    <a href="cheapest-llm-api.html">Cheapest LLM API →</a>')
     cross.append('    <a href="changelog.html">Price changelog →</a>')
 
     if n == 1:
@@ -667,6 +689,7 @@ def main() -> int:
                   if render_block(p.read_text(encoding="utf-8"), gen, s, e, w)
                   != p.read_text(encoding="utf-8")]
         dirty += build_provider_pages(data, site, check=True)
+        dirty += build_seo.build_seo_pages(data, site, sys.modules[__name__], check=True)
         if dirty:
             print(f"[llm build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python llm/build.py`.")
             return 1
@@ -683,6 +706,7 @@ def main() -> int:
     changed += build_feeds(site.get("domain", "wizardcost.com"),
                            site.get("base_path", "/llm"), clog_entries)
     changed += build_provider_pages(data, site, check=False)
+    changed += build_seo.build_seo_pages(data, site, sys.modules[__name__], check=False)
 
     domain = site.get("domain", "wizardcost.com")
     base_path = site.get("base_path", "/llm")

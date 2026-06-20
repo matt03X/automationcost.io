@@ -24,12 +24,14 @@
       "mistral_lineup": "Medium 3.5 / Small bez verejne ceny - v1 jen Large (overena z oficialni FAQ)"
     },
     "todo_v1_1": [
-      "OpenAI/Gemini batch ceny (taby na cenikove strance - scout musi kliknout)",
-      "xAI cached input cena (Prompt Caching doc)",
-      "context windows: zbyva gpt-5.5-pro, gpt-5.4-nano, Gemini rada, Mistral Large (model docs je neukazuji primo)",
-      "Gemini/OpenAI long-context prirazky do engine (zatim jen poznamka)"
+      "Mistral lineup expanze: vendor nove publikuje verejne per-token ceny pro cely lineup (Medium 3.5, Small 4, Magistral M/S, Codestral, Devstral 2/Small 2, Ministral 3x) - doplnit po overeni context windows + tier zarazeni (research 2026-06-20, HIGH confidence input/output, LOW na context)",
+      "Gemini/OpenAI long-context prirazky do engine (zatim jen poznamka; Gemini 3.1 Pro >200k $4/$18)",
+      "xAI batchDiscount: Batch API existuje (20-50% off dle x.ai), presny nasobitel neoveren - drzime null"
     ],
-    "last_reviewed": "2026-06-12"
+    "verification_log": {
+      "2026-06-20": "Plne overeni vsech 6 provideru proti oficialnim cenikum (research armada): OpenAI/Anthropic/DeepSeek/Gemini ceny 1:1 OK; doplnen OpenAI+Gemini batchDiscount 0.5 a chybejici context windows; doplnen xAI cached 0.20; OPRAVENO Mistral Large -> Large 3 (2.00/6.00 -> 0.50/1.50, ctx 256k, cached 0.05) = nase data byla o generaci pozadu (Large 2)."
+    },
+    "last_reviewed": "2026-06-20"
   },
   "providers": [
     {
@@ -39,11 +41,11 @@
       "pricingUrl": "https://platform.openai.com/docs/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "gpt-5.5", "name": "GPT-5.5", "tier": "frontier", "inputPerM": 5.00, "cachedInputPerM": 0.50, "outputPerM": 30.00, "batchDiscount": null, "contextWindow": 1000000, "longContextNote": "long context: $10 in / $1 cached / $45 out" },
-        { "id": "gpt-5.5-pro", "name": "GPT-5.5 Pro", "tier": "frontier", "inputPerM": 30.00, "cachedInputPerM": null, "outputPerM": 180.00, "batchDiscount": null, "contextWindow": null, "longContextNote": "long context: $60 in / $270 out" },
-        { "id": "gpt-5.4", "name": "GPT-5.4", "tier": "frontier", "inputPerM": 2.50, "cachedInputPerM": 0.25, "outputPerM": 15.00, "batchDiscount": null, "contextWindow": 1000000, "longContextNote": "long context: $5 in / $0.50 cached / $22.50 out" },
-        { "id": "gpt-5.4-mini", "name": "GPT-5.4 mini", "tier": "mid", "inputPerM": 0.75, "cachedInputPerM": 0.075, "outputPerM": 4.50, "batchDiscount": null, "contextWindow": 400000 },
-        { "id": "gpt-5.4-nano", "name": "GPT-5.4 nano", "tier": "budget", "inputPerM": 0.20, "cachedInputPerM": 0.02, "outputPerM": 1.25, "batchDiscount": null, "contextWindow": null }
+        { "id": "gpt-5.5", "name": "GPT-5.5", "tier": "frontier", "inputPerM": 5.00, "cachedInputPerM": 0.50, "outputPerM": 30.00, "batchDiscount": 0.5, "contextWindow": 1000000, "longContextNote": "long context: $10 in / $1 cached / $45 out" },
+        { "id": "gpt-5.5-pro", "name": "GPT-5.5 Pro", "tier": "frontier", "inputPerM": 30.00, "cachedInputPerM": null, "outputPerM": 180.00, "batchDiscount": 0.5, "contextWindow": 1000000, "longContextNote": "long context: $60 in / $270 out" },
+        { "id": "gpt-5.4", "name": "GPT-5.4", "tier": "frontier", "inputPerM": 2.50, "cachedInputPerM": 0.25, "outputPerM": 15.00, "batchDiscount": 0.5, "contextWindow": 1000000, "longContextNote": "long context: $5 in / $0.50 cached / $22.50 out" },
+        { "id": "gpt-5.4-mini", "name": "GPT-5.4 mini", "tier": "mid", "inputPerM": 0.75, "cachedInputPerM": 0.075, "outputPerM": 4.50, "batchDiscount": 0.5, "contextWindow": 400000 },
+        { "id": "gpt-5.4-nano", "name": "GPT-5.4 nano", "tier": "budget", "inputPerM": 0.20, "cachedInputPerM": 0.02, "outputPerM": 1.25, "batchDiscount": 0.5, "contextWindow": 400000 }
       ]
     },
     {
@@ -66,10 +68,10 @@
       "pricingUrl": "https://ai.google.dev/gemini-api/docs/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "gemini-3.1-pro-preview", "name": "Gemini 3.1 Pro Preview", "tier": "frontier", "inputPerM": 2.00, "cachedInputPerM": 0.20, "outputPerM": 12.00, "batchDiscount": null, "contextWindow": null, "longContextNote": "prompty >200k tokenu: $4 in / $18 out" },
-        { "id": "gemini-3.5-flash", "name": "Gemini 3.5 Flash", "tier": "mid", "inputPerM": 1.50, "cachedInputPerM": 0.15, "outputPerM": 9.00, "batchDiscount": null, "contextWindow": null },
-        { "id": "gemini-3-flash-preview", "name": "Gemini 3 Flash Preview", "tier": "mid", "inputPerM": 0.50, "cachedInputPerM": 0.05, "outputPerM": 3.00, "batchDiscount": null, "contextWindow": null },
-        { "id": "gemini-3.1-flash-lite", "name": "Gemini 3.1 Flash-Lite", "tier": "budget", "inputPerM": 0.25, "cachedInputPerM": 0.025, "outputPerM": 1.50, "batchDiscount": null, "contextWindow": null }
+        { "id": "gemini-3.1-pro-preview", "name": "Gemini 3.1 Pro Preview", "tier": "frontier", "inputPerM": 2.00, "cachedInputPerM": 0.20, "outputPerM": 12.00, "batchDiscount": 0.5, "contextWindow": 1000000, "longContextNote": "prompty >200k tokenu: $4 in / $18 out" },
+        { "id": "gemini-3.5-flash", "name": "Gemini 3.5 Flash", "tier": "mid", "inputPerM": 1.50, "cachedInputPerM": 0.15, "outputPerM": 9.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
+        { "id": "gemini-3-flash-preview", "name": "Gemini 3 Flash Preview", "tier": "mid", "inputPerM": 0.50, "cachedInputPerM": 0.05, "outputPerM": 3.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
+        { "id": "gemini-3.1-flash-lite", "name": "Gemini 3.1 Flash-Lite", "tier": "budget", "inputPerM": 0.25, "cachedInputPerM": 0.025, "outputPerM": 1.50, "batchDiscount": 0.5, "contextWindow": 1000000 }
       ]
     },
     {
@@ -90,8 +92,8 @@
       "pricingUrl": "https://docs.x.ai/docs/models",
       "hasAffiliate": false,
       "models": [
-        { "id": "grok-4.3", "name": "Grok 4.3", "tier": "frontier", "inputPerM": 1.25, "cachedInputPerM": null, "outputPerM": 2.50, "batchDiscount": null, "contextWindow": 1000000 },
-        { "id": "grok-build-0.1", "name": "Grok Build 0.1", "tier": "mid", "inputPerM": 1.00, "cachedInputPerM": null, "outputPerM": 2.00, "batchDiscount": null, "contextWindow": 256000 }
+        { "id": "grok-4.3", "name": "Grok 4.3", "tier": "frontier", "inputPerM": 1.25, "cachedInputPerM": 0.20, "outputPerM": 2.50, "batchDiscount": null, "contextWindow": 1000000 },
+        { "id": "grok-build-0.1", "name": "Grok Build 0.1", "tier": "mid", "inputPerM": 1.00, "cachedInputPerM": 0.20, "outputPerM": 2.00, "batchDiscount": null, "contextWindow": 256000 }
       ]
     },
     {
@@ -101,7 +103,7 @@
       "pricingUrl": "https://mistral.ai/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "mistral-large", "name": "Mistral Large", "tier": "frontier", "inputPerM": 2.00, "cachedInputPerM": null, "outputPerM": 6.00, "batchDiscount": 0.5, "contextWindow": null }
+        { "id": "mistral-large", "name": "Mistral Large 3", "tier": "frontier", "inputPerM": 0.50, "cachedInputPerM": 0.05, "outputPerM": 1.50, "batchDiscount": 0.5, "contextWindow": 256000 }
       ]
     }
   ]
