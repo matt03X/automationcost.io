@@ -6,5 +6,19 @@
   <description>Every dated price and limit change recorded across n8n, Make, Zapier, Pipedream and more — sourced from official pricing pages.</description>
   <language>en</language>
   <atom:link href="https://wizardcost.com/automation/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>n8n — Cloud Starter: $24/mo → $667/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-20-n8n-cloud-starter</guid>
+    <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price increase, verified 2026-06-20. Full history in the WizardCost price changelog.</description>
+  </item>
+  <item>
+    <title>n8n — Cloud Pro 50k: $144/mo → $821/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-20-n8n-cloud-pro-50k</guid>
+    <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price increase, verified 2026-06-20. Full history in the WizardCost price changelog.</description>
+  </item>
 </channel>
 </rss>

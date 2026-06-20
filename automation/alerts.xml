@@ -6,5 +6,19 @@
   <description>Price and plan-limit changes only — the feed behind WizardCost email alerts. Catalog updates (integration counts) live in the full changelog feed.</description>
   <language>en</language>
   <atom:link href="https://wizardcost.com/automation/alerts.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>n8n — Cloud Starter: $24/mo → $667/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-20-n8n-cloud-starter</guid>
+    <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 20, 2026</description>
+  </item>
+  <item>
+    <title>n8n — Cloud Pro 50k: $144/mo → $821/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-20-n8n-cloud-pro-50k</guid>
+    <pubDate>Sat, 20 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 20, 2026</description>
+  </item>
 </channel>
 </rss>
