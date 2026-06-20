@@ -403,6 +403,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
         <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
@@ -698,6 +699,7 @@ def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
         <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
