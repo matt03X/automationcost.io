@@ -1,0 +1,76 @@
+{
+  "_meta": {
+    "version": "0.1.0-draft",
+    "status": "DRAFT — podklad k rozhodnuti, NEzapojeno do llm/index.html. Schvalit (roleWeights + scoreWeights = editorial; tierScores/derivace = z models.json) pred jakymkoli wiringem do enginu.",
+    "last_reviewed": "2026-06-20",
+    "calibration": null,
+    "calibration_source": null,
+    "models_source": "data/models.json (verified 2026-06-20)",
+    "note": "Navrh skorovaciho modelu LLM recommendation enginu (ekvivalent automation/data/scoring-model.json). Doporuceni = pro vybrany use-case (role) najdi nejlepe sedici model. matchScore(model) = featureScore*scoreWeights.feature + priceScore*scoreWeights.price + frontierScore*scoreWeights.frontier. featureScore = roleWeights[role] . modelScore[dimensions] (skalarni soucin pres dimenze, BEZ price — cenu resi samostatny priceScore z enginu, stejne jako automation lowPrice). priceScore se POCITA ZA BEHU z enginu (canonical_monthly 'mo' / cost(m) na aktualnim profilu uzivatele), NENI v tomto souboru — soubor drzi jen VAHY a OVERITELNA per-tier/per-model skore. ZDROJ PRAVDY pro vahy je tento soubor; index.html by ho cetl pres marker /* DATA:SCORING:START|END */ generovany llm/build.py (zatim NEEXISTUJE marker ani render_scoring v llm/build.py — soucast wiringu).",
+    "scale": "Vsechny vahy a skore 0..1. roleWeights[role] davaji soucet ~1 pres skorovaci dimenze. lowPrice je REZERVOVANY (cenu resi priceScore z enginu, nepouziva se ve featureScore) — drzime ho jako vahu pro citelnost role profilu, presne jako automation.",
+    "dimensions": ["context", "caching", "cheapOutput", "batch", "frontier", "lowPrice"],
+    "dimension_definitions": {
+      "context": "Velikost context okna. Skore odvozeno z contextWindow (norm. log skalou: 200k~0.6, 256k~0.65, 400k~0.8, 1M~1.0). Overitelne z models.json.",
+      "caching": "Ekonomika promtp cachingu = jak levne je cached input vuci plnemu inputu (1 - cachedInputPerM/inputPerM). Vyssi = vyhodnejsi pro opakovany kontext. Model bez cache ceny (cached=null) = 0. Overitelne z models.json.",
+      "cheapOutput": "Levny output token. Skore = inverzni norm. outputPerM v ramci celeho lineupu (levnejsi output = vyssi skore). Pro role s velkym outputem (agents, reasoning). Overitelne z models.json.",
+      "batch": "Dostupnost batch API slevy. Skore = batchDiscount slevove procento (1 - batchDiscount); batch=null => 0. Pro async/bulk role. Overitelne z models.json.",
+      "frontier": "Schopnostni trida (tier). frontier=1.0, mid=0.6, budget=0.3. EDITORIAL tier z models.json (NE benchmark) — proto je to per-tier, ne vymysleny per-model skill skore.",
+      "lowPrice": "REZERVOVANE. Cenu resi priceScore pocitany z enginu na profilu uzivatele (mo / cost(m)). Drzime vahu pro citelnost, nepouziva se ve featureScore."
+    }
+  },
+
+  "scoreWeights": { "feature": 0.45, "price": 0.45, "frontier": 0.10 },
+
+  "roleWeights": {
+    "chatbot":        { "context": 0.15, "caching": 0.35, "cheapOutput": 0.10, "batch": 0.00, "frontier": 0.15, "lowPrice": 0.25 },
+    "coding":         { "context": 0.25, "caching": 0.20, "cheapOutput": 0.15, "batch": 0.00, "frontier": 0.30, "lowPrice": 0.10 },
+    "agents":         { "context": 0.20, "caching": 0.25, "cheapOutput": 0.20, "batch": 0.00, "frontier": 0.20, "lowPrice": 0.15 },
+    "rag":            { "context": 0.40, "caching": 0.20, "cheapOutput": 0.05, "batch": 0.05, "frontier": 0.10, "lowPrice": 0.20 },
+    "classification": { "context": 0.05, "caching": 0.05, "cheapOutput": 0.25, "batch": 0.25, "frontier": 0.05, "lowPrice": 0.35 },
+    "reasoning":      { "context": 0.20, "caching": 0.05, "cheapOutput": 0.20, "batch": 0.05, "frontier": 0.40, "lowPrice": 0.10 }
+  },
+
+  "role_meta": {
+    "chatbot":        { "label": "Chatbot / assistant", "engine_use_case": "chatbot", "why": "Dlouha historie v inputu, kratky output, vysoky cache hit — caching ekonomika a cena rozhoduji." },
+    "coding":         { "label": "Coding assistant", "engine_use_case": "agents", "why": "Velky kontext (repo), tool-use, dulezita schopnost (frontier) i delsi kontext." },
+    "agents":         { "label": "Autonomous agents", "engine_use_case": "agents", "why": "Mnoho retezenych volani, hodne tokenu in i out, cache na opakovany system/tool kontext." },
+    "rag":            { "label": "RAG / long-context", "engine_use_case": "rag", "why": "Retrievany kontext do inputu — velikost okna a cena inputu (cache) dominuji." },
+    "classification": { "label": "Bulk / cheap classification", "engine_use_case": "extraction", "why": "Objemove, async — batch sleva a levny output/cena rozhoduji, schopnost min." },
+    "reasoning":      { "label": "Reasoning-heavy", "engine_use_case": "agents", "why": "Slozite ulohy, dlouhe vystupy — frontier tier a levny output." }
+  },
+
+  "tierScores": {
+    "_note": "Default per-TIER skore pro dimenze, ktere nejsou odvoditelne per-model z modelScores (jen frontier je ciste tier). Per-model overitelne dimenze (context/caching/cheapOutput/batch) jsou v modelScores nize a maji prednost; tierScores slouzi jako fallback/sanity a pro frontier dimenzi.",
+    "frontier": { "frontier": 1.00 },
+    "mid":      { "frontier": 0.60 },
+    "budget":   { "frontier": 0.30 }
+  },
+
+  "modelScores": {
+    "_note": "Per-model skore odvozena z data/models.json (verified 2026-06-20). VSE pocitatelne ze ctyr overenych poli (contextWindow, cachedInputPerM/inputPerM, outputPerM, batchDiscount) + tier. Hodnoty zde jsou PREDPOCITANY DRAFT pro review; v cilovem wiringu by je build.py mohl dopocitat z models.json (jeden zdroj pravdy), aby se neduplikovaly. context: log-norm vuci 1M. caching: 1 - cached/input. cheapOutput: 1 - norm(log outputPerM) vuci lineupu (0.28..180). batch: 1 - batchDiscount (null=>0). frontier: z tieru.",
+
+    "gpt-5.5":                 { "context": 1.00, "caching": 0.90, "cheapOutput": 0.30, "batch": 0.50, "frontier": 1.00 },
+    "gpt-5.5-pro":             { "context": 1.00, "caching": 0.00, "cheapOutput": 0.05, "batch": 0.50, "frontier": 1.00 },
+    "gpt-5.4":                 { "context": 1.00, "caching": 0.90, "cheapOutput": 0.45, "batch": 0.50, "frontier": 1.00 },
+    "gpt-5.4-mini":            { "context": 0.80, "caching": 0.90, "cheapOutput": 0.70, "batch": 0.50, "frontier": 0.60 },
+    "gpt-5.4-nano":            { "context": 0.80, "caching": 0.90, "cheapOutput": 0.88, "batch": 0.50, "frontier": 0.30 },
+
+    "claude-fable-5":          { "context": 1.00, "caching": 0.90, "cheapOutput": 0.18, "batch": 0.50, "frontier": 1.00 },
+    "claude-opus-4-8":         { "context": 1.00, "caching": 0.90, "cheapOutput": 0.35, "batch": 0.50, "frontier": 1.00 },
+    "claude-sonnet-4-6":       { "context": 1.00, "caching": 0.90, "cheapOutput": 0.45, "batch": 0.50, "frontier": 0.60 },
+    "claude-haiku-4-5":        { "context": 0.60, "caching": 0.90, "cheapOutput": 0.68, "batch": 0.50, "frontier": 0.30 },
+
+    "gemini-3.1-pro-preview":  { "context": 1.00, "caching": 0.90, "cheapOutput": 0.50, "batch": 0.50, "frontier": 1.00 },
+    "gemini-3.5-flash":        { "context": 1.00, "caching": 0.90, "cheapOutput": 0.58, "batch": 0.50, "frontier": 0.60 },
+    "gemini-3-flash-preview":  { "context": 1.00, "caching": 0.90, "cheapOutput": 0.78, "batch": 0.50, "frontier": 0.60 },
+    "gemini-3.1-flash-lite":   { "context": 1.00, "caching": 0.90, "cheapOutput": 0.86, "batch": 0.50, "frontier": 0.30 },
+
+    "deepseek-v4-pro":         { "context": 1.00, "caching": 0.99, "cheapOutput": 0.92, "batch": 0.00, "frontier": 0.60 },
+    "deepseek-v4-flash":       { "context": 1.00, "caching": 0.98, "cheapOutput": 0.98, "batch": 0.00, "frontier": 0.30 },
+
+    "grok-4.3":                { "context": 1.00, "caching": 0.84, "cheapOutput": 0.82, "batch": 0.00, "frontier": 1.00 },
+    "grok-build-0.1":          { "context": 0.65, "caching": 0.80, "cheapOutput": 0.86, "batch": 0.00, "frontier": 0.60 },
+
+    "mistral-large":           { "context": 0.65, "caching": 0.90, "cheapOutput": 0.90, "batch": 0.50, "frontier": 1.00 }
+  }
+}

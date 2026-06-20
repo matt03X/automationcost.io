@@ -32,6 +32,14 @@ START = "/* DATA:MODELS:START */"
 END = "/* DATA:MODELS:END */"
 WARN = "/* generováno build.py z data/models.json — needituj ručně */"
 
+SC_START = "/* DATA:SCORING:START */"
+SC_END = "/* DATA:SCORING:END */"
+SC_WARN = "/* generováno build.py z data/scoring-model.json + models.json — needituj ručně */"
+SCORING = ROOT / "data" / "scoring-model.json"
+# engine USE_CASE (index.html USE_CASES) -> scoring role (scoring-model.json roleWeights)
+UC_ROLE = {"chatbot": "chatbot", "rag": "rag", "summarization": "rag",
+           "agents": "agents", "extraction": "classification"}
+
 AN_START = "<!-- ANALYTICS (build.py) -->"
 AN_END = "<!-- /ANALYTICS -->"
 GA_START = "<!-- GA4 (build.py) -->"
@@ -80,6 +88,41 @@ def render_models(data: dict) -> str:
     lines.append("];")
     lines.append(f'const MODELS_REVIEWED = {js_str(data["_meta"].get("last_reviewed") or "")};')
     return "\n".join(lines)
+
+
+def _model_dims(data: dict) -> dict:
+    """Per-model skóre dimenzí DOPOČÍTANÉ z models.json dle scoring-model.json
+    dimension_definitions (jeden zdroj pravdy, pokrývá celý lineup). Klíč = name
+    (shoda s MODELS blokem). lowPrice řeší priceScore v JS z cost() na profilu."""
+    import math
+    models = [m for p in data["providers"] for m in p["models"]]
+    outs = [m["outputPerM"] for m in models]
+    lo_o, hi_o = math.log10(min(outs)), math.log10(max(outs))
+    lo_c, hi_c = math.log10(128000), math.log10(1000000)
+    tierf = {"frontier": 1.0, "mid": 0.6, "budget": 0.3}
+    dims = {}
+    for m in models:
+        ctx = m.get("contextWindow")
+        context = 0.5 if not ctx else min(1.0, max(0.3, 0.5 + 0.5 * (math.log10(ctx) - lo_c) / (hi_c - lo_c)))
+        caching = (1 - m["cachedInputPerM"] / m["inputPerM"]) if m.get("cachedInputPerM") is not None else 0.0
+        cheap = 0.5 if hi_o == lo_o else min(1.0, max(0.0, 1 - (math.log10(m["outputPerM"]) - lo_o) / (hi_o - lo_o)))
+        batch = (1 - m["batchDiscount"]) if m.get("batchDiscount") is not None else 0.0
+        dims[m["name"]] = {"context": round(context, 3), "caching": round(caching, 3),
+                           "cheapOutput": round(cheap, 3), "batch": round(batch, 3),
+                           "frontier": tierf[m["tier"]]}
+    return dims
+
+
+def render_scoring(data: dict) -> str:
+    """const SCORE_W / ROLE_WEIGHTS / UC_ROLE / MODEL_SCORES pro recommendation
+    engine v index.html. Váhy = editorial (scoring-model.json), dimenze = z dat."""
+    sm = json.loads(SCORING.read_text(encoding="utf-8"))
+    return "\n".join([
+        "const SCORE_W = " + json.dumps(sm["scoreWeights"], ensure_ascii=False) + ";",
+        "const ROLE_WEIGHTS = " + json.dumps(sm["roleWeights"], ensure_ascii=False) + ";",
+        "const UC_ROLE = " + json.dumps(UC_ROLE, ensure_ascii=False) + ";",
+        "const MODEL_SCORES = " + json.dumps(_model_dims(data), ensure_ascii=False) + ";",
+    ])
 
 
 # ── changelog z git historie models.json (vzor automation/build.py) ─────────
@@ -767,6 +810,10 @@ def main() -> int:
     if clog_page.exists() and CLOG_START in clog_page.read_text(encoding="utf-8"):
         clog_jobs.append((clog_page, render_changelog(data, clog_entries, clog_genesis),
                           CLOG_START, CLOG_END, CLOG_WARN))
+    # scoring blok (recommendation engine) — jen index.html
+    idx = ROOT / "index.html"
+    if idx.exists() and SCORING.exists() and SC_START in idx.read_text(encoding="utf-8"):
+        clog_jobs.append((idx, render_scoring(data), SC_START, SC_END, SC_WARN))
 
     if args.check:
         dirty = [p.name for p in targets
