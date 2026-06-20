@@ -1,0 +1,85 @@
+# Denní cenový AUDIT + ALARM pro LLM API ceníky (subsite /llm/) — zrcadlo
+# price-audit.yml, ale pro LLM providery (NE automation nástroje).
+# Scrapuje 6 LLM ceníků (openai, anthropic, google/gemini, deepseek, xai/grok,
+# mistral), uloží snapshot do llm/data/audit/<provider>/<datum>.{json,html.gz},
+# zdiffuje proti předchozímu dni → changes-<datum>.json + price-history.jsonl.
+# Mail ownerovi (job fail) přijde JEN při REÁLNÉ změně LLM ceny (changeCount > 0)
+# nebo tvrdé chybě scrape — ne při bot-wallu (ten je tolerován jako WARN).
+# Audit = EVIDENCE, ne zdroj pravdy: llm/data/models.json updatuje člověk po revizi.
+name: llm-price-audit
+on:
+  schedule:
+    - cron: "45 6 * * *"   # denně 06:45 UTC (offset od automation price-audit 06:30, ať neběží naráz)
+  workflow_dispatch:
+permissions:
+  contents: write          # commit LLM snapshotů zpět do repa
+concurrency:
+  group: llm-price-audit
+  cancel-in-progress: false
+jobs:
+  llm-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright (mimo repo checkout)
+        run: |
+          mkdir -p /tmp/pw
+          cd /tmp/pw
+          npm init -y > /dev/null
+          npm install playwright@1 > /dev/null
+          ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Spustit LLM cenový audit (exit 1 jen při reálné změně/tvrdé chybě; bot-wall = WARN)
+        run: NODE_PATH=/tmp/pw/node_modules node scripts/llm-price-audit.js
+      - name: Commit LLM snapshotů a změn (vždy — ať se důkazy uloží i při změně)
+        if: always()
+        run: |
+          git config user.name  "llm-price-audit-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add llm/data/audit
+          if git diff --cached --quiet; then
+            echo "Žádné nové LLM audit soubory — nic k commitu."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            git commit -m "audit(llm): cenové snapshoty LLM ceníků ${DATE}"
+            git push
+          fi
+      - name: ALARM — fail (= mail ownerovi) jen při REÁLNÉ změně LLM ceny
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          # sečti changeCount ze všech per-provider changes-<datum>.json
+          TOTAL=$(D="$DATE" node -e "
+            const fs=require('fs'),path=require('path');
+            const root='llm/data/audit'; let total=0;
+            try {
+              for (const p of fs.readdirSync(root)) {
+                const f=path.join(root,p,'changes-'+process.env.D+'.json');
+                if (fs.existsSync(f)) { try { total += (require('./'+f).changeCount||0); } catch {} }
+              }
+            } catch {}
+            console.log(total);
+          " 2>/dev/null || echo 0)
+          echo "Detekováno LLM cenových změn: ${TOTAL}"
+          if [ "$TOTAL" -gt 0 ]; then
+            echo "## ⚠ Změna v LLM ceníku detekována — ${TOTAL} změn" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**Co přesně se mění:**" >> "$GITHUB_STEP_SUMMARY"
+            D="$DATE" node -e "
+              const fs=require('fs'),path=require('path');
+              const root='llm/data/audit';
+              try {
+                for (const p of fs.readdirSync(root)) {
+                  const f=path.join(root,p,'changes-'+process.env.D+'.json');
+                  if (fs.existsSync(f)) { try { (require('./'+f).changes||[]).forEach(c=>console.log('- '+(c.desc||JSON.stringify(c)))); } catch {} }
+                }
+              } catch {}
+            " >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Další krok: ověřit proti oficiálnímu ceníku (calc-test/scout-llm-pricing.js <provider>) → revize llm/data/models.json." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "LLM ceny beze změny — žádný alarm."

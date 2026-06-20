@@ -1,0 +1,86 @@
+# Denní AUDIT NE-cenových faktů LLM modelů (subsite /llm/) — sourozenec
+# llm-price-audit.yml: zatímco price-audit hlídá CENY, tohle hlídá non-price fakta
+# (contextWindow, caching support, batch support, max output tokens, deprecation/EOL),
+# diffuje proti llm/data/models.json a ukládá snapshot do
+# llm/data/facts-audit/<provider>/<datum>.{json,html.gz} → changes-<datum>.json +
+# facts-history.jsonl.
+# Mail ownerovi (job fail) přijde JEN při REÁLNÉ změně faktu (changeCount > 0) nebo
+# tvrdé chybě scrape — ne při bot-wallu (ten je tolerován jako WARN).
+# Audit = EVIDENCE, ne zdroj pravdy: llm/data/models.json updatuje člověk po revizi.
+name: llm-facts-audit
+on:
+  schedule:
+    - cron: "45 7 * * *"   # denně 07:45 UTC (offset: LLM price-audit 06:45, automation facts-audit 07:30)
+  workflow_dispatch:
+permissions:
+  contents: write          # commit LLM facts snapshotů zpět do repa
+concurrency:
+  group: llm-facts-audit
+  cancel-in-progress: false
+jobs:
+  llm-facts-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright (mimo repo checkout)
+        run: |
+          mkdir -p /tmp/pw
+          cd /tmp/pw
+          npm init -y > /dev/null
+          npm install playwright@1 > /dev/null
+          ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Spustit LLM facts audit (exit 1 jen při reálné změně faktu/tvrdé chybě; bot-wall = WARN)
+        run: NODE_PATH=/tmp/pw/node_modules node scripts/llm-facts-audit.js
+      - name: Commit LLM facts snapshotů a změn (vždy — ať se důkazy uloží i při změně)
+        if: always()
+        run: |
+          git config user.name  "llm-facts-audit-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add llm/data/facts-audit
+          if git diff --cached --quiet; then
+            echo "Žádné nové LLM facts soubory — nic k commitu."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            git commit -m "audit(llm-facts): non-price snapshoty LLM modelů ${DATE}"
+            git push
+          fi
+      - name: ALARM — fail (= mail ownerovi) jen při REÁLNÉ změně faktu LLM modelu
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          # sečti changeCount ze všech per-provider changes-<datum>.json
+          TOTAL=$(D="$DATE" node -e "
+            const fs=require('fs'),path=require('path');
+            const root='llm/data/facts-audit'; let total=0;
+            try {
+              for (const p of fs.readdirSync(root)) {
+                const f=path.join(root,p,'changes-'+process.env.D+'.json');
+                if (fs.existsSync(f)) { try { total += (require('./'+f).changeCount||0); } catch {} }
+              }
+            } catch {}
+            console.log(total);
+          " 2>/dev/null || echo 0)
+          echo "Detekováno LLM faktických změn: ${TOTAL}"
+          if [ "$TOTAL" -gt 0 ]; then
+            echo "## ⚠ Změna NE-cenového faktu LLM modelu detekována — ${TOTAL} změn" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**Co přesně se mění:**" >> "$GITHUB_STEP_SUMMARY"
+            D="$DATE" node -e "
+              const fs=require('fs'),path=require('path');
+              const root='llm/data/facts-audit';
+              try {
+                for (const p of fs.readdirSync(root)) {
+                  const f=path.join(root,p,'changes-'+process.env.D+'.json');
+                  if (fs.existsSync(f)) { try { (require('./'+f).changes||[]).forEach(c=>console.log('- '+(c.desc||JSON.stringify(c)))); } catch {} }
+                }
+              } catch {}
+            " >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Další krok: ověřit proti oficiálním model docs/pricing → revize llm/data/models.json (contextWindow / caching / batch / maxOutput / deprecation)." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "LLM fakta beze změny — žádný alarm."

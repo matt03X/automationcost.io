@@ -250,8 +250,10 @@ _LIMITS_CSS = _BASE_HEAD_CSS + """
 # ---------------------------------------------------------------------------
 
 def _head(title: str, desc: str, canonical: str, css: str, ld_json: str | None,
-          prefix: str) -> str:
+          prefix: str, page_ld: str = "") -> str:
     ld = f'  <script type="application/ld+json">\n{ld_json}\n  </script>\n' if ld_json else ""
+    if page_ld:
+        ld += f'  <script type="application/ld+json">\n{page_ld}\n  </script>\n'
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -308,6 +310,7 @@ def _nav(active: str, month_year: str) -> str:
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
         <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
@@ -654,7 +657,10 @@ def _render_tools_html(tools: list[dict], variants: list[dict], site: dict,
 </div>
 """
 
-    return (_head(title, desc, canonical, css, ld, prefix)
+    from build_pricing import _page_graph_ld, _iso_date  # GEO graf (freshness + identita)
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             title.replace("&amp;", "&"), desc, _iso_date(tools_meta))
+    return (_head(title, desc, canonical, css, ld, prefix, page_ld=page_ld)
             + _nav("tools", month_year)
             + body
             + _footer(month_year)
@@ -849,7 +855,10 @@ def _render_limits_html(tools: list[dict], variants: list[dict], site: dict,
 </div>
 """
 
-    return (_head(title, desc, canonical, css, faq_ld, prefix)
+    from build_pricing import _page_graph_ld, _iso_date  # GEO graf (freshness + identita)
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             title.replace("&amp;", "&"), desc, _iso_date(tools_meta))
+    return (_head(title, desc, canonical, css, faq_ld, prefix, page_ld=page_ld)
             + _nav("limits", month_year)
             + body
             + _footer(month_year)

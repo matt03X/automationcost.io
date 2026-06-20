@@ -567,7 +567,16 @@ def build_robots(domain: str, base_path: str, extra_sitemaps: list[str] | None =
         return False
     sitemaps = [f"https://{domain}/sitemap.xml", *(extra_sitemaps or [])]
     lines = "\n".join(f"Sitemap: {s}" for s in sitemaps)
-    txt = f"User-agent: *\nAllow: /\n\n{lines}\n"
+    # Explicit allow for AI search/citation crawlers. For a citation-funded
+    # comparison site, being read by LLMs IS the distribution — so we opt in to
+    # both search bots and training bots (GEO playbook A10). The wildcard already
+    # allows them; the named blocks make intent legible and survive a future
+    # tighten of the `*` group.
+    ai_bots = ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "Claude-User",
+               "PerplexityBot", "Perplexity-User", "Google-Extended", "Bingbot",
+               "Applebot-Extended", "CCBot"]
+    ai_allow = "\n\n".join(f"User-agent: {b}\nAllow: /" for b in ai_bots)
+    txt = f"User-agent: *\nAllow: /\n\n{ai_allow}\n\n{lines}\n"
     out = ROOT / "robots.txt"
     if not out.exists() or out.read_text(encoding="utf-8") != txt:
         out.write_text(txt, encoding="utf-8")

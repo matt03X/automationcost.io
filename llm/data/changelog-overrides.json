@@ -1,0 +1,4 @@
+{
+  "_meta": "Baseline guard pro LLM changelog/feedy (vzor automation/data/changelog-overrides.json). Diffy data/models.json s datem commitu <= baseline_until se NEzobrazuji v changelog.html ani v feed.xml/alerts.xml: jde o bootstrap-eru + opravy NASICH dat (napr. backfill batch/context, oprava Mistral Large 2 -> Large 3 z 2026-06-20), NE o realne vendor cenove zmeny. Skutecne vendor zmeny (zachycene dennim price-audit cronem) maji datum > baseline a do changelogu patri. Baseline posouvat JEN s auditnim dukazem.",
+  "baseline_until": "2026-06-20"
+}

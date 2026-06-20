@@ -1,0 +1,52 @@
+# IndexNow — push changed page URLs to Bing/IndexNow on every content deploy.
+# ChatGPT Search runs on the Bing index, so IndexNow is the cheapest path to
+# fast (re)indexing → AI citations (GEO playbook A10 #4). The key is PUBLIC by
+# design (verified via the key file at the domain root); no secret needed.
+# Failure never breaks the site — it only warns.
+name: indexnow
+on:
+  push:
+    branches: [master]
+    paths:
+      - "**.html"
+permissions:
+  contents: read
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Submit changed URLs to IndexNow
+        env:
+          KEY: 16c5be48bd1ae996a1a761d4ca077ea8
+          HOST: wizardcost.com
+        run: |
+          base="${{ github.event.before }}"
+          if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then
+            base="${{ github.sha }}~1"
+          fi
+          changed=$(git diff --name-only "$base" "${{ github.sha }}" -- '*.html' 2>/dev/null || true)
+          if [ -z "$changed" ]; then
+            echo "No HTML changes in this push — nothing to submit."
+            exit 0
+          fi
+          urls=""
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            u="https://${HOST}/${f}"
+            u="${u%index.html}"   # pretty directory URLs (…/automation/index.html → …/automation/)
+            urls="${urls:+$urls,}\"$u\""
+          done <<< "$changed"
+          payload="{\"host\":\"${HOST}\",\"key\":\"${KEY}\",\"keyLocation\":\"https://${HOST}/${KEY}.txt\",\"urlList\":[${urls}]}"
+          echo "Submitting to IndexNow:"; echo "$payload"
+          code=$(curl -sS -o /dev/null -w "%{http_code}" -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" -d "$payload" || echo "000")
+          echo "IndexNow HTTP $code"
+          if [ "$code" != "200" ] && [ "$code" != "202" ]; then
+            echo "::warning::IndexNow returned $code (non-fatal)"
+          fi

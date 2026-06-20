@@ -14,6 +14,94 @@
   <meta property="og:image" content="https://wizardcost.com/llm/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://wizardcost.com/llm/og-image.png">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does xAI offer a batch discount?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "xAI documents a Batch API, but the exact discount is not published in a form we can verify, so we hold no batch figure and the estimate does not apply one. Your async cost may be lower than the on-demand figure shown."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does Grok's caching work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Our data lists a flat cached-input rate across the Grok tiers rather than one that scales with each model's standard rate. The exact figure is in the per-model table above."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://wizardcost.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "LLM API pricing",
+      "item": "https://wizardcost.com/llm/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "xAI Grok API Pricing",
+      "item": "https://wizardcost.com/llm/grok-pricing.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://wizardcost.com/#org",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "description": "Independent, data-driven software pricing comparisons. Prices verified by hand from official vendor pricing pages and dated in a public changelog."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://wizardcost.com/#website",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://wizardcost.com/llm/grok-pricing.html#webpage",
+      "url": "https://wizardcost.com/llm/grok-pricing.html",
+      "name": "xAI Grok API Pricing",
+      "description": "Grok 4.3 and Grok Build 0.1 — xAI API prices per 1M tokens, prompt caching and batch discounts, verified June 2026.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://wizardcost.com/#website"
+      },
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      },
+      "dateModified": "2026-06-20"
+    }
+  ]
+}
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -117,6 +205,23 @@
     .price-alerts.subscribed .pa-form, .price-alerts.subscribed .pa-note { display: none; }
     @media (max-width: 520px) { .price-alerts { padding: 20px 18px; } .pa-form { flex-direction: column; } .pa-btn { width: 100%; min-height: 44px; } }
 
+    .warn-box { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.32); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 13.5px; color: var(--text2); margin-top: 16px; line-height: 1.6; }
+    .warn-box strong { color: #f5a623; }
+    .warn-box b { color: var(--text); }
+    .ed-section { margin-top: 40px; }
+    .sec-h2 { font-family: var(--display); font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .worth-table td { text-align: left; font-family: var(--font); white-space: normal; }
+    .worth-table th { text-align: left; }
+    .worth-table td:last-child { font-weight: 700; }
+    .tag-yes { color: var(--green); } .tag-warn { color: #f5a623; } .tag-no { color: var(--muted); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; background: none; border: 0; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 700; text-align: left; padding: 16px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .faq-q:hover { color: var(--accent-br); }
+    .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.7; padding-bottom: 16px; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-a a { color: var(--link); text-decoration: underline; }
     footer { border-top: 1px solid var(--border); margin-top: 72px; padding: 28px 0 48px; }
     footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding-bottom: 0; font-size: 13px; color: var(--muted); }
   </style>
@@ -158,8 +263,9 @@
 <section class="page-head wrap" data-screen-label="Provider head">
   <div class="crumb"><a href="index.html">LLM</a> / providers / grok</div>
   <h1>xAI Grok API Pricing</h1>
-  <p>Every Grok model we track, at official per-token rates — verified by hand against xAI's model docs. Two models across the frontier and mid tiers.</p>
+  <p>xAI's Grok models offer a flagship tier with a large context window and a low output-to-input price ratio, plus a flat cached-input rate, which can suit output-heavy workloads.</p>
   <div class="verify-line">Prices verified June 2026 · changes logged in the <a href="changelog.html">changelog</a></div>
+  <div class="warn-box"><strong>Heads up:</strong> xAI publishes a Batch API but does not publish the exact discount multiplier, so we hold no batch figure and the estimate does not assume one — your real async cost may be lower than shown. The cached-input rate is also flat across tiers rather than scaling with the standard rate.</div>
 </section>
 
 <section class="wrap" data-screen-label="Provider table">
@@ -171,11 +277,11 @@
       <tbody>
         <tr>
           <td><span class="m-name">Grok 4.3</span><span class="m-tier">FRONTIER</span></td>
-          <td>$1.25</td><td>$2.50</td><td>—</td><td>—</td><td>$325</td>
+          <td>$1.25</td><td>$2.50</td><td>$0.20</td><td>—</td><td>$178</td>
         </tr>
         <tr>
           <td><span class="m-name">Grok Build 0.1</span><span class="m-tier">MID</span></td>
-          <td>$1</td><td>$2</td><td>—</td><td>—</td><td class="best">$260</td>
+          <td>$1</td><td>$2</td><td>$0.20</td><td>—</td><td class="best">$148</td>
         </tr>
       </tbody>
     </table>
@@ -185,7 +291,7 @@
   <div class="notes" data-screen-label="Provider notes">
     <div class="note-card">
       <h3>Prompt caching</h3>
-      <p>xAI documents prompt caching but hasn't published a cached-input price we could verify — until it does, the calculator charges Grok models the full input rate on every token.</p>
+      <p>Cache pricing differs per model: Grok 4.3 at <b>$0.20/1M</b> (16% of input); Grok Build 0.1 at <b>$0.20/1M</b> (20% of input). The <a href="index.html">calculator</a> models this with your cache share.</p>
     </div>
     <div class="note-card">
       <h3>Batch / async</h3>
@@ -197,27 +303,53 @@
     </div>
   </div>
 
+  <div class="ed-section" data-screen-label="When worth it">
+    <h2 class="sec-h2">When Grok is worth it</h2>
+    <div class="tbl-card"><table class="worth-table">
+      <thead><tr><th>Use case</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Output-heavy workloads</td><td class="tag-yes">Grok's output rate is relatively low versus input</td></tr>
+        <tr><td>Large context within a single request</td><td class="tag-yes">The flagship tier carries a large window</td></tr>
+        <tr><td>You need a confirmed batch discount up front</td><td class="tag-warn">The exact batch multiplier is unpublished</td></tr>
+      </tbody>
+    </table></div>
+  </div>
   <a class="next-cta" href="index.html">
     <div>
       <div class="nc-title">Is Grok the right price for your workload?</div>
-      <div class="nc-sub">The calculator puts these two models next to the other 16 we track — at your volume, token mix and cache share.</div>
+      <div class="nc-sub">The calculator puts these two models next to the other 26 we track — at your volume, token mix and cache share.</div>
     </div>
     <span class="nc-arrow">Open calculator
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
     </span>
   </a>
 
+  <div class="ed-section" data-screen-label="FAQ">
+    <h2 class="sec-h2">Frequently asked questions</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Does xAI offer a batch discount?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">xAI documents a Batch API, but the exact discount is not published in a form we can verify, so we hold no batch figure and the estimate does not apply one. Your async cost may be lower than the on-demand figure shown.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How does Grok's caching work?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Our data lists a flat cached-input rate across the Grok tiers rather than one that scales with each model's standard rate. The exact figure is in the per-model table above.</div>
+      </div>
+    </div>
+  </div>
   <!-- EMAILCAP:HTML:START — LLM varianta (skupina price-drop-alerts-llm; action = EMAILCAP_ACTION_LLM v build.py) -->
   <!-- price-drop alerts e-mail form disabled 2026-06-16 — compliance: no e-mail collection while the project stays faceless (no MailerLite signup, no consent banner needed). Previous markup is in git history; re-enable by restoring the price-alerts section + EMAILCAP_ACTION_LLM. -->
   <!-- EMAILCAP:HTML:END -->
 
   <div class="cross" data-screen-label="Cross-links">
-    <a href="compare.html">All 18 models →</a>
+    <a href="compare.html">All 28 models →</a>
     <a href="openai-pricing.html">OpenAI pricing →</a>
     <a href="anthropic-pricing.html">Anthropic pricing →</a>
     <a href="gemini-pricing.html">Gemini pricing →</a>
     <a href="deepseek-pricing.html">DeepSeek pricing →</a>
     <a href="mistral-pricing.html">Mistral pricing →</a>
+    <a href="grok-alternatives.html">Grok alternatives →</a>
+    <a href="cheapest-llm-api.html">Cheapest LLM API →</a>
     <a href="changelog.html">Price changelog →</a>
   </div>
 </section>
@@ -267,5 +399,6 @@
 })();
 /* ── EMAILCAP:JS:END ── */
 </script>
+<script>function toggleFaq(el){el.closest(".faq-item").classList.toggle("open");}</script>
 </body>
 </html>

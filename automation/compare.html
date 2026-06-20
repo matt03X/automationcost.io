@@ -15,6 +15,46 @@
   <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.png">
+  <!-- GEO:LD:START --> 
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://wizardcost.com/#org",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "description": "Independent, data-driven software pricing comparisons. Prices verified by hand from official vendor pricing pages and dated in a public changelog."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://wizardcost.com/#website",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://wizardcost.com/automation/compare.html#webpage",
+      "url": "https://wizardcost.com/automation/compare.html",
+      "name": "Compare Automation Tools — AutomationCost.io",
+      "description": "Compare automation tools side by side — pricing, limits, features. n8n vs Make vs Pipedream vs Zapier and more.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://wizardcost.com/#website"
+      },
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      },
+      "dateModified": "2026-06-15"
+    }
+  ]
+}
+  </script>
+  <!-- GEO:LD:END -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -510,6 +550,7 @@
         <a href="index.html" data-i18n="nav.home">AutomationCost home</a>
         <a href="tools.html" data-i18n="nav.tools">Tools</a>
         <a href="changelog.html" data-i18n="nav.changelog">Changelog</a>
+        <a href="price-history.html" data-i18n="nav.price_history">Price history</a>
         <div class="ac-dd-sep" data-i18n="nav.sec_pricing_guides">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
@@ -729,17 +770,17 @@ const TOOLS = {
     hasAffiliate: false,
     plans: [
       { name: "Cloud Starter", monthlyUsd: 27.53, opsIncluded: 2500, workflowLimit: Infinity, annualUsd: 22.94, overage: null },
-      { name: "Cloud Pro 10k", monthlyUsd: 68.83, opsIncluded: 10000, workflowLimit: Infinity, annualUsd: 57.36, overage: null },
-      { name: "Cloud Pro 50k", monthlyUsd: 165.18, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 137.65, overage: null },
-      { name: "Business 40k", monthlyUsd: 917.68, opsIncluded: 40000, workflowLimit: Infinity, annualUsd: 765.12, overage: null },
-      { name: "Business 50k", monthlyUsd: 1129.89, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 941.77, overage: null },
-      { name: "Business 75k", monthlyUsd: 1670.18, opsIncluded: 75000, workflowLimit: Infinity, annualUsd: 1391.43, overage: null },
-      { name: "Business 100k", monthlyUsd: 1979.89, opsIncluded: 100000, workflowLimit: Infinity, annualUsd: 1649.53, overage: null },
-      { name: "Business 150k", monthlyUsd: 2511.0, opsIncluded: 150000, workflowLimit: Infinity, annualUsd: 2092.31, overage: null },
-      { name: "Business 200k", monthlyUsd: 3027.2, opsIncluded: 200000, workflowLimit: Infinity, annualUsd: 2522.47, overage: null },
-      { name: "Business 300k", monthlyUsd: 4028.62, opsIncluded: 300000, workflowLimit: Infinity, annualUsd: 3357.56, overage: null },
-      { name: "Business 400k", monthlyUsd: 5025.45, opsIncluded: 400000, workflowLimit: Infinity, annualUsd: 4188.06, overage: null },
-      { name: "Business 500k", monthlyUsd: 6016.54, opsIncluded: 500000, workflowLimit: Infinity, annualUsd: 5013.97, overage: null },
+      { name: "Cloud Pro 10k", monthlyUsd: 68.81, opsIncluded: 10000, workflowLimit: Infinity, annualUsd: 57.34, overage: null },
+      { name: "Cloud Pro 50k", monthlyUsd: 165.15, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 137.63, overage: null },
+      { name: "Business 40k", monthlyUsd: 917.52, opsIncluded: 40000, workflowLimit: Infinity, annualUsd: 764.98, overage: null },
+      { name: "Business 50k", monthlyUsd: 1129.7, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 941.6, overage: null },
+      { name: "Business 75k", monthlyUsd: 1669.89, opsIncluded: 75000, workflowLimit: Infinity, annualUsd: 1391.19, overage: null },
+      { name: "Business 100k", monthlyUsd: 1979.55, opsIncluded: 100000, workflowLimit: Infinity, annualUsd: 1649.24, overage: null },
+      { name: "Business 150k", monthlyUsd: 2510.56, opsIncluded: 150000, workflowLimit: Infinity, annualUsd: 2091.95, overage: null },
+      { name: "Business 200k", monthlyUsd: 3026.67, opsIncluded: 200000, workflowLimit: Infinity, annualUsd: 2522.03, overage: null },
+      { name: "Business 300k", monthlyUsd: 4027.91, opsIncluded: 300000, workflowLimit: Infinity, annualUsd: 3356.98, overage: null },
+      { name: "Business 400k", monthlyUsd: 5024.57, opsIncluded: 400000, workflowLimit: Infinity, annualUsd: 4187.33, overage: null },
+      { name: "Business 500k", monthlyUsd: 6015.49, opsIncluded: 500000, workflowLimit: Infinity, annualUsd: 5013.1, overage: null },
       { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ],
     overage: null,

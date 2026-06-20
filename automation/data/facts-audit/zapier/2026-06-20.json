@@ -1,0 +1,16 @@
+{
+  "date": "2026-06-20",
+  "vendor": "zapier",
+  "url": "https://zapier.com/apps",
+  "integrations": 9000,
+  "openSourceSignal": false,
+  "evidence": "9,000+ apps",
+  "freeTier": {
+    "snippets": [
+      "100 tasks"
+    ],
+    "numbers": [
+      100
+    ]
+  }
+}

@@ -90,6 +90,58 @@
   ]
 }
   </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://wizardcost.com/#org",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "description": "Independent, data-driven software pricing comparisons. Prices verified by hand from official vendor pricing pages and dated in a public changelog."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://wizardcost.com/#website",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://wizardcost.com/automation/n8n-pricing.html#webpage",
+      "url": "https://wizardcost.com/automation/n8n-pricing.html",
+      "name": "n8n Pricing 2026 — Plans, Run Limits & Real Cost",
+      "description": "n8n pricing 2026: $8 at 1,000 runs, $25 at 20,000 runs, $45 at 100,000 runs. Real plans, self-host options and how n8n compares on cost per run.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://wizardcost.com/#website"
+      },
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      },
+      "dateModified": "2026-06-15",
+      "about": {
+        "@type": "SoftwareApplication",
+        "name": "n8n",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://n8n.io",
+        "offers": {
+          "@type": "AggregateOffer",
+          "priceCurrency": "USD",
+          "lowPrice": 8,
+          "highPrice": 45,
+          "offerCount": 14
+        }
+      }
+    }
+  ]
+}
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -232,6 +284,7 @@
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
         <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
@@ -273,6 +326,7 @@
       <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
     </div>
     <div class="hero-trust">Prices verified June 2026 · taken from n8n's official pricing · all figures per <strong>run</strong></div>
+    <p class="hero-facts" style="margin-top:14px;font-size:0.95rem;opacity:0.88;line-height:1.6;max-width:680px;">As of June 2026, the cheapest plan we track for n8n costs $8 per month at 1,000 runs and $45 at 100,000 runs (cheapest qualifying plan, 3-step workflows, monthly billing), from n8n's official pricing, verified by hand. Self-hosting is free open-source software — the figure is the server it runs on, not a tool fee.</p>
   </div>
 
   <div class="warning-box"><strong>Heads up:</strong> n8n's self-hosted edition is free open-source software — the figures below for VPS and own-server are <em>infrastructure</em> cost (server, database, electricity), not a licence fee. They assume light workflows and exclude your own time to run it.</div>
@@ -298,8 +352,8 @@
       </div>
       <div class="plan-card">
         <div class="plan-name">5,000 runs</div>
-        <div class="plan-price"><span class="price-num" data-month="$68.83" data-annual="$57.36">$68.83</span><span class="price-suffix">/mo</span></div>
-        <div class="plan-annual" data-month="" data-annual="$57.36/mo billed annually — save 17%"></div>
+        <div class="plan-price"><span class="price-num" data-month="$68.81" data-annual="$57.34">$68.81</span><span class="price-suffix">/mo</span></div>
+        <div class="plan-annual" data-month="" data-annual="$57.34/mo billed annually — save 17%"></div>
         <ul class="plan-detail">
           <li>5,000 runs / month</li>
           <li>Cloud Pro 10k</li>
@@ -307,8 +361,8 @@
       </div>
       <div class="plan-card">
         <div class="plan-name">20,000 runs</div>
-        <div class="plan-price"><span class="price-num" data-month="$165.18" data-annual="$137.65">$165.18</span><span class="price-suffix">/mo</span></div>
-        <div class="plan-annual" data-month="" data-annual="$137.65/mo billed annually — save 17%"></div>
+        <div class="plan-price"><span class="price-num" data-month="$165.15" data-annual="$137.63">$165.15</span><span class="price-suffix">/mo</span></div>
+        <div class="plan-annual" data-month="" data-annual="$137.63/mo billed annually — save 17%"></div>
         <ul class="plan-detail">
           <li>20,000 runs / month</li>
           <li>Cloud Pro 50k</li>
@@ -316,8 +370,8 @@
       </div>
       <div class="plan-card">
         <div class="plan-name">100,000 runs</div>
-        <div class="plan-price"><span class="price-num" data-month="$1,979.89" data-annual="$1,649.53">$1,979.89</span><span class="price-suffix">/mo</span></div>
-        <div class="plan-annual" data-month="" data-annual="$1,649.53/mo billed annually — save 17%"></div>
+        <div class="plan-price"><span class="price-num" data-month="$1,979.55" data-annual="$1,649.24">$1,979.55</span><span class="price-suffix">/mo</span></div>
+        <div class="plan-annual" data-month="" data-annual="$1,649.24/mo billed annually — save 17%"></div>
         <ul class="plan-detail">
           <li>100,000 runs / month</li>
           <li>Business 100k</li>

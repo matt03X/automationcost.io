@@ -90,6 +90,58 @@
   ]
 }
   </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://wizardcost.com/#org",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "description": "Independent, data-driven software pricing comparisons. Prices verified by hand from official vendor pricing pages and dated in a public changelog."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://wizardcost.com/#website",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://wizardcost.com/automation/make-pricing.html#webpage",
+      "url": "https://wizardcost.com/automation/make-pricing.html",
+      "name": "Make Pricing 2026 — Plans, Run Limits & Real Cost",
+      "description": "Make pricing 2026: $10.59 at 1,000 runs, $64.71 at 20,000 runs, $214.31 at 100,000 runs. Real plans, self-host options and how Make compares on cost per run.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://wizardcost.com/#website"
+      },
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      },
+      "dateModified": "2026-06-15",
+      "about": {
+        "@type": "SoftwareApplication",
+        "name": "Make",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://www.make.com",
+        "offers": {
+          "@type": "AggregateOffer",
+          "priceCurrency": "USD",
+          "lowPrice": 10.59,
+          "highPrice": 214.31,
+          "offerCount": 20
+        }
+      }
+    }
+  ]
+}
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -232,6 +284,7 @@
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
         <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
@@ -273,6 +326,7 @@
       <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
     </div>
     <div class="hero-trust">Prices verified June 2026 · taken from Make's official pricing · all figures per <strong>run</strong></div>
+    <p class="hero-facts" style="margin-top:14px;font-size:0.95rem;opacity:0.88;line-height:1.6;max-width:680px;">As of June 2026, the cheapest plan we track for Make costs $10.59 per month at 1,000 runs and $214.31 at 100,000 runs (cheapest qualifying plan, 3-step workflows, monthly billing), from Make's official pricing, verified by hand.</p>
   </div>
 
   <div class="warning-box"><strong>Heads up:</strong> Make meters credits (formerly "operations"): one module action = one credit, code execution counts double. The headline plan price covers a fixed credit pool — overshoot it and you move up a tier, so size your plan to your real run volume.</div>

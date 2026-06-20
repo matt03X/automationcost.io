@@ -1,1 +1,16 @@
-{}
+{
+  "n8n|Starter|-": {
+    "vendor": "n8n",
+    "plan": "Starter",
+    "old": 24,
+    "neu": 667,
+    "firstSeen": "2026-06-20"
+  },
+  "n8n|?|50000": {
+    "vendor": "n8n",
+    "units": 50000,
+    "old": 144,
+    "neu": 821,
+    "firstSeen": "2026-06-20"
+  }
+}

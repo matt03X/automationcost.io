@@ -72,6 +72,58 @@ def _month_year(tools_meta: dict) -> str:
     return "June 2026"
 
 
+def _iso_date(tools_meta: dict) -> str:
+    """ISO YYYY-MM-DD posledního ručního review cen → schema.org dateModified
+    (freshness signál pro AI/GEO citace). Fixní fallback drží --check deterministický."""
+    import datetime as _dt
+    lr = (tools_meta or {}).get("last_reviewed")
+    if lr:
+        try:
+            _dt.date(*[int(x) for x in lr.split("-")])  # validace formátu
+            return lr
+        except (ValueError, TypeError):
+            pass
+    return "2026-06-01"
+
+
+def _page_graph_ld(domain: str, canonical: str, name: str, desc: str, iso_date: str,
+                   about_name: str | None = None, about_url: str | None = None,
+                   offers: dict | None = None) -> str:
+    """WebPage + Organization + WebSite @graph pro GEO/AI-citace: dateModified (freshness),
+    identita vydavatele (WizardCost) + isPartOf, volitelně entita softwaru přes `about`.
+    `offers` (AggregateOffer, USD) se připne na SoftwareApplication — reálný cenový range
+    z enginu, stejná veřejná data jako v tabulkách, jen strojově čitelná (schváleno userem)."""
+    home_url = f"https://{domain}/"
+    org_id = f"{home_url}#org"
+    webpage = {
+        "@type": "WebPage", "@id": f"{canonical}#webpage", "url": canonical,
+        "name": name, "description": desc, "inLanguage": "en",
+        "isPartOf": {"@id": f"{home_url}#website"},
+        "publisher": {"@id": org_id}, "dateModified": iso_date,
+    }
+    if about_name:
+        about = {
+            "@type": "SoftwareApplication", "name": about_name,
+            "applicationCategory": "BusinessApplication", "operatingSystem": "Web",
+            "url": about_url or home_url,
+        }
+        if offers:
+            about["offers"] = offers
+        webpage["about"] = about
+    return json.dumps({
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "Organization", "@id": org_id, "name": "WizardCost", "url": home_url,
+             "description": ("Independent, data-driven software pricing comparisons. Prices "
+                             "verified by hand from official vendor pricing pages and dated "
+                             "in a public changelog.")},
+            {"@type": "WebSite", "@id": f"{home_url}#website", "name": "WizardCost",
+             "url": home_url, "publisher": {"@id": org_id}},
+            webpage,
+        ],
+    }, ensure_ascii=False, indent=2)
+
+
 def _site_prefix(domain: str, base_path: str) -> str:
     bp = (base_path or "").strip("/")
     return f"https://{domain}/{bp}".rstrip("/") if bp else f"https://{domain}"
@@ -424,6 +476,42 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
                "{name} Pricing 2026 — Plans, Run Limits &amp; Real Cost | AutomationCost.io").format(name=name)
     og_title = title.split(" | ")[0].replace("&amp;", "&")
 
+    # ── Citation-ready key facts (GEO playbook A10 #2): one dated, standalone,
+    # quotable sentence with the headline numbers, in SSR HTML — the prime thing
+    # an LLM lifts for "how much does X cost". Computed from the engine, not typed.
+    _kf_lo = engine.cheapest_monthly(tool, VOLUMES[0], STEPS)
+    _kf_hi = engine.cheapest_monthly(tool, VOLUMES[3], STEPS)
+    key_facts_html = ""
+    if _kf_lo and _kf_hi:
+        _selfhost = "self-host" in (_kf_lo.get("label", "") + _kf_hi.get("label", "")).lower()
+        _tail = (" Self-hosting is free open-source software — the figure is the server it "
+                 "runs on, not a tool fee." if _selfhost else "")
+        _kf = (f"As of {month_year}, the cheapest plan we track for {name} costs "
+               f"{_fmt_usd(_kf_lo['cost'], _kf_lo['est'])} per month at {VOLUMES[0]:,} runs and "
+               f"{_fmt_usd(_kf_hi['cost'], _kf_hi['est'])} at {VOLUMES[3]:,} runs "
+               f"(cheapest qualifying plan, 3-step workflows, monthly billing), from "
+               f"{name}'s official pricing, verified by hand.{_tail}")
+        key_facts_html = ('<p class="hero-facts" style="margin-top:14px;font-size:0.95rem;'
+                          f'opacity:0.88;line-height:1.6;max-width:680px;">{_kf}</p>')
+    # ── AggregateOffer: reálný měsíční cost-range z enginu napříč VOLUMES (USD).
+    #    Stejná veřejná čísla jako v tabulkách/meta — jen strojově čitelná pro AI/Google
+    #    citace. offerCount = počet plánů nástroje. Odhady (~) jdou do schématu jako číslo. ──
+    _costs = [r["cost"] for vol in VOLUMES
+              if (r := engine.cheapest_monthly(tool, vol, STEPS)) is not None]
+    offers = None
+    if _costs:
+        offers = {"@type": "AggregateOffer", "priceCurrency": "USD",
+                  "lowPrice": round(min(_costs), 2), "highPrice": round(max(_costs), 2)}
+        if tool.get("plans"):
+            offers["offerCount"] = len(tool["plans"])
+
+    # ── WebPage + Organization + WebSite graf (GEO/AI-citace: freshness + identita
+    #    vydavatele + entita nástroje + cenový range). dateModified = poslední ruční review. ──
+    page_ld = _page_graph_ld(
+        site.get("domain", "wizardcost.com"), canonical,
+        f"{name} Pricing 2026 — Plans, Run Limits & Real Cost", desc, _iso_date(tools_meta),
+        about_name=name, about_url=tool.get("homepage"), offers=offers)
+
     css = _PRICING_CSS
 
     # ── localized chrome strings (precomputed; {name}/{cmp_vol}/{month_year} frozen via placeholders) ──
@@ -486,6 +574,9 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
   <script type="application/ld+json">
 {breadcrumb_ld}
   </script>
+  <script type="application/ld+json">
+{page_ld}
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -519,6 +610,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
         <a href="index.html">{tr("nav.home", "AutomationCost home")}</a>
         <a href="tools.html">{tr("nav.tools", "Tools")}</a>
         <a href="changelog.html">{tr("nav.changelog", "Changelog")}</a>
+        <a href="price-history.html">{tr("nav.price_history", "Price history")}</a>
         <div class="ac-dd-sep">{tr("nav.sec_pricing_guides", "Pricing guides")}</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n {tr("nav.pricing_word", "Pricing")}</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make {tr("nav.pricing_word", "Pricing")}</a>
@@ -553,6 +645,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
       <a href="compare.html" class="btn-secondary">{cta_compare_all}</a>
     </div>
     <div class="hero-trust">{hero_trust}</div>
+    {key_facts_html}
   </div>
 
   <div class="warning-box"><strong>{heads_up}</strong> {ed["warn"]}</div>
@@ -812,8 +905,10 @@ def _seo_faq(faq: list[dict]) -> tuple[str, str]:
 
 
 def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
-               body_html, faq_ld, breadcrumb_ld, faq_html) -> str:
+               body_html, faq_ld, breadcrumb_ld, faq_html, page_ld="") -> str:
     css = _PRICING_CSS
+    page_ld_block = (f'  <script type="application/ld+json">\n{page_ld}\n  </script>\n'
+                     if page_ld else "")
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -837,7 +932,7 @@ def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
   <script type="application/ld+json">
 {breadcrumb_ld}
   </script>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+{page_ld_block}  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -870,6 +965,7 @@ def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
         <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
@@ -1007,10 +1103,13 @@ def render_alternatives_page(slug: str, by_slug: dict, site: dict, tools_meta: d
             f"{cheapest_name} is the lowest-cost option we track at {ALT_VOL:,} runs/mo — "
             f"compare every alternative on cost, integrations and self-hosting.")
     breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, f"{name} alternatives", canonical)
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             f"{name} Alternatives 2026 — Priced & Compared", desc,
+                             _iso_date(tools_meta), about_name=name, about_url=tool.get("homepage"))
     return _seo_shell(title=title, desc=desc, canonical=canonical, prefix=prefix,
                       month_year=month_year, h1=f"The best {_html_escape(name)} alternatives in 2026",
                       intro_html=intro, body_html=body, faq_ld=faq_ld,
-                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html)
+                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html, page_ld=page_ld)
 
 
 def render_cheapest_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
@@ -1063,7 +1162,7 @@ def render_cheapest_page(by_slug: dict, site: dict, tools_meta: dict, engine) ->
     </table>
     <p style="margin-top:12px">Cheapest at each volume — {summary}.</p>
     <div class="warning-box" style="margin-top:16px"><strong>Note:</strong> self-hosted figures are the server bill (VPS + DB), not a tool fee — the software is free and open-source. Activepieces is $0 on its cloud free tier (up to 10 active flows). Values marked ~ are estimates for custom enterprise tiers.</div>
-    <p style="margin-top:14px"><a href="calculator.html">Get your exact cheapest tool from the calculator →</a></p>
+    <p style="margin-top:14px"><a href="calculator.html">Get your exact cheapest tool from the calculator →</a> · <a href="self-hosted-automation-cost.html">Self-host vs cloud cost →</a></p>
   </div>"""
 
     faq = [
@@ -1086,20 +1185,140 @@ def render_cheapest_page(by_slug: dict, site: dict, tools_meta: dict, engine) ->
     desc = (f"The cheapest automation tool in 2026, priced at every volume. At {lo:,} runs/mo it's {lo_name}; "
             f"at {hi:,} runs {hi_name}. Self-hosted tools run at just a server bill — see the full ranked matrix.")
     breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, "Cheapest automation tool", canonical)
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             "The Cheapest Automation Tool in 2026 (Real Prices)", desc,
+                             _iso_date(tools_meta))
     return _seo_shell(title=title, desc=desc, canonical=canonical, prefix=prefix,
                       month_year=month_year, h1="The cheapest automation tool in 2026",
                       intro_html=intro, body_html=body, faq_ld=faq_ld,
-                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html)
+                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html, page_ld=page_ld)
+
+
+def render_selfhost_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
+    """Self-host vs cloud cost hub — cílí na rostoucí self-host/n8n vlnu. VŠECHNA čísla
+    z enginu (žádná nová cenová tvrzení). Self-host i cloud sloupec z hosting VARIANT podle
+    hostingKind (vps/own vs saas/cloud) — aby cloud free tier (Activepieces $0) nezamořil
+    self-host sloupec. Editorial = jen rámující próza + poctivý maintenance catch."""
+    month_year = _month_year(tools_meta)
+    prefix = _site_prefix(site.get("domain", "wizardcost.com"), site.get("base_path", ""))
+    canonical = f"{prefix}/self-hosted-automation-cost.html"
+
+    variants = expand_hosting_variants(list(by_slug.values()))
+    sh_vars = [v for v in variants if v.get("hostingKind") == "vps"]   # realistický self-host = pronájem VPS
+    cl_vars = [v for v in variants if v.get("hostingKind") in ("saas", "cloud")]
+    sh_tool_names = ", ".join(t["name"] for t in by_slug.values() if t.get("selfHostable"))
+
+    def _base_name(var):
+        return _html_escape(by_slug[var["variantOf"]]["name"])
+
+    def _best(vlist, vol, paid_only=False):
+        cand = []
+        for var in vlist:
+            r = engine.cheapest_monthly(var, vol, STEPS)
+            if r and (not paid_only or r["cost"] > 0):
+                cand.append((var, r))
+        return min(cand, key=lambda x: x[1]["cost"]) if cand else None
+
+    # free cloud tier (typicky Activepieces $0, ≤10 flows) — poctivě disclose, neschovávat
+    _free = _best(cl_vars, VOLUMES[-1])
+    free_name = _base_name(_free[0]) if _free and _free[1]["cost"] == 0 else None
+    free_caveat = (f"a free cloud tier ({free_name}, up to 10 active flows at $0) can undercut self-host on raw "
+                   "cost for very small usage") if free_name else \
+                  "free cloud tiers can undercut self-host on raw cost for very small usage"
+
+    rows = []
+    for vol in VOLUMES:
+        sb, cb = _best(sh_vars, vol), _best(cl_vars, vol, paid_only=True)
+        sh_cell = (f"{_fmt_usd(sb[1]['cost'], sb[1]['est'])} "
+                   f"<span style=\"color:var(--muted);font-size:13px\">{_base_name(sb[0])}</span>") if sb else "—"
+        cl_cell = (f"{_fmt_usd(cb[1]['cost'], cb[1]['est'])} "
+                   f"<span style=\"color:var(--muted);font-size:13px\">{_base_name(cb[0])}</span>") if cb else "—"
+        if sb and cb:
+            cheaper = "Self-host" if sb[1]["cost"] < cb[1]["cost"] else ("Cloud" if cb[1]["cost"] < sb[1]["cost"] else "Tie")
+        else:
+            cheaper = "—"
+        cls = ' class="cheap"' if cheaper == "Self-host" else ""
+        rows.append(f"        <tr><td>{vol:,} runs/mo</td><td{cls}>{sh_cell}</td><td>{cl_cell}</td><td>{cheaper}</td></tr>")
+    table = "\n".join(rows)
+
+    lo, hi = VOLUMES[0], VOLUMES[-1]
+    sb_lo, cb_lo = _best(sh_vars, lo), _best(cl_vars, lo, paid_only=True)
+    sb_hi, cb_hi = _best(sh_vars, hi), _best(cl_vars, hi, paid_only=True)
+    sh_lo_fmt = _fmt_usd(sb_lo[1]["cost"], sb_lo[1]["est"]) if sb_lo else "a low server bill"
+    sh_hi_fmt = _fmt_usd(sb_hi[1]["cost"], sb_hi[1]["est"]) if sb_hi else "—"
+    cl_lo_fmt = _fmt_usd(cb_lo[1]["cost"], cb_lo[1]["est"]) if cb_lo else "—"
+    cl_hi_fmt = _fmt_usd(cb_hi[1]["cost"], cb_hi[1]["est"]) if cb_hi else "—"
+
+    intro = (
+        "Self-hosting means running open-source automation software on your own server, so you pay for the "
+        f"server — not a per-run subscription. {sh_tool_names} are free, open-source and self-hostable: their "
+        f"cost is just the VPS (plus a database at scale), which our engine models from about {sh_lo_fmt}/mo. "
+        f"Against paid cloud the maths is one-sided: self-host runs about {sh_lo_fmt}/mo at {lo:,} runs versus "
+        f"{cl_lo_fmt} for the cheapest paid cloud plan, and the gap widens to {sh_hi_fmt} vs {cl_hi_fmt} at "
+        f"{hi:,} runs, because a server bill is roughly flat while cloud is priced per run. One honest caveat: "
+        f"{free_caveat}. And self-host is only “free” if you don’t count your own time to set up, secure, "
+        "monitor and back up the server.")
+
+    body = f"""  <div class="section">
+    <h2>Self-host vs paid cloud: cost at each volume</h2>
+    <p class="section-sub">Cheapest self-host (rented VPS) vs cheapest <em>paid</em> managed-cloud plan, 3-step workflows, generated live from our data. Self-host figures are the server bill (VPS + database), not a tool fee. Free cloud tiers are excluded from the table and discussed below.</p>
+    <table class="comparison-table">
+      <thead><tr><th>Volume</th><th>Cheapest self-host</th><th>Cheapest paid cloud</th><th>Cheaper</th></tr></thead>
+      <tbody>
+{table}
+      </tbody>
+    </table>
+    <div class="warning-box" style="margin-top:16px"><strong>Two honest catches:</strong> (1) self-host figures cover only the server (VPS + database) — they exclude your time to install, secure, update, monitor and back up the stack, which for a small team can outweigh the saving. (2) {free_caveat[0].upper() + free_caveat[1:]}. The software is free and open-source; the figure shown is infrastructure. Values marked ~ are estimates for custom tiers.</div>
+    <p style="margin-top:14px"><a href="calculator.html">Get your exact cheapest setup from the calculator →</a> · <a href="cheapest-automation-tool.html">Cheapest automation tool overall →</a></p>
+  </div>"""
+
+    faq = [
+        {"q": "Is self-hosting n8n worth it?",
+         "a": (f"Versus paid cloud, usually yes on cost: self-hosted n8n runs on a flat VPS bill (from about "
+               f"{sh_lo_fmt}/mo) with no per-run fees, while n8n Cloud and other paid plans climb with usage. The "
+               "trade-offs are your own time to set up, secure and maintain the server — and that a free cloud "
+               'tier can be cheaper still for very small usage. Model your exact numbers in the '
+               '<a href="calculator.html">calculator</a>.')},
+        {"q": "How much does self-hosted automation cost?",
+         "a": (f"Only the server it runs on. Our engine models {sh_tool_names} self-hosted from about {sh_lo_fmt}/mo "
+               "(small VPS, low volume) up to higher tiers as throughput grows and you add a database — the "
+               "software itself is free and open-source.")},
+        {"q": "Cloud vs self-host — which is cheaper?",
+         "a": (f"Against paid cloud, self-host is cheaper at every volume in our data — about {sh_lo_fmt} vs "
+               f"{cl_lo_fmt} at {lo:,} runs, widening to {sh_hi_fmt} vs {cl_hi_fmt} at {hi:,} runs. The exception "
+               "is free cloud tiers (up to ~10 flows), which can undercut self-host for small usage. See the "
+               "table above.")},
+        {"q": "Which automation tools can be self-hosted?",
+         "a": (f"{sh_tool_names} are open-source and self-hostable. Make, Zapier and Pipedream are cloud-only. If "
+               "you need EU data residency or full control, the self-hostable open-source tools are the ones to look at.")},
+        {"q": "How accurate are these prices?",
+         "a": ("They're generated from each vendor's official pricing and our server-cost model via the cost "
+               f"engine, verified {month_year}; see the <a href=\"changelog.html\">price changelog</a>.")},
+    ]
+    faq_ld, faq_html = _seo_faq(faq)
+    title = "Self-Hosted Automation Cost 2026 — Cloud vs Self-Host (Real Prices) | AutomationCost.io"
+    desc = (f"Self-hosted automation cost in 2026: {sh_tool_names} run on a VPS from about {sh_lo_fmt}/mo vs "
+            f"{cl_lo_fmt}+ for paid cloud — self-host beats paid cloud at every volume, though free tiers can "
+            "undercut it for small usage. Real comparison plus the maintenance catch.")
+    breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, "Self-hosted automation cost", canonical)
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             "Self-hosted automation cost in 2026 — cloud vs self-host", desc,
+                             _iso_date(tools_meta))
+    return _seo_shell(title=title, desc=desc, canonical=canonical, prefix=prefix,
+                      month_year=month_year, h1="Self-hosted automation cost in 2026",
+                      intro_html=intro, body_html=body, faq_ld=faq_ld,
+                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html, page_ld=page_ld)
 
 
 def build_seo_pages(tools: list[dict], site: dict, tools_meta: dict, *, check: bool = False) -> list[str]:
-    """Vygeneruje long-tail SEO stránky (alternatives ×7 + cheapest ×1)."""
+    """Vygeneruje long-tail SEO stránky (alternatives ×7 + cheapest ×1 + self-host ×1)."""
     engine = _root_engine()
     by_slug = {t["slug"]: t for t in tools}
     out = []
     targets = [(f"{s}-alternatives.html", lambda s=s: render_alternatives_page(s, by_slug, site, tools_meta, engine))
                for s in PRICING_SLUGS if s in by_slug]
     targets.append(("cheapest-automation-tool.html", lambda: render_cheapest_page(by_slug, site, tools_meta, engine)))
+    targets.append(("self-hosted-automation-cost.html", lambda: render_selfhost_page(by_slug, site, tools_meta, engine)))
     for fname, render in targets:
         target = ROOT / fname
         rendered = render()

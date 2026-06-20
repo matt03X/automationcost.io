@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_hosting import expand_hosting_variants, apply_fx  # noqa: E402
-from build_pricing import build_pricing_pages, build_seo_pages  # noqa: E402
+from build_pricing import build_pricing_pages, build_seo_pages, _page_graph_ld, _iso_date  # noqa: E402
 from build_catalog import build_catalog_pages  # noqa: E402
 import build_i18n  # noqa: E402  — language layer (/de/ … mirror, hreflang, switcher)
 
@@ -41,6 +41,13 @@ WARN = "/* generováno build.py z data/tools.json — needituj ručně */"
 CLOG_START = "/* DATA:CHANGELOG:START */"
 CLOG_END = "/* DATA:CHANGELOG:END */"
 CLOG_WARN = "/* generováno build.py z git historie data/tools.json — needituj ručně */"
+
+# GEO:LD — Org+WebSite+WebPage @graph injektovaný do <head> statických stránek
+# (živý dateModified z last_reviewed). Markery jsou HTML komentáře → warn prázdný
+# (jinak by se text vykreslil mimo komentář).
+GEO_LD_START = "<!-- GEO:LD:START -->"
+GEO_LD_END = "<!-- GEO:LD:END -->"
+GEO_LD_WARN = ""
 
 SCORING = ROOT / "data" / "scoring-model.json"
 SCORING_START = "/* DATA:SCORING:START */"
@@ -350,6 +357,7 @@ def render_changelog(tools: list[dict], entries: list[dict], genesis: str | None
 # ---------------------------------------------------------------------------
 
 PAIRS = ROOT / "data" / "pairs.json"
+PRICE_HISTORY = ROOT / "data" / "price-history.json"
 
 
 def _root_engine():
@@ -638,6 +646,12 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
               "pricing compares for your usage.")
     canonical = f"{prefix}/{slug}.html"
 
+    # WebPage + Organization + WebSite graf (GEO/AI-citace: dateModified freshness +
+    # identita vydavatele). Bez Product/Offer ceny (stop-and-confirm).
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             f"{a_name} vs {b_name}: Pricing & Cost Comparison 2026",
+                             desc, _iso_date(tools_meta))
+
     css = _VS_CSS  # sdílená šablona stylů (port z _vs-example.html)
 
     return f"""<!DOCTYPE html>
@@ -662,6 +676,9 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
   </script>
   <script type="application/ld+json">
 {breadcrumb_ld}
+  </script>
+  <script type="application/ld+json">
+{page_ld}
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -696,6 +713,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
         <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
@@ -1081,6 +1099,23 @@ def render_block(text: str, generated: str, start: str, end: str, warn: str) -> 
     return pre + f"{start} {warn}\n{generated}\n{indent}{end}" + post
 
 
+def _static_geo_ld(text: str, site: dict, tools_meta: dict) -> str:
+    """Z <head> statické stránky vytáhne canonical/title/desc a vrátí `<script>` blok
+    s Org+WebSite+WebPage @graph (živý dateModified z last_reviewed). Vrací "" když chybí
+    canonical. Reuse _page_graph_ld z build_pricing → konzistentní s generovanými stránkami."""
+    import re
+    mc = re.search(r'<link rel="canonical" href="([^"]+)"', text)
+    if not mc:
+        return ""
+    mt = re.search(r"<title[^>]*>(.*?)</title>", text, re.S)
+    md = re.search(r'<meta name="description"[^>]*\scontent="([^"]*)"', text)
+    name = (mt.group(1).strip() if mt else "").split(" | ")[0].replace("&amp;", "&")
+    desc = (md.group(1) if md else "").replace("&amp;", "&")
+    graph = _page_graph_ld(site.get("domain", "wizardcost.com"), mc.group(1), name, desc,
+                           _iso_date(tools_meta))
+    return f'  <script type="application/ld+json">\n{graph}\n  </script>'
+
+
 def inject(path: Path, generated: str, start: str = START, end: str = END, warn: str = WARN) -> bool:
     """Nahradí obsah mezi markery. Vrací True, pokud se soubor změnil."""
     text = path.read_text(encoding="utf-8")
@@ -1114,6 +1149,291 @@ def _site_prefix(domain: str, base_path: str) -> str:
     """https://domain  +  optional /base_path  (no trailing slash)."""
     bp = (base_path or "").strip("/")
     return f"https://{domain}/{bp}".rstrip("/") if bp else f"https://{domain}"
+
+
+# ---------------------------------------------------------------------------
+# Price-history stránka: data/price-history.json (kurátorováno z Wayback verdiktů,
+# calc-test/wayback/) → automation/price-history.html. CELÉ generované, server-side
+# (crawlovatelné + AI-citovatelné — proto NE JS render). CONFIRMED-only; gapy přiznané.
+# ---------------------------------------------------------------------------
+
+_PH_CSS = """
+    .ph-lead { color: var(--text2); font-size: 1.06rem; max-width: 700px; margin: 14px auto 4px; }
+    .ph-tldr { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin: 22px 0; }
+    .ph-tldr ul { margin: 8px 0 0; padding-left: 20px; }
+    .ph-tldr li { margin: 5px 0; color: var(--text2); }
+    .ph-tool { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 18px; }
+    .ph-tool-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .ph-tool-head img { width: 30px; height: 30px; border-radius: 7px; }
+    .ph-tool-head h3 { font-size: 1.22rem; }
+    .ph-headline { color: var(--accent-br); font-size: 0.85rem; font-weight: 600; display: block; }
+    .ph-meta { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .ph-stable { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 12px 0; margin-bottom: 16px; }
+    .ph-row { display: flex; align-items: baseline; gap: 10px; padding: 3px 0; flex-wrap: wrap; }
+    .ph-plan { font-weight: 700; min-width: 100px; }
+    .ph-price { font-family: var(--mono); color: var(--text); }
+    .ph-detail { color: var(--muted); font-size: 0.85rem; }
+    .ph-event { border-left: 2px solid var(--border2); padding: 4px 0 14px 16px; margin-left: 4px; position: relative; }
+    .ph-event::before { content: ''; position: absolute; left: -5px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .ph-event-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .ph-date { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+    .ph-kind { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
+    .ph-k-change { background: rgba(245,158,11,0.16); color: #f6ad3c; }
+    .ph-k-product { background: rgba(111,155,255,0.16); color: #8fb0ff; }
+    .ph-k-pack { background: rgba(168,180,204,0.12); color: #aeb9d0; }
+    .ph-k-artifact { background: rgba(107,122,153,0.14); color: #93a0bd; }
+    .ph-event-title { font-weight: 600; margin-top: 4px; }
+    .ph-event-detail { color: var(--text2); font-size: 0.9rem; margin-top: 3px; }
+    .ph-evidence { margin-top: 6px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .ph-evidence a { font-size: 12px; font-family: var(--mono); }
+    .ph-none { color: var(--muted); font-style: italic; }
+    .ph-gap { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.22); border-radius: 9px; padding: 9px 13px; margin-top: 12px; font-size: 0.86rem; color: var(--text2); }
+    .ph-fixed-row { display: flex; align-items: baseline; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .ph-fixed-row img { width: 20px; height: 20px; }
+"""
+
+_PH_KIND = {
+    "change": ("Real change", "ph-k-change"),
+    "product": ("New product", "ph-k-product"),
+    "packaging": ("Repackaging", "ph-k-pack"),
+    "artifact": ("Display only", "ph-k-artifact"),
+}
+
+
+def _ph_kind_badge(kind: str) -> str:
+    label, cls = _PH_KIND.get(kind, (kind, "ph-k-artifact"))
+    return f'<span class="ph-kind {cls}">{label}</span>'
+
+
+def _ph_tool_card(t: dict) -> str:
+    stable = "\n".join(
+        f'<div class="ph-row"><span class="ph-plan">{_html_escape(p["plan"])}</span>'
+        f'<span class="ph-price">{_html_escape(p["price"])}</span>'
+        f'<span class="ph-detail">{_html_escape(p["detail"])} · stable since {_html_escape(p["since"])}</span></div>'
+        for p in t.get("stable", []))
+    events = []
+    for e in t.get("events", []):
+        links = " ".join(
+            f'<a href="{u}" target="_blank" rel="noopener nofollow">archive {i + 1} ↗</a>'
+            for i, u in enumerate(e.get("evidence", [])))
+        links = f'<div class="ph-evidence">{links}</div>' if links else ""
+        events.append(
+            '<div class="ph-event">'
+            f'<div class="ph-event-head"><span class="ph-date">{_html_escape(e["date"])}</span>{_ph_kind_badge(e["kind"])}</div>'
+            f'<div class="ph-event-title">{_html_escape(e["title"])}</div>'
+            f'<p class="ph-event-detail">{_html_escape(e["detail"])}</p>{links}</div>')
+    events_html = "\n".join(events) if events else '<p class="ph-none">No price events recorded in this window.</p>'
+    gaps = "\n".join(
+        f'<div class="ph-gap">⚠ Coverage gap {_html_escape(g["from"])} → {_html_escape(g["to"])}: {_html_escape(g["reason"])}</div>'
+        for g in t.get("gaps", []))
+    oq = (f'<div class="ph-gap">❓ Open question — {_html_escape(t["open_question"])}</div>'
+          if t.get("open_question") else "")
+    return (
+        f'<div class="ph-tool" id="ph-{t["slug"]}">\n'
+        f'      <div class="ph-tool-head"><img src="{_logo(t["slug"])}" alt="{t["name"]} logo" loading="lazy">'
+        f'<div><h3>{t["name"]}</h3><span class="ph-headline">{_html_escape(t["headline"])}</span></div>'
+        f'<span class="ph-meta">{t["snapshots"]} archived snapshots · {_html_escape(t["range_from"])} → {_html_escape(t["range_to"])}</span></div>\n'
+        f'      <div class="ph-stable">{stable}</div>\n'
+        f'      <div class="ph-events">{events_html}</div>\n'
+        f'      {gaps}{oq}\n    </div>')
+
+
+def render_price_history(data: dict, site: dict) -> str:
+    meta = data.get("_meta", {})
+    prefix = _site_prefix(site.get("domain", "wizardcost.com"), site.get("base_path", ""))
+    canonical = f"{prefix}/price-history.html"
+    updated = meta.get("updated", "2026-06-20")
+    window = f'{meta.get("window_from", "2024-06")} – {meta.get("window_to", "2026-06")}'
+
+    tool_cards = "\n    ".join(_ph_tool_card(t) for t in data.get("tools", []))
+    fixed_html = "\n".join(
+        f'<div class="ph-fixed-row"><img src="{_logo(f["slug"])}" alt="" loading="lazy">'
+        f'<span class="ph-plan">{_html_escape(f["name"])}</span>'
+        f'<span class="ph-detail">{_html_escape(f["note"])}</span></div>'
+        for f in data.get("fixed", []))
+
+    title = "Automation Tool Pricing History 2024–2026: What Actually Changed | AutomationCost.io"
+    desc = ("Two years of Make, Zapier, n8n and Pipedream pricing from the Web Archive. "
+            "Core prices barely moved — every confirmed change linked to dated archive evidence.")
+
+    article_ld = json.dumps({
+        "@context": "https://schema.org", "@type": "Article",
+        "headline": "Automation tool pricing history (2024–2026)",
+        "description": desc,
+        "datePublished": "2026-06-20", "dateModified": updated,
+        "author": {"@type": "Organization", "name": "AutomationCost.io"},
+        "publisher": {"@type": "Organization", "name": "WizardCost"},
+        "mainEntityOfPage": canonical,
+    }, ensure_ascii=False, indent=2)
+    breadcrumb_ld = json.dumps({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": f'https://{site.get("domain", "wizardcost.com")}/'},
+            {"@type": "ListItem", "position": 2, "name": "Automation tools", "item": f"{prefix}/tools.html"},
+            {"@type": "ListItem", "position": 3, "name": "Pricing history", "item": canonical},
+        ],
+    }, ensure_ascii=False, indent=2)
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- generováno build.py z data/price-history.json — needituj ručně -->
+  <title>{title}</title>
+  <meta name="description" content="{_html_escape(desc)}">
+  <link rel="canonical" href="{canonical}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AutomationCost.io">
+  <meta property="og:title" content="Automation Tool Pricing History 2024–2026">
+  <meta property="og:description" content="{_html_escape(desc)}">
+  <meta property="og:url" content="{canonical}">
+  <meta property="og:image" content="{prefix}/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{prefix}/og-image.png">
+  <script type="application/ld+json">
+{article_ld}
+  </script>
+  <script type="application/ld+json">
+{breadcrumb_ld}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+{_VS_CSS}
+{_PH_CSS}
+  </style>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body class="ac anim">
+
+<div id="ac-progress"></div>
+
+<nav class="ac-nav">
+  <a href="/" class="logo">
+    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+      <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
+    </svg>
+    Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+  </a>
+  <div class="ac-links">
+    <a href="compare.html" class="ac-hide-sm">Compare</a>
+    <a href="limits.html" class="ac-hide-sm">Pricing</a>
+    <div class="ac-dd">
+      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true">More
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="ac-dd-menu">
+        <a href="index.html">AutomationCost home</a>
+        <a href="tools.html">Tools</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
+        <div class="ac-dd-sep">Pricing guides</div>
+        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
+        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
+        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
+        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
+        <div class="ac-dd-sep">Other wizards</div>
+        <a href="/llm/">LLMCost <span class="ac-dd-tag">Live</span></a>
+      </div>
+    </div>
+    <a href="calculator.html" class="ac-cta">Calculator
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero" data-screen-label="Price history hero">
+    <div class="hero-badge">2-year price history · Web Archive evidence · updated {updated}</div>
+    <h1>Automation tool pricing — <em>what actually changed, {window}</em></h1>
+    <p class="ph-lead">{_html_escape(meta.get("thesis", ""))}</p>
+  </div>
+
+  <div class="section" data-screen-label="Summary">
+    <div class="ph-tldr">
+      <strong>The short version</strong>
+      <ul>
+        <li><b>Zapier</b> — core plans ($0 / $19.99 / $69) unchanged for 2+ years.</li>
+        <li><b>Make</b> — annual prices ($9 / $16 / $29) flat since at least Feb 2025.</li>
+        <li><b>n8n</b> — one real overhaul (Aug 2025): workflow limits removed, Business tier added.</li>
+        <li><b>Pipedream</b> — Basic / Advanced ($29 / $49) flat; free tier cut 300 → 100 credits.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" data-screen-label="Per-tool timeline">
+    <div class="section-label">The receipts</div>
+    <h2>Two years of pricing, tool by tool</h2>
+    <p class="section-sub">Each entry links to a dated Web Archive snapshot. Product launches and display changes are labelled as such — only genuine price moves are marked <span class="ph-kind ph-k-change">Real change</span>.</p>
+    {tool_cards}
+  </div>
+
+  <div class="section" data-screen-label="Fixed / open-source">
+    <div class="section-label">Free &amp; open-source</div>
+    <h2>The self-hosted tools</h2>
+    <p class="section-sub">These have no list-price history to chart — they are free or open-source; the only cost is the server you run them on.</p>
+    {fixed_html}
+  </div>
+
+  <div class="section" data-screen-label="Methodology">
+    <div class="section-label">How we know</div>
+    <h2>Method &amp; honest caveats</h2>
+    <p class="section-sub">{_html_escape(meta.get("method", ""))}</p>
+    <p class="tbl-note">Some windows are coverage gaps (marked ⚠) where a vendor rendered prices client-side, so the archive holds no figures — we don't guess. From here on, our <a href="changelog.html">daily price audit</a> records changes as they happen.</p>
+  </div>
+
+  <div class="calc-cta" data-screen-label="Calculator CTA">
+    <div class="calc-cta-text">
+      <h2>Prices are stable — so pick on <em style="font-style:normal; color:var(--accent-br);">your</em> volume.</h2>
+      <p>30 seconds, no signup — your runs, all 7 tools ranked by real cost.</p>
+    </div>
+    <a href="calculator.html" class="btn-primary-lg">Open the calculator →</a>
+  </div>
+
+  <div class="section" data-screen-label="Related pages">
+    <div class="section-label">Keep digging</div>
+    <div class="xlinks">
+      <a class="xlink" href="changelog.html">Live price changelog</a>
+      <a class="xlink" href="compare.html">Compare all 7 tools</a>
+      <a class="xlink" href="calculator.html">Pricing calculator</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  AutomationCost · part of WizardCost · Pricing history from the Web Archive · updated {updated} · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
+"""
+
+
+def build_price_history(site: dict, *, check: bool) -> list[str]:
+    """Vygeneruje automation/price-history.html z data/price-history.json.
+    V check módu vrací seznam zastaralých souborů (porovnává bez GA4/analytics bloků)."""
+    if not PRICE_HISTORY.exists():
+        return []
+    data = json.loads(PRICE_HISTORY.read_text(encoding="utf-8"))
+    if not data.get("tools"):
+        return []
+    target = ROOT / "price-history.html"
+    rendered = render_price_history(data, site)
+    existing = target.read_text(encoding="utf-8") if target.exists() else None
+    dirty = existing is None or _vs_strip_injected(existing) != rendered
+    if not dirty:
+        return []
+    if not check:
+        target.write_text(rendered, encoding="utf-8")
+    return [target.name]
 
 
 def build_sitemap(domain: str, base_path: str, pages: list[Path]) -> bool:
@@ -1355,6 +1675,17 @@ def main() -> int:
             jobs.append((clog_page, render_changelog(tools, clog_entries, clog_genesis),
                          CLOG_START, CLOG_END, CLOG_WARN))
 
+        # GEO:LD — Org+WebSite+WebPage graf do <head> statických stránek BEZ vlastního
+        # WebSite/Org schématu (changelog, compare). Hub/calculator už WebSite/WebApplication
+        # mají → ty dostávají jen @id kotvy ručně (žádný duplicitní WebSite node).
+        _geo_meta = data.get("_meta", {})
+        for _sp in ("changelog.html", "compare.html"):
+            _spp = ROOT / _sp
+            if _spp.exists() and GEO_LD_START in _spp.read_text(encoding="utf-8"):
+                _block = _static_geo_ld(_spp.read_text(encoding="utf-8"), site, _geo_meta)
+                if _block:
+                    jobs.append((_spp, _block, GEO_LD_START, GEO_LD_END, GEO_LD_WARN))
+
     # scoring-model injection — recommendation engine weights (calculator.html only).
     # Nezávislé na tools.json: zdroj pravdy pro váhy je data/scoring-model.json.
     if SCORING.exists():
@@ -1376,6 +1707,7 @@ def main() -> int:
             dirty += build_seo_pages(data["tools"], site, data.get("_meta", {}), check=True)
             dirty += build_catalog_pages(data["tools"], site, data.get("_meta", {}), check=True)
             dirty += build_i18n.run_all(site, data["tools"], data.get("_meta", {}), check=True)
+        dirty += build_price_history(site, check=True)
         if dirty:
             print(f"[build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python build.py`.")
             return 1
@@ -1394,6 +1726,10 @@ def main() -> int:
         changed += build_seo_pages(data["tools"], site, data.get("_meta", {}), check=False)
         changed += build_catalog_pages(data["tools"], site, data.get("_meta", {}), check=False)
         changed += build_i18n.run_all(site, data["tools"], data.get("_meta", {}), check=False)
+
+    # price-history je nezávislá na tools.json (vlastní zdroj price-history.json);
+    # generovat PŘED sitemap, ať se nová stránka dostane do sitemapy/analytics
+    changed += build_price_history(site, check=False)
 
     # site-wide artefakty
     domain = site.get("domain", "automationcost.io")

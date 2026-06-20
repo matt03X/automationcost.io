@@ -145,6 +145,12 @@
     .savings-banner { display: flex; align-items: center; gap: 10px; background: linear-gradient(160deg, rgba(217,123,251,0.13), var(--surface) 70%); border: 1px solid rgba(217,123,251,0.4); border-radius: var(--radius-sm); padding: 13px 18px; margin-bottom: 26px; font-size: 14px; }
     .savings-banner b { color: var(--accent-br); font-family: var(--mono); }
     .savings-banner svg { flex-shrink: 0; color: var(--accent); }
+    .reco { background: linear-gradient(160deg, rgba(217,123,251,0.16), var(--surface) 72%); border: 1px solid rgba(217,123,251,0.45); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 22px; }
+    .reco-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 8px; }
+    .reco-body { font-size: 15px; color: var(--text); line-height: 1.55; }
+    .reco-body b { color: var(--accent-br); }
+    .reco-prov { font-size: 12px; color: var(--muted); font-weight: 500; margin-left: 6px; }
+    .reco-note { font-size: 11.5px; color: var(--muted); margin-top: 9px; }
     .tier-section { margin-bottom: 34px; }
     .tier-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
     .tier-tag { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(217,123,251,0.3); border-radius: 20px; padding: 3px 12px; }
@@ -164,6 +170,8 @@
     .model-row.win .mr-cost { color: var(--accent-br); }
     .mr-chips { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
     .cap-chip { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--muted); border: 1px solid var(--border2); background: var(--surface2); border-radius: 20px; padding: 1px 8px; }
+    .cap-chip.nofit { color: #f5a623; border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.09); }
+    .model-row.nofit { opacity: 0.5; }
     .mr-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--text2); line-height: 1.9; }
     .model-row.open .mr-detail { display: block; }
     .mr-detail b { color: var(--text); font-weight: 700; }
@@ -288,6 +296,7 @@
   <div class="step-num">Step 3 — Results</div>
   <h2>Monthly cost per model</h2>
   <p class="step-sub">Grouped by tier — comparing a frontier model with a budget one on price alone is meaningless.</p>
+  <div id="reco" class="reco" hidden></div>
   <div class="savings-banner" id="savings-banner"></div>
   <div id="results"></div>
   <p class="results-foot">Costs marked ≈ use our auto-estimated tokens — override them in step 2 for exact math. Cached input is billed at each model's published cache-read rate; models without published cache pricing are computed at the full input rate.</p>
@@ -323,27 +332,43 @@ var USE_CASES = [
 
 /* DATA:MODELS:START */ /* generováno build.py z data/models.json — needituj ručně */
 const MODELS = [
-  { n: "GPT-5.5", p: "OpenAI", pslug: "openai", t: "frontier", i: 5.0, o: 30.0, cached: 0.5, batch: null, ctx: 1000000, mo: 1270.0 },
-  { n: "GPT-5.5 Pro", p: "OpenAI", pslug: "openai", t: "frontier", i: 30.0, o: 180.0, cached: null, batch: null, ctx: null, mo: 11400.0 },
-  { n: "GPT-5.4", p: "OpenAI", pslug: "openai", t: "frontier", i: 2.5, o: 15.0, cached: 0.25, batch: null, ctx: 1000000, mo: 635.0 },
-  { n: "GPT-5.4 mini", p: "OpenAI", pslug: "openai", t: "mid", i: 0.75, o: 4.5, cached: 0.075, batch: null, ctx: 400000, mo: 190.5 },
-  { n: "GPT-5.4 nano", p: "OpenAI", pslug: "openai", t: "budget", i: 0.2, o: 1.25, cached: 0.02, batch: null, ctx: null, mo: 52.3 },
+  { n: "GPT-5.5", p: "OpenAI", pslug: "openai", t: "frontier", i: 5.0, o: 30.0, cached: 0.5, batch: 0.5, ctx: 1000000, mo: 1270.0 },
+  { n: "GPT-5.5 Pro", p: "OpenAI", pslug: "openai", t: "frontier", i: 30.0, o: 180.0, cached: null, batch: 0.5, ctx: 1000000, mo: 11400.0 },
+  { n: "GPT-5.4", p: "OpenAI", pslug: "openai", t: "frontier", i: 2.5, o: 15.0, cached: 0.25, batch: 0.5, ctx: 1000000, mo: 635.0 },
+  { n: "GPT-5.4 mini", p: "OpenAI", pslug: "openai", t: "mid", i: 0.75, o: 4.5, cached: 0.075, batch: 0.5, ctx: 400000, mo: 190.5 },
+  { n: "GPT-5.4 nano", p: "OpenAI", pslug: "openai", t: "budget", i: 0.2, o: 1.25, cached: 0.02, batch: 0.5, ctx: 400000, mo: 52.3 },
   { n: "Claude Fable 5", p: "Anthropic", pslug: "anthropic", t: "frontier", i: 10.0, o: 50.0, cached: 1.0, batch: 0.5, ctx: 1000000, mo: 2240.0 },
   { n: "Claude Opus 4.8", p: "Anthropic", pslug: "anthropic", t: "frontier", i: 5.0, o: 25.0, cached: 0.5, batch: 0.5, ctx: 1000000, mo: 1120.0 },
   { n: "Claude Sonnet 4.6", p: "Anthropic", pslug: "anthropic", t: "mid", i: 3.0, o: 15.0, cached: 0.3, batch: 0.5, ctx: 1000000, mo: 672.0 },
   { n: "Claude Haiku 4.5", p: "Anthropic", pslug: "anthropic", t: "budget", i: 1.0, o: 5.0, cached: 0.1, batch: 0.5, ctx: 200000, mo: 224.0 },
-  { n: "Gemini 3.1 Pro Preview", p: "Google (Gemini)", pslug: "google", t: "frontier", i: 2.0, o: 12.0, cached: 0.2, batch: null, ctx: null, mo: 508.0 },
-  { n: "Gemini 3.5 Flash", p: "Google (Gemini)", pslug: "google", t: "mid", i: 1.5, o: 9.0, cached: 0.15, batch: null, ctx: null, mo: 381.0 },
-  { n: "Gemini 3 Flash Preview", p: "Google (Gemini)", pslug: "google", t: "mid", i: 0.5, o: 3.0, cached: 0.05, batch: null, ctx: null, mo: 127.0 },
-  { n: "Gemini 3.1 Flash-Lite", p: "Google (Gemini)", pslug: "google", t: "budget", i: 0.25, o: 1.5, cached: 0.025, batch: null, ctx: null, mo: 63.5 },
+  { n: "Gemini 3.1 Pro Preview", p: "Google (Gemini)", pslug: "google", t: "frontier", i: 2.0, o: 12.0, cached: 0.2, batch: 0.5, ctx: 1000000, mo: 508.0 },
+  { n: "Gemini 3.5 Flash", p: "Google (Gemini)", pslug: "google", t: "mid", i: 1.5, o: 9.0, cached: 0.15, batch: 0.5, ctx: 1000000, mo: 381.0 },
+  { n: "Gemini 3 Flash Preview", p: "Google (Gemini)", pslug: "google", t: "mid", i: 0.5, o: 3.0, cached: 0.05, batch: 0.5, ctx: 1000000, mo: 127.0 },
+  { n: "Gemini 3.1 Flash-Lite", p: "Google (Gemini)", pslug: "google", t: "budget", i: 0.25, o: 1.5, cached: 0.025, batch: 0.5, ctx: 1000000, mo: 63.5 },
   { n: "DeepSeek V4 Pro", p: "DeepSeek", pslug: "deepseek", t: "mid", i: 0.435, o: 0.87, cached: 0.003625, batch: null, ctx: 1000000, mo: 52.7075 },
   { n: "DeepSeek V4 Flash", p: "DeepSeek", pslug: "deepseek", t: "budget", i: 0.14, o: 0.28, cached: 0.0028, batch: null, ctx: 1000000, mo: 17.192 },
-  { n: "Grok 4.3", p: "xAI (Grok)", pslug: "xai", t: "frontier", i: 1.25, o: 2.5, cached: null, batch: null, ctx: 1000000, mo: 325.0 },
-  { n: "Grok Build 0.1", p: "xAI (Grok)", pslug: "xai", t: "mid", i: 1.0, o: 2.0, cached: null, batch: null, ctx: 256000, mo: 260.0 },
-  { n: "Mistral Large", p: "Mistral", pslug: "mistral", t: "frontier", i: 2.0, o: 6.0, cached: null, batch: 0.5, ctx: null, mo: 580.0 },
+  { n: "Grok 4.3", p: "xAI (Grok)", pslug: "xai", t: "frontier", i: 1.25, o: 2.5, cached: 0.2, batch: null, ctx: 1000000, mo: 178.0 },
+  { n: "Grok Build 0.1", p: "xAI (Grok)", pslug: "xai", t: "mid", i: 1.0, o: 2.0, cached: 0.2, batch: null, ctx: 256000, mo: 148.0 },
+  { n: "Mistral Large 3", p: "Mistral", pslug: "mistral", t: "frontier", i: 0.5, o: 1.5, cached: 0.05, batch: 0.5, ctx: 256000, mo: 82.0 },
+  { n: "Mistral Medium 3.5", p: "Mistral", pslug: "mistral", t: "frontier", i: 1.5, o: 7.5, cached: null, batch: 0.5, ctx: 256000, mo: 525.0 },
+  { n: "Magistral Medium", p: "Mistral", pslug: "mistral", t: "frontier", i: 2.0, o: 5.0, cached: null, batch: 0.5, ctx: 128000, mo: 550.0 },
+  { n: "Devstral 2", p: "Mistral", pslug: "mistral", t: "frontier", i: 0.4, o: 2.0, cached: null, batch: 0.5, ctx: 256000, mo: 140.0 },
+  { n: "Mistral Small 4", p: "Mistral", pslug: "mistral", t: "mid", i: 0.1, o: 0.3, cached: null, batch: 0.5, ctx: 256000, mo: 29.0 },
+  { n: "Magistral Small", p: "Mistral", pslug: "mistral", t: "mid", i: 0.5, o: 1.5, cached: null, batch: 0.5, ctx: 128000, mo: 145.0 },
+  { n: "Codestral", p: "Mistral", pslug: "mistral", t: "mid", i: 0.3, o: 0.9, cached: null, batch: 0.5, ctx: 128000, mo: 87.0 },
+  { n: "Devstral Small 2", p: "Mistral", pslug: "mistral", t: "budget", i: 0.1, o: 0.3, cached: null, batch: 0.5, ctx: 256000, mo: 29.0 },
+  { n: "Ministral 3 (3B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.1, o: 0.1, cached: null, batch: 0.5, ctx: 256000, mo: 23.0 },
+  { n: "Ministral 3 (8B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.15, o: 0.15, cached: null, batch: 0.5, ctx: 256000, mo: 34.5 },
+  { n: "Ministral 3 (14B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.2, o: 0.2, cached: null, batch: 0.5, ctx: 256000, mo: 46.0 },
 ];
-const MODELS_REVIEWED = "2026-06-12";
+const MODELS_REVIEWED = "2026-06-20";
 /* DATA:MODELS:END */
+/* DATA:SCORING:START */ /* generováno build.py z data/scoring-model.json + models.json — needituj ručně */
+const SCORE_W = {"feature": 0.5, "price": 0.32, "frontier": 0.18};
+const ROLE_WEIGHTS = {"chatbot": {"context": 0.15, "caching": 0.35, "cheapOutput": 0.1, "batch": 0.0, "frontier": 0.15, "lowPrice": 0.25}, "coding": {"context": 0.25, "caching": 0.15, "cheapOutput": 0.1, "batch": 0.0, "frontier": 0.4, "lowPrice": 0.1}, "agents": {"context": 0.2, "caching": 0.2, "cheapOutput": 0.15, "batch": 0.0, "frontier": 0.35, "lowPrice": 0.1}, "rag": {"context": 0.4, "caching": 0.2, "cheapOutput": 0.05, "batch": 0.05, "frontier": 0.15, "lowPrice": 0.15}, "classification": {"context": 0.05, "caching": 0.05, "cheapOutput": 0.25, "batch": 0.25, "frontier": 0.1, "lowPrice": 0.3}, "reasoning": {"context": 0.15, "caching": 0.05, "cheapOutput": 0.15, "batch": 0.05, "frontier": 0.5, "lowPrice": 0.1}};
+const UC_ROLE = {"chatbot": "chatbot", "rag": "rag", "summarization": "rag", "agents": "agents", "extraction": "classification"};
+const MODEL_SCORES = {"GPT-5.5": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.239, "batch": 0.5, "frontier": 1.0}, "GPT-5.5 Pro": {"context": 1.0, "caching": 0.0, "cheapOutput": 0.0, "batch": 0.5, "frontier": 1.0}, "GPT-5.4": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.332, "batch": 0.5, "frontier": 1.0}, "GPT-5.4 mini": {"context": 0.777, "caching": 0.9, "cheapOutput": 0.492, "batch": 0.5, "frontier": 0.6}, "GPT-5.4 nano": {"context": 0.777, "caching": 0.9, "cheapOutput": 0.663, "batch": 0.5, "frontier": 0.3}, "Claude Fable 5": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.171, "batch": 0.5, "frontier": 1.0}, "Claude Opus 4.8": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.263, "batch": 0.5, "frontier": 1.0}, "Claude Sonnet 4.6": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.332, "batch": 0.5, "frontier": 0.6}, "Claude Haiku 4.5": {"context": 0.609, "caching": 0.9, "cheapOutput": 0.478, "batch": 0.5, "frontier": 0.3}, "Gemini 3.1 Pro Preview": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.361, "batch": 0.5, "frontier": 1.0}, "Gemini 3.5 Flash": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.4, "batch": 0.5, "frontier": 0.6}, "Gemini 3 Flash Preview": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.546, "batch": 0.5, "frontier": 0.6}, "Gemini 3.1 Flash-Lite": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.639, "batch": 0.5, "frontier": 0.3}, "DeepSeek V4 Pro": {"context": 1.0, "caching": 0.992, "cheapOutput": 0.711, "batch": 0.0, "frontier": 0.6}, "DeepSeek V4 Flash": {"context": 1.0, "caching": 0.98, "cheapOutput": 0.863, "batch": 0.0, "frontier": 0.3}, "Grok 4.3": {"context": 1.0, "caching": 0.84, "cheapOutput": 0.571, "batch": 0.0, "frontier": 1.0}, "Grok Build 0.1": {"context": 0.669, "caching": 0.8, "cheapOutput": 0.6, "batch": 0.0, "frontier": 0.6}, "Mistral Large 3": {"context": 0.669, "caching": 0.9, "cheapOutput": 0.639, "batch": 0.5, "frontier": 1.0}, "Mistral Medium 3.5": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.424, "batch": 0.5, "frontier": 1.0}, "Magistral Medium": {"context": 0.5, "caching": 0.0, "cheapOutput": 0.478, "batch": 0.5, "frontier": 1.0}, "Devstral 2": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.6, "batch": 0.5, "frontier": 1.0}, "Mistral Small 4": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.853, "batch": 0.5, "frontier": 0.6}, "Magistral Small": {"context": 0.5, "caching": 0.0, "cheapOutput": 0.639, "batch": 0.5, "frontier": 0.6}, "Codestral": {"context": 0.5, "caching": 0.0, "cheapOutput": 0.707, "batch": 0.5, "frontier": 0.6}, "Devstral Small 2": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.853, "batch": 0.5, "frontier": 0.3}, "Ministral 3 (3B)": {"context": 0.669, "caching": 0.0, "cheapOutput": 1.0, "batch": 0.5, "frontier": 0.3}, "Ministral 3 (8B)": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.946, "batch": 0.5, "frontier": 0.3}, "Ministral 3 (14B)": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.908, "batch": 0.5, "frontier": 0.3}};
+/* DATA:SCORING:END */
 var TIERS = [
   { id: 'frontier', label: 'FRONTIER' },
   { id: 'mid',      label: 'MID-TIER' },
@@ -406,6 +431,39 @@ function ctxChip(ctx) {
   return (ctx >= 1000000 ? (ctx / 1000000) + "M" : Math.round(ctx / 1000) + "k") + " context";
 }
 
+/* fyzická vejde-se kontrola: input+output prompt se musí vejít do context okna.
+   ctx == null (neověřeno) => nehodnotíme jako „nevejde se" (nepenalizujeme neznámé) */
+function fits(m) { return m.ctx == null || (state.inTok + state.outTok) <= m.ctx; }
+function ctxShort(ctx) { return ctx >= 1000000 ? (ctx / 1000000) + 'M' : Math.round(ctx / 1000) + 'k'; }
+
+/* ── Recommendation engine (váhy z DATA:SCORING; dimenze dopočítané z dat) ──
+   matchScore = featureScore*SCORE_W.feature + priceScore*SCORE_W.price + frontier*SCORE_W.frontier.
+   featureScore = váhy role · per-model dimenze; priceScore = log-norm cost(m) na AKTUÁLNÍM
+   profilu (levnější = vyšší). Žádné benchmarky — jen ověřená data + tvoje čísla. */
+function recommend() {
+  var role = UC_ROLE[state.uc];
+  var w = role && ROLE_WEIGHTS[role];
+  if (!w) return null;
+  var pool = MODELS.filter(fits);
+  if (!pool.length) return { none: true };
+  var costs = pool.map(function (m) { return cost(m).total; });
+  var logs = costs.map(function (c) { return Math.log(Math.max(c, 0.01)); });
+  var lo = Math.min.apply(null, logs), hi = Math.max.apply(null, logs);
+  var DIMS = ['context', 'caching', 'cheapOutput', 'batch', 'frontier'];
+  var scored = pool.map(function (m, i) {
+    var ms = MODEL_SCORES[m.n] || {};
+    var feat = 0;
+    DIMS.forEach(function (d) { feat += (w[d] || 0) * (ms[d] || 0); });
+    var price = hi === lo ? 0.5 : (hi - logs[i]) / (hi - lo);
+    var match = SCORE_W.feature * feat + SCORE_W.price * price + SCORE_W.frontier * (ms.frontier || 0);
+    return { m: m, match: match, total: costs[i] };
+  }).sort(function (a, b) { return b.match - a.match; });
+  var top = scored[0];
+  var value = scored.filter(function (s) { return s.match >= top.match * 0.82; })
+    .sort(function (a, b) { return a.total - b.total; })[0];
+  return { top: top, value: value };
+}
+
 function setFill(el) { el.style.setProperty('--fill', ((+el.value - +el.min) * 100 / (+el.max - +el.min)) + '%'); }
 
 function render() {
@@ -441,17 +499,20 @@ function render() {
     html += '<div class="tier-section"><div class="tier-head">' +
       '<span class="tier-tag">' + tier.label + '</span>' +
       '<span class="tier-info" title="' + TIER_TIP + '">' + rows.length + ' models · our grouping</span></div>';
+    var winIdx = rows.findIndex(function (r) { return fits(r.m); });
     rows.forEach(function (r, idx) {
       var w = Math.max(3, Math.sqrt(r.c.total / max) * 100);
+      var ok = fits(r.m);
       var chips = '';
       var cc = ctxChip(r.m.ctx);
       if (cc) chips += '<span class="cap-chip">' + cc + '</span>';
       if (r.m.batch !== null) chips += '<span class="cap-chip">batch −' + Math.round((1 - r.m.batch) * 100) + '%</span>';
+      if (!ok) chips += '<span class="cap-chip nofit">input &gt; ' + ctxShort(r.m.ctx) + ' ctx</span>';
       var key = r.m.n;
       var cacheNote = r.c.cacheUsed
         ? ' (' + state.cache + '% cached at $' + r.m.cached + '/1M)'
         : (CACHE_RELEVANT[state.uc] && r.m.cached === null ? ' (no cache pricing published)' : '');
-      html += '<div class="model-row' + (idx === 0 ? ' win' : '') + (state.open === key ? ' open' : '') + '" data-model="' + key + '">' +
+      html += '<div class="model-row' + (idx === winIdx ? ' win' : '') + (ok ? '' : ' nofit') + (state.open === key ? ' open' : '') + '" data-model="' + key + '">' +
         '<div class="mr-top">' +
         '<span class="mr-name">' + r.m.n + '<span class="mr-provider">' + r.m.p + '</span></span>' +
         '<span class="bar-track"><span class="bar-fill" style="width:' + w.toFixed(1) + '%"></span></span>' +
@@ -466,9 +527,35 @@ function render() {
   });
   document.getElementById('results').innerHTML = html;
 
+  /* recommendation panel (scoring) — vítěz pro use-case + nejlevnější co stále sedí */
+  var recEl = document.getElementById('reco');
+  if (recEl) {
+    var rec = recommend();
+    if (rec && rec.none) {
+      recEl.hidden = false;
+      recEl.innerHTML = '<div class="reco-label">Heads up</div>' +
+        '<div class="reco-body">Your input of <b>' + fmtInt(state.inTok) + ' tokens</b> is larger than the context window of every model we track — none can hold this prompt. Reduce the input or split it across calls.</div>';
+    } else if (rec) {
+      var ucName = USE_CASES.find(function (u) { return u.id === state.uc; }).name;
+      var diff = rec.value && rec.value.m.n !== rec.top.m.n;
+      var valHtml = diff
+        ? ' Tightest budget that still fits: <b>' + rec.value.m.n + '</b> at ' + prefix + fmtMoney(rec.value.total) + '/mo.'
+        : '';
+      recEl.hidden = false;
+      recEl.innerHTML =
+        '<div class="reco-label">Our pick for ' + ucName + '</div>' +
+        '<div class="reco-body"><b>' + rec.top.m.n + '</b><span class="reco-prov">' + rec.top.m.p + '</span> — ' +
+        'best balance of capability' + (CACHE_RELEVANT[state.uc] ? ', caching economics' : '') + ' and cost at ' +
+        prefix + fmtMoney(rec.top.total) + '/mo.' + valHtml + '</div>' +
+        '<div class="reco-note">Ranked from published specs (context, caching, batch, tier) and price on your profile — not benchmarks.</div>';
+    } else {
+      recEl.hidden = true;
+    }
+  }
+
   /* savings banner — vítěz vs DRUHÝ NEJLEVNĚJŠÍ v témže tieru (runner-up,
      konzistence s automation; srovnání s nejdražším by bylo inflační) */
-  var fr = MODELS.filter(function (m) { return m.t === 'frontier'; })
+  var fr = MODELS.filter(function (m) { return m.t === 'frontier' && fits(m); })
     .map(function (m) { return { m: m, c: cost(m).total }; })
     .sort(function (a, b) { return a.c - b.c; });
   var save = fr.length > 1 ? (fr[1].c - fr[0].c) * 12 : 0;
@@ -482,8 +569,9 @@ function render() {
     banner.hidden = true;
   }
 
-  /* hero demo range — ze stejných dat */
-  var all = MODELS.map(function (m) { return { m: m, c: cost(m).total }; }).sort(function (a, b) { return a.c - b.c; });
+  /* hero demo range — ze stejných dat (jen modely co se vejdou; fallback na vše) */
+  var allM = MODELS.filter(fits); if (!allM.length) allM = MODELS;
+  var all = allM.map(function (m) { return { m: m, c: cost(m).total }; }).sort(function (a, b) { return a.c - b.c; });
   document.getElementById('demo-range').innerHTML =
     '<span>' + (USE_CASES.find(function (u) { return u.id === state.uc; }).name) + ', ' + fmtReq(state.req) + ' requests/mo:</span>' +
     '<span>from <b>' + fmtMoney(all[0].c) + '/mo</b> (' + all[0].m.n + ')</span>' +

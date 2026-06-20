@@ -14,6 +14,94 @@
   <meta property="og:image" content="https://wizardcost.com/llm/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://wizardcost.com/llm/og-image.png">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does OpenAI support prompt caching and batch processing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most GPT-5 tiers offer both a discounted cached-input rate and a batch (async) discount. The exception in our data is the top Pro tier, which is listed without a cached rate — see the per-model table above for which models include caching."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do some OpenAI models show a separate long-context price?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The flagship tiers apply a higher rate to very large prompts (above a token threshold) than to short prompts. The table shows the standard short-context rate; if your prompts are large, model the long-context rate noted on the page instead."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://wizardcost.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "LLM API pricing",
+      "item": "https://wizardcost.com/llm/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "OpenAI API Pricing",
+      "item": "https://wizardcost.com/llm/openai-pricing.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://wizardcost.com/#org",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "description": "Independent, data-driven software pricing comparisons. Prices verified by hand from official vendor pricing pages and dated in a public changelog."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://wizardcost.com/#website",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://wizardcost.com/llm/openai-pricing.html#webpage",
+      "url": "https://wizardcost.com/llm/openai-pricing.html",
+      "name": "OpenAI API Pricing",
+      "description": "GPT-5.5, GPT-5.5 Pro, GPT-5.4, GPT-5.4 mini and GPT-5.4 nano — OpenAI API prices per 1M tokens, prompt caching and batch discounts, verified June 2026.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://wizardcost.com/#website"
+      },
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      },
+      "dateModified": "2026-06-20"
+    }
+  ]
+}
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -117,6 +205,23 @@
     .price-alerts.subscribed .pa-form, .price-alerts.subscribed .pa-note { display: none; }
     @media (max-width: 520px) { .price-alerts { padding: 20px 18px; } .pa-form { flex-direction: column; } .pa-btn { width: 100%; min-height: 44px; } }
 
+    .warn-box { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.32); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 13.5px; color: var(--text2); margin-top: 16px; line-height: 1.6; }
+    .warn-box strong { color: #f5a623; }
+    .warn-box b { color: var(--text); }
+    .ed-section { margin-top: 40px; }
+    .sec-h2 { font-family: var(--display); font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 14px; }
+    .worth-table td { text-align: left; font-family: var(--font); white-space: normal; }
+    .worth-table th { text-align: left; }
+    .worth-table td:last-child { font-weight: 700; }
+    .tag-yes { color: var(--green); } .tag-warn { color: #f5a623; } .tag-no { color: var(--muted); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; background: none; border: 0; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 700; text-align: left; padding: 16px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .faq-q:hover { color: var(--accent-br); }
+    .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.7; padding-bottom: 16px; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-a a { color: var(--link); text-decoration: underline; }
     footer { border-top: 1px solid var(--border); margin-top: 72px; padding: 28px 0 48px; }
     footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding-bottom: 0; font-size: 13px; color: var(--muted); }
   </style>
@@ -158,8 +263,9 @@
 <section class="page-head wrap" data-screen-label="Provider head">
   <div class="crumb"><a href="index.html">LLM</a> / providers / openai</div>
   <h1>OpenAI API Pricing</h1>
-  <p>Every GPT model we track, at official per-token rates — verified by hand against OpenAI's pricing page. Five models across all three tiers.</p>
+  <p>OpenAI offers a broad GPT-5 lineup spanning frontier, mid and budget tiers, all with prompt caching and batch discounts, plus a high-end Pro variant for the most demanding reasoning tasks.</p>
   <div class="verify-line">Prices verified June 2026 · changes logged in the <a href="changelog.html">changelog</a></div>
+  <div class="warn-box"><strong>Heads up:</strong> The top-end <b>GPT-5.5 Pro</b> tier is listed without a cached-input rate, so prompt caching can't be assumed to lower its cost — price it on full input. Both flagship tiers also carry a separate long-context rate for very large prompts; check which rate applies to your prompt size before estimating.</div>
 </section>
 
 <section class="wrap" data-screen-label="Provider table">
@@ -171,28 +277,28 @@
       <tbody>
         <tr>
           <td><span class="m-name">GPT-5.5 Pro</span><span class="m-tier">FRONTIER</span></td>
-          <td>$30</td><td>$180</td><td>—</td><td>—</td><td>$11,400</td>
+          <td>$30</td><td>$180</td><td>—</td><td>−50%</td><td>$11,400</td>
         </tr>
         <tr>
           <td><span class="m-name">GPT-5.5</span><span class="m-tier">FRONTIER</span></td>
-          <td>$5</td><td>$30</td><td>$0.50</td><td>—</td><td>$1,270</td>
+          <td>$5</td><td>$30</td><td>$0.50</td><td>−50%</td><td>$1,270</td>
         </tr>
         <tr>
           <td><span class="m-name">GPT-5.4</span><span class="m-tier">FRONTIER</span></td>
-          <td>$2.50</td><td>$15</td><td>$0.25</td><td>—</td><td>$635</td>
+          <td>$2.50</td><td>$15</td><td>$0.25</td><td>−50%</td><td>$635</td>
         </tr>
         <tr>
           <td><span class="m-name">GPT-5.4 mini</span><span class="m-tier">MID</span></td>
-          <td>$0.75</td><td>$4.50</td><td>$0.075</td><td>—</td><td>$190.5</td>
+          <td>$0.75</td><td>$4.50</td><td>$0.075</td><td>−50%</td><td>$190.5</td>
         </tr>
         <tr>
           <td><span class="m-name">GPT-5.4 nano</span><span class="m-tier">BUDGET</span></td>
-          <td>$0.20</td><td>$1.25</td><td>$0.02</td><td>—</td><td class="best">$52.3</td>
+          <td>$0.20</td><td>$1.25</td><td>$0.02</td><td>−50%</td><td class="best">$52.3</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <p class="tbl-foot">* Example workload — chatbot, 100k requests/mo, 2,000 input / 300 output tokens per request, 70% of input cached. Computed by the same engine as the <a href="index.html">calculator</a>. Batch: no verified batch discount published for GPT at our last revision — we only list discounts we've confirmed.</p>
+  <p class="tbl-foot">* Example workload — chatbot, 100k requests/mo, 2,000 input / 300 output tokens per request, 70% of input cached. Computed by the same engine as the <a href="index.html">calculator</a>. Batch: the −50% is OpenAI's verified Batch API discount; the ≈ $/mo column is computed without it.</p>
 
   <div class="notes" data-screen-label="Provider notes">
     <div class="note-card">
@@ -201,35 +307,61 @@
     </div>
     <div class="note-card">
       <h3>Batch / async</h3>
-      <p>No verified batch discount published at our last revision — we only list discounts we've confirmed, so the Batch toggle in the <a href="index.html">calculator</a> leaves GPT prices unchanged.</p>
+      <p>The Batch API runs asynchronous jobs at a verified <b>−50% on both input and output</b> across all models we track — flip the Batch toggle in the <a href="index.html">calculator</a> to model it.</p>
     </div>
     <div class="note-card">
       <h3>Context window</h3>
-      <p>GPT-5.5 and GPT-5.4 run a verified <b>1M-token context window</b>; GPT-5.4 mini is 400k tokens. We haven't verified figures for GPT-5.5 Pro and GPT-5.4 nano yet — they show as “—” until we do. GPT-5.5, GPT-5.5 Pro and GPT-5.4 bill higher rates on long-context prompts — this table and the calculator use standard rates.</p>
+      <p>GPT-5.5, GPT-5.5 Pro and GPT-5.4 run a verified <b>1M-token context window</b>; GPT-5.4 mini and GPT-5.4 nano are 400k tokens. GPT-5.5, GPT-5.5 Pro and GPT-5.4 bill higher rates on long-context prompts — this table and the calculator use standard rates.</p>
     </div>
   </div>
 
+  <div class="ed-section" data-screen-label="When worth it">
+    <h2 class="sec-h2">When GPT is worth it</h2>
+    <div class="tbl-card"><table class="worth-table">
+      <thead><tr><th>Use case</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>You want one vendor covering frontier down to budget models with a consistent API</td><td class="tag-yes">OpenAI's lineup fits</td></tr>
+        <tr><td>Workload is asynchronous and tolerant of delay</td><td class="tag-yes">Batch tier lowers the per-token cost</td></tr>
+        <tr><td>Hard requirement for the lowest possible token price</td><td class="tag-warn">Compare against budget-tier and open-weight providers in the table</td></tr>
+      </tbody>
+    </table></div>
+  </div>
   <a class="next-cta" href="index.html">
     <div>
       <div class="nc-title">Is GPT the right price for your workload?</div>
-      <div class="nc-sub">The calculator puts these five models next to the other 13 we track — at your volume, token mix and cache share.</div>
+      <div class="nc-sub">The calculator puts these five models next to the other 23 we track — at your volume, token mix and cache share.</div>
     </div>
     <span class="nc-arrow">Open calculator
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
     </span>
   </a>
 
+  <div class="ed-section" data-screen-label="FAQ">
+    <h2 class="sec-h2">Frequently asked questions</h2>
+    <div class="faq">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Does OpenAI support prompt caching and batch processing?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Most GPT-5 tiers offer both a discounted cached-input rate and a batch (async) discount. The exception in our data is the top Pro tier, which is listed without a cached rate — see the per-model table above for which models include caching.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Why do some OpenAI models show a separate long-context price?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">The flagship tiers apply a higher rate to very large prompts (above a token threshold) than to short prompts. The table shows the standard short-context rate; if your prompts are large, model the long-context rate noted on the page instead.</div>
+      </div>
+    </div>
+  </div>
   <!-- EMAILCAP:HTML:START — LLM varianta (skupina price-drop-alerts-llm; action = EMAILCAP_ACTION_LLM v build.py) -->
   <!-- price-drop alerts e-mail form disabled 2026-06-16 — compliance: no e-mail collection while the project stays faceless (no MailerLite signup, no consent banner needed). Previous markup is in git history; re-enable by restoring the price-alerts section + EMAILCAP_ACTION_LLM. -->
   <!-- EMAILCAP:HTML:END -->
 
   <div class="cross" data-screen-label="Cross-links">
-    <a href="compare.html">All 18 models →</a>
+    <a href="compare.html">All 28 models →</a>
     <a href="anthropic-pricing.html">Anthropic pricing →</a>
     <a href="gemini-pricing.html">Gemini pricing →</a>
     <a href="deepseek-pricing.html">DeepSeek pricing →</a>
     <a href="grok-pricing.html">Grok pricing →</a>
     <a href="mistral-pricing.html">Mistral pricing →</a>
+    <a href="openai-alternatives.html">OpenAI alternatives →</a>
+    <a href="cheapest-llm-api.html">Cheapest LLM API →</a>
     <a href="changelog.html">Price changelog →</a>
   </div>
 </section>
@@ -279,5 +411,6 @@
 })();
 /* ── EMAILCAP:JS:END ── */
 </script>
+<script>function toggleFaq(el){el.closest(".faq-item").classList.toggle("open");}</script>
 </body>
 </html>

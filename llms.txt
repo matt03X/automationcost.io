@@ -9,6 +9,7 @@ Covers n8n, Make, Zapier, Pipedream, Activepieces, Automatisch and Node-RED (clo
 - [Cost calculator](https://wizardcost.com/automation/calculator.html): guided wizard — company size, role, workflow types and volume in, ranked tool recommendations with exact monthly cost out.
 - [Compare tools](https://wizardcost.com/automation/compare.html): side-by-side plans, limits and features, cheapest plan at any volume.
 - [Price changelog](https://wizardcost.com/automation/changelog.html): every dated price/limit change we have recorded. RSS: https://wizardcost.com/automation/feed.xml
+- [Price history](https://wizardcost.com/automation/price-history.html): two years (2024–2026) of Make, Zapier, n8n and Pipedream pricing reconstructed from the Web Archive — what actually changed, every claim linked to a dated archive snapshot. Core prices barely moved.
 - [Limits & quotas](https://wizardcost.com/automation/limits.html): ops definitions, timeouts, workflow caps per tool.
 - Per-tool pricing breakdowns: [n8n](https://wizardcost.com/automation/n8n-pricing.html), [Make](https://wizardcost.com/automation/make-pricing.html), [Zapier](https://wizardcost.com/automation/zapier-pricing.html), [Pipedream](https://wizardcost.com/automation/pipedream-pricing.html), [Activepieces](https://wizardcost.com/automation/activepieces-pricing.html), [Automatisch](https://wizardcost.com/automation/automatisch-pricing.html), [Node-RED](https://wizardcost.com/automation/node-red-pricing.html).
 

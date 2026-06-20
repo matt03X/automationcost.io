@@ -14,6 +14,46 @@
   <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.png">
+  <!-- GEO:LD:START --> 
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://wizardcost.com/#org",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "description": "Independent, data-driven software pricing comparisons. Prices verified by hand from official vendor pricing pages and dated in a public changelog."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://wizardcost.com/#website",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://wizardcost.com/automation/changelog.html#webpage",
+      "url": "https://wizardcost.com/automation/changelog.html",
+      "name": "Price Changelog — Automation Tool Pricing History",
+      "description": "Every price and limit change we've recorded across n8n, Make, Zapier, Pipedream and more — dated, sourced from official pricing pages.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://wizardcost.com/#website"
+      },
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      },
+      "dateModified": "2026-06-15"
+    }
+  ]
+}
+  </script>
+  <!-- GEO:LD:END -->
   <link rel="alternate" type="application/rss+xml" title="AutomationCost — Price Changelog (RSS)" href="feed.xml">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -176,6 +216,7 @@
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
         <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
@@ -201,7 +242,7 @@
   <div class="hero" data-screen-label="Changelog hero">
     <div class="hero-badge">tracking since June 2026</div>
     <h1>Price <em>changelog</em></h1>
-    <p>Every price and limit change we record across the 7 tracked tools — dated, with the old and new value. Sourced from official pricing pages, generated from our data history.</p>
+    <p>Every price and limit change we record across the 7 tracked tools — dated, with the old and new value. Sourced from official pricing pages, generated from our data history. Want the longer view? See the <a href="price-history.html">2-year pricing history</a> reconstructed from the Web Archive.</p>
   </div>
 
   <div id="clog" data-screen-label="Changelog timeline"></div>

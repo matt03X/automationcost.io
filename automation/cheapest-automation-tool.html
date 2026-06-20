@@ -81,6 +81,44 @@
   ]
 }
   </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://wizardcost.com/#org",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "description": "Independent, data-driven software pricing comparisons. Prices verified by hand from official vendor pricing pages and dated in a public changelog."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://wizardcost.com/#website",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://wizardcost.com/automation/cheapest-automation-tool.html#webpage",
+      "url": "https://wizardcost.com/automation/cheapest-automation-tool.html",
+      "name": "The Cheapest Automation Tool in 2026 (Real Prices)",
+      "description": "The cheapest automation tool in 2026, priced at every volume. At 1,000 runs/mo it's Activepieces; at 100,000 runs Activepieces. Self-hosted tools run at just a server bill — see the full ranked matrix.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://wizardcost.com/#website"
+      },
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      },
+      "dateModified": "2026-06-15"
+    }
+  ]
+}
+  </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -223,6 +261,7 @@
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
         <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
@@ -272,7 +311,7 @@
     </table>
     <p style="margin-top:12px">Cheapest at each volume — 1,000 runs: <strong>Activepieces</strong> · 5,000 runs: <strong>Activepieces</strong> · 20,000 runs: <strong>Activepieces</strong> · 100,000 runs: <strong>Activepieces</strong>.</p>
     <div class="warning-box" style="margin-top:16px"><strong>Note:</strong> self-hosted figures are the server bill (VPS + DB), not a tool fee — the software is free and open-source. Activepieces is $0 on its cloud free tier (up to 10 active flows). Values marked ~ are estimates for custom enterprise tiers.</div>
-    <p style="margin-top:14px"><a href="calculator.html">Get your exact cheapest tool from the calculator →</a></p>
+    <p style="margin-top:14px"><a href="calculator.html">Get your exact cheapest tool from the calculator →</a> · <a href="self-hosted-automation-cost.html">Self-host vs cloud cost →</a></p>
   </div>
 
   <div class="section">

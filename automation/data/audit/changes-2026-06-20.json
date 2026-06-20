@@ -1,0 +1,43 @@
+{
+  "date": "2026-06-20",
+  "generatedAt": "2026-06-20T09:51:47.456Z",
+  "changeCount": 4,
+  "priceChanges": 4,
+  "billingChanges": 0,
+  "changes": [
+    {
+      "vendor": "n8n",
+      "billing": "monthly",
+      "plan": "Starter",
+      "old": 24,
+      "neu": 667,
+      "desc": "n8n Starter (monthly): €24 → €667"
+    },
+    {
+      "vendor": "n8n",
+      "billing": "monthly",
+      "dropdown": "40k workflow executions with u",
+      "units": 50000,
+      "old": 144,
+      "neu": 821,
+      "desc": "n8n 40k workflow executions with u @50000 exec (monthly): €144 → €821"
+    },
+    {
+      "vendor": "n8n",
+      "billing": "annually",
+      "plan": "Starter",
+      "old": 20,
+      "neu": 667,
+      "desc": "n8n Starter (annually): €20 → €667"
+    },
+    {
+      "vendor": "n8n",
+      "billing": "annually",
+      "dropdown": "40k workflow executions with u",
+      "units": 50000,
+      "old": 120,
+      "neu": 821,
+      "desc": "n8n 40k workflow executions with u @50000 exec (annually): €120 → €821"
+    }
+  ]
+}

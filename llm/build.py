@@ -20,18 +20,36 @@ import json
 import sys
 from pathlib import Path
 
+import build_seo  # programmatic long-tail SEO stránky (cheapest / alternatives / vs)
+
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "models.json"
 SITE = ROOT / "data" / "site.json"
+OVERRIDES = ROOT / "data" / "changelog-overrides.json"
+EDITORIAL = ROOT / "data" / "pricing-editorial.json"
 
 START = "/* DATA:MODELS:START */"
 END = "/* DATA:MODELS:END */"
 WARN = "/* generováno build.py z data/models.json — needituj ručně */"
 
+SC_START = "/* DATA:SCORING:START */"
+SC_END = "/* DATA:SCORING:END */"
+SC_WARN = "/* generováno build.py z data/scoring-model.json + models.json — needituj ručně */"
+SCORING = ROOT / "data" / "scoring-model.json"
+# engine USE_CASE (index.html USE_CASES) -> scoring role (scoring-model.json roleWeights)
+UC_ROLE = {"chatbot": "chatbot", "rag": "rag", "summarization": "rag",
+           "agents": "agents", "extraction": "classification"}
+
 AN_START = "<!-- ANALYTICS (build.py) -->"
 AN_END = "<!-- /ANALYTICS -->"
 GA_START = "<!-- GA4 (build.py) -->"
 GA_END = "<!-- /GA4 -->"
+
+# GEO:LD — Org+WebSite+WebPage @graph do <head> statických /llm/ stránek (živý
+# dateModified). HTML komentář markery → warn prázdný (jinak text mimo komentář).
+GEO_LD_START = "<!-- GEO:LD:START -->"
+GEO_LD_END = "<!-- GEO:LD:END -->"
+GEO_LD_WARN = ""
 
 
 def js_str(s: str) -> str:
@@ -58,6 +76,56 @@ def canonical_monthly(m: dict) -> float:
     return round(in_cost + out_cost, 4)
 
 
+# ── GEO/AI-citace: Org+WebSite+WebPage @graph (freshness + identita) ───────────
+# Duplikát z automation/build_pricing._page_graph_ld (subsite je samostatný; vzor
+# „kopírovat, neimportovat" jako jinde v repu). Sdílené @id #org/#website konsolidují
+# entitu napříč /automation/ i /llm/. Bez Offer ceny — LLM ceny per-token = scénářové.
+def _iso_date(data: dict) -> str:
+    import datetime as _dt
+    lr = (data.get("_meta") or {}).get("last_reviewed")
+    if lr:
+        try:
+            _dt.date(*[int(x) for x in lr.split("-")])
+            return lr
+        except (ValueError, TypeError):
+            pass
+    return "2026-06-01"
+
+
+def _geo_graph_ld(domain: str, canonical: str, name: str, desc: str, iso_date: str) -> str:
+    home_url = f"https://{domain}/"
+    org_id = f"{home_url}#org"
+    return json.dumps({
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "Organization", "@id": org_id, "name": "WizardCost", "url": home_url,
+             "description": ("Independent, data-driven software pricing comparisons. Prices "
+                             "verified by hand from official vendor pricing pages and dated "
+                             "in a public changelog.")},
+            {"@type": "WebSite", "@id": f"{home_url}#website", "name": "WizardCost",
+             "url": home_url, "publisher": {"@id": org_id}},
+            {"@type": "WebPage", "@id": f"{canonical}#webpage", "url": canonical,
+             "name": name, "description": desc, "inLanguage": "en",
+             "isPartOf": {"@id": f"{home_url}#website"},
+             "publisher": {"@id": org_id}, "dateModified": iso_date},
+        ],
+    }, ensure_ascii=False, indent=2)
+
+
+def _static_geo_ld(text: str, domain: str, iso_date: str) -> str:
+    """Z <head> statické stránky vytáhne canonical/title/desc → <script> GEO blok ("" když chybí canonical)."""
+    import re
+    mc = re.search(r'<link rel="canonical" href="([^"]+)"', text)
+    if not mc:
+        return ""
+    mt = re.search(r"<title[^>]*>(.*?)</title>", text, re.S)
+    md = re.search(r'<meta name="description"[^>]*\scontent="([^"]*)"', text)
+    name = (mt.group(1).strip() if mt else "").split(" | ")[0].replace("&amp;", "&")
+    desc = (md.group(1) if md else "").replace("&amp;", "&")
+    return (f'  <script type="application/ld+json">\n'
+            f'{_geo_graph_ld(domain, mc.group(1), name, desc, iso_date)}\n  </script>')
+
+
 def render_models(data: dict) -> str:
     """const MODELS pro index.html + compare.html. Pole per model:
     n (name), p (provider name), pslug, t (tier), i/o (USD za 1M in/out),
@@ -76,6 +144,41 @@ def render_models(data: dict) -> str:
     lines.append("];")
     lines.append(f'const MODELS_REVIEWED = {js_str(data["_meta"].get("last_reviewed") or "")};')
     return "\n".join(lines)
+
+
+def _model_dims(data: dict) -> dict:
+    """Per-model skóre dimenzí DOPOČÍTANÉ z models.json dle scoring-model.json
+    dimension_definitions (jeden zdroj pravdy, pokrývá celý lineup). Klíč = name
+    (shoda s MODELS blokem). lowPrice řeší priceScore v JS z cost() na profilu."""
+    import math
+    models = [m for p in data["providers"] for m in p["models"]]
+    outs = [m["outputPerM"] for m in models]
+    lo_o, hi_o = math.log10(min(outs)), math.log10(max(outs))
+    lo_c, hi_c = math.log10(128000), math.log10(1000000)
+    tierf = {"frontier": 1.0, "mid": 0.6, "budget": 0.3}
+    dims = {}
+    for m in models:
+        ctx = m.get("contextWindow")
+        context = 0.5 if not ctx else min(1.0, max(0.3, 0.5 + 0.5 * (math.log10(ctx) - lo_c) / (hi_c - lo_c)))
+        caching = (1 - m["cachedInputPerM"] / m["inputPerM"]) if m.get("cachedInputPerM") is not None else 0.0
+        cheap = 0.5 if hi_o == lo_o else min(1.0, max(0.0, 1 - (math.log10(m["outputPerM"]) - lo_o) / (hi_o - lo_o)))
+        batch = (1 - m["batchDiscount"]) if m.get("batchDiscount") is not None else 0.0
+        dims[m["name"]] = {"context": round(context, 3), "caching": round(caching, 3),
+                           "cheapOutput": round(cheap, 3), "batch": round(batch, 3),
+                           "frontier": tierf[m["tier"]]}
+    return dims
+
+
+def render_scoring(data: dict) -> str:
+    """const SCORE_W / ROLE_WEIGHTS / UC_ROLE / MODEL_SCORES pro recommendation
+    engine v index.html. Váhy = editorial (scoring-model.json), dimenze = z dat."""
+    sm = json.loads(SCORING.read_text(encoding="utf-8"))
+    return "\n".join([
+        "const SCORE_W = " + json.dumps(sm["scoreWeights"], ensure_ascii=False) + ";",
+        "const ROLE_WEIGHTS = " + json.dumps(sm["roleWeights"], ensure_ascii=False) + ";",
+        "const UC_ROLE = " + json.dumps(UC_ROLE, ensure_ascii=False) + ";",
+        "const MODEL_SCORES = " + json.dumps(_model_dims(data), ensure_ascii=False) + ";",
+    ])
 
 
 # ── changelog z git historie models.json (vzor automation/build.py) ─────────
@@ -171,11 +274,25 @@ def diff_models(old: dict, new: dict, date: str) -> list[dict]:
     return entries
 
 
+def _baseline_until() -> str | None:
+    """Datum (YYYY-MM-DD), do kterého se changelog/feed diffy ignorují — bootstrap
+    éra + opravy NAŠICH dat ≠ vendor změny (vzor automation changelog-overrides)."""
+    if OVERRIDES.exists():
+        try:
+            return json.loads(OVERRIDES.read_text(encoding="utf-8")).get("baseline_until")
+        except json.JSONDecodeError:
+            return None
+    return None
+
+
 def changelog_entries() -> tuple[list[dict], str | None]:
     hist = models_history()
     entries = []
     for (_, older), (date, newer) in zip(hist, hist[1:]):
         entries.extend(diff_models(older, newer, date))
+    baseline = _baseline_until()
+    if baseline:
+        entries = [e for e in entries if e["d"] > baseline]
     entries.sort(key=lambda e: e["d"], reverse=True)
     return entries, (hist[0][0] if hist else None)
 
@@ -299,15 +416,7 @@ PROVIDER_PAGES = {
                           "we could verify — until it does, the calculator charges Grok models the "
                           "full input rate on every token."},
     "mistral": {"page": "mistral-pricing.html", "crumb": "mistral", "h1": "Mistral AI API Pricing",
-                "family": "Mistral", "vendor": "Mistral", "cross": "Mistral pricing", "nav": "Mistral", "domain": "mistral.ai",
-                "intro": "Mistral's public per-token list covers a single model — Mistral Large. "
-                         "Medium and Small have no public per-token price, so we track the one "
-                         "price we can verify against the official pricing FAQ.",
-                "cache_none": "Mistral publishes no cached-input price for Large — the calculator "
-                              "charges the full input rate. If that changes, it lands in the "
-                              '<a href="changelog.html">changelog</a>.',
-                "ctx_none": "We haven't verified an official context-window figure for Mistral "
-                            "Large yet — it's listed as “—” until we do."},
+                "family": "Mistral", "vendor": "Mistral", "cross": "Mistral pricing", "nav": "Mistral", "domain": "mistral.ai"},
 }
 
 
@@ -338,6 +447,17 @@ def nav_dropdown_html(data: dict, active_slug: str | None) -> str:
 
 def _join(names: list[str]) -> str:
     return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
+
+
+_NUM_WORDS = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six",
+              7: "seven", 8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"}
+
+
+def _count_word(n: int, cap: bool = False) -> str:
+    """Číslovka slovem (1–12), nad rozsah fallback na číslici — provider lineup
+    může mít >6 modelů (Mistral), takže pevná mapa {2..6} by spadla."""
+    w = _NUM_WORDS.get(n, str(n))
+    return w.capitalize() if cap else w
 
 
 def _usd(v) -> str:
@@ -372,7 +492,7 @@ def _intro(prov: dict, cfg: dict) -> str:
     if "intro" in cfg:
         return cfg["intro"]
     n = len(prov["models"])
-    count = {2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six"}[n]
+    count = _count_word(n, cap=True)
     tiers = [t for t in ("frontier", "mid", "budget") if any(m["tier"] == t for m in prov["models"])]
     tier_phrase = ("all three tiers" if len(tiers) == 3
                    else f"the {tiers[0]} and {tiers[1]} tiers" if len(tiers) == 2
@@ -463,12 +583,89 @@ def _note_ctx(prov: dict, cfg: dict) -> str:
     return " ".join(parts)
 
 
-def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template: str) -> str:
+EDITORIAL_WORTH_CLS = {"good": "tag-yes", "warn": "tag-warn", "bad": "tag-no"}
+
+
+def load_editorial() -> dict:
+    """Per-provider editorial (intro/warn/whenWorthIt/faq) z data/pricing-editorial.json;
+    {} když soubor chybí. Texty se vkládají doslovně (owner-approved copy, vzor automation
+    pricing-editorial.json) — fakta z models.json, ceny generuje engine."""
+    if EDITORIAL.exists():
+        try:
+            return json.loads(EDITORIAL.read_text(encoding="utf-8")).get("providers", {})
+        except json.JSONDecodeError:
+            return {}
+    return {}
+
+
+def _ed_warn(ed: dict) -> str:
+    w = ed.get("warn")
+    return f'\n  <div class="warn-box"><strong>Heads up:</strong> {w}</div>' if w else ""
+
+
+def _ed_when_worth(ed: dict, family: str) -> str:
+    items = ed.get("whenWorthIt") or []
+    if not items:
+        return ""
+    rows = "\n".join(
+        f'        <tr><td>{i["case"]}</td>'
+        f'<td class="{EDITORIAL_WORTH_CLS.get(i.get("tier"), "tag-no")}">{i["verdict"]}</td></tr>'
+        for i in items)
+    return (
+        '\n  <div class="ed-section" data-screen-label="When worth it">\n'
+        f'    <h2 class="sec-h2">When {family} is worth it</h2>\n'
+        '    <div class="tbl-card"><table class="worth-table">\n'
+        '      <thead><tr><th>Use case</th><th>Verdict</th></tr></thead>\n'
+        f'      <tbody>\n{rows}\n      </tbody>\n'
+        '    </table></div>\n  </div>')
+
+
+def _ed_faq_html(ed: dict) -> str:
+    faq = ed.get("faq") or []
+    if not faq:
+        return ""
+    items = "\n".join(
+        '      <div class="faq-item">\n'
+        '        <button class="faq-q" onclick="toggleFaq(this)">' + f["q"]
+        + '<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" '
+          'stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>\n'
+        f'        <div class="faq-a">{f["a"]}</div>\n      </div>' for f in faq)
+    return (
+        '\n  <div class="ed-section" data-screen-label="FAQ">\n'
+        '    <h2 class="sec-h2">Frequently asked questions</h2>\n'
+        f'    <div class="faq">\n{items}\n    </div>\n  </div>')
+
+
+def _ed_jsonld(ed: dict, domain: str, prefix: str, canonical: str, crumb_name: str) -> str:
+    blocks = []
+    faq = ed.get("faq") or []
+    if faq:
+        faq_ld = json.dumps({
+            "@context": "https://schema.org", "@type": "FAQPage",
+            "mainEntity": [{"@type": "Question", "name": f["q"],
+                            "acceptedAnswer": {"@type": "Answer", "text": f["a"]}} for f in faq],
+        }, ensure_ascii=False, indent=2)
+        blocks.append(f'  <script type="application/ld+json">\n{faq_ld}\n  </script>')
+    bc = json.dumps({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": f"https://{domain}/"},
+            {"@type": "ListItem", "position": 2, "name": "LLM API pricing", "item": f"{prefix}/"},
+            {"@type": "ListItem", "position": 3, "name": crumb_name, "item": canonical},
+        ],
+    }, ensure_ascii=False, indent=2)
+    blocks.append(f'  <script type="application/ld+json">\n{bc}\n  </script>')
+    return "\n".join(blocks)
+
+
+def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template: str,
+                         editorial: dict | None = None) -> str:
     domain = site.get("domain", "wizardcost.com")
     base_path = site.get("base_path", "/llm")
     month = _verified_month(data)
     total = sum(len(p["models"]) for p in data["providers"])
     n = len(prov["models"])
+    ed = (editorial or {}).get(prov["slug"], {})
 
     mos = {m["id"]: canonical_monthly(m) for m in prov["models"]}
     best_id = min(mos, key=mos.get) if n > 1 else None
@@ -502,26 +699,33 @@ def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template
         if p["slug"] != prov["slug"]:
             c = PROVIDER_PAGES[p["slug"]]
             cross.append(f'    <a href="{c["page"]}">{c["cross"]} →</a>')
+    # long-tail SEO stránky (build_seo.py) — interní linky z nejsilněji rankujících
+    # provider stránek na cheapest + alternatives téhož brandu
+    cross.append(f'    <a href="{build_seo.SEO[prov["slug"]]["alt"]}.html">'
+                 f'{build_seo.SEO[prov["slug"]]["brand"]} alternatives →</a>')
+    cross.append('    <a href="cheapest-llm-api.html">Cheapest LLM API →</a>')
     cross.append('    <a href="changelog.html">Price changelog →</a>')
 
     if n == 1:
         nc_sub = (f'The calculator puts {prov["models"][0]["name"]} next to the other {total - 1} '
                   f'models we track — at your volume, token mix and cache share.')
     else:
-        count = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six"}[n]
+        count = _count_word(n)
         nc_sub = (f'The calculator puts these {count} models next to the other {total - n} we '
                   f'track — at your volume, token mix and cache share.')
 
     names = _join([m["name"] for m in prov["models"]])
+    _desc = (f'{names} — {cfg["vendor"]} API prices per 1M tokens, prompt caching and batch '
+             f'discounts, verified {month}.')
+    _canon = f'{_site_prefix(domain, base_path)}/{cfg["page"]}'
     tokens = {
         "TITLE": f'{cfg["h1"]} ({month}) — WizardCost',
-        "DESC": (f'{names} — {cfg["vendor"]} API prices per 1M tokens, prompt caching and batch '
-                 f'discounts, verified {month}.'),
-        "CANONICAL": f'{_site_prefix(domain, base_path)}/{cfg["page"]}',
+        "DESC": _desc,
+        "CANONICAL": _canon,
         "VERIFIED_MONTH": month,
         "CRUMB": cfg["crumb"],
         "H1": cfg["h1"],
-        "INTRO": _intro(prov, cfg),
+        "INTRO": ed.get("intro") or _intro(prov, cfg),
         "ROWS": "\n".join(rows),
         "FOOT_BATCH": foot_batch,
         "NOTE_CACHE": _note_cache(prov, cfg),
@@ -532,6 +736,12 @@ def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template
         "CROSS": "\n".join(cross),
         "CAPTURE_ACTION": EMAILCAP_ACTION_LLM,
         "NAV_DROPDOWN": nav_dropdown_html(data, prov["slug"]),
+        "WARN": _ed_warn(ed),
+        "WHEN_WORTH": _ed_when_worth(ed, cfg["family"]),
+        "FAQ": _ed_faq_html(ed),
+        "JSONLD": _ed_jsonld(ed, domain, _site_prefix(domain, base_path),
+                             f'{_site_prefix(domain, base_path)}/{cfg["page"]}', cfg["h1"]),
+        "PAGE_LD": _geo_graph_ld(domain, _canon, cfg["h1"], _desc, _iso_date(data)),
     }
     page = template
     for k, v in tokens.items():
@@ -556,12 +766,13 @@ def build_provider_pages(data: dict, site: dict, *, check: bool) -> list[str]:
     if not TEMPLATE.exists():
         return []
     template = TEMPLATE.read_text(encoding="utf-8")
+    editorial = load_editorial()
     out = []
     for prov in data["providers"]:
         cfg = PROVIDER_PAGES.get(prov["slug"])
         if cfg is None:
             raise SystemExit(f'CHYBA: provider {prov["slug"]} nemá záznam v PROVIDER_PAGES.')
-        rendered = render_provider_page(prov, cfg, data, site, template)
+        rendered = render_provider_page(prov, cfg, data, site, template, editorial)
         target = ROOT / cfg["page"]
         existing = target.read_text(encoding="utf-8") if target.exists() else None
         dirty = existing is None or _strip_injected(existing) != rendered
@@ -658,6 +869,22 @@ def main() -> int:
     if clog_page.exists() and CLOG_START in clog_page.read_text(encoding="utf-8"):
         clog_jobs.append((clog_page, render_changelog(data, clog_entries, clog_genesis),
                           CLOG_START, CLOG_END, CLOG_WARN))
+    # scoring blok (recommendation engine) — jen index.html
+    idx = ROOT / "index.html"
+    if idx.exists() and SCORING.exists() and SC_START in idx.read_text(encoding="utf-8"):
+        clog_jobs.append((idx, render_scoring(data), SC_START, SC_END, SC_WARN))
+
+    # GEO:LD graf do <head> /llm/ stránek BEZ vlastního WebSite/Org (compare, changelog).
+    # index.html má WebApplication → ponechán (žádný duplicitní WebSite node).
+    _geo_iso = _iso_date(data)
+    _geo_domain = site.get("domain", "wizardcost.com")
+    geo_jobs = []
+    for _sp in ("compare.html", "changelog.html"):
+        _spp = ROOT / _sp
+        if _spp.exists() and GEO_LD_START in _spp.read_text(encoding="utf-8"):
+            _blk = _static_geo_ld(_spp.read_text(encoding="utf-8"), _geo_domain, _geo_iso)
+            if _blk:
+                geo_jobs.append((_spp, _blk, GEO_LD_START, GEO_LD_END, GEO_LD_WARN))
 
     if args.check:
         dirty = [p.name for p in targets
@@ -666,7 +893,11 @@ def main() -> int:
         dirty += [p.name for p, gen, s, e, w in clog_jobs
                   if render_block(p.read_text(encoding="utf-8"), gen, s, e, w)
                   != p.read_text(encoding="utf-8")]
+        dirty += [p.name for p, gen, s, e, w in geo_jobs
+                  if render_block(p.read_text(encoding="utf-8"), gen, s, e, w)
+                  != p.read_text(encoding="utf-8")]
         dirty += build_provider_pages(data, site, check=True)
+        dirty += build_seo.build_seo_pages(data, site, sys.modules[__name__], check=True)
         if dirty:
             print(f"[llm build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python llm/build.py`.")
             return 1
@@ -674,7 +905,7 @@ def main() -> int:
         return 0
 
     changed = [p.name for p in targets if inject(p, generated)]
-    for p, gen, s, e, w in clog_jobs:
+    for p, gen, s, e, w in clog_jobs + geo_jobs:
         text = p.read_text(encoding="utf-8")
         new_text = render_block(text, gen, s, e, w)
         if new_text != text:
@@ -683,6 +914,7 @@ def main() -> int:
     changed += build_feeds(site.get("domain", "wizardcost.com"),
                            site.get("base_path", "/llm"), clog_entries)
     changed += build_provider_pages(data, site, check=False)
+    changed += build_seo.build_seo_pages(data, site, sys.modules[__name__], check=False)
 
     domain = site.get("domain", "wizardcost.com")
     base_path = site.get("base_path", "/llm")

@@ -54,8 +54,13 @@
           },
           {
             "@type": "Question",
+            "name": "How are the match scores calculated?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Each tool gets a 0–100 rating on seven features — no-code UI, code access, AI nodes, self-hosting, GDPR, integrations and ecosystem maturity. We weight those to your selected role, then blend feature fit (52%), price against your budget (26%) and ecosystem maturity (12%), plus a small workflow-fit bonus. The per-feature ratings are WizardCost's own editorial assessment, based on public documentation and sources we record internally — they are considered judgements, not measured benchmarks or vendor-supplied numbers. Treat the scores as guidance for comparison, not exact metrics." }
+          },
+          {
+            "@type": "Question",
             "name": "Is WizardCost affiliated with any of these vendors?",
-            "acceptedAnswer": { "@type": "Answer", "text": "No — we're independent. Some outbound links are affiliate links (marked as sponsored) and we may earn a commission at no extra cost to you, but affiliate status never affects match scores or rankings: every tool is ranked by the same formula on the same data. See the <a href=\"https://wizardcost.com/automation/affiliate.html\">affiliate disclosure</a>." }
+            "acceptedAnswer": { "@type": "Answer", "text": "No — we're editorially independent. Some outbound links are affiliate links (marked as sponsored) and we may earn a commission at no extra cost to you, but affiliate status never affects match scores or rankings: every tool is ranked by the same formula, and the per-feature scores are our own editorial judgement applied equally to all of them. See the <a href=\"https://wizardcost.com/automation/affiliate.html\">affiliate disclosure</a>." }
           },
           {
             "@type": "Question",
@@ -524,6 +529,7 @@
         <a href="index.html" data-i18n="nav.home">AutomationCost home</a>
         <a href="tools.html" data-i18n="nav.tools">Tools</a>
         <a href="changelog.html" data-i18n="nav.changelog">Changelog</a>
+        <a href="price-history.html" data-i18n="nav.price_history">Price history</a>
         <div class="ac-dd-sep" data-i18n="nav.sec_pricing_guides">Pricing guides</div>
         <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
         <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
@@ -822,7 +828,7 @@
     <div class="results-header">
       <div>
         <h2 data-i18n="pages.calc.s5_h2">Your personalized recommendations</h2>
-        <p data-i18n="pages.calc.s5_p">Four ways to choose — pick the priority that fits you, then see the full ranked breakdown below. Same data, same formula for every tool.</p>
+        <p data-i18n="pages.calc.s5_p">Four ways to choose — pick the priority that fits you, then see the full ranked breakdown below. The same formula ranks every tool — no paid placement.</p>
       </div>
       <button class="share-btn" id="share-btn" onclick="copyShareLink(this)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -833,6 +839,7 @@
     <div class="savings-banner" id="savings-banner" hidden></div>
     <div class="persona-row" id="persona-picks" hidden></div>
     <div class="crossover-box" id="crossover-insight" hidden></div>
+    <p data-i18n="results.scores_note" style="font-size:12px;color:var(--muted);margin:6px 2px 14px;line-height:1.6;">Match scores blend feature fit (52%), price vs your budget (26%) and ecosystem maturity (12%), plus a small workflow-fit bonus. The per-feature ratings (0–100) are WizardCost's own editorial assessment from public sources — not measured benchmarks or vendor-supplied figures. <a href="#faq-scores">How we score →</a></p>
     <div id="results-list"></div>
     <div id="no-results-msg" class="no-results" style="display:none">
       No tool supports <strong>all</strong> your selected integrations with these settings. Try removing one, or note that most platforms support any app via custom HTTP requests.
@@ -877,9 +884,13 @@
       <button class="faq-q" onclick="toggleFaq(this)">Which tools does the calculator cover?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
       <div class="faq-a">n8n, Make, Zapier, Pipedream, Activepieces, Automatisch and Node-RED — cloud plans and self-hosted options alike. You can also put them side by side on the <a href="compare.html">compare page</a>.</div>
     </div>
+    <div class="faq-item" id="faq-scores">
+      <button class="faq-q" onclick="toggleFaq(this)"><span data-i18n="faq.q_scores">How are the match scores calculated?</span><svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a" data-i18n="faq.a_scores">Each tool gets a 0–100 rating on seven features — no-code UI, code access, AI nodes, self-hosting, GDPR, integrations and ecosystem maturity. We weight those to your selected role, then blend feature fit (52%), price against your budget (26%) and ecosystem maturity (12%), plus a small workflow-fit bonus. The per-feature ratings are WizardCost's own editorial assessment, based on public documentation and sources we record internally — they are considered judgements, not measured benchmarks or vendor-supplied numbers. Treat the scores as guidance for comparison, not exact metrics.</div>
+    </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Is WizardCost affiliated with any of these vendors?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-      <div class="faq-a">No — we're independent. Some outbound links are affiliate links (marked as sponsored) and we may earn a commission at no extra cost to you, but affiliate status never affects match scores or rankings: every tool is ranked by the same formula on the same data. See the <a href="affiliate.html">affiliate disclosure</a>.</div>
+      <div class="faq-a">No — we're editorially independent. Some outbound links are affiliate links (marked as sponsored) and we may earn a commission at no extra cost to you, but affiliate status never affects match scores or rankings: every tool is ranked by the same formula, and the per-feature scores are our own editorial judgement applied equally to all of them. See the <a href="affiliate.html">affiliate disclosure</a>.</div>
     </div>
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">Why does n8n often rank cheapest?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -2342,17 +2353,17 @@ const TOOLS = [
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
       { name: "Cloud Starter", monthlyUsd: 27.53, opsIncluded: 2500, workflowLimit: Infinity, annualUsd: 22.94, overage: null, note: "Cloud Starter (€24/mo monthly, 2.5k executions)" },
-      { name: "Cloud Pro 10k", monthlyUsd: 68.83, opsIncluded: 10000, workflowLimit: Infinity, annualUsd: 57.36, overage: null, note: "Cloud Pro — 10k executions (€60/mo monthly)" },
-      { name: "Cloud Pro 50k", monthlyUsd: 165.18, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 137.65, overage: null, note: "Cloud Pro — 50k executions (€144/mo monthly)" },
-      { name: "Business 40k", monthlyUsd: 917.68, opsIncluded: 40000, workflowLimit: Infinity, annualUsd: 765.12, overage: null, note: "Business — 40k executions (€800/mo monthly)" },
-      { name: "Business 50k", monthlyUsd: 1129.89, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 941.77, overage: null, note: "Business — 50k executions (€985/mo monthly)" },
-      { name: "Business 75k", monthlyUsd: 1670.18, opsIncluded: 75000, workflowLimit: Infinity, annualUsd: 1391.43, overage: null, note: "Business — 75k executions (€1456/mo monthly)" },
-      { name: "Business 100k", monthlyUsd: 1979.89, opsIncluded: 100000, workflowLimit: Infinity, annualUsd: 1649.53, overage: null, note: "Business — 100k executions (€1726/mo monthly)" },
-      { name: "Business 150k", monthlyUsd: 2511.0, opsIncluded: 150000, workflowLimit: Infinity, annualUsd: 2092.31, overage: null, note: "Business — 150k executions (€2189/mo monthly)" },
-      { name: "Business 200k", monthlyUsd: 3027.2, opsIncluded: 200000, workflowLimit: Infinity, annualUsd: 2522.47, overage: null, note: "Business — 200k executions (€2639/mo monthly)" },
-      { name: "Business 300k", monthlyUsd: 4028.62, opsIncluded: 300000, workflowLimit: Infinity, annualUsd: 3357.56, overage: null, note: "Business — 300k executions (€3512/mo monthly)" },
-      { name: "Business 400k", monthlyUsd: 5025.45, opsIncluded: 400000, workflowLimit: Infinity, annualUsd: 4188.06, overage: null, note: "Business — 400k executions (€4381/mo monthly)" },
-      { name: "Business 500k", monthlyUsd: 6016.54, opsIncluded: 500000, workflowLimit: Infinity, annualUsd: 5013.97, overage: null, note: "Business — 500k executions (€5245/mo monthly)" },
+      { name: "Cloud Pro 10k", monthlyUsd: 68.81, opsIncluded: 10000, workflowLimit: Infinity, annualUsd: 57.34, overage: null, note: "Cloud Pro — 10k executions (€60/mo monthly)" },
+      { name: "Cloud Pro 50k", monthlyUsd: 165.15, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 137.63, overage: null, note: "Cloud Pro — 50k executions (€144/mo monthly)" },
+      { name: "Business 40k", monthlyUsd: 917.52, opsIncluded: 40000, workflowLimit: Infinity, annualUsd: 764.98, overage: null, note: "Business — 40k executions (€800/mo monthly)" },
+      { name: "Business 50k", monthlyUsd: 1129.7, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 941.6, overage: null, note: "Business — 50k executions (€985/mo monthly)" },
+      { name: "Business 75k", monthlyUsd: 1669.89, opsIncluded: 75000, workflowLimit: Infinity, annualUsd: 1391.19, overage: null, note: "Business — 75k executions (€1456/mo monthly)" },
+      { name: "Business 100k", monthlyUsd: 1979.55, opsIncluded: 100000, workflowLimit: Infinity, annualUsd: 1649.24, overage: null, note: "Business — 100k executions (€1726/mo monthly)" },
+      { name: "Business 150k", monthlyUsd: 2510.56, opsIncluded: 150000, workflowLimit: Infinity, annualUsd: 2091.95, overage: null, note: "Business — 150k executions (€2189/mo monthly)" },
+      { name: "Business 200k", monthlyUsd: 3026.67, opsIncluded: 200000, workflowLimit: Infinity, annualUsd: 2522.03, overage: null, note: "Business — 200k executions (€2639/mo monthly)" },
+      { name: "Business 300k", monthlyUsd: 4027.91, opsIncluded: 300000, workflowLimit: Infinity, annualUsd: 3356.98, overage: null, note: "Business — 300k executions (€3512/mo monthly)" },
+      { name: "Business 400k", monthlyUsd: 5024.57, opsIncluded: 400000, workflowLimit: Infinity, annualUsd: 4187.33, overage: null, note: "Business — 400k executions (€4381/mo monthly)" },
+      { name: "Business 500k", monthlyUsd: 6015.49, opsIncluded: 500000, workflowLimit: Infinity, annualUsd: 5013.1, overage: null, note: "Business — 500k executions (€5245/mo monthly)" },
       { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
   {
