@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_hosting import expand_hosting_variants, apply_fx  # noqa: E402
-from build_pricing import build_pricing_pages, build_seo_pages  # noqa: E402
+from build_pricing import build_pricing_pages, build_seo_pages, _page_graph_ld, _iso_date  # noqa: E402
 from build_catalog import build_catalog_pages  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
@@ -637,6 +637,12 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
               "pricing compares for your usage.")
     canonical = f"{prefix}/{slug}.html"
 
+    # WebPage + Organization + WebSite graf (GEO/AI-citace: dateModified freshness +
+    # identita vydavatele). Bez Product/Offer ceny (stop-and-confirm).
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             f"{a_name} vs {b_name}: Pricing & Cost Comparison 2026",
+                             desc, _iso_date(tools_meta))
+
     css = _VS_CSS  # sdílená šablona stylů (port z _vs-example.html)
 
     return f"""<!DOCTYPE html>
@@ -661,6 +667,9 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
   </script>
   <script type="application/ld+json">
 {breadcrumb_ld}
+  </script>
+  <script type="application/ld+json">
+{page_ld}
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
