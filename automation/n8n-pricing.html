@@ -7,6 +7,7 @@
   <title>n8n Pricing 2026 — Plans, Run Limits &amp; Real Cost | AutomationCost.io</title>
   <meta name="description" content="n8n pricing 2026: $8 at 1,000 runs, $25 at 20,000 runs, $45 at 100,000 runs. Real plans, self-host options and how n8n compares on cost per run.">
   <link rel="canonical" href="https://wizardcost.com/automation/n8n-pricing.html">
+
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AutomationCost.io">
   <meta property="og:title" content="n8n Pricing 2026 — Plans, Run Limits &amp; Real Cost">
@@ -245,6 +246,15 @@
         <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon">Soon</span></span>
       </div>
     </div>
+    
+    <div class="ac-dd ac-cur">
+      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true" aria-label="Currency / Währung"><span class="ac-cur-label">$</span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="ac-dd-menu ac-cur-menu">
+        <a href="#" data-cur="usd">USD&nbsp;($)</a>
+        <a href="#" data-cur="eur">EUR&nbsp;(€)</a>
+        <a href="#" data-cur="czk">CZK&nbsp;(Kč)</a>
+      </div>
+    </div>
     <a href="calculator.html" class="ac-cta">Calculator
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
@@ -274,6 +284,7 @@
       <button type="button" class="bt-opt is-active" data-billing="month" aria-pressed="true">Monthly</button>
       <button type="button" class="bt-opt" data-billing="annual" aria-pressed="false">Annual</button>
     </div>
+    <p class="cur-note" hidden>≈ Converted from USD at today's rate — not the amount you're billed.</p>
     <h3 class="variant-head">Cloud</h3>
     <div class="plans-grid">
       <div class="plan-card">
@@ -502,25 +513,77 @@
 <script>
 function toggleFaq(el) { el.closest(".faq-item").classList.toggle("open"); }
 
-/* ── billing Monthly/Annual toggle — vanilla, default monthly ── */
+/* ── billing (Monthly/Annual) + currency (USD/EUR/CZK display-only) ──
+   USD is canonical (data-month/data-annual hold USD). The currency layer
+   re-formats every .price-num from the USD base × FX — a display estimate
+   (disclaimer shown), never re-baking the source prices. ── */
+window.AC_FX = {"usd": 1, "eur": 0.871791, "czk": 21.100361};
 (function () {
-  var toggle = document.querySelector(".billing-toggle");
-  if (!toggle) return;
-  function apply(period) {
-    var attr = period === "annual" ? "data-annual" : "data-month";
+  var FX = window.AC_FX || { usd: 1 };
+  var billing = "month";
+  var currency = "usd";
+  try { currency = localStorage.getItem("ac-cur") || "usd"; } catch (e) {}
+  if (!FX[currency]) currency = "usd";
+  function fmtConv(usd, cur, est) {
+    var v = Math.round(usd * (FX[cur] || 1)).toLocaleString("en-US");
+    var pre = est ? "~" : "";
+    if (cur === "czk") return pre + v + " Kč";
+    if (cur === "eur") return pre + "€" + v;
+    return pre + "$" + v;
+  }
+  function applyBilling() {
+    var attr = billing === "annual" ? "data-annual" : "data-month";
     document.querySelectorAll("[" + attr + "]").forEach(function (el) {
       if (el.classList.contains("bt-opt")) return;
       el.textContent = el.getAttribute(attr) || "";
     });
-    toggle.querySelectorAll(".bt-opt").forEach(function (b) {
-      var on = b.getAttribute("data-billing") === period;
-      b.classList.toggle("is-active", on);
-      b.setAttribute("aria-pressed", on ? "true" : "false");
+  }
+  function applyCurrency() {
+    var note = document.querySelector(".cur-note");
+    if (note) note.hidden = currency === "usd";
+    if (currency === "usd") return;
+    document.querySelectorAll(".price-num").forEach(function (el) {
+      var m = el.textContent.match(/(~)?\$\s?([0-9][0-9,]*(?:\.[0-9]+)?)/);
+      if (!m) return;
+      el.textContent = fmtConv(parseFloat(m[2].replace(/,/g, "")), currency, !!m[1]);
     });
   }
-  toggle.querySelectorAll(".bt-opt").forEach(function (b) {
-    b.addEventListener("click", function () { apply(b.getAttribute("data-billing")); });
+  function render() { applyBilling(); applyCurrency(); }
+  var bt = document.querySelector(".billing-toggle");
+  if (bt) {
+    bt.querySelectorAll(".bt-opt").forEach(function (b) {
+      b.addEventListener("click", function () {
+        billing = b.getAttribute("data-billing");
+        bt.querySelectorAll(".bt-opt").forEach(function (x) {
+          var on = x.getAttribute("data-billing") === billing;
+          x.classList.toggle("is-active", on);
+          x.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+        render();
+      });
+    });
+  }
+  function syncCur() {
+    var lab = document.querySelector(".ac-cur .ac-cur-label");
+    if (lab) lab.textContent = currency === "eur" ? "€" : currency === "czk" ? "Kč" : "$";
+    document.querySelectorAll(".ac-cur [data-cur]").forEach(function (a) {
+      a.setAttribute("aria-current", a.getAttribute("data-cur") === currency ? "true" : "false");
+    });
+  }
+  document.querySelectorAll(".ac-cur [data-cur]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      currency = a.getAttribute("data-cur");
+      if (!FX[currency]) currency = "usd";
+      try { localStorage.setItem("ac-cur", currency); } catch (e2) {}
+      syncCur();
+      render();
+      var dd = a.closest(".ac-dd");
+      if (dd) { dd.classList.remove("open"); var bb = dd.querySelector(".ac-dd-btn"); if (bb) bb.setAttribute("aria-expanded", "false"); }
+    });
   });
+  syncCur();
+  render();
 })();
 
 /* ── EMAILCAP:JS:START — wire every .price-alerts form on the page ── */

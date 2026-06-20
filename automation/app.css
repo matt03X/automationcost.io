@@ -114,6 +114,22 @@ body.ac .wrap { max-width: 1100px; margin: 0 auto; padding-left: 36px; padding-r
 .ac-dd-tag { margin-left: auto; font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 99px; color: var(--accent); border: 1px solid rgba(16,185,129,.45); }
 .ac-dd-tag.soon { color: var(--muted); border-color: var(--border2); }
 
+/* language switcher (globe → endonym list) — reuses .ac-dd machinery */
+.ac-lang .ac-dd-btn { gap: 3px; }
+.ac-lang-menu { min-width: 168px; }
+.ac-lang-menu a { justify-content: flex-start; }
+.ac-lang-menu a[aria-current="true"] { color: var(--text); background: var(--surface2); }
+
+/* currency switcher (USD/EUR/CZK — display only, USD canonical) */
+.ac-cur .ac-dd-btn { gap: 3px; font-weight: 700; }
+.ac-cur .ac-cur-label { font-family: var(--mono); }
+.ac-cur-menu { min-width: 132px; }
+.ac-cur-menu a { justify-content: flex-start; }
+.ac-cur-menu a[aria-current="true"] { color: var(--text); background: var(--surface2); }
+/* "≈ converted from USD" disclaimer — shown by JS only when currency ≠ USD */
+.cur-note { font-size: 12px; color: var(--muted); margin: 8px 0 0; font-style: italic; }
+.cur-note[hidden] { display: none; }
+
 /* ── hero typography: match homepage treatment (kept green) ──────────────── */
 body.ac .hero h1 {
   font-family: var(--display);

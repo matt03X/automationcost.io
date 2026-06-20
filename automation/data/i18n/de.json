@@ -1,0 +1,524 @@
+{
+  "_meta": {
+    "lang": "de",
+    "name": "Deutsch",
+    "dir": "ltr",
+    "reviewed": false,
+    "note": "Phase-1 DE pilot. ui/nav/pp/faq/bc = low-risk chrome (auto). meta + pricing (vč. whenWorthIt + editorial FAQ) = editorial s fakty → STOP-AND-CONFIRM (zkontroluj před merge). Ceny/názvy/čísla frozen. 7 PRICING stránek je nyní PLNĚ DE (chrome+editorial+plan karty+tabulka). PENDING: calculator/compare JS-renderovaný obsah (potřebuje JS-i18n vrstvu) + měnový přepínač EUR/USD/CZK (display+disclaimer)."
+  },
+  "nav": {
+    "compare": "Vergleichen",
+    "pricing": "Preise",
+    "more": "Mehr",
+    "home": "AutomationCost Start",
+    "tools": "Tools",
+    "changelog": "Changelog",
+    "sec_pricing_guides": "Preis-Guides",
+    "pricing_word": "Preise",
+    "sec_other_wizards": "Weitere Wizards",
+    "tag_live": "Live",
+    "tag_soon": "Bald",
+    "calculator": "Rechner",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "affiliate_disclosure": "Affiliate-Hinweis"
+  },
+  "bc": {
+    "home": "Start",
+    "tools": "Automatisierungstools",
+    "pricing": "{name} Preise"
+  },
+  "pp": {
+    "cta_try": "{name} kostenlos testen →",
+    "cta_visit": "{name} besuchen →",
+    "cta_calc": "Meine {name}-Kosten berechnen",
+    "cta_compare_all": "Alle 7 Tools vergleichen",
+    "hero_trust": "Preise geprüft {month_year} · aus der offiziellen {name}-Preisliste · alle Angaben pro <strong>Run</strong>",
+    "heads_up": "Achtung:",
+    "h2_plans": "{name} Tarife &amp; echte Kosten",
+    "plans_sub": "Günstigster passender Tarif bei vier typischen Run-Volumen (3-Schritt-Workflows) — Preise live aus unseren Daten generiert, nie von Hand getippt. Umschalten, um die Preise bei jährlicher Abrechnung zu sehen.",
+    "monthly": "Monatlich",
+    "annual": "Jährlich",
+    "h2_vs": "{name} vs. Alternativen",
+    "vs_sub": "Preis für {cmp_vol:,} Runs / Monat über alle von uns erfassten Tools. Nutze den Monatlich/Jährlich-Schalter oben, um die Abrechnungsart zu ändern.",
+    "th_tool": "Tool",
+    "th_price": "Preis für {cmp_vol:,} Runs",
+    "th_integrations": "Integrationen",
+    "th_selfhost": "Self-Hosting",
+    "billing_monthly_paren": "(monatlich)",
+    "billing_annual_paren": "(jährlich abgerechnet)",
+    "see_alts": "Alle {name}-Alternativen ansehen →",
+    "cheapest": "Günstigstes Automatisierungstool →",
+    "full_compare": "Vollständiger interaktiver Vergleich →",
+    "h2_worth": "Wann sich {name} lohnt",
+    "th_usecase": "Anwendungsfall",
+    "th_verdict": "Urteil",
+    "h2_faq": "Häufig gestellte Fragen",
+    "h2_h2h": "{name} im direkten Vergleich",
+    "related_desc": "Preise &amp; Funktionen im Vergleich",
+    "footer_part": "&copy; 2026 AutomationCost.io · Teil von WizardCost",
+    "footer_tagline": "AutomationCost.io · Unabhängige, datengetriebene Vergleiche · Preise geprüft {month_year}",
+    "footer_affiliate": "Einige Links sind Affiliate-Links — wir erhalten ggf. eine Provision ohne Mehrkosten für dich. Das beeinflusst niemals unsere Rankings oder Empfehlungen.",
+    "fab": "Mein bestes Tool finden",
+    "overage": "Mehrverbrauch",
+    "suffix_mo": "/Mon.",
+    "suffix_mo_elec": "/Mon. Strom",
+    "runs_per_month": "{runs:,} Runs / Monat",
+    "hardware_oneoff": "+ ~${hw:,} Hardware (einmalig)",
+    "annual_save": "{price}{suffix} jährlich abgerechnet — spare {pct}%",
+    "no_annual": "Noch keine Jahrespreise erfasst",
+    "plan_runs": "{runs:,} Runs",
+    "kind_saas": "Cloud",
+    "kind_cloud": "Cloud",
+    "kind_vps": "Self-Hosting · VPS",
+    "kind_own": "Self-Hosting · eigener Server",
+    "kind_plans": "Tarife",
+    "note_own": "Der Monatswert ist nur Strom — die Software ist kostenlos. Die einmaligen Hardwarekosten (ein Mini-PC oder Pi, den du behältst) sind pro Volumen angegeben.",
+    "note_vps": "Der Monatswert ist der gemietete Server (VPS + Datenbank), der mit dem Volumen skaliert — die Software selbst ist kostenlos.",
+    "sh_yes": "Ja (kostenlose SW)",
+    "sh_no": "Nein",
+    "cur_note": "≈ Umrechnung aus USD zum heutigen Kurs — nicht der tatsächlich abgerechnete Betrag."
+  },
+  "faq": {
+    "and": "und",
+    "cost_q": "Wie viel kostet {name} pro Monat?",
+    "cost_a": "Im günstigsten passenden Tarif (3-Schritt-Workflows, monatliche Abrechnung) kostet {name} {prices}. Die vollständige Aufschlüsselung findest du in den Tarifen und der Vergleichstabelle oben.",
+    "cheaper_q": "Was ist günstiger als {name}?",
+    "cheaper_a": "Bei {vol:,} Runs/Monat ist die günstigste von uns erfasste Wahl {link} mit {cprice} gegenüber {name} mit {tprice}. Nutze den Rechner für dein genaues Volumen.",
+    "accuracy_q": "Wie genau sind diese Preise?",
+    "accuracy_a": "Aus den offiziellen Preisseiten entnommen und von Hand geprüft. Mit ~ markierte Werte sind Schätzungen für individuelle Enterprise-Stufen. Jede erfasste Änderung landet im <a href=\"changelog.html\">Preisverlauf</a>."
+  },
+  "meta": {
+    "zapier-pricing": {
+      "title": "{name} Preise 2026 — Tarife, Run-Limits &amp; echte Kosten | AutomationCost.io",
+      "description": "{name} Preise 2026: {prices}. Echte Tarife, Self-Hosting-Optionen und wie {name} bei den Kosten pro Run abschneidet."
+    },
+    "make-pricing": {
+      "title": "{name} Preise 2026 — Tarife, Run-Limits &amp; echte Kosten | AutomationCost.io",
+      "description": "{name} Preise 2026: {prices}. Echte Tarife, Self-Hosting-Optionen und wie {name} bei den Kosten pro Run abschneidet."
+    },
+    "n8n-pricing": {
+      "title": "{name} Preise 2026 — Tarife, Run-Limits &amp; echte Kosten | AutomationCost.io",
+      "description": "{name} Preise 2026: {prices}. Echte Tarife, Self-Hosting-Optionen und wie {name} bei den Kosten pro Run abschneidet."
+    },
+    "pipedream-pricing": {
+      "title": "{name} Preise 2026 — Tarife, Run-Limits &amp; echte Kosten | AutomationCost.io",
+      "description": "{name} Preise 2026: {prices}. Echte Tarife, Self-Hosting-Optionen und wie {name} bei den Kosten pro Run abschneidet."
+    },
+    "activepieces-pricing": {
+      "title": "{name} Preise 2026 — Tarife, Run-Limits &amp; echte Kosten | AutomationCost.io",
+      "description": "{name} Preise 2026: {prices}. Echte Tarife, Self-Hosting-Optionen und wie {name} bei den Kosten pro Run abschneidet."
+    },
+    "automatisch-pricing": {
+      "title": "{name} Preise 2026 — Tarife, Run-Limits &amp; echte Kosten | AutomationCost.io",
+      "description": "{name} Preise 2026: {prices}. Echte Tarife, Self-Hosting-Optionen und wie {name} bei den Kosten pro Run abschneidet."
+    },
+    "node-red-pricing": {
+      "title": "{name} Preise 2026 — Tarife, Run-Limits &amp; echte Kosten | AutomationCost.io",
+      "description": "{name} Preise 2026: {prices}. Echte Tarife, Self-Hosting-Optionen und wie {name} bei den Kosten pro Run abschneidet."
+    }
+  },
+  "pricing": {
+    "zapier": {
+      "h1": "Zapier Preise 2026 — Lohnt es sich?",
+      "intro": "Zapier ist das bekannteste Automatisierungstool — und das teuerste. Hier siehst du, was du tatsächlich pro Monat zahlst und welche günstigeren Alternativen es für dieselben Workflows gibt.",
+      "warn": "Zapier rechnet nach Task-Stufen ab, und die Kosten pro Run bleiben beim Skalieren hoch — deutlich über der Volumenpreisgestaltung von Make oder selbstgehosteten Tools. Prüfe deine Run-Stufe, bevor du dich für einen Jahrestarif entscheidest.",
+      "whenWorthIt": [
+        {
+          "case": "Brauchst eine ganz bestimmte App-Integration, die andere Tools nicht bieten",
+          "verdict": "Zapier nutzen",
+          "tier": "good"
+        },
+        {
+          "case": "Nicht-technischer Nutzer, der die einfachstmögliche Oberfläche will",
+          "verdict": "Zapier nutzen",
+          "tier": "good"
+        },
+        {
+          "case": "Sehr geringes Volumen (unter dem Gratis-Tarif)",
+          "verdict": "Zapier Free reicht",
+          "tier": "good"
+        },
+        {
+          "case": "Höheres Volumen und bereit für eine Lernkurve",
+          "verdict": "Zu Make wechseln — pro Run deutlich günstiger",
+          "tier": "warn"
+        },
+        {
+          "case": "Entwickler, mit Self-Hosting vertraut",
+          "verdict": "n8n self-hosted nutzen — nahezu kostenlos",
+          "tier": "warn"
+        },
+        {
+          "case": "GDPR / EU-Datenresidenz nötig",
+          "verdict": "Zapier meiden (US-Server)",
+          "tier": "bad"
+        }
+      ],
+      "faq": [
+        {
+          "q": "Rechnet Zapier pro Task oder pro Zap ab?",
+          "a": "Zapier rechnet pro Task ab (jede Ausführung eines Aktionsschritts), nicht pro Zap. Ein 3-Schritt-Zap, der 100-mal läuft, kostet 300 Tasks (der Trigger zählt nicht). Auf dieser Seite normalisieren wir das auf <strong>Runs</strong> &times; Schritte, damit du es direkt mit anderen Tools vergleichen kannst — deshalb wird ein mehrstufiger Zap schnell teuer."
+        },
+        {
+          "q": "Kann ich Zapier kostenlos nutzen?",
+          "a": "Ja, aber Zapiers Gratis-Tarif ist sehr begrenzt und fügt eine Polling-Verzögerung hinzu. Makes Gratis-Tarif ist bei den enthaltenen Runs und Szenarien deutlich großzügiger."
+        }
+      ]
+    },
+    "make": {
+      "h1": "Make (Integromat) Preise 2026 — Tarife & echte Kosten pro Run",
+      "intro": "Make ist der Favorit bei der Volumenpreisgestaltung — dasselbe Cloud-Erlebnis wie Zapier zu einem Bruchteil der Kosten pro Run. Hier siehst du, was jeder Tarif mit wachsender Run-Zahl wirklich kostet.",
+      "warn": "Make zählt Credits (früher „Operations\"): eine Modul-Aktion = ein Credit, Code-Ausführung zählt doppelt. Der angezeigte Tarifpreis deckt einen festen Credit-Pool ab — überschreitest du ihn, steigst du eine Stufe höher. Wähle deinen Tarif also passend zu deinem echten Run-Volumen.",
+      "whenWorthIt": [
+        {
+          "case": "Cloud-Komfort ohne Zapiers Preis",
+          "verdict": "Make nutzen",
+          "tier": "good"
+        },
+        {
+          "case": "Hohes Run-Volumen mit kleinem Budget",
+          "verdict": "Make skaliert günstig",
+          "tier": "good"
+        },
+        {
+          "case": "Kommt mit einem visuellen Szenario-Builder zurecht",
+          "verdict": "Make nutzen",
+          "tier": "good"
+        },
+        {
+          "case": "Brauchst eine Integration, die Make nicht hat",
+          "verdict": "Zapiers größeren Katalog prüfen",
+          "tier": "warn"
+        },
+        {
+          "case": "Willst die monatliche Rechnung ganz loswerden",
+          "verdict": "n8n oder Activepieces selbst hosten",
+          "tier": "warn"
+        },
+        {
+          "case": "Strikte EU-Datenresidenz bei Managed Hosting nötig",
+          "verdict": "Region bestätigen oder selbst hosten",
+          "tier": "warn"
+        }
+      ],
+      "faq": [
+        {
+          "q": "Was ist eine Operation (Credit) bei Make?",
+          "a": "Jede Modul-Aktion in einem Szenario verbraucht einen Credit; Code-Ausführungsschritte zählen doppelt. Wir drücken das als <strong>Runs &times; Schritte</strong> aus, damit ein 3-Schritt-Szenario, das 1.000-mal auslöst, über alle Tools auf dieser Seite hinweg vergleichbar ist."
+        },
+        {
+          "q": "Ist Make günstiger als Zapier?",
+          "a": "Bei gleichem Workflow-Volumen ist Make pro Run meist mehrfach günstiger, weil es nach Credit-Pool statt pro Task abrechnet. Den Abstand bei deinem Volumen siehst du in der Vergleichstabelle oben."
+        }
+      ]
+    },
+    "n8n": {
+      "h1": "n8n Preise 2026 — Cloud vs. Self-Hosting",
+      "intro": "n8n ist das Open-Source-Automatisierungstool, zu dem Entwickler greifen. Du kannst die verwaltete Cloud bezahlen, es auf einem günstigen VPS laufen lassen oder auf eigener Hardware zum Strompreis hosten. Hier sind die echten Kosten jedes Wegs.",
+      "warn": "n8n in der Self-Hosting-Edition ist kostenlose Open-Source-Software — die Werte unten für VPS und eigenen Server sind <em>Infrastruktur</em>-Kosten (Server, Datenbank, Strom), keine Lizenzgebühr. Sie gehen von leichten Workflows aus und enthalten nicht deine eigene Zeit für den Betrieb.",
+      "whenWorthIt": [
+        {
+          "case": "Entwickler, der mit einem Server umgehen kann",
+          "verdict": "Self-Hosting — bei jedem Volumen nahezu kostenlos",
+          "tier": "good"
+        },
+        {
+          "case": "Willst Managed Hosting, kein DevOps",
+          "verdict": "n8n Cloud ist fair",
+          "tier": "good"
+        },
+        {
+          "case": "GDPR / EU-Datenresidenz nötig",
+          "verdict": "Self-Hosting in deiner eigenen Region",
+          "tier": "good"
+        },
+        {
+          "case": "Nicht-technisch und willst eine No-Code-Oberfläche",
+          "verdict": "Make oder Activepieces in Betracht ziehen",
+          "tier": "warn"
+        },
+        {
+          "case": "Brauchst einen riesigen Drittanbieter-App-Katalog",
+          "verdict": "Zapier führt bei der Breite weiterhin",
+          "tier": "warn"
+        },
+        {
+          "case": "Keine Lust auf jegliche Infrastruktur",
+          "verdict": "Nur Cloud — Self-Hosting überspringen",
+          "tier": "warn"
+        }
+      ],
+      "faq": [
+        {
+          "q": "Ist n8n wirklich kostenlos, wenn ich selbst hoste?",
+          "a": "Die Software ist unter n8ns Sustainable-Use-Lizenz kostenlos. Du zahlst trotzdem für einen Ort, an dem sie läuft — einen kleinen VPS oder eigene Hardware plus Strom. Beides liegt weit unter den Preisen von Cloud-Tools, weshalb Self-Hosting bei den Kosten im großen Maßstab gewinnt."
+        },
+        {
+          "q": "Was ist der Unterschied zwischen VPS- und Eigenserver-Self-Hosting?",
+          "a": "VPS bedeutet, einen kleinen Cloud-Server zu mieten, der monatlich abgerechnet wird. Eigenserver bedeutet, n8n auf Hardware zu betreiben, die du schon besitzt (ein Mini-PC oder Raspberry Pi) — die einzigen laufenden Kosten sind Strom, die einmalige Hardware-Ausgabe wird unten separat gezeigt."
+        }
+      ]
+    },
+    "pipedream": {
+      "h1": "Pipedream Preise 2026 — Credits & echte Kosten pro Run",
+      "intro": "Pipedream ist die entwicklerorientierte Automatisierungsplattform, die nach Compute-Credits abrechnet. Hier siehst du, was jeder Tarif mit steigendem Run-Volumen kostet und wo er gegenüber den Alternativen landet.",
+      "warn": "Pipedream zählt Credits pro Workflow-Ausführung, und der öffentliche Übernutzungspreis pro Credit wurde von der Preisseite entfernt — Übernutzung bei hohem Volumen ist nun Sache des Vertriebs. Die Business-Stufe trägt die Schätzung für Mehrvolumen. Wähle deinen Tarif sorgfältig.",
+      "whenWorthIt": [
+        {
+          "case": "Entwickler, der in Code-Schritten lebt",
+          "verdict": "Pipedream nutzen",
+          "tier": "good"
+        },
+        {
+          "case": "Event-getrieben, niedriges bis mittleres Volumen",
+          "verdict": "Pipedream passt gut",
+          "tier": "good"
+        },
+        {
+          "case": "Willst einen großzügigen Komponenten-/API-Katalog",
+          "verdict": "Pipedream nutzen",
+          "tier": "good"
+        },
+        {
+          "case": "Sehr hohes Volumen",
+          "verdict": "Mit Self-Hosting vergleichen",
+          "tier": "warn"
+        },
+        {
+          "case": "Nicht-technisch, willst einen visuellen Builder",
+          "verdict": "Make oder Activepieces ist zugänglicher",
+          "tier": "warn"
+        },
+        {
+          "case": "Musst die monatliche Rechnung loswerden",
+          "verdict": "n8n selbst hosten",
+          "tier": "warn"
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wie funktioniert Pipedreams Credit-Preisgestaltung?",
+          "a": "Jede Workflow-Ausführung verbraucht Credits basierend auf der Rechenzeit; bezahlte Tarife enthalten einen monatlichen Credit-Pool. Wir normalisieren das auf <strong>Runs &times; Schritte</strong>, damit es zu den anderen Tools in der Tabelle oben passt."
+        },
+        {
+          "q": "Ist Pipedream für Nicht-Entwickler geeignet?",
+          "a": "Es ist entwicklerorientiert — die wahre Stärke liegt in Code-Schritten und APIs. Wenn du einen Drag-and-drop-No-Code-Builder willst, fühlen sich Make oder Activepieces zugänglicher an."
+        }
+      ]
+    },
+    "activepieces": {
+      "h1": "Activepieces Preise 2026 — Cloud vs. Self-Hosting",
+      "intro": "Activepieces ist das MIT-lizenzierte Open-Source-Automatisierungstool mit einer Zapier-ähnlichen No-Code-Oberfläche. Du kannst die verwaltete Cloud nutzen, es auf einem VPS betreiben oder auf eigener Hardware selbst hosten. Hier sind die echten Kosten jedes Wegs.",
+      "warn": "Activepieces ist echt MIT-lizenziert — die Self-Hosting-Werte unten sind <em>Infrastruktur</em>-Kosten (Server / Strom), keine Lizenzgebühr. Die Cloud wird pro aktivem Flow statt pro Run abgerechnet, also bestimmt die Flow-Zahl die Rechnung.",
+      "whenWorthIt": [
+        {
+          "case": "Willst eine No-Code-Oberfläche, die du auch selbst hosten kannst",
+          "verdict": "Activepieces nutzen",
+          "tier": "good"
+        },
+        {
+          "case": "Legst Wert auf eine wirklich freizügige (MIT-)Lizenz",
+          "verdict": "Activepieces nutzen",
+          "tier": "good"
+        },
+        {
+          "case": "Entwickler, der bei Skalierung nahezu kostenlos will",
+          "verdict": "Auf eigenem Server selbst hosten",
+          "tier": "good"
+        },
+        {
+          "case": "Brauchst Code-Schritte",
+          "verdict": "Schau dir n8n oder Pipedream an",
+          "tier": "warn"
+        },
+        {
+          "case": "Brauchst einen großen Drittanbieter-App-Katalog",
+          "verdict": "Zapier führt bei der Breite",
+          "tier": "warn"
+        },
+        {
+          "case": "Betreibst sehr viele aktive Flows in der Cloud",
+          "verdict": "Selbst hosten, um der Per-Flow-Abrechnung zu entgehen",
+          "tier": "warn"
+        }
+      ],
+      "faq": [
+        {
+          "q": "Ist Activepieces wirklich kostenlos?",
+          "a": "Die Software ist MIT-lizenziert und kostenlos selbst zu hosten. In der Cloud zahlst du pro aktivem Flow über dem Gratis-Kontingent. Self-Hosting auf einem VPS oder eigener Hardware kostet nur Infrastruktur, siehe unten."
+        },
+        {
+          "q": "Wie wird Activepieces abgerechnet — pro Run oder pro Flow?",
+          "a": "Die Cloud rechnet pro aktivem Flow ab, nicht pro Run, sodass Workflows mit hohem Volumen den Preis nicht so aufblähen wie Per-Task-Tools. Wir zeigen oben trotzdem normalisierte <strong>Runs</strong>-Kosten für einen direkten Vergleich."
+        }
+      ]
+    },
+    "automatisch": {
+      "h1": "Automatisch Preise 2026 — Self-Hosting-Kosten",
+      "intro": "Automatisch ist ein einfaches, EU-freundliches Open-Source-Automatisierungstool. Es gibt keinen allgemeinen Cloud-Tarif mehr — du betreibst es auf einem VPS oder eigener Hardware. Hier sind die echten Infrastrukturkosten jedes Wegs.",
+      "warn": "Die verwaltete Cloud von Automatisch wurde eingestellt; die realistischen Optionen sind Self-Hosting auf einem VPS oder eigenem Server. Die Werte unten sind <em>Infrastruktur</em>-Kosten (Server / Strom), keine Lizenzgebühr — es ist AGPL-3.0-Open-Source-Software.",
+      "whenWorthIt": [
+        {
+          "case": "Willst ein einfaches, EU-freundliches Open-Source-Tool",
+          "verdict": "Automatisch nutzen",
+          "tier": "good"
+        },
+        {
+          "case": "Legst Wert auf GDPR / Datensouveränität",
+          "verdict": "In deiner Region selbst hosten",
+          "tier": "good"
+        },
+        {
+          "case": "Kommst mit dem Betrieb eines kleinen Servers zurecht",
+          "verdict": "Nahezu kostenlos auf eigener Hardware",
+          "tier": "good"
+        },
+        {
+          "case": "Brauchst einen großen Integrations-Katalog",
+          "verdict": "Schau dir Zapier oder Make an",
+          "tier": "warn"
+        },
+        {
+          "case": "Brauchst Mehrbenutzer- oder API-Zugriff",
+          "verdict": "Stattdessen n8n in Betracht ziehen",
+          "tier": "warn"
+        },
+        {
+          "case": "Willst Managed Hosting ohne DevOps",
+          "verdict": "Keine allgemeine Cloud — n8n Cloud wählen",
+          "tier": "bad"
+        }
+      ],
+      "faq": [
+        {
+          "q": "Hat Automatisch einen Cloud-Tarif?",
+          "a": "Keinen allgemeinen mehr — Managed Hosting wurde eingestellt, also sind die praktischen Optionen Self-Hosting auf einem gemieteten VPS oder eigener Hardware. Beide Kosten sind oben gezeigt."
+        },
+        {
+          "q": "Ist Automatisch kostenlos?",
+          "a": "Ja — es ist AGPL-3.0-Open-Source-Software. Du zahlst nur für die Infrastruktur zum Betrieb, die bei geringem Volumen ein paar Dollar im Monat beträgt."
+        }
+      ]
+    },
+    "node-red": {
+      "h1": "Node-RED Preise 2026 — Self-Hosting-Kosten",
+      "intro": "Node-RED ist das kostenlose, flow-basierte Programmierwerkzeug, um Geräte, APIs und Dienste miteinander zu verdrahten. Es ist von Haus aus self-hosted — auf einem VPS oder eigener Hardware. Hier sind die echten Infrastrukturkosten.",
+      "warn": "Node-RED ist kostenlose Apache-2.0-Software ohne eigene Cloud-Stufe; die Werte unten sind <em>Infrastruktur</em>-Kosten (Server / Strom), keine Lizenzgebühr. Es glänzt bei IoT und Event-Verdrahtung, weniger bei großen SaaS-Integrationskatalogen.",
+      "whenWorthIt": [
+        {
+          "case": "IoT / Hardware / Event-Verdrahtung",
+          "verdict": "Node-RED ist ideal",
+          "tier": "good"
+        },
+        {
+          "case": "Willst ein kostenloses Tool auf eigener Hardware",
+          "verdict": "Nahezu kostenlos im Betrieb",
+          "tier": "good"
+        },
+        {
+          "case": "Entwickler, der mit Flows und JS vertraut ist",
+          "verdict": "Node-RED nutzen",
+          "tier": "good"
+        },
+        {
+          "case": "Brauchst ausgefeilte SaaS-Integrationen",
+          "verdict": "Make oder Zapier ist runder",
+          "tier": "warn"
+        },
+        {
+          "case": "Nicht-technisch, willst eine gehostete No-Code-Oberfläche",
+          "verdict": "Activepieces oder Make in Betracht ziehen",
+          "tier": "warn"
+        },
+        {
+          "case": "Brauchst eingebaute Mehrbenutzer-/Team-Verwaltung",
+          "verdict": "Schau dir n8n an",
+          "tier": "warn"
+        }
+      ],
+      "faq": [
+        {
+          "q": "Kostet Node-RED etwas?",
+          "a": "Die Software ist kostenlos und Open Source (Apache-2.0). Die einzigen Kosten sind die Infrastruktur zum Betrieb — ein kleiner VPS oder eigene Hardware plus Strom, beides oben gezeigt."
+        },
+        {
+          "q": "Ist Node-RED eine Zapier-Alternative?",
+          "a": "Teilweise. Es glänzt bei IoT, Geräte- und API-Verdrahtung, hat aber keinen großen vorgefertigten SaaS-Integrationskatalog. Für die Automatisierung von Business-Apps sind Make, Zapier oder n8n meist die bessere Wahl."
+        }
+      ]
+    }
+  },
+  "foot": {
+    "affiliate": "Einige Links sind Affiliate-Links — wir erhalten ggf. eine Provision ohne Mehrkosten für dich. Das beeinflusst niemals unsere Rankings oder Empfehlungen.",
+    "verified": "Preise geprüft Juni 2026"
+  },
+  "pages": {
+    "hub": {
+      "title": "AutomationCost.io — Echte Preise für n8n, Make, Pipedream, Zapier",
+      "metadesc": "Vergleiche die echten Kosten von Automatisierungstools. Kostenloser Rechner, Limits nebeneinander und ehrliche Empfehlungen. n8n vs. Make vs. Pipedream vs. Zapier.",
+      "eyebrow": "Kostenlos · Keine Anmeldung · Aktualisiert Juni 2026",
+      "h1": "Finde das Automatisierungstool,<br>das <em>wirklich am günstigsten</em> ist.",
+      "hero_p": "Echte Preise für n8n, Make, Pipedream, Zapier und mehr — abgestimmt auf deine tatsächliche Nutzung, nicht auf Marketingseiten. Beantworte ein paar kurze Fragen und erhalte in 30 Sekunden deinen Favoriten.",
+      "cta_find": "Mein bestes Tool finden",
+      "cta_compare": "Tools vergleichen →",
+      "card1_h2": "Mein bestes Tool finden",
+      "card1_p": "Beantworte ein paar Fragen zu Team, Volumen und Budget — und erhalte ein personalisiertes Ranking mit dem günstigsten Treffer markiert.",
+      "card1_arrow": "Finder starten",
+      "card2_h2": "Tools vergleichen",
+      "card2_p": "Wähle 2–4 Tools und sieh Preise, Limits, Funktionen und Tarife nebeneinander. Oder durchstöbere alle Tarife auf einmal.",
+      "card2_arrow": "Tools vergleichen",
+      "card3_h2": "Preise &amp; Limits",
+      "card3_p": "Vollständige Tabelle mit Run-Limits, Workflow-Obergrenzen, Ausführungs-Timeouts und Log-Historie für jedes Tool. Filterbar.",
+      "card3_arrow": "Alle Limits ansehen",
+      "guides_label": "Preis-Guides nach Tool",
+      "faq_heading": "Häufig gestellte Fragen",
+      "footer_tagline": "Unabhängige, datengetriebene Preisvergleiche für Automatisierungstools."
+    },
+    "calc": {
+      "title": "Finde dein bestes Automatisierungstool 2026 — Geführter Tool-Finder | AutomationCost.io",
+      "metadesc": "Beantworte ein paar kurze Fragen zu Team, Rolle, Workflow-Typ und Budget — und erhalte einen personalisierten Match-Score für n8n, Make, Pipedream, Zapier und mehr.",
+      "step1": "Unternehmensgröße",
+      "step2": "Deine Rolle",
+      "step3": "Workflow-Typ",
+      "step4": "Volumen & Budget",
+      "step5": "Ergebnisse",
+      "s1_h2": "Erzähl uns von deinem Unternehmen",
+      "s1_p": "Größe und Geschäftstyp lassen uns dein wahrscheinliches Volumen und Budget vorab schätzen — damit die Schieberegler später bei einem sinnvollen Wert statt bei null starten. Du kannst sie jederzeit anpassen.",
+      "s2_h2": "Was ist deine Rolle?",
+      "s2_p": "Das hilft uns, die Funktionen zu gewichten, die für dich am wichtigsten sind — AI-Nodes, No-Code-Oberfläche, Code-Zugriff, Compliance und mehr.",
+      "s3_h2": "Was willst du automatisieren?",
+      "s3_p": "Pipelines für deine Rolle — wähle eine.",
+      "s4_h2": "Volumen & Budget",
+      "s4_p": "Wir berechnen die genauen Kosten pro Tool und beziehen sie in deinen Match-Score ein.",
+      "s5_h2": "Deine persönlichen Empfehlungen",
+      "s5_p": "Vier Wege zur Wahl — wähle die Priorität, die zu dir passt, und sieh unten das vollständige Ranking. Gleiche Daten, gleiche Formel für jedes Tool.",
+      "lbl_billing": "Abrechnungszyklus",
+      "billing_monthly": "Monatlich",
+      "billing_annual": "Jährlich",
+      "save_pill": "spare ~20%",
+      "lbl_hosting": "Hosting-Präferenz",
+      "host_any": "Beliebig",
+      "host_cloud": "Nur Cloud",
+      "host_selfhost": "Self-Hosting",
+      "lbl_ai": "AI-/LLM-Nodes nötig?",
+      "ai_any": "Egal",
+      "ai_yes": "Ja, erforderlich"
+    },
+    "compare": {
+      "title": "Automatisierungstools vergleichen — AutomationCost.io",
+      "metadesc": "Automatisierungstools nebeneinander vergleichen — Preise, Limits, Funktionen. n8n vs. Make vs. Pipedream vs. Zapier und mehr.",
+      "badge": "Vergleich nebeneinander · Aktualisiert Juni 2026",
+      "h1": "Automatisierungstools <em>im direkten Vergleich</em>",
+      "hero_p": "Vergleiche Tools nebeneinander oder durchstöbere alle Tarife aller Tools auf einmal.",
+      "tab_tools": "Tools vergleichen",
+      "tab_plans": "Tarife vergleichen",
+      "tab_allplans": "Alle Tarife"
+    }
+  },
+  "js": {
+    "calc.top_pick": "Top-Wahl",
+    "calc.recommended": "Empfohlen",
+    "calc.over_budget": "Über Budget"
+  }
+}

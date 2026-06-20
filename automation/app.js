@@ -45,34 +45,41 @@
     onScroll();
   }
 
-  /* ── "More" dropdown ───────────────────────────────────────────────────── */
-  var dd = document.querySelector(".ac-dd");
-  if (dd) {
-    var btn = dd.querySelector(".ac-dd-btn");
-    var menu = dd.querySelector(".ac-dd-menu");
-    function place() {
-      var r = btn.getBoundingClientRect();
-      menu.style.left = Math.max(8, Math.min(r.right - menu.offsetWidth, window.innerWidth - menu.offsetWidth - 8)) + "px";
-      menu.style.top = (r.bottom + 10) + "px";
+  /* ── dropdowns ("More" + language switcher) ─────────────────────────────
+     Wires every .ac-dd on the page (there can be two: More + globe), closing
+     the others when one opens. Backward-compatible with a single dropdown. */
+  var dds = document.querySelectorAll(".ac-dd");
+  if (dds.length) {
+    function closeDd(dd) {
+      dd.classList.remove("open");
+      var b = dd.querySelector(".ac-dd-btn");
+      if (b) b.setAttribute("aria-expanded", "false");
     }
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      var open = dd.classList.toggle("open");
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-      if (open) place();
+    dds.forEach(function (dd) {
+      var btn = dd.querySelector(".ac-dd-btn");
+      var menu = dd.querySelector(".ac-dd-menu");
+      if (!btn || !menu) return;
+      dd._place = function () {
+        var r = btn.getBoundingClientRect();
+        menu.style.left = Math.max(8, Math.min(r.right - menu.offsetWidth, window.innerWidth - menu.offsetWidth - 8)) + "px";
+        menu.style.top = (r.bottom + 10) + "px";
+      };
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        dds.forEach(function (o) { if (o !== dd) closeDd(o); });
+        var open = dd.classList.toggle("open");
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        if (open) dd._place();
+      });
     });
     addEventListener("click", function (e) {
-      if (dd.classList.contains("open") && !dd.contains(e.target)) {
-        dd.classList.remove("open");
-        btn.setAttribute("aria-expanded", "false");
-      }
+      dds.forEach(function (dd) { if (dd.classList.contains("open") && !dd.contains(e.target)) closeDd(dd); });
     });
     addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && dd.classList.contains("open")) {
-        dd.classList.remove("open");
-        btn.setAttribute("aria-expanded", "false");
-      }
+      if (e.key === "Escape") dds.forEach(closeDd);
     });
-    addEventListener("resize", function () { if (dd.classList.contains("open")) place(); });
+    addEventListener("resize", function () {
+      dds.forEach(function (dd) { if (dd.classList.contains("open") && dd._place) dd._place(); });
+    });
   }
 })();

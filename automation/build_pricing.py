@@ -22,6 +22,7 @@ import json
 from pathlib import Path
 
 from build_hosting import expand_hosting_variants, hw_tier_for
+from i18n_util import lang_prefix, hreflang_links, lang_switcher, site_langs
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "tools.json"
@@ -123,16 +124,20 @@ def _discount_pct(monthly: float, annual: float) -> int | None:
     return round((1 - annual / monthly) * 100)
 
 
-def _label_runs(label: str) -> str:
+def _label_runs(label: str, tr=None) -> str:
     """Engine vrací interní label s '+ops' (overage) — user-facing musí být 'runs'."""
-    return label.replace("+ops", "+ overage")
+    overage = tr("pp.overage", "overage") if tr else "overage"
+    return label.replace("+ops", f"+ {overage}")
 
 
-def _plan_cards_for_variant(engine, variant: dict) -> str:
+def _plan_cards_for_variant(engine, variant: dict, tr=None) -> str:
     """Karty: pro každý VOLUME jedna karta s reálnou cenou (monthly + roční, je-li).
 
     Cena nese data-month/data-annual atributy → JS toggle přepíná zobrazení.
     Default = monthly. Plán bez annualUsd → annual == monthly (žádná roční řádka)."""
+    if tr is None:
+        def tr(key, default):
+            return default
     kind = variant.get("hostingKind", "saas")
     cards = []
     for runs in VOLUMES:
@@ -141,28 +146,29 @@ def _plan_cards_for_variant(engine, variant: dict) -> str:
             continue
         price_m = _fmt_usd(r["cost"], r["est"])
         price_a = _fmt_usd(ra["cost"], ra["est"]) if ra else price_m
-        suffix = "/mo electricity" if kind == "own" else "/mo"
+        suffix = tr("pp.suffix_mo_elec", "/mo electricity") if kind == "own" else tr("pp.suffix_mo", "/mo")
         pct = _discount_pct(r["cost"], ra["cost"]) if ra else None
-        detail = [f"<li>{runs:,} runs / month</li>", f"<li>{_html_escape(_label_runs(r['label']))}</li>"]
+        detail = [f"<li>{tr('pp.runs_per_month', '{runs:,} runs / month').format(runs=runs)}</li>",
+                  f"<li>{_html_escape(_label_runs(r['label'], tr))}</li>"]
         if kind == "own":
             tier = hw_tier_for(variant, runs)
             if tier:
-                detail.append(f"<li>+ ~${tier.get('hwOneOff', 0):,} hardware (one-off)</li>")
+                detail.append(f"<li>{tr('pp.hardware_oneoff', '+ ~${hw:,} hardware (one-off)').format(hw=tier.get('hwOneOff', 0))}</li>")
                 if tier.get("spec"):
                     detail.append(f'<li class="spec">{_html_escape(tier["spec"])}</li>')
         # roční řádek pod cenou: jen když plán reálně nabízí roční slevu
         if pct is not None:
             annual_note = (f'        <div class="plan-annual" data-month="" '
-                           f'data-annual="{price_a}{suffix} billed annually — save {pct}%">'
+                           f'data-annual="{tr("pp.annual_save", "{price}{suffix} billed annually — save {pct}%").format(price=price_a, suffix=suffix, pct=pct)}">'
                            f'</div>\n')
         elif kind not in ("own", "vps") and not variant.get("selfHostOnly"):
             annual_note = ('        <div class="plan-annual" data-month="" '
-                           'data-annual="No annual pricing tracked yet"></div>\n')
+                           f'data-annual="{tr("pp.no_annual", "No annual pricing tracked yet")}"></div>\n')
         else:
             annual_note = ""
         cards.append(
             '      <div class="plan-card">\n'
-            f'        <div class="plan-name">{runs:,} runs</div>\n'
+            f'        <div class="plan-name">{tr("pp.plan_runs", "{runs:,} runs").format(runs=runs)}</div>\n'
             f'        <div class="plan-price"><span class="price-num" data-month="{price_m}" '
             f'data-annual="{price_a}">{price_m}</span><span class="price-suffix">{suffix}</span></div>\n'
             f'{annual_note}'
@@ -171,29 +177,37 @@ def _plan_cards_for_variant(engine, variant: dict) -> str:
     return "\n".join(cards)
 
 
-def _variant_section(engine, variant: dict) -> str:
+def _variant_section(engine, variant: dict, tr=None) -> str:
+    if tr is None:
+        def tr(key, default):
+            return default
     kind = variant.get("hostingKind", "saas")
-    label = _KIND_LABEL.get(kind, "Plans")
+    label = tr(f"pp.kind_{kind}", _KIND_LABEL.get(kind, "Plans"))
     if kind == "own":
-        note = ('<p class="plan-note">Monthly figure is electricity only — the software is free. '
-                'One-off hardware cost (a mini PC or Pi you keep) is shown per volume.</p>')
+        note = ('<p class="plan-note">' + tr("pp.note_own",
+                "Monthly figure is electricity only — the software is free. "
+                "One-off hardware cost (a mini PC or Pi you keep) is shown per volume.") + '</p>')
     elif kind == "vps":
-        note = ('<p class="plan-note">Monthly figure is the rented server (VPS + database) that '
-                'scales with volume — the software itself is free.</p>')
+        note = ('<p class="plan-note">' + tr("pp.note_vps",
+                "Monthly figure is the rented server (VPS + database) that "
+                "scales with volume — the software itself is free.") + '</p>')
     else:
         note = ""
-    cards = _plan_cards_for_variant(engine, variant)
+    cards = _plan_cards_for_variant(engine, variant, tr)
     if not cards:
         return ""
     return (f'    <h3 class="variant-head">{label}</h3>\n'
             f'    <div class="plans-grid">\n{cards}\n    </div>\n    {note}')
 
 
-def _comparison_table(engine, by_slug: dict, focus_slug: str, vol: int) -> str:
+def _comparison_table(engine, by_slug: dict, focus_slug: str, vol: int, tr=None) -> str:
     """„<Tool> vs alternativy" na daném runs objemu — ceny VŠECH 7 toolů z enginu.
 
     Price cell nese data-month/data-annual → JS toggle přepíná i tabulku.
     Plán bez roční slevy: annual == monthly (cell se nemění)."""
+    if tr is None:
+        def tr(key, default):
+            return default
     rows = []
     ordered = [focus_slug] + [s for s in PRICING_SLUGS if s != focus_slug]
     for s in ordered:
@@ -207,8 +221,8 @@ def _comparison_table(engine, by_slug: dict, focus_slug: str, vol: int) -> str:
         is_focus = s == focus_slug
         name = (f'<strong>{t["name"]}</strong>' if is_focus
                 else f'<a href="{s}-pricing.html">{t["name"]}</a>')
-        sh = ('<span class="tag-yes">Yes (free SW)</span>' if t.get("selfHostable")
-              else '<span class="tag-no">No</span>')
+        sh = (f'<span class="tag-yes">{tr("pp.sh_yes", "Yes (free SW)")}</span>' if t.get("selfHostable")
+              else f'<span class="tag-no">{tr("pp.sh_no", "No")}</span>')
         rows.append(
             f"        <tr><td>{name}</td>"
             f'<td class="price-cell"><span class="price-num" data-month="{price_m}" '
@@ -218,8 +232,15 @@ def _comparison_table(engine, by_slug: dict, focus_slug: str, vol: int) -> str:
     return "\n".join(rows)
 
 
-def _faq_with_prices(engine, tool: dict, ed_faq: list, by_slug: dict) -> list[dict]:
-    """Editorial FAQ (bez cen) + generované price-bearing otázky (z enginu)."""
+def _faq_with_prices(engine, tool: dict, ed_faq: list, by_slug: dict, tr=None) -> list[dict]:
+    """Editorial FAQ (bez cen) + generované price-bearing otázky (z enginu).
+
+    tr(key, default) lokalizuje generované (price-bearing) otázky; ceny, odkazy a
+    názvy nástrojů jsou frozen přes {placeholder}. ed_faq (editorial, price-free)
+    přichází už lokalizované z merged editorial dictu."""
+    if tr is None:
+        def tr(key, default):
+            return default
     name = tool["name"]
     faq = []
     # price-bearing: kolik to stojí měsíčně přes všechny volume body
@@ -229,11 +250,12 @@ def _faq_with_prices(engine, tool: dict, ed_faq: list, by_slug: dict) -> list[di
         if r:
             parts.append(f"{_fmt_usd(r['cost'], r['est'])} at {vol:,} runs")
     if parts:
+        joined = ", ".join(parts[:-1]) + ((" " + tr("faq.and", "and") + " ") if len(parts) > 1 else "") + parts[-1]
         faq.append({
-            "q": f"How much does {name} cost per month?",
-            "a": (f"On the cheapest qualifying plan (3-step workflows, monthly billing) {name} runs "
-                  + ", ".join(parts[:-1]) + (" and " if len(parts) > 1 else "") + parts[-1]
-                  + ". See the plans and comparison table above for the full breakdown."),
+            "q": tr("faq.cost_q", "How much does {name} cost per month?").format(name=name),
+            "a": tr("faq.cost_a",
+                    "On the cheapest qualifying plan (3-step workflows, monthly billing) {name} runs {prices}. See the plans and comparison table above for the full breakdown."
+                    ).format(name=name, prices=joined),
         })
     # cheaper-than: vůči nejlevnější alternativě na 20k
     vol = 20000
@@ -245,45 +267,98 @@ def _faq_with_prices(engine, tool: dict, ed_faq: list, by_slug: dict) -> list[di
         cheapest = min(alts, key=lambda x: x[1]["cost"])
         cs, cr = cheapest
         if cr["cost"] < rt["cost"]:
+            link = f'<a href="{cs}-pricing.html">{by_slug[cs]["name"]}</a>'
             faq.append({
-                "q": f"What is cheaper than {name}?",
-                "a": (f"At {vol:,} runs/month the cheapest pick we track is "
-                      f'<a href="{cs}-pricing.html">{by_slug[cs]["name"]}</a> at '
-                      f"{_fmt_usd(cr['cost'], cr['est'])} vs {name} at "
-                      f"{_fmt_usd(rt['cost'], rt['est'])}. Use the calculator for your exact volume."),
+                "q": tr("faq.cheaper_q", "What is cheaper than {name}?").format(name=name),
+                "a": tr("faq.cheaper_a",
+                        "At {vol:,} runs/month the cheapest pick we track is {link} at {cprice} vs {name} at {tprice}. Use the calculator for your exact volume."
+                        ).format(vol=vol, link=link, cprice=_fmt_usd(cr['cost'], cr['est']),
+                                 name=name, tprice=_fmt_usd(rt['cost'], rt['est'])),
             })
     # editorial (price-free) na konec
     for f in ed_faq:
         faq.append({"q": f["q"], "a": f["a"]})
     faq.append({
-        "q": "How accurate are these prices?",
-        "a": ("Taken from official pricing pages and verified by hand. Values marked ~ are estimates "
-              "for custom enterprise tiers. Every change we record lands in the "
-              '<a href="changelog.html">price changelog</a>.'),
+        "q": tr("faq.accuracy_q", "How accurate are these prices?"),
+        "a": tr("faq.accuracy_a",
+                'Taken from official pricing pages and verified by hand. Values marked ~ are estimates '
+                'for custom enterprise tiers. Every change we record lands in the '
+                '<a href="changelog.html">price changelog</a>.'),
     })
     return faq
 
 
 _WORTH_CLS = {"good": "tag-yes", "warn": "tag-warn", "bad": "tag-no"}
 
+FX_PATH = ROOT / "data" / "fx.json"
+
+
+def _display_fx() -> dict:
+    """USD→X multiplikátory pro měnový přepínač (display only, USD = zdroj pravdy).
+
+    Z data/fx.json["display_rates"]. Chybí-li → jen USD (přepínač zobrazí jen $)."""
+    try:
+        dr = json.loads(FX_PATH.read_text(encoding="utf-8")).get("display_rates", {})
+    except Exception:
+        dr = {}
+    out = {k: dr[k] for k in ("usd", "eur", "czk") if isinstance(dr.get(k), (int, float))}
+    out.setdefault("usd", 1)
+    return out
+
+
+def _currency_switcher() -> str:
+    """Měnový přepínač (USD/EUR/CZK) — stejný .ac-dd pattern jako globus.
+    Aktivní měnu řídí JS z localStorage (klient-side preference, ne server)."""
+    return (
+        '<div class="ac-dd ac-cur">\n'
+        '      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true" '
+        'aria-label="Currency / Währung"><span class="ac-cur-label">$</span>'
+        '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+        'stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>\n'
+        '      <div class="ac-dd-menu ac-cur-menu">\n'
+        '        <a href="#" data-cur="usd">USD&nbsp;($)</a>\n'
+        '        <a href="#" data-cur="eur">EUR&nbsp;(€)</a>\n'
+        '        <a href="#" data-cur="czk">CZK&nbsp;(Kč)</a>\n'
+        '      </div>\n'
+        '    </div>'
+    )
+
 
 def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
-                        editorial: dict, site: dict, tools_meta: dict, engine) -> str:
+                        editorial: dict, site: dict, tools_meta: dict, engine,
+                        *, lang: str = "en", langs: list[str] | None = None,
+                        tr=None) -> str:
+    # tr(key, english_default) → translation or the inline English default, so the
+    # EN build is byte-identical (no regression). `editorial` is already the
+    # language-merged dict, so ed[...] carries translated copy for non-EN.
+    if tr is None:
+        def tr(key, default):
+            return default
+    langs = list(langs) if langs else ["en"]
     by_slug = {t["slug"]: t for t in tools}
     tool = by_slug[slug]
     name = tool["name"]
     ed = editorial["tools"][slug]
     month_year = _month_year(tools_meta)
-    prefix = _site_prefix(site.get("domain", "wizardcost.com"), site.get("base_path", ""))
+    domain = site.get("domain", "wizardcost.com")
+    base_path = site.get("base_path", "")
+    prefix = lang_prefix(domain, base_path, lang)
+    en_prefix = lang_prefix(domain, base_path, "en")   # breadcrumb parents → real EN pages
     canonical = f"{prefix}/{slug}-pricing.html"
+    rel = f"{slug}-pricing.html"
+    hreflang = hreflang_links(domain, base_path, rel, langs) if len(langs) > 1 else ""
+    switcher = lang_switcher(base_path, rel, langs, lang) if len(langs) > 1 else ""
+    cur_switcher = _currency_switcher()
+    fx_json = json.dumps(_display_fx(), ensure_ascii=False)
+    cur_note = tr("pp.cur_note", "≈ Converted from USD at today's rate — not the amount you're billed.")
 
     # ── plán sekce: hosting varianty (Cloud / VPS / vlastní server) ──
     variants = variants_by_base.get(slug, [])
-    plan_sections = "\n".join(s for s in (_variant_section(engine, v) for v in variants) if s)
+    plan_sections = "\n".join(s for s in (_variant_section(engine, v, tr) for v in variants) if s)
 
     # ── srovnávací tabulka (20k runs) ──
     cmp_vol = 20000
-    cmp_rows = _comparison_table(engine, by_slug, slug, cmp_vol)
+    cmp_rows = _comparison_table(engine, by_slug, slug, cmp_vol, tr)
 
     # ── when worth it ──
     worth_rows = "\n".join(
@@ -292,7 +367,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
         for w in ed.get("whenWorthIt", []))
 
     # ── FAQ (editorial + generované ceny) ──
-    faq = _faq_with_prices(engine, tool, ed.get("faq", []), by_slug)
+    faq = _faq_with_prices(engine, tool, ed.get("faq", []), by_slug, tr)
     faq_ld = json.dumps({
         "@context": "https://schema.org", "@type": "FAQPage",
         "mainEntity": [{"@type": "Question", "name": f["q"],
@@ -313,42 +388,82 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
     related = "\n".join(
         f'      <a href="{_vs_slug(slug, o)}.html" class="related-card">\n'
         f'        <div class="related-card-name">{_html_escape(name)} vs {_html_escape(by_slug[o]["name"])}</div>\n'
-        f'        <div class="related-card-desc">Pricing &amp; features compared</div>\n'
+        f'        <div class="related-card-desc">{tr("pp.related_desc", "Pricing &amp; features compared")}</div>\n'
         f"      </a>" for o in PRICING_SLUGS if o != slug)
 
     # ── breadcrumb JSON-LD (SERP breadcrumbs + topická struktura) ──
-    home_url = f"https://{site.get('domain', 'wizardcost.com')}/"
+    # Parent crumbs point at the real EN pages (tools.html není lokalizovaná); leaf = aktuální stránka.
+    home_url = f"https://{domain}/"
     breadcrumb_ld = json.dumps({
         "@context": "https://schema.org", "@type": "BreadcrumbList",
         "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Home", "item": home_url},
-            {"@type": "ListItem", "position": 2, "name": "Automation tools", "item": f"{prefix}/tools.html"},
-            {"@type": "ListItem", "position": 3, "name": f"{name} pricing", "item": canonical},
+            {"@type": "ListItem", "position": 1, "name": tr("bc.home", "Home"), "item": home_url},
+            {"@type": "ListItem", "position": 2, "name": tr("bc.tools", "Automation tools"), "item": f"{en_prefix}/tools.html"},
+            {"@type": "ListItem", "position": 3, "name": tr("bc.pricing", "{name} pricing").format(name=name), "item": canonical},
         ],
     }, ensure_ascii=False, indent=2)
 
-    # ── outbound CTA (affiliate jen s hasAffiliate) ──
+    # ── outbound CTA (affiliate jen s hasAffiliate) ── {name} frozen, slovosled přes placeholder
     if tool.get("hasAffiliate"):
         primary = (f'<a href="{tool["affiliateUrl"]}" target="_blank" rel="noopener sponsored" '
-                   f'class="btn-primary">Try {name} free →</a>')
+                   f'class="btn-primary">{tr("pp.cta_try", "Try {name} free →").format(name=name)}</a>')
     else:
         primary = (f'<a href="{tool["homepage"]}" target="_blank" rel="noopener" '
-                   f'class="btn-primary">Visit {name} →</a>')
+                   f'class="btn-primary">{tr("pp.cta_visit", "Visit {name} →").format(name=name)}</a>')
 
-    # ── <meta description> s reálnými cenami z dat ──
+    # ── <meta description> s reálnými cenami z dat (ceny VŽDY z enginu přes {prices} placeholder) ──
     desc_parts = []
     for vol in (VOLUMES[0], VOLUMES[2], VOLUMES[3]):
         r = engine.cheapest_monthly(tool, vol, STEPS)
         if r:
             desc_parts.append(f"{_fmt_usd(r['cost'], r['est'])} at {vol:,} runs")
-    desc = (f"{name} pricing 2026: " + ", ".join(desc_parts)
-            + f". Real plans, self-host options and how {name} compares on cost per run.")
-    title = f"{name} Pricing 2026 — Plans, Run Limits &amp; Real Cost | AutomationCost.io"
+    desc = tr(f"meta.{slug}-pricing.description",
+              "{name} pricing 2026: {prices}. Real plans, self-host options and how {name} compares on cost per run."
+              ).format(name=name, prices=", ".join(desc_parts))
+    title = tr(f"meta.{slug}-pricing.title",
+               "{name} Pricing 2026 — Plans, Run Limits &amp; Real Cost | AutomationCost.io").format(name=name)
+    og_title = title.split(" | ")[0].replace("&amp;", "&")
 
     css = _PRICING_CSS
 
+    # ── localized chrome strings (precomputed; {name}/{cmp_vol}/{month_year} frozen via placeholders) ──
+    cta_calc = tr("pp.cta_calc", "Calculate my {name} cost").format(name=name)
+    cta_compare_all = tr("pp.cta_compare_all", "Compare all 7 tools")
+    hero_trust = tr("pp.hero_trust",
+                    "Prices verified {month_year} · taken from {name}'s official pricing · all figures per <strong>run</strong>"
+                    ).format(month_year=month_year, name=name)
+    heads_up = tr("pp.heads_up", "Heads up:")
+    h2_plans = tr("pp.h2_plans", "{name} plans &amp; real cost").format(name=name)
+    plans_sub = tr("pp.plans_sub", "Cheapest qualifying plan at four typical run volumes (3-step workflows) — prices generated live from our data, never hand-typed. Toggle to see prices when billed annually.")
+    lbl_monthly = tr("pp.monthly", "Monthly")
+    lbl_annual = tr("pp.annual", "Annual")
+    h2_vs = tr("pp.h2_vs", "{name} vs alternatives").format(name=name)
+    vs_sub = tr("pp.vs_sub", "Price for {cmp_vol:,} runs / month across every tool we track. Use the Monthly / Annual toggle above to switch how the prices are billed.").format(cmp_vol=cmp_vol)
+    th_tool = tr("pp.th_tool", "Tool")
+    th_price = tr("pp.th_price", "Price for {cmp_vol:,} runs").format(cmp_vol=cmp_vol)
+    th_integrations = tr("pp.th_integrations", "Integrations")
+    th_selfhost = tr("pp.th_selfhost", "Self-host")
+    billing_m = tr("pp.billing_monthly_paren", "(monthly)")
+    billing_a = tr("pp.billing_annual_paren", "(billed annually)")
+    alt_links = (f'<a href="{slug}-alternatives.html">'
+                 + tr("pp.see_alts", "See all {name} alternatives →").format(name=name) + "</a> · "
+                 '<a href="cheapest-automation-tool.html">' + tr("pp.cheapest", "Cheapest automation tool →") + "</a> · "
+                 '<a href="compare.html">' + tr("pp.full_compare", "Full interactive comparison →") + "</a>")
+    h2_worth = tr("pp.h2_worth", "When {name} is worth it").format(name=name)
+    th_usecase = tr("pp.th_usecase", "Use case")
+    th_verdict = tr("pp.th_verdict", "Verdict")
+    h2_faq = tr("pp.h2_faq", "Frequently asked questions")
+    h2_h2h = tr("pp.h2_h2h", "Compare {name} head-to-head").format(name=name)
+    footer_part = tr("pp.footer_part", "&copy; 2026 AutomationCost.io · part of WizardCost")
+    footer_tagline = tr("pp.footer_tagline", "AutomationCost.io · Independent, data-driven comparisons · Prices verified {month_year}").format(month_year=month_year)
+    footer_affiliate = tr("pp.footer_affiliate", "Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.")
+    foot_privacy = tr("nav.privacy", "Privacy")
+    foot_terms = tr("nav.terms", "Terms")
+    foot_affiliate = tr("nav.affiliate_disclosure", "Affiliate Disclosure")
+    fab_label = tr("pp.fab", "Find my best tool")
+
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="{lang}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -356,9 +471,10 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
   <title>{title}</title>
   <meta name="description" content="{_html_escape(desc)}">
   <link rel="canonical" href="{canonical}">
+{hreflang}
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AutomationCost.io">
-  <meta property="og:title" content="{_html_escape(f'{name} Pricing 2026 — Plans, Run Limits & Real Cost')}">
+  <meta property="og:title" content="{_html_escape(og_title)}">
   <meta property="og:description" content="{_html_escape(desc)}">
   <meta property="og:url" content="{canonical}">
   <meta property="og:image" content="{prefix}/og-image.png">
@@ -393,31 +509,33 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
     Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
   </a>
   <div class="ac-links">
-    <a href="compare.html" class="ac-hide-sm">Compare</a>
-    <a href="limits.html" class="ac-hide-sm">Pricing</a>
+    <a href="compare.html" class="ac-hide-sm">{tr("nav.compare", "Compare")}</a>
+    <a href="limits.html" class="ac-hide-sm">{tr("nav.pricing", "Pricing")}</a>
     <div class="ac-dd">
-      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true">More
+      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true">{tr("nav.more", "More")}
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div class="ac-dd-menu">
-        <a href="index.html">AutomationCost home</a>
-        <a href="tools.html">Tools</a>
-        <a href="changelog.html">Changelog</a>
-        <div class="ac-dd-sep">Pricing guides</div>
-        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
-        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
-        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
-        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
-        <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
-        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
-        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
-        <div class="ac-dd-sep">Other wizards</div>
-        <a href="/llm/">LLMCost <span class="ac-dd-tag">Live</span></a>
-        <span class="ac-dd-soon">EmailCost <span class="ac-dd-tag soon">Soon</span></span>
-        <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon">Soon</span></span>
+        <a href="index.html">{tr("nav.home", "AutomationCost home")}</a>
+        <a href="tools.html">{tr("nav.tools", "Tools")}</a>
+        <a href="changelog.html">{tr("nav.changelog", "Changelog")}</a>
+        <div class="ac-dd-sep">{tr("nav.sec_pricing_guides", "Pricing guides")}</div>
+        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n {tr("nav.pricing_word", "Pricing")}</a>
+        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make {tr("nav.pricing_word", "Pricing")}</a>
+        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier {tr("nav.pricing_word", "Pricing")}</a>
+        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream {tr("nav.pricing_word", "Pricing")}</a>
+        <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces {tr("nav.pricing_word", "Pricing")}</a>
+        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch {tr("nav.pricing_word", "Pricing")}</a>
+        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED {tr("nav.pricing_word", "Pricing")}</a>
+        <div class="ac-dd-sep">{tr("nav.sec_other_wizards", "Other wizards")}</div>
+        <a href="/llm/">LLMCost <span class="ac-dd-tag">{tr("nav.tag_live", "Live")}</span></a>
+        <span class="ac-dd-soon">EmailCost <span class="ac-dd-tag soon">{tr("nav.tag_soon", "Soon")}</span></span>
+        <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon">{tr("nav.tag_soon", "Soon")}</span></span>
       </div>
     </div>
-    <a href="calculator.html" class="ac-cta">Calculator
+    {switcher}
+    {cur_switcher}
+    <a href="calculator.html" class="ac-cta">{tr("nav.calculator", "Calculator")}
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 18 15 12 9 6"/></svg>
     </a>
   </div>
@@ -431,40 +549,41 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
     <p>{ed["intro"]}</p>
     <div class="cta-row">
       {primary}
-      <a href="calculator.html" class="btn-secondary">Calculate my {name} cost</a>
-      <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
+      <a href="calculator.html" class="btn-secondary">{cta_calc}</a>
+      <a href="compare.html" class="btn-secondary">{cta_compare_all}</a>
     </div>
-    <div class="hero-trust">Prices verified {month_year} · taken from {name}'s official pricing · all figures per <strong>run</strong></div>
+    <div class="hero-trust">{hero_trust}</div>
   </div>
 
-  <div class="warning-box"><strong>Heads up:</strong> {ed["warn"]}</div>
+  <div class="warning-box"><strong>{heads_up}</strong> {ed["warn"]}</div>
 
   <div class="section">
-    <h2>{name} plans &amp; real cost</h2>
-    <p class="section-sub">Cheapest qualifying plan at four typical run volumes (3-step workflows) — prices generated live from our data, never hand-typed. Toggle to see prices when billed annually.</p>
+    <h2>{h2_plans}</h2>
+    <p class="section-sub">{plans_sub}</p>
     <div class="billing-toggle" role="group" aria-label="Billing period">
-      <button type="button" class="bt-opt is-active" data-billing="month" aria-pressed="true">Monthly</button>
-      <button type="button" class="bt-opt" data-billing="annual" aria-pressed="false">Annual</button>
+      <button type="button" class="bt-opt is-active" data-billing="month" aria-pressed="true">{lbl_monthly}</button>
+      <button type="button" class="bt-opt" data-billing="annual" aria-pressed="false">{lbl_annual}</button>
     </div>
+    <p class="cur-note" hidden>{cur_note}</p>
 {plan_sections}
   </div>
 
   <div class="section">
-    <h2>{name} vs alternatives</h2>
-    <p class="section-sub">Price for {cmp_vol:,} runs / month across every tool we track. Use the Monthly / Annual toggle above to switch how the prices are billed.</p>
+    <h2>{h2_vs}</h2>
+    <p class="section-sub">{vs_sub}</p>
     <table class="comparison-table">
-      <thead><tr><th>Tool</th><th>Price for {cmp_vol:,} runs <span class="th-billing" data-month="(monthly)" data-annual="(billed annually)">(monthly)</span></th><th>Integrations</th><th>Self-host</th></tr></thead>
+      <thead><tr><th>{th_tool}</th><th>{th_price} <span class="th-billing" data-month="{billing_m}" data-annual="{billing_a}">{billing_m}</span></th><th>{th_integrations}</th><th>{th_selfhost}</th></tr></thead>
       <tbody>
 {cmp_rows}
       </tbody>
     </table>
-    <p style="margin-top:12px"><a href="{slug}-alternatives.html">See all {name} alternatives →</a> · <a href="cheapest-automation-tool.html">Cheapest automation tool →</a> · <a href="compare.html">Full interactive comparison →</a></p>
+    <p style="margin-top:12px">{alt_links}</p>
   </div>
 
   <div class="section">
-    <h2>When {name} is worth it</h2>
+    <h2>{h2_worth}</h2>
     <table class="comparison-table">
-      <thead><tr><th>Use case</th><th>Verdict</th></tr></thead>
+      <thead><tr><th>{th_usecase}</th><th>{th_verdict}</th></tr></thead>
       <tbody>
 {worth_rows}
       </tbody>
@@ -477,14 +596,14 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
   <!-- EMAILCAP:HTML:END -->
 
   <div class="section">
-    <h2>Frequently asked questions</h2>
+    <h2>{h2_faq}</h2>
     <div class="faq" style="margin-top:8px;">
 {faq_html}
     </div>
   </div>
 
   <div class="section">
-    <h2>Compare {name} head-to-head</h2>
+    <h2>{h2_h2h}</h2>
     <div class="related-grid">
 {related}
     </div>
@@ -493,34 +612,86 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
 </div>
 
 <footer>
-  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
-  <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified {month_year}</div>
-  <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
-  <div style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+  <div style="margin-bottom:6px;color:#6b7a99">{footer_part}</div>
+  <div>{footer_tagline}</div>
+  <div style="margin-top:6px">{footer_affiliate}</div>
+  <div style="margin-top:6px"><a href="privacy.html">{foot_privacy}</a> · <a href="terms.html">{foot_terms}</a> · <a href="affiliate.html">{foot_affiliate}</a></div>
 </footer>
 
 <script>
 function toggleFaq(el) {{ el.closest(".faq-item").classList.toggle("open"); }}
 
-/* ── billing Monthly/Annual toggle — vanilla, default monthly ── */
+/* ── billing (Monthly/Annual) + currency (USD/EUR/CZK display-only) ──
+   USD is canonical (data-month/data-annual hold USD). The currency layer
+   re-formats every .price-num from the USD base × FX — a display estimate
+   (disclaimer shown), never re-baking the source prices. ── */
+window.AC_FX = {fx_json};
 (function () {{
-  var toggle = document.querySelector(".billing-toggle");
-  if (!toggle) return;
-  function apply(period) {{
-    var attr = period === "annual" ? "data-annual" : "data-month";
+  var FX = window.AC_FX || {{ usd: 1 }};
+  var billing = "month";
+  var currency = "usd";
+  try {{ currency = localStorage.getItem("ac-cur") || "usd"; }} catch (e) {{}}
+  if (!FX[currency]) currency = "usd";
+  function fmtConv(usd, cur, est) {{
+    var v = Math.round(usd * (FX[cur] || 1)).toLocaleString("en-US");
+    var pre = est ? "~" : "";
+    if (cur === "czk") return pre + v + " Kč";
+    if (cur === "eur") return pre + "€" + v;
+    return pre + "$" + v;
+  }}
+  function applyBilling() {{
+    var attr = billing === "annual" ? "data-annual" : "data-month";
     document.querySelectorAll("[" + attr + "]").forEach(function (el) {{
       if (el.classList.contains("bt-opt")) return;
       el.textContent = el.getAttribute(attr) || "";
     }});
-    toggle.querySelectorAll(".bt-opt").forEach(function (b) {{
-      var on = b.getAttribute("data-billing") === period;
-      b.classList.toggle("is-active", on);
-      b.setAttribute("aria-pressed", on ? "true" : "false");
+  }}
+  function applyCurrency() {{
+    var note = document.querySelector(".cur-note");
+    if (note) note.hidden = currency === "usd";
+    if (currency === "usd") return;
+    document.querySelectorAll(".price-num").forEach(function (el) {{
+      var m = el.textContent.match(/(~)?\\$\\s?([0-9][0-9,]*(?:\\.[0-9]+)?)/);
+      if (!m) return;
+      el.textContent = fmtConv(parseFloat(m[2].replace(/,/g, "")), currency, !!m[1]);
     }});
   }}
-  toggle.querySelectorAll(".bt-opt").forEach(function (b) {{
-    b.addEventListener("click", function () {{ apply(b.getAttribute("data-billing")); }});
+  function render() {{ applyBilling(); applyCurrency(); }}
+  var bt = document.querySelector(".billing-toggle");
+  if (bt) {{
+    bt.querySelectorAll(".bt-opt").forEach(function (b) {{
+      b.addEventListener("click", function () {{
+        billing = b.getAttribute("data-billing");
+        bt.querySelectorAll(".bt-opt").forEach(function (x) {{
+          var on = x.getAttribute("data-billing") === billing;
+          x.classList.toggle("is-active", on);
+          x.setAttribute("aria-pressed", on ? "true" : "false");
+        }});
+        render();
+      }});
+    }});
+  }}
+  function syncCur() {{
+    var lab = document.querySelector(".ac-cur .ac-cur-label");
+    if (lab) lab.textContent = currency === "eur" ? "€" : currency === "czk" ? "Kč" : "$";
+    document.querySelectorAll(".ac-cur [data-cur]").forEach(function (a) {{
+      a.setAttribute("aria-current", a.getAttribute("data-cur") === currency ? "true" : "false");
+    }});
+  }}
+  document.querySelectorAll(".ac-cur [data-cur]").forEach(function (a) {{
+    a.addEventListener("click", function (e) {{
+      e.preventDefault();
+      currency = a.getAttribute("data-cur");
+      if (!FX[currency]) currency = "usd";
+      try {{ localStorage.setItem("ac-cur", currency); }} catch (e2) {{}}
+      syncCur();
+      render();
+      var dd = a.closest(".ac-dd");
+      if (dd) {{ dd.classList.remove("open"); var bb = dd.querySelector(".ac-dd-btn"); if (bb) bb.setAttribute("aria-expanded", "false"); }}
+    }});
   }});
+  syncCur();
+  render();
 }})();
 
 /* ── EMAILCAP:JS:START — wire every .price-alerts form on the page ── */
@@ -560,7 +731,7 @@ function toggleFaq(el) {{ el.closest(".faq-item").classList.toggle("open"); }}
 }})();
 /* ── EMAILCAP:JS:END ── */
 </script>
-<a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="17" height="17" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#04130d"/></svg> Find my best tool</a>
+<a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="17" height="17" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#04130d"/></svg> {fab_label}</a>
 <script src="app.js"></script>
 </body>
 </html>
@@ -578,6 +749,7 @@ def build_pricing_pages(tools: list[dict], site: dict, tools_meta: dict,
     editorial = json.loads(EDITORIAL.read_text(encoding="utf-8"))
     engine = _root_engine()
     by_slug = {t["slug"]: t for t in tools}
+    langs = site_langs(site)   # EN pages advertise the available translations (hreflang + switcher)
 
     # hosting varianty seskupené podle base slug (variantOf)
     variants_by_base: dict[str, list[dict]] = {}
@@ -590,7 +762,7 @@ def build_pricing_pages(tools: list[dict], site: dict, tools_meta: dict,
             continue
         target = ROOT / f"{slug}-pricing.html"
         rendered = render_pricing_page(slug, tools, variants_by_base, editorial,
-                                       site, tools_meta, engine)
+                                       site, tools_meta, engine, lang="en", langs=langs)
         existing = target.read_text(encoding="utf-8") if target.exists() else None
         dirty = existing is None or _strip_injected(existing) != rendered
         if check:

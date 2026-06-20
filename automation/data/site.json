@@ -2,6 +2,8 @@
   "_meta": "Site-wide config consumed by build.py. Edit + run `python build.py`.",
   "domain": "wizardcost.com",
   "base_path": "/automation",
+  "_languages_note": "RESERVE: cs i de odzálohovány po GSC datech 2026-06-20 — web 12 dní starý, NULOVÁ CZ poptávka, i18n předčasné. cs.json + de.json + engine zůstávají hotové; ARM = přidat kód jazyka sem + rebuild (až GSC ukáže reálnou poptávku, ne dřív).",
+  "languages": ["en"],
   "cloudflare_analytics_token": "d92ac7950aa242fc9291b77df0ce406e",
   "ga4_measurement_id": "",
   "sitemap_exclude": [
