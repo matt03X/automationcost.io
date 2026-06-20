@@ -345,6 +345,24 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
             + f". Real plans, self-host options and how {name} compares on cost per run.")
     title = f"{name} Pricing 2026 — Plans, Run Limits &amp; Real Cost | AutomationCost.io"
 
+    # ── Citation-ready key facts (GEO playbook A10 #2): one dated, standalone,
+    # quotable sentence with the headline numbers, in SSR HTML — the prime thing
+    # an LLM lifts for "how much does X cost". Computed from the engine, not typed.
+    _kf_lo = engine.cheapest_monthly(tool, VOLUMES[0], STEPS)
+    _kf_hi = engine.cheapest_monthly(tool, VOLUMES[3], STEPS)
+    key_facts_html = ""
+    if _kf_lo and _kf_hi:
+        _selfhost = "self-host" in (_kf_lo.get("label", "") + _kf_hi.get("label", "")).lower()
+        _tail = (" Self-hosting is free open-source software — the figure is the server it "
+                 "runs on, not a tool fee." if _selfhost else "")
+        _kf = (f"As of {month_year}, the cheapest plan we track for {name} costs "
+               f"{_fmt_usd(_kf_lo['cost'], _kf_lo['est'])} per month at {VOLUMES[0]:,} runs and "
+               f"{_fmt_usd(_kf_hi['cost'], _kf_hi['est'])} at {VOLUMES[3]:,} runs "
+               f"(cheapest qualifying plan, 3-step workflows, monthly billing), from "
+               f"{name}'s official pricing, verified by hand.{_tail}")
+        key_facts_html = ('<p class="hero-facts" style="margin-top:14px;font-size:0.95rem;'
+                          f'opacity:0.88;line-height:1.6;max-width:680px;">{_kf}</p>')
+
     css = _PRICING_CSS
 
     return f"""<!DOCTYPE html>
@@ -436,6 +454,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
       <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
     </div>
     <div class="hero-trust">Prices verified {month_year} · taken from {name}'s official pricing · all figures per <strong>run</strong></div>
+    {key_facts_html}
   </div>
 
   <div class="warning-box"><strong>Heads up:</strong> {ed["warn"]}</div>
