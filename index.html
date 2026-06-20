@@ -341,7 +341,7 @@
 
 <nav>
   <a class="logo" href="/"><svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="lg" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#b08cff"></stop><stop offset="1" stop-color="#7c4dff"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#lg)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg>Wizard<span class="c">Cost</span></a>
-  <div class="links"><a href="#automation">Automation</a><a href="#wizards">Wizards</a><a href="/automation/price-history.html">Price history</a><a class="nav-cta" href="/automation/">Get your number</a></div>
+  <div class="links"><a href="#automation">Automation</a><a href="/llm/">LLM</a><a href="#wizards">Wizards</a><a href="/automation/price-history.html">Price history</a><a class="nav-cta" href="/automation/">Get your number</a></div>
 </nav>
 
 <header class="hero">
@@ -425,10 +425,6 @@
   </div>
 </section>
 
-<!-- LLM landscape removed for the live homepage — AutomationCost-only (owner directive:
-     LLM data není zatím scraper-grade → riziko nepřesnosti). LLMCost je v gridu níže
-     jako "SOON". Plná verze (s LLM scatterem) žije na větvi design/redesign-root. -->
-
 <!-- ── Wizards ── -->
 <section class="block wrap" id="wizards">
   <div class="kicker rv">Pick your category</div>
@@ -440,12 +436,12 @@
       <div class="desc">n8n, Make, Zapier, Pipedream &amp; more — priced at your run volume, with free-tier limits and self-hosting math.</div>
       <div class="meta">7 tools · calculator + compare · updated Jun 2026</div>
     </a>
-    <div class="wcard rv d3 soon" style="--glow:rgba(217,123,251,.15);">
-      <span class="wbadge">● SOON</span>
+    <a class="wcard rv d3" href="/llm/" style="--glow:rgba(217,123,251,.15);">
+      <span class="wbadge">● LIVE</span>
       <div class="head"><svg viewBox="0 0 48 48" fill="none"><defs><linearGradient id="wg2" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e98bff"></stop><stop offset="1" stop-color="#c44dff"></stop></linearGradient></defs><path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#wg2)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path><path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#efeaff"></path></svg><span class="nm" style="color:#d97bfb;">LLM<span class="sfx">Cost</span></span></div>
-      <div class="desc">OpenAI, Anthropic, Gemini, DeepSeek, xAI &amp; Mistral — price per million tokens at your real prompt/completion mix.</div>
-      <div class="meta">in progress — launching once pricing data is fully verified</div>
-    </div>
+      <div class="desc">OpenAI, Anthropic, Gemini, DeepSeek, xAI &amp; Mistral — price per million tokens at your real prompt/completion mix, with cheapest pick and head-to-head comparisons.</div>
+      <div class="meta">6 providers · 28 models · calculator + 15 vs-pairs · updated Jun 2026</div>
+    </a>
   </div>
 </section>
 
@@ -455,6 +451,7 @@
   <h2 class="rv d1">Two tools, head-to-head.</h2>
   <p class="sub rv d2">Side-by-side pricing, limits and feature differences — straight from the same engine as the calculator.</p>
   <div class="toollinks rv d2" style="margin-top:24px;">
+    <span class="tl-label">Automation</span>
     <a class="tl" href="/automation/zapier-vs-make.html">Zapier vs Make</a>
     <a class="tl" href="/automation/zapier-vs-n8n.html">Zapier vs n8n</a>
     <a class="tl" href="/automation/zapier-vs-pipedream.html">Zapier vs Pipedream</a>
@@ -465,6 +462,19 @@
     <a class="tl" href="/automation/n8n-vs-pipedream.html">n8n vs Pipedream</a>
     <a class="tl" href="/automation/n8n-vs-activepieces.html">n8n vs Activepieces</a>
     <a class="tl" href="/automation/compare.html">Compare all 7 →</a>
+  </div>
+  <div class="toollinks rv d2" style="margin-top:18px;">
+    <span class="tl-label">LLM</span>
+    <a class="tl" href="/llm/openai-vs-claude.html">OpenAI vs Claude</a>
+    <a class="tl" href="/llm/openai-vs-gemini.html">OpenAI vs Gemini</a>
+    <a class="tl" href="/llm/openai-vs-deepseek.html">OpenAI vs DeepSeek</a>
+    <a class="tl" href="/llm/openai-vs-mistral.html">OpenAI vs Mistral</a>
+    <a class="tl" href="/llm/claude-vs-gemini.html">Claude vs Gemini</a>
+    <a class="tl" href="/llm/claude-vs-deepseek.html">Claude vs DeepSeek</a>
+    <a class="tl" href="/llm/claude-vs-grok.html">Claude vs Grok</a>
+    <a class="tl" href="/llm/gemini-vs-deepseek.html">Gemini vs DeepSeek</a>
+    <a class="tl" href="/llm/gemini-vs-grok.html">Gemini vs Grok</a>
+    <a class="tl" href="/llm/cheapest-llm-api.html">Cheapest LLM →</a>
   </div>
 </section>
 
