@@ -1,0 +1,155 @@
+{
+  "_meta": {
+    "title": "Automation tool pricing history",
+    "thesis": "Across the major automation platforms, core pricing has barely moved in two years. Here is the evidence — every claim links to a dated Web Archive snapshot.",
+    "window_from": "2024-06",
+    "window_to": "2026-06",
+    "updated": "2026-06-20",
+    "method": "Curated from Web Archive (Wayback Machine) snapshots of each vendor's pricing page, 2024-06 to 2026-06. Only CONFIRMED, evidence-linked events are published; rendering and packaging artifacts are labelled as such, not as price changes. Live figures cross-checked against our daily price audit (verified 2026-06-12).",
+    "note": "Zdroj pravdy = tato data, kurátorovaná z calc-test/wayback/ verdiktů (2026-06-12). Stránka generována build.py → render_price_history. CONFIRMED-only; gapy a artefakty přiznané."
+  },
+  "tools": [
+    {
+      "slug": "zapier",
+      "name": "Zapier",
+      "snapshots": 31,
+      "range_from": "2024-06",
+      "range_to": "2026-06",
+      "headline": "No core price change in 2+ years",
+      "stable": [
+        { "plan": "Free", "price": "$0", "detail": "100 tasks / mo", "since": "at least June 2024" },
+        { "plan": "Professional", "price": "$19.99 / mo", "detail": "billed annually", "since": "at least June 2024" },
+        { "plan": "Team", "price": "$69 / mo", "detail": "billed annually", "since": "at least June 2024" }
+      ],
+      "events": [
+        {
+          "date": "2025-05",
+          "kind": "product",
+          "title": "AI Agents add-on launched (not a core price change)",
+          "detail": "An \"Agents (Beta) — Starts at $50/mo\" block appeared on the pricing page alongside the existing Chatbots / Interfaces / Tables teasers. Core automation plans were unchanged.",
+          "evidence": [
+            "https://web.archive.org/web/20250429083306/https://zapier.com/pricing",
+            "https://web.archive.org/web/20250504035157/https://zapier.com/pricing"
+          ]
+        },
+        {
+          "date": "2025-09",
+          "kind": "packaging",
+          "title": "Packaging overhaul — \"Pro\" renamed \"Professional\" (core prices unchanged)",
+          "detail": "Zaps, Tables and Interfaces were merged into unified platform plans; Agents and Chatbots got their own tabs and tiers. Core prices stayed $0 / $19.99 / $69. This is the layout you see today.",
+          "evidence": [
+            "https://web.archive.org/web/20250917095310/https://zapier.com/pricing",
+            "https://web.archive.org/web/20250920135747/https://zapier.com/pricing"
+          ]
+        }
+      ],
+      "gaps": []
+    },
+    {
+      "slug": "make",
+      "name": "Make",
+      "snapshots": 23,
+      "range_from": "2024-06",
+      "range_to": "2026-06",
+      "headline": "Annual prices flat since at least Feb 2025",
+      "stable": [
+        { "plan": "Core", "price": "$9 / mo", "detail": "10k credits / mo, billed annually", "since": "at least Feb 2025" },
+        { "plan": "Pro", "price": "$16 / mo", "detail": "10k credits / mo, billed annually", "since": "at least Feb 2025" },
+        { "plan": "Teams", "price": "$29 / mo", "detail": "10k credits / mo, billed annually", "since": "at least Feb 2025" }
+      ],
+      "events": [
+        {
+          "date": "2026-05",
+          "kind": "artifact",
+          "title": "Archive showed monthly prices ($12 / $21 / $38) — a display default, not a price hike",
+          "detail": "From mid-May 2026 the archived page rendered the monthly variant of the same plans. The live annual list price stayed $9 / $16 / $29 (verified 2026-06-12). No actual price change.",
+          "evidence": [
+            "https://web.archive.org/web/20260514164452/https://www.make.com/en/pricing",
+            "https://web.archive.org/web/20260521223734/https://www.make.com/en/pricing"
+          ]
+        }
+      ],
+      "gaps": [
+        { "from": "2024-06", "to": "2025-01", "reason": "The pricing page rendered prices client-side, so archived HTML for this window is empty — no reliable figures." }
+      ]
+    },
+    {
+      "slug": "n8n",
+      "name": "n8n",
+      "snapshots": 35,
+      "range_from": "2024-06",
+      "range_to": "2026-06",
+      "headline": "One real overhaul (Aug 2025): workflow limits removed + Business tier",
+      "stable": [
+        { "plan": "Starter", "price": "$20 / mo", "detail": "billed annually, 2.5k executions / mo", "since": "Aug 2025 (EUR today)" },
+        { "plan": "Pro", "price": "$50 / mo", "detail": "billed annually, 10k executions / mo", "since": "Aug 2025 (EUR today)" },
+        { "plan": "Business", "price": "$667 / mo", "detail": "billed annually", "since": "Aug 2025 (EUR today)" }
+      ],
+      "events": [
+        {
+          "date": "2025-08-07",
+          "kind": "change",
+          "title": "Major overhaul — workflow limits removed, Business tier added",
+          "detail": "Until 6 Aug 2025: Starter $24/$20 (monthly/annual) capped at 5 active workflows; Pro $60/$50 capped at 15; plus a $120/mo tier (50k exec / 50 workflows). On 7 Aug 2025 the workflow/step/user limits were removed (now unlimited), quotas were rewritten to annual, the $120 tier was discontinued and a Business plan ($667 / $800 annual / monthly) appeared.",
+          "evidence": [
+            "https://web.archive.org/web/20250806080243/https://n8n.io/pricing",
+            "https://web.archive.org/web/20250807160941/https://n8n.io/pricing"
+          ]
+        },
+        {
+          "date": "2025-09",
+          "kind": "artifact",
+          "title": "Monthly variants dropped from the page (display change, not prices)",
+          "detail": "The page stopped rendering the monthly figures (24 / 60 / 800) in HTML and defaulted to annual only. The annual prices themselves did not change.",
+          "evidence": []
+        }
+      ],
+      "gaps": [
+        { "from": "2024-06", "to": "2025-03", "reason": "Pricing rendered client-side in this window — archived HTML has no figures." }
+      ],
+      "open_question": "Currency: the Aug 2025 archive showed USD ($24 / $20); the live page today is in EUR (€24 / €20). When (or whether) the $→€ switch happened can't be pinned from the archive."
+    },
+    {
+      "slug": "pipedream",
+      "name": "Pipedream",
+      "snapshots": 26,
+      "range_from": "2024-06",
+      "range_to": "2026-06",
+      "headline": "Core flat; free tier cut and a new Connect plan",
+      "stable": [
+        { "plan": "Basic", "price": "$29 / mo", "detail": "$348 billed annually", "since": "at least June 2024" },
+        { "plan": "Advanced", "price": "$49 / mo", "detail": "$588 billed annually", "since": "at least June 2024" }
+      ],
+      "events": [
+        {
+          "date": "2025-04",
+          "kind": "product",
+          "title": "Connect plan ($99/mo) launched (new plan, not a price change)",
+          "detail": "A new \"Connect\" plan ($99/mo, 10k credits, auth for external users) was added to the lineup. A catalogue addition rather than a change to existing prices.",
+          "evidence": [
+            "https://web.archive.org/web/20250424003531/https://pipedream.com/pricing",
+            "https://web.archive.org/web/20250430012209/https://pipedream.com/pricing"
+          ]
+        },
+        {
+          "date": "2025-04 → 2026-01",
+          "kind": "change",
+          "title": "Free tier cut: 300 → 100 credits / mo",
+          "detail": "The free monthly credit allowance dropped from 300 (April 2025) to 100 (January 2026) — a real reduction in the free tier. The exact date falls inside this window; the live tier today is 100 credits / mo.",
+          "evidence": [
+            "https://web.archive.org/web/20250430012209/https://pipedream.com/pricing",
+            "https://web.archive.org/web/20260115212149/https://pipedream.com/pricing"
+          ]
+        }
+      ],
+      "gaps": [
+        { "from": "2026-02", "to": "2026-06", "reason": "The page moved to client-side rendering — archived HTML has no figures for this window; live data comes from our own audit." }
+      ]
+    }
+  ],
+  "fixed": [
+    { "slug": "activepieces", "name": "Activepieces", "note": "Open-source (MIT). Self-hosting is free; the cloud has a free tier plus paid plans. No list-price history tracked here." },
+    { "slug": "automatisch", "name": "Automatisch", "note": "Open-source (AGPL). Self-hosted and free — you pay only for the server it runs on." },
+    { "slug": "node-red", "name": "Node-RED", "note": "Open-source (Apache 2.0) and free. The only cost is the infrastructure you run it on." }
+  ]
+}
