@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- generováno build_pricing.py (build_seo_pages) z data/tools.json — needituj ručně -->
+  <title>Hidden Costs of Automation Tools: Overages, Annual Fees &amp; Surprises | AutomationCost.io</title>
+  <meta name="description" content="Zapier, Make and Pipedream overage behavior, annual billing premiums and volume tier traps — everything that's not on the pricing page. Plus the open-source tools that cost only your server.">
+  <link rel="canonical" href="https://wizardcost.com/automation/hidden-cost-automation.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AutomationCost.io">
+  <meta property="og:title" content="Hidden Costs of Automation Tools: Overages, Annual Fees &amp; Surprises">
+  <meta property="og:description" content="Zapier, Make and Pipedream overage behavior, annual billing premiums and volume tier traps — everything that's not on the pricing page. Plus the open-source tools that cost only your server.">
+  <meta property="og:url" content="https://wizardcost.com/automation/hidden-cost-automation.html">
+  <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.png">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What happens if I exceed my automation plan limit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the tool. Most cloud platforms use tier-based pricing: exceeding your monthly limit means upgrading to the next volume bracket for the whole month — not just paying for the extra runs. Pipedream historically offered per-credit overage but this is now quote-only. Self-hosted open-source tools (n8n, Activepieces, Automatisch, Node-RED) have no hard ops ceiling — you're limited only by your server capacity."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is n8n really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "n8n the software is open-source (Sustainable Use license) and free to self-host. You pay only for the server: a basic VPS starts around $8/mo for low-volume workloads. n8n Cloud is a paid hosted service with a separate pricing structure. See the <a href=\"n8n-pricing.html\">n8n pricing breakdown</a> and the <a href=\"self-hosted-automation-cost.html\">self-host cost guide</a> for exact figures."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which automation tool has the lowest annual billing premium?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tools that offer only monthly billing (like some self-hosted plans) have no annual premium by definition. Among cloud tools, the annual discount varies — check the table above for current entry-plan figures. Self-hosted tools (n8n, Activepieces, Automatisch, Node-RED) have no subscription to lock into at all, so the annual vs monthly question doesn't arise."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I pay month-to-month for automation tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — Zapier, Make, and Pipedream all offer monthly billing, but you pay a premium over annual pricing. The markup is visible in the table above. n8n Cloud also offers monthly billing. Self-hosted tools have no subscription; the server (VPS) is typically billed by the hour or month with no commitment required."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I avoid automation overage charges?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Three strategies work reliably: (1) Monitor your run volume before it hits the limit — most platforms send alerts. (2) Self-host on open-source software (n8n, Activepieces) — no per-run fee means no overages. (3) Choose a tool whose tier jump is smaller, or whose entry plan already covers your peak volume. The <a href=\"calculator.html\">calculator</a> shows which tier you land on at your volume."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://wizardcost.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Automation tools",
+      "item": "https://wizardcost.com/automation/tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Hidden costs of automation tools",
+      "item": "https://wizardcost.com/automation/hidden-cost-automation.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://wizardcost.com/#org",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "description": "Independent, data-driven software pricing comparisons. Prices verified by hand from official vendor pricing pages and dated in a public changelog."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://wizardcost.com/#website",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://wizardcost.com/automation/hidden-cost-automation.html#webpage",
+      "url": "https://wizardcost.com/automation/hidden-cost-automation.html",
+      "name": "Hidden Costs of Automation Tools: Overages, Annual Fees & Surprises",
+      "description": "Zapier, Make and Pipedream overage behavior, annual billing premiums and volume tier traps — everything that's not on the pricing page. Plus the open-source tools that cost only your server.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://wizardcost.com/#website"
+      },
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      },
+      "dateModified": "2026-06-15"
+    }
+  ]
+}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #0a0e17; --surface: #111827; --surface2: #1a2236; --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99; --accent: #10b981; --accent-br: #16d18c; --accent-dim: rgba(16,185,129,0.09); --accent-glow: rgba(16,185,129,0.20); --ink: #04130d; --link: #6f9bff; --green: #10b981; --yellow: #f59e0b; --orange: #f59e0b; --radius: 14px; --radius-sm: 9px; --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; padding-top: 100px; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: #9fbcff; }
+    h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; }
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,14,23,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+    .nav-bottom::-webkit-scrollbar { display: none; }
+    .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; }
+    .nav-bottom a:hover { color: var(--text); }
+    .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.06rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .logo .io { color: var(--muted); font-weight: 600; }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+    .page-hero { padding: 56px 0 36px; }
+    .tool-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 20px; }
+    .tool-badge img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 1px; }
+    .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+    .page-hero p { color: var(--muted); font-size: 1.05rem; max-width: 640px; margin-bottom: 28px; }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .hero-trust { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .hero-trust strong { color: var(--accent-br); }
+    .btn-primary { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 24px; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 6px 20px rgba(16,185,129,0.26); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .btn-primary:hover { background: var(--accent-br); transform: translateY(-1px); text-decoration: none; box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 10px 28px rgba(16,185,129,0.36); }
+    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.15s; }
+    .btn-secondary:hover { border-color: var(--accent); text-decoration: none; }
+    .section { margin-bottom: 48px; }
+    .section h2 { font-size: 1.45rem; font-weight: 800; margin-bottom: 6px; }
+    .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; max-width: 680px; }
+    .billing-toggle { display: inline-flex; background: var(--surface); border: 1px solid var(--border2); border-radius: 999px; padding: 3px; gap: 2px; margin: 0 0 20px; }
+    .bt-opt { background: none; border: none; color: var(--muted); font-family: var(--font); font-size: 13px; font-weight: 700; padding: 7px 18px; border-radius: 999px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .bt-opt:hover { color: var(--text); }
+    .bt-opt.is-active { background: var(--accent); color: var(--ink); }
+    .variant-head { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-br); margin: 22px 0 10px; }
+    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; margin-bottom: 8px; }
+    .plan-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .plan-name { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .plan-price { font-family: var(--mono); font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .plan-price .price-suffix { font-size: 13px; font-weight: 400; color: var(--muted); }
+    .plan-annual { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--accent-br); min-height: 16px; margin-bottom: 4px; }
+    .plan-annual:empty { min-height: 0; margin-bottom: 0; }
+    .th-billing { font-family: var(--mono); font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--muted); }
+    .plan-detail { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
+    .plan-detail li { list-style: none; padding: 2px 0; }
+    .plan-detail li::before { content: "·"; margin-right: 6px; color: var(--accent); }
+    .plan-detail li.spec { color: var(--text2); font-style: italic; }
+    .plan-note { font-size: 12.5px; color: var(--muted); margin: 4px 0 0; max-width: 660px; }
+    .comparison-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .comparison-table th { text-align: left; padding: 10px 14px; color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+    .comparison-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .comparison-table tr:hover td { background: var(--surface2); }
+    .comparison-table .price-cell { font-family: var(--mono); font-weight: 700; }
+    .tag-yes { color: var(--green); font-weight: 700; }
+    .tag-no { color: var(--muted); }
+    .tag-warn { color: var(--orange); font-weight: 700; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; background: none; border: none; color: var(--text); font-family: inherit; font-size: 15px; font-weight: 600; text-align: left; padding: 18px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .faq-q:hover { color: var(--accent); }
+    .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-a { display: none; color: var(--muted); font-size: 14px; line-height: 1.7; padding-bottom: 18px; }
+    .faq-item.open .faq-a { display: block; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+    .related-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-decoration: none; color: var(--text); display: block; transition: border-color 0.15s; }
+    .related-card:hover { border-color: var(--accent); text-decoration: none; }
+    .related-card-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .related-card-desc { font-size: 12px; color: var(--muted); }
+    .warning-box { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+    .warning-box strong { color: var(--orange); }
+    .warning-box em { color: var(--text2); font-style: normal; }
+    .price-alerts { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 48px; }
+    .pa-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-br); margin-bottom: 8px; }
+    .pa-title { font-family: var(--display); font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+    .pa-sub { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    .pa-form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pa-input { flex: 1; min-width: 220px; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; }
+    .pa-input:focus { outline: none; border-color: var(--accent); }
+    .pa-btn { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 22px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .pa-btn:hover { background: var(--accent-br); }
+    .pa-btn:disabled { opacity: 0.6; cursor: default; }
+    .pa-msg { display: none; align-items: center; gap: 8px; font-size: 13px; margin-top: 12px; }
+    .pa-msg.show { display: flex; }
+    .pa-msg.ok { color: var(--green); }
+    .pa-msg.err { color: var(--orange); }
+    .pa-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+    .price-alerts.subscribed .pa-form { display: none; }
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 64px; }
+    footer a { color: var(--muted); }
+    .funnel-fab { position: fixed; right: 22px; bottom: 22px; z-index: 90; display: inline-flex; align-items: center; gap: 9px; background: var(--accent); color: var(--ink); font-family: var(--font); font-size: 14px; font-weight: 700; padding: 13px 20px; border-radius: 100px; text-decoration: none; box-shadow: 0 10px 30px rgba(16,185,129,0.4), 0 0 0 1px rgba(16,185,129,0.5); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .funnel-fab:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-2px); text-decoration: none; box-shadow: 0 14px 38px rgba(16,185,129,0.5); }
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 8px; padding-right: 8px; }
+      .nav-bottom a { padding: 13px 14px; }
+    }
+    @media (max-width: 620px) { .nav-badge { display: none; } }
+    @media (max-width: 520px) {
+      .cta-row { flex-direction: column; align-items: stretch; }
+      .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+      .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; }
+    }
+  </style>
+  <link rel="stylesheet" href="app.css">
+<!-- ANALYTICS (build.py) -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
+  <!-- /ANALYTICS -->
+  </head>
+<body class="ac anim">
+
+<div id="ac-progress"></div>
+
+<nav class="ac-nav">
+  <a href="/" class="logo">
+    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+      <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
+    </svg>
+    Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+  </a>
+  <div class="ac-links">
+    <a href="compare.html" class="ac-hide-sm">Compare</a>
+    <a href="limits.html" class="ac-hide-sm">Pricing</a>
+    <div class="ac-dd">
+      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true">More
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="ac-dd-menu">
+        <a href="index.html">AutomationCost home</a>
+        <a href="tools.html">Tools</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
+        <div class="ac-dd-sep">Pricing guides</div>
+        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
+        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
+        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
+        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
+        <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
+        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
+        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
+        <div class="ac-dd-sep">Other wizards</div>
+        <a href="/llm/">LLMCost <span class="ac-dd-tag">Live</span></a>
+        <span class="ac-dd-soon">EmailCost <span class="ac-dd-tag soon">Soon</span></span>
+        <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon">Soon</span></span>
+      </div>
+    </div>
+    <a href="calculator.html" class="ac-cta">Calculator
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-hero">
+    <h1>The hidden costs of automation tools</h1>
+    <p>The price shown on an automation tool's pricing page is rarely the price you end up paying. Volume limits, overage tiers and annual billing premiums can add 20–50% on top of the headline number — before you've even started. This page maps out the three hidden costs that most often catch teams off guard, using the same data that powers our calculator.</p>
+    <div class="cta-row">
+      <a href="calculator.html" class="btn-primary">Find my cheapest tool →</a>
+      <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
+    </div>
+    <div class="hero-trust">Prices generated live from our data · verified June 2026 · all figures per <strong>run</strong>, 3-step workflows</div>
+  </div>
+
+  <div class="section">
+    <h2>1. What happens when you exceed your limit</h2>
+    <p class="section-sub">Each tool sets a monthly ops/runs/credit ceiling. Here's what triggers when you hit it — sourced from each vendor's published pricing, verified June 2026.</p>
+    <table class="comparison-table">
+      <thead><tr><th>Tool</th><th>Entry plan limit</th><th>Entry plan price</th><th>When you exceed it</th></tr></thead>
+      <tbody>
+        <tr><td><a href="zapier-pricing.html">Zapier</a></td><td>750 actions/mo</td><td>$29.99/mo</td><td>Must upgrade to next volume tier (no pay-as-you-go)</td></tr>
+        <tr><td><a href="make-pricing.html">Make</a></td><td>10,000 modules/mo</td><td>$10.59/mo</td><td>Must upgrade to next volume tier (no pay-as-you-go)</td></tr>
+        <tr><td><a href="n8n-pricing.html">n8n</a></td><td>2,500 runs/mo</td><td>$27.53/mo</td><td>Must upgrade to next volume tier (no pay-as-you-go)</td></tr>
+        <tr><td><a href="pipedream-pricing.html">Pipedream</a></td><td>2,000 runs/mo</td><td>$45/mo</td><td>Tiered per-credit rate applies (Contact Sales for current rates)</td></tr>
+        <tr><td><a href="activepieces-pricing.html">Activepieces</a></td><td>Unlimited (self-host)</td><td>Server cost only</td><td>No ops limit — self-host runs are unlimited by software</td></tr>
+        <tr><td><a href="automatisch-pricing.html">Automatisch</a></td><td>Unlimited (self-host)</td><td>Server cost only</td><td>No ops limit — self-host runs are unlimited by software</td></tr>
+        <tr><td><a href="node-red-pricing.html">Node-RED</a></td><td>Unlimited (self-host)</td><td>Server cost only</td><td>No ops limit — self-host runs are unlimited by software</td></tr>
+      </tbody>
+    </table>
+    <div class="warning-box" style="margin-top:16px"><strong>Key takeaway:</strong> most cloud tools use <em>tier-based pricing</em> — you pay for the next volume bracket, not just the overage. A single busy month can push you into a tier that costs 2–3× more. Self-hosted open-source tools (n8n, Activepieces, Automatisch, Node-RED) have no ops ceiling at all: the limit is your server capacity.</div>
+  </div>
+
+  <div class="section">
+    <h2>2. Annual billing premium</h2>
+    <p class="section-sub">Choosing monthly billing over annual means you pay a premium on many platforms. The table below compares the entry-plan monthly vs annual price (billed-annually price expressed as $/mo), and shows the effective markup you pay for the flexibility of monthly billing.</p>
+    <table class="comparison-table">
+      <thead><tr><th>Tool</th><th>Monthly billing</th><th>Annual billing ($/mo)</th><th>Monthly premium</th></tr></thead>
+      <tbody>
+        <tr><td><a href="zapier-pricing.html">Zapier</a></td><td>$29.99/mo</td><td>$19.99/mo</td><td class="tag-warn">+50% monthly premium</td></tr>
+        <tr><td><a href="make-pricing.html">Make</a></td><td>$10.59/mo</td><td>$9/mo</td><td>+18% monthly premium</td></tr>
+        <tr><td><a href="n8n-pricing.html">n8n</a></td><td>$27.53/mo</td><td>$22.94/mo</td><td>+20% monthly premium</td></tr>
+        <tr><td><a href="pipedream-pricing.html">Pipedream</a></td><td>$45/mo</td><td>$29/mo</td><td class="tag-warn">+55% monthly premium</td></tr>
+        <tr><td><a href="activepieces-pricing.html">Activepieces</a></td><td>Server cost/mo</td><td>Server cost/mo</td><td>N/A</td></tr>
+        <tr><td><a href="automatisch-pricing.html">Automatisch</a></td><td>Server cost/mo</td><td>Server cost/mo</td><td>N/A</td></tr>
+        <tr><td><a href="node-red-pricing.html">Node-RED</a></td><td>Server cost/mo</td><td>Server cost/mo</td><td>N/A</td></tr>
+      </tbody>
+    </table>
+    <div class="warning-box" style="margin-top:16px"><strong>Note:</strong> "Monthly premium" is the extra cost of paying month-to-month vs committing to a year. Highlighted cells (<span class="tag-warn">orange</span>) indicate a premium of 30% or more. Self-hosted tools have no subscription, so the annual vs monthly distinction doesn't apply. Server costs are typically billed monthly by the hour.</div>
+  </div>
+
+  <div class="section">
+    <h2>3. The open-source escape hatch</h2>
+    <p>If overage charges and billing lock-in are a concern, the cleanest exit is switching to an open-source, self-hosted tool. n8n, Activepieces, Automatisch, Node-RED are free, MIT/Apache/AGPL-licensed software — the only recurring cost is the server it runs on.</p>
+    <p style="margin-top:12px">Our <a href="self-hosted-automation-cost.html">self-hosted automation cost guide</a> models VPS costs from entry level up to high-volume workloads and compares them directly against paid cloud plans. The short version: at most volumes self-hosting is cheaper than paid cloud, and there are no overages by design.</p>
+    <p style="margin-top:12px"><a href="self-hosted-automation-cost.html">See self-host vs cloud cost breakdown →</a></p>
+  </div>
+
+  <div class="section">
+    <h2>Calculate your real cost</h2>
+    <p>Enter your actual monthly run volume in the calculator and it shows the full cost — including which tier you land on and whether a paid cloud plan or self-hosting is cheaper for your usage.</p>
+    <div class="cta-row" style="margin-top:16px">
+      <a href="calculator.html" class="btn-primary">Open calculator →</a>
+      <a href="compare.html" class="btn-secondary">Compare all tools</a>
+      <a href="cheapest-automation-tool.html" class="btn-secondary">Cheapest automation tool</a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Frequently asked questions</h2>
+    <div class="faq" style="margin-top:8px;">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What happens if I exceed my automation plan limit?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">It depends on the tool. Most cloud platforms use tier-based pricing: exceeding your monthly limit means upgrading to the next volume bracket for the whole month — not just paying for the extra runs. Pipedream historically offered per-credit overage but this is now quote-only. Self-hosted open-source tools (n8n, Activepieces, Automatisch, Node-RED) have no hard ops ceiling — you're limited only by your server capacity.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is n8n really free?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">n8n the software is open-source (Sustainable Use license) and free to self-host. You pay only for the server: a basic VPS starts around $8/mo for low-volume workloads. n8n Cloud is a paid hosted service with a separate pricing structure. See the <a href="n8n-pricing.html">n8n pricing breakdown</a> and the <a href="self-hosted-automation-cost.html">self-host cost guide</a> for exact figures.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Which automation tool has the lowest annual billing premium?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Tools that offer only monthly billing (like some self-hosted plans) have no annual premium by definition. Among cloud tools, the annual discount varies — check the table above for current entry-plan figures. Self-hosted tools (n8n, Activepieces, Automatisch, Node-RED) have no subscription to lock into at all, so the annual vs monthly question doesn't arise.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Can I pay month-to-month for automation tools?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Yes — Zapier, Make, and Pipedream all offer monthly billing, but you pay a premium over annual pricing. The markup is visible in the table above. n8n Cloud also offers monthly billing. Self-hosted tools have no subscription; the server (VPS) is typically billed by the hour or month with no commitment required.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I avoid automation overage charges?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Three strategies work reliably: (1) Monitor your run volume before it hits the limit — most platforms send alerts. (2) Self-host on open-source software (n8n, Activepieces) — no per-run fee means no overages. (3) Choose a tool whose tier jump is smaller, or whose entry plan already covers your peak volume. The <a href="calculator.html">calculator</a> shows which tier you land on at your volume.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
+  <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified June 2026</div>
+  <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
+  <div style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+</footer>
+
+<script>
+function toggleFaq(el) { el.closest(".faq-item").classList.toggle("open"); }
+</script>
+<a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="17" height="17" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#04130d"/></svg> Find my best tool</a>
+<script src="app.js"></script>
+</body>
+</html>
