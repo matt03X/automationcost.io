@@ -502,6 +502,17 @@
     /* a11y: visible keyboard focus (cards became focusable buttons) */
     :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .size-card:focus-visible, .biz-card:focus-visible, .role-card:focus-visible, .wf-card:focus-visible, .wf-skip:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 12px; }
+    /* ── Calculator landing hero (above the wizard) ─────────────────────────── */
+    .calc-hero { text-align: center; max-width: 760px; margin: 4px auto 34px; }
+    .calc-hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono, ui-monospace, "SFMono-Regular", Menlo, monospace); font-size: 12.5px; letter-spacing: .2px; color: var(--muted); background: var(--surface2, #1a2236); border: 1px solid var(--border, #1f2d45); border-radius: 99px; padding: 6px 14px; margin-bottom: 18px; }
+    .calc-hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); flex-shrink: 0; }
+    .calc-hero h1 { font-size: clamp(1.9rem, 4vw, 2.7rem); font-weight: 800; letter-spacing: -1px; line-height: 1.08; margin: 0 0 14px; color: var(--text); }
+    .calc-hero h1 em { font-style: normal; color: var(--accent); }
+    .calc-hero-sub { font-size: 16px; line-height: 1.6; color: var(--text2, #a9b6cc); max-width: 640px; margin: 0 auto 20px; }
+    .calc-hero-proof { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+    .calc-hero-proof .chp { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); background: var(--surface, #111827); border: 1px solid var(--border, #1f2d45); border-radius: 99px; padding: 6px 13px; }
+    .calc-hero-proof .chp svg { color: var(--green, #10b981); flex-shrink: 0; }
+    @media (max-width: 560px) { .calc-hero { margin-bottom: 24px; } .calc-hero-sub { font-size: 15px; } .calc-hero-proof .chp { font-size: 12px; } }
   </style>
 <link rel="stylesheet" href="app.css">
   <!-- ANALYTICS (build.py) -->
@@ -556,7 +567,16 @@
 
 <div class="wrap">
 
-  <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">Automation cost calculator — Zapier, Make, n8n, Pipedream &amp; more, priced at your real volume</h1>
+  <div class="calc-hero" id="calc-hero">
+    <div class="calc-hero-eyebrow"><span class="dot"></span> Free · No signup · Live vendor pricing</div>
+    <h1>What will automation <em>actually</em> cost you?</h1>
+    <p class="calc-hero-sub">Answer 4 quick questions and we'll price Zapier, Make, n8n, Pipedream &amp; more at <b>your real volume</b> — then rank them by fit, not by who pays us. About 30 seconds.</p>
+    <div class="calc-hero-proof">
+      <span class="chp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> No paid placement</span>
+      <span class="chp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 7 tools · prices re-checked weekly</span>
+      <span class="chp"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Cloud, self-host &amp; GDPR aware</span>
+    </div>
+  </div>
 
   <!-- Progress bar -->
   <div class="wizard-progress" id="wizard-progress">
@@ -2651,6 +2671,9 @@ function costBreakdown(tool, cr, runs, steps, workflows, perWf) {
 function goStep(n) {
   document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
   document.getElementById("step-" + n).classList.add("active");
+  // The landing hero is the entry moment — keep it on step 1, hide it once the
+  // user is inside the wizard / on results so the flow stays focused.
+  const _hero = document.getElementById("calc-hero"); if (_hero && _hero.style) _hero.style.display = n === 1 ? "" : "none";
 
   for (let i = 1; i <= 5; i++) {
     const dot = document.getElementById("wp-" + i);
