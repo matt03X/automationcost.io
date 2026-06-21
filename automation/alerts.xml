@@ -6,5 +6,131 @@
   <description>Price and plan-limit changes only — the feed behind WizardCost email alerts. Catalog updates (integration counts) live in the full changelog feed.</description>
   <language>en</language>
   <atom:link href="https://wizardcost.com/automation/alerts.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Make — Core 10k: $10.59/mo → $21/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-core-10k</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Core 20k: $18.82/mo → $28/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-core-20k</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Core 40k: $34.12/mo → $51/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-core-40k</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Core 80k: $64.71/mo → $97/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-core-80k</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Core 150k: $116.47/mo → $175/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-core-150k</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Core 300k: $214.31/mo → $321/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-core-300k</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 500k: $482.67/mo → $724/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-500k</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 750k: $678.75/mo → $1018/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-750k</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 1M: $880.86/mo → $1321/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-1m</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 1.5M: $1268.44/mo → $1903/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-1.5m</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 2M: $1620.79/mo → $2431/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-2m</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 2.5M: $2001.32/mo → $3002/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-2.5m</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 3M: $2333.94/mo → $3501/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-3m</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 4M: $3028.93/mo → $4543/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-4m</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 5M: $3710.44/mo → $5566/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-5m</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 6M: $4361.66/mo → $6542/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-6m</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 7M: $5028.39/mo → $7543/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-7m</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
+  <item>
+    <title>Make — Pro 8M: $5660.47/mo → $8491/mo</title>
+    <link>https://wizardcost.com/automation/changelog.html</link>
+    <guid isPermaLink="false">2026-06-21-make-pro-8m</guid>
+    <pubDate>Sun, 21 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Price change · verified June 21, 2026</description>
+  </item>
 </channel>
 </rss>
