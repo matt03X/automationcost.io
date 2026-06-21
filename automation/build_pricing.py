@@ -618,7 +618,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
 <div id="ac-progress"></div>
 
 <nav class="ac-nav">
-  <a href="/" class="logo">
+  <a href="/automation/" class="logo">
     <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
       <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -975,7 +975,7 @@ def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
 <div id="ac-progress"></div>
 
 <nav class="ac-nav">
-  <a href="/" class="logo">
+  <a href="/automation/" class="logo">
     <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
       <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -1856,7 +1856,7 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
 <div id="ac-progress"></div>
 
 <nav class="ac-nav">
-  <a href="/" class="logo">
+  <a href="/automation/" class="logo">
     <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
       <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
