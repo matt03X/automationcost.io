@@ -114,6 +114,29 @@ def _breadcrumb_ld(domain: str, prefix: str, leaf: str, canonical: str) -> str:
     }, ensure_ascii=False, indent=2)
 
 
+def _clamp_desc(text: str, n: int = 158) -> str:
+    """Trim a meta description to <= n chars on a word boundary (+ ellipsis)."""
+    if not text or len(text) <= n:
+        return text
+    cut = text[:n].rsplit(" ", 1)[0].rstrip(" ,.;:—–-")
+    return cut + "…"
+
+
+def _clamp_title(title: str, n: int = 60) -> str:
+    """Keep <title> <= n rendered chars, trimming the core but preserving the ' | brand' suffix."""
+    if not title or len(title.replace("&amp;", "&")) <= n:
+        return title
+    if " | " in title:
+        core, brand = title.rsplit(" | ", 1)
+        budget = n - len(" | " + brand.replace("&amp;", "&"))
+        if budget >= 16:
+            r_core = core.replace("&amp;", "&")
+            trimmed = r_core[:budget].rsplit(" ", 1)[0].rstrip(" ,.;:—–-&")
+            return trimmed.replace("&", "&amp;") + " | " + brand
+    r = title.replace("&amp;", "&")[:n - 1].rsplit(" ", 1)[0].rstrip(" ,.;:—–-&")
+    return r.replace("&", "&amp;") + "…"
+
+
 def _shell(parts: tuple, *, title: str, desc: str, canonical: str, prefix: str,
            crumb: str, h1: str, lead: str, month: str, body: str, faq: list[dict],
            nav: str) -> str:
@@ -122,7 +145,7 @@ def _shell(parts: tuple, *, title: str, desc: str, canonical: str, prefix: str,
     footer = footer.replace("{{VERIFIED_MONTH}}", month)
     domain = canonical.split("/llm/", 1)[0].replace("https://", "")
     repl = {
-        "%%TITLE%%": title, "%%DESC%%": desc, "%%CANONICAL%%": canonical,
+        "%%TITLE%%": _clamp_title(title), "%%DESC%%": _clamp_desc(desc), "%%CANONICAL%%": canonical,
         "%%OGIMG%%": f"{prefix}/og-image.png", "%%FAQLD%%": _faq_ld(faq),
         "%%BCLD%%": _breadcrumb_ld(domain, prefix, crumb.split(" / ")[-1], canonical),
         "%%CSS%%": css, "%%HEADER%%": header, "%%FOOTER%%": footer,
@@ -226,6 +249,10 @@ def _cross(eng, data: dict, *, exclude: tuple = (), calc: bool = True) -> str:
         c = eng.PROVIDER_PAGES[slug]
         if c["page"] not in exclude:
             links.append(f'    <a href="{c["page"]}">{c["cross"]} →</a>')
+    for slug in PROVIDER_ORDER:
+        alt = SEO[slug]["alt"] + ".html"
+        if alt not in exclude:
+            links.append(f'    <a href="{alt}">{SEO[slug]["brand"]} alternatives →</a>')
     if "cheapest-llm-api.html" not in exclude:
         links.append('    <a href="cheapest-llm-api.html">Cheapest LLM API →</a>')
     if calc and "index.html" not in exclude:

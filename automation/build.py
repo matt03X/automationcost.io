@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_hosting import expand_hosting_variants, apply_fx  # noqa: E402
-from build_pricing import build_pricing_pages, build_seo_pages, _page_graph_ld, _iso_date  # noqa: E402
+from build_pricing import build_pricing_pages, build_seo_pages, _page_graph_ld, _iso_date, _clamp_title, _clamp_desc, _seo_breadcrumb_ld  # noqa: E402
 from build_catalog import build_catalog_pages  # noqa: E402
 import build_i18n  # noqa: E402  — language layer (/de/ … mirror, hreflang, switcher)
 
@@ -611,6 +611,8 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
     # cross-linky: pricing obou + compare + až 3 nejbližší publikované páry
     xlinks = [f'<a class="xlink" href="{ta["slug"]}-pricing.html">{a_name} pricing in detail</a>',
               f'<a class="xlink" href="{tb["slug"]}-pricing.html">{b_name} pricing in detail</a>',
+              f'<a class="xlink" href="{ta["slug"]}-alternatives.html">{a_name} alternatives</a>',
+              f'<a class="xlink" href="{tb["slug"]}-alternatives.html">{b_name} alternatives</a>',
               '<a class="xlink" href="compare.html">Compare all 7 tools</a>']
     for other in pairs_data["pairs"]:
         oslug = f'{other["a"]}-vs-{other["b"]}'
@@ -640,7 +642,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
         f'      <div class="faq-item">\n        <button class="faq-q" onclick="toggleFaq(this)">{f["q"]}</button>\n'
         f'        <div class="faq-a">{f["a"]}</div>\n      </div>' for f in faq)
 
-    title = f"{a_name} vs {b_name}: Pricing &amp; Cost Comparison 2026 | AutomationCost.io"
+    title = f"{a_name} vs {b_name}: Pricing &amp; Cost Comparison 2026 | WizardCost"
     desc = (f"{a_name} vs {b_name} priced at " + " / ".join(f"{v:,}" for v in volumes)
             + " runs per month — real plans, overage math, feature differences and how the "
               "pricing compares for your usage.")
@@ -660,8 +662,8 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno build.py z data/tools.json + data/pairs.json — needituj ručně -->
-  <title>{title}</title>
-  <meta name="description" content="{_html_escape(desc)}">
+  <title>{_clamp_title(title)}</title>
+  <meta name="description" content="{_html_escape(_clamp_desc(desc))}">
   <link rel="canonical" href="{canonical}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AutomationCost.io">
@@ -838,7 +840,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
 
 <!-- 9 ── Footer -->
 <footer>
-  AutomationCost · part of WizardCost · Prices verified {month_year} · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a>
+  AutomationCost · part of WizardCost · Prices verified {month_year} · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a>
 </footer>
 
 <script>
@@ -1113,7 +1115,11 @@ def _static_geo_ld(text: str, site: dict, tools_meta: dict) -> str:
     desc = (md.group(1) if md else "").replace("&amp;", "&")
     graph = _page_graph_ld(site.get("domain", "wizardcost.com"), mc.group(1), name, desc,
                            _iso_date(tools_meta))
-    return f'  <script type="application/ld+json">\n{graph}\n  </script>'
+    fname = mc.group(1).rsplit("/", 1)[-1]
+    leaf = {"compare.html": "Compare tools", "changelog.html": "Price changelog"}.get(fname, name)
+    bc = _seo_breadcrumb_ld(site, mc.group(1).rsplit("/", 1)[0], leaf, mc.group(1))
+    return (f'  <script type="application/ld+json">\n{graph}\n  </script>\n'
+            f'  <script type="application/ld+json">\n{bc}\n  </script>')
 
 
 def inject(path: Path, generated: str, start: str = START, end: str = END, warn: str = WARN) -> bool:
@@ -1252,7 +1258,7 @@ def render_price_history(data: dict, site: dict) -> str:
         f'<span class="ph-detail">{_html_escape(f["note"])}</span></div>'
         for f in data.get("fixed", []))
 
-    title = "Automation Tool Pricing History 2024–2026: What Actually Changed | AutomationCost.io"
+    title = "Automation Tool Pricing History 2024–2026: What Actually Changed | WizardCost"
     desc = ("Two years of Make, Zapier, n8n and Pipedream pricing from the Web Archive. "
             "Core prices barely moved — every confirmed change linked to dated archive evidence.")
 
@@ -1280,8 +1286,8 @@ def render_price_history(data: dict, site: dict) -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno build.py z data/price-history.json — needituj ručně -->
-  <title>{title}</title>
-  <meta name="description" content="{_html_escape(desc)}">
+  <title>{_clamp_title(title)}</title>
+  <meta name="description" content="{_html_escape(_clamp_desc(desc))}">
   <link rel="canonical" href="{canonical}">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AutomationCost.io">
@@ -1408,7 +1414,7 @@ def render_price_history(data: dict, site: dict) -> str:
 </div>
 
 <footer>
-  AutomationCost · part of WizardCost · Pricing history from the Web Archive · updated {updated} · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a>
+  AutomationCost · part of WizardCost · Pricing history from the Web Archive · updated {updated} · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a>
 </footer>
 
 <script src="app.js"></script>

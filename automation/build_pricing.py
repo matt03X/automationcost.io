@@ -133,6 +133,33 @@ def _html_escape(s: str) -> str:
     return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
 
 
+def _clamp_desc(text: str, n: int = 158) -> str:
+    """Trim a meta description to <= n chars on a word boundary (+ ellipsis)."""
+    if not text or len(text) <= n:
+        return text
+    cut = text[:n].rsplit(" ", 1)[0].rstrip(" ,.;:—–-")
+    return cut + "…"
+
+
+def _clamp_title(title: str, n: int = 60) -> str:
+    """Keep <title> <= n rendered chars, trimming the core but preserving the ' | brand' suffix.
+
+    Titles may contain the &amp; entity (5 chars, renders as 1), so length is measured
+    on the rendered form. A guardrail only — generators should keep cores short already.
+    """
+    if not title or len(title.replace("&amp;", "&")) <= n:
+        return title
+    if " | " in title:
+        core, brand = title.rsplit(" | ", 1)
+        budget = n - len(" | " + brand.replace("&amp;", "&"))
+        if budget >= 16:
+            r_core = core.replace("&amp;", "&")
+            trimmed = r_core[:budget].rsplit(" ", 1)[0].rstrip(" ,.;:—–-&")
+            return trimmed.replace("&", "&amp;") + " | " + brand
+    r = title.replace("&amp;", "&")[:n - 1].rsplit(" ", 1)[0].rstrip(" ,.;:—–-&")
+    return r.replace("&", "&amp;") + "…"
+
+
 def _fmt_usd(cost, est: bool) -> str:
     body = f"{cost:,.2f}".rstrip("0").rstrip(".") if isinstance(cost, float) else f"{cost:,}"
     return ("~$" if est else "$") + body
@@ -473,7 +500,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
               "{name} pricing 2026: {prices}. Real plans, self-host options and how {name} compares on cost per run."
               ).format(name=name, prices=", ".join(desc_parts))
     title = tr(f"meta.{slug}-pricing.title",
-               "{name} Pricing 2026 — Plans, Run Limits &amp; Real Cost | AutomationCost.io").format(name=name)
+               "{name} Pricing 2026 — Plans, Run Limits &amp; Real Cost | WizardCost").format(name=name)
     og_title = title.split(" | ")[0].replace("&amp;", "&")
 
     # ── Citation-ready key facts (GEO playbook A10 #2): one dated, standalone,
@@ -556,8 +583,8 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno build_pricing.py z data/tools.json + data/pricing-editorial.json — needituj ručně -->
-  <title>{title}</title>
-  <meta name="description" content="{_html_escape(desc)}">
+  <title>{_clamp_title(title)}</title>
+  <meta name="description" content="{_html_escape(_clamp_desc(desc))}">
   <link rel="canonical" href="{canonical}">
 {hreflang}
   <meta property="og:type" content="article">
@@ -907,6 +934,8 @@ def _seo_faq(faq: list[dict]) -> tuple[str, str]:
 def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
                body_html, faq_ld, breadcrumb_ld, faq_html, page_ld="") -> str:
     css = _PRICING_CSS
+    title = _clamp_title(title)
+    desc = _clamp_desc(desc)
     page_ld_block = (f'  <script type="application/ld+json">\n{page_ld}\n  </script>\n'
                      if page_ld else "")
     return f"""<!DOCTYPE html>
@@ -915,8 +944,8 @@ def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno build_pricing.py (build_seo_pages) z data/tools.json — needituj ručně -->
-  <title>{title}</title>
-  <meta name="description" content="{_html_escape(desc)}">
+  <title>{_clamp_title(title)}</title>
+  <meta name="description" content="{_html_escape(_clamp_desc(desc))}">
   <link rel="canonical" href="{canonical}">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AutomationCost.io">
@@ -1013,7 +1042,7 @@ def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
   <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
   <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified {month_year}</div>
   <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
-  <div style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+  <div style="margin-top:6px"><a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
 </footer>
 
 <script>
@@ -1098,7 +1127,7 @@ def render_alternatives_page(slug: str, by_slug: dict, site: dict, tools_meta: d
                '<a href="changelog.html">price changelog</a> for every change we record.')},
     ]
     faq_ld, faq_html = _seo_faq(faq)
-    title = f"{name} Alternatives 2026 — Priced &amp; Compared | AutomationCost.io"
+    title = f"{name} Alternatives 2026 — Priced &amp; Compared | WizardCost"
     desc = (f"The best {name} alternatives in 2026, priced at real run volumes. "
             f"{cheapest_name} is the lowest-cost option we track at {ALT_VOL:,} runs/mo — "
             f"compare every alternative on cost, integrations and self-hosting.")
@@ -1181,7 +1210,7 @@ def render_cheapest_page(by_slug: dict, site: dict, tools_meta: dict, engine) ->
                f"{month_year}; see the <a href=\"changelog.html\">price changelog</a> for every recorded change.")},
     ]
     faq_ld, faq_html = _seo_faq(faq)
-    title = "The Cheapest Automation Tool in 2026 (Real Prices) | AutomationCost.io"
+    title = "The Cheapest Automation Tool in 2026 (Real Prices) | WizardCost"
     desc = (f"The cheapest automation tool in 2026, priced at every volume. At {lo:,} runs/mo it's {lo_name}; "
             f"at {hi:,} runs {hi_name}. Self-hosted tools run at just a server bill — see the full ranked matrix.")
     breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, "Cheapest automation tool", canonical)
@@ -1296,7 +1325,7 @@ def render_selfhost_page(by_slug: dict, site: dict, tools_meta: dict, engine) ->
                f"engine, verified {month_year}; see the <a href=\"changelog.html\">price changelog</a>.")},
     ]
     faq_ld, faq_html = _seo_faq(faq)
-    title = "Self-Hosted Automation Cost 2026 — Cloud vs Self-Host (Real Prices) | AutomationCost.io"
+    title = "Self-Hosted Automation Cost 2026 — Cloud vs Self-Host (Real Prices) | WizardCost"
     desc = (f"Self-hosted automation cost in 2026: {sh_tool_names} run on a VPS from about {sh_lo_fmt}/mo vs "
             f"{cl_lo_fmt}+ for paid cloud — self-host beats paid cloud at every volume, though free tiers can "
             "undercut it for small usage. Real comparison plus the maintenance catch.")
@@ -1636,7 +1665,7 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
     faq_ld, faq_html = _seo_faq(faq)
 
     # ── JSON-LD ──────────────────────────────────────────────────────────────
-    title = "Is Automation Worth It? ROI &amp; Break-Even Calculator 2026 | AutomationCost.io"
+    title = "Is Automation Worth It? ROI &amp; Break-Even Calculator 2026 | WizardCost"
     desc = (f"Calculate automation ROI: enter your runs, minutes saved and hourly rate — get net savings, "
             f"return on cost and break-even. Tool costs from official pricing (cheapest at {ALT_VOL:,} runs: "
             f"{anchor_name} at {anchor_cost_fmt}/mo, verified {month_year}).")
@@ -1793,8 +1822,8 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno build_pricing.py (render_roi_page) z data/tools.json — needituj ručně -->
-  <title>{title}</title>
-  <meta name="description" content="{_html_escape(desc)}">
+  <title>{_clamp_title(title)}</title>
+  <meta name="description" content="{_html_escape(_clamp_desc(desc))}">
   <link rel="canonical" href="{canonical}">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AutomationCost.io">
@@ -1895,7 +1924,7 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
   <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
   <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified {month_year}</div>
   <div style="margin-top:6px">Tool costs on this page come from each vendor's official public pricing page via our cost engine — the same data powering the calculator. ROI calculations are illustrative: they use your inputs and do not account for setup time, maintenance, or tasks that cannot be fully automated. We do not claim any specific time savings — that is your measurement to make from your own process.</div>
-  <div style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+  <div style="margin-top:6px"><a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
 </footer>
 
 <script>
@@ -2101,7 +2130,7 @@ def render_hidden_cost_page(by_slug: dict, site: dict, tools_meta: dict, engine)
                '<a href="calculator.html">calculator</a> shows which tier you land on at your volume.')},
     ]
     faq_ld, faq_html = _seo_faq(faq)
-    title = "Hidden Costs of Automation Tools: Overages, Annual Fees &amp; Surprises | AutomationCost.io"
+    title = "Hidden Costs of Automation Tools: Overages, Annual Fees &amp; Surprises | WizardCost"
     desc = ("Zapier, Make and Pipedream overage behavior, annual billing premiums and volume tier traps — "
             "everything that's not on the pricing page. Plus the self-hosted tools that cost only your server.")
     breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, "Hidden costs of automation tools", canonical)
@@ -2110,6 +2139,143 @@ def render_hidden_cost_page(by_slug: dict, site: dict, tools_meta: dict, engine)
                              _iso_date(tools_meta))
     return _seo_shell(title=title, desc=desc, canonical=canonical, prefix=prefix,
                       month_year=month_year, h1="The hidden costs of automation tools",
+                      intro_html=intro, body_html=body, faq_ld=faq_ld,
+                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html, page_ld=page_ld)
+
+
+def render_methodology_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
+    """Generuje automation/methodology.html — jak ověřujeme ceny (E-E-A-T, sources).
+
+    Zrcadlí llm/methodology.html. Všechna čísla/zdroje z tools.json + audit pipeline.
+    """
+    month_year = _month_year(tools_meta)
+    prefix = _site_prefix(site.get("domain", "wizardcost.com"), site.get("base_path", ""))
+    canonical = f"{prefix}/methodology.html"
+    reviewed = tools_meta.get("last_reviewed", month_year)
+    slugs = PRICING_SLUGS
+    ntools = len(slugs)
+
+    src_rows = []
+    for s in slugs:
+        t = by_slug[s]
+        url = (t.get("homepage") or "").split(" ", 1)[0]
+        host = url.replace("https://", "").replace("http://", "").rstrip("/")
+        nplans = len([p for p in t.get("plans", []) if p.get("monthlyUsd") is not None])
+        link = (f'<a href="{url}" target="_blank" rel="noopener nofollow">{host}</a>' if url else "—")
+        src_rows.append(
+            "        <tr>\n"
+            f'          <td><strong>{_html_escape(t["name"])}</strong></td>\n'
+            f"          <td>{nplans}</td>\n"
+            f"          <td>{link}</td>\n"
+            f"          <td>{reviewed}</td>\n        </tr>")
+
+    intro = (f"Every price here is taken by hand from the tool's official pricing page, verified on a dated "
+             f"pass, and turned into a real monthly figure by the same engine as the "
+             f'<a href="calculator.html">calculator</a> — never quoted from memory or a third party. '
+             f"Here is exactly where each tool's numbers come from, what they mean, and what we don't claim.")
+
+    body = f"""  <div class="section">
+    <h2>How we price automation tools</h2>
+    <p class="step-sub">Four rules, the same for every tool.</p>
+    <ol style="line-height:1.75;padding-left:1.2em;">
+      <li><strong>One source of truth per tool.</strong> Every plan price and limit comes from the vendor's own official pricing page (listed below) — not a blog, aggregator or screenshot.</li>
+      <li><strong>Verified by hand, then promoted.</strong> A scrape or research pass is only <em>evidence</em>; a number reaches our data file only after a human confirms it against the official page. Raw dumps are kept dated for audit.</li>
+      <li><strong>Computed, not quoted.</strong> The cost you see is calculated by our engine from each plan's price, included runs and overage at a stated workload — so tools compare on one number. We never invent a monthly price.</li>
+      <li><strong>Every change is logged.</strong> Prices are committed before the site rebuilds, so each change is dated in the public <a href="changelog.html">changelog</a> with the tool it came from.</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>Sources — every number traces to an official page</h2>
+    <p class="step-sub">{ntools} tools, cloud and self-hosted. Last full verification: {reviewed}.</p>
+    <div class="tbl-card">
+      <table class="comparison-table">
+        <thead><tr><th>Tool</th><th>Paid plans tracked</th><th>Official pricing source</th><th>Last verified</th></tr></thead>
+        <tbody>
+{chr(10).join(src_rows)}
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:10px;color:#6b7a99;font-size:14px">Self-hosted figures (n8n, Activepieces, Automatisch, Node-RED) are the server bill our engine models from VPS list prices — the software itself is free to self-host.</p>
+  </div>
+
+  <div class="section">
+    <h2>Is a "run" the same across tools? No — and it matters</h2>
+    <p>A "run" is not a fixed unit. Each tool meters work differently: <strong>Zapier</strong> bills per <em>task</em> (one action step), <strong>Make</strong> per <em>operation</em> (one module call, renamed "credits" in 2026), <strong>n8n</strong> per <em>workflow execution</em> (a whole run, regardless of steps), and <strong>Pipedream</strong> per <em>credit</em> (compute time). The <em>same</em> automation can therefore consume a very different billed quantity from one tool to the next — a multi-step workflow is one n8n execution but many Zapier tasks.</p>
+    <p>What this means for our numbers: we model a realistic <strong>multi-step workflow</strong> and convert your monthly run volume into each tool's own billed unit, so the cost column is apples-to-apples on the same work — not on a raw "runs" number that means something different per tool. Treat small cross-tool gaps as a tie until you map your real workflows; the <a href="calculator.html">calculator</a> lets you set your exact volume and steps.</p>
+  </div>
+
+  <div class="section">
+    <h2>What each number means</h2>
+    <div class="tbl-card">
+      <table class="comparison-table">
+        <thead><tr><th>Field</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Monthly cost</strong></td><td>The cheapest qualifying plan for your volume, computed by the engine — the plan whose included allowance covers your runs, or the next tier up.</td></tr>
+          <tr><td><strong>Included runs</strong></td><td>The run / task / operation allowance bundled in a paid plan (range shown across tiers).</td></tr>
+          <tr><td><strong>Overage</strong></td><td>What happens past the limit: most tools require upgrading to the next volume tier (no pay-as-you-go); some bill a per-unit rate.</td></tr>
+          <tr><td><strong>Self-host</strong></td><td>For self-hostable tools, the modelled VPS (plus a database at scale) — infrastructure only, not a tool fee.</td></tr>
+          <tr><td><strong>~ (tilde)</strong></td><td>An estimate for a custom / enterprise tier the vendor doesn't price publicly — held as an estimate rather than a quoted fact.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Known limits &amp; confidence</h2>
+    <p>We would rather show a gap than a guess:</p>
+    <ul style="line-height:1.75;padding-left:1.2em;">
+      <li><strong>Enterprise tiers</strong> with "contact sales" pricing are marked ~ and estimated — they are not vendor-quoted facts.</li>
+      <li><strong>Self-host VPS cost</strong> is modelled from public VPS list prices (Elestio / Netcup tiers); your real server bill depends on provider, region and add-ons, and excludes your own time to install, secure and maintain the stack.</li>
+      <li><strong>Annual vs monthly billing</strong> differs per tool; we show the monthly-billing figure unless noted, and the annual premium is broken out on the <a href="hidden-cost-automation.html">hidden-cost page</a>.</li>
+      <li><strong>Our example workflow is an assumption</strong>, not a vendor fact — change volume and steps in the calculator for your case.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>How we keep it current</h2>
+    <p>An automated job re-reads every official pricing page each morning and flags any change; a second job watches plan limits, licensing and feature facts. Those flags are evidence — a human still confirms before a number changes. Confirmed changes are dated in the <a href="changelog.html">changelog</a> (with an <a href="feed.xml">RSS feed</a>), and we take a commission only from a single optional affiliate link that never affects rankings — so nothing here is pay-to-rank.</p>
+  </div>
+
+  <div class="section" style="text-align:center">
+    <h2>See it on your own numbers</h2>
+    <p>The calculator uses these exact prices — set your volume, workflow type and budget, and it re-ranks every tool live.</p>
+    <div class="cta-row" style="margin-top:16px;justify-content:center">
+      <a href="calculator.html" class="btn-primary">Open calculator →</a>
+      <a href="changelog.html" class="btn-secondary">Price changelog</a>
+      <a href="/llm/methodology.html" class="btn-secondary">LLM pricing methodology</a>
+    </div>
+  </div>"""
+
+    faq = [
+        {"q": "Where do your automation prices come from?",
+         "a": ("Each plan price and limit is taken by hand from the tool's official pricing page (listed in the "
+               "sources table above) and confirmed by a person before it enters our data. The monthly figure is "
+               "computed by our engine, not quoted.")},
+        {"q": "Why can't I compare tools on “runs” alone?",
+         "a": ("Because a run isn't one unit: Zapier bills per task, Make per operation/credit, n8n per workflow "
+               "execution and Pipedream per credit. One multi-step workflow is a single n8n execution but many "
+               "Zapier tasks. We model a realistic workflow and convert to each tool's own unit so costs compare "
+               "on the same work.")},
+        {"q": "Do the tool vendors pay you?",
+         "a": ("Only one tool has an optional affiliate link, clearly disclosed, and it never affects rankings — "
+               "those are by objective cost only. Self-hosted tools, which we often rank cheapest, have no "
+               "affiliate at all.")},
+        {"q": "How often are prices checked?",
+         "a": (f"An automated job re-reads every official pricing page daily and flags changes; a human confirms "
+               f"before any number moves. The last full hand-verification was {reviewed}, and every change is "
+               'dated in the <a href="changelog.html">changelog</a>.')},
+    ]
+    faq_ld, faq_html = _seo_faq(faq)
+    title = "How We Verify Automation Pricing — Methodology | WizardCost"
+    desc = ("How we verify automation tool pricing: every plan traced to the vendor's official page, "
+            "verified by hand and computed not quoted — plus why a “run” isn't the same unit across tools.")
+    breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, "Methodology", canonical)
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             "How We Verify Automation Pricing — Methodology", desc,
+                             _iso_date(tools_meta))
+    return _seo_shell(title=title, desc=desc, canonical=canonical, prefix=prefix,
+                      month_year=month_year, h1="How we verify automation pricing",
                       intro_html=intro, body_html=body, faq_ld=faq_ld,
                       breadcrumb_ld=breadcrumb_ld, faq_html=faq_html, page_ld=page_ld)
 
@@ -2124,6 +2290,7 @@ def build_seo_pages(tools: list[dict], site: dict, tools_meta: dict, *, check: b
     targets.append(("self-hosted-automation-cost.html", lambda: render_selfhost_page(by_slug, site, tools_meta, engine)))
     targets.append(("is-automation-worth-it.html", lambda: render_roi_page(by_slug, site, tools_meta, engine)))
     targets.append(("hidden-cost-automation.html", lambda: render_hidden_cost_page(by_slug, site, tools_meta, engine)))
+    targets.append(("methodology.html", lambda: render_methodology_page(by_slug, site, tools_meta, engine)))
     for fname, render in targets:
         target = ROOT / fname
         rendered = render()

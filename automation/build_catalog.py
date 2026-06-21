@@ -433,7 +433,7 @@ _BILLING_JS = """
 def _footer(month_year: str) -> str:
     return f"""
 <footer>
-  AutomationCost · part of WizardCost · Prices verified {month_year} · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a>
+  AutomationCost · part of WizardCost · Prices verified {month_year} · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a>
 </footer>
 """
 
@@ -590,10 +590,9 @@ def _render_tools_html(tools: list[dict], variants: list[dict], site: dict,
     }, ensure_ascii=False, indent=2)
 
     css = _TOOLS_CSS + "\n" + _EMAILCAP_CSS
-    title = ("Best Automation Tools 2026 — Pricing & Hosting Options | AutomationCost.io")
-    desc = ("Every automation tool priced from real data — n8n, Make, Pipedream, Zapier, "
-            "Activepieces, Automatisch and Node-RED. Cloud, VPS and own-server hosting, "
-            f"cheapest cost at {DEFAULT_VOLUME:,} runs/mo, plus key features.")
+    title = ("Best Automation Tools 2026 — Pricing & Hosting | WizardCost")
+    desc = ("Every automation tool priced from real data — n8n, Make, Zapier and more. "
+            f"Cloud, VPS and self-host, cheapest cost at {DEFAULT_VOLUME:,} runs/mo.")
 
     # jednoduchý TOC styl inline (drobnost — design se řeší zvlášť)
     toc_inline = ""
@@ -801,10 +800,9 @@ def _render_limits_html(tools: list[dict], variants: list[dict], site: dict,
         f'      <div class="faq-a">{a}</div>\n    </div>' for q, a in faqs)
 
     css = _LIMITS_CSS + "\n" + _EMAILCAP_CSS
-    title = "Automation Tool Pricing & Limits 2026 — Runs, Steps, Timeouts | AutomationCost.io"
-    desc = ("Plan limits for every automation tool and hosting option — included runs, workflow "
-            "caps, max steps, execution timeout and log history for n8n, Make, Pipedream, Zapier, "
-            "Activepieces, Automatisch and Node-RED, including self-host VPS and own-server.")
+    title = "Automation Tool Limits 2026 — Runs & Timeouts | WizardCost"
+    desc = ("Plan limits for every automation tool — included runs, workflow caps, max steps, "
+            "execution timeout and log history for n8n, Make, Zapier and more.")
 
     note = ("All values from real vendor plans. Included runs = the run allowance on paid cloud "
             "plans (range across tiers); free runs = the run allowance on the free / entry plan. "

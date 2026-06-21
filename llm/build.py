@@ -140,8 +140,12 @@ def _static_geo_ld(text: str, domain: str, iso_date: str) -> str:
     md = re.search(r'<meta name="description"[^>]*\scontent="([^"]*)"', text)
     name = (mt.group(1).strip() if mt else "").split(" | ")[0].replace("&amp;", "&")
     desc = (md.group(1) if md else "").replace("&amp;", "&")
+    fname = mc.group(1).rsplit("/", 1)[-1]
+    leaf = {"compare.html": "Compare models", "changelog.html": "Price changelog"}.get(fname, name)
+    bc = build_seo._breadcrumb_ld(domain, mc.group(1).rsplit("/", 1)[0], leaf, mc.group(1))
     return (f'  <script type="application/ld+json">\n'
-            f'{_geo_graph_ld(domain, mc.group(1), name, desc, iso_date)}\n  </script>')
+            f'{_geo_graph_ld(domain, mc.group(1), name, desc, iso_date)}\n  </script>\n'
+            f'  <script type="application/ld+json">\n{bc}\n  </script>')
 
 
 def render_models(data: dict) -> str:
@@ -739,8 +743,8 @@ def render_provider_page(prov: dict, cfg: dict, data: dict, site: dict, template
              f'discounts, verified {month}.')
     _canon = f'{_site_prefix(domain, base_path)}/{cfg["page"]}'
     tokens = {
-        "TITLE": f'{cfg["h1"]} ({month}) — WizardCost',
-        "DESC": _desc,
+        "TITLE": build_seo._clamp_title(f'{cfg["h1"]} ({month}) — WizardCost'),
+        "DESC": build_seo._clamp_desc(_desc),
         "CANONICAL": _canon,
         "VERIFIED_MONTH": month,
         "CRUMB": cfg["crumb"],
@@ -1029,8 +1033,8 @@ def render_llm_price_history(data: dict, site: dict) -> str:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno llm/build.py z data/price-history.json — needituj ručně -->
-  <title>{title}</title>
-  <meta name="description" content="{_llm_ph_html_escape(desc)}">
+  <title>{build_seo._clamp_title(title)}</title>
+  <meta name="description" content="{_llm_ph_html_escape(build_seo._clamp_desc(desc))}">
   <link rel="canonical" href="{canonical}">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="WizardCost">
