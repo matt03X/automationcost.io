@@ -197,6 +197,7 @@
     .faq-item { border-bottom: 1px solid var(--border); }
     .faq-q { width: 100%; background: none; border: 0; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 700; text-align: left; padding: 16px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .faq-q:hover { color: var(--accent-br); }
+    a:focus-visible, button:focus-visible, .faq-q:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
     .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
     .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.7; padding-bottom: 16px; }
@@ -381,19 +382,19 @@
     <h2>Frequently asked questions</h2>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Is OpenAI or Mistral cheaper?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Is OpenAI or Mistral cheaper?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">On our example chatbot workload, OpenAI's cheapest model (GPT-5.4 nano) is $52.3/mo and Mistral's (Ministral 3 (3B)) is $23/mo. So Mistral is lower-cost at the budget end. The cheaper choice can flip with your token mix — check the <a href="index.html">calculator</a>.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Which has the bigger context window, OpenAI or Mistral?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Which has the bigger context window, OpenAI or Mistral?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">The largest context window we've verified is 1M tokens for OpenAI and 256k tokens for Mistral. Context windows vary by model within each provider — see the pricing pages for the per-model figures.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">OpenAI vs Mistral: which API should I choose?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">OpenAI vs Mistral: which API should I choose?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">It depends on your workload. Compare the side-by-side table above for list prices and the ≈ $/mo column for a like-for-like cost, then run your own volume through the <a href="index.html">calculator</a>. We rank on cost and published specs only — the <a href="changelog.html">changelog</a> records every price change.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">How accurate are these prices?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">Every per-token rate is taken from each provider's official pricing and verified by hand (June 2026); the monthly figure is computed by our cost engine, not quoted.</div>
       </div>
     </div>
@@ -423,6 +424,6 @@
   document.addEventListener("click", function () { dd.classList.remove("open"); });
 })();
 </script>
-<script>function toggleFaq(el){el.closest(".faq-item").classList.toggle("open");}</script>
+<script>function toggleFaq(el){var o=el.closest(".faq-item").classList.toggle("open");el.setAttribute("aria-expanded",o?"true":"false");}</script>
 </body>
 </html>

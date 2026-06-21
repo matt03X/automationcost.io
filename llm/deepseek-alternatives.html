@@ -197,6 +197,7 @@
     .faq-item { border-bottom: 1px solid var(--border); }
     .faq-q { width: 100%; background: none; border: 0; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 700; text-align: left; padding: 16px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .faq-q:hover { color: var(--accent-br); }
+    a:focus-visible, button:focus-visible, .faq-q:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
     .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
     .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.7; padding-bottom: 16px; }
@@ -336,19 +337,19 @@
     <h2>Frequently asked questions</h2>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">What is the best DeepSeek alternative?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">What is the best DeepSeek alternative?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">It depends what you're optimising for. On cost, the lowest-priced alternative we track is Mistral ($23/mo at its cheapest). For a flagship-class alternative, compare the “top model” column above. Use the <a href="index.html">calculator</a> to rank them for your exact workload.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">What is the cheapest DeepSeek alternative?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">What is the cheapest DeepSeek alternative?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">At its cheapest model, Mistral is the lowest-cost alternative to DeepSeek we track ($23/mo on the example workload). See the ranked table above for the full order.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">How do these alternatives compare to DeepSeek on price?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">How do these alternatives compare to DeepSeek on price?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">DeepSeek's cheapest model runs about $17.19/mo on our example workload. Each alternative in the table is priced the same way, so the numbers are directly comparable. Head-to-head pages break each pairing down model by model.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">How accurate are these prices?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">Every per-token rate is taken from each provider's official pricing and verified by hand (June 2026); the monthly figure is computed by our cost engine. Changes are logged in the <a href="changelog.html">price changelog</a>.</div>
       </div>
     </div>
@@ -378,6 +379,6 @@
   document.addEventListener("click", function () { dd.classList.remove("open"); });
 })();
 </script>
-<script>function toggleFaq(el){el.closest(".faq-item").classList.toggle("open");}</script>
+<script>function toggleFaq(el){var o=el.closest(".faq-item").classList.toggle("open");el.setAttribute("aria-expanded",o?"true":"false");}</script>
 </body>
 </html>

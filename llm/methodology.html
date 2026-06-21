@@ -197,6 +197,7 @@
     .faq-item { border-bottom: 1px solid var(--border); }
     .faq-q { width: 100%; background: none; border: 0; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 700; text-align: left; padding: 16px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .faq-q:hover { color: var(--accent-br); }
+    a:focus-visible, button:focus-visible, .faq-q:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
     .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
     .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.7; padding-bottom: 16px; }
@@ -405,19 +406,19 @@
     <h2>Frequently asked questions</h2>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Where do your LLM prices come from?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Where do your LLM prices come from?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">Each per-token rate is taken by hand from the provider's official pricing page (listed in the sources table above) and confirmed by a person before it enters our data. The monthly figure is computed by our engine, not quoted.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Are token counts the same across providers?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Are token counts the same across providers?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">No. Every model family uses its own tokenizer, so the same text becomes a different number of tokens — typically a 10–30% spread, wider for non-English text and code. We compare list price per 1M tokens as the billing unit and run one identical workload through every model, so treat small cross-provider differences as a tie until you test your own prompts.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Do the model providers pay you?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Do the model providers pay you?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">No. The LLM section carries no affiliate links and no sponsored placement — rankings are by objective cost only. It exists to be an accurate, independent reference.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">How often are prices checked?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">How often are prices checked?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">An automated job re-reads every official price page daily and flags changes; a human confirms before any number moves. The last full hand-verification was 2026-06-20, and every change is dated in the <a href="changelog.html">changelog</a>.</div>
       </div>
     </div>
@@ -447,6 +448,6 @@
   document.addEventListener("click", function () { dd.classList.remove("open"); });
 })();
 </script>
-<script>function toggleFaq(el){el.closest(".faq-item").classList.toggle("open");}</script>
+<script>function toggleFaq(el){var o=el.closest(".faq-item").classList.toggle("open");el.setAttribute("aria-expanded",o?"true":"false");}</script>
 </body>
 </html>

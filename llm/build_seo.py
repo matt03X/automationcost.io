@@ -89,7 +89,7 @@ def _tpl_parts() -> tuple[str, str, str, str]:
 def _faq_html(faq: list[dict]) -> str:
     return "\n".join(
         '      <div class="faq-item">\n'
-        '        <button class="faq-q" onclick="toggleFaq(this)">' + f["q"]
+        '        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">' + f["q"]
         + '<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" '
           'stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>\n'
         f'        <div class="faq-a">{f["a"]}</div>\n      </div>' for f in faq)
@@ -192,7 +192,7 @@ _SHELL = """<!DOCTYPE html>
 %%FOOTER%%
 
 %%DROPDOWNJS%%
-<script>function toggleFaq(el){el.closest(".faq-item").classList.toggle("open");}</script>
+<script>function toggleFaq(el){var o=el.closest(".faq-item").classList.toggle("open");el.setAttribute("aria-expanded",o?"true":"false");}</script>
 </body>
 </html>
 """
