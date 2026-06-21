@@ -1354,11 +1354,10 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
         net = value_usd - tool_cost
         roi_x = round(value_usd / tool_cost, 0) if tool_cost > 0 else None
         # break-even: how many total minutes/mo needed to cover tool cost
-        # break_even_mins = tool_cost / (hr/60)
-        be_mins = (tool_cost / hr) * 60 if hr > 0 else None
+        be_mins = (tool_cost / hr) * 60 if (hr > 0 and tool_cost > 0) else None
 
-        roi_str = f"{int(roi_x):,}x" if roi_x is not None else "—"
-        be_str = f"~{int(be_mins):,} min/mo" if be_mins is not None else "—"
+        roi_str = f"{int(roi_x):,}x" if roi_x is not None else "∞ (free tier)"
+        be_str = f"~{int(be_mins):,} min/mo" if be_mins is not None else "n/a (free tier)"
         row_class = ' class="cheap"' if net > 0 else ""
         scenario_rows.append(
             f"        <tr>"
@@ -1415,7 +1414,8 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
     <p class="tbl-note" style="margin-top:10px">
       Tool costs generated live from official pricing via our engine, verified {month_year}.
       "Value of time" uses an illustrative 3 min/run &times; $40/hr default — change it in the calculator below.
-      Self-hosted tools show the server bill, not a tool fee. Values marked ~ are estimates for custom enterprise tiers.
+      Self-hosted tools show the server bill, not a tool fee. $0/mo tools (Activepieces cloud free tier) are limited to 10 active flows — if you need more flows, the next paid tier applies; check the <a href="activepieces-pricing.html">Activepieces pricing page</a>.
+      Values marked ~ are estimates for custom enterprise tiers.
       <a href="cheapest-automation-tool.html">Full cheapest-tool breakdown →</a>
     </p>
   </div>
