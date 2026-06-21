@@ -16,7 +16,7 @@
       "make: vendor renamed operations -> credits (prices unchanged, 1 module action = 1 credit; code execution 2 credits/sec) — watch copy on pages",
       "selfHostHw: VPS hardware cost scales with volume (selfHostHw tiers) — derived from Elestio/Netcup list (NC-MEDIUM 2C/4G $18, NC-LARGE 4C/8G $33, NC-XLARGE 8C/16G $66). Re-check when those list prices move."
     ],
-    "last_reviewed": "2026-06-15"
+    "last_reviewed": "2026-06-21"
   },
   "tools": [
     {
@@ -255,7 +255,7 @@
         },
         {
           "name": "Core 10k",
-          "monthlyUsd": 10.59,
+          "monthlyUsd": 21,
           "opsIncluded": 10000,
           "workflowLimit": null,
           "overage": null,
@@ -264,7 +264,7 @@
         },
         {
           "name": "Core 20k",
-          "monthlyUsd": 18.82,
+          "monthlyUsd": 28,
           "opsIncluded": 20000,
           "workflowLimit": null,
           "overage": null,
@@ -273,7 +273,7 @@
         },
         {
           "name": "Core 40k",
-          "monthlyUsd": 34.12,
+          "monthlyUsd": 51,
           "opsIncluded": 40000,
           "workflowLimit": null,
           "overage": null,
@@ -282,7 +282,7 @@
         },
         {
           "name": "Core 80k",
-          "monthlyUsd": 64.71,
+          "monthlyUsd": 97,
           "opsIncluded": 80000,
           "workflowLimit": null,
           "overage": null,
@@ -291,7 +291,7 @@
         },
         {
           "name": "Core 150k",
-          "monthlyUsd": 116.47,
+          "monthlyUsd": 175,
           "opsIncluded": 150000,
           "workflowLimit": null,
           "overage": null,
@@ -300,7 +300,7 @@
         },
         {
           "name": "Core 300k",
-          "monthlyUsd": 214.31,
+          "monthlyUsd": 321,
           "opsIncluded": 300000,
           "workflowLimit": null,
           "overage": null,
@@ -309,7 +309,7 @@
         },
         {
           "name": "Pro 500k",
-          "monthlyUsd": 482.67,
+          "monthlyUsd": 724,
           "opsIncluded": 500000,
           "workflowLimit": null,
           "overage": null,
@@ -318,7 +318,7 @@
         },
         {
           "name": "Pro 750k",
-          "monthlyUsd": 678.75,
+          "monthlyUsd": 1018,
           "opsIncluded": 750000,
           "workflowLimit": null,
           "overage": null,
@@ -327,7 +327,7 @@
         },
         {
           "name": "Pro 1M",
-          "monthlyUsd": 880.86,
+          "monthlyUsd": 1321,
           "opsIncluded": 1000000,
           "workflowLimit": null,
           "overage": null,
@@ -336,7 +336,7 @@
         },
         {
           "name": "Pro 1.5M",
-          "monthlyUsd": 1268.44,
+          "monthlyUsd": 1903,
           "opsIncluded": 1500000,
           "workflowLimit": null,
           "overage": null,
@@ -345,7 +345,7 @@
         },
         {
           "name": "Pro 2M",
-          "monthlyUsd": 1620.79,
+          "monthlyUsd": 2431,
           "opsIncluded": 2000000,
           "workflowLimit": null,
           "overage": null,
@@ -354,7 +354,7 @@
         },
         {
           "name": "Pro 2.5M",
-          "monthlyUsd": 2001.32,
+          "monthlyUsd": 3002,
           "opsIncluded": 2500000,
           "workflowLimit": null,
           "overage": null,
@@ -363,7 +363,7 @@
         },
         {
           "name": "Pro 3M",
-          "monthlyUsd": 2333.94,
+          "monthlyUsd": 3501,
           "opsIncluded": 3000000,
           "workflowLimit": null,
           "overage": null,
@@ -372,7 +372,7 @@
         },
         {
           "name": "Pro 4M",
-          "monthlyUsd": 3028.93,
+          "monthlyUsd": 4543,
           "opsIncluded": 4000000,
           "workflowLimit": null,
           "overage": null,
@@ -381,7 +381,7 @@
         },
         {
           "name": "Pro 5M",
-          "monthlyUsd": 3710.44,
+          "monthlyUsd": 5566,
           "opsIncluded": 5000000,
           "workflowLimit": null,
           "overage": null,
@@ -390,7 +390,7 @@
         },
         {
           "name": "Pro 6M",
-          "monthlyUsd": 4361.66,
+          "monthlyUsd": 6542,
           "opsIncluded": 6000000,
           "workflowLimit": null,
           "overage": null,
@@ -399,7 +399,7 @@
         },
         {
           "name": "Pro 7M",
-          "monthlyUsd": 5028.39,
+          "monthlyUsd": 7543,
           "opsIncluded": 7000000,
           "workflowLimit": null,
           "overage": null,
@@ -408,7 +408,7 @@
         },
         {
           "name": "Pro 8M",
-          "monthlyUsd": 5660.47,
+          "monthlyUsd": 8491,
           "opsIncluded": 8000000,
           "workflowLimit": null,
           "overage": null,
@@ -754,7 +754,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 1,500 tasks/mo ($58.5)",
-          "annualUsd": 39.0
+          "annualUsd": 39
         },
         {
           "name": "Professional 2k",
@@ -763,7 +763,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 2,000 tasks/mo ($73.5)",
-          "annualUsd": 49.0
+          "annualUsd": 49
         },
         {
           "name": "Professional 5k",
@@ -772,7 +772,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 5,000 tasks/mo ($133.5)",
-          "annualUsd": 89.0
+          "annualUsd": 89
         },
         {
           "name": "Professional 10k",
@@ -781,7 +781,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 10,000 tasks/mo ($193.5)",
-          "annualUsd": 129.0
+          "annualUsd": 129
         },
         {
           "name": "Professional 20k",
@@ -790,7 +790,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 20,000 tasks/mo ($283.5)",
-          "annualUsd": 189.0
+          "annualUsd": 189
         },
         {
           "name": "Professional 50k",
@@ -799,7 +799,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 50,000 tasks/mo ($433.5)",
-          "annualUsd": 289.0
+          "annualUsd": 289
         },
         {
           "name": "Professional 100k",
@@ -808,7 +808,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 100,000 tasks/mo ($733.5)",
-          "annualUsd": 489.0
+          "annualUsd": 489
         },
         {
           "name": "Professional 200k",
@@ -817,7 +817,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 200,000 tasks/mo ($1149)",
-          "annualUsd": 769.0
+          "annualUsd": 769
         },
         {
           "name": "Professional 300k",
@@ -826,7 +826,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 300,000 tasks/mo ($1599)",
-          "annualUsd": 1069.0
+          "annualUsd": 1069
         },
         {
           "name": "Professional 400k",
@@ -835,7 +835,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 400,000 tasks/mo ($1899)",
-          "annualUsd": 1269.0
+          "annualUsd": 1269
         },
         {
           "name": "Professional 500k",
@@ -844,7 +844,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 500,000 tasks/mo ($2199)",
-          "annualUsd": 1499.0
+          "annualUsd": 1499
         },
         {
           "name": "Professional 750k",
@@ -853,7 +853,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 750,000 tasks/mo ($2999)",
-          "annualUsd": 1999.0
+          "annualUsd": 1999
         },
         {
           "name": "Professional 1M",
@@ -862,7 +862,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 1,000,000 tasks/mo ($3299)",
-          "annualUsd": 2199.0
+          "annualUsd": 2199
         },
         {
           "name": "Professional 1.2M",
@@ -871,7 +871,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 1,250,000 tasks/mo ($3899)",
-          "annualUsd": 2599.0
+          "annualUsd": 2599
         },
         {
           "name": "Professional 1.5M",
@@ -880,7 +880,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 1,500,000 tasks/mo ($4499)",
-          "annualUsd": 2999.0
+          "annualUsd": 2999
         },
         {
           "name": "Professional 1.8M",
@@ -889,7 +889,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 1,750,000 tasks/mo ($4799)",
-          "annualUsd": 3199.0
+          "annualUsd": 3199
         },
         {
           "name": "Professional 2M",
@@ -898,7 +898,7 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Professional — 2,000,000 tasks/mo ($5099)",
-          "annualUsd": 3389.0
+          "annualUsd": 3389
         },
         {
           "name": "Enterprise",
