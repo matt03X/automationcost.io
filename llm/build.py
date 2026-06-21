@@ -27,6 +27,7 @@ DATA = ROOT / "data" / "models.json"
 SITE = ROOT / "data" / "site.json"
 OVERRIDES = ROOT / "data" / "changelog-overrides.json"
 EDITORIAL = ROOT / "data" / "pricing-editorial.json"
+PRICE_HISTORY = ROOT / "data" / "price-history.json"
 
 START = "/* DATA:MODELS:START */"
 END = "/* DATA:MODELS:END */"
@@ -872,6 +873,375 @@ def _apply_snippet(pages: list[Path], start: str, end: str, snippet: str) -> lis
     return changed
 
 
+# ---------------------------------------------------------------------------
+# LLM price-history stránka: data/price-history.json (kurátorováno z Wayback
+# verdiktů + veřejných oznámení) → llm/price-history.html. CELÉ generované,
+# server-side (crawlovatelné + AI-citovatelné). CONFIRMED-only; gapy přiznané.
+# Vzor: automation/build.py render_price_history / build_price_history.
+# ---------------------------------------------------------------------------
+
+_LLM_PH_CSS = """
+    .ph-lead { color: var(--text2); font-size: 1.06rem; max-width: 700px; margin: 14px auto 4px; }
+    .ph-tldr { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin: 22px 0; }
+    .ph-tldr ul { margin: 8px 0 0; padding-left: 20px; }
+    .ph-tldr li { margin: 5px 0; color: var(--text2); }
+    .ph-tool { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 18px; }
+    .ph-tool-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .ph-tool-head img { width: 30px; height: 30px; border-radius: 7px; background: #fff; padding: 2px; }
+    .ph-tool-head h3 { font-size: 1.22rem; }
+    .ph-headline { color: var(--accent-br); font-size: 0.85rem; font-weight: 600; display: block; }
+    .ph-meta { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .ph-stable { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 12px 0; margin-bottom: 16px; }
+    .ph-row { display: flex; align-items: baseline; gap: 10px; padding: 3px 0; flex-wrap: wrap; }
+    .ph-plan { font-weight: 700; min-width: 140px; }
+    .ph-price { font-family: var(--mono); color: var(--text); }
+    .ph-detail { color: var(--muted); font-size: 0.85rem; }
+    .ph-event { border-left: 2px solid var(--border2); padding: 4px 0 14px 16px; margin-left: 4px; position: relative; }
+    .ph-event::before { content: ''; position: absolute; left: -5px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .ph-event-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .ph-date { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+    .ph-kind { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
+    .ph-k-change { background: rgba(245,158,11,0.16); color: #f6ad3c; }
+    .ph-k-product { background: rgba(111,155,255,0.16); color: #8fb0ff; }
+    .ph-k-pack { background: rgba(168,180,204,0.12); color: #aeb9d0; }
+    .ph-k-artifact { background: rgba(107,122,153,0.14); color: #93a0bd; }
+    .ph-event-title { font-weight: 600; margin-top: 4px; }
+    .ph-event-detail { color: var(--text2); font-size: 0.9rem; margin-top: 3px; }
+    .ph-evidence { margin-top: 6px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .ph-evidence a { font-size: 12px; font-family: var(--mono); }
+    .ph-none { color: var(--muted); font-style: italic; }
+    .ph-gap { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.22); border-radius: 9px; padding: 9px 13px; margin-top: 12px; font-size: 0.86rem; color: var(--text2); }
+    .section { margin: 44px 0 0; }
+    .section-label { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px; }
+    .section h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+    .section-sub { color: var(--text2); font-size: 14.5px; margin-bottom: 20px; max-width: 620px; }
+    .tbl-note { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-top: 10px; line-height: 1.7; }
+    .xlinks { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .xlink { font-family: var(--mono); font-size: 12.5px; background: var(--surface); border: 1px solid var(--border); border-radius: 99px; padding: 8px 16px; color: var(--text2); transition: border-color 0.15s, color 0.15s; text-decoration: none; }
+    .xlink:hover { border-color: var(--accent); color: var(--text); }
+    .finder-cta { background: linear-gradient(160deg, rgba(217,123,251,0.10), var(--surface) 65%); border: 1px solid rgba(217,123,251,0.35); border-radius: var(--radius); padding: 28px 32px; margin: 52px 0 64px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .finder-cta-text { flex: 1 1 320px; }
+    .finder-cta h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 6px; }
+    .finder-cta p { color: var(--text2); font-size: 14px; line-height: 1.6; }
+    .btn-primary-lg { background: var(--accent); color: var(--ink); border-radius: var(--radius-sm); padding: 14px 26px; font-family: var(--font); font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 9px; box-shadow: 0 0 0 1px rgba(217,123,251,0.4), 0 10px 30px rgba(217,123,251,0.28); transition: transform 0.15s, box-shadow 0.15s; white-space: nowrap; }
+    .btn-primary-lg:hover { transform: translateY(-1px); color: var(--ink); }
+"""
+
+_LLM_PH_KIND = {
+    "change": ("Real change", "ph-k-change"),
+    "product": ("New product", "ph-k-product"),
+    "packaging": ("Repackaging", "ph-k-pack"),
+    "artifact": ("Display only", "ph-k-artifact"),
+}
+
+
+def _llm_ph_html_escape(s: str) -> str:
+    return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+
+
+def _llm_ph_kind_badge(kind: str) -> str:
+    label, cls = _LLM_PH_KIND.get(kind, (kind, "ph-k-artifact"))
+    return f'<span class="ph-kind {cls}">{label}</span>'
+
+
+def _llm_ph_logo(slug: str) -> str:
+    domain = {
+        "openai": "openai.com",
+        "anthropic": "anthropic.com",
+        "google": "ai.google.dev",
+        "deepseek": "deepseek.com",
+        "xai": "x.ai",
+        "mistral": "mistral.ai",
+    }.get(slug, f"{slug}.com")
+    return f"https://www.google.com/s2/favicons?domain={domain}&sz=32"
+
+
+def _llm_ph_tool_card(t: dict) -> str:
+    stable = "\n".join(
+        f'<div class="ph-row"><span class="ph-plan">{_llm_ph_html_escape(p["plan"])}</span>'
+        f'<span class="ph-price">{_llm_ph_html_escape(p["price"])}</span>'
+        f'<span class="ph-detail">{_llm_ph_html_escape(p["detail"])} · stable since {_llm_ph_html_escape(p["since"])}</span></div>'
+        for p in t.get("stable", []))
+    events = []
+    for e in t.get("events", []):
+        links = " ".join(
+            f'<a href="{u}" target="_blank" rel="noopener nofollow">archive {i + 1} ↗</a>'
+            for i, u in enumerate(e.get("evidence", [])))
+        links = f'<div class="ph-evidence">{links}</div>' if links else ""
+        events.append(
+            '<div class="ph-event">'
+            f'<div class="ph-event-head"><span class="ph-date">{_llm_ph_html_escape(e["date"])}</span>{_llm_ph_kind_badge(e["kind"])}</div>'
+            f'<div class="ph-event-title">{_llm_ph_html_escape(e["title"])}</div>'
+            f'<p class="ph-event-detail">{_llm_ph_html_escape(e["detail"])}</p>{links}</div>')
+    events_html = "\n".join(events) if events else '<p class="ph-none">No price events recorded in this window.</p>'
+    gaps = "\n".join(
+        f'<div class="ph-gap">Coverage gap {_llm_ph_html_escape(g["from"])} to {_llm_ph_html_escape(g["to"])}: {_llm_ph_html_escape(g["reason"])}</div>'
+        for g in t.get("gaps", []))
+    oq = (f'<div class="ph-gap">Open question — {_llm_ph_html_escape(t["open_question"])}</div>'
+          if t.get("open_question") else "")
+    logo = _llm_ph_logo(t["slug"])
+    return (
+        f'<div class="ph-tool" id="ph-{t["slug"]}">\n'
+        f'      <div class="ph-tool-head"><img src="{logo}" alt="{t["name"]} logo" loading="lazy">'
+        f'<div><h3>{t["name"]}</h3><span class="ph-headline">{_llm_ph_html_escape(t["headline"])}</span></div>'
+        f'<span class="ph-meta">{t["snapshots"]} archived snapshots · {_llm_ph_html_escape(t["range_from"])} to {_llm_ph_html_escape(t["range_to"])}</span></div>\n'
+        f'      <div class="ph-stable">{stable}</div>\n'
+        f'      <div class="ph-events">{events_html}</div>\n'
+        f'      {gaps}{oq}\n    </div>')
+
+
+def render_llm_price_history(data: dict, site: dict) -> str:
+    meta = data.get("_meta", {})
+    domain = site.get("domain", "wizardcost.com")
+    base_path = site.get("base_path", "/llm")
+    prefix = _site_prefix(domain, base_path)
+    canonical = f"{prefix}/price-history.html"
+    updated = meta.get("updated", "2026-06-20")
+    window = f'{meta.get("window_from", "2024-01")} – {meta.get("window_to", "2026-06")}'
+
+    tool_cards = "\n    ".join(_llm_ph_tool_card(t) for t in data.get("tools", []))
+
+    title = "LLM API Pricing History 2024–2026: What Actually Changed | WizardCost"
+    desc = ("Two years of OpenAI, Anthropic, Gemini and DeepSeek API pricing. "
+            "Major cuts documented — every confirmed event linked to dated evidence.")
+
+    article_ld = json.dumps({
+        "@context": "https://schema.org", "@type": "Article",
+        "headline": "LLM API pricing history (2024–2026)",
+        "description": desc,
+        "datePublished": "2026-06-20", "dateModified": updated,
+        "author": {"@type": "Organization", "name": "WizardCost"},
+        "publisher": {"@type": "Organization", "name": "WizardCost"},
+        "mainEntityOfPage": canonical,
+    }, ensure_ascii=False, indent=2)
+    breadcrumb_ld = json.dumps({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": f"https://{domain}/"},
+            {"@type": "ListItem", "position": 2, "name": "LLM Pricing", "item": f"{prefix}/"},
+            {"@type": "ListItem", "position": 3, "name": "Pricing history", "item": canonical},
+        ],
+    }, ensure_ascii=False, indent=2)
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- generováno llm/build.py z data/price-history.json — needituj ručně -->
+  <title>{title}</title>
+  <meta name="description" content="{_llm_ph_html_escape(desc)}">
+  <link rel="canonical" href="{canonical}">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="WizardCost">
+  <meta property="og:title" content="LLM API Pricing History 2024–2026">
+  <meta property="og:description" content="{_llm_ph_html_escape(desc)}">
+  <meta property="og:url" content="{canonical}">
+  <meta property="og:image" content="{prefix}/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{prefix}/og-image.png">
+  <script type="application/ld+json">
+{article_ld}
+  </script>
+  <script type="application/ld+json">
+{breadcrumb_ld}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    :root {{
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
+      --border: #1f2d45; --text: #e8edf5; --muted: #6b7a99;
+      --accent: #d97bfb; --accent-br: #e98bff; --accent-dim: rgba(217,123,251,0.09); --accent-glow: rgba(217,123,251,0.20); --ink: #1a0524; --link: #6f9bff; --border2: #27375a; --text2: #a8b4cc;
+      --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 14px; --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }}
+    body {{
+      background: var(--bg);
+      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(217,123,251,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(217,123,251,0.08), transparent 50%);
+      background-repeat: no-repeat; background-attachment: fixed;
+      color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; -webkit-font-smoothing: antialiased;
+      padding-top: 100px;
+    }}
+    a {{ color: var(--link); text-decoration: none; }}
+    a:hover {{ color: #9fbcff; }}
+    h1, h2, h3 {{ font-family: var(--display); letter-spacing: -0.02em; text-wrap: balance; }}
+    header {{ position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,14,23,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }}
+    .nav-top {{ padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }}
+    .nav-bottom {{ border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }}
+    .nav-bottom::-webkit-scrollbar {{ display: none; }}
+    .nav-bottom a {{ padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }}
+    .nav-bottom a:hover {{ color: var(--text); }}
+    .nav-bottom a.active {{ color: var(--text); font-weight: 700; border-bottom-color: var(--accent); }}
+    .logo {{ display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; white-space: nowrap; }}
+    .logo span {{ color: var(--accent); }}
+    .logo .io {{ color: var(--muted); font-weight: 600; }}
+    .logo-icon {{ width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }}
+    .nav-badge {{ font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); display: flex; align-items: center; gap: 7px; letter-spacing: 0.01em; }}
+    .nav-badge::before {{ content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 7px var(--accent); }}
+    .nav-dropdown {{ position: relative; display: flex; align-items: center; }}
+    .nav-dropdown-btn {{ background: none; border: none; cursor: pointer; color: var(--muted); font-family: var(--font); font-size: 14px; padding: 12px 20px; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s, border-color 0.15s; margin-bottom: -2px; border-bottom: 2px solid transparent; }}
+    .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn {{ color: var(--text); }}
+    .nav-dropdown-menu {{ display: none; position: fixed; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); min-width: 214px; z-index: 200; box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03); padding: 6px 0; }}
+    .nav-dropdown.open .nav-dropdown-menu {{ display: block; }}
+    .nav-dropdown-menu a {{ display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin-bottom: 0; font-size: 13px; font-weight: 600; color: var(--text2); transition: background 0.1s, color 0.1s; border-bottom: none !important; }}
+    .nav-dropdown-menu a:hover {{ background: var(--surface2); color: var(--text); text-decoration: none; }}
+    .nav-dropdown-menu img {{ width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }}
+    .wrap {{ max-width: 880px; margin: 0 auto; padding: 0 32px; }}
+    .hero {{ padding: 64px 0 40px; }}
+    .hero-badge {{ display: inline-flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; font-family: var(--mono); font-size: 11.5px; color: var(--text2); padding: 6px 15px; margin-bottom: 22px; letter-spacing: 0.02em; }}
+    .hero h1 {{ font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }}
+    .hero h1 em {{ font-style: normal; color: var(--accent); }}
+    .hero p {{ color: var(--text2); font-size: 1.08rem; max-width: 640px; line-height: 1.7; text-wrap: pretty; }}
+    footer {{ border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 24px; }}
+    footer a {{ color: var(--muted); }}
+    @media (max-width: 760px) {{
+      .wrap {{ padding-left: 18px; padding-right: 18px; }}
+      .nav-top {{ padding-left: 18px; padding-right: 18px; }}
+      .nav-bottom {{ padding-left: 18px; padding-right: 18px; }}
+      .nav-bottom a {{ padding: 13px 14px; }}
+    }}
+    @media (max-width: 620px) {{
+      .nav-badge {{ display: none; }}
+    }}
+    @media (max-width: 520px) {{
+      .finder-cta {{ flex-direction: column; align-items: stretch; text-align: left; }}
+      .btn-primary-lg {{ justify-content: center; }}
+    }}
+{_LLM_PH_CSS}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a href="/" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="llmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e98bff"></stop><stop offset="1" stop-color="#c44dff"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#llmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#fbeeff"></path>
+      </svg>
+      LLM<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+    </a>
+    <span class="nav-badge">LLM API pricing · verified June 2026</span>
+  </div>
+  <nav class="nav-bottom">
+    <a href="./">Calculator</a>
+    <a href="compare.html">Compare models</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn" type="button">Providers <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-dropdown-menu">
+        <a href="openai-pricing.html"><img src="assets/icons/openai.png" alt="">OpenAI</a>
+        <a href="anthropic-pricing.html"><img src="assets/icons/anthropic.png" alt="">Anthropic</a>
+        <a href="gemini-pricing.html"><img src="assets/icons/gemini.png" alt="">Gemini</a>
+        <a href="deepseek-pricing.html"><img src="assets/icons/deepseek.png" alt="">DeepSeek</a>
+        <a href="grok-pricing.html"><img src="assets/icons/grok.png" alt="">Grok</a>
+        <a href="mistral-pricing.html"><img src="assets/icons/mistral.png" alt="">Mistral</a>
+      </div>
+    </div>
+    <a href="changelog.html">Changelog</a>
+    <a href="price-history.html" class="active">Price history</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <div class="hero" data-screen-label="Price history hero">
+    <div class="hero-badge">2-year price history · Web Archive evidence · updated {updated}</div>
+    <h1>LLM API pricing — <em>what actually changed, {window}</em></h1>
+    <p class="ph-lead">{_llm_ph_html_escape(meta.get("thesis", ""))}</p>
+  </div>
+
+  <div class="section" data-screen-label="Summary">
+    <div class="ph-tldr">
+      <strong>The short version</strong>
+      <ul>
+        <li><b>OpenAI</b> — GPT-4 launched at $30/$60 per 1M tokens (2023); GPT-4o (2024) cut that to $5/$15; current lineup now starts at $0.20/$1.25 (GPT-5.4 nano).</li>
+        <li><b>Anthropic</b> — Claude 3 Haiku ($0.25/$1.25 per 1M) set a cheap-tier anchor in 2024; current Haiku 4.5 is $1/$5 but far more capable.</li>
+        <li><b>Google (Gemini)</b> — Flash tier consistently cheapest among frontier providers; Gemini 2.0 Flash shipped free in preview (Dec 2024) before paid pricing.</li>
+        <li><b>DeepSeek</b> — R1/V3 launch (Jan 2025) disrupted the market: GPT-4-class quality at 10–30x lower prices than Western competitors.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" data-screen-label="Per-provider timeline">
+    <div class="section-label">The receipts</div>
+    <h2>Two years of pricing, provider by provider</h2>
+    <p class="section-sub">Each entry links to a dated Web Archive snapshot where available. Product launches and packaging changes are labelled as such — only genuine price moves are marked <span class="ph-kind ph-k-change">Real change</span>. Note: evidence URLs need owner verification before merge.</p>
+    {tool_cards}
+  </div>
+
+  <div class="section" data-screen-label="Methodology">
+    <div class="section-label">How we know</div>
+    <h2>Method &amp; honest caveats</h2>
+    <p class="section-sub">{_llm_ph_html_escape(meta.get("method", ""))}</p>
+    <p class="tbl-note">Some events lack Wayback evidence links (marked in the data) — these are from widely-reported public announcements. From here on, our <a href="changelog.html">live price changelog</a> records changes as they happen, sourced from official pricing pages.</p>
+  </div>
+
+  <div class="finder-cta" data-screen-label="CTA">
+    <div class="finder-cta-text">
+      <h2>Prices changed a lot — check today's best value.</h2>
+      <p>The calculator uses current verified prices across all 28 models.</p>
+    </div>
+    <a href="compare.html" class="btn-primary-lg">Compare all models →</a>
+  </div>
+
+  <div class="section" data-screen-label="Related pages">
+    <div class="section-label">Keep digging</div>
+    <div class="xlinks">
+      <a class="xlink" href="changelog.html">Live price changelog →</a>
+      <a class="xlink" href="compare.html">Compare all models →</a>
+      <a class="xlink" href="./">Pricing calculator →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  WizardCost LLM Pricing History · Web Archive evidence · updated {updated} · <a href="/automation/privacy.html">Privacy</a> · <a href="/automation/terms.html">Terms</a>
+</footer>
+
+<script>
+(function () {{
+  var dd = document.querySelector(".nav-dropdown");
+  if (!dd) return;
+  dd.querySelector(".nav-dropdown-btn").addEventListener("click", function (e) {{
+    e.stopPropagation();
+    var r = this.getBoundingClientRect(), m = dd.querySelector(".nav-dropdown-menu");
+    m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 224)) + "px";
+    m.style.top = (r.bottom + 8) + "px";
+    dd.classList.toggle("open");
+  }});
+  document.addEventListener("click", function () {{ dd.classList.remove("open"); }});
+}})();
+</script>
+</body>
+</html>
+"""
+
+
+def build_llm_price_history(site: dict, *, check: bool) -> list[str]:
+    """Vygeneruje llm/price-history.html z data/price-history.json.
+    V check módu vrací seznam zastaralých souborů (porovnává bez GA4/analytics bloků)."""
+    if not PRICE_HISTORY.exists():
+        return []
+    data = json.loads(PRICE_HISTORY.read_text(encoding="utf-8"))
+    if not data.get("tools"):
+        return []
+    target = ROOT / "price-history.html"
+    rendered = render_llm_price_history(data, site)
+    existing = target.read_text(encoding="utf-8") if target.exists() else None
+    dirty = existing is None or _strip_injected(existing) != rendered
+    if not dirty:
+        return []
+    if not check:
+        target.write_text(rendered, encoding="utf-8")
+    return [target.name]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Inject data/models.json into /llm/ pages.")
     parser.add_argument("--check", action="store_true")
@@ -918,6 +1288,7 @@ def main() -> int:
                   != p.read_text(encoding="utf-8")]
         dirty += build_provider_pages(data, site, check=True)
         dirty += build_seo.build_seo_pages(data, site, sys.modules[__name__], check=True)
+        dirty += build_llm_price_history(site, check=True)
         if dirty:
             print(f"[llm build --check] OUT OF DATE: {', '.join(dirty)} — spusť `python llm/build.py`.")
             return 1
@@ -935,6 +1306,7 @@ def main() -> int:
                            site.get("base_path", "/llm"), clog_entries)
     changed += build_provider_pages(data, site, check=False)
     changed += build_seo.build_seo_pages(data, site, sys.modules[__name__], check=False)
+    changed += build_llm_price_history(site, check=False)
 
     domain = site.get("domain", "wizardcost.com")
     base_path = site.get("base_path", "/llm")

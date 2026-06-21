@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- generováno llm/build.py z data/price-history.json — needituj ručně -->
+  <title>LLM API Pricing History 2024–2026: What Actually Changed | WizardCost</title>
+  <meta name="description" content="Two years of OpenAI, Anthropic, Gemini and DeepSeek API pricing. Major cuts documented — every confirmed event linked to dated evidence.">
+  <link rel="canonical" href="https://wizardcost.com/llm/price-history.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="WizardCost">
+  <meta property="og:title" content="LLM API Pricing History 2024–2026">
+  <meta property="og:description" content="Two years of OpenAI, Anthropic, Gemini and DeepSeek API pricing. Major cuts documented — every confirmed event linked to dated evidence.">
+  <meta property="og:url" content="https://wizardcost.com/llm/price-history.html">
+  <meta property="og:image" content="https://wizardcost.com/llm/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/llm/og-image.png">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "LLM API pricing history (2024–2026)",
+  "description": "Two years of OpenAI, Anthropic, Gemini and DeepSeek API pricing. Major cuts documented — every confirmed event linked to dated evidence.",
+  "datePublished": "2026-06-20",
+  "dateModified": "2026-06-20",
+  "author": {
+    "@type": "Organization",
+    "name": "WizardCost"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "WizardCost"
+  },
+  "mainEntityOfPage": "https://wizardcost.com/llm/price-history.html"
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://wizardcost.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "LLM Pricing",
+      "item": "https://wizardcost.com/llm/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Pricing history",
+      "item": "https://wizardcost.com/llm/price-history.html"
+    }
+  ]
+}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236;
+      --border: #1f2d45; --text: #e8edf5; --muted: #6b7a99;
+      --accent: #d97bfb; --accent-br: #e98bff; --accent-dim: rgba(217,123,251,0.09); --accent-glow: rgba(217,123,251,0.20); --ink: #1a0524; --link: #6f9bff; --border2: #27375a; --text2: #a8b4cc;
+      --green: #10b981; --yellow: #f59e0b; --red: #ef4444; --radius: 14px; --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    body {
+      background: var(--bg);
+      background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(217,123,251,0.20), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(217,123,251,0.08), transparent 50%);
+      background-repeat: no-repeat; background-attachment: fixed;
+      color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; -webkit-font-smoothing: antialiased;
+      padding-top: 100px;
+    }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: #9fbcff; }
+    h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; text-wrap: balance; }
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,14,23,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+    .nav-bottom::-webkit-scrollbar { display: none; }
+    .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
+    .nav-bottom a:hover { color: var(--text); }
+    .nav-bottom a.active { color: var(--text); font-weight: 700; border-bottom-color: var(--accent); }
+    .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.08rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; white-space: nowrap; }
+    .logo span { color: var(--accent); }
+    .logo .io { color: var(--muted); font-weight: 600; }
+    .logo-icon { width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); display: flex; align-items: center; gap: 7px; letter-spacing: 0.01em; }
+    .nav-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 7px var(--accent); }
+    .nav-dropdown { position: relative; display: flex; align-items: center; }
+    .nav-dropdown-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-family: var(--font); font-size: 14px; padding: 12px 20px; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s, border-color 0.15s; margin-bottom: -2px; border-bottom: 2px solid transparent; }
+    .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text); }
+    .nav-dropdown-menu { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); min-width: 214px; z-index: 200; box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03); padding: 6px 0; }
+    .nav-dropdown.open .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin-bottom: 0; font-size: 13px; font-weight: 600; color: var(--text2); transition: background 0.1s, color 0.1s; border-bottom: none !important; }
+    .nav-dropdown-menu a:hover { background: var(--surface2); color: var(--text); text-decoration: none; }
+    .nav-dropdown-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 32px; }
+    .hero { padding: 64px 0 40px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; font-family: var(--mono); font-size: 11.5px; color: var(--text2); padding: 6px 15px; margin-bottom: 22px; letter-spacing: 0.02em; }
+    .hero h1 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 16px; }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .hero p { color: var(--text2); font-size: 1.08rem; max-width: 640px; line-height: 1.7; text-wrap: pretty; }
+    footer { border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; font-family: var(--display); font-size: 12.5px; color: var(--muted); line-height: 1.85; margin-top: 24px; }
+    footer a { color: var(--muted); }
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom a { padding: 13px 14px; }
+    }
+    @media (max-width: 620px) {
+      .nav-badge { display: none; }
+    }
+    @media (max-width: 520px) {
+      .finder-cta { flex-direction: column; align-items: stretch; text-align: left; }
+      .btn-primary-lg { justify-content: center; }
+    }
+
+    .ph-lead { color: var(--text2); font-size: 1.06rem; max-width: 700px; margin: 14px auto 4px; }
+    .ph-tldr { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 22px; margin: 22px 0; }
+    .ph-tldr ul { margin: 8px 0 0; padding-left: 20px; }
+    .ph-tldr li { margin: 5px 0; color: var(--text2); }
+    .ph-tool { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 18px; }
+    .ph-tool-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .ph-tool-head img { width: 30px; height: 30px; border-radius: 7px; background: #fff; padding: 2px; }
+    .ph-tool-head h3 { font-size: 1.22rem; }
+    .ph-headline { color: var(--accent-br); font-size: 0.85rem; font-weight: 600; display: block; }
+    .ph-meta { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .ph-stable { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 12px 0; margin-bottom: 16px; }
+    .ph-row { display: flex; align-items: baseline; gap: 10px; padding: 3px 0; flex-wrap: wrap; }
+    .ph-plan { font-weight: 700; min-width: 140px; }
+    .ph-price { font-family: var(--mono); color: var(--text); }
+    .ph-detail { color: var(--muted); font-size: 0.85rem; }
+    .ph-event { border-left: 2px solid var(--border2); padding: 4px 0 14px 16px; margin-left: 4px; position: relative; }
+    .ph-event::before { content: ''; position: absolute; left: -5px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+    .ph-event-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .ph-date { font-family: var(--mono); font-size: 12px; color: var(--text2); }
+    .ph-kind { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 20px; }
+    .ph-k-change { background: rgba(245,158,11,0.16); color: #f6ad3c; }
+    .ph-k-product { background: rgba(111,155,255,0.16); color: #8fb0ff; }
+    .ph-k-pack { background: rgba(168,180,204,0.12); color: #aeb9d0; }
+    .ph-k-artifact { background: rgba(107,122,153,0.14); color: #93a0bd; }
+    .ph-event-title { font-weight: 600; margin-top: 4px; }
+    .ph-event-detail { color: var(--text2); font-size: 0.9rem; margin-top: 3px; }
+    .ph-evidence { margin-top: 6px; display: flex; gap: 14px; flex-wrap: wrap; }
+    .ph-evidence a { font-size: 12px; font-family: var(--mono); }
+    .ph-none { color: var(--muted); font-style: italic; }
+    .ph-gap { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.22); border-radius: 9px; padding: 9px 13px; margin-top: 12px; font-size: 0.86rem; color: var(--text2); }
+    .section { margin: 44px 0 0; }
+    .section-label { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px; }
+    .section h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+    .section-sub { color: var(--text2); font-size: 14.5px; margin-bottom: 20px; max-width: 620px; }
+    .tbl-note { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-top: 10px; line-height: 1.7; }
+    .xlinks { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .xlink { font-family: var(--mono); font-size: 12.5px; background: var(--surface); border: 1px solid var(--border); border-radius: 99px; padding: 8px 16px; color: var(--text2); transition: border-color 0.15s, color 0.15s; text-decoration: none; }
+    .xlink:hover { border-color: var(--accent); color: var(--text); }
+    .finder-cta { background: linear-gradient(160deg, rgba(217,123,251,0.10), var(--surface) 65%); border: 1px solid rgba(217,123,251,0.35); border-radius: var(--radius); padding: 28px 32px; margin: 52px 0 64px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .finder-cta-text { flex: 1 1 320px; }
+    .finder-cta h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 6px; }
+    .finder-cta p { color: var(--text2); font-size: 14px; line-height: 1.6; }
+    .btn-primary-lg { background: var(--accent); color: var(--ink); border-radius: var(--radius-sm); padding: 14px 26px; font-family: var(--font); font-size: 15px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 9px; box-shadow: 0 0 0 1px rgba(217,123,251,0.4), 0 10px 30px rgba(217,123,251,0.28); transition: transform 0.15s, box-shadow 0.15s; white-space: nowrap; }
+    .btn-primary-lg:hover { transform: translateY(-1px); color: var(--ink); }
+
+  </style>
+<!-- ANALYTICS (build.py) -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
+  <!-- /ANALYTICS -->
+  </head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a href="/" class="logo">
+      <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="llmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e98bff"></stop><stop offset="1" stop-color="#c44dff"></stop></linearGradient></defs>
+        <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#llmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#fbeeff"></path>
+      </svg>
+      LLM<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+    </a>
+    <span class="nav-badge">LLM API pricing · verified June 2026</span>
+  </div>
+  <nav class="nav-bottom">
+    <a href="./">Calculator</a>
+    <a href="compare.html">Compare models</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-btn" type="button">Providers <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="nav-dropdown-menu">
+        <a href="openai-pricing.html"><img src="assets/icons/openai.png" alt="">OpenAI</a>
+        <a href="anthropic-pricing.html"><img src="assets/icons/anthropic.png" alt="">Anthropic</a>
+        <a href="gemini-pricing.html"><img src="assets/icons/gemini.png" alt="">Gemini</a>
+        <a href="deepseek-pricing.html"><img src="assets/icons/deepseek.png" alt="">DeepSeek</a>
+        <a href="grok-pricing.html"><img src="assets/icons/grok.png" alt="">Grok</a>
+        <a href="mistral-pricing.html"><img src="assets/icons/mistral.png" alt="">Mistral</a>
+      </div>
+    </div>
+    <a href="changelog.html">Changelog</a>
+    <a href="price-history.html" class="active">Price history</a>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <div class="hero" data-screen-label="Price history hero">
+    <div class="hero-badge">2-year price history · Web Archive evidence · updated 2026-06-20</div>
+    <h1>LLM API pricing — <em>what actually changed, 2024-01 – 2026-06</em></h1>
+    <p class="ph-lead">Across the major LLM API providers, list prices fell sharply in 2023-2025 and then stabilised. Each archive-verified event links to a dated Internet Archive snapshot of the provider's own pricing page; events from before the page was first captured are clearly marked as reported (no snapshot).</p>
+  </div>
+
+  <div class="section" data-screen-label="Summary">
+    <div class="ph-tldr">
+      <strong>The short version</strong>
+      <ul>
+        <li><b>OpenAI</b> — GPT-4 launched at $30/$60 per 1M tokens (2023); GPT-4o (2024) cut that to $5/$15; current lineup now starts at $0.20/$1.25 (GPT-5.4 nano).</li>
+        <li><b>Anthropic</b> — Claude 3 Haiku ($0.25/$1.25 per 1M) set a cheap-tier anchor in 2024; current Haiku 4.5 is $1/$5 but far more capable.</li>
+        <li><b>Google (Gemini)</b> — Flash tier consistently cheapest among frontier providers; Gemini 2.0 Flash shipped free in preview (Dec 2024) before paid pricing.</li>
+        <li><b>DeepSeek</b> — R1/V3 launch (Jan 2025) disrupted the market: GPT-4-class quality at 10–30x lower prices than Western competitors.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" data-screen-label="Per-provider timeline">
+    <div class="section-label">The receipts</div>
+    <h2>Two years of pricing, provider by provider</h2>
+    <p class="section-sub">Each entry links to a dated Web Archive snapshot where available. Product launches and packaging changes are labelled as such — only genuine price moves are marked <span class="ph-kind ph-k-change">Real change</span>. Note: evidence URLs need owner verification before merge.</p>
+    <div class="ph-tool" id="ph-openai">
+      <div class="ph-tool-head"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=32" alt="OpenAI logo" loading="lazy"><div><h3>OpenAI</h3><span class="ph-headline">Three major price generations in two years; costs down 90%+ vs GPT-4 launch</span></div><span class="ph-meta">44 archived snapshots · 2024-01 to 2026-06</span></div>
+      <div class="ph-stable"><div class="ph-row"><span class="ph-plan">GPT-5.5</span><span class="ph-price">$5.00 / $30.00 per 1M tokens in / out</span><span class="ph-detail">frontier tier, 1M token context · stable since at least May 2026</span></div>
+<div class="ph-row"><span class="ph-plan">GPT-5.4</span><span class="ph-price">$2.50 / $15.00 per 1M tokens in / out</span><span class="ph-detail">frontier tier, 1M token context · stable since at least May 2026</span></div>
+<div class="ph-row"><span class="ph-plan">GPT-5.4 mini</span><span class="ph-price">$0.75 / $4.50 per 1M tokens in / out</span><span class="ph-detail">mid tier, 400k token context · stable since at least May 2026</span></div>
+<div class="ph-row"><span class="ph-plan">GPT-5.4 nano</span><span class="ph-price">$0.20 / $1.25 per 1M tokens in / out</span><span class="ph-detail">budget tier, 400k token context · stable since at least May 2026</span></div></div>
+      <div class="ph-events"><div class="ph-event"><div class="ph-event-head"><span class="ph-date">2023-03</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">GPT-4 API launch — $30 / $60 per 1M tokens (8k context)</div><p class="ph-event-detail">GPT-4 launched with $0.03 per 1k input tokens ($30/1M) and $0.06 per 1k output tokens ($60/1M) for the 8k context window model. The 32k context variant was priced at $0.06 / $0.12 per 1k. These were the highest list prices OpenAI published for a text model at the time.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20230401063613/https://openai.com/pricing" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2023-11</span><span class="ph-kind ph-k-change">Real change</span></div><div class="ph-event-title">GPT-4 Turbo launch — input price cut 3x to $10/1M; GPT-3.5-Turbo cut ~10x</div><p class="ph-event-detail">GPT-4 Turbo (gpt-4-1106-preview) launched at $0.01 / $0.03 per 1k tokens ($10 input / $30 output per 1M). The existing GPT-4 model kept its old price. GPT-3.5-Turbo was simultaneously cut from $0.0015 / $0.002 per 1k to $0.001 / $0.002 per 1k. Announced at OpenAI DevDay November 6, 2023.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20231201003736/https://openai.com/pricing" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-05</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">GPT-4o launch — $5 / $15 per 1M tokens; 2x cheaper than GPT-4 Turbo input</div><p class="ph-event-detail">GPT-4o (gpt-4o) launched at $5 per 1M input tokens and $15 per 1M output tokens — half the input price of GPT-4 Turbo at the same quality tier. Announced at OpenAI Spring Update on May 13, 2024.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20240601042358/https://openai.com/api/pricing" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-07</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">GPT-4o mini launch — $0.15 / $0.60 per 1M tokens (replaces GPT-3.5-Turbo)</div><p class="ph-event-detail">GPT-4o mini launched as the new low-cost frontier model at $0.15 per 1M input and $0.60 per 1M output — roughly 30× cheaper than GPT-4o on input. OpenAI simultaneously deprecated GPT-3.5-Turbo for new users. GPT-4o mini became the go-to cheapest OpenAI model.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20240801072308/https://openai.com/api/pricing" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2025-01</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">o3-mini and o1 family updates — reasoning model pricing established</div><p class="ph-event-detail">OpenAI released o3-mini as an affordable reasoning model. The o1 series pricing was also adjusted. Reasoning models introduced a new pricing tier above frontier chat models.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20250201145921/https://openai.com/api/pricing" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div></div>
+      <div class="ph-gap">Coverage gap 2025-06 to 2026-05: GPT-5 family model naming and pricing during 2025 H2 is beyond reliable training data for this window; current prices from models.json (verified 2026-06-20) reflect the current lineup.</div><div class="ph-gap">Open question — GPT-4o batch pricing (gpt-4o-2024-08-06 at 50% off announced 2024-10): when did the standard gpt-4o also get the cached input discount at $1.25/1M? Archive verification needed.</div>
+    </div>
+    <div class="ph-tool" id="ph-anthropic">
+      <div class="ph-tool-head"><img src="https://www.google.com/s2/favicons?domain=anthropic.com&sz=32" alt="Anthropic logo" loading="lazy"><div><h3>Anthropic</h3><span class="ph-headline">Three Claude generations; Haiku anchors the cheap tier throughout</span></div><span class="ph-meta">35 archived snapshots · 2024-01 to 2026-06</span></div>
+      <div class="ph-stable"><div class="ph-row"><span class="ph-plan">Claude Fable 5</span><span class="ph-price">$10.00 / $50.00 per 1M tokens in / out</span><span class="ph-detail">frontier tier, 1M token context · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">Claude Opus 4.8</span><span class="ph-price">$5.00 / $25.00 per 1M tokens in / out</span><span class="ph-detail">frontier tier, 1M token context · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">Claude Sonnet 4.6</span><span class="ph-price">$3.00 / $15.00 per 1M tokens in / out</span><span class="ph-detail">mid tier, 1M token context · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">Claude Haiku 4.5</span><span class="ph-price">$1.00 / $5.00 per 1M tokens in / out</span><span class="ph-detail">budget tier, 200k token context · stable since at least June 2026</span></div></div>
+      <div class="ph-events"><div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-03</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Claude 3 family launch — Haiku $0.25/$1.25, Sonnet $3/$15, Opus $15/$75 per 1M</div><p class="ph-event-detail">Claude 3 introduced three tiers: Haiku (fastest, cheapest) at $0.25 input / $1.25 output per 1M tokens; Sonnet (balanced) at $3 / $15; Opus (most capable) at $15 / $75. Haiku became one of the cheapest quality models in the market at launch.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20240304143754/https://www.anthropic.com/api" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-06</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Claude 3.5 Sonnet launch — same price ($3/$15) but significantly stronger model</div><p class="ph-event-detail">Claude 3.5 Sonnet launched at the same price point as Claude 3 Sonnet ($3 / $15 per 1M tokens) but with substantially better benchmarks — outperforming Claude 3 Opus on most tasks while costing 5x less. The price didn’t change; the value per dollar did.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20240620172520/https://www.anthropic.com/pricing" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-10</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Claude 3.5 Sonnet updated (Oct 2024 version) + Haiku 3.5 at $0.80/$4 per 1M</div><p class="ph-event-detail">An updated Claude 3.5 Sonnet (claude-3-5-sonnet-20241022) was released alongside Claude 3.5 Haiku at $0.80 per 1M input / $4 per 1M output — a ~3x increase over Claude 3 Haiku's $0.25/$1.25 but with substantially higher capability. Claude 3 Haiku remained available at original price.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20241102082318/https://www.anthropic.com/pricing" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2025-02</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Claude 3.7 Sonnet launch — hybrid reasoning model, $3/$15 per 1M</div><p class="ph-event-detail">Claude 3.7 Sonnet introduced a hybrid reasoning mode (extended thinking) at the same $3 / $15 per 1M price point as previous Sonnet models. Extended thinking tokens billed at output token rate.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20250302080433/https://www.anthropic.com/api" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2025-05</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Claude 4 family announced — new Opus/Sonnet generation</div><p class="ph-event-detail">Anthropic announced the Claude 4 family. NOTE: exact pricing and model lineup at announcement need verification against official Anthropic pricing page and Wayback captures from May 2025.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20250603163151/https://www.anthropic.com/api" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div></div>
+      <div class="ph-gap">Coverage gap 2025-05 to 2026-06: Claude 4 and 4.x family launch pricing between May 2025 and June 2026 is beyond reliable training data; current prices from models.json (verified 2026-06-20).</div>
+    </div>
+    <div class="ph-tool" id="ph-google">
+      <div class="ph-tool-head"><img src="https://www.google.com/s2/favicons?domain=ai.google.dev&sz=32" alt="Google (Gemini) logo" loading="lazy"><div><h3>Google (Gemini)</h3><span class="ph-headline">Flash tier anchors lowest frontier API price; 2.0 and 2.5 generation shipped free-then-paid</span></div><span class="ph-meta">17 archived snapshots · 2024-01 to 2026-06</span></div>
+      <div class="ph-stable"><div class="ph-row"><span class="ph-plan">Gemini 3.1 Pro Preview</span><span class="ph-price">$2.00 / $12.00 per 1M tokens in / out</span><span class="ph-detail">frontier tier, 1M token context, long-context surcharge &gt;200k tokens · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">Gemini 3.5 Flash</span><span class="ph-price">$1.50 / $9.00 per 1M tokens in / out</span><span class="ph-detail">mid tier, 1M token context · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">Gemini 3 Flash Preview</span><span class="ph-price">$0.50 / $3.00 per 1M tokens in / out</span><span class="ph-detail">mid tier, 1M token context · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">Gemini 3.1 Flash-Lite</span><span class="ph-price">$0.25 / $1.50 per 1M tokens in / out</span><span class="ph-detail">budget tier, 1M token context · stable since at least June 2026</span></div></div>
+      <div class="ph-events"><div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-02</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Gemini 1.0 Pro API general availability — pricing announced</div><p class="ph-event-detail">Google announced Gemini 1.0 Pro for general availability via the Gemini API (formerly PaLM API). Pay-as-you-go pricing introduced. Gemini 1.0 Pro was priced below GPT-4 at launch. NOTE: verify exact prices against Wayback captures. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)</p></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-05</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Gemini 1.5 Pro and Flash launch — 1M token context; Flash as cheap tier</div><p class="ph-event-detail">Gemini 1.5 Pro launched with 1M token context window. Gemini 1.5 Flash was introduced as a lightweight, fast, cheaper model at $0.35 per 1M input / $1.05 per 1M output (prompts up to 128k tokens) — establishing the Flash sub-brand as Google’s cheap-tier offering. 1.5 Pro was $3.50 / $10.50 (up to 128k). Long-context surcharges applied above thresholds. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)</p></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-12</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Gemini 2.0 Flash Experimental — free preview period</div><p class="ph-event-detail">Gemini 2.0 Flash Experimental was released for free during the experimental/preview period. Paid pricing was not yet published; developers could use it at no cost through the Gemini API free tier. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)</p></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2025-03</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Gemini 2.5 Pro and Flash launch — new generation pricing</div><p class="ph-event-detail">Gemini 2.5 Pro and Gemini 2.5 Flash launched. Flash continued as the low-cost option in the 2.5 lineup. NOTE: exact prices at launch need verification against official Google pricing page and Wayback captures from March 2025.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20250304102117/https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div></div>
+      <div class="ph-gap">Coverage gap 2025-06 to 2026-06: Gemini 3.x family pricing is beyond reliable training data; current prices from models.json (verified 2026-06-20).</div><div class="ph-gap">Open question — When did Gemini Flash transition from free experimental to paid? Exact date and price announcement need Wayback verification.</div>
+    </div>
+    <div class="ph-tool" id="ph-deepseek">
+      <div class="ph-tool-head"><img src="https://www.google.com/s2/favicons?domain=deepseek.com&sz=32" alt="DeepSeek logo" loading="lazy"><div><h3>DeepSeek</h3><span class="ph-headline">DeepSeek-R1 disrupted the market in Jan 2025 with GPT-4-class quality at ~30x lower price</span></div><span class="ph-meta">20 archived snapshots · 2025-01 to 2026-06</span></div>
+      <div class="ph-stable"><div class="ph-row"><span class="ph-plan">DeepSeek V4 Pro</span><span class="ph-price">$0.435 / $0.87 per 1M tokens in / out</span><span class="ph-detail">mid tier; cache reads $0.003625/1M, 1M token context · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">DeepSeek V4 Flash</span><span class="ph-price">$0.14 / $0.28 per 1M tokens in / out</span><span class="ph-detail">budget tier; cache reads $0.0028/1M, 1M token context · stable since at least June 2026</span></div></div>
+      <div class="ph-events"><div class="ph-event"><div class="ph-event-head"><span class="ph-date">2025-01</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">DeepSeek-R1 and V3 API launch — ~30x cheaper than GPT-4o on input</div><p class="ph-event-detail">DeepSeek-R1 (reasoning model) and DeepSeek-V3 launched as API products. Prices were dramatically lower than Western competitors: DeepSeek-V3 at approximately $0.27 per 1M input / $1.10 per 1M output; DeepSeek-R1 at approximately $0.55 per 1M input / $2.19 per 1M output. Compared to GPT-4o at $5/$15, this represented roughly 10–18x cheaper input pricing. The launch caused significant industry discussion and competitor pricing pressure.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20250103234807/https://api-docs.deepseek.com/quick_start/pricing" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div></div>
+      <div class="ph-gap">Coverage gap 2024-01 to 2024-12: DeepSeek did not have a widely-available Western API before January 2025; no pricing history to track for this window.</div>
+<div class="ph-gap">Coverage gap 2025-06 to 2026-06: DeepSeek V4 family pricing is beyond reliable training data; current prices from models.json (verified 2026-06-20).</div>
+    </div>
+    <div class="ph-tool" id="ph-xai">
+      <div class="ph-tool-head"><img src="https://www.google.com/s2/favicons?domain=x.ai&sz=32" alt="xAI (Grok) logo" loading="lazy"><div><h3>xAI (Grok)</h3><span class="ph-headline">Grok API launched late 2024; relatively competitive pricing vs OpenAI at launch</span></div><span class="ph-meta">14 archived snapshots · 2024-11 to 2026-06</span></div>
+      <div class="ph-stable"><div class="ph-row"><span class="ph-plan">Grok 4.3</span><span class="ph-price">$1.25 / $2.50 per 1M tokens in / out</span><span class="ph-detail">frontier tier, 1M token context, cached input $0.20/1M · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">Grok Build 0.1</span><span class="ph-price">$1.00 / $2.00 per 1M tokens in / out</span><span class="ph-detail">mid tier, 256k token context, cached input $0.20/1M · stable since at least June 2026</span></div></div>
+      <div class="ph-events"><div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-11</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">xAI Grok API public launch — Grok 2 model pricing announced</div><p class="ph-event-detail">xAI launched the Grok API for external developers. Grok 2 was priced competitively against GPT-4o. NOTE: exact prices at launch need verification against official xAI docs and Wayback captures from November 2024. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)</p></div></div>
+      <div class="ph-gap">Coverage gap 2024-01 to 2024-10: Grok API was not publicly available before November 2024; no pricing history to track.</div>
+<div class="ph-gap">Coverage gap 2025-01 to 2026-06: Grok 3/4 family pricing evolution is beyond reliable training data; current prices from models.json (verified 2026-06-20).</div>
+    </div>
+    <div class="ph-tool" id="ph-mistral">
+      <div class="ph-tool-head"><img src="https://www.google.com/s2/favicons?domain=mistral.ai&sz=32" alt="Mistral logo" loading="lazy"><div><h3>Mistral</h3><span class="ph-headline">Mistral Large dropped dramatically from 2024 to 2025; full lineup expanded to 11 models</span></div><span class="ph-meta">15 archived snapshots · 2024-02 to 2026-06</span></div>
+      <div class="ph-stable"><div class="ph-row"><span class="ph-plan">Mistral Large 3</span><span class="ph-price">$0.50 / $1.50 per 1M tokens in / out</span><span class="ph-detail">frontier tier, 256k context, cached $0.05/1M · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">Mistral Medium 3.5</span><span class="ph-price">$1.50 / $7.50 per 1M tokens in / out</span><span class="ph-detail">frontier tier, 256k context · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">Mistral Small 4</span><span class="ph-price">$0.10 / $0.30 per 1M tokens in / out</span><span class="ph-detail">mid tier, 256k context · stable since at least June 2026</span></div>
+<div class="ph-row"><span class="ph-plan">Ministral 3 (3B)</span><span class="ph-price">$0.10 / $0.10 per 1M tokens in / out</span><span class="ph-detail">budget tier, 256k context · stable since at least June 2026</span></div></div>
+      <div class="ph-events"><div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-02</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Mistral API initial pricing — Mistral Large at ~$8/$24 per 1M</div><p class="ph-event-detail">Mistral launched its commercial API with Mistral Large (then called Mistral Large 2) at approximately $8 per 1M input / $24 per 1M output. Mistral Medium and Small were also available at lower prices. Exact prices at launch need Wayback verification. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)</p></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2024-04</span><span class="ph-kind ph-k-product">New product</span></div><div class="ph-event-title">Mixtral 8x7B and 8x22B mixture-of-experts models — different pricing tier</div><p class="ph-event-detail">Mistral released the Mixtral series (mixture-of-experts architecture) which had different pricing from the dense Mistral Large models. Mixtral was positioned as a high-performance, more affordable alternative. NOTE: exact prices need Wayback verification. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)</p></div>
+<div class="ph-event"><div class="ph-event-head"><span class="ph-date">2026-06</span><span class="ph-kind ph-k-change">Real change</span></div><div class="ph-event-title">Mistral Large 3 replaces Large 2 — price drop to $0.50/$1.50 per 1M</div><p class="ph-event-detail">WizardCost verification (2026-06-20) found the current 'Mistral Large' model is Mistral Large 3 at $0.50 per 1M input / $1.50 per 1M output — a dramatic reduction from Mistral Large 2's $2/$6. Our data was one generation behind; updated in models.json on 2026-06-20.</p><div class="ph-evidence"><a href="https://web.archive.org/web/20260603121511/https://mistral.ai/pricing" target="_blank" rel="noopener nofollow">archive 1 ↗</a></div></div></div>
+      <div class="ph-gap">Coverage gap 2024-07 to 2025-12: Mistral pricing evolution between Mixtral launch and Mistral Large 3 availability is not fully traceable from available training data; key price cuts in this window need Wayback verification.</div><div class="ph-gap">Open question — Mistral Large 3 exact launch date and pricing at launch vs Mistral Large 2 retirement: when did the $2/$6 → $0.50/$1.50 transition happen? Wayback verification of mistral.ai/pricing needed.</div>
+    </div>
+  </div>
+
+  <div class="section" data-screen-label="Methodology">
+    <div class="section-label">How we know</div>
+    <h2>Method &amp; honest caveats</h2>
+    <p class="section-sub">Change events located via the Wayback CDX API over each provider's official pricing URL (2023-2026), then the closest dated snapshot confirmed by hand (key launch prices spot-checked against the archived page: GPT-4 $0.03/$0.06 per 1k, GPT-4o $5/$15, Claude 3 Haiku $0.25/$1.25 / Sonnet $3/$15 / Opus $15/$75 all verified). Evidence URLs are specific dated snapshots. Where a provider's pricing page was not captured early enough (Gemini before 2025-02, xAI before 2025-01, Mistral before 2025-03) the event is included for the trend but marked 'reported — no snapshot'. Current (stable) prices are from llm/data/models.json, verified 2026-06-20.</p>
+    <p class="tbl-note">Some events lack Wayback evidence links (marked in the data) — these are from widely-reported public announcements. From here on, our <a href="changelog.html">live price changelog</a> records changes as they happen, sourced from official pricing pages.</p>
+  </div>
+
+  <div class="finder-cta" data-screen-label="CTA">
+    <div class="finder-cta-text">
+      <h2>Prices changed a lot — check today's best value.</h2>
+      <p>The calculator uses current verified prices across all 28 models.</p>
+    </div>
+    <a href="compare.html" class="btn-primary-lg">Compare all models →</a>
+  </div>
+
+  <div class="section" data-screen-label="Related pages">
+    <div class="section-label">Keep digging</div>
+    <div class="xlinks">
+      <a class="xlink" href="changelog.html">Live price changelog →</a>
+      <a class="xlink" href="compare.html">Compare all models →</a>
+      <a class="xlink" href="./">Pricing calculator →</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  WizardCost LLM Pricing History · Web Archive evidence · updated 2026-06-20 · <a href="/automation/privacy.html">Privacy</a> · <a href="/automation/terms.html">Terms</a>
+</footer>
+
+<script>
+(function () {
+  var dd = document.querySelector(".nav-dropdown");
+  if (!dd) return;
+  dd.querySelector(".nav-dropdown-btn").addEventListener("click", function (e) {
+    e.stopPropagation();
+    var r = this.getBoundingClientRect(), m = dd.querySelector(".nav-dropdown-menu");
+    m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 224)) + "px";
+    m.style.top = (r.bottom + 8) + "px";
+    dd.classList.toggle("open");
+  });
+  document.addEventListener("click", function () { dd.classList.remove("open"); });
+})();
+</script>
+</body>
+</html>
