@@ -171,11 +171,27 @@
     .mr-chips { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
     .cap-chip { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--muted); border: 1px solid var(--border2); background: var(--surface2); border-radius: 20px; padding: 1px 8px; }
     .cap-chip.nofit { color: #f5a623; border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.09); }
+    .cap-chip.lc { color: var(--accent-br); border-color: rgba(217,123,251,0.4); background: var(--accent-dim); }
     .model-row.nofit { opacity: 0.5; }
     .mr-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--text2); line-height: 1.9; }
     .model-row.open .mr-detail { display: block; }
     .mr-detail b { color: var(--text); font-weight: 700; }
     .results-foot { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+
+    /* reasoning effort (segmented chips, vzor vol-chip) */
+    .reason-row { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .reason-head { display: flex; flex-direction: column; gap: 2px; margin-bottom: 12px; }
+    .reason-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .reason-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+    .reason-chip { font-family: var(--mono); font-size: 11.5px; font-weight: 700; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 6px 14px; color: var(--text2); cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s; min-height: 30px; }
+    .reason-chip:hover { border-color: var(--accent); color: var(--accent-br); }
+    .reason-chip.on { background: var(--accent-dim); border-color: var(--accent); color: var(--accent-br); }
+
+    /* results head + share */
+    .results-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .share-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 9px 16px; color: var(--text2); font-family: var(--font); font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; transition: border-color 0.15s, color 0.15s; flex-shrink: 0; margin-top: 6px; }
+    .share-btn:hover { border-color: var(--accent); color: var(--accent-br); }
+    .share-btn.done { border-color: var(--accent); color: var(--accent-br); }
 
     /* ── EMAILCAP:CSS:START — držet 1:1 s _provider-template.html ── */
     .price-alerts { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 24px 28px; margin: 32px 0 0; }
@@ -289,17 +305,32 @@
       <span class="switch"><input type="checkbox" id="batch-toggle" aria-label="Apply batch discounts"><i></i></span>
       <span class="batch-label"><b>I can run batch / async</b> — applies batch discounts where verified <span id="batch-providers"></span></span>
     </div>
+    <div class="reason-row">
+      <div class="reason-head">
+        <span class="vol-label" style="font-size:13px; color:var(--text2);">Reasoning / thinking</span>
+        <span class="reason-sub">Thinking tokens bill as output — estimate how much your task adds, or set output tokens directly.</span>
+      </div>
+      <div class="reason-chips" id="reason-chips" role="group" aria-label="Reasoning effort"></div>
+    </div>
   </div>
 </section>
 
 <section class="step-block wrap" data-screen-label="Step 3 — Results">
   <div class="step-num">Step 3 — Results</div>
-  <h2>Monthly cost per model</h2>
-  <p class="step-sub">Grouped by tier — comparing a frontier model with a budget one on price alone is meaningless.</p>
+  <div class="results-head">
+    <div>
+      <h2>Monthly cost per model</h2>
+      <p class="step-sub">Grouped by tier — comparing a frontier model with a budget one on price alone is meaningless.</p>
+    </div>
+    <button type="button" class="share-btn" id="share-btn" aria-label="Copy a shareable link to this scenario">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      <span id="share-label">Copy share link</span>
+    </button>
+  </div>
   <div id="reco" class="reco" hidden></div>
   <div class="savings-banner" id="savings-banner"></div>
   <div id="results"></div>
-  <p class="results-foot">Costs marked ≈ use our auto-estimated tokens — override them in step 2 for exact math. Cached input is billed at each model's published cache-read rate; models without published cache pricing are computed at the full input rate.</p>
+  <p class="results-foot">Costs marked ≈ use our auto-estimated tokens — override them in step 2 for exact math. Cached input is billed at each model's published cache-read rate; models without published cache pricing are computed at the full input rate. Models with a published long-context tier (e.g. Gemini above 200k input) switch to those rates automatically. Reasoning effort multiplies billed output to estimate thinking tokens.</p>
 
   <!-- EMAILCAP:HTML:START — LLM varianta (skupina price-drop-alerts-llm; action = EMAILCAP_ACTION_LLM v build.py, ručně i na changelog.html — měnit synchronně) -->
   <!-- price-drop alerts e-mail form disabled 2026-06-16 — compliance: no e-mail collection while the project stays faceless (no MailerLite signup, no consent banner needed). Previous markup is in git history; re-enable by restoring the price-alerts section + EMAILCAP_ACTION_LLM. -->
@@ -332,34 +363,34 @@ var USE_CASES = [
 
 /* DATA:MODELS:START */ /* generováno build.py z data/models.json — needituj ručně */
 const MODELS = [
-  { n: "GPT-5.5", p: "OpenAI", pslug: "openai", t: "frontier", i: 5.0, o: 30.0, cached: 0.5, batch: 0.5, ctx: 1000000, mo: 1270.0 },
-  { n: "GPT-5.5 Pro", p: "OpenAI", pslug: "openai", t: "frontier", i: 30.0, o: 180.0, cached: null, batch: 0.5, ctx: 1000000, mo: 11400.0 },
-  { n: "GPT-5.4", p: "OpenAI", pslug: "openai", t: "frontier", i: 2.5, o: 15.0, cached: 0.25, batch: 0.5, ctx: 1000000, mo: 635.0 },
-  { n: "GPT-5.4 mini", p: "OpenAI", pslug: "openai", t: "mid", i: 0.75, o: 4.5, cached: 0.075, batch: 0.5, ctx: 400000, mo: 190.5 },
-  { n: "GPT-5.4 nano", p: "OpenAI", pslug: "openai", t: "budget", i: 0.2, o: 1.25, cached: 0.02, batch: 0.5, ctx: 400000, mo: 52.3 },
-  { n: "Claude Fable 5", p: "Anthropic", pslug: "anthropic", t: "frontier", i: 10.0, o: 50.0, cached: 1.0, batch: 0.5, ctx: 1000000, mo: 2240.0 },
-  { n: "Claude Opus 4.8", p: "Anthropic", pslug: "anthropic", t: "frontier", i: 5.0, o: 25.0, cached: 0.5, batch: 0.5, ctx: 1000000, mo: 1120.0 },
-  { n: "Claude Sonnet 4.6", p: "Anthropic", pslug: "anthropic", t: "mid", i: 3.0, o: 15.0, cached: 0.3, batch: 0.5, ctx: 1000000, mo: 672.0 },
-  { n: "Claude Haiku 4.5", p: "Anthropic", pslug: "anthropic", t: "budget", i: 1.0, o: 5.0, cached: 0.1, batch: 0.5, ctx: 200000, mo: 224.0 },
-  { n: "Gemini 3.1 Pro Preview", p: "Google (Gemini)", pslug: "google", t: "frontier", i: 2.0, o: 12.0, cached: 0.2, batch: 0.5, ctx: 1000000, mo: 508.0 },
-  { n: "Gemini 3.5 Flash", p: "Google (Gemini)", pslug: "google", t: "mid", i: 1.5, o: 9.0, cached: 0.15, batch: 0.5, ctx: 1000000, mo: 381.0 },
-  { n: "Gemini 3 Flash Preview", p: "Google (Gemini)", pslug: "google", t: "mid", i: 0.5, o: 3.0, cached: 0.05, batch: 0.5, ctx: 1000000, mo: 127.0 },
-  { n: "Gemini 3.1 Flash-Lite", p: "Google (Gemini)", pslug: "google", t: "budget", i: 0.25, o: 1.5, cached: 0.025, batch: 0.5, ctx: 1000000, mo: 63.5 },
-  { n: "DeepSeek V4 Pro", p: "DeepSeek", pslug: "deepseek", t: "mid", i: 0.435, o: 0.87, cached: 0.003625, batch: null, ctx: 1000000, mo: 52.7075 },
-  { n: "DeepSeek V4 Flash", p: "DeepSeek", pslug: "deepseek", t: "budget", i: 0.14, o: 0.28, cached: 0.0028, batch: null, ctx: 1000000, mo: 17.192 },
-  { n: "Grok 4.3", p: "xAI (Grok)", pslug: "xai", t: "frontier", i: 1.25, o: 2.5, cached: 0.2, batch: null, ctx: 1000000, mo: 178.0 },
-  { n: "Grok Build 0.1", p: "xAI (Grok)", pslug: "xai", t: "mid", i: 1.0, o: 2.0, cached: 0.2, batch: null, ctx: 256000, mo: 148.0 },
-  { n: "Mistral Large 3", p: "Mistral", pslug: "mistral", t: "frontier", i: 0.5, o: 1.5, cached: 0.05, batch: 0.5, ctx: 256000, mo: 82.0 },
-  { n: "Mistral Medium 3.5", p: "Mistral", pslug: "mistral", t: "frontier", i: 1.5, o: 7.5, cached: null, batch: 0.5, ctx: 256000, mo: 525.0 },
-  { n: "Magistral Medium", p: "Mistral", pslug: "mistral", t: "frontier", i: 2.0, o: 5.0, cached: null, batch: 0.5, ctx: 128000, mo: 550.0 },
-  { n: "Devstral 2", p: "Mistral", pslug: "mistral", t: "frontier", i: 0.4, o: 2.0, cached: null, batch: 0.5, ctx: 256000, mo: 140.0 },
-  { n: "Mistral Small 4", p: "Mistral", pslug: "mistral", t: "mid", i: 0.1, o: 0.3, cached: null, batch: 0.5, ctx: 256000, mo: 29.0 },
-  { n: "Magistral Small", p: "Mistral", pslug: "mistral", t: "mid", i: 0.5, o: 1.5, cached: null, batch: 0.5, ctx: 128000, mo: 145.0 },
-  { n: "Codestral", p: "Mistral", pslug: "mistral", t: "mid", i: 0.3, o: 0.9, cached: null, batch: 0.5, ctx: 128000, mo: 87.0 },
-  { n: "Devstral Small 2", p: "Mistral", pslug: "mistral", t: "budget", i: 0.1, o: 0.3, cached: null, batch: 0.5, ctx: 256000, mo: 29.0 },
-  { n: "Ministral 3 (3B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.1, o: 0.1, cached: null, batch: 0.5, ctx: 256000, mo: 23.0 },
-  { n: "Ministral 3 (8B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.15, o: 0.15, cached: null, batch: 0.5, ctx: 256000, mo: 34.5 },
-  { n: "Ministral 3 (14B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.2, o: 0.2, cached: null, batch: 0.5, ctx: 256000, mo: 46.0 },
+  { n: "GPT-5.5", p: "OpenAI", pslug: "openai", t: "frontier", i: 5.0, o: 30.0, cached: 0.5, batch: 0.5, ctx: 1000000, lc: null, mo: 1270.0 },
+  { n: "GPT-5.5 Pro", p: "OpenAI", pslug: "openai", t: "frontier", i: 30.0, o: 180.0, cached: null, batch: 0.5, ctx: 1000000, lc: null, mo: 11400.0 },
+  { n: "GPT-5.4", p: "OpenAI", pslug: "openai", t: "frontier", i: 2.5, o: 15.0, cached: 0.25, batch: 0.5, ctx: 1000000, lc: null, mo: 635.0 },
+  { n: "GPT-5.4 mini", p: "OpenAI", pslug: "openai", t: "mid", i: 0.75, o: 4.5, cached: 0.075, batch: 0.5, ctx: 400000, lc: null, mo: 190.5 },
+  { n: "GPT-5.4 nano", p: "OpenAI", pslug: "openai", t: "budget", i: 0.2, o: 1.25, cached: 0.02, batch: 0.5, ctx: 400000, lc: null, mo: 52.3 },
+  { n: "Claude Fable 5", p: "Anthropic", pslug: "anthropic", t: "frontier", i: 10.0, o: 50.0, cached: 1.0, batch: 0.5, ctx: 1000000, lc: null, mo: 2240.0 },
+  { n: "Claude Opus 4.8", p: "Anthropic", pslug: "anthropic", t: "frontier", i: 5.0, o: 25.0, cached: 0.5, batch: 0.5, ctx: 1000000, lc: null, mo: 1120.0 },
+  { n: "Claude Sonnet 4.6", p: "Anthropic", pslug: "anthropic", t: "mid", i: 3.0, o: 15.0, cached: 0.3, batch: 0.5, ctx: 1000000, lc: null, mo: 672.0 },
+  { n: "Claude Haiku 4.5", p: "Anthropic", pslug: "anthropic", t: "budget", i: 1.0, o: 5.0, cached: 0.1, batch: 0.5, ctx: 200000, lc: null, mo: 224.0 },
+  { n: "Gemini 3.1 Pro Preview", p: "Google (Gemini)", pslug: "google", t: "frontier", i: 2.0, o: 12.0, cached: 0.2, batch: 0.5, ctx: 1000000, lc: { th: 200000, i: 4.0, o: 18.0, cached: null }, mo: 508.0 },
+  { n: "Gemini 3.5 Flash", p: "Google (Gemini)", pslug: "google", t: "mid", i: 1.5, o: 9.0, cached: 0.15, batch: 0.5, ctx: 1000000, lc: null, mo: 381.0 },
+  { n: "Gemini 3 Flash Preview", p: "Google (Gemini)", pslug: "google", t: "mid", i: 0.5, o: 3.0, cached: 0.05, batch: 0.5, ctx: 1000000, lc: null, mo: 127.0 },
+  { n: "Gemini 3.1 Flash-Lite", p: "Google (Gemini)", pslug: "google", t: "budget", i: 0.25, o: 1.5, cached: 0.025, batch: 0.5, ctx: 1000000, lc: null, mo: 63.5 },
+  { n: "DeepSeek V4 Pro", p: "DeepSeek", pslug: "deepseek", t: "mid", i: 0.435, o: 0.87, cached: 0.003625, batch: null, ctx: 1000000, lc: null, mo: 52.7075 },
+  { n: "DeepSeek V4 Flash", p: "DeepSeek", pslug: "deepseek", t: "budget", i: 0.14, o: 0.28, cached: 0.0028, batch: null, ctx: 1000000, lc: null, mo: 17.192 },
+  { n: "Grok 4.3", p: "xAI (Grok)", pslug: "xai", t: "frontier", i: 1.25, o: 2.5, cached: 0.2, batch: null, ctx: 1000000, lc: null, mo: 178.0 },
+  { n: "Grok Build 0.1", p: "xAI (Grok)", pslug: "xai", t: "mid", i: 1.0, o: 2.0, cached: 0.2, batch: null, ctx: 256000, lc: null, mo: 148.0 },
+  { n: "Mistral Large 3", p: "Mistral", pslug: "mistral", t: "frontier", i: 0.5, o: 1.5, cached: 0.05, batch: 0.5, ctx: 256000, lc: null, mo: 82.0 },
+  { n: "Mistral Medium 3.5", p: "Mistral", pslug: "mistral", t: "frontier", i: 1.5, o: 7.5, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 525.0 },
+  { n: "Magistral Medium", p: "Mistral", pslug: "mistral", t: "frontier", i: 2.0, o: 5.0, cached: null, batch: 0.5, ctx: 128000, lc: null, mo: 550.0 },
+  { n: "Devstral 2", p: "Mistral", pslug: "mistral", t: "frontier", i: 0.4, o: 2.0, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 140.0 },
+  { n: "Mistral Small 4", p: "Mistral", pslug: "mistral", t: "mid", i: 0.1, o: 0.3, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 29.0 },
+  { n: "Magistral Small", p: "Mistral", pslug: "mistral", t: "mid", i: 0.5, o: 1.5, cached: null, batch: 0.5, ctx: 128000, lc: null, mo: 145.0 },
+  { n: "Codestral", p: "Mistral", pslug: "mistral", t: "mid", i: 0.3, o: 0.9, cached: null, batch: 0.5, ctx: 128000, lc: null, mo: 87.0 },
+  { n: "Devstral Small 2", p: "Mistral", pslug: "mistral", t: "budget", i: 0.1, o: 0.3, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 29.0 },
+  { n: "Ministral 3 (3B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.1, o: 0.1, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 23.0 },
+  { n: "Ministral 3 (8B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.15, o: 0.15, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 34.5 },
+  { n: "Ministral 3 (14B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.2, o: 0.2, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 46.0 },
 ];
 const MODELS_REVIEWED = "2026-06-20";
 /* DATA:MODELS:END */
@@ -375,10 +406,23 @@ var TIERS = [
   { id: 'budget',   label: 'BUDGET' }
 ];
 var TIER_TIP = 'Our editorial grouping — model classes change, we re-sort on every pricing revision.';
-var CACHE_RELEVANT = { chatbot: true, agents: true };
+/* cache se aplikuje jen tam, kde se prompt reálně opakuje: chatbot (historie),
+   agents (system/tool kontext), rag (system prompt + retrievaný kontext).
+   summarization/extraction = každý dokument unikátní → cache hit ~0, neaplikujeme
+   (drží to i parity test test-llm-engine.js „summarization ignoruje cache"). */
+var CACHE_RELEVANT = { chatbot: true, agents: true, rag: true };
+
+/* reasoning effort = násobitel účtovaného outputu (thinking tokeny se účtují jako
+   output). 1 = vypnuto (default → parity kanonického scénáře beze změny). */
+var REASONING = [
+  { id: 1,  label: 'None' },
+  { id: 3,  label: 'Light' },
+  { id: 6,  label: 'Medium' },
+  { id: 12, label: 'Heavy' }
+];
 
 var state = { uc: 'chatbot', req: 100000, inTok: 2000, outTok: 300, inAuto: true, outAuto: true,
-              cache: 70, cacheAuto: true, batch: false, open: null };
+              cache: 70, cacheAuto: true, batch: false, reason: 1, open: null };
 
 /* persist (refresh-friendly; klíč vlastní, nikdy nemazat cizí) */
 /* stropy ručních token vstupů — nad největší context window v datech nedává
@@ -389,15 +433,54 @@ function parseTok(raw, max) {
   return v > 0 ? Math.min(v, max) : null;
 }
 
+function clampReason(v) {
+  v = parseInt(v, 10);
+  return REASONING.some(function (r) { return r.id === v; }) ? v : 1;
+}
+function sanitize() {
+  state.inTok = parseTok(state.inTok, TOK_MAX_IN) || 2000;
+  state.outTok = parseTok(state.outTok, TOK_MAX_OUT) || 300;
+  state.reason = clampReason(state.reason);
+}
+
 try {
   var saved = JSON.parse(localStorage.getItem('llm_profile') || 'null');
-  if (saved && saved.uc) {
-    state = saved;
-    state.inTok = parseTok(state.inTok, TOK_MAX_IN) || 2000;
-    state.outTok = parseTok(state.outTok, TOK_MAX_OUT) || 300;
-  }
+  if (saved && saved.uc) { state = saved; sanitize(); }
 } catch (e) {}
+
+/* sdílitelná URL: ?uc=&req=&in=&out=&cache=&batch=&r= přebíjí localStorage, aby
+   sdílený odkaz vždy ukázal přesně ten profil (čteme jen při loadu, ne historii) */
+(function () {
+  try {
+    if (!location.search) return;
+    var q = new URLSearchParams(location.search);
+    if (q.has('uc') && USE_CASES.some(function (u) { return u.id === q.get('uc'); })) state.uc = q.get('uc');
+    if (q.has('req')) { var rq = parseInt(q.get('req'), 10); if (rq > 0) state.req = Math.min(rq, 10000000); }
+    if (q.has('in'))  { state.inTok = q.get('in');  state.inAuto = false; }
+    if (q.has('out')) { state.outTok = q.get('out'); state.outAuto = false; }
+    if (q.has('cache')) { var ch = parseInt(q.get('cache'), 10); if (ch >= 0 && ch <= 95) { state.cache = ch; state.cacheAuto = false; } }
+    if (q.has('batch')) state.batch = q.get('batch') === '1';
+    if (q.has('r')) state.reason = q.get('r');
+    sanitize();
+  } catch (e) {}
+})();
+
 function persist() { try { localStorage.setItem('llm_profile', JSON.stringify(state)); } catch (e) {} }
+
+/* sdílecí odkaz z aktuálního stavu — jen pole odlišná od defaultu use case
+   (čistá, krátká URL); kopíruje do schránky */
+function shareUrl() {
+  var u = USE_CASES.find(function (x) { return x.id === state.uc; }) || USE_CASES[0];
+  var p = new URLSearchParams();
+  p.set('uc', state.uc);
+  p.set('req', state.req);
+  if (state.inTok !== u.inTok) p.set('in', state.inTok);
+  if (state.outTok !== u.outTok) p.set('out', state.outTok);
+  if (CACHE_RELEVANT[state.uc] && state.cache !== u.cache) p.set('cache', state.cache);
+  if (state.batch) p.set('batch', '1');
+  if (state.reason !== 1) p.set('r', state.reason);
+  return location.origin + location.pathname + '?' + p.toString();
+}
 
 function fmtInt(n) { return Math.round(n).toLocaleString('en-US'); }
 function fmtReq(n) { return n >= 1000000 ? (n / 1000000).toFixed(n % 1000000 ? 1 : 0) + 'M' : n >= 1000 ? Math.round(n / 1000) + 'k' : '' + n; }
@@ -409,21 +492,34 @@ function fmtMoney(n) {
 function reqFromSlider(v) { return Math.round(Math.pow(10, 3 + v * 4 / 100)); }
 function sliderFromReq(r) { return Math.max(0, Math.min(100, (Math.log10(r) - 3) * 100 / 4)); }
 
+/* efektivní per-1M sazby pro AKTUÁLNÍ profil: nad publikovaným long-context
+   prahem (m.lc.th) účtují provideři vyšší sazby (Gemini >200k = $4/$18). Práh se
+   posuzuje dle velikosti promptu = input tokenů. m.lc chybí → vždy základní sazby. */
+function rates(m) {
+  if (m.lc && state.inTok > m.lc.th) return { i: m.lc.i, o: m.lc.o, cached: m.lc.cached };
+  return { i: m.i, o: m.o, cached: m.cached };
+}
+function longCtx(m) { return !!(m.lc && state.inTok > m.lc.th); }
+
 /* Cost engine — přesné per-model ceny z dat (žádné poměry):
-   - cache se uplatní jen u use case, kde dává smysl (CACHE_RELEVANT),
-     a jen u modelů s publikovanou cache cenou (m.cached !== null);
+   - long-context: nad m.lc.th se použijí vyšší sazby (rates())
+   - cache jen u CACHE_RELEVANT use case a modelů s publikovanou cache cenou
+     (cached z rates() — nad prahem buď long-context cache cena, nebo neaplikujeme);
      efektivní input cena = i*(1-c) + cached*c
+   - reasoning: thinking tokeny se účtují jako output → output × state.reason
    - batch násobí celek jen u modelů s ověřenou slevou (m.batch !== null) */
 function cost(m) {
+  var r = rates(m);
   var c = CACHE_RELEVANT[state.uc] ? state.cache / 100 : 0;
-  var cacheUsed = c > 0 && m.cached !== null;
-  var inRate = cacheUsed ? m.i * (1 - c) + m.cached * c : m.i;
+  var cacheUsed = c > 0 && r.cached !== null;
+  var inRate = cacheUsed ? r.i * (1 - c) + r.cached * c : r.i;
   var inCost = state.req * state.inTok / 1e6 * inRate;
-  var outCost = state.req * state.outTok / 1e6 * m.o;
+  var outCost = state.req * state.outTok * state.reason / 1e6 * r.o;
   var total = inCost + outCost;
   var batched = state.batch && m.batch !== null;
   if (batched) total *= m.batch;
-  return { inCost: inCost, outCost: outCost, total: total, cacheUsed: cacheUsed, batched: batched };
+  return { inCost: inCost, outCost: outCost, total: total,
+           cacheUsed: cacheUsed, batched: batched, longCtx: longCtx(m), rate: r };
 }
 
 function ctxChip(ctx) {
@@ -507,11 +603,16 @@ function render() {
       var cc = ctxChip(r.m.ctx);
       if (cc) chips += '<span class="cap-chip">' + cc + '</span>';
       if (r.m.batch !== null) chips += '<span class="cap-chip">batch −' + Math.round((1 - r.m.batch) * 100) + '%</span>';
+      if (r.c.longCtx) chips += '<span class="cap-chip lc">long-context rate &gt;' + ctxShort(r.m.lc.th) + '</span>';
       if (!ok) chips += '<span class="cap-chip nofit">input &gt; ' + ctxShort(r.m.ctx) + ' ctx</span>';
       var key = r.m.n;
       var cacheNote = r.c.cacheUsed
-        ? ' (' + state.cache + '% cached at $' + r.m.cached + '/1M)'
-        : (CACHE_RELEVANT[state.uc] && r.m.cached === null ? ' (no cache pricing published)' : '');
+        ? ' (' + state.cache + '% cached at $' + r.c.rate.cached + '/1M)'
+        : (CACHE_RELEVANT[state.uc]
+            ? (r.c.longCtx ? ' (no cache rate above ' + ctxShort(r.m.lc.th) + ')'
+                           : (r.m.cached === null ? ' (no cache pricing published)' : ''))
+            : '');
+      var outNote = state.reason > 1 ? ' (incl. ×' + state.reason + ' reasoning)' : '';
       html += '<div class="model-row' + (idx === winIdx ? ' win' : '') + (ok ? '' : ' nofit') + (state.open === key ? ' open' : '') + '" data-model="' + key + '">' +
         '<div class="mr-top">' +
         '<span class="mr-name">' + r.m.n + '<span class="mr-provider">' + r.m.p + '</span></span>' +
@@ -519,9 +620,10 @@ function render() {
         '<span class="mr-cost">' + prefix + fmtMoney(r.c.total) + '/mo</span></div>' +
         (chips ? '<div class="mr-chips">' + chips + '</div>' : '') +
         '<div class="mr-detail">input <b>' + fmtMoney(r.c.inCost) + '</b>' + cacheNote +
-        ' · output <b>' + fmtMoney(r.c.outCost) + '</b>' +
+        ' · output <b>' + fmtMoney(r.c.outCost) + '</b>' + outNote +
         (r.c.batched ? ' · batch <b>−' + Math.round((1 - r.m.batch) * 100) + '%</b>' : '') +
-        ' · $' + r.m.i + ' / $' + r.m.o + ' per 1M tokens</div></div>';
+        ' · $' + r.c.rate.i + ' / $' + r.c.rate.o + ' per 1M tokens' +
+        (r.c.longCtx ? ' (long-context)' : '') + '</div></div>';
     });
     html += '</div>';
   });
@@ -577,6 +679,11 @@ function render() {
     '<span>from <b>' + fmtMoney(all[0].c) + '/mo</b> (' + all[0].m.n + ')</span>' +
     '<span>to <b>' + fmtMoney(all[all.length - 1].c) + '/mo</b> (' + all[all.length - 1].m.n + ')</span>';
 
+  document.querySelectorAll('.reason-chip').forEach(function (el) {
+    el.classList.toggle('on', +el.dataset.reason === state.reason);
+    el.setAttribute('aria-pressed', +el.dataset.reason === state.reason);
+  });
+
   persist();
 }
 
@@ -599,6 +706,34 @@ USE_CASES.forEach(function (u) {
   el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
   ucGrid.appendChild(el);
 });
+
+/* build reasoning effort chips */
+var reasonChips = document.getElementById('reason-chips');
+REASONING.forEach(function (r) {
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'reason-chip';
+  b.dataset.reason = r.id;
+  b.textContent = r.id === 1 ? r.label : r.label + ' ×' + r.id;
+  b.addEventListener('click', function () { state.reason = r.id; render(); });
+  reasonChips.appendChild(b);
+});
+
+/* share link — kopíruje URL aktuálního scénáře do schránky */
+(function () {
+  var btn = document.getElementById('share-btn');
+  if (!btn) return;
+  var lbl = document.getElementById('share-label');
+  btn.addEventListener('click', function () {
+    var url = shareUrl();
+    function done() { btn.classList.add('done'); lbl.textContent = 'Link copied'; setTimeout(function () { btn.classList.remove('done'); lbl.textContent = 'Copy share link'; }, 2200); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done, function () { window.prompt('Copy this link:', url); });
+    } else {
+      window.prompt('Copy this link:', url);
+    }
+  });
+})();
 
 document.getElementById('req-slider').addEventListener('input', function () {
   state.req = reqFromSlider(+this.value); render();
