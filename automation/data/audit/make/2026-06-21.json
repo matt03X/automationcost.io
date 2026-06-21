@@ -1,0 +1,324 @@
+{
+  "vendor": "make",
+  "scrapedAt": "2026-06-21T10:10:15.859Z",
+  "url": "https://www.make.com/en/pricing",
+  "unit": "credits",
+  "monthly": [
+    {
+      "units": 10000,
+      "plans": {
+        "Core": 16,
+        "Pro": 28,
+        "Teams": 51
+      }
+    },
+    {
+      "units": 20000,
+      "plans": {
+        "Core": 28,
+        "Pro": 51,
+        "Teams": 94
+      }
+    },
+    {
+      "units": 40000,
+      "plans": {
+        "Core": 51,
+        "Pro": 94,
+        "Teams": 175
+      }
+    },
+    {
+      "units": 80000,
+      "plans": {
+        "Core": 97,
+        "Pro": 161,
+        "Teams": 305
+      }
+    },
+    {
+      "units": 150000,
+      "plans": {
+        "Core": 175,
+        "Pro": 271,
+        "Teams": 515
+      }
+    },
+    {
+      "units": 300000,
+      "plans": {
+        "Core": 321,
+        "Pro": 474,
+        "Teams": 900
+      }
+    },
+    {
+      "units": 500000,
+      "plans": {
+        "Core": null,
+        "Pro": 724,
+        "Teams": 1376
+      }
+    },
+    {
+      "units": 750000,
+      "plans": {
+        "Core": null,
+        "Pro": 1018,
+        "Teams": 1934
+      }
+    },
+    {
+      "units": 1000000,
+      "plans": {
+        "Core": null,
+        "Pro": 1321,
+        "Teams": 2472
+      }
+    },
+    {
+      "units": 1500000,
+      "plans": {
+        "Core": null,
+        "Pro": 1903,
+        "Teams": 3476
+      }
+    },
+    {
+      "units": 2000000,
+      "plans": {
+        "Core": null,
+        "Pro": 2431,
+        "Teams": 4326
+      }
+    },
+    {
+      "units": 2500000,
+      "plans": {
+        "Core": null,
+        "Pro": 3002,
+        "Teams": 5310
+      }
+    },
+    {
+      "units": 3000000,
+      "plans": {
+        "Core": null,
+        "Pro": 3501,
+        "Teams": 6083
+      }
+    },
+    {
+      "units": 4000000,
+      "plans": {
+        "Core": null,
+        "Pro": 4543,
+        "Teams": 7773
+      }
+    },
+    {
+      "units": 5000000,
+      "plans": {
+        "Core": null,
+        "Pro": 5566,
+        "Teams": 9412
+      }
+    },
+    {
+      "units": 6000000,
+      "plans": {
+        "Core": null,
+        "Pro": 6542,
+        "Teams": 11193
+      }
+    },
+    {
+      "units": 7000000,
+      "plans": {
+        "Core": null,
+        "Pro": 7543,
+        "Teams": 12755
+      }
+    },
+    {
+      "units": 8000000,
+      "plans": {
+        "Core": null,
+        "Pro": 8491,
+        "Teams": 14525
+      }
+    },
+    {
+      "units": null,
+      "plans": {
+        "Core": null,
+        "Pro": null,
+        "Teams": null
+      }
+    }
+  ],
+  "annually": [
+    {
+      "units": 10000,
+      "plans": {
+        "Core": 12,
+        "Pro": 21,
+        "Teams": 38
+      }
+    },
+    {
+      "units": 20000,
+      "plans": {
+        "Core": 21,
+        "Pro": 38,
+        "Teams": 69
+      }
+    },
+    {
+      "units": 40000,
+      "plans": {
+        "Core": 38,
+        "Pro": 69,
+        "Teams": 129
+      }
+    },
+    {
+      "units": 80000,
+      "plans": {
+        "Core": 72,
+        "Pro": 118,
+        "Teams": 225
+      }
+    },
+    {
+      "units": 150000,
+      "plans": {
+        "Core": 129,
+        "Pro": 199,
+        "Teams": 379
+      }
+    },
+    {
+      "units": 300000,
+      "plans": {
+        "Core": 237,
+        "Pro": 349,
+        "Teams": 663
+      }
+    },
+    {
+      "units": 500000,
+      "plans": {
+        "Core": null,
+        "Pro": 533,
+        "Teams": 1013
+      }
+    },
+    {
+      "units": 750000,
+      "plans": {
+        "Core": null,
+        "Pro": 750,
+        "Teams": 1425
+      }
+    },
+    {
+      "units": 1000000,
+      "plans": {
+        "Core": null,
+        "Pro": 973,
+        "Teams": 1821
+      }
+    },
+    {
+      "units": 1500000,
+      "plans": {
+        "Core": null,
+        "Pro": 1402,
+        "Teams": 2561
+      }
+    },
+    {
+      "units": 2000000,
+      "plans": {
+        "Core": null,
+        "Pro": 1791,
+        "Teams": 3187
+      }
+    },
+    {
+      "units": 2500000,
+      "plans": {
+        "Core": null,
+        "Pro": 2211,
+        "Teams": 3912
+      }
+    },
+    {
+      "units": 3000000,
+      "plans": {
+        "Core": null,
+        "Pro": 2579,
+        "Teams": 4481
+      }
+    },
+    {
+      "units": 4000000,
+      "plans": {
+        "Core": null,
+        "Pro": 3347,
+        "Teams": 5726
+      }
+    },
+    {
+      "units": 5000000,
+      "plans": {
+        "Core": null,
+        "Pro": 4100,
+        "Teams": 6934
+      }
+    },
+    {
+      "units": 6000000,
+      "plans": {
+        "Core": null,
+        "Pro": 4820,
+        "Teams": 8245
+      }
+    },
+    {
+      "units": 7000000,
+      "plans": {
+        "Core": null,
+        "Pro": 5556,
+        "Teams": 9396
+      }
+    },
+    {
+      "units": 8000000,
+      "plans": {
+        "Core": null,
+        "Pro": 6255,
+        "Teams": 10700
+      }
+    },
+    {
+      "units": null,
+      "plans": {
+        "Core": null,
+        "Pro": null,
+        "Teams": null
+      }
+    }
+  ],
+  "billingLines": [
+    "1,000 credits/month",
+    "2 credits per 1 sec of code execution time",
+    "8,000,000+ credits/mo",
+    "access to 300+ make api endpoints (rate call limit/minute)",
+    "unlimited",
+    "unlimited active scenarios",
+    "unlimited users",
+    "up to 1,000 credits/mo"
+  ]
+}

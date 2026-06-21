@@ -1,16 +1,338 @@
 {
-  "n8n|Starter|-": {
-    "vendor": "n8n",
-    "plan": "Starter",
-    "old": 24,
-    "neu": 667,
-    "firstSeen": "2026-06-20"
+  "make|Core|10000": {
+    "vendor": "make",
+    "plan": "Core",
+    "units": 10000,
+    "old": 9,
+    "neu": 12,
+    "firstSeen": "2026-06-21"
   },
-  "n8n|?|50000": {
-    "vendor": "n8n",
-    "units": 50000,
-    "old": 144,
-    "neu": 821,
-    "firstSeen": "2026-06-20"
+  "make|Pro|10000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 10000,
+    "old": 16,
+    "neu": 21,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|10000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 10000,
+    "old": 29,
+    "neu": 38,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Core|20000": {
+    "vendor": "make",
+    "plan": "Core",
+    "units": 20000,
+    "old": 16,
+    "neu": 21,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|20000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 20000,
+    "old": 29,
+    "neu": 38,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|20000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 20000,
+    "old": 53,
+    "neu": 69,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Core|40000": {
+    "vendor": "make",
+    "plan": "Core",
+    "units": 40000,
+    "old": 29,
+    "neu": 38,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|40000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 40000,
+    "old": 53,
+    "neu": 69,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|40000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 40000,
+    "old": 99,
+    "neu": 129,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Core|80000": {
+    "vendor": "make",
+    "plan": "Core",
+    "units": 80000,
+    "old": 55,
+    "neu": 72,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|80000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 80000,
+    "old": 91,
+    "neu": 118,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|80000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 80000,
+    "old": 172,
+    "neu": 225,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Core|150000": {
+    "vendor": "make",
+    "plan": "Core",
+    "units": 150000,
+    "old": 99,
+    "neu": 129,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|150000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 150000,
+    "old": 153.45,
+    "neu": 199,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|150000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 150000,
+    "old": 291.56,
+    "neu": 379,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Core|300000": {
+    "vendor": "make",
+    "plan": "Core",
+    "units": 300000,
+    "old": 182.16,
+    "neu": 237,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|300000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 300000,
+    "old": 268.54,
+    "neu": 349,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|300000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 300000,
+    "old": 510.22,
+    "neu": 663,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|500000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 500000,
+    "old": 410.27,
+    "neu": 533,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|500000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 500000,
+    "old": 779,
+    "neu": 1013,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|750000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 750000,
+    "old": 576.94,
+    "neu": 750,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|750000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 750000,
+    "old": 1096.18,
+    "neu": 1425,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|1000000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 1000000,
+    "old": 748.73,
+    "neu": 973,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|1000000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 1000000,
+    "old": 1400.67,
+    "neu": 1821,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|1500000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 1500000,
+    "old": 1078.18,
+    "neu": 1402,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|1500000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 1500000,
+    "old": 1969,
+    "neu": 2561,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|2000000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 2000000,
+    "old": 1377.67,
+    "neu": 1791,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|2000000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 2000000,
+    "old": 2451.18,
+    "neu": 3187,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|2500000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 2500000,
+    "old": 1701.13,
+    "neu": 2211,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|2500000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 2500000,
+    "old": 3009.26,
+    "neu": 3912,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|3000000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 3000000,
+    "old": 1983.85,
+    "neu": 2579,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|3000000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 3000000,
+    "old": 3446.97,
+    "neu": 4481,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|4000000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 4000000,
+    "old": 2574.59,
+    "neu": 3347,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|4000000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 4000000,
+    "old": 4404.46,
+    "neu": 5726,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|5000000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 5000000,
+    "old": 3153.88,
+    "neu": 4100,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|5000000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 5000000,
+    "old": 5333.52,
+    "neu": 6934,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|6000000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 6000000,
+    "old": 3707.41,
+    "neu": 4820,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|6000000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 6000000,
+    "old": 6342.42,
+    "neu": 8245,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|7000000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 7000000,
+    "old": 4274.13,
+    "neu": 5556,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|7000000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 7000000,
+    "old": 7227.99,
+    "neu": 9396,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Pro|8000000": {
+    "vendor": "make",
+    "plan": "Pro",
+    "units": 8000000,
+    "old": 4811,
+    "neu": 6255,
+    "firstSeen": "2026-06-21"
+  },
+  "make|Teams|8000000": {
+    "vendor": "make",
+    "plan": "Teams",
+    "units": 8000000,
+    "old": 8231.05,
+    "neu": 10700,
+    "firstSeen": "2026-06-21"
   }
 }
