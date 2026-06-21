@@ -95,7 +95,7 @@
       "a": "n8n",
       "b": "activepieces",
       "winner": "activepieces",
-      "verdict": "Both are open-source and self-hostable, so philosophy doesn't separate them. Activepieces Cloud runs this at $0 (free up to 10 active flows, then $5 per flow, unlimited runs); n8n has the larger node ecosystem and more mature advanced logic, self-hosted from ~$8/mo. Start free on Activepieces if 10 flows is enough; move to n8n when you need its bigger toolkit. See the price table for figures.",
+      "verdict": "Both are self-hostable, so philosophy doesn't separate them. Activepieces Cloud runs this at $0 (free up to 10 active flows, then $5 per flow, unlimited runs); n8n has the larger node ecosystem and more mature advanced logic, self-hosted from ~$8/mo. Start free on Activepieces if 10 flows is enough; move to n8n when you need its bigger toolkit. See the price table for figures.",
       "whyLoser": "When automations get complex or numerous. n8n has no workflow cap (you pay only for the server), a larger node ecosystem, and more mature branching, error handling and code nodes — which start to matter once usage gets heavy."
     },
     {
@@ -123,7 +123,7 @@
       "a": "n8n",
       "b": "pipedream",
       "winner": "n8n",
-      "verdict": "Both are developer-friendly, so this isn't no-code vs code — it's your server + open-source vs managed cloud + code steps. n8n self-hosted is the lower-cost option if running a VPS is routine for your team (~$8–66/mo); Pipedream is fully managed with Node/Python code steps and event sources, so you never touch infrastructure. n8n Cloud is the managed comparison if you'd rather not self-host. See the price table for figures.",
+      "verdict": "Both are developer-friendly, so this isn't no-code vs code — it's your own server vs managed cloud + code steps. n8n self-hosted is the lower-cost option if running a VPS is routine for your team (~$8–66/mo); Pipedream is fully managed with Node/Python code steps and event sources, so you never touch infrastructure. n8n Cloud is the managed comparison if you'd rather not self-host. See the price table for figures.",
       "whyLoser": "When you'd rather not run infrastructure. Pipedream is fully managed and scales without your attention, and its code-step model (Node/Python, npm/PyPI) is a powerful developer experience — teams that count engineering hours often prefer it to operating a server."
     },
     {
@@ -157,13 +157,13 @@
     {
       "a": "n8n",
       "b": "automatisch",
-      "verdict": "Both are open-source and self-hosted, so on our figures they cost the same — the server they run on (see the table). The difference is scope: n8n carries a much larger node ecosystem (1,868 integrations), native AI/LLM nodes and code steps, while Automatisch is deliberately minimal (about 50 integrations, no AI), AGPL-licensed and quick to stand up. Pick n8n for depth, Automatisch for simplicity and a lean footprint. See the price table below for figures.",
+      "verdict": "Both are self-hosted, so on our figures they cost the same — the server they run on (see the table). The difference is scope: n8n carries a much larger node ecosystem (1,868 integrations), native AI/LLM nodes and code steps, while Automatisch is deliberately minimal (about 50 integrations, no AI), AGPL-licensed and quick to stand up. Pick n8n for depth, Automatisch for simplicity and a lean footprint. See the price table below for figures.",
       "whyLoser": "When your automations get complex or numerous. n8n has the larger node library, native AI/LLM steps, code nodes and more mature branching and error handling — depth that pays off once usage grows beyond simple flows."
     },
     {
       "a": "n8n",
       "b": "node-red",
-      "verdict": "Both are open-source, self-hosted and free software, so our figures put them at the same cost — your server (see the table). They serve different builders: n8n is a general-purpose automation tool with 1,868 app integrations, AI/LLM nodes and a visual editor aimed at business workflows, while Node-RED (Apache 2.0) is event-driven and excels at IoT/hardware, wired in a flow editor with Node.js function nodes. Pick n8n for SaaS automation, Node-RED for devices and events. See the price table below for figures.",
+      "verdict": "Both are self-hosted and free to run, so our figures put them at the same cost — your server (see the table). They serve different builders: n8n is a general-purpose automation tool with 1,868 app integrations, AI/LLM nodes and a visual editor aimed at business workflows, while Node-RED (Apache 2.0) is event-driven and excels at IoT/hardware, wired in a flow editor with Node.js function nodes. Pick n8n for SaaS automation, Node-RED for devices and events. See the price table below for figures.",
       "whyLoser": "When you're automating SaaS apps and APIs rather than hardware. n8n's 1,868 integrations, native AI nodes and business-oriented editor cover that ground, where Node-RED leans toward IoT, events and low-level wiring."
     },
     {

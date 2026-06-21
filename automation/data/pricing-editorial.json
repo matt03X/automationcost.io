@@ -59,8 +59,8 @@
     },
     "n8n": {
       "h1": "n8n Pricing 2026 — Cloud vs Self-Hosted Cost",
-      "intro": "n8n is the open-source automation tool developers reach for. You can pay for managed Cloud, run it on a cheap VPS, or host it on your own hardware for the price of the electricity. Here's the real cost of each path.",
-      "warn": "n8n's self-hosted edition is free open-source software — the figures below for VPS and own-server are <em>infrastructure</em> cost (server, database, electricity), not a licence fee. They assume light workflows and exclude your own time to run it.",
+      "intro": "n8n is the source-available automation tool developers reach for. You can pay for managed Cloud, run it on a cheap VPS, or host it on your own hardware for the price of the electricity. Here's the real cost of each path.",
+      "warn": "n8n's self-hosted edition is free, source-available software (Sustainable Use License) — the figures below for VPS and own-server are <em>infrastructure</em> cost (server, database, electricity), not a licence fee. They assume light workflows and exclude your own time to run it.",
       "whenWorthIt": [
         { "case": "Developer comfortable with a server", "verdict": "Self-host — near-free at any volume", "tier": "good" },
         { "case": "Want managed hosting, no DevOps", "verdict": "n8n Cloud is fair value", "tier": "good" },
@@ -105,8 +105,8 @@
     },
     "activepieces": {
       "h1": "Activepieces Pricing 2026 — Cloud vs Self-Hosted Cost",
-      "intro": "Activepieces is the MIT-licensed open-source automation tool with a Zapier-like no-code UI. You can use managed Cloud, run it on a VPS, or self-host on your own hardware. Here's the real cost of each path.",
-      "warn": "Activepieces is genuinely MIT-licensed — the self-hosted figures below are <em>infrastructure</em> cost (server / electricity), not a licence fee. Cloud is priced per active flow rather than per run, so flow count drives the bill.",
+      "intro": "Activepieces is the MIT-licensed (open-core) automation tool with a Zapier-like no-code UI. You can use managed Cloud, run it on a VPS, or self-host on your own hardware. Here's the real cost of each path.",
+      "warn": "Activepieces' self-hosted core is MIT-licensed (open-core) — the self-hosted figures below are <em>infrastructure</em> cost (server / electricity), not a licence fee. Cloud is priced per active flow rather than per run, so flow count drives the bill.",
       "whenWorthIt": [
         { "case": "Want a no-code UI you can also self-host", "verdict": "Use Activepieces", "tier": "good" },
         { "case": "Care about a truly permissive (MIT) licence", "verdict": "Use Activepieces", "tier": "good" },

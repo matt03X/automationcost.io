@@ -481,7 +481,7 @@ def _vs_auto_faq(pair, ta, tb, costs, volumes):
         faq.append({
             "q": f"How do {a_name} and {b_name} compare on price?",
             "a": (f"They come out to the same cost across the volumes we track — both are free "
-                  f"open-source software, so the figure is just your server bill (see the table above). "
+                  f"to self-host, so the figure is just your server bill (see the table above). "
                   "Price isn't the deciding factor here; the feature and trade-off sections below "
                   "cover what separates them.")})
     else:
@@ -567,7 +567,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
                 "public list prices). Assumes 3 workflows, monthly billing, cheapest qualifying plan. "
                 f"Prices verified {month_year} — see the <a href=\"changelog.html\">price changelog</a>.")
     if any_selfhost_star:
-        tbl_note += (" * self-hosted = free open-source software; the figure is the server "
+        tbl_note += (" * self-hosted = free to run yourself; the figure is the server "
                      "infrastructure (VPS + DB, not a tool fee), ~$8/mo small to ~$150/mo at "
                      "high volume — assumes light workflows and excludes your ops time.")
 
@@ -1441,7 +1441,8 @@ def build_sitemap(domain: str, base_path: str, pages: list[Path]) -> bool:
     urls = []
     for p in pages:
         loc = f"{prefix}/" if p.name == "index.html" else f"{prefix}/{p.name}"
-        urls.append(f"  <url><loc>{loc}</loc></url>")
+        lastmod = __import__("datetime").date.fromtimestamp(p.stat().st_mtime).isoformat()
+        urls.append(f"  <url><loc>{loc}</loc><lastmod>{lastmod}</lastmod></url>")
     xml = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

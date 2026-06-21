@@ -484,7 +484,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
     key_facts_html = ""
     if _kf_lo and _kf_hi:
         _selfhost = "self-host" in (_kf_lo.get("label", "") + _kf_hi.get("label", "")).lower()
-        _tail = (" Self-hosting is free open-source software — the figure is the server it "
+        _tail = (" Self-hosting is free — the figure is the server it "
                  "runs on, not a tool fee." if _selfhost else "")
         _kf = (f"As of {month_year}, the cheapest plan we track for {name} costs "
                f"{_fmt_usd(_kf_lo['cost'], _kf_lo['est'])} per month at {VOLUMES[0]:,} runs and "
@@ -1061,7 +1061,7 @@ def render_alternatives_page(slug: str, by_slug: dict, site: dict, tools_meta: d
             f"<td><a href=\"{_vs_slug(slug, s)}.html\">{_html_escape(name)} vs {_html_escape(t['name'])} →</a></td></tr>")
     table = "\n".join(rows)
 
-    oss_sentence = (f" For the open-source, self-hostable route like {name}, look at "
+    oss_sentence = (f" For the self-hostable route like {name}, look at "
                     + ", ".join(oss[:-1]) + (f" or {oss[-1]}" if len(oss) > 1 else (oss[0] if oss else "")) + "."
                     ) if oss else ""
     intro = (f"Looking for a {name} alternative? We priced every tool we track at "
@@ -1089,7 +1089,7 @@ def render_alternatives_page(slug: str, by_slug: dict, site: dict, tools_meta: d
                "Self-hosted tools can be lower still — their cost is just the server. See the ranked table above; "
                'your real number depends on volume — try the <a href="calculator.html">calculator</a>.')},
         {"q": f"Is there a free or open-source {name} alternative?",
-         "a": ((f"Yes — {', '.join(oss)} are open-source and self-hostable, so beyond a server bill they're effectively free. "
+         "a": ((f"Yes — {', '.join(oss)} are self-hostable, so beyond a server bill they're effectively free. "
                 "Activepieces also has a cloud free tier (10 active flows, unlimited runs).") if oss
                else "Several tools offer free tiers — see the comparison for current limits.")},
         {"q": f"How accurate are these prices?",
@@ -1145,7 +1145,7 @@ def render_cheapest_page(by_slug: dict, site: dict, tools_meta: dict, engine) ->
     hi_name = by_slug[cheapest_per_vol[hi]]["name"]
     intro = (f"The cheapest automation tool depends on your volume and whether you'll self-host. "
              f"At {lo:,} runs/month the lowest price we track is <strong>{lo_name}</strong>; at "
-             f"{hi:,} runs it's <strong>{hi_name}</strong>. Self-hosted, open-source tools "
+             f"{hi:,} runs it's <strong>{hi_name}</strong>. Self-hosted tools "
              "(n8n, Activepieces, Automatisch, Node-RED) cost only the server they run on — effectively "
              "the floor at any volume. The full ranked matrix is below; prices come straight from each "
              "vendor's pricing, generated live.")
@@ -1161,21 +1161,21 @@ def render_cheapest_page(by_slug: dict, site: dict, tools_meta: dict, engine) ->
       </tbody>
     </table>
     <p style="margin-top:12px">Cheapest at each volume — {summary}.</p>
-    <div class="warning-box" style="margin-top:16px"><strong>Note:</strong> self-hosted figures are the server bill (VPS + DB), not a tool fee — the software is free and open-source. Activepieces is $0 on its cloud free tier (up to 10 active flows). Values marked ~ are estimates for custom enterprise tiers.</div>
+    <div class="warning-box" style="margin-top:16px"><strong>Note:</strong> self-hosted figures are the server bill (VPS + DB), not a tool fee — the software is free to self-host. Activepieces is $0 on its cloud free tier (up to 10 active flows). Values marked ~ are estimates for custom enterprise tiers.</div>
     <p style="margin-top:14px"><a href="calculator.html">Get your exact cheapest tool from the calculator →</a> · <a href="self-hosted-automation-cost.html">Self-host vs cloud cost →</a></p>
   </div>"""
 
     faq = [
         {"q": "What is the cheapest automation tool?",
          "a": (f"It depends on volume. Among cloud tools, the lowest published price we track at {lo:,} runs/month "
-               f"is {lo_name}, and at {hi:,} runs it's {hi_name}. Open-source self-hosted tools (n8n, Activepieces, "
+               f"is {lo_name}, and at {hi:,} runs it's {hi_name}. Self-hosted tools (n8n, Activepieces,"
                "Automatisch, Node-RED) are cheaper still — you pay only for the server. See the matrix above.")},
         {"q": "What is the cheapest cloud (no self-host) automation tool?",
          "a": ("Among fully managed cloud tools, the lowest cost shifts with volume — check the highlighted cells "
                'in the table for your run level, or use the <a href="calculator.html">calculator</a> for your exact numbers.')},
         {"q": "Is there a free automation tool?",
          "a": ("Yes. Activepieces has a cloud free tier (10 active flows, unlimited runs), and n8n, Activepieces, "
-               "Automatisch and Node-RED are free open-source software you can self-host for just a server cost.")},
+               "Automatisch and Node-RED are free to self-host for just a server cost.")},
         {"q": "How accurate are these prices?",
          "a": ("They're generated from each vendor's official pricing via our cost engine, verified "
                f"{month_year}; see the <a href=\"changelog.html\">price changelog</a> for every recorded change.")},
@@ -1250,8 +1250,8 @@ def render_selfhost_page(by_slug: dict, site: dict, tools_meta: dict, engine) ->
     cl_hi_fmt = _fmt_usd(cb_hi[1]["cost"], cb_hi[1]["est"]) if cb_hi else "—"
 
     intro = (
-        "Self-hosting means running open-source automation software on your own server, so you pay for the "
-        f"server — not a per-run subscription. {sh_tool_names} are free, open-source and self-hostable: their "
+        "Self-hosting means running the automation software on your own server, so you pay for the "
+        f"server — not a per-run subscription. {sh_tool_names} are free to self-host: their "
         f"cost is just the VPS (plus a database at scale), which our engine models from about {sh_lo_fmt}/mo. "
         f"Against paid cloud the maths is one-sided: self-host runs about {sh_lo_fmt}/mo at {lo:,} runs versus "
         f"{cl_lo_fmt} for the cheapest paid cloud plan, and the gap widens to {sh_hi_fmt} vs {cl_hi_fmt} at "
@@ -1268,7 +1268,7 @@ def render_selfhost_page(by_slug: dict, site: dict, tools_meta: dict, engine) ->
 {table}
       </tbody>
     </table>
-    <div class="warning-box" style="margin-top:16px"><strong>Two honest catches:</strong> (1) self-host figures cover only the server (VPS + database) — they exclude your time to install, secure, update, monitor and back up the stack, which for a small team can outweigh the saving. (2) {free_caveat[0].upper() + free_caveat[1:]}. The software is free and open-source; the figure shown is infrastructure. Values marked ~ are estimates for custom tiers.</div>
+    <div class="warning-box" style="margin-top:16px"><strong>Two honest catches:</strong> (1) self-host figures cover only the server (VPS + database) — they exclude your time to install, secure, update, monitor and back up the stack, which for a small team can outweigh the saving. (2) {free_caveat[0].upper() + free_caveat[1:]}. The software is free to self-host; the figure shown is infrastructure. Values marked ~ are estimates for custom tiers.</div>
     <p style="margin-top:14px"><a href="calculator.html">Get your exact cheapest setup from the calculator →</a> · <a href="cheapest-automation-tool.html">Cheapest automation tool overall →</a></p>
   </div>"""
 
@@ -1282,15 +1282,15 @@ def render_selfhost_page(by_slug: dict, site: dict, tools_meta: dict, engine) ->
         {"q": "How much does self-hosted automation cost?",
          "a": (f"Only the server it runs on. Our engine models {sh_tool_names} self-hosted from about {sh_lo_fmt}/mo "
                "(small VPS, low volume) up to higher tiers as throughput grows and you add a database — the "
-               "software itself is free and open-source.")},
+               "software itself is free to self-host.")},
         {"q": "Cloud vs self-host — which is cheaper?",
          "a": (f"Against paid cloud, self-host is cheaper at every volume in our data — about {sh_lo_fmt} vs "
                f"{cl_lo_fmt} at {lo:,} runs, widening to {sh_hi_fmt} vs {cl_hi_fmt} at {hi:,} runs. The exception "
                "is free cloud tiers (up to ~10 flows), which can undercut self-host for small usage. See the "
                "table above.")},
         {"q": "Which automation tools can be self-hosted?",
-         "a": (f"{sh_tool_names} are open-source and self-hostable. Make, Zapier and Pipedream are cloud-only. If "
-               "you need EU data residency or full control, the self-hostable open-source tools are the ones to look at.")},
+         "a": (f"{sh_tool_names} are self-hostable. Make, Zapier and Pipedream are cloud-only. If "
+               "you need EU data residency or full control, these self-hostable tools are the ones to look at.")},
         {"q": "How accurate are these prices?",
          "a": ("They're generated from each vendor's official pricing and our server-cost model via the cost "
                f"engine, verified {month_year}; see the <a href=\"changelog.html\">price changelog</a>.")},
