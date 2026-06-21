@@ -1,0 +1,229 @@
+{
+  "provider": "anthropic",
+  "scrapedAt": "2026-06-21T10:22:16.103Z",
+  "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+  "httpStatus": 200,
+  "modelCount": 30,
+  "models": [
+    {
+      "name": "Claude Fable 5",
+      "input": 10,
+      "output": 50,
+      "cached": null,
+      "matchedId": "claude-fable-5",
+      "raw": "Claude Fable 5 $10 / MTok $12.50 / MTok $20 / MTok $1 / MTok $50 / MTok"
+    },
+    {
+      "name": "Claude Mythos 5 (limited availability)",
+      "input": 10,
+      "output": 50,
+      "cached": null,
+      "raw": "Claude Mythos 5 (limited availability) $10 / MTok $12.50 / MTok $20 / MTok $1 / MTok $50 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.8",
+      "input": 5,
+      "output": 25,
+      "cached": null,
+      "matchedId": "claude-opus-4-8",
+      "raw": "Claude Opus 4.8 $5 / MTok $6.25 / MTok $10 / MTok $0.50 / MTok $25 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.7",
+      "input": 5,
+      "output": 25,
+      "cached": null,
+      "raw": "Claude Opus 4.7 $5 / MTok $6.25 / MTok $10 / MTok $0.50 / MTok $25 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.6",
+      "input": 5,
+      "output": 25,
+      "cached": null,
+      "raw": "Claude Opus 4.6 $5 / MTok $6.25 / MTok $10 / MTok $0.50 / MTok $25 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.5",
+      "input": 5,
+      "output": 25,
+      "cached": null,
+      "raw": "Claude Opus 4.5 $5 / MTok $6.25 / MTok $10 / MTok $0.50 / MTok $25 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.1 (deprecated)",
+      "input": 15,
+      "output": 75,
+      "cached": null,
+      "raw": "Claude Opus 4.1 (deprecated) $15 / MTok $18.75 / MTok $30 / MTok $1.50 / MTok $75 / MTok"
+    },
+    {
+      "name": "Claude Opus 4 (retired, except on Vertex AI)",
+      "input": 15,
+      "output": 75,
+      "cached": null,
+      "raw": "Claude Opus 4 (retired, except on Vertex AI) $15 / MTok $18.75 / MTok $30 / MTok $1.50 / MTok $75 / MTok"
+    },
+    {
+      "name": "Claude Sonnet 4.6",
+      "input": 3,
+      "output": 15,
+      "cached": null,
+      "matchedId": "claude-sonnet-4-6",
+      "raw": "Claude Sonnet 4.6 $3 / MTok $3.75 / MTok $6 / MTok $0.30 / MTok $15 / MTok"
+    },
+    {
+      "name": "Claude Sonnet 4.5",
+      "input": 3,
+      "output": 15,
+      "cached": null,
+      "raw": "Claude Sonnet 4.5 $3 / MTok $3.75 / MTok $6 / MTok $0.30 / MTok $15 / MTok"
+    },
+    {
+      "name": "Claude Sonnet 4 (retired, except on Bedrock and Vertex AI)",
+      "input": 3,
+      "output": 15,
+      "cached": null,
+      "raw": "Claude Sonnet 4 (retired, except on Bedrock and Vertex AI) $3 / MTok $3.75 / MTok $6 / MTok $0.30 / MTok $15 / MTok"
+    },
+    {
+      "name": "Claude Haiku 4.5",
+      "input": 1,
+      "output": 5,
+      "cached": null,
+      "matchedId": "claude-haiku-4-5",
+      "raw": "Claude Haiku 4.5 $1 / MTok $1.25 / MTok $2 / MTok $0.10 / MTok $5 / MTok"
+    },
+    {
+      "name": "Claude Haiku 3.5 (retired, except on Bedrock and Vertex AI)",
+      "input": 0.8,
+      "output": 4,
+      "cached": null,
+      "raw": "Claude Haiku 3.5 (retired, except on Bedrock and Vertex AI) $0.80 / MTok $1 / MTok $1.60 / MTok $0.08 / MTok $4 / MTok"
+    },
+    {
+      "name": "Conversion Token usage rated in USD at standard per-model, p",
+      "input": 0.01,
+      "output": null,
+      "cached": null,
+      "raw": "Conversion Token usage rated in USD at standard per-model, per-feature rates (same as Claude API pricing), then converted to CCUs at $0.01 per CCU"
+    },
+    {
+      "name": "Claude Opus 4.6 / Claude Opus 4.7",
+      "input": 30,
+      "output": 150,
+      "cached": null,
+      "raw": "Claude Opus 4.6 / Claude Opus 4.7 $30 / MTok $150 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.8",
+      "input": 10,
+      "output": 50,
+      "cached": null,
+      "matchedId": "claude-opus-4-8",
+      "raw": "Claude Opus 4.8 $10 / MTok $50 / MTok"
+    },
+    {
+      "name": "Claude Fable 5",
+      "input": 5,
+      "output": 25,
+      "cached": null,
+      "matchedId": "claude-fable-5",
+      "raw": "Claude Fable 5 $5 / MTok $25 / MTok"
+    },
+    {
+      "name": "Claude Mythos 5 (limited availability)",
+      "input": 5,
+      "output": 25,
+      "cached": null,
+      "raw": "Claude Mythos 5 (limited availability) $5 / MTok $25 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.8",
+      "input": 2.5,
+      "output": 12.5,
+      "cached": null,
+      "matchedId": "claude-opus-4-8",
+      "raw": "Claude Opus 4.8 $2.50 / MTok $12.50 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.7",
+      "input": 2.5,
+      "output": 12.5,
+      "cached": null,
+      "raw": "Claude Opus 4.7 $2.50 / MTok $12.50 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.6",
+      "input": 2.5,
+      "output": 12.5,
+      "cached": null,
+      "raw": "Claude Opus 4.6 $2.50 / MTok $12.50 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.5",
+      "input": 2.5,
+      "output": 12.5,
+      "cached": null,
+      "raw": "Claude Opus 4.5 $2.50 / MTok $12.50 / MTok"
+    },
+    {
+      "name": "Claude Opus 4.1 (deprecated)",
+      "input": 7.5,
+      "output": 37.5,
+      "cached": null,
+      "raw": "Claude Opus 4.1 (deprecated) $7.50 / MTok $37.50 / MTok"
+    },
+    {
+      "name": "Claude Opus 4 (retired, except on Vertex AI)",
+      "input": 7.5,
+      "output": 37.5,
+      "cached": null,
+      "raw": "Claude Opus 4 (retired, except on Vertex AI) $7.50 / MTok $37.50 / MTok"
+    },
+    {
+      "name": "Claude Sonnet 4.6",
+      "input": 1.5,
+      "output": 7.5,
+      "cached": null,
+      "matchedId": "claude-sonnet-4-6",
+      "raw": "Claude Sonnet 4.6 $1.50 / MTok $7.50 / MTok"
+    },
+    {
+      "name": "Claude Sonnet 4.5",
+      "input": 1.5,
+      "output": 7.5,
+      "cached": null,
+      "raw": "Claude Sonnet 4.5 $1.50 / MTok $7.50 / MTok"
+    },
+    {
+      "name": "Claude Sonnet 4 (retired, except on Bedrock and Vertex AI)",
+      "input": 1.5,
+      "output": 7.5,
+      "cached": null,
+      "raw": "Claude Sonnet 4 (retired, except on Bedrock and Vertex AI) $1.50 / MTok $7.50 / MTok"
+    },
+    {
+      "name": "Claude Haiku 4.5",
+      "input": 0.5,
+      "output": 2.5,
+      "cached": null,
+      "matchedId": "claude-haiku-4-5",
+      "raw": "Claude Haiku 4.5 $0.50 / MTok $2.50 / MTok"
+    },
+    {
+      "name": "Claude Haiku 3.5 (retired, except on Bedrock and Vertex AI)",
+      "input": 0.4,
+      "output": 2,
+      "cached": null,
+      "raw": "Claude Haiku 3.5 (retired, except on Bedrock and Vertex AI) $0.40 / MTok $2 / MTok"
+    },
+    {
+      "name": "Claude Haiku 4.5",
+      "input": 5,
+      "output": 5,
+      "cached": null,
+      "matchedId": "claude-haiku-4-5",
+      "raw": "Using Claude Haiku 4.5 at $1/MTok input, $5/MTok output"
+    }
+  ]
+}
