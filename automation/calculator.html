@@ -513,8 +513,40 @@
     .calc-hero-proof .chp { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); background: var(--surface, #111827); border: 1px solid var(--border, #1f2d45); border-radius: 99px; padding: 6px 13px; }
     .calc-hero-proof .chp svg { color: var(--green, #10b981); flex-shrink: 0; }
     @media (max-width: 560px) { .calc-hero { margin-bottom: 24px; } .calc-hero-sub { font-size: 15px; } .calc-hero-proof .chp { font-size: 12px; } }
+    /* ── Results actions + print / "Save as PDF" ────────────────────────────── */
+    .results-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .print-only { display: none; }
+    @media print {
+      /* keep only the estimate — drop nav, wizard, CTAs, affiliate buttons, FAQ */
+      .ac-nav, #ac-progress, .wizard-progress, .calc-hero, .resume-banner,
+      .results-actions, .restart-btn, .results-next-cta, .faq-section, footer, .ac-footer,
+      .step:not(.active), .persona-jump, .result-expand-btn, .result-cta-col,
+      .estimate-note { display: none !important; }
+      .print-only { display: block !important; }
+      html, body { background: #fff !important; color: #111 !important; padding-top: 0 !important; }
+      .wrap { max-width: 100% !important; padding: 0 !important; }
+      .results-header h2, .results-header p { color: #111 !important; }
+      .savings-banner, .crossover-box, .persona-card, .result-card, .profile-chip, .se-box {
+        background: #fff !important; color: #111 !important; border: 1px solid #ccc !important;
+        box-shadow: none !important; break-inside: avoid; }
+      .result-card { margin-bottom: 8px !important; }
+      .persona-row { display: flex !important; gap: 8px !important; }
+      a { color: #111 !important; text-decoration: none !important; }
+      #print-head { border-bottom: 2px solid #111; padding-bottom: 8px; margin-bottom: 14px; }
+      #print-head .ph-brand { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #555; }
+      #print-head .ph-title { font-size: 20px; font-weight: 800; margin: 2px 0; }
+      #print-head .ph-date { font-size: 12px; color: #555; }
+      .print-disclaimer { margin-top: 14px; font-size: 11px; color: #555; border-top: 1px solid #ccc; padding-top: 8px; line-height: 1.5; }
+    }
   </style>
 <link rel="stylesheet" href="app.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
+    {"@type":"ListItem","position":1,"name":"WizardCost","item":"https://wizardcost.com/"},
+    {"@type":"ListItem","position":2,"name":"Automation","item":"https://wizardcost.com/automation/"},
+    {"@type":"ListItem","position":3,"name":"Cost calculator","item":"https://wizardcost.com/automation/calculator.html"}
+  ]}
+  </script>
   <!-- ANALYTICS (build.py) -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
   <!-- /ANALYTICS -->
@@ -863,10 +895,21 @@
         <h2 data-i18n="pages.calc.s5_h2">Your personalized recommendations</h2>
         <p data-i18n="pages.calc.s5_p">Four ways to choose — pick the priority that fits you, then see the full ranked breakdown below. The same formula ranks every tool — no paid placement.</p>
       </div>
-      <button class="share-btn" id="share-btn" onclick="copyShareLink(this)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <span id="share-btn-label">Copy share link</span>
-      </button>
+      <div class="results-actions">
+        <button class="share-btn" id="print-btn" onclick="window.print()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          <span>Print / Save PDF</span>
+        </button>
+        <button class="share-btn" id="share-btn" onclick="copyShareLink(this)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span id="share-btn-label">Copy share link</span>
+        </button>
+      </div>
+    </div>
+    <div class="print-only" id="print-head">
+      <div class="ph-brand">WizardCost · AutomationCost</div>
+      <div class="ph-title">Automation tool cost estimate — priced at your volume</div>
+      <div class="ph-date" id="print-date"></div>
     </div>
     <div class="profile-summary" id="profile-summary"></div>
     <div class="savings-banner" id="roi-banner" hidden></div>
@@ -883,6 +926,7 @@
          Disclosure text schválen ownerem 2026-06-11 — NEMĚNIT bez jeho OK. -->
     <!-- price-drop alerts e-mail form disabled 2026-06-16 — compliance: no e-mail collection while the project stays faceless (no MailerLite signup, no consent banner needed). Previous markup is in git history; re-enable by restoring the price-alerts section. -->
     <!-- EMAILCAP:HTML:END -->
+    <div class="print-only print-disclaimer">Estimates derived from each vendor's public pricing (verified June 2026); your real cost depends on workflow shape. WizardCost is editorially independent — some links are affiliate links that never affect the ranking. Method &amp; full disclosure: wizardcost.com/automation/ · generated by the free calculator at wizardcost.com/automation/calculator.html</div>
     <a href="compare.html?view=plancomp&bestforme=1" class="results-next-cta">
       <div class="rnc-text">
         <div class="rnc-title">Next: compare plans head-to-head</div>
@@ -3490,6 +3534,8 @@ function renderResults() {
   // Profile summary chips
   const roleLabel = { marketing:"Marketing", operations:"Operations", developer:"Developer", finance:"Finance / Accounting", legal:"Legal / Compliance", hr:"HR / People Ops", ecommerce:"E-commerce", sales:"Sales", support:"Customer Support", other:"Mixed / Other" };
   const bizLabel = { services:"Services / Consulting", saas:"SaaS / Software", ecommerce:"E-commerce / Retail", agency:"Agency", manufacturing:"Manufacturing / Logistics", regulated:"Finance / Healthcare", other:"Other / Mixed" };
+  const _pd = document.getElementById("print-date");
+  if (_pd) _pd.textContent = "Generated " + new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
   document.getElementById("profile-summary").innerHTML = [
     selectedBizModel ? `<div class="profile-chip">Company: <span>${bizLabel[selectedBizModel] || selectedBizModel}</span></div>` : "",
     `<div class="profile-chip">Role: <span>${roleLabel[role] || role}</span></div>`,
@@ -3644,6 +3690,7 @@ function renderResults() {
     </div>`;
   }).join("")
     + `<div style="font-size:12px;color:var(--muted);margin:14px 2px 0;line-height:1.6;">⚖ <b>Each tool measures volume differently</b> — we convert your ${runs.toLocaleString()} runs/mo × ${steps} steps into each vendor's own unit: n8n bills per run (executions), Make bills every step (credits), Zapier bills actions but triggers/filters/paths are free (tasks), Pipedream bills compute time (~1 credit/run under 30s). Conversions are conservative estimates — your real usage depends on workflow shape.</div>`
+    + `<div style="font-size:12px;color:var(--muted);margin:8px 2px 0;line-height:1.6;">🔗 Some “Try free” buttons are affiliate links — we may earn a commission at no extra cost to you. It never changes the ranking: the same formula scores every tool. <a href="affiliate.html" style="color:var(--accent)">Disclosure</a>.</div>`
     + (items.some(r => r.costResult.estimated)
     ? `<div style="font-size:12px;color:var(--muted);margin:8px 2px 0;">~ Estimated price — derived from the vendor's public pricing; actual enterprise quotes may differ. Always verify on the vendor's site.</div>`
     : "");
