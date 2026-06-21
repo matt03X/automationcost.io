@@ -299,6 +299,20 @@
     .savings-banner { display: flex; align-items: center; gap: 10px; background: linear-gradient(160deg, rgba(16,185,129,0.14), var(--surface) 70%); border: 1px solid rgba(16,185,129,0.4); border-radius: var(--radius-sm); padding: 13px 18px; margin: -12px 0 24px; font-size: 14px; color: var(--text); }
     .savings-banner b { color: var(--green); font-family: var(--mono); }
     .savings-banner svg { flex-shrink: 0; color: var(--green); }
+    .roi-worth { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm); margin: 16px 0 6px; overflow: hidden; }
+    .roi-worth-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: none; border: none; color: var(--text); font-family: var(--font); font-size: 15px; padding: 15px 18px; cursor: pointer; text-align: left; }
+    .roi-worth-toggle b { color: var(--accent-br); }
+    .roi-worth-toggle .rw-chev { transition: transform .2s; color: var(--muted); flex-shrink: 0; }
+    .roi-worth.open .rw-chev { transform: rotate(180deg); }
+    .roi-worth-sub { font-size: 12.5px; color: var(--muted); padding: 0 18px 10px; margin: 0; }
+    .roi-worth-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 18px 6px; }
+    .roi-worth-inputs label { display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; color: var(--text2); font-weight: 600; }
+    .roi-worth-inputs input { background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; padding: 9px 11px; color: var(--text); font-family: var(--font); font-size: 15px; }
+    .roi-worth-inputs input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .roi-worth-out { padding: 8px 18px 18px; font-size: 14px; line-height: 1.7; color: var(--text2); }
+    .roi-worth-out .rw-verdict { font-weight: 800; margin-bottom: 3px; }
+    .roi-worth-out b { font-family: var(--mono); color: var(--text); }
+    @media (max-width: 520px) { .roi-worth-inputs { grid-template-columns: 1fr; } }
     .profile-chip { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; font-size: 12px; font-weight: 600; color: var(--muted); }
     .profile-chip span { color: var(--text); }
 
@@ -918,6 +932,20 @@
     <div class="crossover-box" id="crossover-insight" hidden></div>
     <p data-i18n="results.scores_note" style="font-size:12px;color:var(--muted);margin:6px 2px 14px;line-height:1.6;">Match scores blend feature fit (52%), price vs your budget (26%) and ecosystem maturity (12%), plus a small workflow-fit bonus. The per-feature ratings (0–100) are WizardCost's own editorial assessment from public sources — not measured benchmarks or vendor-supplied figures. <a href="#faq-scores">How we score →</a></p>
     <div id="results-list"></div>
+    <div class="roi-worth" id="roi-worth" hidden>
+      <button class="roi-worth-toggle" type="button" onclick="toggleRoiWorth()" aria-expanded="false">
+        <span><b>Is it worth it?</b> Your ROI vs doing the work by hand</span>
+        <svg class="rw-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="roi-worth-body" id="roi-worth-body" hidden>
+        <p class="roi-worth-sub">Your top pick's cost vs the value of the human time it offsets — at your volume.</p>
+        <div class="roi-worth-inputs">
+          <label>Minutes a person would spend per run<input id="rw-mins" type="number" value="3" min="0" step="0.5" oninput="computeRoiWorth()"></label>
+          <label>Their hourly cost ($)<input id="rw-rate" type="number" value="30" min="0" oninput="computeRoiWorth()"></label>
+        </div>
+        <div class="roi-worth-out" id="rw-out"></div>
+      </div>
+    </div>
     <div id="no-results-msg" class="no-results" style="display:none">
       No tool supports <strong>all</strong> your selected integrations with these settings. Try removing one, or note that most platforms support any app via custom HTTP requests.
     </div>
@@ -3523,6 +3551,48 @@ function annualDiscountPct(plan) {
 }
 
 // ── Render results ────────────────────────────────────────────────────────────
+// ── "Is it worth it?" inline ROI panel (Step 3) ── value of human time offset vs
+// top pick's cost @ your volume. Same logic as is-automation-worth-it.html.
+var _roiW = { runs: 0, cost: 0, name: "", est: false };
+function toggleRoiWorth() {
+  var w = document.getElementById("roi-worth");
+  var b = document.getElementById("roi-worth-body");
+  var open = w.classList.toggle("open");
+  b.hidden = !open;
+  w.querySelector(".roi-worth-toggle").setAttribute("aria-expanded", open ? "true" : "false");
+}
+function updateRoiWorth(runs, top) {
+  var w = document.getElementById("roi-worth");
+  if (!w) return;
+  if (!top) { w.hidden = true; return; }
+  w.hidden = false;
+  _roiW = { runs: runs, cost: top.costResult.cost, name: top.tool.name, est: !!top.costResult.estimated };
+  computeRoiWorth();
+}
+function computeRoiWorth() {
+  var out = document.getElementById("rw-out");
+  if (!out) return;
+  var mins = parseFloat(document.getElementById("rw-mins").value) || 0;
+  var rate = parseFloat(document.getElementById("rw-rate").value) || 0;
+  var runs = _roiW.runs, cost = _roiW.cost, ap = _roiW.est ? "~" : "";
+  if (mins <= 0 || rate <= 0) { out.innerHTML = '<span style="color:var(--muted)">Enter minutes saved per run and an hourly rate to see your ROI.</span>'; return; }
+  var value = runs * mins / 60 * rate;
+  var net = value - cost;
+  var roi = cost > 0 ? value / cost : null;
+  var roiStr = roi === null ? "∞" : (roi >= 1000 ? "1,000×+" : Math.round(roi).toLocaleString("en-US") + "×");
+  var beRuns = (rate > 0 && mins > 0) ? cost / (rate * mins / 60) : null;
+  var beStr = beRuns === null ? "—" : (beRuns < 1 ? "<1" : Math.ceil(beRuns).toLocaleString("en-US"));
+  var V = function (n) { return "$" + Math.round(n).toLocaleString("en-US"); };
+  if (net >= 0) {
+    out.innerHTML = '<div class="rw-verdict" style="color:var(--green)">Worth it ✓</div>' +
+      '<div><b>' + _roiW.name + '</b> costs ' + ap + '$' + fmtUsd(Math.round(cost)) + '/mo and offsets <b>' + V(value) + '</b>/mo of human time (' +
+      runs.toLocaleString("en-US") + ' runs × ' + mins + ' min ÷ 60 × $' + rate + ') — net <b>+' + V(net) + '/mo</b>, ' + roiStr + ' return. Break-even at ~' + beStr + ' runs/mo.</div>';
+  } else {
+    out.innerHTML = '<div class="rw-verdict" style="color:var(--text)">Not yet</div>' +
+      '<div>At ' + runs.toLocaleString("en-US") + ' runs/mo the time saved (' + V(value) + '/mo) doesn’t cover <b>' + _roiW.name + '</b>’s ' + ap + '$' + fmtUsd(Math.round(cost)) +
+      '/mo. Raise volume, minutes saved or the hourly rate — ROI scales with all three.</div>';
+  }
+}
 function renderResults() {
   const runs = getCalcRuns();
   const steps = getCalcSteps();
@@ -3614,6 +3684,7 @@ function renderResults() {
   // Persona picks + crossover insight (Phase B): same engine, different lenses.
   renderPersonas(items);
   renderCrossover(effRuns, steps, workflows);
+  updateRoiWorth(effRuns, items[0]);
 
   const whyData = TOOL_WHY;
   list.innerHTML = items.map((r, i) => {
