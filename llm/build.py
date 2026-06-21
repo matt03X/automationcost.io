@@ -626,7 +626,7 @@ def _ed_faq_html(ed: dict) -> str:
         return ""
     items = "\n".join(
         '      <div class="faq-item">\n'
-        '        <button class="faq-q" onclick="toggleFaq(this)">' + f["q"]
+        '        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">' + f["q"]
         + '<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" '
           'stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>\n'
         f'        <div class="faq-a">{f["a"]}</div>\n      </div>' for f in faq)

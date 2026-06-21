@@ -217,6 +217,7 @@
     .faq-item { border-bottom: 1px solid var(--border); }
     .faq-q { width: 100%; background: none; border: 0; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 700; text-align: left; padding: 16px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .faq-q:hover { color: var(--accent-br); }
+    a:focus-visible, button:focus-visible, .faq-q:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
     .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
     .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.7; padding-bottom: 16px; }
@@ -336,11 +337,11 @@
     <h2 class="sec-h2">Frequently asked questions</h2>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Is prompt caching available on every Claude tier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Is prompt caching available on every Claude tier?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">Caching and a batch (async) discount are available across the lineup in our data. The discounted cached-input rate per tier is shown in the per-model table above.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Do all Claude models have the same context window?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Do all Claude models have the same context window?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">No — the frontier and mid tiers carry the larger context window, while the budget tier is smaller. The exact window per model is listed in the context-window note on this page.</div>
       </div>
     </div>
@@ -407,6 +408,6 @@
 })();
 /* ── EMAILCAP:JS:END ── */
 </script>
-<script>function toggleFaq(el){el.closest(".faq-item").classList.toggle("open");}</script>
+<script>function toggleFaq(el){var o=el.closest(".faq-item").classList.toggle("open");el.setAttribute("aria-expanded",o?"true":"false");}</script>
 </body>
 </html>

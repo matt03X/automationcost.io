@@ -217,6 +217,7 @@
     .faq-item { border-bottom: 1px solid var(--border); }
     .faq-q { width: 100%; background: none; border: 0; color: var(--text); font-family: var(--font); font-size: 15px; font-weight: 700; text-align: left; padding: 16px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
     .faq-q:hover { color: var(--accent-br); }
+    a:focus-visible, button:focus-visible, .faq-q:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
     .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
     .faq-item.open .faq-chevron { transform: rotate(180deg); }
     .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.7; padding-bottom: 16px; }
@@ -340,11 +341,11 @@
     <h2 class="sec-h2">Frequently asked questions</h2>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Does OpenAI support prompt caching and batch processing?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Does OpenAI support prompt caching and batch processing?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">Most GPT-5 tiers offer both a discounted cached-input rate and a batch (async) discount. The exception in our data is the top Pro tier, which is listed without a cached rate — see the per-model table above for which models include caching.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Why do some OpenAI models show a separate long-context price?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Why do some OpenAI models show a separate long-context price?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">The flagship tiers apply a higher rate to very large prompts (above a token threshold) than to short prompts. The table shows the standard short-context rate; if your prompts are large, model the long-context rate noted on the page instead.</div>
       </div>
     </div>
@@ -411,6 +412,6 @@
 })();
 /* ── EMAILCAP:JS:END ── */
 </script>
-<script>function toggleFaq(el){el.closest(".faq-item").classList.toggle("open");}</script>
+<script>function toggleFaq(el){var o=el.closest(".faq-item").classList.toggle("open");el.setAttribute("aria-expanded",o?"true":"false");}</script>
 </body>
 </html>
