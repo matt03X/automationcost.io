@@ -25,7 +25,7 @@
       "annualFactor": 0.8333,
       "currency": "EUR",
       "name": "n8n",
-      "tagline": "Open-source automation for developers & self-hosters",
+      "tagline": "Fair-code automation for developers & self-hosters",
       "selfHostable": true,
       "aiFeatures": true,
       "integrations": 1868,
@@ -924,7 +924,7 @@
       "unitModel": "runs",
       "annualFactor": 1,
       "name": "Activepieces",
-      "tagline": "MIT-licensed open-source automation, Zapier-like UI",
+      "tagline": "MIT-licensed (open-core) automation, Zapier-like UI",
       "selfHostable": true,
       "aiFeatures": true,
       "integrations": 747,
@@ -1007,7 +1007,7 @@
         }
       ],
       "pros": [
-        "True MIT license — no restrictions",
+        "MIT-licensed core (open-core)",
         "No-code UI like Zapier",
         "Self-hostable"
       ],

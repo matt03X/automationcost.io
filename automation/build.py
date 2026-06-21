@@ -481,7 +481,7 @@ def _vs_auto_faq(pair, ta, tb, costs, volumes):
         faq.append({
             "q": f"How do {a_name} and {b_name} compare on price?",
             "a": (f"They come out to the same cost across the volumes we track — both are free "
-                  f"open-source software, so the figure is just your server bill (see the table above). "
+                  f"to self-host, so the figure is just your server bill (see the table above). "
                   "Price isn't the deciding factor here; the feature and trade-off sections below "
                   "cover what separates them.")})
     else:
@@ -567,7 +567,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
                 "public list prices). Assumes 3 workflows, monthly billing, cheapest qualifying plan. "
                 f"Prices verified {month_year} — see the <a href=\"changelog.html\">price changelog</a>.")
     if any_selfhost_star:
-        tbl_note += (" * self-hosted = free open-source software; the figure is the server "
+        tbl_note += (" * self-hosted = free to run yourself; the figure is the server "
                      "infrastructure (VPS + DB, not a tool fee), ~$8/mo small to ~$150/mo at "
                      "high volume — assumes light workflows and excludes your ops time.")
 
