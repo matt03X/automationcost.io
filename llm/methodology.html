@@ -238,7 +238,7 @@
 
 <header>
   <div class="nav-top">
-    <a href="/" class="logo">
+    <a href="./" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs><linearGradient id="llmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e98bff"></stop><stop offset="1" stop-color="#c44dff"></stop></linearGradient></defs>
         <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#llmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -248,7 +248,7 @@
     <span class="nav-badge">LLM API pricing · verified June 2026</span>
   </div>
   <nav class="nav-bottom">
-    <a href="index.html">Calculator</a>
+    <a href="calculator.html">Calculator</a>
     <a href="compare.html">Compare models</a>
     <div class="nav-dropdown">
       <button class="nav-dropdown-btn" type="button">Providers <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -268,7 +268,7 @@
 <section class="page-head wrap">
   <div class="crumb"><a href="index.html">LLM</a> / methodology</div>
   <h1>How we verify LLM API pricing</h1>
-  <p>Every price here is taken by hand from the provider's official pricing page, verified on a dated pass, and turned into a monthly figure by the same engine as the <a href="index.html">calculator</a> — never quoted from memory or a third party. Here is exactly where each of the 28 models' numbers come from, what they mean, and what we don't claim.</p>
+  <p>Every price here is taken by hand from the provider's official pricing page, verified on a dated pass, and turned into a monthly figure by the same engine as the <a href="calculator.html">calculator</a> — never quoted from memory or a third party. Here is exactly where each of the 28 models' numbers come from, what they mean, and what we don't claim.</p>
   <div class="verify-line">Prices verified June 2026 · changes logged in the <a href="changelog.html">changelog</a></div>
 </section>
 
@@ -337,7 +337,7 @@
     <h2>Are tokens the same across models? No — and it matters</h2>
     <p>A "token" is not a fixed unit. Each model family uses its <strong>own tokenizer</strong>, so the <em>same text</em> becomes a different number of tokens from one provider to the next — commonly a <strong>10–30% spread</strong> (wider for non-English text and code). Two models at the same "$ per 1M tokens" can therefore cost differently for the <em>same prompt</em>, because one encodes it in fewer tokens.</p>
     <p>Tokens aren't equal in <strong>value</strong> either: a token from a frontier model carries more capability than one from a budget model, so price per token says nothing about quality.</p>
-    <p>What this means for our numbers: we compare <strong>list price per 1M tokens</strong> as the billing unit — the honest, vendor-published basis — and run every model through <strong>one identical workload</strong> (same token counts) so the ≈ $/mo column is apples-to-apples on price. Treat cross-provider gaps inside ~10–20% as a tie until you test your own prompts; the <a href="index.html">calculator</a> lets you plug in your real token mix.</p>
+    <p>What this means for our numbers: we compare <strong>list price per 1M tokens</strong> as the billing unit — the honest, vendor-published basis — and run every model through <strong>one identical workload</strong> (same token counts) so the ≈ $/mo column is apples-to-apples on price. Treat cross-provider gaps inside ~10–20% as a tie until you test your own prompts; the <a href="calculator.html">calculator</a> lets you plug in your real token mix.</p>
   </div>
 
   <div class="section">
@@ -381,7 +381,7 @@
     <h2>How we keep it current</h2>
     <p>An automated job re-reads all 6 official price pages every morning and flags any change; a second job watches context windows, caching, batch and deprecations. Those flags are evidence — a human still confirms before a number changes. Confirmed changes are dated in the <a href="changelog.html">changelog</a>, and we take no commission from any model provider, so nothing here is pay-to-rank.</p>
   </div>
-  <a class="next-cta" href="index.html">
+  <a class="next-cta" href="calculator.html">
     <div>
       <div class="nc-title">See it on your own numbers</div>
       <div class="nc-sub">The calculator uses these exact prices — plug in your volume, token mix and cache share, and it re-ranks every model live.</div>
@@ -404,7 +404,7 @@
     <a href="mistral-alternatives.html">Mistral alternatives →</a>
     <a href="cheapest-llm-api.html">Cheapest LLM API →</a>
     <a href="is-llm-worth-it.html">Is an LLM API worth it? →</a>
-    <a href="index.html">Open calculator →</a>
+    <a href="calculator.html">Open calculator →</a>
   </div>
 </section>
 

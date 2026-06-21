@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LLM API Cost Calculator 2026 — OpenAI &amp; Claude | WizardCost</title>
-  <meta name="description" content="What will your LLM actually cost? Per-token API pricing for 28 models across OpenAI, Anthropic, Gemini, DeepSeek, xAI and Mistral, at your real volume.">
+  <title>LLM API Pricing — Cost Calculator for OpenAI, Claude &amp; More | WizardCost</title>
+  <meta name="description" content="The independent home for LLM API costs. Price all 28 models across OpenAI, Anthropic, Gemini, DeepSeek, xAI and Mistral at your real token volume — calculator, comparison, cheapest pick and ROI.">
   <link rel="canonical" href="https://wizardcost.com/llm/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="WizardCost">
-  <meta property="og:title" content="LLM API Cost Calculator 2026 — OpenAI, Claude, Gemini &amp; More">
-  <meta property="og:description" content="Per-token API pricing for builders — 28 models across 6 providers, computed at your real volume, cache mix and batch eligibility.">
+  <meta property="og:title" content="LLM API Pricing — Cost Calculator for OpenAI, Claude &amp; More">
+  <meta property="og:description" content="Price all 28 LLM models at your real token volume — calculator, comparison, cheapest pick and ROI. Independent, verified June 2026.">
   <meta property="og:url" content="https://wizardcost.com/llm/">
   <meta property="og:image" content="https://wizardcost.com/llm/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -17,14 +17,25 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "LLM API Cost Calculator",
-    "url": "https://wizardcost.com/llm/",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "browserRequirements": "Requires JavaScript",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "publisher": { "@type": "Organization", "name": "WizardCost", "url": "https://wizardcost.com/" }
+    "@graph": [
+      { "@type": "Organization", "@id": "https://wizardcost.com/#org", "name": "WizardCost", "url": "https://wizardcost.com/",
+        "description": "Independent, data-driven software pricing comparisons. Prices verified by hand from official vendor pricing pages and dated in a public changelog." },
+      { "@type": "WebSite", "@id": "https://wizardcost.com/#website", "name": "WizardCost", "url": "https://wizardcost.com/", "publisher": { "@id": "https://wizardcost.com/#org" } },
+      { "@type": "WebPage", "@id": "https://wizardcost.com/llm/#webpage", "url": "https://wizardcost.com/llm/",
+        "name": "LLM API Pricing — Cost Calculator for OpenAI, Claude & More",
+        "description": "Price all 28 LLM models across 6 providers at your real token volume.",
+        "isPartOf": { "@id": "https://wizardcost.com/#website" }, "inLanguage": "en" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org", "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Which LLM API is cheapest?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on your token mix, but budget models like DeepSeek and Gemini Flash are typically the cheapest per token, while frontier models from OpenAI and Anthropic cost far more. Our calculator prices all 28 models at your exact volume and ranks them by cost." } },
+      { "@type": "Question", "name": "How do you calculate LLM API cost?", "acceptedAnswer": { "@type": "Answer", "text": "From each model's official per-token input, output and cached price, verified by hand, at the request volume and token sizes you enter. We compute a monthly figure rather than quoting one, so every model compares on the same workload." } },
+      { "@type": "Question", "name": "Do you take commission from model providers?", "acceptedAnswer": { "@type": "Answer", "text": "No. The LLM section carries no affiliate links and no sponsored placement — rankings are by objective cost only." } }
+    ]
   }
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -47,15 +58,15 @@
       background: var(--bg);
       background-image: radial-gradient(ellipse 70% 50% at 50% -8%, rgba(217,123,251,0.16), transparent 60%), radial-gradient(ellipse 60% 50% at 100% 0%, rgba(217,123,251,0.07), transparent 50%);
       background-repeat: no-repeat; background-attachment: fixed;
-      color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; padding-top: 100px;
+      color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; padding-top: 100px; -webkit-font-smoothing: antialiased;
     }
     a { color: var(--link); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* ── Nav (vzor automation) ── */
-    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg); }
+    /* Nav */
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,14,23,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
     .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
-    .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; overflow-x: auto; scrollbar-width: none; }
+    .nav-bottom { padding: 0 32px; display: flex; overflow-x: auto; scrollbar-width: none; }
     .nav-bottom::-webkit-scrollbar { display: none; }
     .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; flex-shrink: 0; }
     .nav-bottom a:hover { color: var(--text); text-decoration: none; }
@@ -67,190 +78,122 @@
     .logo-icon { width: 28px; height: 28px; flex-shrink: 0; margin-right: 9px; }
     .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 4px 11px; color: var(--muted); }
     .nav-dropdown { position: relative; display: flex; align-items: center; }
-    .nav-dropdown-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-family: var(--font); font-size: 14px; padding: 12px 20px; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s, border-color 0.15s; margin-bottom: -2px; border-bottom: 2px solid transparent; }
+    .nav-dropdown-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-family: var(--font); font-size: 14px; padding: 12px 20px; display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: color 0.15s; margin-bottom: -2px; border-bottom: 2px solid transparent; }
     .nav-dropdown-btn:hover, .nav-dropdown.open .nav-dropdown-btn { color: var(--text); }
-    .nav-dropdown-btn.active { color: var(--text); font-weight: 700; border-bottom-color: var(--accent); }
-    .nav-dropdown-menu { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); min-width: 214px; z-index: 200; box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03); padding: 6px 0; }
+    .nav-dropdown-menu { display: none; position: fixed; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); min-width: 214px; z-index: 200; box-shadow: 0 16px 40px rgba(0,0,0,0.5); padding: 6px 0; }
     .nav-dropdown.open .nav-dropdown-menu { display: block; }
-    .nav-dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin-bottom: 0; font-size: 13px; font-weight: 600; color: var(--text2); transition: background 0.1s, color 0.1s; border-bottom: none !important; }
+    .nav-dropdown-menu a { display: flex; align-items: center; gap: 10px; padding: 10px 16px; margin-bottom: 0; font-size: 13px; font-weight: 600; color: var(--text2); border-bottom: none !important; }
     .nav-dropdown-menu a:hover { background: var(--surface2); color: var(--text); text-decoration: none; }
-    .nav-dropdown-menu a.active { color: var(--accent-br); background: var(--accent-dim); }
     .nav-dropdown-menu img { width: 16px; height: 16px; border-radius: 3px; background: #fff; padding: 1px; }
 
     .wrap { max-width: 1160px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
     @media (max-width: 760px) { .wrap { padding-left: 18px; padding-right: 18px; } .nav-top, .nav-bottom { padding-left: 18px; padding-right: 18px; } }
 
-    /* ── Hero ── */
-    .hero { text-align: center; padding-top: 56px; padding-bottom: 14px; }
-    .hero h1 { font-family: var(--display); font-size: clamp(1.9rem, 4.6vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; }
-    .hero h1 em { font-style: normal; color: var(--accent); }
-    .hero p { color: var(--text2); max-width: 620px; margin: 14px auto 0; font-size: 1.02rem; }
-    .trust-line { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 18px; letter-spacing: 0.02em; }
-    .trust-line b { color: var(--text2); font-weight: 500; }
-    .demo-range { display: inline-flex; align-items: center; gap: 9px; flex-wrap: wrap; justify-content: center; background: var(--surface); border: 1px solid var(--border2); border-radius: 30px; padding: 9px 20px; margin-top: 22px; font-size: 13.5px; color: var(--text2); }
-    .demo-range b { font-family: var(--mono); font-weight: 700; color: var(--accent-br); }
+    /* Hero */
+    .hero { text-align: center; min-height: calc(100vh - 150px); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 28px 0 56px; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--text2); padding: 6px 15px; margin-bottom: 30px; letter-spacing: 0.02em; }
+    .hero-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); flex-shrink: 0; }
+    .hero h1 { font-family: var(--display); font-size: clamp(2.5rem, 5.2vw, 3.85rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; max-width: 17ch; margin: 0 auto 24px; }
+    .hero h1 em { font-style: normal; background: linear-gradient(96deg, #d97bfb 0%, #e98bff 48%, #c44dff 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+    .hero p { color: var(--text2); font-size: 1.16rem; max-width: 600px; margin: 0 auto 42px; line-height: 1.72; text-wrap: pretty; }
+    .hero-cta { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 26px; }
+    .hero-proof { display: inline-flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 13.5px; color: var(--muted); font-family: var(--mono); margin-bottom: 30px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 99px; padding: 9px 20px; }
+    .hero-proof b { color: var(--text); font-weight: 700; }
+    .hero-proof .hp-accent { color: var(--accent); font-weight: 700; }
+    .hero-proof .hp-gap { border-left: 1px solid var(--border2); padding-left: 12px; }
+    .btn-primary { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 15px 30px; font-family: var(--font); font-size: 15px; font-weight: 700; cursor: pointer; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; align-items: center; gap: 9px; box-shadow: 0 0 0 1px rgba(217,123,251,0.4), 0 10px 30px rgba(217,123,251,0.28); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .btn-primary:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-1px); box-shadow: 0 0 0 1px rgba(217,123,251,0.5), 0 14px 36px rgba(217,123,251,0.4); text-decoration: none; }
+    .btn-secondary { background: var(--surface2); color: var(--text2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 14px 24px; font-family: var(--font); font-size: 15px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.15s, color 0.15s, transform 0.15s; }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--text); transform: translateY(-1px); text-decoration: none; }
 
-    /* ── Steps ── */
-    .step-block { padding-top: 52px; }
-    .step-num { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 6px; }
-    .step-block h2 { font-family: var(--display); font-size: clamp(1.3rem, 2.6vw, 1.7rem); font-weight: 800; letter-spacing: -0.4px; margin-bottom: 6px; }
-    .step-sub { color: var(--muted); font-size: 0.93rem; margin-bottom: 22px; }
+    /* Tracking ledger */
+    .track-strip { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 26px; margin-bottom: 72px; }
+    .track-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+    .track-title { display: inline-flex; align-items: center; gap: 9px; font-family: var(--display); font-weight: 700; font-size: 14.5px; color: var(--text2); }
+    .track-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 9px var(--accent); flex-shrink: 0; }
+    .track-verified { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.02em; }
+    .track-logos { display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; }
+    .track-logo { flex: 1 1 92px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 8px; border: 1px solid var(--border); border-radius: 11px; background: var(--bg); transition: border-color .15s, transform .15s, background .15s; }
+    .track-logo img { width: 26px; height: 26px; border-radius: 5px; filter: grayscale(1) opacity(0.7); transition: filter .15s; }
+    .track-logo span { font-family: var(--mono); font-size: 11px; color: var(--muted); font-weight: 500; }
+    .track-logo:hover { border-color: var(--accent); transform: translateY(-2px); background: rgba(217,123,251,0.05); text-decoration: none; }
+    .track-logo:hover img { filter: none; }
+    .track-logo:hover span { color: var(--text); }
+    .track-foot { font-family: var(--mono); font-size: 11.5px; color: var(--muted); margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); text-align: center; letter-spacing: 0.01em; }
+    .track-foot b { color: var(--accent); font-weight: 700; }
 
-    /* use case cards */
-    .uc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); gap: 14px; }
-    .uc-card { background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 18px 17px; cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.15s; display: flex; flex-direction: column; gap: 8px; min-height: 44px; }
-    .uc-card:hover { border-color: var(--accent); background: rgba(217,123,251,0.05); transform: translateY(-2px); }
-    .uc-card.selected { border-color: var(--accent); background: linear-gradient(160deg, rgba(217,123,251,0.14), rgba(217,123,251,0.04)); box-shadow: 0 0 0 1px var(--accent), 0 10px 28px rgba(217,123,251,0.13); }
-    .uc-icon { color: #8a99b5; display: flex; transition: color 0.15s; }
-    .uc-card:hover .uc-icon, .uc-card.selected .uc-icon { color: var(--accent-br); }
-    .uc-name { font-size: 15.5px; font-weight: 700; letter-spacing: -0.01em; }
-    .uc-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); line-height: 1.5; }
+    /* CTA cards */
+    .section-label { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 18px; }
+    .cta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 72px; }
+    .cta-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; text-decoration: none; color: var(--text); transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; display: block; position: relative; overflow: hidden; }
+    .cta-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% -20%, var(--accent-dim), transparent 70%); opacity: 0; transition: opacity 0.2s; }
+    .cta-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.32), 0 0 0 1px var(--accent-glow); text-decoration: none; color: var(--text); }
+    .cta-card:hover::before { opacity: 1; }
+    .cta-card.featured { border-color: rgba(217,123,251,0.35); background: linear-gradient(165deg, rgba(217,123,251,0.06), var(--surface) 60%); }
+    .cta-icon { width: 46px; height: 46px; border-radius: 12px; background: var(--accent-dim); border: 1px solid rgba(217,123,251,0.25); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; position: relative; }
+    .cta-card h2 { font-size: 1.12rem; font-weight: 700; margin-bottom: 9px; position: relative; }
+    .cta-card p { font-size: 13.5px; color: var(--text2); line-height: 1.65; margin-bottom: 20px; position: relative; }
+    .cta-arrow { font-family: var(--mono); font-size: 12.5px; font-weight: 700; color: var(--accent); position: relative; display: flex; align-items: center; gap: 5px; letter-spacing: 0.02em; }
+    .cta-arrow svg { transition: transform 0.15s; }
+    .cta-card:hover .cta-arrow svg { transform: translateX(3px); }
 
-    /* volume + tokens */
-    .vol-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 26px; }
-    .vol-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 4px; }
-    .vol-label { font-size: 14.5px; font-weight: 700; }
-    .vol-value { font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--accent-br); }
-    input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; margin: 14px 0 10px; height: 28px; background: transparent; cursor: pointer; }
-    input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--accent-deep), var(--accent)) no-repeat var(--surface2); background-size: var(--fill, 50%) 100%; }
-    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--accent-br); border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--accent), 0 2px 8px rgba(0,0,0,0.4); margin-top: -7px; }
-    input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--surface2); }
-    input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--accent-deep), var(--accent)); }
-    input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent-br); border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--accent); }
-    input[type="range"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
-    .vol-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-    .vol-chip { font-family: var(--mono); font-size: 11.5px; font-weight: 700; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 6px 14px; color: var(--text2); cursor: pointer; transition: border-color 0.15s, color 0.15s; min-height: 30px; }
-    .vol-chip:hover { border-color: var(--accent); color: var(--accent-br); }
-    .tok-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 22px; }
-    @media (max-width: 620px) { .tok-grid { grid-template-columns: 1fr; } }
-    .tok-field { background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 14px 16px; }
-    .tok-label { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; font-weight: 700; color: var(--text2); margin-bottom: 8px; }
-    .auto-badge { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; background: var(--accent-dim); border: 1px solid rgba(217,123,251,0.3); border-radius: 20px; padding: 1px 8px; white-space: nowrap; }
-    .auto-badge.off { display: none; }
-    .tok-input { width: 100%; background: transparent; border: 0; font-family: var(--mono); font-size: 19px; font-weight: 700; color: var(--text); outline: none; }
-    .tok-words { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
-    .cache-row { margin-top: 22px; }
-    .cache-row[hidden] { display: none; }
-    .batch-row { display: flex; align-items: center; gap: 12px; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border); flex-wrap: wrap; }
-    .switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
-    .switch input { opacity: 0; width: 44px; height: 24px; position: absolute; cursor: pointer; z-index: 1; margin: 0; }
-    .switch i { position: absolute; inset: 0; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; transition: background 0.15s, border-color 0.15s; }
-    .switch i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--muted); transition: transform 0.15s, background 0.15s; }
-    .switch input:checked + i { background: var(--accent-dim); border-color: var(--accent); }
-    .switch input:checked + i::after { transform: translateX(20px); background: var(--accent-br); }
-    .batch-label { font-size: 13.5px; font-weight: 600; color: var(--text2); }
-    .batch-label b { color: var(--text); }
+    /* Provider pages strip */
+    .tool-pages { margin-bottom: 72px; }
+    .tool-page-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .tool-page-link { display: flex; align-items: center; gap: 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 18px; font-size: 13.5px; font-weight: 700; color: var(--text); text-decoration: none; transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s; }
+    .tool-page-link:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow); transform: translateY(-1px); text-decoration: none; }
+    .tool-page-link img { width: 20px; height: 20px; border-radius: 5px; object-fit: contain; background: #fff; padding: 2px; }
 
-    /* results */
-    .savings-banner { display: flex; align-items: center; gap: 10px; background: linear-gradient(160deg, rgba(217,123,251,0.13), var(--surface) 70%); border: 1px solid rgba(217,123,251,0.4); border-radius: var(--radius-sm); padding: 13px 18px; margin-bottom: 26px; font-size: 14px; }
-    .savings-banner b { color: var(--accent-br); font-family: var(--mono); }
-    .savings-banner svg { flex-shrink: 0; color: var(--accent); }
-    .reco { background: linear-gradient(160deg, rgba(217,123,251,0.16), var(--surface) 72%); border: 1px solid rgba(217,123,251,0.45); border-radius: var(--radius); padding: 18px 22px; margin-bottom: 22px; }
-    .reco-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 8px; }
-    .reco-body { font-size: 15px; color: var(--text); line-height: 1.55; }
-    .reco-body b { color: var(--accent-br); }
-    .reco-prov { font-size: 12px; color: var(--muted); font-weight: 500; margin-left: 6px; }
-    .reco-note { font-size: 11.5px; color: var(--muted); margin-top: 9px; }
-    .tier-section { margin-bottom: 34px; }
-    .tier-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
-    .tier-tag { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(217,123,251,0.3); border-radius: 20px; padding: 3px 12px; }
-    .tier-info { font-size: 12.5px; color: var(--muted); cursor: help; border-bottom: 1px dotted var(--muted); }
-    .model-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 13px 18px; margin-bottom: 8px; cursor: pointer; transition: border-color 0.15s; }
-    .model-row:hover { border-color: var(--border2); }
-    .model-row.win { border-color: rgba(217,123,251,0.45); background: linear-gradient(160deg, rgba(217,123,251,0.09), var(--surface) 65%); }
-    .mr-top { display: grid; grid-template-columns: minmax(150px, 230px) 1fr 110px; gap: 14px; align-items: center; }
-    @media (max-width: 620px) { .mr-top { grid-template-columns: 1fr 100px; } .mr-top .bar-track { display: none; } }
-    .mr-name { font-size: 14.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .model-row.win .mr-name { color: var(--accent-br); }
-    .mr-provider { font-family: var(--mono); font-size: 10.5px; color: var(--muted); display: block; font-weight: 400; }
-    .bar-track { display: block; height: 8px; border-radius: 4px; background: var(--surface2); overflow: hidden; }
-    .bar-fill { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent-deep), var(--accent-br)); opacity: 0.5; }
-    .model-row.win .bar-fill { opacity: 1; }
-    .mr-cost { font-family: var(--mono); font-size: 15px; font-weight: 700; text-align: right; }
-    .model-row.win .mr-cost { color: var(--accent-br); }
-    .mr-chips { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-    .cap-chip { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--muted); border: 1px solid var(--border2); background: var(--surface2); border-radius: 20px; padding: 1px 8px; }
-    .cap-chip.nofit { color: #f5a623; border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.09); }
-    .cap-chip.lc { color: var(--accent-br); border-color: rgba(217,123,251,0.4); background: var(--accent-dim); }
-    .model-row.nofit { opacity: 0.5; }
-    .mr-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--text2); line-height: 1.9; }
-    .model-row.open .mr-detail { display: block; }
-    .mr-detail b { color: var(--text); font-weight: 700; }
-    .results-foot { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+    /* FAQ */
+    .faq { margin-bottom: 80px; }
+    .faq-heading { font-size: 1.7rem; font-weight: 800; margin-bottom: 30px; font-family: var(--display); }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; background: none; border: none; color: var(--text); font-family: var(--font); font-size: 16px; font-weight: 600; letter-spacing: -0.01em; text-align: left; padding: 22px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: color 0.15s; }
+    .faq-q:hover { color: var(--accent); }
+    .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--accent); }
+    .faq-a { display: none; color: var(--text2); font-size: 14.5px; line-height: 1.78; padding-bottom: 22px; max-width: 780px; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-a a { color: var(--link); font-weight: 500; }
 
-    /* reasoning effort (segmented chips, vzor vol-chip) */
-    .reason-row { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border); }
-    .reason-head { display: flex; flex-direction: column; gap: 2px; margin-bottom: 12px; }
-    .reason-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
-    .reason-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-    .reason-chip { font-family: var(--mono); font-size: 11.5px; font-weight: 700; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 6px 14px; color: var(--text2); cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s; min-height: 30px; }
-    .reason-chip:hover { border-color: var(--accent); color: var(--accent-br); }
-    .reason-chip.on { background: var(--accent-dim); border-color: var(--accent); color: var(--accent-br); }
+    /* Network band */
+    .network { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px 32px; margin-bottom: 72px; display: grid; grid-template-columns: 1fr 1.1fr; gap: 28px 38px; align-items: start; }
+    .network-intro { display: flex; flex-direction: column; gap: 12px; }
+    .network-intro h3 { font-size: 1.18rem; font-weight: 800; font-family: var(--display); }
+    .network-intro p { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+    .network-intro b { color: var(--text2); }
+    .wiz-rail { display: flex; flex-direction: column; gap: 10px; }
+    .wiz-rail-label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+    .wiz-tile { display: block; background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 13px 16px; transition: border-color .15s, transform .15s, box-shadow .15s; }
+    a.wiz-tile:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0,0,0,0.28); text-decoration: none; }
+    .wiz-tile-top { display: flex; align-items: center; gap: 9px; font-family: var(--display); font-weight: 800; font-size: 15px; color: var(--text); }
+    .wiz-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .wiz-tile p { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-top: 5px; }
+    .wiz-badge { margin-left: auto; font-family: var(--mono); font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; color: var(--accent); border: 1px solid rgba(217,123,251,0.45); }
+    .wiz-badge.soon { color: var(--muted); border-color: var(--border2); }
+    .wiz-tile.soon { opacity: 0.6; }
 
-    /* results head + share */
-    .results-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-    .share-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 9px 16px; color: var(--text2); font-family: var(--font); font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; transition: border-color 0.15s, color 0.15s; flex-shrink: 0; margin-top: 6px; }
-    .share-btn:hover { border-color: var(--accent); color: var(--accent-br); }
-    .share-btn.done { border-color: var(--accent); color: var(--accent-br); }
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 40px 32px; }
+    footer .wrap { display: flex; flex-direction: column; gap: 8px; text-align: center; font-size: 12.5px; color: var(--muted); line-height: 1.8; }
+    footer a { color: var(--muted); transition: color 0.15s; }
+    footer a:hover { color: var(--text2); }
 
-    /* ── EMAILCAP:CSS:START — držet 1:1 s _provider-template.html ── */
-    .price-alerts { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 24px 28px; margin: 32px 0 0; }
-    .pa-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 8px; }
-    .pa-title { font-family: var(--display); font-size: 17px; font-weight: 800; letter-spacing: -0.01em; }
-    .pa-sub { font-size: 13.5px; color: var(--text2); margin-top: 5px; line-height: 1.55; max-width: 560px; }
-    .pa-form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
-    .pa-input { flex: 1 1 240px; min-width: 0; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; font-family: var(--font); font-size: 14.5px; color: var(--text); transition: border-color 0.15s, box-shadow 0.15s; }
-    .pa-input::placeholder { color: var(--muted); }
-    .pa-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-    .pa-btn { display: inline-flex; align-items: center; justify-content: center; background: var(--accent); color: var(--ink); border: 0; cursor: pointer; font-family: var(--font); font-weight: 700; font-size: 14px; padding: 12px 22px; border-radius: var(--radius-sm); white-space: nowrap; transition: background 0.15s; }
-    .pa-btn:hover { background: var(--accent-br); }
-    .pa-btn:disabled { opacity: 0.6; cursor: default; }
-    .pa-note { font-size: 12.5px; color: var(--muted); margin-top: 12px; }
-    .pa-note a { color: var(--muted); text-decoration: underline; }
-    .pa-msg { display: none; margin-top: 14px; font-size: 14px; }
-    .pa-msg.show { display: flex; align-items: flex-start; gap: 9px; }
-    .pa-msg.ok { color: var(--green); }
-    .pa-msg.err { color: var(--red); }
-    .price-alerts.subscribed .pa-form, .price-alerts.subscribed .pa-note { display: none; }
-    @media (max-width: 520px) { .price-alerts { padding: 20px 18px; } .pa-form { flex-direction: column; } .pa-btn { width: 100%; min-height: 44px; } }
-    /* ── EMAILCAP:CSS:END ── */
-
-    footer { border-top: 1px solid var(--border); margin-top: 72px; padding: 28px 0 48px; }
-    footer .wrap { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding-bottom: 0; font-size: 13px; color: var(--muted); }
-
-    /* ── Print / "Save as PDF" of the estimate ──────────────────────────────── */
-    .llm-print-only { display: none; }
-    .llm-print-btn { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text2); background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; padding: 8px 14px; cursor: pointer; margin: 2px 0 18px; }
-    .llm-print-btn:hover { border-color: var(--accent); color: var(--accent-br); }
-    .llm-print-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    @media print {
-      header, footer, .price-alerts, .llm-print-btn, .share-btn,
-      section[data-screen-label="Hero"],
-      section[data-screen-label^="Step 1"],
-      section[data-screen-label^="Step 2"],
-      .vol-chips, .results-foot { display: none !important; }
-      html, body { background: #fff !important; color: #111 !important; }
-      .step-block { padding: 0 !important; }
-      .step-num, .step-sub { color: #555 !important; }
-      .savings-banner, .reco, .tier-section, .tier-head, .model-row, #results > * { background: #fff !important; color: #111 !important; border-color: #ccc !important; box-shadow: none !important; break-inside: avoid; }
-      .model-row { border: 1px solid #ddd !important; }
-      .bar-track { background: #eee !important; }
-      .tier-tag, .m-sub, .tier-info { color: #555 !important; }
-      a { color: #111 !important; text-decoration: none !important; }
-      .llm-print-only { display: block !important; }
-      #llm-print-head { border-bottom: 2px solid #111; padding-bottom: 8px; margin-bottom: 14px; }
-      #llm-print-head .lph-brand { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: #555; }
-      #llm-print-head .lph-title { font-size: 20px; font-weight: 800; margin: 2px 0; }
-      #llm-print-head .lph-date { font-size: 12px; color: #555; }
-      .llm-print-disclaimer { margin-top: 14px; font-size: 11px; color: #555; border-top: 1px solid #ccc; padding-top: 8px; line-height: 1.5; }
+    /* Scroll reveal */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s cubic-bezier(0.16,0.84,0.44,1), transform 0.7s cubic-bezier(0.16,0.84,0.44,1); }
+      .reveal.in { opacity: 1; transform: none; }
+      .reveal[data-d="1"] { transition-delay: 0.08s; } .reveal[data-d="2"] { transition-delay: 0.16s; } .reveal[data-d="3"] { transition-delay: 0.24s; }
+      .hero-eyebrow, .hero h1, .hero p, .hero-cta { animation: heroIn 0.85s cubic-bezier(0.16,0.84,0.44,1) backwards; }
+      .hero h1 { animation-delay: 0.07s; } .hero p { animation-delay: 0.15s; } .hero-cta { animation-delay: 0.23s; }
+      @keyframes heroIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    }
+    @media (max-width: 640px) {
+      .hero { min-height: auto; justify-content: flex-start; padding: 40px 0; }
+      .network { grid-template-columns: 1fr; }
+      .track-logo { flex-basis: 26%; }
     }
   </style>
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[
-    {"@type":"ListItem","position":1,"name":"WizardCost","item":"https://wizardcost.com/"},
-    {"@type":"ListItem","position":2,"name":"LLM API cost calculator","item":"https://wizardcost.com/llm/"}
-  ]}
-  </script>
 <!-- ANALYTICS (build.py) -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
   <!-- /ANALYTICS -->
@@ -259,7 +202,7 @@
 
 <header>
   <div class="nav-top">
-    <a href="/" class="logo">
+    <a href="./" class="logo">
       <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs><linearGradient id="llmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e98bff"></stop><stop offset="1" stop-color="#c44dff"></stop></linearGradient></defs>
         <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#llmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -269,7 +212,7 @@
     <span class="nav-badge">LLM API pricing · verified June 2026</span>
   </div>
   <nav class="nav-bottom">
-    <a href="./" class="active">Calculator</a>
+    <a href="calculator.html">Calculator</a>
     <a href="compare.html">Compare models</a>
     <div class="nav-dropdown">
       <button class="nav-dropdown-btn" type="button">Providers <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -286,101 +229,144 @@
   </nav>
 </header>
 
-<section class="hero wrap" data-screen-label="Hero">
-  <h1>What will your LLM <em>actually cost</em>?</h1>
-  <p>Per-token API pricing for builders — OpenAI, Anthropic, Gemini, DeepSeek, xAI and Mistral, side by side at your real volume.</p>
-  <div class="trust-line"><b>28 models · 6 providers</b> · prices verified June 2026 · independent</div>
-  <div class="demo-range" id="demo-range"><!-- filled by JS from the same data the wizard uses --></div>
-</section>
+<div class="wrap">
 
-<section class="step-block wrap" data-screen-label="Step 1 — Use case">
-  <div class="step-num">Step 1 — Use case</div>
-  <h2>What are you building?</h2>
-  <p class="step-sub">Drives our token-per-request estimates — you can override everything in step 2.</p>
-  <div class="uc-grid" id="uc-grid"></div>
-</section>
-
-<section class="step-block wrap" data-screen-label="Step 2 — Volume & tokens">
-  <div class="step-num">Step 2 — Volume &amp; tokens</div>
-  <h2>How much will you run?</h2>
-  <p class="step-sub">Estimated from your use case — override any number.</p>
-  <div class="vol-card">
-    <div class="vol-head">
-      <span class="vol-label">Requests per month</span>
-      <span class="vol-value" id="req-value">100k</span>
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <span class="dot"></span>
+      <span>Free · No signup · Updated June 2026</span>
     </div>
-    <input type="range" id="req-slider" min="0" max="100" value="50" aria-label="Requests per month">
-    <div class="vol-chips">
-      <button class="vol-chip" data-req="10000">10k</button>
-      <button class="vol-chip" data-req="100000">100k</button>
-      <button class="vol-chip" data-req="1000000">1M</button>
+    <h1>Find the LLM API that's <em>actually cheapest</em>.</h1>
+    <p>Per-token pricing for OpenAI, Anthropic, Gemini, DeepSeek, xAI and Mistral — all 28 models priced at your real token volume, not marketing pages. Get your cheapest pick in 30 seconds.</p>
+    <div class="hero-cta">
+      <a href="calculator.html" class="btn-primary">
+        <span>Open the calculator</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>
+      </a>
+      <a href="compare.html" class="btn-secondary">Compare all models →</a>
     </div>
-    <div class="tok-grid">
-      <div class="tok-field">
-        <div class="tok-label">Input tokens / request <span class="auto-badge" id="in-badge">AUTO-ESTIMATED</span></div>
-        <input class="tok-input" id="in-tok" type="text" inputmode="numeric" aria-label="Input tokens per request">
-        <div class="tok-words" id="in-words"></div>
-      </div>
-      <div class="tok-field">
-        <div class="tok-label">Output tokens / request <span class="auto-badge" id="out-badge">AUTO-ESTIMATED</span></div>
-        <input class="tok-input" id="out-tok" type="text" inputmode="numeric" aria-label="Output tokens per request">
-        <div class="tok-words" id="out-words"></div>
-      </div>
-    </div>
-    <div class="cache-row" id="cache-row">
-      <div class="vol-head">
-        <span class="vol-label" style="font-size:13px; color:var(--text2);">Input served from cache <span class="auto-badge" id="cache-badge">AUTO-ESTIMATED</span></span>
-        <span class="vol-value" style="font-size:16px;" id="cache-value">70%</span>
-      </div>
-      <input type="range" id="cache-slider" min="0" max="95" value="70" aria-label="Share of input served from cache">
-    </div>
-    <div class="batch-row">
-      <span class="switch"><input type="checkbox" id="batch-toggle" aria-label="Apply batch discounts"><i></i></span>
-      <span class="batch-label"><b>I can run batch / async</b> — applies batch discounts where verified <span id="batch-providers"></span></span>
-    </div>
-    <div class="reason-row">
-      <div class="reason-head">
-        <span class="vol-label" style="font-size:13px; color:var(--text2);">Reasoning / thinking</span>
-        <span class="reason-sub">Thinking tokens bill as output — estimate how much your task adds, or set output tokens directly.</span>
-      </div>
-      <div class="reason-chips" id="reason-chips" role="group" aria-label="Reasoning effort"></div>
+    <div class="hero-proof">
+      <span>Same workload, <b>28 models</b></span>
+      <span class="hp-accent">budget models cost cents — frontier models cost orders of magnitude more</span>
+      <span class="hp-gap">we price all of them so you pick on cost</span>
     </div>
   </div>
-</section>
 
-<section class="step-block wrap" data-screen-label="Step 3 — Results">
-  <div class="step-num">Step 3 — Results</div>
-  <div class="results-head">
-    <div>
-      <h2>Monthly cost per model</h2>
-      <p class="step-sub">Grouped by tier — comparing a frontier model with a budget one on price alone is meaningless.</p>
+  <div class="track-strip reveal">
+    <div class="track-head">
+      <span class="track-title"><span class="track-dot"></span>Tracking live per-token prices for every major LLM API</span>
+      <span class="track-verified">verified June 2026 · re-checked daily</span>
     </div>
-    <div class="results-actions" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px;">
-      <button type="button" class="share-btn" id="share-btn" aria-label="Copy a shareable link to this scenario" style="margin-top:0;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-        <span id="share-label">Copy share link</span>
-      </button>
-      <button class="llm-print-btn" id="llm-print-btn" onclick="window.print()" style="margin:0;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-        Print / Save PDF
-      </button>
+    <div class="track-logos">
+      <a href="openai-pricing.html" class="track-logo"><img src="assets/icons/openai.png" alt="OpenAI"><span>OpenAI</span></a>
+      <a href="anthropic-pricing.html" class="track-logo"><img src="assets/icons/anthropic.png" alt="Anthropic"><span>Anthropic</span></a>
+      <a href="gemini-pricing.html" class="track-logo"><img src="assets/icons/gemini.png" alt="Gemini"><span>Gemini</span></a>
+      <a href="deepseek-pricing.html" class="track-logo"><img src="assets/icons/deepseek.png" alt="DeepSeek"><span>DeepSeek</span></a>
+      <a href="grok-pricing.html" class="track-logo"><img src="assets/icons/grok.png" alt="Grok"><span>Grok</span></a>
+      <a href="mistral-pricing.html" class="track-logo"><img src="assets/icons/mistral.png" alt="Mistral"><span>Mistral</span></a>
+    </div>
+    <div class="track-foot">Every model priced from each provider's <b>official per-token pricing</b> — input, output, cached &amp; batch · free, no signup</div>
+  </div>
+
+  <div class="reveal">
+    <div class="section-label">Start here</div>
+    <div class="cta-grid">
+      <a href="calculator.html" class="cta-card featured" data-d="1">
+        <div class="cta-icon">
+          <svg width="22" height="22" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#e98bff" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#ffffff"/></svg>
+        </div>
+        <h2>Find my cheapest model</h2>
+        <p>Answer a few questions about your use case and volume — get all 28 models ranked by cost, with the cheapest qualifying pick flagged.</p>
+        <span class="cta-arrow">Open the calculator <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </a>
+      <a href="compare.html" class="cta-card" data-d="2">
+        <div class="cta-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e98bff" stroke-width="2.2"><path d="M9 3v18M15 3v18M4 8h16M4 16h16"/></svg>
+        </div>
+        <h2>Compare all models</h2>
+        <p>Every model's input, output, cached and batch price in one sortable table — frontier to budget, side by side.</p>
+        <span class="cta-arrow">Compare models <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </a>
+      <a href="cheapest-llm-api.html" class="cta-card" data-d="3">
+        <div class="cta-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e98bff" stroke-width="2.2"><path d="M4 19V5M4 19h16M9 16V9M14 16V6M19 16v-4"/></svg>
+        </div>
+        <h2>Cheapest LLM API</h2>
+        <p>The lowest-cost model at a typical workload, ranked by price per tier — frontier, mid and budget.</p>
+        <span class="cta-arrow">See the ranking <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </a>
+      <a href="is-llm-worth-it.html" class="cta-card" data-d="4">
+        <div class="cta-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e98bff" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+        </div>
+        <h2>Is it worth it? ROI</h2>
+        <p>Price every model against the human time it offsets — net savings, return and break-even for your task.</p>
+        <span class="cta-arrow">Calculate ROI <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></span>
+      </a>
     </div>
   </div>
-  <div class="llm-print-only" id="llm-print-head">
-    <div class="lph-brand">WizardCost · LLMCost</div>
-    <div class="lph-title">LLM API cost estimate — monthly cost per model</div>
-    <div class="lph-date" id="llm-print-date"></div>
-  </div>
-  <div id="reco" class="reco" hidden></div>
-  <div class="savings-banner" id="savings-banner"></div>
-  <div id="results"></div>
-  <p class="results-foot">Costs marked ≈ use our auto-estimated tokens — override them in step 2 for exact math. Cached input is billed at each model's published cache-read rate; models without published cache pricing are computed at the full input rate. Models with a published long-context tier (e.g. Gemini above 200k input) switch to those rates automatically. Reasoning effort multiplies billed output to estimate thinking tokens.</p>
-  <div class="llm-print-only llm-print-disclaimer">Estimates computed from each provider's published per-token pricing (verified June 2026) at your selected volume; real cost depends on your exact token usage. WizardCost is editorially independent and not affiliated with any provider. Method &amp; sources: wizardcost.com/llm/methodology.html · generated by the free calculator at wizardcost.com/llm/</div>
 
-  <!-- EMAILCAP:HTML:START — LLM varianta (skupina price-drop-alerts-llm; action = EMAILCAP_ACTION_LLM v build.py, ručně i na changelog.html — měnit synchronně) -->
-  <!-- price-drop alerts e-mail form disabled 2026-06-16 — compliance: no e-mail collection while the project stays faceless (no MailerLite signup, no consent banner needed). Previous markup is in git history; re-enable by restoring the price-alerts section + EMAILCAP_ACTION_LLM. -->
-  <!-- EMAILCAP:HTML:END -->
-</section>
+  <div class="tool-pages reveal">
+    <div class="section-label">Pricing guides by provider</div>
+    <div class="tool-page-grid">
+      <a href="openai-pricing.html" class="tool-page-link"><img src="assets/icons/openai.png" alt="OpenAI">OpenAI Pricing</a>
+      <a href="anthropic-pricing.html" class="tool-page-link"><img src="assets/icons/anthropic.png" alt="Anthropic">Anthropic Pricing</a>
+      <a href="gemini-pricing.html" class="tool-page-link"><img src="assets/icons/gemini.png" alt="Gemini">Gemini Pricing</a>
+      <a href="deepseek-pricing.html" class="tool-page-link"><img src="assets/icons/deepseek.png" alt="DeepSeek">DeepSeek Pricing</a>
+      <a href="grok-pricing.html" class="tool-page-link"><img src="assets/icons/grok.png" alt="Grok">Grok Pricing</a>
+      <a href="mistral-pricing.html" class="tool-page-link"><img src="assets/icons/mistral.png" alt="Mistral">Mistral Pricing</a>
+      <a href="methodology.html" class="tool-page-link">Methodology</a>
+      <a href="price-history.html" class="tool-page-link">Price history</a>
+    </div>
+  </div>
+
+  <div class="faq reveal">
+    <h2 class="faq-heading">Frequently asked questions</h2>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Which LLM API is cheapest?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">It depends on your token mix, but budget models like DeepSeek and Gemini Flash are typically the cheapest per token, while frontier models from OpenAI and Anthropic cost far more for the same tokens. Our <a href="calculator.html">calculator</a> prices all 28 models at your exact volume and ranks them, or see the <a href="cheapest-llm-api.html">cheapest LLM API ranking</a>.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How do you calculate LLM API cost?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">From each model's official per-token input, output and cached price, verified by hand, at the request volume and token sizes you enter — the same engine across every page. We compute a monthly figure rather than quoting one, so models compare on the same workload. See the <a href="methodology.html">methodology</a>.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Are tokens the same across providers?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">No — each model family uses its own tokenizer, so the same text becomes a different number of tokens from one provider to the next (commonly a 10–30% spread). We compare list price per 1M tokens and run one identical workload through every model. <a href="methodology.html">Full methodology →</a></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is an LLM API worth the cost?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">At high volume on a clear task, cost per call is cents while the human time it offsets is worth far more, so ROI is strong. For one-off or zero-error-tolerance work it often isn't. The <a href="is-llm-worth-it.html">ROI calculator</a> shows net savings and break-even for your scenario.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do model providers pay you?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="faq-a">No. The LLM section carries no affiliate links and no sponsored placement — rankings are by objective cost only. It exists to be an accurate, independent reference.</div>
+    </div>
+  </div>
+
+  <div class="network reveal">
+    <div class="network-intro">
+      <h3>Part of WizardCost</h3>
+      <p><b>LLMCost</b> is one of <a href="/">WizardCost</a>'s pricing wizards — live calculators with real, dated prices for a whole software category. Same honest method, no marketing fluff, no affiliate on LLM pricing.</p>
+    </div>
+    <div class="wiz-rail">
+      <div class="wiz-rail-label">Other wizards</div>
+      <a class="wiz-tile" href="/automation/">
+        <div class="wiz-tile-top"><span class="wiz-dot" style="background:#16d18c"></span>AutomationCost<span class="wiz-badge">Live</span></div>
+        <p>Real pricing for n8n, Make, Pipedream, Zapier &amp; more — matched to your run volume.</p>
+      </a>
+      <div class="wiz-tile soon">
+        <div class="wiz-tile-top"><span class="wiz-dot" style="background:#5cb8ff"></span>EmailCost<span class="wiz-badge soon">Soon</span></div>
+        <p>Email-sending pricing — Mailgun, SendGrid, Postmark &amp; Resend at your send volume.</p>
+      </div>
+      <div class="wiz-tile soon">
+        <div class="wiz-tile-top"><span class="wiz-dot" style="background:#ffa45c"></span>CRMCost<span class="wiz-badge soon">Soon</span></div>
+        <p>CRM seat &amp; contact pricing — HubSpot, Salesforce, Pipedrive &amp; more.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <footer>
   <div class="wrap">
@@ -391,457 +377,8 @@
 </footer>
 
 <script>
-/* Token/cache defaulty per use case — FINÁLNÍ hodnoty enginu (2026-06-12).
-   Editorial odhady, auto-badge, uživatel přepisuje. Neměnit bez testů. */
-var USE_CASES = [
-  { id: 'chatbot', name: 'Chatbot', meta: 'long input (history), short output', inTok: 2000, outTok: 300, cache: 70,
-    icon: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' },
-  { id: 'rag', name: 'RAG / search', meta: 'retrieved context in, cited answer out', inTok: 5000, outTok: 500, cache: 30,
-    icon: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' },
-  { id: 'summarization', name: 'Summarization', meta: 'very long input, compact output', inTok: 8000, outTok: 500, cache: 10,
-    icon: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="11" x2="20" y2="11"/><line x1="4" y1="16" x2="13" y2="16"/></svg>' },
-  { id: 'agents', name: 'Agents', meta: 'many chained calls, tool outputs', inTok: 10000, outTok: 1500, cache: 50,
-    icon: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>' },
-  { id: 'extraction', name: 'Data extraction', meta: 'documents in, structured JSON out', inTok: 3000, outTok: 300, cache: 20,
-    icon: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><line x1="4" y1="10" x2="20" y2="10"/><line x1="10" y1="10" x2="10" y2="20"/></svg>' }
-];
-
-/* DATA:MODELS:START */ /* generováno build.py z data/models.json — needituj ručně */
-const MODELS = [
-  { n: "GPT-5.5", p: "OpenAI", pslug: "openai", t: "frontier", i: 5.0, o: 30.0, cached: 0.5, batch: 0.5, ctx: 1000000, lc: null, mo: 1270.0 },
-  { n: "GPT-5.5 Pro", p: "OpenAI", pslug: "openai", t: "frontier", i: 30.0, o: 180.0, cached: null, batch: 0.5, ctx: 1000000, lc: null, mo: 11400.0 },
-  { n: "GPT-5.4", p: "OpenAI", pslug: "openai", t: "frontier", i: 2.5, o: 15.0, cached: 0.25, batch: 0.5, ctx: 1000000, lc: null, mo: 635.0 },
-  { n: "GPT-5.4 mini", p: "OpenAI", pslug: "openai", t: "mid", i: 0.75, o: 4.5, cached: 0.075, batch: 0.5, ctx: 400000, lc: null, mo: 190.5 },
-  { n: "GPT-5.4 nano", p: "OpenAI", pslug: "openai", t: "budget", i: 0.2, o: 1.25, cached: 0.02, batch: 0.5, ctx: 400000, lc: null, mo: 52.3 },
-  { n: "Claude Fable 5", p: "Anthropic", pslug: "anthropic", t: "frontier", i: 10.0, o: 50.0, cached: 1.0, batch: 0.5, ctx: 1000000, lc: null, mo: 2240.0 },
-  { n: "Claude Opus 4.8", p: "Anthropic", pslug: "anthropic", t: "frontier", i: 5.0, o: 25.0, cached: 0.5, batch: 0.5, ctx: 1000000, lc: null, mo: 1120.0 },
-  { n: "Claude Sonnet 4.6", p: "Anthropic", pslug: "anthropic", t: "mid", i: 3.0, o: 15.0, cached: 0.3, batch: 0.5, ctx: 1000000, lc: null, mo: 672.0 },
-  { n: "Claude Haiku 4.5", p: "Anthropic", pslug: "anthropic", t: "budget", i: 1.0, o: 5.0, cached: 0.1, batch: 0.5, ctx: 200000, lc: null, mo: 224.0 },
-  { n: "Gemini 3.1 Pro Preview", p: "Google (Gemini)", pslug: "google", t: "frontier", i: 2.0, o: 12.0, cached: 0.2, batch: 0.5, ctx: 1000000, lc: { th: 200000, i: 4.0, o: 18.0, cached: null }, mo: 508.0 },
-  { n: "Gemini 3.5 Flash", p: "Google (Gemini)", pslug: "google", t: "mid", i: 1.5, o: 9.0, cached: 0.15, batch: 0.5, ctx: 1000000, lc: null, mo: 381.0 },
-  { n: "Gemini 3 Flash Preview", p: "Google (Gemini)", pslug: "google", t: "mid", i: 0.5, o: 3.0, cached: 0.05, batch: 0.5, ctx: 1000000, lc: null, mo: 127.0 },
-  { n: "Gemini 3.1 Flash-Lite", p: "Google (Gemini)", pslug: "google", t: "budget", i: 0.25, o: 1.5, cached: 0.025, batch: 0.5, ctx: 1000000, lc: null, mo: 63.5 },
-  { n: "DeepSeek V4 Pro", p: "DeepSeek", pslug: "deepseek", t: "mid", i: 0.435, o: 0.87, cached: 0.003625, batch: null, ctx: 1000000, lc: null, mo: 52.7075 },
-  { n: "DeepSeek V4 Flash", p: "DeepSeek", pslug: "deepseek", t: "budget", i: 0.14, o: 0.28, cached: 0.0028, batch: null, ctx: 1000000, lc: null, mo: 17.192 },
-  { n: "Grok 4.3", p: "xAI (Grok)", pslug: "xai", t: "frontier", i: 1.25, o: 2.5, cached: 0.2, batch: null, ctx: 1000000, lc: null, mo: 178.0 },
-  { n: "Grok Build 0.1", p: "xAI (Grok)", pslug: "xai", t: "mid", i: 1.0, o: 2.0, cached: 0.2, batch: null, ctx: 256000, lc: null, mo: 148.0 },
-  { n: "Mistral Large 3", p: "Mistral", pslug: "mistral", t: "frontier", i: 0.5, o: 1.5, cached: 0.05, batch: 0.5, ctx: 256000, lc: null, mo: 82.0 },
-  { n: "Mistral Medium 3.5", p: "Mistral", pslug: "mistral", t: "frontier", i: 1.5, o: 7.5, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 525.0 },
-  { n: "Magistral Medium", p: "Mistral", pslug: "mistral", t: "frontier", i: 2.0, o: 5.0, cached: null, batch: 0.5, ctx: 128000, lc: null, mo: 550.0 },
-  { n: "Devstral 2", p: "Mistral", pslug: "mistral", t: "frontier", i: 0.4, o: 2.0, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 140.0 },
-  { n: "Mistral Small 4", p: "Mistral", pslug: "mistral", t: "mid", i: 0.1, o: 0.3, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 29.0 },
-  { n: "Magistral Small", p: "Mistral", pslug: "mistral", t: "mid", i: 0.5, o: 1.5, cached: null, batch: 0.5, ctx: 128000, lc: null, mo: 145.0 },
-  { n: "Codestral", p: "Mistral", pslug: "mistral", t: "mid", i: 0.3, o: 0.9, cached: null, batch: 0.5, ctx: 128000, lc: null, mo: 87.0 },
-  { n: "Devstral Small 2", p: "Mistral", pslug: "mistral", t: "budget", i: 0.1, o: 0.3, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 29.0 },
-  { n: "Ministral 3 (3B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.1, o: 0.1, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 23.0 },
-  { n: "Ministral 3 (8B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.15, o: 0.15, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 34.5 },
-  { n: "Ministral 3 (14B)", p: "Mistral", pslug: "mistral", t: "budget", i: 0.2, o: 0.2, cached: null, batch: 0.5, ctx: 256000, lc: null, mo: 46.0 },
-];
-const MODELS_REVIEWED = "2026-06-20";
-/* DATA:MODELS:END */
-/* DATA:SCORING:START */ /* generováno build.py z data/scoring-model.json + models.json — needituj ručně */
-const SCORE_W = {"feature": 0.5, "price": 0.32, "frontier": 0.18};
-const ROLE_WEIGHTS = {"chatbot": {"context": 0.15, "caching": 0.35, "cheapOutput": 0.1, "batch": 0.0, "frontier": 0.15, "lowPrice": 0.25}, "coding": {"context": 0.25, "caching": 0.15, "cheapOutput": 0.1, "batch": 0.0, "frontier": 0.4, "lowPrice": 0.1}, "agents": {"context": 0.2, "caching": 0.2, "cheapOutput": 0.15, "batch": 0.0, "frontier": 0.35, "lowPrice": 0.1}, "rag": {"context": 0.4, "caching": 0.2, "cheapOutput": 0.05, "batch": 0.05, "frontier": 0.15, "lowPrice": 0.15}, "classification": {"context": 0.05, "caching": 0.05, "cheapOutput": 0.25, "batch": 0.25, "frontier": 0.1, "lowPrice": 0.3}, "reasoning": {"context": 0.15, "caching": 0.05, "cheapOutput": 0.15, "batch": 0.05, "frontier": 0.5, "lowPrice": 0.1}};
-const UC_ROLE = {"chatbot": "chatbot", "rag": "rag", "summarization": "rag", "agents": "agents", "extraction": "classification"};
-const MODEL_SCORES = {"GPT-5.5": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.239, "batch": 0.5, "frontier": 1.0}, "GPT-5.5 Pro": {"context": 1.0, "caching": 0.0, "cheapOutput": 0.0, "batch": 0.5, "frontier": 1.0}, "GPT-5.4": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.332, "batch": 0.5, "frontier": 1.0}, "GPT-5.4 mini": {"context": 0.777, "caching": 0.9, "cheapOutput": 0.492, "batch": 0.5, "frontier": 0.6}, "GPT-5.4 nano": {"context": 0.777, "caching": 0.9, "cheapOutput": 0.663, "batch": 0.5, "frontier": 0.3}, "Claude Fable 5": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.171, "batch": 0.5, "frontier": 1.0}, "Claude Opus 4.8": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.263, "batch": 0.5, "frontier": 1.0}, "Claude Sonnet 4.6": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.332, "batch": 0.5, "frontier": 0.6}, "Claude Haiku 4.5": {"context": 0.609, "caching": 0.9, "cheapOutput": 0.478, "batch": 0.5, "frontier": 0.3}, "Gemini 3.1 Pro Preview": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.361, "batch": 0.5, "frontier": 1.0}, "Gemini 3.5 Flash": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.4, "batch": 0.5, "frontier": 0.6}, "Gemini 3 Flash Preview": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.546, "batch": 0.5, "frontier": 0.6}, "Gemini 3.1 Flash-Lite": {"context": 1.0, "caching": 0.9, "cheapOutput": 0.639, "batch": 0.5, "frontier": 0.3}, "DeepSeek V4 Pro": {"context": 1.0, "caching": 0.992, "cheapOutput": 0.711, "batch": 0.0, "frontier": 0.6}, "DeepSeek V4 Flash": {"context": 1.0, "caching": 0.98, "cheapOutput": 0.863, "batch": 0.0, "frontier": 0.3}, "Grok 4.3": {"context": 1.0, "caching": 0.84, "cheapOutput": 0.571, "batch": 0.0, "frontier": 1.0}, "Grok Build 0.1": {"context": 0.669, "caching": 0.8, "cheapOutput": 0.6, "batch": 0.0, "frontier": 0.6}, "Mistral Large 3": {"context": 0.669, "caching": 0.9, "cheapOutput": 0.639, "batch": 0.5, "frontier": 1.0}, "Mistral Medium 3.5": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.424, "batch": 0.5, "frontier": 1.0}, "Magistral Medium": {"context": 0.5, "caching": 0.0, "cheapOutput": 0.478, "batch": 0.5, "frontier": 1.0}, "Devstral 2": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.6, "batch": 0.5, "frontier": 1.0}, "Mistral Small 4": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.853, "batch": 0.5, "frontier": 0.6}, "Magistral Small": {"context": 0.5, "caching": 0.0, "cheapOutput": 0.639, "batch": 0.5, "frontier": 0.6}, "Codestral": {"context": 0.5, "caching": 0.0, "cheapOutput": 0.707, "batch": 0.5, "frontier": 0.6}, "Devstral Small 2": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.853, "batch": 0.5, "frontier": 0.3}, "Ministral 3 (3B)": {"context": 0.669, "caching": 0.0, "cheapOutput": 1.0, "batch": 0.5, "frontier": 0.3}, "Ministral 3 (8B)": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.946, "batch": 0.5, "frontier": 0.3}, "Ministral 3 (14B)": {"context": 0.669, "caching": 0.0, "cheapOutput": 0.908, "batch": 0.5, "frontier": 0.3}};
-/* DATA:SCORING:END */
-var TIERS = [
-  { id: 'frontier', label: 'FRONTIER' },
-  { id: 'mid',      label: 'MID-TIER' },
-  { id: 'budget',   label: 'BUDGET' }
-];
-var TIER_TIP = 'Our editorial grouping — model classes change, we re-sort on every pricing revision.';
-/* cache se aplikuje jen tam, kde se prompt reálně opakuje: chatbot (historie),
-   agents (system/tool kontext), rag (system prompt + retrievaný kontext).
-   summarization/extraction = každý dokument unikátní → cache hit ~0, neaplikujeme
-   (drží to i parity test test-llm-engine.js „summarization ignoruje cache"). */
-var CACHE_RELEVANT = { chatbot: true, agents: true, rag: true };
-
-/* reasoning effort = násobitel účtovaného outputu (thinking tokeny se účtují jako
-   output). 1 = vypnuto (default → parity kanonického scénáře beze změny). */
-var REASONING = [
-  { id: 1,  label: 'None' },
-  { id: 3,  label: 'Light' },
-  { id: 6,  label: 'Medium' },
-  { id: 12, label: 'Heavy' }
-];
-
-var state = { uc: 'chatbot', req: 100000, inTok: 2000, outTok: 300, inAuto: true, outAuto: true,
-              cache: 70, cacheAuto: true, batch: false, reason: 1, open: null };
-
-/* persist (refresh-friendly; klíč vlastní, nikdy nemazat cizí) */
-/* stropy ručních token vstupů — nad největší context window v datech nedává
-   smysl a součiny s req rozbíjejí čísla; persistovaný stav klampovat taky */
-var TOK_MAX_IN = 2000000, TOK_MAX_OUT = 200000;
-function parseTok(raw, max) {
-  var v = parseInt(String(raw).replace(/[^0-9]/g, ''), 10);
-  return v > 0 ? Math.min(v, max) : null;
-}
-
-function clampReason(v) {
-  v = parseInt(v, 10);
-  return REASONING.some(function (r) { return r.id === v; }) ? v : 1;
-}
-function sanitize() {
-  state.inTok = parseTok(state.inTok, TOK_MAX_IN) || 2000;
-  state.outTok = parseTok(state.outTok, TOK_MAX_OUT) || 300;
-  state.reason = clampReason(state.reason);
-}
-
-try {
-  var saved = JSON.parse(localStorage.getItem('llm_profile') || 'null');
-  if (saved && saved.uc) { state = saved; sanitize(); }
-} catch (e) {}
-
-/* sdílitelná URL: ?uc=&req=&in=&out=&cache=&batch=&r= přebíjí localStorage, aby
-   sdílený odkaz vždy ukázal přesně ten profil (čteme jen při loadu, ne historii) */
-(function () {
-  try {
-    if (!location.search) return;
-    var q = new URLSearchParams(location.search);
-    if (q.has('uc') && USE_CASES.some(function (u) { return u.id === q.get('uc'); })) state.uc = q.get('uc');
-    if (q.has('req')) { var rq = parseInt(q.get('req'), 10); if (rq > 0) state.req = Math.min(rq, 10000000); }
-    if (q.has('in'))  { state.inTok = q.get('in');  state.inAuto = false; }
-    if (q.has('out')) { state.outTok = q.get('out'); state.outAuto = false; }
-    if (q.has('cache')) { var ch = parseInt(q.get('cache'), 10); if (ch >= 0 && ch <= 95) { state.cache = ch; state.cacheAuto = false; } }
-    if (q.has('batch')) state.batch = q.get('batch') === '1';
-    if (q.has('r')) state.reason = q.get('r');
-    sanitize();
-  } catch (e) {}
-})();
-
-function persist() { try { localStorage.setItem('llm_profile', JSON.stringify(state)); } catch (e) {} }
-
-/* sdílecí odkaz z aktuálního stavu — jen pole odlišná od defaultu use case
-   (čistá, krátká URL); kopíruje do schránky */
-function shareUrl() {
-  var u = USE_CASES.find(function (x) { return x.id === state.uc; }) || USE_CASES[0];
-  var p = new URLSearchParams();
-  p.set('uc', state.uc);
-  p.set('req', state.req);
-  if (state.inTok !== u.inTok) p.set('in', state.inTok);
-  if (state.outTok !== u.outTok) p.set('out', state.outTok);
-  if (CACHE_RELEVANT[state.uc] && state.cache !== u.cache) p.set('cache', state.cache);
-  if (state.batch) p.set('batch', '1');
-  if (state.reason !== 1) p.set('r', state.reason);
-  return location.origin + location.pathname + '?' + p.toString();
-}
-
-function fmtInt(n) { return Math.round(n).toLocaleString('en-US'); }
-function fmtReq(n) { return n >= 1000000 ? (n / 1000000).toFixed(n % 1000000 ? 1 : 0) + 'M' : n >= 1000 ? Math.round(n / 1000) + 'k' : '' + n; }
-function fmtMoney(n) {
-  if (n < 10) return '$' + n.toFixed(2);
-  if (n < 100) return '$' + n.toFixed(1);
-  return '$' + fmtInt(n);
-}
-function reqFromSlider(v) { return Math.round(Math.pow(10, 3 + v * 4 / 100)); }
-function sliderFromReq(r) { return Math.max(0, Math.min(100, (Math.log10(r) - 3) * 100 / 4)); }
-
-/* efektivní per-1M sazby pro AKTUÁLNÍ profil: nad publikovaným long-context
-   prahem (m.lc.th) účtují provideři vyšší sazby (Gemini >200k = $4/$18). Práh se
-   posuzuje dle velikosti promptu = input tokenů. m.lc chybí → vždy základní sazby. */
-function rates(m) {
-  if (m.lc && state.inTok > m.lc.th) return { i: m.lc.i, o: m.lc.o, cached: m.lc.cached };
-  return { i: m.i, o: m.o, cached: m.cached };
-}
-function longCtx(m) { return !!(m.lc && state.inTok > m.lc.th); }
-
-/* Cost engine — přesné per-model ceny z dat (žádné poměry):
-   - long-context: nad m.lc.th se použijí vyšší sazby (rates())
-   - cache jen u CACHE_RELEVANT use case a modelů s publikovanou cache cenou
-     (cached z rates() — nad prahem buď long-context cache cena, nebo neaplikujeme);
-     efektivní input cena = i*(1-c) + cached*c
-   - reasoning: thinking tokeny se účtují jako output → output × state.reason
-   - batch násobí celek jen u modelů s ověřenou slevou (m.batch !== null) */
-function cost(m) {
-  var r = rates(m);
-  var c = CACHE_RELEVANT[state.uc] ? state.cache / 100 : 0;
-  var cacheUsed = c > 0 && r.cached !== null;
-  var inRate = cacheUsed ? r.i * (1 - c) + r.cached * c : r.i;
-  var inCost = state.req * state.inTok / 1e6 * inRate;
-  var outCost = state.req * state.outTok * state.reason / 1e6 * r.o;
-  var total = inCost + outCost;
-  var batched = state.batch && m.batch !== null;
-  if (batched) total *= m.batch;
-  return { inCost: inCost, outCost: outCost, total: total,
-           cacheUsed: cacheUsed, batched: batched, longCtx: longCtx(m), rate: r };
-}
-
-function ctxChip(ctx) {
-  if (!ctx) return null;
-  return (ctx >= 1000000 ? (ctx / 1000000) + "M" : Math.round(ctx / 1000) + "k") + " context";
-}
-
-/* fyzická vejde-se kontrola: input+output prompt se musí vejít do context okna.
-   ctx == null (neověřeno) => nehodnotíme jako „nevejde se" (nepenalizujeme neznámé) */
-function fits(m) { return m.ctx == null || (state.inTok + state.outTok) <= m.ctx; }
-function ctxShort(ctx) { return ctx >= 1000000 ? (ctx / 1000000) + 'M' : Math.round(ctx / 1000) + 'k'; }
-
-/* ── Recommendation engine (váhy z DATA:SCORING; dimenze dopočítané z dat) ──
-   matchScore = featureScore*SCORE_W.feature + priceScore*SCORE_W.price + frontier*SCORE_W.frontier.
-   featureScore = váhy role · per-model dimenze; priceScore = log-norm cost(m) na AKTUÁLNÍM
-   profilu (levnější = vyšší). Žádné benchmarky — jen ověřená data + tvoje čísla. */
-function recommend() {
-  var role = UC_ROLE[state.uc];
-  var w = role && ROLE_WEIGHTS[role];
-  if (!w) return null;
-  var pool = MODELS.filter(fits);
-  if (!pool.length) return { none: true };
-  var costs = pool.map(function (m) { return cost(m).total; });
-  var logs = costs.map(function (c) { return Math.log(Math.max(c, 0.01)); });
-  var lo = Math.min.apply(null, logs), hi = Math.max.apply(null, logs);
-  var DIMS = ['context', 'caching', 'cheapOutput', 'batch', 'frontier'];
-  var scored = pool.map(function (m, i) {
-    var ms = MODEL_SCORES[m.n] || {};
-    var feat = 0;
-    DIMS.forEach(function (d) { feat += (w[d] || 0) * (ms[d] || 0); });
-    var price = hi === lo ? 0.5 : (hi - logs[i]) / (hi - lo);
-    var match = SCORE_W.feature * feat + SCORE_W.price * price + SCORE_W.frontier * (ms.frontier || 0);
-    return { m: m, match: match, total: costs[i] };
-  }).sort(function (a, b) { return b.match - a.match; });
-  var top = scored[0];
-  var value = scored.filter(function (s) { return s.match >= top.match * 0.82; })
-    .sort(function (a, b) { return a.total - b.total; })[0];
-  return { top: top, value: value };
-}
-
-function setFill(el) { el.style.setProperty('--fill', ((+el.value - +el.min) * 100 / (+el.max - +el.min)) + '%'); }
-
-function render() {
-  var _pd = document.getElementById('llm-print-date');
-  if (_pd && !_pd.textContent) _pd.textContent = 'Generated ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  document.querySelectorAll('.uc-card').forEach(function (el) {
-    var sel = el.dataset.uc === state.uc;
-    el.classList.toggle('selected', sel);
-    el.setAttribute('aria-pressed', sel ? 'true' : 'false');
-  });
-  document.getElementById('req-value').textContent = fmtReq(state.req);
-  var reqS = document.getElementById('req-slider');
-  reqS.value = sliderFromReq(state.req); setFill(reqS);
-  reqS.setAttribute('aria-valuetext', fmtReq(state.req) + ' requests per month');
-  var inEl = document.getElementById('in-tok'), outEl = document.getElementById('out-tok');
-  if (document.activeElement !== inEl) inEl.value = fmtInt(state.inTok);
-  if (document.activeElement !== outEl) outEl.value = fmtInt(state.outTok);
-  document.getElementById('in-badge').classList.toggle('off', !state.inAuto);
-  document.getElementById('out-badge').classList.toggle('off', !state.outAuto);
-  document.getElementById('in-words').textContent = '≈ ' + fmtInt(state.inTok * 0.75) + ' words';
-  document.getElementById('out-words').textContent = '≈ ' + fmtInt(state.outTok * 0.75) + ' words';
-  var cacheRow = document.getElementById('cache-row');
-  cacheRow.hidden = !CACHE_RELEVANT[state.uc];
-  document.getElementById('cache-value').textContent = state.cache + '%';
-  var cacheS = document.getElementById('cache-slider');
-  cacheS.value = state.cache; setFill(cacheS);
-  cacheS.setAttribute('aria-valuetext', state.cache + '% of input served from cache');
-  document.getElementById('cache-badge').classList.toggle('off', !state.cacheAuto);
-  document.getElementById('batch-toggle').checked = state.batch;
-
-  var est = state.inAuto || state.outAuto;
-  var prefix = est ? '≈' : '';
-  var html = '';
-  TIERS.forEach(function (tier) {
-    var rows = MODELS.filter(function (m) { return m.t === tier.id; })
-      .map(function (m) { var c = cost(m); return { m: m, c: c }; })
-      .sort(function (a, b) { return a.c.total - b.c.total; });
-    var max = rows[rows.length - 1].c.total;
-    html += '<div class="tier-section"><div class="tier-head">' +
-      '<span class="tier-tag">' + tier.label + '</span>' +
-      '<span class="tier-info" title="' + TIER_TIP + '">' + rows.length + ' models · our grouping</span></div>';
-    var winIdx = rows.findIndex(function (r) { return fits(r.m); });
-    rows.forEach(function (r, idx) {
-      var w = Math.max(3, Math.sqrt(r.c.total / max) * 100);
-      var ok = fits(r.m);
-      var chips = '';
-      var cc = ctxChip(r.m.ctx);
-      if (cc) chips += '<span class="cap-chip">' + cc + '</span>';
-      if (r.m.batch !== null) chips += '<span class="cap-chip">batch −' + Math.round((1 - r.m.batch) * 100) + '%</span>';
-      if (r.c.longCtx) chips += '<span class="cap-chip lc">long-context rate &gt;' + ctxShort(r.m.lc.th) + '</span>';
-      if (!ok) chips += '<span class="cap-chip nofit">input &gt; ' + ctxShort(r.m.ctx) + ' ctx</span>';
-      var key = r.m.n;
-      var cacheNote = r.c.cacheUsed
-        ? ' (' + state.cache + '% cached at $' + r.c.rate.cached + '/1M)'
-        : (CACHE_RELEVANT[state.uc]
-            ? (r.c.longCtx ? ' (no cache rate above ' + ctxShort(r.m.lc.th) + ')'
-                           : (r.m.cached === null ? ' (no cache pricing published)' : ''))
-            : '');
-      var outNote = state.reason > 1 ? ' (incl. ×' + state.reason + ' reasoning)' : '';
-      html += '<div class="model-row' + (idx === winIdx ? ' win' : '') + (ok ? '' : ' nofit') + (state.open === key ? ' open' : '') + '" data-model="' + key + '">' +
-        '<div class="mr-top">' +
-        '<span class="mr-name">' + r.m.n + '<span class="mr-provider">' + r.m.p + '</span></span>' +
-        '<span class="bar-track"><span class="bar-fill" style="width:' + w.toFixed(1) + '%"></span></span>' +
-        '<span class="mr-cost">' + prefix + fmtMoney(r.c.total) + '/mo</span></div>' +
-        (chips ? '<div class="mr-chips">' + chips + '</div>' : '') +
-        '<div class="mr-detail">input <b>' + fmtMoney(r.c.inCost) + '</b>' + cacheNote +
-        ' · output <b>' + fmtMoney(r.c.outCost) + '</b>' + outNote +
-        (r.c.batched ? ' · batch <b>−' + Math.round((1 - r.m.batch) * 100) + '%</b>' : '') +
-        ' · $' + r.c.rate.i + ' / $' + r.c.rate.o + ' per 1M tokens' +
-        (r.c.longCtx ? ' (long-context)' : '') + '</div></div>';
-    });
-    html += '</div>';
-  });
-  document.getElementById('results').innerHTML = html;
-
-  /* recommendation panel (scoring) — vítěz pro use-case + nejlevnější co stále sedí */
-  var recEl = document.getElementById('reco');
-  if (recEl) {
-    var rec = recommend();
-    if (rec && rec.none) {
-      recEl.hidden = false;
-      recEl.innerHTML = '<div class="reco-label">Heads up</div>' +
-        '<div class="reco-body">Your input of <b>' + fmtInt(state.inTok) + ' tokens</b> is larger than the context window of every model we track — none can hold this prompt. Reduce the input or split it across calls.</div>';
-    } else if (rec) {
-      var ucName = USE_CASES.find(function (u) { return u.id === state.uc; }).name;
-      var diff = rec.value && rec.value.m.n !== rec.top.m.n;
-      var valHtml = diff
-        ? ' Tightest budget that still fits: <b>' + rec.value.m.n + '</b> at ' + prefix + fmtMoney(rec.value.total) + '/mo.'
-        : '';
-      recEl.hidden = false;
-      recEl.innerHTML =
-        '<div class="reco-label">Our pick for ' + ucName + '</div>' +
-        '<div class="reco-body"><b>' + rec.top.m.n + '</b><span class="reco-prov">' + rec.top.m.p + '</span> — ' +
-        'best balance of capability' + (CACHE_RELEVANT[state.uc] ? ', caching economics' : '') + ' and cost at ' +
-        prefix + fmtMoney(rec.top.total) + '/mo.' + valHtml + '</div>' +
-        '<div class="reco-note">Ranked from published specs (context, caching, batch, tier) and price on your profile — not benchmarks.</div>';
-    } else {
-      recEl.hidden = true;
-    }
-  }
-
-  /* savings banner — vítěz vs DRUHÝ NEJLEVNĚJŠÍ v témže tieru (runner-up,
-     konzistence s automation; srovnání s nejdražším by bylo inflační) */
-  var fr = MODELS.filter(function (m) { return m.t === 'frontier' && fits(m); })
-    .map(function (m) { return { m: m, c: cost(m).total }; })
-    .sort(function (a, b) { return a.c - b.c; });
-  var save = fr.length > 1 ? (fr[1].c - fr[0].c) * 12 : 0;
-  var banner = document.getElementById('savings-banner');
-  if (save >= 24) {
-    banner.hidden = false;
-    banner.innerHTML =
-      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>' +
-      '<span>' + fr[0].m.n + ' saves you <b>' + prefix + fmtMoney(save) + '/yr</b> vs ' + fr[1].m.n + ' — the next-cheapest frontier model.</span>';
-  } else {
-    banner.hidden = true;
-  }
-
-  /* hero demo range — ze stejných dat (jen modely co se vejdou; fallback na vše) */
-  var allM = MODELS.filter(fits); if (!allM.length) allM = MODELS;
-  var all = allM.map(function (m) { return { m: m, c: cost(m).total }; }).sort(function (a, b) { return a.c - b.c; });
-  document.getElementById('demo-range').innerHTML =
-    '<span>' + (USE_CASES.find(function (u) { return u.id === state.uc; }).name) + ', ' + fmtReq(state.req) + ' requests/mo:</span>' +
-    '<span>from <b>' + fmtMoney(all[0].c) + '/mo</b> (' + all[0].m.n + ')</span>' +
-    '<span>to <b>' + fmtMoney(all[all.length - 1].c) + '/mo</b> (' + all[all.length - 1].m.n + ')</span>';
-
-  document.querySelectorAll('.reason-chip').forEach(function (el) {
-    el.classList.toggle('on', +el.dataset.reason === state.reason);
-    el.setAttribute('aria-pressed', +el.dataset.reason === state.reason);
-  });
-
-  persist();
-}
-
-/* build use case cards */
-var ucGrid = document.getElementById('uc-grid');
-USE_CASES.forEach(function (u) {
-  var el = document.createElement('div');
-  el.className = 'uc-card';
-  el.dataset.uc = u.id;
-  el.setAttribute('role', 'button');
-  el.setAttribute('tabindex', '0');
-  el.innerHTML = '<span class="uc-icon">' + u.icon + '</span><span class="uc-name">' + u.name + '</span><span class="uc-meta">' + u.meta + '</span>';
-  function pick() {
-    state.uc = u.id;
-    state.inTok = u.inTok; state.outTok = u.outTok; state.inAuto = true; state.outAuto = true;
-    state.cache = u.cache; state.cacheAuto = true;
-    render();
-  }
-  el.addEventListener('click', pick);
-  el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
-  ucGrid.appendChild(el);
-});
-
-/* build reasoning effort chips */
-var reasonChips = document.getElementById('reason-chips');
-REASONING.forEach(function (r) {
-  var b = document.createElement('button');
-  b.type = 'button';
-  b.className = 'reason-chip';
-  b.dataset.reason = r.id;
-  b.textContent = r.id === 1 ? r.label : r.label + ' ×' + r.id;
-  b.addEventListener('click', function () { state.reason = r.id; render(); });
-  reasonChips.appendChild(b);
-});
-
-/* share link — kopíruje URL aktuálního scénáře do schránky */
-(function () {
-  var btn = document.getElementById('share-btn');
-  if (!btn) return;
-  var lbl = document.getElementById('share-label');
-  btn.addEventListener('click', function () {
-    var url = shareUrl();
-    function done() { btn.classList.add('done'); lbl.textContent = 'Link copied'; setTimeout(function () { btn.classList.remove('done'); lbl.textContent = 'Copy share link'; }, 2200); }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(done, function () { window.prompt('Copy this link:', url); });
-    } else {
-      window.prompt('Copy this link:', url);
-    }
-  });
-})();
-
-document.getElementById('req-slider').addEventListener('input', function () {
-  state.req = reqFromSlider(+this.value); render();
-});
-document.querySelectorAll('.vol-chip').forEach(function (b) {
-  b.addEventListener('click', function () { state.req = +this.dataset.req; render(); });
-});
-/* živá maska: jen číslice, průběžné formátování s čárkami (fmtInt) a oprava
-   pozice kurzoru — počítá se přes číslice před kurzorem, ne přes indexy */
-function maskTok(el, max) {
-  var digitsBefore = el.value.slice(0, el.selectionStart).replace(/[^0-9]/g, '').length;
-  var v = parseTok(el.value, max);
-  el.value = v ? fmtInt(v) : '';
-  var pos = 0, seen = 0;
-  while (pos < el.value.length && seen < digitsBefore) {
-    if (el.value[pos] >= '0' && el.value[pos] <= '9') seen++;
-    pos++;
-  }
-  el.setSelectionRange(pos, pos);
-  return v;
-}
-document.getElementById('in-tok').addEventListener('input', function () {
-  var v = maskTok(this, TOK_MAX_IN);
-  if (v) { state.inTok = v; state.inAuto = false; render(); }
-});
-document.getElementById('out-tok').addEventListener('input', function () {
-  var v = maskTok(this, TOK_MAX_OUT);
-  if (v) { state.outTok = v; state.outAuto = false; render(); }
-});
-/* blur = normalizace pole zpět na stav (render pole s fokusem záměrně nepřepisuje,
-   takže by jinak nečíselný paskvil zůstal viset) */
-document.getElementById('in-tok').addEventListener('blur', function () { this.value = fmtInt(state.inTok); });
-document.getElementById('out-tok').addEventListener('blur', function () { this.value = fmtInt(state.outTok); });
-document.getElementById('cache-slider').addEventListener('input', function () {
-  state.cache = +this.value; state.cacheAuto = false; render();
-});
-document.getElementById('batch-toggle').addEventListener('change', function () {
-  state.batch = this.checked; render();
-});
-document.getElementById('results').addEventListener('click', function (e) {
-  var row = e.target.closest('.model-row');
-  if (!row) return;
-  state.open = state.open === row.dataset.model ? null : row.dataset.model;
-  render();
-});
-
-/* batch providers popisek — z dat, ne hardcode */
-(function () {
-  var provs = [];
-  MODELS.forEach(function (m) { if (m.batch && provs.indexOf(m.p) === -1) provs.push(m.p); });
-  document.getElementById('batch-providers').textContent = '(−50% ' + provs.join(', ') + ')';
-})();
-
-render();
-</script>
-<script>
-/* Providers dropdown (vzor automation Pricing Guides) — držet 1:1 s _provider-template.html */
+function toggleFaq(el) { el.closest(".faq-item").classList.toggle("open"); }
+/* Providers dropdown */
 (function () {
   var dd = document.querySelector(".nav-dropdown");
   if (!dd) return;
@@ -854,29 +391,15 @@ render();
   });
   document.addEventListener("click", function () { dd.classList.remove("open"); });
 })();
-</script>
-<script>
-/* ── EMAILCAP:JS:START — držet 1:1 s _provider-template.html (samostatný script tag,
-   DOM-stub harness bere jen nejdelší = engine) ── */
+/* Scroll reveal */
 (function () {
-  var OK = 'Check your inbox to confirm your subscription.';
-  document.querySelectorAll('.price-alerts form.pa-form').forEach(function (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var card = form.closest('.price-alerts');
-      var input = form.querySelector('.pa-input');
-      var btn = form.querySelector('.pa-btn');
-      var msg = card.querySelector('.pa-msg');
-      function show(ok, text) { msg.className = 'pa-msg show ' + (ok ? 'ok' : 'err'); msg.textContent = text; }
-      if (!input.value || input.value.indexOf('@') < 1) { show(false, 'Please enter a valid email address.'); input.focus(); return; }
-      btn.disabled = true; btn.textContent = 'Subscribing…';
-      fetch(form.action, { method: 'POST', body: new FormData(form) })
-        .then(function (r) { if (!r.ok) throw 0; card.classList.add('subscribed'); show(true, OK); })
-        .catch(function () { btn.disabled = false; btn.textContent = 'Get price alerts'; show(false, 'Something went wrong — please try again.'); });
-    });
-  });
+  var els = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) { els.forEach(function (e) { e.classList.add("in"); }); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(function (e) { io.observe(e); });
 })();
-/* ── EMAILCAP:JS:END ── */
 </script>
 </body>
 </html>

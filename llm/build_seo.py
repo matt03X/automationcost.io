@@ -257,13 +257,13 @@ def _cross(eng, data: dict, *, exclude: tuple = (), calc: bool = True) -> str:
         links.append('    <a href="cheapest-llm-api.html">Cheapest LLM API →</a>')
     if "is-llm-worth-it.html" not in exclude:
         links.append('    <a href="is-llm-worth-it.html">Is an LLM API worth it? →</a>')
-    if calc and "index.html" not in exclude:
-        links.append('    <a href="index.html">Open calculator →</a>')
+    if calc and "calculator.html" not in exclude:
+        links.append('    <a href="calculator.html">Open calculator →</a>')
     return '  <div class="cross">\n' + "\n".join(links) + "\n  </div>"
 
 
 def _calc_cta(title: str, sub: str) -> str:
-    return (f'  <a class="next-cta" href="index.html">\n    <div>\n'
+    return (f'  <a class="next-cta" href="calculator.html">\n    <div>\n'
             f'      <div class="nc-title">{title}</div>\n'
             f'      <div class="nc-sub">{sub}</div>\n    </div>\n'
             '    <span class="nc-arrow">Open calculator'
@@ -318,7 +318,7 @@ def render_cheapest(eng, data: dict, site: dict, month: str, nav: str, parts: tu
             f'at about {eng._fmt_mo(cheapest_mo)}/month on our example chatbot workload. '
             f'Cheapest per class — {"; ".join(tier_bits)}. '
             f'All {total} models priced by the same engine as the '
-            f'<a href="index.html">calculator</a>, ranked by cost below.')
+            f'<a href="calculator.html">calculator</a>, ranked by cost below.')
 
     body = f"""<section class="wrap">
   <div class="section">
@@ -334,7 +334,7 @@ def render_cheapest(eng, data: dict, site: dict, month: str, nav: str, parts: tu
         </tbody>
       </table>
     </div>
-    <p class="tbl-foot">* Same engine as the <a href="index.html">calculator</a>. Your real number depends on volume, token mix and cache share — tier (frontier / mid / budget) is our editorial class, not a benchmark.</p>
+    <p class="tbl-foot">* Same engine as the <a href="calculator.html">calculator</a>. Your real number depends on volume, token mix and cache share — tier (frontier / mid / budget) is our editorial class, not a benchmark.</p>
   </div>
 {_calc_cta("Cheapest for <em>your</em> workload, not ours",
            "Change the volume, token mix and cache share and the calculator re-ranks every model live.")}
@@ -346,7 +346,7 @@ def render_cheapest(eng, data: dict, site: dict, month: str, nav: str, parts: tu
          "a": (f"On our example chatbot workload the cheapest LLM API we track is {cheap_m['name']} "
                f"({cheap_p['name']}) at about {eng._fmt_mo(cheapest_mo)}/month. Budget-tier models are "
                "almost always the lowest cost, but the cheapest model for you depends on your token mix "
-               'and how much of the prompt you cache — the <a href="index.html">calculator</a> re-ranks '
+               'and how much of the prompt you cache — the <a href="calculator.html">calculator</a> re-ranks '
                "for your numbers.")},
         {"q": "What is the cheapest frontier (flagship-class) LLM API?",
          "a": ((f"Among frontier-class models the lowest cost we track is "
@@ -429,7 +429,7 @@ def render_alternatives(eng, slug: str, data: dict, site: dict, month: str, nav:
         </tbody>
       </table>
     </div>
-    <p class="tbl-foot">≈ $/mo from the same engine as the <a href="index.html">calculator</a>. See <a href="{eng.PROVIDER_PAGES[slug]["page"]}">{brand} pricing</a> in detail or the full <a href="cheapest-llm-api.html">cheapest LLM API</a> ranking.</p>
+    <p class="tbl-foot">≈ $/mo from the same engine as the <a href="calculator.html">calculator</a>. See <a href="{eng.PROVIDER_PAGES[slug]["page"]}">{brand} pricing</a> in detail or the full <a href="cheapest-llm-api.html">cheapest LLM API</a> ranking.</p>
   </div>
 {_calc_cta(f"Is {brand} actually the right price for you?",
            f"Put {brand} next to every alternative at your volume, token mix and cache share.")}
@@ -441,7 +441,7 @@ def render_alternatives(eng, slug: str, data: dict, site: dict, month: str, nav:
          "a": (f"It depends what you're optimising for. On cost, the lowest-priced alternative we track "
                f"is {alt_p['name']} ({eng._fmt_mo(alt_st['cheap'][1])}/mo at its cheapest). For a "
                f"flagship-class alternative, compare the “top model” column above. Use the "
-               '<a href="index.html">calculator</a> to rank them for your exact workload.')},
+               '<a href="calculator.html">calculator</a> to rank them for your exact workload.')},
         {"q": f"What is the cheapest {brand} alternative?",
          "a": (f"At its cheapest model, {alt_p['name']} is the lowest-cost alternative to {brand} we "
                f"track ({eng._fmt_mo(alt_st['cheap'][1])}/mo on the example workload). See the ranked "
@@ -523,7 +523,7 @@ def render_vs(eng, a_slug: str, b_slug: str, data: dict, site: dict, month: str,
     <h2>{ba} vs {bb}: the short answer</h2>
     <p>{budget_line}</p>
     <p>{top_line} {ctx_line}</p>
-    <p>Both are priced by the same engine, so compare your own workload in the <a href="index.html">calculator</a> — the cheaper choice flips with your token mix and cache share.</p>
+    <p>Both are priced by the same engine, so compare your own workload in the <a href="calculator.html">calculator</a> — the cheaper choice flips with your token mix and cache share.</p>
   </div>
   <div class="section">
     <h2>{ba} and {bb} models, priced side by side</h2>
@@ -538,7 +538,7 @@ def render_vs(eng, a_slug: str, b_slug: str, data: dict, site: dict, month: str,
         </tbody>
       </table>
     </div>
-    <p class="tbl-foot">* Same engine as the <a href="index.html">calculator</a>. See <a href="{eng.PROVIDER_PAGES[a_slug]["page"]}">{ba} pricing</a> · <a href="{eng.PROVIDER_PAGES[b_slug]["page"]}">{bb} pricing</a> in full.</p>
+    <p class="tbl-foot">* Same engine as the <a href="calculator.html">calculator</a>. See <a href="{eng.PROVIDER_PAGES[a_slug]["page"]}">{ba} pricing</a> · <a href="{eng.PROVIDER_PAGES[b_slug]["page"]}">{bb} pricing</a> in full.</p>
   </div>
 {_calc_cta(f"{ba} or {bb} for your workload?",
            "The cheaper option depends on your volume and cache share — run both through the calculator.")}
@@ -552,7 +552,7 @@ def render_vs(eng, a_slug: str, b_slug: str, data: dict, site: dict, month: str,
                f"{eng._fmt_mo(cheap_b[1])}/mo. "
                + (f"So {lower} is lower-cost at the budget end" if lower else "They're level at the budget end")
                + '. The cheaper choice can flip with your token mix — check the '
-               '<a href="index.html">calculator</a>.')},
+               '<a href="calculator.html">calculator</a>.')},
         {"q": f"Which has the bigger context window, {ba} or {bb}?",
          "a": (f"The largest context window we've verified is {ctx_a} for {ba} and {ctx_b} for {bb}. "
                "Context windows vary by model within each provider — see the pricing pages for the "
@@ -560,7 +560,7 @@ def render_vs(eng, a_slug: str, b_slug: str, data: dict, site: dict, month: str,
         {"q": f"{ba} vs {bb}: which API should I choose?",
          "a": ("It depends on your workload. Compare the side-by-side table above for list prices and the "
                "≈ $/mo column for a like-for-like cost, then run your own volume through the "
-               '<a href="index.html">calculator</a>. We rank on cost and published specs only — the '
+               '<a href="calculator.html">calculator</a>. We rank on cost and published specs only — the '
                '<a href="changelog.html">changelog</a> records every price change.')},
         {"q": "How accurate are these prices?",
          "a": (f"Every per-token rate is taken from each provider's official pricing and verified by hand "
@@ -603,7 +603,7 @@ def render_methodology(eng, data: dict, site: dict, month: str, nav: str, parts:
 
     lead = (f"Every price here is taken by hand from the provider's official pricing page, verified on a "
             f"dated pass, and turned into a monthly figure by the same engine as the "
-            f'<a href="index.html">calculator</a> — never quoted from memory or a third party. '
+            f'<a href="calculator.html">calculator</a> — never quoted from memory or a third party. '
             f"Here is exactly where each of the {total} models' numbers come from, what they mean, and what "
             f"we don't claim.")
 
@@ -637,7 +637,7 @@ def render_methodology(eng, data: dict, site: dict, month: str, nav: str, parts:
     <h2>Are tokens the same across models? No — and it matters</h2>
     <p>A "token" is not a fixed unit. Each model family uses its <strong>own tokenizer</strong>, so the <em>same text</em> becomes a different number of tokens from one provider to the next — commonly a <strong>10–30% spread</strong> (wider for non-English text and code). Two models at the same "$ per 1M tokens" can therefore cost differently for the <em>same prompt</em>, because one encodes it in fewer tokens.</p>
     <p>Tokens aren't equal in <strong>value</strong> either: a token from a frontier model carries more capability than one from a budget model, so price per token says nothing about quality.</p>
-    <p>What this means for our numbers: we compare <strong>list price per 1M tokens</strong> as the billing unit — the honest, vendor-published basis — and run every model through <strong>one identical workload</strong> (same token counts) so the ≈ $/mo column is apples-to-apples on price. Treat cross-provider gaps inside ~10–20% as a tie until you test your own prompts; the <a href="index.html">calculator</a> lets you plug in your real token mix.</p>
+    <p>What this means for our numbers: we compare <strong>list price per 1M tokens</strong> as the billing unit — the honest, vendor-published basis — and run every model through <strong>one identical workload</strong> (same token counts) so the ≈ $/mo column is apples-to-apples on price. Treat cross-provider gaps inside ~10–20% as a tie until you test your own prompts; the <a href="calculator.html">calculator</a> lets you plug in your real token mix.</p>
   </div>
 
   <div class="section">
@@ -798,7 +798,7 @@ def render_is_llm_worth_it(eng, data: dict, site: dict, month: str, nav: str, pa
     <div class="formula-card">
       Net savings = work value &minus; API cost &nbsp;·&nbsp; Return on cost = work value &divide; API cost &nbsp;·&nbsp; Break-even = the number of tasks/mo whose saved time covers the API bill.
     </div>
-    <p class="sub" style="margin-top:12px">API cost is computed by the same engine as the <a href="index.html">calculator</a> from each model's per-token price — never quoted from memory. The cheapest model we track for a typical chatbot workload is <strong>{anchor}</strong>.</p>
+    <p class="sub" style="margin-top:12px">API cost is computed by the same engine as the <a href="calculator.html">calculator</a> from each model's per-token price — never quoted from memory. The cheapest model we track for a typical chatbot workload is <strong>{anchor}</strong>.</p>
   </div>
 
   <div class="section">

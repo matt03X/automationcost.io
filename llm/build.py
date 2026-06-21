@@ -541,16 +541,16 @@ def _note_cache(prov: dict, cfg: dict) -> str:
             return (f'Cached input is billed at <b>{pct} of the input rate</b> on every '
                     f'{cfg["family"]} model with a published cache price; {names} {verb} the full '
                     f'input rate. A major lever for chatbots and agents where most of the prompt '
-                    f'repeats — the <a href="index.html">calculator</a> models this with your cache share.')
+                    f'repeats — the <a href="calculator.html">calculator</a> models this with your cache share.')
         return (f'Cached input is billed at <b>{pct} of the input rate</b> across all '
                 f'{cfg["family"]} models we track — a major lever for chatbots and agents where '
-                f'most of the prompt repeats. The <a href="index.html">calculator</a> models this '
+                f'most of the prompt repeats. The <a href="calculator.html">calculator</a> models this '
                 f'with your cache share.')
     lead = cfg.get("cache_lead", "Cache pricing differs per model: ")
     # od nejlevnější — když lead slibuje "cheapest", musí věta začínat nejlevnějším
     parts = "; ".join(f'{m["name"]} at <b>{_usd(v)}/1M</b> ({_pct(v / m["inputPerM"])} of input)'
                       for m, v in sorted(have, key=lambda t: t[1]))
-    return f'{lead}{parts}. The <a href="index.html">calculator</a> models this with your cache share.'
+    return f'{lead}{parts}. The <a href="calculator.html">calculator</a> models this with your cache share.'
 
 
 def _note_batch(prov: dict, cfg: dict) -> str:
@@ -559,7 +559,7 @@ def _note_batch(prov: dict, cfg: dict) -> str:
         return cfg.get("batch_none",
                        f"No verified batch discount published at our last revision — we only list "
                        f'discounts we\'ve confirmed, so the Batch toggle in the '
-                       f'<a href="index.html">calculator</a> leaves {cfg["family"]} prices unchanged.')
+                       f'<a href="calculator.html">calculator</a> leaves {cfg["family"]} prices unchanged.')
     ds = {m["batchDiscount"] for m in have}
     scope = ("all models we track" if len(have) == len(prov["models"]) and len(have) > 1
              else _join([m["name"] for m in have]))
@@ -567,9 +567,9 @@ def _note_batch(prov: dict, cfg: dict) -> str:
         pct = f"−{round((1 - next(iter(ds))) * 100)}%"
         return (f'The Batch API runs asynchronous jobs at a verified <b>{pct} on both input and '
                 f'output</b> across {scope} — flip the Batch toggle in the '
-                f'<a href="index.html">calculator</a> to model it.')
+                f'<a href="calculator.html">calculator</a> to model it.')
     return (f'Verified batch discounts apply to {scope} — flip the Batch toggle in the '
-            f'<a href="index.html">calculator</a> to model them.')
+            f'<a href="calculator.html">calculator</a> to model them.')
 
 
 def _note_ctx(prov: dict, cfg: dict) -> str:
@@ -1254,7 +1254,7 @@ def main() -> int:
     site = load_site()
     data = json.loads(DATA.read_text(encoding="utf-8"))
     generated = render_models(data)
-    targets = [p for p in (ROOT / "index.html", ROOT / "compare.html") if p.exists()]
+    targets = [p for p in (ROOT / "calculator.html", ROOT / "compare.html") if p.exists()]
 
     # changelog: generovaný z git historie models.json (sdílí ho i feedy)
     clog_entries, clog_genesis = changelog_entries()
@@ -1264,7 +1264,7 @@ def main() -> int:
         clog_jobs.append((clog_page, render_changelog(data, clog_entries, clog_genesis),
                           CLOG_START, CLOG_END, CLOG_WARN))
     # scoring blok (recommendation engine) — jen index.html
-    idx = ROOT / "index.html"
+    idx = ROOT / "calculator.html"
     if idx.exists() and SCORING.exists() and SC_START in idx.read_text(encoding="utf-8"):
         clog_jobs.append((idx, render_scoring(data), SC_START, SC_END, SC_WARN))
 
