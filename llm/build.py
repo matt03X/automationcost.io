@@ -60,6 +60,17 @@ def js_num(v) -> str:
     return "null" if v is None else str(v)
 
 
+def js_lc(m: dict) -> str:
+    """long-context tier modelu → JS objekt { th, i, o, cached } nebo null.
+    Nad prahem `th` (velikost promptu = input tokeny) účtuje provider vyšší sazby
+    (Gemini >200k = $4/$18). cached=null → cache se nad prahem neaplikuje."""
+    lc = m.get("longContext")
+    if not lc:
+        return "null"
+    return (f'{{ th: {js_num(lc.get("threshold"))}, i: {js_num(lc.get("inputPerM"))}, '
+            f'o: {js_num(lc.get("outputPerM"))}, cached: {js_num(lc.get("cachedInputPerM"))} }}')
+
+
 # Kanonický scénář pro ≈$/mo sloupec compare (MUSÍ sedět s USE_CASES chatbot
 # defaulty v index.html a footnote textem na compare — měnit synchronně!).
 # Paritu Python↔JS hlídá calc-test/test-llm-engine.js.
@@ -67,12 +78,18 @@ CANON = {"req": 100000, "in_tok": 2000, "out_tok": 300, "cache": 0.70}
 
 
 def canonical_monthly(m: dict) -> float:
-    """Python port cost() z index.html pro kanonický scénář (bez batch)."""
+    """Python port cost() z index.html pro kanonický scénář (bez batch, reason=1).
+    Long-context aware (parita s rates()): nad prahem se použijí lc sazby. Kanonický
+    in_tok=2000 < práh → reálně se nikdy nespustí, držíme symetrii s JS enginem."""
     c = CANON["cache"]
-    cached = m.get("cachedInputPerM")
-    in_rate = m["inputPerM"] * (1 - c) + cached * c if cached is not None else m["inputPerM"]
+    lc = m.get("longContext")
+    use_lc = bool(lc) and CANON["in_tok"] > lc["threshold"]
+    in_per_m = lc["inputPerM"] if use_lc else m["inputPerM"]
+    out_per_m = lc["outputPerM"] if use_lc else m["outputPerM"]
+    cached = lc.get("cachedInputPerM") if use_lc else m.get("cachedInputPerM")
+    in_rate = in_per_m * (1 - c) + cached * c if cached is not None else in_per_m
     in_cost = CANON["req"] * CANON["in_tok"] / 1e6 * in_rate
-    out_cost = CANON["req"] * CANON["out_tok"] / 1e6 * m["outputPerM"]
+    out_cost = CANON["req"] * CANON["out_tok"] / 1e6 * out_per_m
     return round(in_cost + out_cost, 4)
 
 
@@ -130,7 +147,8 @@ def render_models(data: dict) -> str:
     """const MODELS pro index.html + compare.html. Pole per model:
     n (name), p (provider name), pslug, t (tier), i/o (USD za 1M in/out),
     cached (USD za 1M cached input; null = bez cache), batch (násobitel; null),
-    ctx (context window v tokenech; null), mo (kanonický ≈$/mo — viz CANON)."""
+    ctx (context window v tokenech; null), lc (long-context tier { th,i,o,cached }
+    nebo null), mo (kanonický ≈$/mo — viz CANON)."""
     lines = ["const MODELS = ["]
     for prov in data["providers"]:
         for m in prov["models"]:
@@ -139,7 +157,7 @@ def render_models(data: dict) -> str:
                 f'n: {js_str(m["name"])}, p: {js_str(prov["name"])}, pslug: {js_str(prov["slug"])}, '
                 f't: {js_str(m["tier"])}, i: {js_num(m["inputPerM"])}, o: {js_num(m["outputPerM"])}, '
                 f'cached: {js_num(m.get("cachedInputPerM"))}, batch: {js_num(m.get("batchDiscount"))}, '
-                f'ctx: {js_num(m.get("contextWindow"))}, mo: {canonical_monthly(m)} }},'
+                f'ctx: {js_num(m.get("contextWindow"))}, lc: {js_lc(m)}, mo: {canonical_monthly(m)} }},'
             )
     lines.append("];")
     lines.append(f'const MODELS_REVIEWED = {js_str(data["_meta"].get("last_reviewed") or "")};')
@@ -404,8 +422,9 @@ PROVIDER_PAGES = {
     "google": {"page": "gemini-pricing.html", "crumb": "gemini", "h1": "Google Gemini API Pricing",
                "family": "Gemini", "vendor": "Google", "cross": "Gemini pricing", "nav": "Gemini", "domain": "ai.google.dev",
                "longctx": "Note the long-context surcharge: Gemini 3.1 Pro Preview bills prompts "
-                          "over 200k tokens at $4 in / $18 out per 1M — the calculator prices "
-                          "all prompts at the base rate."},
+                          "over 200k tokens at $4 in / $18 out per 1M — the "
+                          "<a href=\"index.html\">calculator</a> applies these rates automatically "
+                          "once your input crosses 200k tokens."},
     "deepseek": {"page": "deepseek-pricing.html", "crumb": "deepseek", "h1": "DeepSeek API Pricing",
                  "family": "DeepSeek", "vendor": "DeepSeek", "cross": "DeepSeek pricing", "nav": "DeepSeek", "domain": "deepseek.com",
                  "cache_lead": "DeepSeek publishes the cheapest cache reads we track: "},
