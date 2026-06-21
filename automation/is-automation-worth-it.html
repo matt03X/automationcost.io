@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- generováno build_pricing.py (render_roi_page) z data/tools.json — needituj ručně -->
+  <title>Is Automation Worth It? ROI &amp; Break-Even Calculator 2026 | AutomationCost.io</title>
+  <meta name="description" content="Calculate automation ROI: enter your runs, minutes saved and hourly rate — get net savings, return on cost and break-even. Tool costs from official pricing (cheapest at 20,000 runs: Activepieces at $0/mo, verified June 2026).">
+  <link rel="canonical" href="https://wizardcost.com/automation/is-automation-worth-it.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AutomationCost.io">
+  <meta property="og:title" content="Is Automation Worth It? ROI &amp; Break-Even Calculator 2026">
+  <meta property="og:description" content="Calculate automation ROI: enter your runs, minutes saved and hourly rate — get net savings, return on cost and break-even. Tool costs from official pricing (cheapest at 20,000 runs: Activepieces at $0/mo, verified June 2026).">
+  <meta property="og:url" content="https://wizardcost.com/automation/is-automation-worth-it.html">
+  <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.png">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is automation worth the cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For recurring, well-defined tasks at meaningful volume, yes — often significantly. At 1,000 runs/mo, saving 3 min per run frees ~50 hrs of work. Valued at $40/hr that is $2,000 in time against a tool cost starting from $0/mo (Activepieces at 1,000 runs). The maths turns negative for very low volume (under ~50 runs/mo), one-off tasks, or processes with high exception rates. Use the calculator above to model your exact scenario."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate automation ROI?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ROI = (value of time saved &minus; tool cost) &divide; tool cost. Value of time saved = (runs/mo &times; minutes saved per run &divide; 60) &times; your hourly rate. The break-even point is: tool cost &divide; (hourly rate &divide; 60) = minimum minutes per month needed to cover the tool. The calculator on this page does all of this from your inputs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does automation take to pay for itself?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "At common volumes and rates, payback is effectively immediate — a $0/mo tool against even $500/mo in time saved pays back on day one of the month. Payback only stretches longer when setup time is large relative to ongoing savings — factor in how many hours it takes to build and maintain the workflow, not just the run-time savings."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Automation vs hiring a VA — which is cheaper?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A VA costs $5–25/hr (offshore) or $15–50/hr (domestic) plus your coordination time. An automation tool costs $8–$150/mo depending on volume. For tasks a VA would spend 10+ hrs/mo on, automation almost always wins on unit economics — but only if the task is structured enough to automate reliably. Hybrid (automation handles the repeatable steps, VA handles exceptions) is often the real-world answer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much time does automation actually save?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends entirely on the task. Simple data-transfer automations (copy row from form to CRM, send a notification) typically save 1–5 minutes per run. Multi-step document processing or approval workflows can save 15–30 min per run. The 3 min/run default in our calculator is a conservative starting point for simple workflows — adjust it to match your actual task. We do not make a claim about what automations save; that is your measurement to make from your own process."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the cheapest automation tool right now?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "At 20,000 runs/month the cheapest option we track is Activepieces at $0/mo (verified June 2026). Self-hosted tools (n8n, Activepieces, Node-RED) cost only the server, which is lower still. See the <a href=\"cheapest-automation-tool.html\">full ranked matrix</a> or the <a href=\"calculator.html\">calculator</a> for your exact volume."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate are the tool costs in this calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Tool costs are generated from each vendor's official public pricing via our cost engine, verified June 2026. Every price change we record is dated in the <a href=\"changelog.html\">price changelog</a>. Values marked ~ are estimates for custom enterprise tiers. We do not add any markup or adjustment to the engine output."
+      }
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://wizardcost.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Automation tools",
+      "item": "https://wizardcost.com/automation/tools.html"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Is automation worth it?",
+      "item": "https://wizardcost.com/automation/is-automation-worth-it.html"
+    }
+  ]
+}
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://wizardcost.com/#org",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "description": "Independent, data-driven software pricing comparisons. Prices verified by hand from official vendor pricing pages and dated in a public changelog."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://wizardcost.com/#website",
+      "name": "WizardCost",
+      "url": "https://wizardcost.com/",
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://wizardcost.com/automation/is-automation-worth-it.html#webpage",
+      "url": "https://wizardcost.com/automation/is-automation-worth-it.html",
+      "name": "Is Automation Worth It? ROI & Break-Even Calculator 2026",
+      "description": "Calculate automation ROI: enter your runs, minutes saved and hourly rate — get net savings, return on cost and break-even. Tool costs from official pricing (cheapest at 20,000 runs: Activepieces at $0/mo, verified June 2026).",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@id": "https://wizardcost.com/#website"
+      },
+      "publisher": {
+        "@id": "https://wizardcost.com/#org"
+      },
+      "dateModified": "2026-06-15"
+    }
+  ]
+}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hanken+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #0a0e17; --surface: #111827; --surface2: #1a2236; --border: #1f2d45; --border2: #27375a; --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99; --accent: #10b981; --accent-br: #16d18c; --accent-dim: rgba(16,185,129,0.09); --accent-glow: rgba(16,185,129,0.20); --ink: #04130d; --link: #6f9bff; --green: #10b981; --yellow: #f59e0b; --orange: #f59e0b; --radius: 14px; --radius-sm: 9px; --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; letter-spacing: 0.01em; min-height: 100vh; padding-top: 100px; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: #9fbcff; }
+    h1, h2, h3 { font-family: var(--display); letter-spacing: -0.02em; }
+    header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,14,23,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-top { padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .nav-bottom { border-bottom: 2px solid var(--border); padding: 0 32px; display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
+    .nav-bottom::-webkit-scrollbar { display: none; }
+    .nav-bottom a { padding: 12px 20px; font-size: 14px; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: color 0.15s, border-color 0.15s; }
+    .nav-bottom a:hover { color: var(--text); }
+    .logo { display: flex; align-items: center; gap: 0; font-family: var(--display); font-weight: 800; font-size: 1.06rem; color: var(--text); letter-spacing: -0.01em; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .logo .io { color: var(--muted); font-weight: 600; }
+    .logo-icon { width: 26px; height: 26px; flex-shrink: 0; margin-right: 11px; }
+    .nav-badge { font-family: var(--mono); font-size: 11px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; color: var(--muted); }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+    .page-hero { padding: 56px 0 36px; }
+    .tool-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 20px; }
+    .tool-badge img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 1px; }
+    .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+    .page-hero p { color: var(--muted); font-size: 1.05rem; max-width: 640px; margin-bottom: 28px; }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .hero-trust { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .hero-trust strong { color: var(--accent-br); }
+    .btn-primary { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 24px; font-size: 14px; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; box-shadow: 0 0 0 1px rgba(16,185,129,0.4), 0 6px 20px rgba(16,185,129,0.26); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .btn-primary:hover { background: var(--accent-br); transform: translateY(-1px); text-decoration: none; box-shadow: 0 0 0 1px rgba(16,185,129,0.5), 0 10px 28px rgba(16,185,129,0.36); }
+    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 20px; font-size: 14px; font-weight: 600; text-decoration: none; display: inline-block; transition: border-color 0.15s; }
+    .btn-secondary:hover { border-color: var(--accent); text-decoration: none; }
+    .section { margin-bottom: 48px; }
+    .section h2 { font-size: 1.45rem; font-weight: 800; margin-bottom: 6px; }
+    .section-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; max-width: 680px; }
+    .billing-toggle { display: inline-flex; background: var(--surface); border: 1px solid var(--border2); border-radius: 999px; padding: 3px; gap: 2px; margin: 0 0 20px; }
+    .bt-opt { background: none; border: none; color: var(--muted); font-family: var(--font); font-size: 13px; font-weight: 700; padding: 7px 18px; border-radius: 999px; cursor: pointer; transition: background 0.15s, color 0.15s; }
+    .bt-opt:hover { color: var(--text); }
+    .bt-opt.is-active { background: var(--accent); color: var(--ink); }
+    .variant-head { font-family: var(--mono); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-br); margin: 22px 0 10px; }
+    .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; margin-bottom: 8px; }
+    .plan-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .plan-name { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .plan-price { font-family: var(--mono); font-size: 1.55rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 4px; }
+    .plan-price .price-suffix { font-size: 13px; font-weight: 400; color: var(--muted); }
+    .plan-annual { font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--accent-br); min-height: 16px; margin-bottom: 4px; }
+    .plan-annual:empty { min-height: 0; margin-bottom: 0; }
+    .th-billing { font-family: var(--mono); font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--muted); }
+    .plan-detail { font-size: 13px; color: var(--muted); margin-top: 12px; line-height: 1.6; }
+    .plan-detail li { list-style: none; padding: 2px 0; }
+    .plan-detail li::before { content: "·"; margin-right: 6px; color: var(--accent); }
+    .plan-detail li.spec { color: var(--text2); font-style: italic; }
+    .plan-note { font-size: 12.5px; color: var(--muted); margin: 4px 0 0; max-width: 660px; }
+    .comparison-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .comparison-table th { text-align: left; padding: 10px 14px; color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid var(--border); }
+    .comparison-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .comparison-table tr:hover td { background: var(--surface2); }
+    .comparison-table .price-cell { font-family: var(--mono); font-weight: 700; }
+    .tag-yes { color: var(--green); font-weight: 700; }
+    .tag-no { color: var(--muted); }
+    .tag-warn { color: var(--orange); font-weight: 700; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q { width: 100%; background: none; border: none; color: var(--text); font-family: inherit; font-size: 15px; font-weight: 600; text-align: left; padding: 18px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .faq-q:hover { color: var(--accent); }
+    .faq-chevron { flex-shrink: 0; transition: transform 0.2s; color: var(--muted); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-a { display: none; color: var(--muted); font-size: 14px; line-height: 1.7; padding-bottom: 18px; }
+    .faq-item.open .faq-a { display: block; }
+    .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+    .related-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-decoration: none; color: var(--text); display: block; transition: border-color 0.15s; }
+    .related-card:hover { border-color: var(--accent); text-decoration: none; }
+    .related-card-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .related-card-desc { font-size: 12px; color: var(--muted); }
+    .warning-box { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 8px; padding: 16px 20px; font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+    .warning-box strong { color: var(--orange); }
+    .warning-box em { color: var(--text2); font-style: normal; }
+    .price-alerts { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 48px; }
+    .pa-label { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-br); margin-bottom: 8px; }
+    .pa-title { font-family: var(--display); font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+    .pa-sub { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+    .pa-form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pa-input { flex: 1; min-width: 220px; background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; color: var(--text); font-family: inherit; font-size: 14px; }
+    .pa-input:focus { outline: none; border-color: var(--accent); }
+    .pa-btn { background: var(--accent); color: var(--ink); border: none; border-radius: var(--radius-sm); padding: 12px 22px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .pa-btn:hover { background: var(--accent-br); }
+    .pa-btn:disabled { opacity: 0.6; cursor: default; }
+    .pa-msg { display: none; align-items: center; gap: 8px; font-size: 13px; margin-top: 12px; }
+    .pa-msg.show { display: flex; }
+    .pa-msg.ok { color: var(--green); }
+    .pa-msg.err { color: var(--orange); }
+    .pa-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+    .price-alerts.subscribed .pa-form { display: none; }
+    footer { border-top: 1px solid var(--border); padding: 32px 24px; text-align: center; font-size: 12px; color: var(--muted); line-height: 1.8; margin-top: 64px; }
+    footer a { color: var(--muted); }
+    .funnel-fab { position: fixed; right: 22px; bottom: 22px; z-index: 90; display: inline-flex; align-items: center; gap: 9px; background: var(--accent); color: var(--ink); font-family: var(--font); font-size: 14px; font-weight: 700; padding: 13px 20px; border-radius: 100px; text-decoration: none; box-shadow: 0 10px 30px rgba(16,185,129,0.4), 0 0 0 1px rgba(16,185,129,0.5); transition: transform 0.15s, box-shadow 0.15s, background 0.15s; }
+    .funnel-fab:hover { background: var(--accent-br); color: var(--ink); transform: translateY(-2px); text-decoration: none; box-shadow: 0 14px 38px rgba(16,185,129,0.5); }
+    @media (max-width: 760px) {
+      .wrap { padding-left: 18px; padding-right: 18px; }
+      .nav-top { padding-left: 18px; padding-right: 18px; }
+      .nav-bottom { padding-left: 8px; padding-right: 8px; }
+      .nav-bottom a { padding: 13px 14px; }
+    }
+    @media (max-width: 620px) { .nav-badge { display: none; } }
+    @media (max-width: 520px) {
+      .cta-row { flex-direction: column; align-items: stretch; }
+      .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
+      .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; }
+    }
+    /* ── ROI widget ── */
+    .roi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 8px; }
+    .roi-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
+    .roi-field { display: flex; flex-direction: column; gap: 6px; }
+    .roi-label { font-size: 13px; font-weight: 700; color: var(--text); }
+    .roi-est-badge { background: rgba(245,158,11,0.15); color: var(--orange); border-radius: 4px; padding: 1px 6px; font-size: 11px; font-weight: 700; margin-left: 6px; }
+    .roi-input { background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 14px; color: var(--text); font-family: var(--mono); font-size: 1rem; font-weight: 700; width: 100%; transition: border-color 0.15s; }
+    .roi-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
+    .roi-hint { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .roi-disclosure { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: 8px; padding: 14px 18px; font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 20px; }
+    .roi-results { border-top: 1px solid var(--border); padding-top: 24px; }
+    .roi-results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .roi-stat { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
+    .roi-stat-accent { border-color: rgba(16,185,129,0.35); background: rgba(16,185,129,0.06); }
+    .roi-stat-label { font-family: var(--mono); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; }
+    .roi-stat-value { font-family: var(--mono); font-size: 1.35rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+    .roi-stat-value.accent { color: var(--accent-br); }
+    .roi-stat-value.warn { color: var(--orange); }
+    .roi-stat-sub { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+    .roi-payback { font-size: 14px; color: var(--text2); margin-bottom: 16px; }
+    .roi-cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+    .tbl-note { font-family: var(--mono); font-size: 11.5px; color: var(--muted); line-height: 1.7; }
+    @media (max-width: 520px) {
+      .roi-card { padding: 18px; }
+      .roi-inputs { grid-template-columns: 1fr; }
+      .roi-results-grid { grid-template-columns: repeat(2, 1fr); }
+      .roi-cta-row { flex-direction: column; }
+      .roi-cta-row > a { text-align: center; }
+    }
+  </style>
+  <link rel="stylesheet" href="app.css">
+<!-- ANALYTICS (build.py) -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
+  <!-- /ANALYTICS -->
+  </head>
+<body class="ac anim">
+
+<div id="ac-progress"></div>
+
+<nav class="ac-nav">
+  <a href="/" class="logo">
+    <svg class="logo-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="acmk" x1="14" y1="10" x2="30" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2fe39c"></stop><stop offset="1" stop-color="#0ea66e"></stop></linearGradient></defs>
+      <path d="M28.5 10.5 L13.5 24 L28.5 37.5" stroke="url(#acmk)" stroke-width="6.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M 36.5 17.8 Q 37.864 22.636 42.7 24 Q 37.864 25.364 36.5 30.2 Q 35.136 25.364 30.3 24 Q 35.136 22.636 36.5 17.8 Z" fill="#eafff5"></path>
+    </svg>
+    Automation<span>Cost</span><span class="io" style="font-size:0.72em; margin-left:7px;">by WizardCost</span>
+  </a>
+  <div class="ac-links">
+    <a href="compare.html" class="ac-hide-sm">Compare</a>
+    <a href="limits.html" class="ac-hide-sm">Pricing</a>
+    <div class="ac-dd">
+      <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true">More
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="ac-dd-menu">
+        <a href="index.html">AutomationCost home</a>
+        <a href="tools.html">Tools</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="price-history.html">Price history</a>
+        <div class="ac-dd-sep">Pricing guides</div>
+        <a href="n8n-pricing.html"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=32" alt="">n8n Pricing</a>
+        <a href="make-pricing.html"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="">Make Pricing</a>
+        <a href="zapier-pricing.html"><img src="https://www.google.com/s2/favicons?domain=zapier.com&sz=32" alt="">Zapier Pricing</a>
+        <a href="pipedream-pricing.html"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=32" alt="">Pipedream Pricing</a>
+        <a href="activepieces-pricing.html"><img src="https://www.google.com/s2/favicons?domain=activepieces.com&sz=32" alt="">Activepieces Pricing</a>
+        <a href="automatisch-pricing.html"><img src="https://www.google.com/s2/favicons?domain=automatisch.io&sz=32" alt="">Automatisch Pricing</a>
+        <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
+        <div class="ac-dd-sep">Other wizards</div>
+        <a href="/llm/">LLMCost <span class="ac-dd-tag">Live</span></a>
+        <span class="ac-dd-soon">EmailCost <span class="ac-dd-tag soon">Soon</span></span>
+        <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon">Soon</span></span>
+      </div>
+    </div>
+    <a href="calculator.html" class="ac-cta">Calculator
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-hero">
+    <div class="nav-badge" style="display:inline-flex;margin-bottom:20px">Updated June 2026</div>
+    <h1>Is automation worth it?</h1>
+    <p>Yes — for recurring, well-defined tasks at meaningful volume. The cheapest automation tool we track at 20,000 runs/month costs $0/mo (Activepieces, June 2026). If your team spends even a few hours a month on repeatable manual work, that tool cost is typically a fraction of the time value freed. This page lets you calculate your specific ROI: enter your volume, minutes saved per task, and hourly rate — see your net savings, return on cost, and break-even in seconds. We also cover when automation is <em>not</em> worth it, because that matters too.</p>
+    <div class="cta-row">
+      <a href="#roi-widget" class="btn-primary">Calculate my ROI</a>
+      <a href="calculator.html" class="btn-secondary">Find cheapest tool for my volume</a>
+    </div>
+    <div class="hero-trust">Tool costs verified June 2026 · generated live from official pricing · all figures per <strong>run</strong>, 3-step workflows</div>
+  </div>
+
+  <div class="section">
+    <h2>The ROI formula — how the maths works</h2>
+    <p class="section-sub">Automation earns back time. Time has a dollar value. Compare that value to the tool cost and you get ROI.</p>
+    <div class="warning-box" style="margin-bottom:24px">
+      <strong>Formula:</strong> <em>Value of time saved = (runs/mo &times; minutes saved per run &divide; 60) &times; your hourly rate.</em>
+      Net savings = value &minus; tool cost. Return on cost = value &divide; tool cost. Break-even = tool cost &divide; (hourly rate &divide; 60) minutes per month.
+    </div>
+    <p style="color:var(--muted);font-size:13.5px;margin-bottom:20px">
+      The table below uses <strong>3 min saved per run</strong> as a conservative editorial default and three typical hourly rates. These are illustrative starting points — adjust them in the interactive calculator below.
+      <strong>Minutes saved per run is NOT a vendor claim</strong> — it is your estimate based on how long you currently do the task manually.
+    </p>
+    <div style="overflow-x:auto">
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th>Scenario</th>
+          <th>Cheapest tool (June 2026)</th>
+          <th>Time saved</th>
+          <th>Value of time</th>
+          <th>Net savings/mo</th>
+          <th>Return on cost</th>
+          <th>Break-even</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Small team (500 runs/mo)</td><td>$0/mo<br><span style="color:var(--muted);font-size:12px">Activepieces</span></td><td>25 hrs</td><td>$750</td><td class="cheap">$750</td><td>—</td><td>~0 min/mo</td></tr>
+        <tr><td>Growing team (5,000 runs/mo)</td><td>$0/mo<br><span style="color:var(--muted);font-size:12px">Activepieces</span></td><td>250 hrs</td><td>$10,000</td><td class="cheap">$10,000</td><td>—</td><td>~0 min/mo</td></tr>
+        <tr><td>Active ops (20,000 runs/mo)</td><td>$0/mo<br><span style="color:var(--muted);font-size:12px">Activepieces</span></td><td>1,000 hrs</td><td>$50,000</td><td class="cheap">$50,000</td><td>—</td><td>~0 min/mo</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="tbl-note" style="margin-top:10px">
+      Tool costs generated live from official pricing via our engine, verified June 2026.
+      "Value of time" uses an illustrative 3 min/run &times; $40/hr default — change it in the calculator below.
+      Self-hosted tools show the server bill, not a tool fee. Values marked ~ are estimates for custom enterprise tiers.
+      <a href="cheapest-automation-tool.html">Full cheapest-tool breakdown →</a>
+    </p>
+  </div>
+
+  <!-- ── Interactive ROI widget ── self-contained, no framework dependency ── -->
+  <div class="section" id="roi-widget">
+    <h2>ROI calculator — your numbers</h2>
+    <p class="section-sub">Enter your own values. All arithmetic happens client-side; no data is sent anywhere.</p>
+    <div class="roi-card">
+      <div class="roi-inputs">
+        <div class="roi-field">
+          <label class="roi-label" for="roi-runs">Runs / tasks per month</label>
+          <input type="number" id="roi-runs" class="roi-input" value="1000" min="1" max="1000000" step="100">
+          <div class="roi-hint">How many automated tasks run per month total</div>
+        </div>
+        <div class="roi-field">
+          <label class="roi-label" for="roi-mins">Minutes saved per run <span class="roi-est-badge">your estimate</span></label>
+          <input type="number" id="roi-mins" class="roi-input" value="3" min="0.1" max="120" step="0.5">
+          <div class="roi-hint">How long you currently spend on this task manually (per single run)</div>
+        </div>
+        <div class="roi-field">
+          <label class="roi-label" for="roi-rate">Your hourly rate ($)</label>
+          <input type="number" id="roi-rate" class="roi-input" value="40" min="1" max="500" step="5">
+          <div class="roi-hint">Your loaded hourly cost or opportunity cost. VA rate, employee fully-loaded cost, or your own time value.</div>
+        </div>
+      </div>
+      <div class="roi-disclosure">
+        <strong>What this calculates:</strong> value of time freed from manual work &times; your rate.
+        It does <em>not</em> account for: automation setup time, ongoing maintenance, error handling, or tasks that cannot be fully automated.
+        Minutes per run is <strong>your estimate</strong> — not a vendor benchmark or our claim.
+      </div>
+      <div class="roi-results" id="roi-results" hidden>
+        <div class="roi-results-grid">
+          <div class="roi-stat">
+            <div class="roi-stat-label">Time saved</div>
+            <div class="roi-stat-value" id="r-hours">—</div>
+            <div class="roi-stat-sub">hrs / month</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-label">Value of time</div>
+            <div class="roi-stat-value accent" id="r-value">—</div>
+            <div class="roi-stat-sub">at your rate</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-label">Cheapest tool</div>
+            <div class="roi-stat-value" id="r-tool">—</div>
+            <div class="roi-stat-sub" id="r-tool-name">—</div>
+          </div>
+          <div class="roi-stat roi-stat-accent">
+            <div class="roi-stat-label">Net savings / mo</div>
+            <div class="roi-stat-value" id="r-net">—</div>
+            <div class="roi-stat-sub" id="r-net-sub">value minus tool cost</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-label">Return on cost</div>
+            <div class="roi-stat-value" id="r-roi">—</div>
+            <div class="roi-stat-sub">value &divide; tool cost</div>
+          </div>
+          <div class="roi-stat">
+            <div class="roi-stat-label">Break-even point</div>
+            <div class="roi-stat-value" id="r-be">—</div>
+            <div class="roi-stat-sub">min/mo to cover cost</div>
+          </div>
+        </div>
+        <div class="roi-payback" id="r-payback-row">
+          <span id="r-payback-label">Payback period:</span> <strong id="r-payback">—</strong>
+        </div>
+        <div class="roi-cta-row">
+          <a href="calculator.html" class="btn-primary">Find the exact cheapest tool for my volume →</a>
+          <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
+        </div>
+        <div class="tbl-note" style="margin-top:12px">
+          Tool cost from official pricing via our engine (June 2026). ROI calculation is illustrative — see the disclosure above.
+          <a href="changelog.html">Price changelog</a> · <a href="cheapest-automation-tool.html">Cheapest tool breakdown</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>When automation is NOT worth it</h2>
+    <p class="section-sub">Honesty is a feature. Automation isn't always the right call — here's when the ROI math turns negative.</p>
+    <table class="comparison-table">
+      <thead><tr><th>Situation</th><th>Why ROI suffers</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Very low volume (&lt; ~50 runs/mo)</td>
+          <td>Setup and maintenance time exceeds the hours saved. Even at 3 min/run and $40/hr, 50 runs saves 2.5 hrs — but initial setup of a decent workflow often takes 4–10 hrs.</td>
+          <td class="tag-no">Skip or defer</td>
+        </tr>
+        <tr>
+          <td>One-off or irregular tasks</td>
+          <td>If the task runs once, automation ROI is negative by definition — you spend more building it than doing it once manually.</td>
+          <td class="tag-no">Do it manually</td>
+        </tr>
+        <tr>
+          <td>High exception rate (&gt; 20% failures)</td>
+          <td>Automations that need constant human intervention aren't saving time — they're shifting it. Net savings drop fast when you add error-handling overhead.</td>
+          <td class="tag-warn">Fix the process first</td>
+        </tr>
+        <tr>
+          <td>Process is poorly defined</td>
+          <td>"Automate chaos and you get automated chaos." If humans can't do the task consistently, an automation won't either. Nail the process first.</td>
+          <td class="tag-warn">Document before automating</td>
+        </tr>
+        <tr>
+          <td>Maintenance overhead is high</td>
+          <td>API changes, credential rotations, upstream format changes — maintenance on fragile integrations can consume more time than the automation saves. Factor in realistic upkeep.</td>
+          <td class="tag-warn">Budget maintenance time</td>
+        </tr>
+        <tr>
+          <td>High-volume, straightforward tasks</td>
+          <td>When volume is high and the task is clean, automation is almost always worth it. ROI scales linearly with runs — the more you do, the better the payback.</td>
+          <td class="tag-yes">Strong ROI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>Next steps</h2>
+    <p class="section-sub">Once you know automation is worth it, the cost of the tool matters — use these to find the cheapest option for your volume.</p>
+    <div class="related-grid">
+      <a href="calculator.html" class="related-card">
+        <div class="related-card-name">Automation cost calculator</div>
+        <div class="related-card-desc">Your exact volume → cheapest tool ranked</div>
+      </a>
+      <a href="compare.html" class="related-card">
+        <div class="related-card-name">Compare all 7 tools</div>
+        <div class="related-card-desc">Side-by-side pricing, limits &amp; features</div>
+      </a>
+      <a href="cheapest-automation-tool.html" class="related-card">
+        <div class="related-card-name">Cheapest automation tool</div>
+        <div class="related-card-desc">Full ranked matrix at every volume</div>
+      </a>
+      <a href="self-hosted-automation-cost.html" class="related-card">
+        <div class="related-card-name">Self-host vs cloud cost</div>
+        <div class="related-card-desc">When self-hosting beats paid cloud</div>
+      </a>
+      <a href="hidden-cost-automation.html" class="related-card">
+        <div class="related-card-name">Hidden automation costs</div>
+        <div class="related-card-desc">Overage, maintenance &amp; lock-in to factor in</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Frequently asked questions</h2>
+    <div class="faq" style="margin-top:8px;">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is automation worth the cost?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">For recurring, well-defined tasks at meaningful volume, yes — often significantly. At 1,000 runs/mo, saving 3 min per run frees ~50 hrs of work. Valued at $40/hr that is $2,000 in time against a tool cost starting from $0/mo (Activepieces at 1,000 runs). The maths turns negative for very low volume (under ~50 runs/mo), one-off tasks, or processes with high exception rates. Use the calculator above to model your exact scenario.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I calculate automation ROI?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">ROI = (value of time saved &minus; tool cost) &divide; tool cost. Value of time saved = (runs/mo &times; minutes saved per run &divide; 60) &times; your hourly rate. The break-even point is: tool cost &divide; (hourly rate &divide; 60) = minimum minutes per month needed to cover the tool. The calculator on this page does all of this from your inputs.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How long does automation take to pay for itself?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">At common volumes and rates, payback is effectively immediate — a $0/mo tool against even $500/mo in time saved pays back on day one of the month. Payback only stretches longer when setup time is large relative to ongoing savings — factor in how many hours it takes to build and maintain the workflow, not just the run-time savings.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Automation vs hiring a VA — which is cheaper?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">A VA costs $5–25/hr (offshore) or $15–50/hr (domestic) plus your coordination time. An automation tool costs $8–$150/mo depending on volume. For tasks a VA would spend 10+ hrs/mo on, automation almost always wins on unit economics — but only if the task is structured enough to automate reliably. Hybrid (automation handles the repeatable steps, VA handles exceptions) is often the real-world answer.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How much time does automation actually save?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">It depends entirely on the task. Simple data-transfer automations (copy row from form to CRM, send a notification) typically save 1–5 minutes per run. Multi-step document processing or approval workflows can save 15–30 min per run. The 3 min/run default in our calculator is a conservative starting point for simple workflows — adjust it to match your actual task. We do not make a claim about what automations save; that is your measurement to make from your own process.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">What is the cheapest automation tool right now?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">At 20,000 runs/month the cheapest option we track is Activepieces at $0/mo (verified June 2026). Self-hosted tools (n8n, Activepieces, Node-RED) cost only the server, which is lower still. See the <a href="cheapest-automation-tool.html">full ranked matrix</a> or the <a href="calculator.html">calculator</a> for your exact volume.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How accurate are the tool costs in this calculator?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Tool costs are generated from each vendor's official public pricing via our cost engine, verified June 2026. Every price change we record is dated in the <a href="changelog.html">price changelog</a>. Values marked ~ are estimates for custom enterprise tiers. We do not add any markup or adjustment to the engine output.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
+  <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified June 2026</div>
+  <div style="margin-top:6px">Tool costs on this page come from each vendor's official public pricing page via our cost engine — the same data powering the calculator. ROI calculations are illustrative: they use your inputs and do not account for setup time, maintenance, or tasks that cannot be fully automated. We do not claim any specific time savings — that is your measurement to make from your own process.</div>
+  <div style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
+</footer>
+
+<script>
+function toggleFaq(el) { el.closest(".faq-item").classList.toggle("open"); }
+
+/* ── ROI widget — self-contained, no dependencies ── */
+(function () {
+  var ANCHORS = [{"runs": 100, "slug": "make", "name": "Make", "cost": 0, "est": false}, {"runs": 250, "slug": "make", "name": "Make", "cost": 0, "est": false}, {"runs": 500, "slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}, {"runs": 1000, "slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}, {"runs": 2500, "slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}, {"runs": 5000, "slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}, {"runs": 10000, "slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}, {"runs": 20000, "slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}, {"runs": 50000, "slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}, {"runs": 100000, "slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}];
+
+  function findAnchor(runs) {
+    if (!ANCHORS.length) return null;
+    // Exact match or step down to nearest anchor below
+    var best = ANCHORS[0];
+    for (var i = 0; i < ANCHORS.length; i++) {
+      if (ANCHORS[i].runs <= runs) best = ANCHORS[i];
+      else break;
+    }
+    return best;
+  }
+
+  function fmt(n, prefix) {
+    if (n === null || isNaN(n)) return '—';
+    var rounded = Math.round(n);
+    return (prefix || '') + rounded.toLocaleString('en-US');
+  }
+
+  function compute() {
+    var runs = parseFloat(document.getElementById('roi-runs').value) || 0;
+    var mins = parseFloat(document.getElementById('roi-mins').value) || 0;
+    var rate = parseFloat(document.getElementById('roi-rate').value) || 0;
+    if (runs <= 0 || mins <= 0 || rate <= 0) {
+      document.getElementById('roi-results').hidden = true;
+      return;
+    }
+
+    var anchor = findAnchor(runs);
+    var toolCost = anchor ? anchor.cost : 8;
+    var toolName = anchor ? anchor.name : 'cheapest tool';
+    var toolEst  = anchor ? anchor.est  : false;
+
+    var hrsSaved = (runs * mins) / 60;
+    var value    = hrsSaved * rate;
+    var net      = value - toolCost;
+    var roiX     = toolCost > 0 ? value / toolCost : null;
+    // break-even: how many total minutes/mo to cover tool cost
+    var beMins   = rate > 0 ? (toolCost / rate) * 60 : null;
+
+    // Payback period: if break-even < 1 day → "< 1 day"; else days
+    var paybackStr = '';
+    if (beMins !== null) {
+      // mins of work per month vs total minutes used per month
+      // calendar: assume 22 working days, 8 hrs each = 10560 min/mo
+      var workingMinsPerMo = 22 * 8 * 60;
+      if (beMins <= 0) {
+        paybackStr = 'Immediate';
+      } else if (beMins < workingMinsPerMo / 22) {
+        paybackStr = '< 1 working day';
+      } else {
+        var days = Math.ceil(beMins / (8 * 60));
+        paybackStr = days + ' working day' + (days !== 1 ? 's' : '');
+      }
+    }
+
+    document.getElementById('r-hours').textContent    = hrsSaved < 1 ? hrsSaved.toFixed(1) + ' hrs' : fmt(hrsSaved) + ' hrs';
+    document.getElementById('r-value').textContent    = '$' + Math.round(value).toLocaleString('en-US');
+    document.getElementById('r-tool').textContent     = (toolEst ? '~' : '') + '$' + toolCost.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 2}) + '/mo';
+    document.getElementById('r-tool-name').textContent = toolName + ' (at your volume)';
+    document.getElementById('r-net').textContent      = (net >= 0 ? '+' : '') + '$' + Math.round(net).toLocaleString('en-US') + '/mo';
+    document.getElementById('r-net-sub').textContent  = net >= 0 ? 'value minus tool cost' : 'cost exceeds time value — check volume or rate';
+    document.getElementById('r-roi').textContent      = roiX !== null ? Math.round(roiX) + 'x' : '—';
+    document.getElementById('r-be').textContent       = beMins !== null ? Math.ceil(beMins) + ' min/mo' : '—';
+
+    var prow = document.getElementById('r-payback-row');
+    if (paybackStr) {
+      document.getElementById('r-payback').textContent = paybackStr;
+      prow.hidden = false;
+    } else {
+      prow.hidden = true;
+    }
+
+    // Colour net savings
+    var netEl = document.getElementById('r-net');
+    netEl.className = 'roi-stat-value' + (net >= 0 ? ' accent' : ' warn');
+
+    document.getElementById('roi-results').hidden = false;
+  }
+
+  ['roi-runs', 'roi-mins', 'roi-rate'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) { el.addEventListener('input', compute); el.addEventListener('change', compute); }
+  });
+  compute();
+})();
+
+</script>
+<a href="calculator.html" class="funnel-fab" aria-label="Find my cheapest tool"><svg width="17" height="17" viewBox="0 0 48 48" fill="none"><path d="M29 11 L15 24 L29 37" stroke="#04130d" stroke-width="6.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34.5" cy="24" r="3.4" fill="#04130d"/></svg> Find my best tool</a>
+<script src="app.js"></script>
+</body>
+</html>
