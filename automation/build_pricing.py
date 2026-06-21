@@ -1909,6 +1909,210 @@ function toggleFaq(el) {{ el.closest(".faq-item").classList.toggle("open"); }}
 """
 
 
+
+def render_hidden_cost_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
+    """Generuje automation/hidden-cost-automation.html — skryté náklady platforem.
+
+    Všechna čísla z enginu / tools.json (žádná nová cenová tvrzení).
+    REVIEW: editorial prose + overage/upgrade logic needs owner sign-off.
+    """
+    month_year = _month_year(tools_meta)
+    prefix = _site_prefix(site.get("domain", "wizardcost.com"), site.get("base_path", ""))
+    canonical = f"{prefix}/hidden-cost-automation.html"
+
+    # ── sekce 1: overage / upgrade chování ──────────────────────────────────
+    # Zdrojem je tools.json: overage: null na plan úrovni = žádné PAYG, upgrade na vyšší tier.
+    # Pipedream má creditBands (tiered per-credit rate) na paid plánech, ale per _meta todo
+    # (2026-06-13): overage je nyní "Contact Sales only" — zobrazujeme creditBands jako referenci.
+    def _overage_behavior(tool: dict) -> str:
+        """Textový popis co se stane po překročení limitu — čistě z tools.json."""
+        slug = tool["slug"]
+        # zjisti, zda má JAKÝKOLI placený plán creditBands (Pipedream)
+        has_credit_bands = any(p.get("creditBands") for p in tool.get("plans", []))
+        # zjisti, zda má nástroj opsIncluded limity (tedy může překročit)
+        paid_plans_with_limit = [p for p in tool.get("plans", [])
+                                  if p.get("monthlyUsd") and p.get("opsIncluded")]
+        if not paid_plans_with_limit and not has_credit_bands:
+            # self-host only (n8n self-host, Activepieces, Automatisch, Node-RED)
+            return "No ops limit — self-host runs are unlimited by software"
+        if has_credit_bands:
+            return "Tiered per-credit rate applies (Contact Sales for current rates)"
+        # všechny ostatní placené plány s overage: null = tier upgrade
+        return "Must upgrade to next volume tier (no pay-as-you-go)"
+
+    def _entry_plan(tool: dict) -> dict | None:
+        """Nejlevnější placený plán s opsIncluded (ne self-host only)."""
+        candidates = [p for p in tool.get("plans", [])
+                      if p.get("monthlyUsd") and p.get("opsIncluded")
+                      and not p.get("selfHostOnly")]
+        return min(candidates, key=lambda p: p["monthlyUsd"]) if candidates else None
+
+    overage_rows = []
+    for slug in PRICING_SLUGS:
+        t = by_slug[slug]
+        ep = _entry_plan(t)
+        if ep:
+            limit_str = f"{ep['opsIncluded']:,} {t.get('unitModel', 'runs')}/mo"
+            price_str = f"${ep['monthlyUsd']:,.2f}".rstrip("0").rstrip(".") + "/mo"
+        else:
+            limit_str = "Unlimited (self-host)"
+            price_str = "Server cost only"
+        behavior = _overage_behavior(t)
+        overage_rows.append(
+            f"        <tr>"
+            f"<td><a href=\"{slug}-pricing.html\">{_html_escape(t['name'])}</a></td>"
+            f"<td>{limit_str}</td>"
+            f"<td>{price_str}</td>"
+            f"<td>{behavior}</td>"
+            f"</tr>"
+        )
+    overage_table = "\n".join(overage_rows)
+
+    # ── sekce 2: annual billing markup ──────────────────────────────────────
+    # markup % = (monthlyUsd - annualUsd) / annualUsd * 100
+    # Pokud plán nemá annualUsd → "No annual option" (platba jen měsíčně)
+    def _annual_markup(tool: dict) -> tuple[str, str, str]:
+        """(monthly_str, annual_str, markup_str) — z entry plánu s oběma cenami."""
+        ep = _entry_plan(tool)
+        if not ep:
+            return ("Server cost", "Server cost", "N/A")
+        monthly = ep.get("monthlyUsd")
+        annual = ep.get("annualUsd")
+        if monthly is None:
+            return ("Custom", "Custom", "N/A")
+        m_str = f"${monthly:,.2f}".rstrip("0").rstrip(".")
+        if annual is None:
+            return (m_str, "Monthly only", "0% — no annual plan")
+        a_str = f"${annual:,.2f}".rstrip("0").rstrip(".")
+        if annual <= 0:
+            return (m_str, a_str, "N/A")
+        markup = (monthly - annual) / annual * 100
+        if markup < 0.5:
+            return (m_str, a_str, "No premium")
+        return (m_str, a_str, f"+{markup:.0f}% monthly premium")
+
+    # určí, zda je markup "velký" (>= 30%) pro zvýraznění
+    def _markup_val(tool: dict) -> float:
+        ep = _entry_plan(tool)
+        if not ep:
+            return 0.0
+        m, a = ep.get("monthlyUsd"), ep.get("annualUsd")
+        if not m or not a or a <= 0:
+            return 0.0
+        return (m - a) / a * 100
+
+    markup_rows = []
+    for slug in PRICING_SLUGS:
+        t = by_slug[slug]
+        m_str, a_str, mk_str = _annual_markup(t)
+        val = _markup_val(t)
+        highlight = ' class="tag-warn"' if val >= 30 else ""
+        markup_rows.append(
+            f"        <tr>"
+            f"<td><a href=\"{slug}-pricing.html\">{_html_escape(t['name'])}</a></td>"
+            f"<td>{m_str}/mo</td>"
+            f"<td>{a_str}/mo</td>"
+            f'<td{highlight}>{mk_str}</td>'
+            f"</tr>"
+        )
+    markup_table = "\n".join(markup_rows)
+
+    # ── sekce 3: self-host tools for escape hatch ─────────────────────────
+    sh_tools = [t for t in by_slug.values() if t.get("selfHostable")]
+    sh_names = ", ".join(t["name"] for t in sh_tools)
+
+    # ── introtext ──────────────────────────────────────────────────────────
+    intro = (
+        "The price shown on an automation tool's pricing page is rarely the price you end up paying. "
+        "Volume limits, overage tiers and annual billing premiums can add 20–50% on top of the headline "
+        "number — before you've even started. This page maps out the three hidden costs that most often "
+        "catch teams off guard, using the same data that powers our calculator."
+    )
+
+    body = f"""  <div class="section">
+    <h2>1. What happens when you exceed your limit</h2>
+    <p class="section-sub">Each tool sets a monthly ops/runs/credit ceiling. Here's what triggers when you hit it — sourced from each vendor's published pricing, verified {month_year}.</p>
+    <table class="comparison-table">
+      <thead><tr><th>Tool</th><th>Entry plan limit</th><th>Entry plan price</th><th>When you exceed it</th></tr></thead>
+      <tbody>
+{overage_table}
+      </tbody>
+    </table>
+    <div class="warning-box" style="margin-top:16px"><strong>Key takeaway:</strong> most cloud tools use <em>tier-based pricing</em> — you pay for the next volume bracket, not just the overage. A single busy month can push you into a tier that costs 2–3× more. Self-hosted tools (n8n, Activepieces, Automatisch, Node-RED) have no ops ceiling at all: the limit is your server capacity.</div>
+  </div>
+
+  <div class="section">
+    <h2>2. Annual billing premium</h2>
+    <p class="section-sub">Choosing monthly billing over annual means you pay a premium on many platforms. The table below compares the entry-plan monthly vs annual price (billed-annually price expressed as $/mo), and shows the effective markup you pay for the flexibility of monthly billing.</p>
+    <table class="comparison-table">
+      <thead><tr><th>Tool</th><th>Monthly billing</th><th>Annual billing ($/mo)</th><th>Monthly premium</th></tr></thead>
+      <tbody>
+{markup_table}
+      </tbody>
+    </table>
+    <div class="warning-box" style="margin-top:16px"><strong>Note:</strong> "Monthly premium" is the extra cost of paying month-to-month vs committing to a year. Highlighted cells (<span class="tag-warn">orange</span>) indicate a premium of 30% or more. Self-hosted tools have no subscription, so the annual vs monthly distinction doesn't apply. Server costs are typically billed monthly by the hour.</div>
+  </div>
+
+  <div class="section">
+    <h2>3. The self-hosted escape hatch</h2>
+    <p>If overage charges and billing lock-in are a concern, the cleanest exit is switching to a self-hostable tool. {_html_escape(sh_names)} are free to run — the only recurring cost is the server it runs on. (Licensing differs: Automatisch and Node-RED are open-source; Activepieces is open-core; n8n is fair-code under its Sustainable Use License — all are free to self-host.)</p>
+    <p style="margin-top:12px">Our <a href="self-hosted-automation-cost.html">self-hosted automation cost guide</a> models VPS costs from entry level up to high-volume workloads and compares them directly against paid cloud plans. The short version: at most volumes self-hosting is cheaper than paid cloud, and there are no overages by design.</p>
+    <p style="margin-top:12px"><a href="self-hosted-automation-cost.html">See self-host vs cloud cost breakdown →</a></p>
+  </div>
+
+  <div class="section">
+    <h2>Calculate your real cost</h2>
+    <p>Enter your actual monthly run volume in the calculator and it shows the full cost — including which tier you land on and whether a paid cloud plan or self-hosting is cheaper for your usage.</p>
+    <div class="cta-row" style="margin-top:16px">
+      <a href="calculator.html" class="btn-primary">Open calculator →</a>
+      <a href="compare.html" class="btn-secondary">Compare all tools</a>
+      <a href="cheapest-automation-tool.html" class="btn-secondary">Cheapest automation tool</a>
+    </div>
+  </div>"""
+
+    faq = [
+        {"q": "What happens if I exceed my automation plan limit?",
+         "a": ("It depends on the tool. Most cloud platforms use tier-based pricing: exceeding your monthly "
+               "limit means upgrading to the next volume bracket for the whole month — not just paying for "
+               "the extra runs. Pipedream historically offered per-credit overage but this is now quote-only. "
+               "Self-hosted tools (n8n, Activepieces, Automatisch, Node-RED) have no hard ops "
+               "ceiling — you're limited only by your server capacity.")},
+        {"q": "Is n8n really free?",
+         "a": ("n8n the software is fair-code (source-available under the Sustainable Use License) and free to self-host. You pay "
+               "only for the server: a basic VPS starts around $8/mo for low-volume workloads. n8n Cloud is "
+               "a paid hosted service with a separate pricing structure. See the "
+               '<a href="n8n-pricing.html">n8n pricing breakdown</a> and the '
+               '<a href="self-hosted-automation-cost.html">self-host cost guide</a> for exact figures.')},
+        {"q": "Which automation tool has the lowest annual billing premium?",
+         "a": ("Tools that offer only monthly billing (like some self-hosted plans) have no annual premium "
+               "by definition. Among cloud tools, the annual discount varies — check the table above for "
+               "current entry-plan figures. Self-hosted tools (n8n, Activepieces, Automatisch, Node-RED) "
+               "have no subscription to lock into at all, so the annual vs monthly question doesn't arise.")},
+        {"q": "Can I pay month-to-month for automation tools?",
+         "a": ("Yes — Zapier, Make, and Pipedream all offer monthly billing, but you pay a premium over "
+               "annual pricing. The markup is visible in the table above. n8n Cloud also offers monthly "
+               "billing. Self-hosted tools have no subscription; the server (VPS) is typically billed by "
+               "the hour or month with no commitment required.")},
+        {"q": "How do I avoid automation overage charges?",
+         "a": ("Three strategies work reliably: (1) Monitor your run volume before it hits the limit — "
+               "most platforms send alerts. (2) Self-host a free-to-run tool (n8n, Activepieces) — "
+               "no per-run fee means no overages. (3) Choose a tool whose tier jump is smaller, or whose "
+               "entry plan already covers your peak volume. The "
+               '<a href="calculator.html">calculator</a> shows which tier you land on at your volume.')},
+    ]
+    faq_ld, faq_html = _seo_faq(faq)
+    title = "Hidden Costs of Automation Tools: Overages, Annual Fees &amp; Surprises | AutomationCost.io"
+    desc = ("Zapier, Make and Pipedream overage behavior, annual billing premiums and volume tier traps — "
+            "everything that's not on the pricing page. Plus the self-hosted tools that cost only your server.")
+    breadcrumb_ld = _seo_breadcrumb_ld(site, prefix, "Hidden costs of automation tools", canonical)
+    page_ld = _page_graph_ld(site.get("domain", "wizardcost.com"), canonical,
+                             "Hidden Costs of Automation Tools: Overages, Annual Fees & Surprises", desc,
+                             _iso_date(tools_meta))
+    return _seo_shell(title=title, desc=desc, canonical=canonical, prefix=prefix,
+                      month_year=month_year, h1="The hidden costs of automation tools",
+                      intro_html=intro, body_html=body, faq_ld=faq_ld,
+                      breadcrumb_ld=breadcrumb_ld, faq_html=faq_html, page_ld=page_ld)
+
 def build_seo_pages(tools: list[dict], site: dict, tools_meta: dict, *, check: bool = False) -> list[str]:
     """Vygeneruje long-tail SEO stránky (alternatives ×7 + cheapest ×1 + self-host ×1 + roi ×1)."""
     engine = _root_engine()
@@ -1919,6 +2123,7 @@ def build_seo_pages(tools: list[dict], site: dict, tools_meta: dict, *, check: b
     targets.append(("cheapest-automation-tool.html", lambda: render_cheapest_page(by_slug, site, tools_meta, engine)))
     targets.append(("self-hosted-automation-cost.html", lambda: render_selfhost_page(by_slug, site, tools_meta, engine)))
     targets.append(("is-automation-worth-it.html", lambda: render_roi_page(by_slug, site, tools_meta, engine)))
+    targets.append(("hidden-cost-automation.html", lambda: render_hidden_cost_page(by_slug, site, tools_meta, engine)))
     for fname, render in targets:
         target = ROOT / fname
         rendered = render()
