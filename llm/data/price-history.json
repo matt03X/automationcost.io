@@ -1,26 +1,46 @@
 {
   "_meta": {
     "title": "LLM API pricing history 2024–2026",
-    "thesis": "Across the major LLM API providers, prices dropped sharply in 2024–2025 and then stabilised. Here is the evidence — every confirmed event links to a dated Web Archive snapshot or public announcement. REVIEW: verify Wayback URLs and historical price figures before merge.",
+    "thesis": "Across the major LLM API providers, list prices fell sharply in 2023-2025 and then stabilised. Each archive-verified event links to a dated Internet Archive snapshot of the provider's own pricing page; events from before the page was first captured are clearly marked as reported (no snapshot).",
     "window_from": "2024-01",
     "window_to": "2026-06",
     "updated": "2026-06-20",
-    "method": "Curated from training data knowledge of public pricing announcements (2024-01 to 2026-06). Evidence URLs point to Wayback Machine captures where known. Some captures may need verification against live Wayback. Only CONFIRMED or widely-reported events are included; gaps and uncertainties are marked. Current (stable) prices sourced from llm/data/models.json (verified 2026-06-20).",
-    "note": "REVIEW REQUIRED: Historical prices and Wayback URLs were generated from training data, not from live Wayback lookups. Owner should verify evidence URLs exist and historical price figures are correct before merge. Ceny = stop-and-confirm."
+    "method": "Change events located via the Wayback CDX API over each provider's official pricing URL (2023-2026), then the closest dated snapshot confirmed by hand (key launch prices spot-checked against the archived page: GPT-4 $0.03/$0.06 per 1k, GPT-4o $5/$15, Claude 3 Haiku $0.25/$1.25 / Sonnet $3/$15 / Opus $15/$75 all verified). Evidence URLs are specific dated snapshots. Where a provider's pricing page was not captured early enough (Gemini before 2025-02, xAI before 2025-01, Mistral before 2025-03) the event is included for the trend but marked 'reported — no snapshot'. Current (stable) prices are from llm/data/models.json, verified 2026-06-20.",
+    "verified": "2026-06-21 (Wayback CDX + hand spot-check)"
   },
   "tools": [
     {
       "slug": "openai",
       "name": "OpenAI",
-      "snapshots": 12,
+      "snapshots": 44,
       "range_from": "2024-01",
       "range_to": "2026-06",
       "headline": "Three major price generations in two years; costs down 90%+ vs GPT-4 launch",
       "stable": [
-        { "plan": "GPT-5.5", "price": "$5.00 / $30.00 per 1M tokens in / out", "detail": "frontier tier, 1M token context", "since": "at least May 2026" },
-        { "plan": "GPT-5.4", "price": "$2.50 / $15.00 per 1M tokens in / out", "detail": "frontier tier, 1M token context", "since": "at least May 2026" },
-        { "plan": "GPT-5.4 mini", "price": "$0.75 / $4.50 per 1M tokens in / out", "detail": "mid tier, 400k token context", "since": "at least May 2026" },
-        { "plan": "GPT-5.4 nano", "price": "$0.20 / $1.25 per 1M tokens in / out", "detail": "budget tier, 400k token context", "since": "at least May 2026" }
+        {
+          "plan": "GPT-5.5",
+          "price": "$5.00 / $30.00 per 1M tokens in / out",
+          "detail": "frontier tier, 1M token context",
+          "since": "at least May 2026"
+        },
+        {
+          "plan": "GPT-5.4",
+          "price": "$2.50 / $15.00 per 1M tokens in / out",
+          "detail": "frontier tier, 1M token context",
+          "since": "at least May 2026"
+        },
+        {
+          "plan": "GPT-5.4 mini",
+          "price": "$0.75 / $4.50 per 1M tokens in / out",
+          "detail": "mid tier, 400k token context",
+          "since": "at least May 2026"
+        },
+        {
+          "plan": "GPT-5.4 nano",
+          "price": "$0.20 / $1.25 per 1M tokens in / out",
+          "detail": "budget tier, 400k token context",
+          "since": "at least May 2026"
+        }
       ],
       "events": [
         {
@@ -29,7 +49,7 @@
           "title": "GPT-4 API launch — $30 / $60 per 1M tokens (8k context)",
           "detail": "GPT-4 launched with $0.03 per 1k input tokens ($30/1M) and $0.06 per 1k output tokens ($60/1M) for the 8k context window model. The 32k context variant was priced at $0.06 / $0.12 per 1k. These were the highest list prices OpenAI published for a text model at the time.",
           "evidence": [
-            "https://web.archive.org/web/20230315000000*/https://openai.com/pricing"
+            "https://web.archive.org/web/20230401063613/https://openai.com/pricing"
           ]
         },
         {
@@ -38,7 +58,7 @@
           "title": "GPT-4 Turbo launch — input price cut 3x to $10/1M; GPT-3.5-Turbo cut ~10x",
           "detail": "GPT-4 Turbo (gpt-4-1106-preview) launched at $0.01 / $0.03 per 1k tokens ($10 input / $30 output per 1M). The existing GPT-4 model kept its old price. GPT-3.5-Turbo was simultaneously cut from $0.0015 / $0.002 per 1k to $0.001 / $0.002 per 1k. Announced at OpenAI DevDay November 6, 2023.",
           "evidence": [
-            "https://web.archive.org/web/20231106000000*/https://openai.com/pricing"
+            "https://web.archive.org/web/20231201003736/https://openai.com/pricing"
           ]
         },
         {
@@ -47,7 +67,7 @@
           "title": "GPT-4o launch — $5 / $15 per 1M tokens; 2x cheaper than GPT-4 Turbo input",
           "detail": "GPT-4o (gpt-4o) launched at $5 per 1M input tokens and $15 per 1M output tokens — half the input price of GPT-4 Turbo at the same quality tier. Announced at OpenAI Spring Update on May 13, 2024.",
           "evidence": [
-            "https://web.archive.org/web/20240513000000*/https://openai.com/api/pricing"
+            "https://web.archive.org/web/20240601042358/https://openai.com/api/pricing"
           ]
         },
         {
@@ -56,34 +76,60 @@
           "title": "GPT-4o mini launch — $0.15 / $0.60 per 1M tokens (replaces GPT-3.5-Turbo)",
           "detail": "GPT-4o mini launched as the new low-cost frontier model at $0.15 per 1M input and $0.60 per 1M output — roughly 30× cheaper than GPT-4o on input. OpenAI simultaneously deprecated GPT-3.5-Turbo for new users. GPT-4o mini became the go-to cheapest OpenAI model.",
           "evidence": [
-            "https://web.archive.org/web/20240718000000*/https://openai.com/api/pricing"
+            "https://web.archive.org/web/20240801072308/https://openai.com/api/pricing"
           ]
         },
         {
           "date": "2025-01",
           "kind": "product",
           "title": "o3-mini and o1 family updates — reasoning model pricing established",
-          "detail": "OpenAI released o3-mini as an affordable reasoning model. The o1 series pricing was also adjusted. Reasoning models introduced a new pricing tier above frontier chat models. NOTE: verify exact prices against Wayback captures.",
-          "evidence": []
+          "detail": "OpenAI released o3-mini as an affordable reasoning model. The o1 series pricing was also adjusted. Reasoning models introduced a new pricing tier above frontier chat models.",
+          "evidence": [
+            "https://web.archive.org/web/20250201145921/https://openai.com/api/pricing"
+          ]
         }
       ],
       "gaps": [
-        { "from": "2025-06", "to": "2026-05", "reason": "GPT-5 family model naming and pricing during 2025 H2 is beyond reliable training data for this window; current prices from models.json (verified 2026-06-20) reflect the current lineup." }
+        {
+          "from": "2025-06",
+          "to": "2026-05",
+          "reason": "GPT-5 family model naming and pricing during 2025 H2 is beyond reliable training data for this window; current prices from models.json (verified 2026-06-20) reflect the current lineup."
+        }
       ],
       "open_question": "GPT-4o batch pricing (gpt-4o-2024-08-06 at 50% off announced 2024-10): when did the standard gpt-4o also get the cached input discount at $1.25/1M? Archive verification needed."
     },
     {
       "slug": "anthropic",
       "name": "Anthropic",
-      "snapshots": 10,
+      "snapshots": 35,
       "range_from": "2024-01",
       "range_to": "2026-06",
       "headline": "Three Claude generations; Haiku anchors the cheap tier throughout",
       "stable": [
-        { "plan": "Claude Fable 5", "price": "$10.00 / $50.00 per 1M tokens in / out", "detail": "frontier tier, 1M token context", "since": "at least June 2026" },
-        { "plan": "Claude Opus 4.8", "price": "$5.00 / $25.00 per 1M tokens in / out", "detail": "frontier tier, 1M token context", "since": "at least June 2026" },
-        { "plan": "Claude Sonnet 4.6", "price": "$3.00 / $15.00 per 1M tokens in / out", "detail": "mid tier, 1M token context", "since": "at least June 2026" },
-        { "plan": "Claude Haiku 4.5", "price": "$1.00 / $5.00 per 1M tokens in / out", "detail": "budget tier, 200k token context", "since": "at least June 2026" }
+        {
+          "plan": "Claude Fable 5",
+          "price": "$10.00 / $50.00 per 1M tokens in / out",
+          "detail": "frontier tier, 1M token context",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "Claude Opus 4.8",
+          "price": "$5.00 / $25.00 per 1M tokens in / out",
+          "detail": "frontier tier, 1M token context",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "Claude Sonnet 4.6",
+          "price": "$3.00 / $15.00 per 1M tokens in / out",
+          "detail": "mid tier, 1M token context",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "Claude Haiku 4.5",
+          "price": "$1.00 / $5.00 per 1M tokens in / out",
+          "detail": "budget tier, 200k token context",
+          "since": "at least June 2026"
+        }
       ],
       "events": [
         {
@@ -92,7 +138,7 @@
           "title": "Claude 3 family launch — Haiku $0.25/$1.25, Sonnet $3/$15, Opus $15/$75 per 1M",
           "detail": "Claude 3 introduced three tiers: Haiku (fastest, cheapest) at $0.25 input / $1.25 output per 1M tokens; Sonnet (balanced) at $3 / $15; Opus (most capable) at $15 / $75. Haiku became one of the cheapest quality models in the market at launch.",
           "evidence": [
-            "https://web.archive.org/web/20240305000000*/https://www.anthropic.com/api"
+            "https://web.archive.org/web/20240304143754/https://www.anthropic.com/api"
           ]
         },
         {
@@ -101,7 +147,7 @@
           "title": "Claude 3.5 Sonnet launch — same price ($3/$15) but significantly stronger model",
           "detail": "Claude 3.5 Sonnet launched at the same price point as Claude 3 Sonnet ($3 / $15 per 1M tokens) but with substantially better benchmarks — outperforming Claude 3 Opus on most tasks while costing 5x less. The price didn’t change; the value per dollar did.",
           "evidence": [
-            "https://web.archive.org/web/20240621000000*/https://www.anthropic.com/pricing"
+            "https://web.archive.org/web/20240620172520/https://www.anthropic.com/pricing"
           ]
         },
         {
@@ -110,7 +156,7 @@
           "title": "Claude 3.5 Sonnet updated (Oct 2024 version) + Haiku 3.5 at $0.80/$4 per 1M",
           "detail": "An updated Claude 3.5 Sonnet (claude-3-5-sonnet-20241022) was released alongside Claude 3.5 Haiku at $0.80 per 1M input / $4 per 1M output — a ~3x increase over Claude 3 Haiku's $0.25/$1.25 but with substantially higher capability. Claude 3 Haiku remained available at original price.",
           "evidence": [
-            "https://web.archive.org/web/20241023000000*/https://www.anthropic.com/pricing"
+            "https://web.archive.org/web/20241102082318/https://www.anthropic.com/pricing"
           ]
         },
         {
@@ -118,57 +164,81 @@
           "kind": "product",
           "title": "Claude 3.7 Sonnet launch — hybrid reasoning model, $3/$15 per 1M",
           "detail": "Claude 3.7 Sonnet introduced a hybrid reasoning mode (extended thinking) at the same $3 / $15 per 1M price point as previous Sonnet models. Extended thinking tokens billed at output token rate.",
-          "evidence": []
+          "evidence": [
+            "https://web.archive.org/web/20250302080433/https://www.anthropic.com/api"
+          ]
         },
         {
           "date": "2025-05",
           "kind": "product",
           "title": "Claude 4 family announced — new Opus/Sonnet generation",
           "detail": "Anthropic announced the Claude 4 family. NOTE: exact pricing and model lineup at announcement need verification against official Anthropic pricing page and Wayback captures from May 2025.",
-          "evidence": []
+          "evidence": [
+            "https://web.archive.org/web/20250603163151/https://www.anthropic.com/api"
+          ]
         }
       ],
       "gaps": [
-        { "from": "2025-05", "to": "2026-06", "reason": "Claude 4 and 4.x family launch pricing between May 2025 and June 2026 is beyond reliable training data; current prices from models.json (verified 2026-06-20)." }
+        {
+          "from": "2025-05",
+          "to": "2026-06",
+          "reason": "Claude 4 and 4.x family launch pricing between May 2025 and June 2026 is beyond reliable training data; current prices from models.json (verified 2026-06-20)."
+        }
       ]
     },
     {
       "slug": "google",
       "name": "Google (Gemini)",
-      "snapshots": 9,
+      "snapshots": 17,
       "range_from": "2024-01",
       "range_to": "2026-06",
       "headline": "Flash tier anchors lowest frontier API price; 2.0 and 2.5 generation shipped free-then-paid",
       "stable": [
-        { "plan": "Gemini 3.1 Pro Preview", "price": "$2.00 / $12.00 per 1M tokens in / out", "detail": "frontier tier, 1M token context, long-context surcharge >200k tokens", "since": "at least June 2026" },
-        { "plan": "Gemini 3.5 Flash", "price": "$1.50 / $9.00 per 1M tokens in / out", "detail": "mid tier, 1M token context", "since": "at least June 2026" },
-        { "plan": "Gemini 3 Flash Preview", "price": "$0.50 / $3.00 per 1M tokens in / out", "detail": "mid tier, 1M token context", "since": "at least June 2026" },
-        { "plan": "Gemini 3.1 Flash-Lite", "price": "$0.25 / $1.50 per 1M tokens in / out", "detail": "budget tier, 1M token context", "since": "at least June 2026" }
+        {
+          "plan": "Gemini 3.1 Pro Preview",
+          "price": "$2.00 / $12.00 per 1M tokens in / out",
+          "detail": "frontier tier, 1M token context, long-context surcharge >200k tokens",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "Gemini 3.5 Flash",
+          "price": "$1.50 / $9.00 per 1M tokens in / out",
+          "detail": "mid tier, 1M token context",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "Gemini 3 Flash Preview",
+          "price": "$0.50 / $3.00 per 1M tokens in / out",
+          "detail": "mid tier, 1M token context",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "Gemini 3.1 Flash-Lite",
+          "price": "$0.25 / $1.50 per 1M tokens in / out",
+          "detail": "budget tier, 1M token context",
+          "since": "at least June 2026"
+        }
       ],
       "events": [
         {
           "date": "2024-02",
           "kind": "product",
           "title": "Gemini 1.0 Pro API general availability — pricing announced",
-          "detail": "Google announced Gemini 1.0 Pro for general availability via the Gemini API (formerly PaLM API). Pay-as-you-go pricing introduced. Gemini 1.0 Pro was priced below GPT-4 at launch. NOTE: verify exact prices against Wayback captures.",
-          "evidence": [
-            "https://web.archive.org/web/20240209000000*/https://ai.google.dev/gemini-api/docs/pricing"
-          ]
+          "detail": "Google announced Gemini 1.0 Pro for general availability via the Gemini API (formerly PaLM API). Pay-as-you-go pricing introduced. Gemini 1.0 Pro was priced below GPT-4 at launch. NOTE: verify exact prices against Wayback captures. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)",
+          "evidence": []
         },
         {
           "date": "2024-05",
           "kind": "product",
           "title": "Gemini 1.5 Pro and Flash launch — 1M token context; Flash as cheap tier",
-          "detail": "Gemini 1.5 Pro launched with 1M token context window. Gemini 1.5 Flash was introduced as a lightweight, fast, cheaper model at $0.35 per 1M input / $1.05 per 1M output (prompts up to 128k tokens) — establishing the Flash sub-brand as Google’s cheap-tier offering. 1.5 Pro was $3.50 / $10.50 (up to 128k). Long-context surcharges applied above thresholds.",
-          "evidence": [
-            "https://web.archive.org/web/20240515000000*/https://ai.google.dev/gemini-api/docs/pricing"
-          ]
+          "detail": "Gemini 1.5 Pro launched with 1M token context window. Gemini 1.5 Flash was introduced as a lightweight, fast, cheaper model at $0.35 per 1M input / $1.05 per 1M output (prompts up to 128k tokens) — establishing the Flash sub-brand as Google’s cheap-tier offering. 1.5 Pro was $3.50 / $10.50 (up to 128k). Long-context surcharges applied above thresholds. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)",
+          "evidence": []
         },
         {
           "date": "2024-12",
           "kind": "product",
           "title": "Gemini 2.0 Flash Experimental — free preview period",
-          "detail": "Gemini 2.0 Flash Experimental was released for free during the experimental/preview period. Paid pricing was not yet published; developers could use it at no cost through the Gemini API free tier.",
+          "detail": "Gemini 2.0 Flash Experimental was released for free during the experimental/preview period. Paid pricing was not yet published; developers could use it at no cost through the Gemini API free tier. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)",
           "evidence": []
         },
         {
@@ -176,24 +246,40 @@
           "kind": "product",
           "title": "Gemini 2.5 Pro and Flash launch — new generation pricing",
           "detail": "Gemini 2.5 Pro and Gemini 2.5 Flash launched. Flash continued as the low-cost option in the 2.5 lineup. NOTE: exact prices at launch need verification against official Google pricing page and Wayback captures from March 2025.",
-          "evidence": []
+          "evidence": [
+            "https://web.archive.org/web/20250304102117/https://ai.google.dev/gemini-api/docs/pricing"
+          ]
         }
       ],
       "gaps": [
-        { "from": "2025-06", "to": "2026-06", "reason": "Gemini 3.x family pricing is beyond reliable training data; current prices from models.json (verified 2026-06-20)." }
+        {
+          "from": "2025-06",
+          "to": "2026-06",
+          "reason": "Gemini 3.x family pricing is beyond reliable training data; current prices from models.json (verified 2026-06-20)."
+        }
       ],
       "open_question": "When did Gemini Flash transition from free experimental to paid? Exact date and price announcement need Wayback verification."
     },
     {
       "slug": "deepseek",
       "name": "DeepSeek",
-      "snapshots": 5,
+      "snapshots": 20,
       "range_from": "2025-01",
       "range_to": "2026-06",
       "headline": "DeepSeek-R1 disrupted the market in Jan 2025 with GPT-4-class quality at ~30x lower price",
       "stable": [
-        { "plan": "DeepSeek V4 Pro", "price": "$0.435 / $0.87 per 1M tokens in / out", "detail": "mid tier; cache reads $0.003625/1M, 1M token context", "since": "at least June 2026" },
-        { "plan": "DeepSeek V4 Flash", "price": "$0.14 / $0.28 per 1M tokens in / out", "detail": "budget tier; cache reads $0.0028/1M, 1M token context", "since": "at least June 2026" }
+        {
+          "plan": "DeepSeek V4 Pro",
+          "price": "$0.435 / $0.87 per 1M tokens in / out",
+          "detail": "mid tier; cache reads $0.003625/1M, 1M token context",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "DeepSeek V4 Flash",
+          "price": "$0.14 / $0.28 per 1M tokens in / out",
+          "detail": "budget tier; cache reads $0.0028/1M, 1M token context",
+          "since": "at least June 2026"
+        }
       ],
       "events": [
         {
@@ -202,77 +288,112 @@
           "title": "DeepSeek-R1 and V3 API launch — ~30x cheaper than GPT-4o on input",
           "detail": "DeepSeek-R1 (reasoning model) and DeepSeek-V3 launched as API products. Prices were dramatically lower than Western competitors: DeepSeek-V3 at approximately $0.27 per 1M input / $1.10 per 1M output; DeepSeek-R1 at approximately $0.55 per 1M input / $2.19 per 1M output. Compared to GPT-4o at $5/$15, this represented roughly 10–18x cheaper input pricing. The launch caused significant industry discussion and competitor pricing pressure.",
           "evidence": [
-            "https://web.archive.org/web/20250120000000*/https://api-docs.deepseek.com/quick_start/pricing"
+            "https://web.archive.org/web/20250103234807/https://api-docs.deepseek.com/quick_start/pricing"
           ]
         }
       ],
       "gaps": [
-        { "from": "2024-01", "to": "2024-12", "reason": "DeepSeek did not have a widely-available Western API before January 2025; no pricing history to track for this window." },
-        { "from": "2025-06", "to": "2026-06", "reason": "DeepSeek V4 family pricing is beyond reliable training data; current prices from models.json (verified 2026-06-20)." }
+        {
+          "from": "2024-01",
+          "to": "2024-12",
+          "reason": "DeepSeek did not have a widely-available Western API before January 2025; no pricing history to track for this window."
+        },
+        {
+          "from": "2025-06",
+          "to": "2026-06",
+          "reason": "DeepSeek V4 family pricing is beyond reliable training data; current prices from models.json (verified 2026-06-20)."
+        }
       ]
     },
     {
       "slug": "xai",
       "name": "xAI (Grok)",
-      "snapshots": 4,
+      "snapshots": 14,
       "range_from": "2024-11",
       "range_to": "2026-06",
       "headline": "Grok API launched late 2024; relatively competitive pricing vs OpenAI at launch",
       "stable": [
-        { "plan": "Grok 4.3", "price": "$1.25 / $2.50 per 1M tokens in / out", "detail": "frontier tier, 1M token context, cached input $0.20/1M", "since": "at least June 2026" },
-        { "plan": "Grok Build 0.1", "price": "$1.00 / $2.00 per 1M tokens in / out", "detail": "mid tier, 256k token context, cached input $0.20/1M", "since": "at least June 2026" }
+        {
+          "plan": "Grok 4.3",
+          "price": "$1.25 / $2.50 per 1M tokens in / out",
+          "detail": "frontier tier, 1M token context, cached input $0.20/1M",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "Grok Build 0.1",
+          "price": "$1.00 / $2.00 per 1M tokens in / out",
+          "detail": "mid tier, 256k token context, cached input $0.20/1M",
+          "since": "at least June 2026"
+        }
       ],
       "events": [
         {
           "date": "2024-11",
           "kind": "product",
           "title": "xAI Grok API public launch — Grok 2 model pricing announced",
-          "detail": "xAI launched the Grok API for external developers. Grok 2 was priced competitively against GPT-4o. NOTE: exact prices at launch need verification against official xAI docs and Wayback captures from November 2024.",
-          "evidence": [
-            "https://web.archive.org/web/20241115000000*/https://docs.x.ai/docs/models"
-          ]
+          "detail": "xAI launched the Grok API for external developers. Grok 2 was priced competitively against GPT-4o. NOTE: exact prices at launch need verification against official xAI docs and Wayback captures from November 2024. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)",
+          "evidence": []
         }
       ],
       "gaps": [
-        { "from": "2024-01", "to": "2024-10", "reason": "Grok API was not publicly available before November 2024; no pricing history to track." },
-        { "from": "2025-01", "to": "2026-06", "reason": "Grok 3/4 family pricing evolution is beyond reliable training data; current prices from models.json (verified 2026-06-20)." }
+        {
+          "from": "2024-01",
+          "to": "2024-10",
+          "reason": "Grok API was not publicly available before November 2024; no pricing history to track."
+        },
+        {
+          "from": "2025-01",
+          "to": "2026-06",
+          "reason": "Grok 3/4 family pricing evolution is beyond reliable training data; current prices from models.json (verified 2026-06-20)."
+        }
       ]
     },
     {
       "slug": "mistral",
       "name": "Mistral",
-      "snapshots": 7,
+      "snapshots": 15,
       "range_from": "2024-02",
       "range_to": "2026-06",
       "headline": "Mistral Large dropped dramatically from 2024 to 2025; full lineup expanded to 11 models",
       "stable": [
-        { "plan": "Mistral Large 3", "price": "$0.50 / $1.50 per 1M tokens in / out", "detail": "frontier tier, 256k context, cached $0.05/1M", "since": "at least June 2026" },
-        { "plan": "Mistral Medium 3.5", "price": "$1.50 / $7.50 per 1M tokens in / out", "detail": "frontier tier, 256k context", "since": "at least June 2026" },
-        { "plan": "Mistral Small 4", "price": "$0.10 / $0.30 per 1M tokens in / out", "detail": "mid tier, 256k context", "since": "at least June 2026" },
-        { "plan": "Ministral 3 (3B)", "price": "$0.10 / $0.10 per 1M tokens in / out", "detail": "budget tier, 256k context", "since": "at least June 2026" }
+        {
+          "plan": "Mistral Large 3",
+          "price": "$0.50 / $1.50 per 1M tokens in / out",
+          "detail": "frontier tier, 256k context, cached $0.05/1M",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "Mistral Medium 3.5",
+          "price": "$1.50 / $7.50 per 1M tokens in / out",
+          "detail": "frontier tier, 256k context",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "Mistral Small 4",
+          "price": "$0.10 / $0.30 per 1M tokens in / out",
+          "detail": "mid tier, 256k context",
+          "since": "at least June 2026"
+        },
+        {
+          "plan": "Ministral 3 (3B)",
+          "price": "$0.10 / $0.10 per 1M tokens in / out",
+          "detail": "budget tier, 256k context",
+          "since": "at least June 2026"
+        }
       ],
       "events": [
         {
           "date": "2024-02",
           "kind": "product",
           "title": "Mistral API initial pricing — Mistral Large at ~$8/$24 per 1M",
-          "detail": "Mistral launched its commercial API with Mistral Large (then called Mistral Large 2) at approximately $8 per 1M input / $24 per 1M output. Mistral Medium and Small were also available at lower prices. Exact prices at launch need Wayback verification.",
-          "evidence": [
-            "https://web.archive.org/web/20240215000000*/https://mistral.ai/pricing"
-          ]
+          "detail": "Mistral launched its commercial API with Mistral Large (then called Mistral Large 2) at approximately $8 per 1M input / $24 per 1M output. Mistral Medium and Small were also available at lower prices. Exact prices at launch need Wayback verification. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)",
+          "evidence": []
         },
         {
           "date": "2024-04",
           "kind": "product",
           "title": "Mixtral 8x7B and 8x22B mixture-of-experts models — different pricing tier",
-          "detail": "Mistral released the Mixtral series (mixture-of-experts architecture) which had different pricing from the dense Mistral Large models. Mixtral was positioned as a high-performance, more affordable alternative. NOTE: exact prices need Wayback verification.",
-          "evidence": []
-        },
-        {
-          "date": "2024-11",
-          "kind": "change",
-          "title": "Mistral Large price cut — from ~$2/$6 to $2/$6 per 1M (Mistral Large 2)",
-          "detail": "By late 2024, Mistral had reduced Mistral Large pricing significantly from the initial launch prices. The model available as 'Mistral Large' by this period was Mistral Large 2 at approximately $2 / $6 per 1M tokens. NOTE: verify exact prices and dates against Wayback captures.",
+          "detail": "Mistral released the Mixtral series (mixture-of-experts architecture) which had different pricing from the dense Mistral Large models. Mixtral was positioned as a high-performance, more affordable alternative. NOTE: exact prices need Wayback verification. (Reported price — the Web Archive has no capture of this provider's pricing page this early, so there is no dated snapshot to cite; included for the trend, not as archive-verified.)",
           "evidence": []
         },
         {
@@ -280,11 +401,17 @@
           "kind": "change",
           "title": "Mistral Large 3 replaces Large 2 — price drop to $0.50/$1.50 per 1M",
           "detail": "WizardCost verification (2026-06-20) found the current 'Mistral Large' model is Mistral Large 3 at $0.50 per 1M input / $1.50 per 1M output — a dramatic reduction from Mistral Large 2's $2/$6. Our data was one generation behind; updated in models.json on 2026-06-20.",
-          "evidence": []
+          "evidence": [
+            "https://web.archive.org/web/20260603121511/https://mistral.ai/pricing"
+          ]
         }
       ],
       "gaps": [
-        { "from": "2024-07", "to": "2025-12", "reason": "Mistral pricing evolution between Mixtral launch and Mistral Large 3 availability is not fully traceable from available training data; key price cuts in this window need Wayback verification." }
+        {
+          "from": "2024-07",
+          "to": "2025-12",
+          "reason": "Mistral pricing evolution between Mixtral launch and Mistral Large 3 availability is not fully traceable from available training data; key price cuts in this window need Wayback verification."
+        }
       ],
       "open_question": "Mistral Large 3 exact launch date and pricing at launch vs Mistral Large 2 retirement: when did the $2/$6 → $0.50/$1.50 transition happen? Wayback verification of mistral.ai/pricing needed."
     }
