@@ -1441,7 +1441,8 @@ def build_sitemap(domain: str, base_path: str, pages: list[Path]) -> bool:
     urls = []
     for p in pages:
         loc = f"{prefix}/" if p.name == "index.html" else f"{prefix}/{p.name}"
-        urls.append(f"  <url><loc>{loc}</loc></url>")
+        lastmod = __import__("datetime").date.fromtimestamp(p.stat().st_mtime).isoformat()
+        urls.append(f"  <url><loc>{loc}</loc><lastmod>{lastmod}</lastmod></url>")
     xml = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
