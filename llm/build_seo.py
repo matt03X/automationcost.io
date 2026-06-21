@@ -255,6 +255,8 @@ def _cross(eng, data: dict, *, exclude: tuple = (), calc: bool = True) -> str:
             links.append(f'    <a href="{alt}">{SEO[slug]["brand"]} alternatives →</a>')
     if "cheapest-llm-api.html" not in exclude:
         links.append('    <a href="cheapest-llm-api.html">Cheapest LLM API →</a>')
+    if "is-llm-worth-it.html" not in exclude:
+        links.append('    <a href="is-llm-worth-it.html">Is an LLM API worth it? →</a>')
     if calc and "index.html" not in exclude:
         links.append('    <a href="index.html">Open calculator →</a>')
     return '  <div class="cross">\n' + "\n".join(links) + "\n  </div>"
@@ -710,6 +712,240 @@ def render_methodology(eng, data: dict, site: dict, month: str, nav: str, parts:
                   crumb=crumb, h1=h1, lead=lead, month=month, body=body, faq=faq, nav=nav)
 
 
+
+def _iwi_cost(m: dict, tasks: float, in_tok: float, out_tok: float, cache: float) -> float:
+    """Parametrizovaný náklad modelu (port canonical_monthly, libovolný workload)."""
+    in_per_m = m["inputPerM"]
+    out_per_m = m["outputPerM"]
+    cached = m.get("cachedInputPerM")
+    in_rate = in_per_m * (1 - cache) + cached * cache if cached is not None else in_per_m
+    return tasks * in_tok / 1e6 * in_rate + tasks * out_tok / 1e6 * out_per_m
+
+
+def _smoney(x: float) -> str:
+    """$ částka: centy/desetiny u malých, celé u velkých (aby levné scénáře nebyly '$0')."""
+    if x < 100:
+        return f"{x:,.2f}".rstrip("0").rstrip(".")
+    return f"{x:,.0f}"
+
+
+def _roi_str(roi) -> str:
+    """ROI multiplikátor — nad 1000× cap na '1,000×+' (honest, ale ne hype-looking)."""
+    if roi is None:
+        return "—"
+    return "1,000×+" if roi >= 1000 else f"{roi:,}×"
+
+
+def render_is_llm_worth_it(eng, data: dict, site: dict, month: str, nav: str, parts: tuple) -> str:
+    """is-llm-worth-it.html — ROI / break-even pro LLM API (zrcadlí automation ROI,
+    ale s PER-MODEL rozpadem: každý model = náklad + ROI + úspora pro tvůj scénář).
+    Nákladová strana z enginu (canonical formula). Žádné nové cenové tvrzení."""
+    domain = site.get("domain", "wizardcost.com")
+    base_path = site.get("base_path", "/llm")
+    prefix = eng._site_prefix(domain, base_path)
+    canonical = f"{prefix}/is-llm-worth-it.html"
+    models = [(p, m) for p, m in _all_models(data)]
+
+    def cheapest_at(tasks, it, ot, cache=0.0):
+        ranked = sorted(((p, m, _iwi_cost(m, tasks, it, ot, cache)) for p, m in models), key=lambda t: t[2])
+        return ranked[0]  # (prov, model, cost)
+
+    # ── worked scenarios: (label, tasks/mo, in_tok, out_tok, min ušetřených/task, $/hod) ──
+    SCEN = [
+        ("Support replies — 10k tickets/mo", 10000, 1500, 400, 6, 28),
+        ("Content drafts — 2k pieces/mo", 2000, 900, 1200, 20, 35),
+        ("Doc classification — 100k docs/mo", 100000, 600, 60, 1, 28),
+    ]
+    rows = []
+    for label, tasks, it, ot, mins, rate in SCEN:
+        p, m, cost = cheapest_at(tasks, it, ot)
+        hrs = tasks * mins / 60
+        value = hrs * rate
+        net = value - cost
+        roi = round(value / cost) if cost > 0 else None
+        be_tasks = int(cost / (rate * mins / 60)) if (rate and mins) else None
+        be_disp = "n/a" if be_tasks is None else ("&lt;1" if be_tasks < 1 else f"~{be_tasks:,}")
+        cls = ' class="cheap"' if net > 0 else ""
+        rows.append(
+            "        <tr>"
+            f"<td>{label}</td>"
+            f'<td>${_smoney(cost)}/mo<br><span class="m-sub2">{m["name"]}</span></td>'
+            f"<td>{hrs:,.0f} hrs</td>"
+            f"<td>${value:,.0f}</td>"
+            f'<td{cls}>${net:,.0f}</td>'
+            f"<td>{_roi_str(roi)}</td>"
+            f"<td>{be_disp}/mo</td>"
+            "</tr>")
+    scen_rows = "\n".join(rows)
+
+    # hero anchor — cheapest model at a representative chatbot workload
+    ap, am, acost = cheapest_at(100000, 2000, 300, 0.70)
+    anchor = f'{am["name"]} at about ${_smoney(acost)}/mo'
+
+    # model data pro widget (JS)
+    mjs = []
+    for p, m in models:
+        c = m.get("cachedInputPerM")
+        mjs.append('{n:%s,p:%s,i:%s,o:%s,c:%s,t:%s}' % (
+            json.dumps(m["name"], ensure_ascii=False), json.dumps(p["name"], ensure_ascii=False), m["inputPerM"], m["outputPerM"],
+            ("null" if c is None else c), json.dumps(m["tier"], ensure_ascii=False)))
+    models_js = "[\n      " + ",\n      ".join(mjs) + "\n    ]"
+
+    body = f"""<section class="wrap">
+  <div class="section">
+    <h2>The ROI formula — does an LLM API pay for itself?</h2>
+    <p class="sub">An LLM call replaces work a person would otherwise do. Put a dollar value on that work, compare it to the API cost, and you get ROI.</p>
+    <div class="formula-card">
+      Net savings = work value &minus; API cost &nbsp;·&nbsp; Return on cost = work value &divide; API cost &nbsp;·&nbsp; Break-even = the number of tasks/mo whose saved time covers the API bill.
+    </div>
+    <p class="sub" style="margin-top:12px">API cost is computed by the same engine as the <a href="index.html">calculator</a> from each model's per-token price — never quoted from memory. The cheapest model we track for a typical chatbot workload is <strong>{anchor}</strong>.</p>
+  </div>
+
+  <div class="section">
+    <h2>Worked examples — cheapest model, real ROI</h2>
+    <p class="sub">Each row prices every one of our {len(models)} models at the workload and shows the cheapest, with the value of the human time it offsets. Saved-time and rate are editorial assumptions — change them in the calculator below.</p>
+    <div class="tbl-card">
+      <table>
+        <thead><tr><th>Scenario</th><th>API cost</th><th>Time offset</th><th>Work value</th><th>Net savings/mo</th><th>Return</th><th>Break-even</th></tr></thead>
+        <tbody>
+{scen_rows}
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-foot">Cheapest model per scenario, no caching assumed (caching only lowers cost further). "Return" = value ÷ API cost. A long, clean, high-volume task is where LLM ROI is strongest.</p>
+  </div>
+
+  <div class="section">
+    <h2>ROI calculator — every model, your numbers</h2>
+    <p class="sub">Set your task and what an hour of the work it replaces is worth. We price all {len(models)} models and rank them by ROI — so you see which model has which return and how much each saves.</p>
+    <div class="iwi-widget">
+      <div class="iwi-inputs">
+        <label>Tasks / month<input id="iwi-tasks" type="number" value="10000" min="0"></label>
+        <label>Input tokens / task<input id="iwi-in" type="number" value="1500" min="0"></label>
+        <label>Output tokens / task<input id="iwi-out" type="number" value="400" min="0"></label>
+        <label>Minutes a human would spend / task<input id="iwi-mins" type="number" value="6" min="0" step="0.5"></label>
+        <label>Hourly cost of that person ($)<input id="iwi-rate" type="number" value="28" min="0"></label>
+        <label>Cached input share (%)<input id="iwi-cache" type="number" value="0" min="0" max="100"></label>
+      </div>
+      <div id="iwi-verdict" class="iwi-verdict" hidden></div>
+      <div class="tbl-card" style="margin-top:14px">
+        <table id="iwi-table">
+          <thead><tr><th>Model</th><th>API cost/mo</th><th>Net savings/mo</th><th>Return</th></tr></thead>
+          <tbody id="iwi-rows"></tbody>
+        </table>
+      </div>
+      <p class="iwi-disc">Work value = (tasks × minutes ÷ 60) × hourly cost. API cost from each model's published per-token price (verified {month}); ROI is illustrative — real value depends on your task and quality bar. Models aren't interchangeable: a budget model may need review a frontier model wouldn't. See <a href="methodology.html">methodology</a>.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>When an LLM API is <em>not</em> worth it</h2>
+    <p class="sub">Honesty is a feature. The ROI math turns negative here:</p>
+    <div class="tbl-card">
+      <table>
+        <thead><tr><th>Situation</th><th>Why ROI suffers</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>One-off or tiny volume</td><td>Engineering and prompt-tuning time dwarfs the saved minutes when you run it a handful of times.</td><td class="tag-no">Skip</td></tr>
+          <tr><td>Zero error tolerance</td><td>If every output needs a human to verify, you've shifted work, not removed it — and added latency and token cost on top.</td><td class="tag-no">Risky</td></tr>
+          <tr><td>The work is already cheap</td><td>If a person does the task in seconds for near-zero cost, the API bill plus oversight rarely beats it.</td><td class="tag-warn">Marginal</td></tr>
+          <tr><td>High volume, clear task, tolerant of small error</td><td>Cost per task is cents, the offset is real minutes — ROI scales with volume.</td><td class="tag-yes">Strong ROI</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+{_calc_cta("Tune it on your real prompts", "The calculator uses these exact prices — set your token mix, cache share and volume and it re-ranks every model live.")}
+{_cross(eng, data, exclude=("is-llm-worth-it.html",))}
+</section>
+<style>
+  .formula-card {{ background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 14.5px; color: var(--text2); line-height: 1.7; }}
+  .m-sub2 {{ color: var(--muted); font-size: 12px; }}
+  td.cheap {{ color: var(--accent-br); font-weight: 700; }}
+  .tag-yes {{ color: #16d18c; font-weight: 700; }} .tag-no {{ color: #ef6a6a; font-weight: 700; }} .tag-warn {{ color: #f0b84e; font-weight: 700; }}
+  .iwi-widget {{ background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 20px; }}
+  .iwi-inputs {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }}
+  .iwi-inputs label {{ display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; color: var(--text2); font-weight: 600; }}
+  .iwi-inputs input {{ background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; padding: 9px 11px; color: var(--text); font-family: var(--font); font-size: 15px; }}
+  .iwi-inputs input:focus {{ outline: 2px solid var(--accent); outline-offset: 1px; }}
+  .iwi-verdict {{ margin-top: 16px; padding: 14px 16px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; }}
+  .iwi-verdict.good {{ background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.35); color: #6ee7b7; }}
+  .iwi-verdict.bad {{ background: rgba(239,68,68,0.10); border: 1px solid rgba(239,68,68,0.35); color: #fca5a5; }}
+  #iwi-table td:first-child {{ font-weight: 600; }}
+  .iwi-disc {{ color: var(--muted); font-size: 12px; margin-top: 12px; line-height: 1.6; }}
+</style>
+<script>
+(function() {{
+  var MODELS = {models_js};
+  function num(id) {{ return parseFloat(document.getElementById(id).value) || 0; }}
+  function money(n) {{ if (Math.abs(n) < 100) {{ return '$' + (Math.round(n*100)/100).toLocaleString('en-US', {{maximumFractionDigits:2}}); }} return '$' + Math.round(n).toLocaleString('en-US'); }}
+  function roiStr(x) {{ if (x === null) return '—'; return x >= 1000 ? '1,000×+' : Math.round(x).toLocaleString('en-US') + '×'; }}
+  function compute() {{
+    var tasks = num('iwi-tasks'), it = num('iwi-in'), ot = num('iwi-out');
+    var mins = num('iwi-mins'), rate = num('iwi-rate'), cache = Math.min(Math.max(num('iwi-cache'),0),100)/100;
+    var value = tasks * mins / 60 * rate;
+    var ranked = MODELS.map(function(m) {{
+      var inRate = (m.c !== null) ? (m.i*(1-cache) + m.c*cache) : m.i;
+      var cost = tasks*it/1e6*inRate + tasks*ot/1e6*m.o;
+      return {{ m: m, cost: cost, net: value - cost, roi: cost > 0 ? value/cost : null }};
+    }}).sort(function(a,b) {{ return a.cost - b.cost; }});
+    var tb = document.getElementById('iwi-rows'); tb.innerHTML = '';
+    ranked.forEach(function(r, i) {{
+      var tr = document.createElement('tr');
+      var net = (r.net >= 0 ? '+' : '') + money(r.net);
+      var roi = roiStr(r.roi);
+      tr.innerHTML = '<td>' + r.m.n + ' <span class="m-sub2">' + r.m.p + '</span></td>'
+        + '<td>' + money(r.cost) + '/mo</td>'
+        + '<td' + (r.net >= 0 ? ' class="cheap"' : ' style="color:#ef6a6a"') + '>' + net + '</td>'
+        + '<td>' + roi + '</td>';
+      tb.appendChild(tr);
+    }});
+    var best = ranked[0];
+    var v = document.getElementById('iwi-verdict');
+    if (tasks <= 0 || value <= 0) {{ v.hidden = true; return; }}
+    v.hidden = false;
+    if (best.net >= 0) {{
+      v.className = 'iwi-verdict good';
+      v.innerHTML = 'Worth it: cheapest model <strong>' + best.m.n + '</strong> costs ' + money(best.cost)
+        + '/mo and offsets ' + money(value) + ' of work — net <strong>' + money(best.net) + '/mo</strong> ('
+        + roiStr(best.roi) + ' return).';
+    }} else {{
+      v.className = 'iwi-verdict bad';
+      v.innerHTML = 'Not yet: even the cheapest model (' + best.m.n + ', ' + money(best.cost)
+        + '/mo) costs more than the ' + money(value) + ' of work it offsets. Raise volume, minutes saved or the hourly rate.';
+    }}
+  }}
+  ['iwi-tasks','iwi-in','iwi-out','iwi-mins','iwi-rate','iwi-cache'].forEach(function(id) {{
+    document.getElementById(id).addEventListener('input', compute);
+  }});
+  compute();
+}})();
+</script>"""
+
+    faq = [
+        {"q": "Is using an LLM API worth it?",
+         "a": ("It depends on volume and how much human time each call offsets. At high volume on a clear task, "
+               "cost per task is cents while the offset is real minutes, so ROI is strong. For one-off or "
+               "zero-error-tolerance work it often isn't — the calculator above shows the break-even for your case.")},
+        {"q": "Which model gives the best ROI?",
+         "a": ("Since the work value is the same whichever model does it, the cheapest model that meets your quality "
+               "bar has the highest ROI. The calculator ranks all our models by cost for your token mix — but a budget "
+               "model that needs review can erase its savings, so weigh quality, not just price.")},
+        {"q": "How do you calculate the API cost?",
+         "a": (f"From each model's official per-token input/output (and cached) price, verified {month}, at the volume "
+               "and token sizes you enter — the same engine as the main calculator. We never quote a monthly price.")},
+        {"q": "What about prompt caching and batch discounts?",
+         "a": ("Caching only lowers cost (set your cached share in the calculator); the worked examples assume none, so "
+               "they're conservative. Batch APIs cut cost further on non-interactive jobs — see each model's pricing page.")},
+    ]
+    title = "Is an LLM API Worth It? ROI & Break-Even Calculator | WizardCost"
+    desc = ("Is an LLM API worth the cost? Price every model at your volume and see ROI, net savings and break-even — "
+            "which model pays for itself, and when it doesn't.")
+    crumb = '<a href="index.html">LLM</a> / is it worth it'
+    h1 = "Is an LLM API worth it?"
+    lead = ("An LLM call replaces work a person would do. Price every model at your real workload, value the time it "
+            "offsets, and see which models pay for themselves — and when none do.")
+    return _shell(parts, title=title, desc=desc, canonical=canonical, prefix=prefix,
+                  crumb=crumb, h1=h1, lead=lead, month=month, body=body, faq=faq, nav=nav)
+
 def build_seo_pages(data: dict, site: dict, eng, *, check: bool = False) -> list[str]:
     """Vygeneruje cheapest (1) + alternatives (6) + vs (15) stránky CELÉ z dat.
 
@@ -724,6 +960,7 @@ def build_seo_pages(data: dict, site: dict, eng, *, check: bool = False) -> list
     targets: list[tuple[str, "callable"]] = [
         ("cheapest-llm-api.html", lambda: render_cheapest(eng, data, site, month, nav, parts)),
         ("methodology.html", lambda: render_methodology(eng, data, site, month, nav, parts)),
+        ("is-llm-worth-it.html", lambda: render_is_llm_worth_it(eng, data, site, month, nav, parts)),
     ]
     for slug in PROVIDER_ORDER:
         targets.append((f'{SEO[slug]["alt"]}.html',

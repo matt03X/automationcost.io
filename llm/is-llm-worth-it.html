@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno build_seo.py z data/models.json — needituj ručně -->
-  <title>Claude vs DeepSeek API Pricing 2026 — Cost | WizardCost</title>
-  <meta name="description" content="Claude vs DeepSeek API pricing in 2026, compared on a real workload. DeepSeek V4 Flash is the lowest-cost model across both at ~$17.19/mo — see every model…">
-  <link rel="canonical" href="https://wizardcost.com/llm/claude-vs-deepseek.html">
+  <title>Is an LLM API Worth It? ROI &amp; Break-Even | WizardCost</title>
+  <meta name="description" content="Is an LLM API worth the cost? Price every model at your volume and see ROI, net savings and break-even — which model pays for itself, and when it doesn't.">
+  <link rel="canonical" href="https://wizardcost.com/llm/is-llm-worth-it.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="WizardCost">
-  <meta property="og:title" content="Claude vs DeepSeek API Pricing 2026 — Cost | WizardCost">
-  <meta property="og:description" content="Claude vs DeepSeek API pricing in 2026, compared on a real workload. DeepSeek V4 Flash is the lowest-cost model across both at ~$17.19/mo — see every model…">
-  <meta property="og:url" content="https://wizardcost.com/llm/claude-vs-deepseek.html">
+  <meta property="og:title" content="Is an LLM API Worth It? ROI &amp; Break-Even | WizardCost">
+  <meta property="og:description" content="Is an LLM API worth the cost? Price every model at your volume and see ROI, net savings and break-even — which model pays for itself, and when it doesn't.">
+  <meta property="og:url" content="https://wizardcost.com/llm/is-llm-worth-it.html">
   <meta property="og:image" content="https://wizardcost.com/llm/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://wizardcost.com/llm/og-image.png">
@@ -22,34 +22,34 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Is Claude or DeepSeek cheaper?",
+      "name": "Is using an LLM API worth it?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "On our example chatbot workload, Claude's cheapest model (Claude Haiku 4.5) is $224/mo and DeepSeek's (DeepSeek V4 Flash) is $17.19/mo. So DeepSeek is lower-cost at the budget end. The cheaper choice can flip with your token mix — check the <a href=\"index.html\">calculator</a>."
+        "text": "It depends on volume and how much human time each call offsets. At high volume on a clear task, cost per task is cents while the offset is real minutes, so ROI is strong. For one-off or zero-error-tolerance work it often isn't — the calculator above shows the break-even for your case."
       }
     },
     {
       "@type": "Question",
-      "name": "Which has the bigger context window, Claude or DeepSeek?",
+      "name": "Which model gives the best ROI?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The largest context window we've verified is 1M tokens for Claude and 1M tokens for DeepSeek. Context windows vary by model within each provider — see the pricing pages for the per-model figures."
+        "text": "Since the work value is the same whichever model does it, the cheapest model that meets your quality bar has the highest ROI. The calculator ranks all our models by cost for your token mix — but a budget model that needs review can erase its savings, so weigh quality, not just price."
       }
     },
     {
       "@type": "Question",
-      "name": "Claude vs DeepSeek: which API should I choose?",
+      "name": "How do you calculate the API cost?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It depends on your workload. Compare the side-by-side table above for list prices and the ≈ $/mo column for a like-for-like cost, then run your own volume through the <a href=\"index.html\">calculator</a>. We rank on cost and published specs only — the <a href=\"changelog.html\">changelog</a> records every price change."
+        "text": "From each model's official per-token input/output (and cached) price, verified June 2026, at the volume and token sizes you enter — the same engine as the main calculator. We never quote a monthly price."
       }
     },
     {
       "@type": "Question",
-      "name": "How accurate are these prices?",
+      "name": "What about prompt caching and batch discounts?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Every per-token rate is taken from each provider's official pricing and verified by hand (June 2026); the monthly figure is computed by our cost engine, not quoted."
+        "text": "Caching only lowers cost (set your cached share in the calculator); the worked examples assume none, so they're conservative. Batch APIs cut cost further on non-interactive jobs — see each model's pricing page."
       }
     }
   ]
@@ -75,8 +75,8 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Claude vs DeepSeek",
-      "item": "https://wizardcost.com/llm/claude-vs-deepseek.html"
+      "name": "is it worth it",
+      "item": "https://wizardcost.com/llm/is-llm-worth-it.html"
     }
   ]
 }
@@ -266,61 +266,80 @@
 </header>
 
 <section class="page-head wrap">
-  <div class="crumb"><a href="index.html">LLM</a> / Claude vs DeepSeek</div>
-  <h1>Claude vs DeepSeek: API pricing compared</h1>
-  <p>Claude vs DeepSeek, compared on real cost. We ran every model from both on the same example workload (chatbot, 100k requests/mo, 70% cached) so the prices line up directly. The lowest-cost model across both is <strong>DeepSeek V4 Flash</strong> ($17.19/mo). Full table and verdict below.</p>
+  <div class="crumb"><a href="index.html">LLM</a> / is it worth it</div>
+  <h1>Is an LLM API worth it?</h1>
+  <p>An LLM call replaces work a person would do. Price every model at your real workload, value the time it offsets, and see which models pay for themselves — and when none do.</p>
   <div class="verify-line">Prices verified June 2026 · changes logged in the <a href="changelog.html">changelog</a></div>
 </section>
 
 <section class="wrap">
-  <div class="verdict">
-    <h2>Claude vs DeepSeek: the short answer</h2>
-    <p>At the budget end, <b>DeepSeek</b> is the lower-cost option on this workload: Claude's cheapest (Claude Haiku 4.5) is $224/mo vs DeepSeek's (DeepSeek V4 Flash) $17.19/mo.</p>
-    <p>At the top end, Claude's flagship Claude Fable 5 runs $2,240/mo vs DeepSeek's DeepSeek V4 Pro at $52.71/mo. Largest verified context window — Claude: 1M tokens; DeepSeek: 1M tokens.</p>
-    <p>Both are priced by the same engine, so compare your own workload in the <a href="index.html">calculator</a> — the cheaper choice flips with your token mix and cache share.</p>
-  </div>
   <div class="section">
-    <h2>Claude and DeepSeek models, priced side by side</h2>
-    <p class="sub">Every model from both providers on one example workload (100k requests/mo, 2,000 input / 300 output tokens, 70% cached), cheapest first. The single lowest-cost model is highlighted.</p>
+    <h2>The ROI formula — does an LLM API pay for itself?</h2>
+    <p class="sub">An LLM call replaces work a person would otherwise do. Put a dollar value on that work, compare it to the API cost, and you get ROI.</p>
+    <div class="formula-card">
+      Net savings = work value &minus; API cost &nbsp;·&nbsp; Return on cost = work value &divide; API cost &nbsp;·&nbsp; Break-even = the number of tasks/mo whose saved time covers the API bill.
+    </div>
+    <p class="sub" style="margin-top:12px">API cost is computed by the same engine as the <a href="index.html">calculator</a> from each model's per-token price — never quoted from memory. The cheapest model we track for a typical chatbot workload is <strong>DeepSeek V4 Flash at about $17.19/mo</strong>.</p>
+  </div>
+
+  <div class="section">
+    <h2>Worked examples — cheapest model, real ROI</h2>
+    <p class="sub">Each row prices every one of our 28 models at the workload and shows the cheapest, with the value of the human time it offsets. Saved-time and rate are editorial assumptions — change them in the calculator below.</p>
     <div class="tbl-card">
       <table>
-        <thead>
-          <tr><th>Model</th><th>$ input /1M</th><th>$ output /1M</th><th>$ cached /1M</th><th>≈ $/mo *</th></tr>
-        </thead>
+        <thead><tr><th>Scenario</th><th>API cost</th><th>Time offset</th><th>Work value</th><th>Net savings/mo</th><th>Return</th><th>Break-even</th></tr></thead>
         <tbody>
-        <tr>
-          <td><a href="deepseek-pricing.html"><span class="m-name">DeepSeek V4 Flash</span></a><span class="m-tier">BUDGET</span><span class="m-sub">DeepSeek</span></td>
-          <td>$0.14</td><td>$0.28</td><td>$0.0028</td><td>$17.19</td>
-        </tr>
-        <tr>
-          <td><a href="deepseek-pricing.html"><span class="m-name">DeepSeek V4 Pro</span></a><span class="m-tier">MID</span><span class="m-sub">DeepSeek</span></td>
-          <td>$0.435</td><td>$0.87</td><td>$0.003625</td><td>$52.71</td>
-        </tr>
-        <tr>
-          <td><a href="anthropic-pricing.html"><span class="m-name">Claude Haiku 4.5</span></a><span class="m-tier">BUDGET</span><span class="m-sub">Anthropic</span></td>
-          <td>$1</td><td>$5</td><td>$0.10</td><td>$224</td>
-        </tr>
-        <tr>
-          <td><a href="anthropic-pricing.html"><span class="m-name">Claude Sonnet 4.6</span></a><span class="m-tier">MID</span><span class="m-sub">Anthropic</span></td>
-          <td>$3</td><td>$15</td><td>$0.30</td><td>$672</td>
-        </tr>
-        <tr>
-          <td><a href="anthropic-pricing.html"><span class="m-name">Claude Opus 4.8</span></a><span class="m-tier">FRONTIER</span><span class="m-sub">Anthropic</span></td>
-          <td>$5</td><td>$25</td><td>$0.50</td><td>$1,120</td>
-        </tr>
-        <tr>
-          <td><a href="anthropic-pricing.html"><span class="m-name">Claude Fable 5</span></a><span class="m-tier">FRONTIER</span><span class="m-sub">Anthropic</span></td>
-          <td>$10</td><td>$50</td><td>$1</td><td>$2,240</td>
-        </tr>
+        <tr><td>Support replies — 10k tickets/mo</td><td>$1.9/mo<br><span class="m-sub2">Ministral 3 (3B)</span></td><td>1,000 hrs</td><td>$28,000</td><td class="cheap">$27,998</td><td>1,000×+</td><td>&lt;1/mo</td></tr>
+        <tr><td>Content drafts — 2k pieces/mo</td><td>$0.42/mo<br><span class="m-sub2">Ministral 3 (3B)</span></td><td>667 hrs</td><td>$23,333</td><td class="cheap">$23,333</td><td>1,000×+</td><td>&lt;1/mo</td></tr>
+        <tr><td>Doc classification — 100k docs/mo</td><td>$6.6/mo<br><span class="m-sub2">Ministral 3 (3B)</span></td><td>1,667 hrs</td><td>$46,667</td><td class="cheap">$46,660</td><td>1,000×+</td><td>~14/mo</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="tbl-foot">* Same engine as the <a href="index.html">calculator</a>. See <a href="anthropic-pricing.html">Claude pricing</a> · <a href="deepseek-pricing.html">DeepSeek pricing</a> in full.</p>
+    <p class="tbl-foot">Cheapest model per scenario, no caching assumed (caching only lowers cost further). "Return" = value ÷ API cost. A long, clean, high-volume task is where LLM ROI is strongest.</p>
+  </div>
+
+  <div class="section">
+    <h2>ROI calculator — every model, your numbers</h2>
+    <p class="sub">Set your task and what an hour of the work it replaces is worth. We price all 28 models and rank them by ROI — so you see which model has which return and how much each saves.</p>
+    <div class="iwi-widget">
+      <div class="iwi-inputs">
+        <label>Tasks / month<input id="iwi-tasks" type="number" value="10000" min="0"></label>
+        <label>Input tokens / task<input id="iwi-in" type="number" value="1500" min="0"></label>
+        <label>Output tokens / task<input id="iwi-out" type="number" value="400" min="0"></label>
+        <label>Minutes a human would spend / task<input id="iwi-mins" type="number" value="6" min="0" step="0.5"></label>
+        <label>Hourly cost of that person ($)<input id="iwi-rate" type="number" value="28" min="0"></label>
+        <label>Cached input share (%)<input id="iwi-cache" type="number" value="0" min="0" max="100"></label>
+      </div>
+      <div id="iwi-verdict" class="iwi-verdict" hidden></div>
+      <div class="tbl-card" style="margin-top:14px">
+        <table id="iwi-table">
+          <thead><tr><th>Model</th><th>API cost/mo</th><th>Net savings/mo</th><th>Return</th></tr></thead>
+          <tbody id="iwi-rows"></tbody>
+        </table>
+      </div>
+      <p class="iwi-disc">Work value = (tasks × minutes ÷ 60) × hourly cost. API cost from each model's published per-token price (verified June 2026); ROI is illustrative — real value depends on your task and quality bar. Models aren't interchangeable: a budget model may need review a frontier model wouldn't. See <a href="methodology.html">methodology</a>.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>When an LLM API is <em>not</em> worth it</h2>
+    <p class="sub">Honesty is a feature. The ROI math turns negative here:</p>
+    <div class="tbl-card">
+      <table>
+        <thead><tr><th>Situation</th><th>Why ROI suffers</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>One-off or tiny volume</td><td>Engineering and prompt-tuning time dwarfs the saved minutes when you run it a handful of times.</td><td class="tag-no">Skip</td></tr>
+          <tr><td>Zero error tolerance</td><td>If every output needs a human to verify, you've shifted work, not removed it — and added latency and token cost on top.</td><td class="tag-no">Risky</td></tr>
+          <tr><td>The work is already cheap</td><td>If a person does the task in seconds for near-zero cost, the API bill plus oversight rarely beats it.</td><td class="tag-warn">Marginal</td></tr>
+          <tr><td>High volume, clear task, tolerant of small error</td><td>Cost per task is cents, the offset is real minutes — ROI scales with volume.</td><td class="tag-yes">Strong ROI</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <a class="next-cta" href="index.html">
     <div>
-      <div class="nc-title">Claude or DeepSeek for your workload?</div>
-      <div class="nc-sub">The cheaper option depends on your volume and cache share — run both through the calculator.</div>
+      <div class="nc-title">Tune it on your real prompts</div>
+      <div class="nc-sub">The calculator uses these exact prices — set your token mix, cache share and volume and it re-ranks every model live.</div>
     </div>
     <span class="nc-arrow">Open calculator<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg></span>
   </a>
@@ -339,30 +358,121 @@
     <a href="grok-alternatives.html">Grok alternatives →</a>
     <a href="mistral-alternatives.html">Mistral alternatives →</a>
     <a href="cheapest-llm-api.html">Cheapest LLM API →</a>
-    <a href="is-llm-worth-it.html">Is an LLM API worth it? →</a>
     <a href="index.html">Open calculator →</a>
   </div>
 </section>
+<style>
+  .formula-card { background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 14.5px; color: var(--text2); line-height: 1.7; }
+  .m-sub2 { color: var(--muted); font-size: 12px; }
+  td.cheap { color: var(--accent-br); font-weight: 700; }
+  .tag-yes { color: #16d18c; font-weight: 700; } .tag-no { color: #ef6a6a; font-weight: 700; } .tag-warn { color: #f0b84e; font-weight: 700; }
+  .iwi-widget { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 20px; }
+  .iwi-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  .iwi-inputs label { display: flex; flex-direction: column; gap: 5px; font-size: 12.5px; color: var(--text2); font-weight: 600; }
+  .iwi-inputs input { background: var(--surface2); border: 1px solid var(--border2); border-radius: 8px; padding: 9px 11px; color: var(--text); font-family: var(--font); font-size: 15px; }
+  .iwi-inputs input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .iwi-verdict { margin-top: 16px; padding: 14px 16px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; }
+  .iwi-verdict.good { background: rgba(16,185,129,0.10); border: 1px solid rgba(16,185,129,0.35); color: #6ee7b7; }
+  .iwi-verdict.bad { background: rgba(239,68,68,0.10); border: 1px solid rgba(239,68,68,0.35); color: #fca5a5; }
+  #iwi-table td:first-child { font-weight: 600; }
+  .iwi-disc { color: var(--muted); font-size: 12px; margin-top: 12px; line-height: 1.6; }
+</style>
+<script>
+(function() {
+  var MODELS = [
+      {n:"GPT-5.5",p:"OpenAI",i:5.0,o:30.0,c:0.5,t:"frontier"},
+      {n:"GPT-5.5 Pro",p:"OpenAI",i:30.0,o:180.0,c:null,t:"frontier"},
+      {n:"GPT-5.4",p:"OpenAI",i:2.5,o:15.0,c:0.25,t:"frontier"},
+      {n:"GPT-5.4 mini",p:"OpenAI",i:0.75,o:4.5,c:0.075,t:"mid"},
+      {n:"GPT-5.4 nano",p:"OpenAI",i:0.2,o:1.25,c:0.02,t:"budget"},
+      {n:"Claude Fable 5",p:"Anthropic",i:10.0,o:50.0,c:1.0,t:"frontier"},
+      {n:"Claude Opus 4.8",p:"Anthropic",i:5.0,o:25.0,c:0.5,t:"frontier"},
+      {n:"Claude Sonnet 4.6",p:"Anthropic",i:3.0,o:15.0,c:0.3,t:"mid"},
+      {n:"Claude Haiku 4.5",p:"Anthropic",i:1.0,o:5.0,c:0.1,t:"budget"},
+      {n:"Gemini 3.1 Pro Preview",p:"Google (Gemini)",i:2.0,o:12.0,c:0.2,t:"frontier"},
+      {n:"Gemini 3.5 Flash",p:"Google (Gemini)",i:1.5,o:9.0,c:0.15,t:"mid"},
+      {n:"Gemini 3 Flash Preview",p:"Google (Gemini)",i:0.5,o:3.0,c:0.05,t:"mid"},
+      {n:"Gemini 3.1 Flash-Lite",p:"Google (Gemini)",i:0.25,o:1.5,c:0.025,t:"budget"},
+      {n:"DeepSeek V4 Pro",p:"DeepSeek",i:0.435,o:0.87,c:0.003625,t:"mid"},
+      {n:"DeepSeek V4 Flash",p:"DeepSeek",i:0.14,o:0.28,c:0.0028,t:"budget"},
+      {n:"Grok 4.3",p:"xAI (Grok)",i:1.25,o:2.5,c:0.2,t:"frontier"},
+      {n:"Grok Build 0.1",p:"xAI (Grok)",i:1.0,o:2.0,c:0.2,t:"mid"},
+      {n:"Mistral Large 3",p:"Mistral",i:0.5,o:1.5,c:0.05,t:"frontier"},
+      {n:"Mistral Medium 3.5",p:"Mistral",i:1.5,o:7.5,c:null,t:"frontier"},
+      {n:"Magistral Medium",p:"Mistral",i:2.0,o:5.0,c:null,t:"frontier"},
+      {n:"Devstral 2",p:"Mistral",i:0.4,o:2.0,c:null,t:"frontier"},
+      {n:"Mistral Small 4",p:"Mistral",i:0.1,o:0.3,c:null,t:"mid"},
+      {n:"Magistral Small",p:"Mistral",i:0.5,o:1.5,c:null,t:"mid"},
+      {n:"Codestral",p:"Mistral",i:0.3,o:0.9,c:null,t:"mid"},
+      {n:"Devstral Small 2",p:"Mistral",i:0.1,o:0.3,c:null,t:"budget"},
+      {n:"Ministral 3 (3B)",p:"Mistral",i:0.1,o:0.1,c:null,t:"budget"},
+      {n:"Ministral 3 (8B)",p:"Mistral",i:0.15,o:0.15,c:null,t:"budget"},
+      {n:"Ministral 3 (14B)",p:"Mistral",i:0.2,o:0.2,c:null,t:"budget"}
+    ];
+  function num(id) { return parseFloat(document.getElementById(id).value) || 0; }
+  function money(n) { if (Math.abs(n) < 100) { return '$' + (Math.round(n*100)/100).toLocaleString('en-US', {maximumFractionDigits:2}); } return '$' + Math.round(n).toLocaleString('en-US'); }
+  function roiStr(x) { if (x === null) return '—'; return x >= 1000 ? '1,000×+' : Math.round(x).toLocaleString('en-US') + '×'; }
+  function compute() {
+    var tasks = num('iwi-tasks'), it = num('iwi-in'), ot = num('iwi-out');
+    var mins = num('iwi-mins'), rate = num('iwi-rate'), cache = Math.min(Math.max(num('iwi-cache'),0),100)/100;
+    var value = tasks * mins / 60 * rate;
+    var ranked = MODELS.map(function(m) {
+      var inRate = (m.c !== null) ? (m.i*(1-cache) + m.c*cache) : m.i;
+      var cost = tasks*it/1e6*inRate + tasks*ot/1e6*m.o;
+      return { m: m, cost: cost, net: value - cost, roi: cost > 0 ? value/cost : null };
+    }).sort(function(a,b) { return a.cost - b.cost; });
+    var tb = document.getElementById('iwi-rows'); tb.innerHTML = '';
+    ranked.forEach(function(r, i) {
+      var tr = document.createElement('tr');
+      var net = (r.net >= 0 ? '+' : '') + money(r.net);
+      var roi = roiStr(r.roi);
+      tr.innerHTML = '<td>' + r.m.n + ' <span class="m-sub2">' + r.m.p + '</span></td>'
+        + '<td>' + money(r.cost) + '/mo</td>'
+        + '<td' + (r.net >= 0 ? ' class="cheap"' : ' style="color:#ef6a6a"') + '>' + net + '</td>'
+        + '<td>' + roi + '</td>';
+      tb.appendChild(tr);
+    });
+    var best = ranked[0];
+    var v = document.getElementById('iwi-verdict');
+    if (tasks <= 0 || value <= 0) { v.hidden = true; return; }
+    v.hidden = false;
+    if (best.net >= 0) {
+      v.className = 'iwi-verdict good';
+      v.innerHTML = 'Worth it: cheapest model <strong>' + best.m.n + '</strong> costs ' + money(best.cost)
+        + '/mo and offsets ' + money(value) + ' of work — net <strong>' + money(best.net) + '/mo</strong> ('
+        + roiStr(best.roi) + ' return).';
+    } else {
+      v.className = 'iwi-verdict bad';
+      v.innerHTML = 'Not yet: even the cheapest model (' + best.m.n + ', ' + money(best.cost)
+        + '/mo) costs more than the ' + money(value) + ' of work it offsets. Raise volume, minutes saved or the hourly rate.';
+    }
+  }
+  ['iwi-tasks','iwi-in','iwi-out','iwi-mins','iwi-rate','iwi-cache'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', compute);
+  });
+  compute();
+})();
+</script>
 
 <section class="wrap">
   <div class="section">
     <h2>Frequently asked questions</h2>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Is Claude or DeepSeek cheaper?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a">On our example chatbot workload, Claude's cheapest model (Claude Haiku 4.5) is $224/mo and DeepSeek's (DeepSeek V4 Flash) is $17.19/mo. So DeepSeek is lower-cost at the budget end. The cheaper choice can flip with your token mix — check the <a href="index.html">calculator</a>.</div>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Is using an LLM API worth it?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">It depends on volume and how much human time each call offsets. At high volume on a clear task, cost per task is cents while the offset is real minutes, so ROI is strong. For one-off or zero-error-tolerance work it often isn't — the calculator above shows the break-even for your case.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Which has the bigger context window, Claude or DeepSeek?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a">The largest context window we've verified is 1M tokens for Claude and 1M tokens for DeepSeek. Context windows vary by model within each provider — see the pricing pages for the per-model figures.</div>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Which model gives the best ROI?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Since the work value is the same whichever model does it, the cheapest model that meets your quality bar has the highest ROI. The calculator ranks all our models by cost for your token mix — but a budget model that needs review can erase its savings, so weigh quality, not just price.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">Claude vs DeepSeek: which API should I choose?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a">It depends on your workload. Compare the side-by-side table above for list prices and the ≈ $/mo column for a like-for-like cost, then run your own volume through the <a href="index.html">calculator</a>. We rank on cost and published specs only — the <a href="changelog.html">changelog</a> records every price change.</div>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">How do you calculate the API cost?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">From each model's official per-token input/output (and cached) price, verified June 2026, at the volume and token sizes you enter — the same engine as the main calculator. We never quote a monthly price.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">How accurate are these prices?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a">Every per-token rate is taken from each provider's official pricing and verified by hand (June 2026); the monthly figure is computed by our cost engine, not quoted.</div>
+        <button class="faq-q" aria-expanded="false" onclick="toggleFaq(this)">What about prompt caching and batch discounts?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Caching only lowers cost (set your cached share in the calculator); the worked examples assume none, so they're conservative. Batch APIs cut cost further on non-interactive jobs — see each model's pricing page.</div>
       </div>
     </div>
   </div>
