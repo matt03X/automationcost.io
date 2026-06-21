@@ -1341,7 +1341,9 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
         best_slug, best_r = None, None
         for s in PRICING_SLUGS:
             r = engine.cheapest_monthly(by_slug[s], runs, STEPS)
-            if r and (best_r is None or r["cost"] < best_r["cost"]):
+            # paid_only=True: free-tier ($0) tools skipped — ROI tabulka ukazuje
+            # reálný placený tool, aby net savings / return / break-even byly konečné.
+            if r and r["cost"] > 0 and (best_r is None or r["cost"] < best_r["cost"]):
                 best_slug, best_r = s, r
         if best_r is None:
             continue
@@ -1414,9 +1416,8 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
     <p class="tbl-note" style="margin-top:10px">
       Tool costs generated live from official pricing via our engine, verified {month_year}.
       "Value of time" uses an illustrative 3 min/run &times; $40/hr default — change it in the calculator below.
-      Self-hosted tools show the server bill, not a tool fee. $0/mo tools (Activepieces cloud free tier) are limited to 10 active flows — if you need more flows, the next paid tier applies; check the <a href="activepieces-pricing.html">Activepieces pricing page</a>.
+      Table shows the cheapest <em>paid</em> plan per scenario — a free tier (Activepieces cloud free tier, up to 10 active flows) or self-hosted option (n8n, Activepieces, Node-RED) can bring tool cost to $0 and push ROI even higher; see the <a href="cheapest-automation-tool.html">cheapest-tool breakdown</a> or <a href="self-hosted-automation-cost.html">self-host vs cloud cost</a>.
       Values marked ~ are estimates for custom enterprise tiers.
-      <a href="cheapest-automation-tool.html">Full cheapest-tool breakdown →</a>
     </p>
   </div>
 
@@ -1554,10 +1555,6 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
       <a href="self-hosted-automation-cost.html" class="related-card">
         <div class="related-card-name">Self-host vs cloud cost</div>
         <div class="related-card-desc">When self-hosting beats paid cloud</div>
-      </a>
-      <a href="hidden-cost-automation.html" class="related-card">
-        <div class="related-card-name">Hidden automation costs</div>
-        <div class="related-card-desc">Overage, maintenance &amp; lock-in to factor in</div>
       </a>
     </div>
   </div>"""
