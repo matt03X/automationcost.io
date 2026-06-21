@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno build_seo.py z data/models.json — needituj ručně -->
-  <title>Gemini vs Grok API Pricing 2026 — Cost Compared | WizardCost</title>
-  <meta name="description" content="Gemini vs Grok API pricing in 2026, compared on a real workload. Gemini 3.1 Flash-Lite is the lowest-cost model across both at ~$63.5/mo — see every model priced side by side, plus context windows and caching.">
-  <link rel="canonical" href="https://wizardcost.com/llm/gemini-vs-grok.html">
+  <title>How We Verify LLM API Pricing — Methodology & Sources | WizardCost</title>
+  <meta name="description" content="How we verify LLM API pricing: every model's price traced to its provider's official page, verified by hand and computed not quoted — plus why tokens aren't equal across models.">
+  <link rel="canonical" href="https://wizardcost.com/llm/methodology.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="WizardCost">
-  <meta property="og:title" content="Gemini vs Grok API Pricing 2026 — Cost Compared | WizardCost">
-  <meta property="og:description" content="Gemini vs Grok API pricing in 2026, compared on a real workload. Gemini 3.1 Flash-Lite is the lowest-cost model across both at ~$63.5/mo — see every model priced side by side, plus context windows and caching.">
-  <meta property="og:url" content="https://wizardcost.com/llm/gemini-vs-grok.html">
+  <meta property="og:title" content="How We Verify LLM API Pricing — Methodology & Sources | WizardCost">
+  <meta property="og:description" content="How we verify LLM API pricing: every model's price traced to its provider's official page, verified by hand and computed not quoted — plus why tokens aren't equal across models.">
+  <meta property="og:url" content="https://wizardcost.com/llm/methodology.html">
   <meta property="og:image" content="https://wizardcost.com/llm/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://wizardcost.com/llm/og-image.png">
@@ -22,34 +22,34 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Is Gemini or Grok cheaper?",
+      "name": "Where do your LLM prices come from?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "On our example chatbot workload, Gemini's cheapest model (Gemini 3.1 Flash-Lite) is $63.5/mo and Grok's (Grok Build 0.1) is $148/mo. So Gemini is lower-cost at the budget end. The cheaper choice can flip with your token mix — check the <a href=\"index.html\">calculator</a>."
+        "text": "Each per-token rate is taken by hand from the provider's official pricing page (listed in the sources table above) and confirmed by a person before it enters our data. The monthly figure is computed by our engine, not quoted."
       }
     },
     {
       "@type": "Question",
-      "name": "Which has the bigger context window, Gemini or Grok?",
+      "name": "Are token counts the same across providers?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The largest context window we've verified is 1M tokens for Gemini and 1M tokens for Grok. Context windows vary by model within each provider — see the pricing pages for the per-model figures."
+        "text": "No. Every model family uses its own tokenizer, so the same text becomes a different number of tokens — typically a 10–30% spread, wider for non-English text and code. We compare list price per 1M tokens as the billing unit and run one identical workload through every model, so treat small cross-provider differences as a tie until you test your own prompts."
       }
     },
     {
       "@type": "Question",
-      "name": "Gemini vs Grok: which API should I choose?",
+      "name": "Do the model providers pay you?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "It depends on your workload. Compare the side-by-side table above for list prices and the ≈ $/mo column for a like-for-like cost, then run your own volume through the <a href=\"index.html\">calculator</a>. We rank on cost and published specs only — the <a href=\"changelog.html\">changelog</a> records every price change."
+        "text": "No. The LLM section carries no affiliate links and no sponsored placement — rankings are by objective cost only. It exists to be an accurate, independent reference."
       }
     },
     {
       "@type": "Question",
-      "name": "How accurate are these prices?",
+      "name": "How often are prices checked?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Every per-token rate is taken from each provider's official pricing and verified by hand (June 2026); the monthly figure is computed by our cost engine, not quoted."
+        "text": "An automated job re-reads every official price page daily and flags changes; a human confirms before any number moves. The last full hand-verification was 2026-06-20, and every change is dated in the <a href=\"changelog.html\">changelog</a>."
       }
     }
   ]
@@ -75,8 +75,8 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Gemini vs Grok",
-      "item": "https://wizardcost.com/llm/gemini-vs-grok.html"
+      "name": "methodology",
+      "item": "https://wizardcost.com/llm/methodology.html"
     }
   ]
 }
@@ -265,61 +265,125 @@
 </header>
 
 <section class="page-head wrap">
-  <div class="crumb"><a href="index.html">LLM</a> / Gemini vs Grok</div>
-  <h1>Gemini vs Grok: API pricing compared</h1>
-  <p>Gemini vs Grok, compared on real cost. We ran every model from both on the same example workload (chatbot, 100k requests/mo, 70% cached) so the prices line up directly. The lowest-cost model across both is <strong>Gemini 3.1 Flash-Lite</strong> ($63.5/mo). Full table and verdict below.</p>
+  <div class="crumb"><a href="index.html">LLM</a> / methodology</div>
+  <h1>How we verify LLM API pricing</h1>
+  <p>Every price here is taken by hand from the provider's official pricing page, verified on a dated pass, and turned into a monthly figure by the same engine as the <a href="index.html">calculator</a> — never quoted from memory or a third party. Here is exactly where each of the 28 models' numbers come from, what they mean, and what we don't claim.</p>
   <div class="verify-line">Prices verified June 2026 · changes logged in the <a href="changelog.html">changelog</a></div>
 </section>
 
 <section class="wrap">
-  <div class="verdict">
-    <h2>Gemini vs Grok: the short answer</h2>
-    <p>At the budget end, <b>Gemini</b> is the lower-cost option on this workload: Gemini's cheapest (Gemini 3.1 Flash-Lite) is $63.5/mo vs Grok's (Grok Build 0.1) $148/mo.</p>
-    <p>At the top end, Gemini's flagship Gemini 3.1 Pro Preview runs $508/mo vs Grok's Grok 4.3 at $178/mo. Largest verified context window — Gemini: 1M tokens; Grok: 1M tokens.</p>
-    <p>Both are priced by the same engine, so compare your own workload in the <a href="index.html">calculator</a> — the cheaper choice flips with your token mix and cache share.</p>
-  </div>
   <div class="section">
-    <h2>Gemini and Grok models, priced side by side</h2>
-    <p class="sub">Every model from both providers on one example workload (100k requests/mo, 2,000 input / 300 output tokens, 70% cached), cheapest first. The single lowest-cost model is highlighted.</p>
+    <h2>How we price LLM APIs</h2>
+    <p class="sub">Four rules, the same for every model.</p>
+    <ol style="line-height:1.75;padding-left:1.2em;">
+      <li><strong>One source of truth per provider.</strong> Every per-token rate comes from the vendor's own official pricing page (listed below) — not a blog, aggregator or screenshot.</li>
+      <li><strong>Verified by hand, then promoted.</strong> A scrape or research pass is only <em>evidence</em>; a number reaches our data file only after a human confirms it against the official page. Raw dumps are kept dated for audit.</li>
+      <li><strong>Computed, not quoted.</strong> The "≈ $/mo" you see is calculated by our engine from input, output and cached rates at a stated workload — so models compare on one number. We never invent a monthly price.</li>
+      <li><strong>Every change is logged.</strong> Prices are committed before the site rebuilds, so each change is dated in the public <a href="changelog.html">changelog</a> with the provider it came from.</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>Sources — every number traces to an official page</h2>
+    <p class="sub">28 models across 6 providers. Last full verification: 2026-06-20.</p>
     <div class="tbl-card">
       <table>
-        <thead>
-          <tr><th>Model</th><th>$ input /1M</th><th>$ output /1M</th><th>$ cached /1M</th><th>≈ $/mo *</th></tr>
-        </thead>
+        <thead><tr><th>Provider</th><th>Models</th><th>Official pricing source</th><th>Last verified</th></tr></thead>
         <tbody>
         <tr>
-          <td><a href="gemini-pricing.html"><span class="m-name">Gemini 3.1 Flash-Lite</span></a><span class="m-tier">BUDGET</span><span class="m-sub">Google (Gemini)</span></td>
-          <td>$0.25</td><td>$1.50</td><td>$0.025</td><td>$63.5</td>
+          <td><strong>OpenAI</strong></td>
+          <td>5</td>
+          <td><a href="https://platform.openai.com/docs/pricing" target="_blank" rel="noopener nofollow">platform.openai.com/docs/pricing</a></td>
+          <td>2026-06-20</td>
         </tr>
         <tr>
-          <td><a href="gemini-pricing.html"><span class="m-name">Gemini 3 Flash Preview</span></a><span class="m-tier">MID</span><span class="m-sub">Google (Gemini)</span></td>
-          <td>$0.50</td><td>$3</td><td>$0.05</td><td>$127</td>
+          <td><strong>Anthropic</strong></td>
+          <td>4</td>
+          <td><a href="https://platform.claude.com/docs/en/about-claude/pricing" target="_blank" rel="noopener nofollow">platform.claude.com/docs/en/about-claude/pricing</a></td>
+          <td>2026-06-20</td>
         </tr>
         <tr>
-          <td><a href="grok-pricing.html"><span class="m-name">Grok Build 0.1</span></a><span class="m-tier">MID</span><span class="m-sub">xAI (Grok)</span></td>
-          <td>$1</td><td>$2</td><td>$0.20</td><td>$148</td>
+          <td><strong>Google (Gemini)</strong></td>
+          <td>4</td>
+          <td><a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener nofollow">ai.google.dev/gemini-api/docs/pricing</a></td>
+          <td>2026-06-20</td>
         </tr>
         <tr>
-          <td><a href="grok-pricing.html"><span class="m-name">Grok 4.3</span></a><span class="m-tier">FRONTIER</span><span class="m-sub">xAI (Grok)</span></td>
-          <td>$1.25</td><td>$2.50</td><td>$0.20</td><td>$178</td>
+          <td><strong>DeepSeek</strong></td>
+          <td>2</td>
+          <td><a href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank" rel="noopener nofollow">api-docs.deepseek.com/quick_start/pricing</a></td>
+          <td>2026-06-20</td>
         </tr>
         <tr>
-          <td><a href="gemini-pricing.html"><span class="m-name">Gemini 3.5 Flash</span></a><span class="m-tier">MID</span><span class="m-sub">Google (Gemini)</span></td>
-          <td>$1.50</td><td>$9</td><td>$0.15</td><td>$381</td>
+          <td><strong>xAI (Grok)</strong></td>
+          <td>2</td>
+          <td><a href="https://docs.x.ai/docs/models" target="_blank" rel="noopener nofollow">docs.x.ai/docs/models</a></td>
+          <td>2026-06-20</td>
         </tr>
         <tr>
-          <td><a href="gemini-pricing.html"><span class="m-name">Gemini 3.1 Pro Preview</span></a><span class="m-tier">FRONTIER</span><span class="m-sub">Google (Gemini)</span></td>
-          <td>$2</td><td>$12</td><td>$0.20</td><td>$508</td>
+          <td><strong>Mistral</strong></td>
+          <td>11</td>
+          <td><a href="https://mistral.ai/pricing" target="_blank" rel="noopener nofollow">mistral.ai/pricing</a></td>
+          <td>2026-06-20</td>
         </tr>
         </tbody>
       </table>
     </div>
-    <p class="tbl-foot">* Same engine as the <a href="index.html">calculator</a>. See <a href="gemini-pricing.html">Gemini pricing</a> · <a href="grok-pricing.html">Grok pricing</a> in full.</p>
+    <p class="tbl-foot">Mistral's per-model lineup is taken from the official model cards on docs.mistral.ai; the public FAQ price page lists only the flagship.</p>
+  </div>
+
+  <div class="section">
+    <h2>Are tokens the same across models? No — and it matters</h2>
+    <p>A "token" is not a fixed unit. Each model family uses its <strong>own tokenizer</strong>, so the <em>same text</em> becomes a different number of tokens from one provider to the next — commonly a <strong>10–30% spread</strong> (wider for non-English text and code). Two models at the same "$ per 1M tokens" can therefore cost differently for the <em>same prompt</em>, because one encodes it in fewer tokens.</p>
+    <p>Tokens aren't equal in <strong>value</strong> either: a token from a frontier model carries more capability than one from a budget model, so price per token says nothing about quality.</p>
+    <p>What this means for our numbers: we compare <strong>list price per 1M tokens</strong> as the billing unit — the honest, vendor-published basis — and run every model through <strong>one identical workload</strong> (same token counts) so the ≈ $/mo column is apples-to-apples on price. Treat cross-provider gaps inside ~10–20% as a tie until you test your own prompts; the <a href="index.html">calculator</a> lets you plug in your real token mix.</p>
+  </div>
+
+  <div class="section">
+    <h2>What each number means</h2>
+    <div class="tbl-card">
+      <table>
+        <thead><tr><th>Field</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><strong>$ input / 1M</strong></td><td>List price per 1M input (prompt) tokens — standard tier, short context.</td></tr>
+          <tr><td><strong>$ output / 1M</strong></td><td>List price per 1M output (completion) tokens.</td></tr>
+          <tr><td><strong>$ cached / 1M</strong></td><td>Price per 1M cached / read input tokens. "—" = caching not offered or not yet verified (we then bill input at the full rate).</td></tr>
+          <tr><td><strong>Batch</strong></td><td>Multiplier for the provider's Batch API (×0.5 = 50% off). "—" = no batch tier, or the exact discount is unverified and we hold it empty rather than guess.</td></tr>
+          <tr><td><strong>Context</strong></td><td>Maximum context window, in tokens.</td></tr>
+          <tr><td><strong>Tier</strong></td><td><em>Editorial</em> class (frontier / mid / budget) for ranking — our judgement, not a benchmark. The calculator never compares price across tiers.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Known limits &amp; confidence</h2>
+    <p>We would rather show a gap than a guess:</p>
+    <ul style="line-height:1.75;padding-left:1.2em;">
+      <li><strong>Mistral cached prices</strong> are held empty (except the flagship): Mistral documents a caching rule but doesn't publish per-model cached rates, so we bill input at the full rate rather than estimate.</li>
+      <li><strong>Batch multipliers for xAI and DeepSeek</strong> are held empty: a batch or cache discount exists, but the exact figure isn't officially tabled, so we don't apply one.</li>
+      <li><strong>Long-context surcharges</strong> (e.g. Gemini above 200k tokens) are noted in our data but not yet in the calculation — short-context pricing is shown.</li>
+      <li><strong>Tier and our example workload are assumptions</strong>, not vendor facts — change them in the calculator for your case.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>What we exclude, and why</h2>
+    <ul style="line-height:1.75;padding-left:1.2em;">
+      <li><strong>Cohere</strong> — the current lineup is sold as enterprise instances with no public per-token price, so it can't be verified the same way.</li>
+      <li><strong>Meta Llama</strong> — priced only through third-party hosts with their own rates; planned for a later pass once we can compare hosts fairly.</li>
+    </ul>
+    <p class="tbl-foot">We track the 28 models we can verify against an official, first-party price. We would rather cover fewer models accurately than more on guesswork.</p>
+  </div>
+
+  <div class="section">
+    <h2>How we keep it current</h2>
+    <p>An automated job re-reads all 6 official price pages every morning and flags any change; a second job watches context windows, caching, batch and deprecations. Those flags are evidence — a human still confirms before a number changes. Confirmed changes are dated in the <a href="changelog.html">changelog</a>, and we take no commission from any model provider, so nothing here is pay-to-rank.</p>
   </div>
   <a class="next-cta" href="index.html">
     <div>
-      <div class="nc-title">Gemini or Grok for your workload?</div>
-      <div class="nc-sub">The cheaper option depends on your volume and cache share — run both through the calculator.</div>
+      <div class="nc-title">See it on your own numbers</div>
+      <div class="nc-sub">The calculator uses these exact prices — plug in your volume, token mix and cache share, and it re-ranks every model live.</div>
     </div>
     <span class="nc-arrow">Open calculator<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg></span>
   </a>
@@ -341,20 +405,20 @@
     <h2>Frequently asked questions</h2>
     <div class="faq">
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Is Gemini or Grok cheaper?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a">On our example chatbot workload, Gemini's cheapest model (Gemini 3.1 Flash-Lite) is $63.5/mo and Grok's (Grok Build 0.1) is $148/mo. So Gemini is lower-cost at the budget end. The cheaper choice can flip with your token mix — check the <a href="index.html">calculator</a>.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">Where do your LLM prices come from?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Each per-token rate is taken by hand from the provider's official pricing page (listed in the sources table above) and confirmed by a person before it enters our data. The monthly figure is computed by our engine, not quoted.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Which has the bigger context window, Gemini or Grok?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a">The largest context window we've verified is 1M tokens for Gemini and 1M tokens for Grok. Context windows vary by model within each provider — see the pricing pages for the per-model figures.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">Are token counts the same across providers?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">No. Every model family uses its own tokenizer, so the same text becomes a different number of tokens — typically a 10–30% spread, wider for non-English text and code. We compare list price per 1M tokens as the billing unit and run one identical workload through every model, so treat small cross-provider differences as a tie until you test your own prompts.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">Gemini vs Grok: which API should I choose?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a">It depends on your workload. Compare the side-by-side table above for list prices and the ≈ $/mo column for a like-for-like cost, then run your own volume through the <a href="index.html">calculator</a>. We rank on cost and published specs only — the <a href="changelog.html">changelog</a> records every price change.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">Do the model providers pay you?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">No. The LLM section carries no affiliate links and no sponsored placement — rankings are by objective cost only. It exists to be an accurate, independent reference.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" onclick="toggleFaq(this)">How accurate are these prices?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <div class="faq-a">Every per-token rate is taken from each provider's official pricing and verified by hand (June 2026); the monthly figure is computed by our cost engine, not quoted.</div>
+        <button class="faq-q" onclick="toggleFaq(this)">How often are prices checked?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">An automated job re-reads every official price page daily and flags changes; a human confirms before any number moves. The last full hand-verification was 2026-06-20, and every change is dated in the <a href="changelog.html">changelog</a>.</div>
       </div>
     </div>
   </div>

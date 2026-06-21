@@ -549,6 +549,140 @@ def render_vs(eng, a_slug: str, b_slug: str, data: dict, site: dict, month: str,
 
 # ── orchestrace (vzor automation build_seo_pages) ───────────────────────────
 
+def render_methodology(eng, data: dict, site: dict, month: str, nav: str, parts: tuple) -> str:
+    domain = site.get("domain", "wizardcost.com")
+    base_path = site.get("base_path", "/llm")
+    prefix = eng._site_prefix(domain, base_path)
+    canonical = f"{prefix}/methodology.html"
+    meta = data.get("_meta", {})
+    sources = meta.get("sources", {})
+    reviewed = meta.get("last_reviewed", month)
+    total = sum(len(p["models"]) for p in data["providers"])
+    nprov = len(data["providers"])
+
+    src_rows = []
+    for p in data["providers"]:
+        raw = sources.get(p["slug"], "")
+        url = raw.split(" ", 1)[0]
+        host = url.replace("https://", "").replace("http://", "").rstrip("/")
+        src_rows.append(
+            "        <tr>\n"
+            f'          <td><strong>{p["name"]}</strong></td>\n'
+            f'          <td>{len(p["models"])}</td>\n'
+            f'          <td><a href="{url}" target="_blank" rel="noopener nofollow">{host}</a></td>\n'
+            f"          <td>{reviewed}</td>\n        </tr>")
+
+    lead = (f"Every price here is taken by hand from the provider's official pricing page, verified on a "
+            f"dated pass, and turned into a monthly figure by the same engine as the "
+            f'<a href="index.html">calculator</a> — never quoted from memory or a third party. '
+            f"Here is exactly where each of the {total} models' numbers come from, what they mean, and what "
+            f"we don't claim.")
+
+    body = f"""<section class="wrap">
+  <div class="section">
+    <h2>How we price LLM APIs</h2>
+    <p class="sub">Four rules, the same for every model.</p>
+    <ol style="line-height:1.75;padding-left:1.2em;">
+      <li><strong>One source of truth per provider.</strong> Every per-token rate comes from the vendor's own official pricing page (listed below) — not a blog, aggregator or screenshot.</li>
+      <li><strong>Verified by hand, then promoted.</strong> A scrape or research pass is only <em>evidence</em>; a number reaches our data file only after a human confirms it against the official page. Raw dumps are kept dated for audit.</li>
+      <li><strong>Computed, not quoted.</strong> The "≈ $/mo" you see is calculated by our engine from input, output and cached rates at a stated workload — so models compare on one number. We never invent a monthly price.</li>
+      <li><strong>Every change is logged.</strong> Prices are committed before the site rebuilds, so each change is dated in the public <a href="changelog.html">changelog</a> with the provider it came from.</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>Sources — every number traces to an official page</h2>
+    <p class="sub">{total} models across {nprov} providers. Last full verification: {reviewed}.</p>
+    <div class="tbl-card">
+      <table>
+        <thead><tr><th>Provider</th><th>Models</th><th>Official pricing source</th><th>Last verified</th></tr></thead>
+        <tbody>
+{chr(10).join(src_rows)}
+        </tbody>
+      </table>
+    </div>
+    <p class="tbl-foot">Mistral's per-model lineup is taken from the official model cards on docs.mistral.ai; the public FAQ price page lists only the flagship.</p>
+  </div>
+
+  <div class="section">
+    <h2>Are tokens the same across models? No — and it matters</h2>
+    <p>A "token" is not a fixed unit. Each model family uses its <strong>own tokenizer</strong>, so the <em>same text</em> becomes a different number of tokens from one provider to the next — commonly a <strong>10–30% spread</strong> (wider for non-English text and code). Two models at the same "$ per 1M tokens" can therefore cost differently for the <em>same prompt</em>, because one encodes it in fewer tokens.</p>
+    <p>Tokens aren't equal in <strong>value</strong> either: a token from a frontier model carries more capability than one from a budget model, so price per token says nothing about quality.</p>
+    <p>What this means for our numbers: we compare <strong>list price per 1M tokens</strong> as the billing unit — the honest, vendor-published basis — and run every model through <strong>one identical workload</strong> (same token counts) so the ≈ $/mo column is apples-to-apples on price. Treat cross-provider gaps inside ~10–20% as a tie until you test your own prompts; the <a href="index.html">calculator</a> lets you plug in your real token mix.</p>
+  </div>
+
+  <div class="section">
+    <h2>What each number means</h2>
+    <div class="tbl-card">
+      <table>
+        <thead><tr><th>Field</th><th>Definition</th></tr></thead>
+        <tbody>
+          <tr><td><strong>$ input / 1M</strong></td><td>List price per 1M input (prompt) tokens — standard tier, short context.</td></tr>
+          <tr><td><strong>$ output / 1M</strong></td><td>List price per 1M output (completion) tokens.</td></tr>
+          <tr><td><strong>$ cached / 1M</strong></td><td>Price per 1M cached / read input tokens. "—" = caching not offered or not yet verified (we then bill input at the full rate).</td></tr>
+          <tr><td><strong>Batch</strong></td><td>Multiplier for the provider's Batch API (×0.5 = 50% off). "—" = no batch tier, or the exact discount is unverified and we hold it empty rather than guess.</td></tr>
+          <tr><td><strong>Context</strong></td><td>Maximum context window, in tokens.</td></tr>
+          <tr><td><strong>Tier</strong></td><td><em>Editorial</em> class (frontier / mid / budget) for ranking — our judgement, not a benchmark. The calculator never compares price across tiers.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Known limits &amp; confidence</h2>
+    <p>We would rather show a gap than a guess:</p>
+    <ul style="line-height:1.75;padding-left:1.2em;">
+      <li><strong>Mistral cached prices</strong> are held empty (except the flagship): Mistral documents a caching rule but doesn't publish per-model cached rates, so we bill input at the full rate rather than estimate.</li>
+      <li><strong>Batch multipliers for xAI and DeepSeek</strong> are held empty: a batch or cache discount exists, but the exact figure isn't officially tabled, so we don't apply one.</li>
+      <li><strong>Long-context surcharges</strong> (e.g. Gemini above 200k tokens) are noted in our data but not yet in the calculation — short-context pricing is shown.</li>
+      <li><strong>Tier and our example workload are assumptions</strong>, not vendor facts — change them in the calculator for your case.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>What we exclude, and why</h2>
+    <ul style="line-height:1.75;padding-left:1.2em;">
+      <li><strong>Cohere</strong> — the current lineup is sold as enterprise instances with no public per-token price, so it can't be verified the same way.</li>
+      <li><strong>Meta Llama</strong> — priced only through third-party hosts with their own rates; planned for a later pass once we can compare hosts fairly.</li>
+    </ul>
+    <p class="tbl-foot">We track the {total} models we can verify against an official, first-party price. We would rather cover fewer models accurately than more on guesswork.</p>
+  </div>
+
+  <div class="section">
+    <h2>How we keep it current</h2>
+    <p>An automated job re-reads all {nprov} official price pages every morning and flags any change; a second job watches context windows, caching, batch and deprecations. Those flags are evidence — a human still confirms before a number changes. Confirmed changes are dated in the <a href="changelog.html">changelog</a>, and we take no commission from any model provider, so nothing here is pay-to-rank.</p>
+  </div>
+{_calc_cta("See it on your own numbers", "The calculator uses these exact prices — plug in your volume, token mix and cache share, and it re-ranks every model live.")}
+{_cross(eng, data, exclude=("methodology.html",))}
+</section>"""
+
+    faq = [
+        {"q": "Where do your LLM prices come from?",
+         "a": ("Each per-token rate is taken by hand from the provider's official pricing page (listed in the "
+               "sources table above) and confirmed by a person before it enters our data. The monthly figure is "
+               "computed by our engine, not quoted.")},
+        {"q": "Are token counts the same across providers?",
+         "a": ("No. Every model family uses its own tokenizer, so the same text becomes a different number of "
+               "tokens — typically a 10–30% spread, wider for non-English text and code. We compare list price "
+               "per 1M tokens as the billing unit and run one identical workload through every model, so treat "
+               "small cross-provider differences as a tie until you test your own prompts.")},
+        {"q": "Do the model providers pay you?",
+         "a": ("No. The LLM section carries no affiliate links and no sponsored placement — rankings are by "
+               "objective cost only. It exists to be an accurate, independent reference.")},
+        {"q": "How often are prices checked?",
+         "a": (f"An automated job re-reads every official price page daily and flags changes; a human confirms "
+               f"before any number moves. The last full hand-verification was {reviewed}, and every change is "
+               'dated in the <a href="changelog.html">changelog</a>.')},
+    ]
+    title = "How We Verify LLM API Pricing — Methodology & Sources | WizardCost"
+    desc = ("How we verify LLM API pricing: every model's price traced to its provider's official page, "
+            "verified by hand and computed not quoted — plus why tokens aren't equal across models.")
+    crumb = '<a href="index.html">LLM</a> / methodology'
+    h1 = "How we verify LLM API pricing"
+    return _shell(parts, title=title, desc=desc, canonical=canonical, prefix=prefix,
+                  crumb=crumb, h1=h1, lead=lead, month=month, body=body, faq=faq, nav=nav)
+
+
 def build_seo_pages(data: dict, site: dict, eng, *, check: bool = False) -> list[str]:
     """Vygeneruje cheapest (1) + alternatives (6) + vs (15) stránky CELÉ z dat.
 
@@ -562,6 +696,7 @@ def build_seo_pages(data: dict, site: dict, eng, *, check: bool = False) -> list
 
     targets: list[tuple[str, "callable"]] = [
         ("cheapest-llm-api.html", lambda: render_cheapest(eng, data, site, month, nav, parts)),
+        ("methodology.html", lambda: render_methodology(eng, data, site, month, nav, parts)),
     ]
     for slug in PROVIDER_ORDER:
         targets.append((f'{SEO[slug]["alt"]}.html',
