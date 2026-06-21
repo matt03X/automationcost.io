@@ -500,7 +500,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
               "{name} pricing 2026: {prices}. Real plans, self-host options and how {name} compares on cost per run."
               ).format(name=name, prices=", ".join(desc_parts))
     title = tr(f"meta.{slug}-pricing.title",
-               "{name} Pricing 2026 — Plans, Run Limits &amp; Real Cost | WizardCost").format(name=name)
+               "{name} Pricing 2026 — Plans &amp; Real Cost | WizardCost").format(name=name)
     og_title = title.split(" | ")[0].replace("&amp;", "&")
 
     # ── Citation-ready key facts (GEO playbook A10 #2): one dated, standalone,
