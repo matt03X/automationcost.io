@@ -1,0 +1,17 @@
+{
+  "date": "2026-06-21",
+  "vendor": "node-red",
+  "url": "https://flows.nodered.org/",
+  "integrations": null,
+  "openSourceSignal": false,
+  "evidence": null,
+  "repo": "node-red/node-red",
+  "selfHostConfirmed": true,
+  "license": {
+    "spdx": "Apache-2.0",
+    "name": "Apache License 2.0"
+  },
+  "warnings": [
+    "počet integrací nenalezen (změna layoutu / bot wall)"
+  ]
+}
