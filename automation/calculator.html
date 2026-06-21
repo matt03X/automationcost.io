@@ -499,6 +499,9 @@
     .faq-a { display: none; color: var(--text2); font-size: 14px; line-height: 1.75; padding-bottom: 20px; }
     .faq-item.open .faq-a { display: block; }
     .faq-a a { color: var(--accent); font-weight: 500; }
+    /* a11y: visible keyboard focus (cards became focusable buttons) */
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .size-card:focus-visible, .biz-card:focus-visible, .role-card:focus-visible, .wf-card:focus-visible, .wf-skip:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 12px; }
   </style>
 <link rel="stylesheet" href="app.css">
   <!-- ANALYTICS (build.py) -->
@@ -754,7 +757,7 @@
         <label for="ops">Workflow runs per month <span class="auto-badge" id="ops-auto" hidden>✦ auto-estimated</span></label>
         <div class="budget-row" style="margin-top:8px">
           <div class="budget-val" id="ops-display">5,000</div>
-          <input type="range" id="ops" min="0" max="11" step="1" value="4" oninput="updateOpsDisplay()">
+          <input type="range" id="ops" min="0" max="11" step="1" value="4" aria-valuetext="5,000 runs per month" oninput="updateOpsDisplay()">
         </div>
         <div class="hint">runs/mo · How many times your automations fire. Each tool bills this differently — we convert it per vendor (see results).</div>
         <div id="wf-per-wrap" hidden>
@@ -766,7 +769,7 @@
         <label for="steps">Steps per workflow <span class="auto-badge" id="steps-auto" hidden>✦ auto-estimated</span></label>
         <div class="budget-row" style="margin-top:8px">
           <div class="budget-val" id="steps-display">3</div>
-          <input type="range" id="steps" min="0" max="11" step="1" value="2" oninput="updateStepsDisplay()">
+          <input type="range" id="steps" min="0" max="11" step="1" value="2" aria-valuetext="3 steps per workflow" oninput="updateStepsDisplay()">
         </div>
         <div class="hint">steps · Actions per run. Matters because Make bills every step, Zapier skips triggers/filters, n8n &amp; Pipedream bill per run.</div>
       </div>
@@ -774,38 +777,46 @@
         <label for="workflows">Active workflows <span class="auto-badge" id="wf-auto" hidden>✦ auto-estimated</span></label>
         <div class="budget-row" style="margin-top:8px">
           <div class="budget-val" id="wf-display">5</div>
-          <input type="range" id="workflows" min="0" max="7" step="1" value="2" oninput="updateWfDisplay()">
+          <input type="range" id="workflows" min="0" max="7" step="1" value="2" aria-valuetext="5 active workflows" oninput="updateWfDisplay()">
         </div>
         <div class="hint">workflows · How many separate automations you run in parallel.</div>
       </div>
       <div>
-        <label>Max monthly budget <span class="auto-badge" id="budget-auto" hidden>✦ auto-estimated</span></label>
+        <label for="budget">Max monthly budget <span class="auto-badge" id="budget-auto" hidden>✦ auto-estimated</span></label>
         <div class="budget-row">
           <div class="budget-val" id="budget-display">$50</div>
-          <input type="range" id="budget" min="0" max="1500" step="5" value="50" oninput="updateBudget(this.value)">
+          <input type="range" id="budget" min="0" max="1500" step="5" value="50" aria-valuetext="$50 per month" oninput="updateBudget(this.value)">
         </div>
         <div class="budget-note" id="budget-note">Tools above this will be marked as over-budget, not hidden</div>
       </div>
       <div>
+        <label for="spend">What do you pay for automation now? <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;color:var(--muted);">(optional)</span></label>
+        <div class="budget-row" style="margin-top:8px">
+          <div class="budget-val" id="spend-display">Not set</div>
+          <input type="range" id="spend" min="0" max="1500" step="5" value="0" aria-valuetext="Not set" oninput="updateSpend(this.value)">
+        </div>
+        <div class="hint">Set your current monthly automation bill and we'll show the projected savings of your top pick.</div>
+      </div>
+      <div>
         <label data-i18n="pages.calc.lbl_billing">Billing cycle</label>
         <div class="toggle-group">
-          <button class="toggle-btn active" data-billing="monthly" onclick="setBilling('monthly',this)" data-i18n="pages.calc.billing_monthly">Monthly</button>
-          <button class="toggle-btn" data-billing="annual" onclick="setBilling('annual',this)"><span data-i18n="pages.calc.billing_annual">Annual</span> <span class="save-pill" data-i18n="pages.calc.save_pill">save ~20%</span></button>
+          <button class="toggle-btn active" data-billing="monthly" aria-pressed="true" onclick="setBilling('monthly',this)" data-i18n="pages.calc.billing_monthly">Monthly</button>
+          <button class="toggle-btn" data-billing="annual" aria-pressed="false" onclick="setBilling('annual',this)"><span data-i18n="pages.calc.billing_annual">Annual</span> <span class="save-pill" data-i18n="pages.calc.save_pill">save ~20%</span></button>
         </div>
       </div>
       <div>
         <label data-i18n="pages.calc.lbl_hosting">Hosting preference</label>
         <div class="toggle-group">
-          <button class="toggle-btn active" data-host="any" onclick="setHost('any',this)" data-i18n="pages.calc.host_any">Any</button>
-          <button class="toggle-btn" data-host="cloud" onclick="setHost('cloud',this)" data-i18n="pages.calc.host_cloud">Cloud only</button>
-          <button class="toggle-btn" data-host="selfhost" onclick="setHost('selfhost',this)" data-i18n="pages.calc.host_selfhost">Self-host</button>
+          <button class="toggle-btn active" data-host="any" aria-pressed="true" onclick="setHost('any',this)" data-i18n="pages.calc.host_any">Any</button>
+          <button class="toggle-btn" data-host="cloud" aria-pressed="false" onclick="setHost('cloud',this)" data-i18n="pages.calc.host_cloud">Cloud only</button>
+          <button class="toggle-btn" data-host="selfhost" aria-pressed="false" onclick="setHost('selfhost',this)" data-i18n="pages.calc.host_selfhost">Self-host</button>
         </div>
       </div>
       <div>
         <label data-i18n="pages.calc.lbl_ai">Need AI / LLM nodes?</label>
         <div class="toggle-group">
-          <button class="toggle-btn active" data-ai="any" onclick="setAI('any',this)" data-i18n="pages.calc.ai_any">Don't care</button>
-          <button class="toggle-btn" data-ai="yes" onclick="setAI('yes',this)" data-i18n="pages.calc.ai_yes">Yes, required</button>
+          <button class="toggle-btn active" data-ai="any" aria-pressed="true" onclick="setAI('any',this)" data-i18n="pages.calc.ai_any">Don't care</button>
+          <button class="toggle-btn" data-ai="yes" aria-pressed="false" onclick="setAI('yes',this)" data-i18n="pages.calc.ai_yes">Yes, required</button>
         </div>
       </div>
     </div>
@@ -814,8 +825,8 @@
       <div class="section-label">Required integrations <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;">(optional — filters tools that don't support them)</span></div>
       <div class="integ-selected" id="integ-selected"></div>
       <div class="integ-search-wrap">
-        <input type="text" id="integ-search" autocomplete="off" placeholder="Search apps — Slack, Notion, Shopify, Stripe…">
-        <div class="integ-dropdown" id="integ-dropdown"></div>
+        <input type="text" id="integ-search" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="integ-dropdown" aria-label="Search integrations" placeholder="Search apps — Slack, Notion, Shopify, Stripe…">
+        <div class="integ-dropdown" id="integ-dropdown" role="listbox" aria-label="Integrations"></div>
       </div>
     </div>
 
@@ -838,6 +849,7 @@
       </button>
     </div>
     <div class="profile-summary" id="profile-summary"></div>
+    <div class="savings-banner" id="roi-banner" hidden></div>
     <div class="savings-banner" id="savings-banner" hidden></div>
     <div class="persona-row" id="persona-picks" hidden></div>
     <div class="crossover-box" id="crossover-insight" hidden></div>
@@ -2530,6 +2542,7 @@ let selectedBizModel = null; // company type / business model — run-volume mul
 let selectedWorkflows = []; // multi-select list; selectedWorkflow = last picked (primary, used by scoring)
 let hostPref = "any", aiPref = "any", billing = "monthly";
 let maxBudget = 50;
+let currentSpend = 0;     // optional: what the user pays for automation today → ROI/savings banner
 let selectedIntegrations = [];
 let lastEstimateSig = null; // profile the sliders were last auto-estimated for
 let lastWfDefaultsSig = null; // (size|role) the workflow step was last default-selected for
@@ -2788,6 +2801,7 @@ function renderWorkflowGrid() {
 
   document.getElementById("btn-next-2").disabled = selectedWorkflows.length === 0;
   updateWfSelectedCount();
+  enhanceCardA11y(); // workflow cards are built here — make them keyboard-operable too
 }
 
 function selectWorkflow(id) {
@@ -2860,14 +2874,29 @@ function getCalcRuns()  { return CALC_RUNS_STEPS[parseInt(document.getElementByI
 function getCalcSteps() { return CALC_STEP_COUNTS[parseInt(document.getElementById("steps").value)]; }
 function getCalcWf()    { return CALC_WF_STEPS[parseInt(document.getElementById("workflows").value)]; }
 function findClosestIdx(arr, val) { return arr.reduce((b,v,i) => Math.abs(v-val) < Math.abs(arr[b]-val) ? i : b, 0); }
-function updateOpsDisplay()  { document.getElementById("ops-display").textContent  = getCalcRuns().toLocaleString(); }
-function updateStepsDisplay(){ document.getElementById("steps-display").textContent = getCalcSteps(); }
-function updateWfDisplay()   { document.getElementById("wf-display").textContent   = getCalcWf(); }
+// a11y: range sliders carry an INDEX (0..n) as their native value, but the
+// human number lives in a sibling <div>. Mirror that number into aria-valuetext
+// so a screen reader announces "5,000 runs per month", not "4 of 11".
+function setAria(id, txt) { const el = document.getElementById(id); if (el && el.setAttribute) el.setAttribute("aria-valuetext", txt); }
+function updateOpsDisplay()  { const v = getCalcRuns();  document.getElementById("ops-display").textContent  = v.toLocaleString(); setAria("ops", v.toLocaleString() + " runs per month"); }
+function updateStepsDisplay(){ const v = getCalcSteps(); document.getElementById("steps-display").textContent = v; setAria("steps", v + " steps per workflow"); }
+function updateWfDisplay()   { const v = getCalcWf();    document.getElementById("wf-display").textContent   = v; setAria("workflows", v + " active workflows"); }
 
 function updateBudget(v) {
   maxBudget = parseInt(v);
   const display = document.getElementById("budget-display");
   display.textContent = maxBudget === 0 ? "Any" : "$" + maxBudget;
+  setAria("budget", maxBudget === 0 ? "Any budget" : "$" + maxBudget + " per month");
+}
+
+// Optional "what do you pay now?" → drives the ROI/savings banner on results.
+function updateSpend(v) {
+  currentSpend = parseInt(v) || 0;
+  const d = document.getElementById("spend-display");
+  if (d) d.textContent = currentSpend === 0 ? "Not set" : "$" + currentSpend;
+  setAria("spend", currentSpend === 0 ? "Not set" : "$" + currentSpend + " per month");
+  const r = document.getElementById("step-5");
+  if (r && r.classList && r.classList.contains("active")) renderResults();
 }
 
 // ── Volume & budget auto-estimate ─────────────────────────────────────────────
@@ -3043,14 +3072,14 @@ function toggleWfPer() {
     if (note && allHidden) note.hidden = true;
   });
 });
-function setHost(v, btn) { hostPref = v; document.querySelectorAll("[data-host]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
-function toggleFaq(btn) { btn.closest(".faq-item").classList.toggle("open"); }
-function setAI(v, btn)   { aiPref  = v; document.querySelectorAll("[data-ai]").forEach(b => b.classList.remove("active")); btn.classList.add("active"); }
+function setHost(v, btn) { hostPref = v; document.querySelectorAll("[data-host]").forEach(b => { b.classList.remove("active"); if (b.setAttribute) b.setAttribute("aria-pressed", "false"); }); btn.classList.add("active"); if (btn.setAttribute) btn.setAttribute("aria-pressed", "true"); }
+function toggleFaq(btn) { const open = btn.closest(".faq-item").classList.toggle("open"); if (btn.setAttribute) btn.setAttribute("aria-expanded", open ? "true" : "false"); }
+function setAI(v, btn)   { aiPref  = v; document.querySelectorAll("[data-ai]").forEach(b => { b.classList.remove("active"); if (b.setAttribute) b.setAttribute("aria-pressed", "false"); }); btn.classList.add("active"); if (btn.setAttribute) btn.setAttribute("aria-pressed", "true"); }
 function setBilling(v, btn) {
   billing = v;
-  document.querySelectorAll("[data-billing]").forEach(b => b.classList.remove("active"));
-  if (btn) btn.classList.add("active");
-  else document.querySelectorAll("[data-billing]").forEach(b => b.classList.toggle("active", b.dataset.billing === v));
+  document.querySelectorAll("[data-billing]").forEach(b => { b.classList.remove("active"); if (b.setAttribute) b.setAttribute("aria-pressed", "false"); });
+  if (btn) { btn.classList.add("active"); if (btn.setAttribute) btn.setAttribute("aria-pressed", "true"); }
+  else document.querySelectorAll("[data-billing]").forEach(b => { const on = b.dataset.billing === v; b.classList.toggle("active", on); if (b.setAttribute) b.setAttribute("aria-pressed", on ? "true" : "false"); });
   // If results are already on screen, re-price them live with the new billing cycle.
   const r = document.getElementById("step-5");
   if (r && r.classList.contains("active")) renderResults();
@@ -3085,26 +3114,46 @@ function renderIntegDropdown() {
   let html = "", idx = 0;
   if (sel.length) {
     html += `<div class="integ-cat-head">Selected</div>`;
-    sel.forEach(a => { html += `<div class="integ-opt selected" onclick="toggleIntegration('${a.name.replace(/'/g,"\\'")}',event)"><span class="integ-checkbox"></span><span class="integ-name">${a.name}</span><span class="integ-cat">${Object.values(a.s).filter(v=>v).length}/7 tools</span></div>`; idx++; });
+    sel.forEach(a => { html += `<div class="integ-opt selected" role="option" aria-selected="true" onclick="toggleIntegration('${a.name.replace(/'/g,"\\'")}',event)"><span class="integ-checkbox"></span><span class="integ-name">${a.name}</span><span class="integ-cat">${Object.values(a.s).filter(v=>v).length}/7 tools</span></div>`; idx++; });
   }
   for (const cat of Object.keys(byCat)) {
     html += `<div class="integ-cat-head">${cat}</div>`;
-    byCat[cat].forEach(a => { html += `<div class="integ-opt" onclick="toggleIntegration('${a.name.replace(/'/g,"\\'")}',event)"><span class="integ-checkbox"></span><span class="integ-name">${a.name}</span><span class="integ-cat">${Object.values(a.s).filter(v=>v).length}/7 tools</span></div>`; idx++; });
+    byCat[cat].forEach(a => { html += `<div class="integ-opt" role="option" aria-selected="false" onclick="toggleIntegration('${a.name.replace(/'/g,"\\'")}',event)"><span class="integ-checkbox"></span><span class="integ-name">${a.name}</span><span class="integ-cat">${Object.values(a.s).filter(v=>v).length}/7 tools</span></div>`; idx++; });
   }
   integDropdown.innerHTML = html; integHighlight = -1;
 }
-integSearch.addEventListener("focus", () => { renderIntegDropdown(); integDropdown.classList.add("open"); });
-integSearch.addEventListener("input", () => { renderIntegDropdown(); integDropdown.classList.add("open"); });
+integSearch.addEventListener("focus", () => { renderIntegDropdown(); integDropdown.classList.add("open"); integSearch.setAttribute("aria-expanded", "true"); });
+integSearch.addEventListener("input", () => { renderIntegDropdown(); integDropdown.classList.add("open"); integSearch.setAttribute("aria-expanded", "true"); });
 integSearch.addEventListener("keydown", e => {
   const opts = Array.from(integDropdown.querySelectorAll(".integ-opt"));
   if (e.key === "ArrowDown") { e.preventDefault(); integHighlight = Math.min(integHighlight+1, opts.length-1); }
   else if (e.key === "ArrowUp") { e.preventDefault(); integHighlight = Math.max(integHighlight-1, 0); }
   else if (e.key === "Enter" && integHighlight >= 0 && opts[integHighlight]) { e.preventDefault(); opts[integHighlight].click(); return; }
-  else if (e.key === "Escape") { integDropdown.classList.remove("open"); return; }
+  else if (e.key === "Escape") { integDropdown.classList.remove("open"); integSearch.setAttribute("aria-expanded", "false"); return; }
   opts.forEach((o,i) => o.classList.toggle("highlight", i === integHighlight));
   if (opts[integHighlight]) opts[integHighlight].scrollIntoView({ block: "nearest" });
 });
-document.addEventListener("click", e => { if (!e.target.closest(".integ-search-wrap")) integDropdown.classList.remove("open"); });
+document.addEventListener("click", e => { if (!e.target.closest(".integ-search-wrap")) { integDropdown.classList.remove("open"); integSearch.setAttribute("aria-expanded", "false"); } });
+
+// ── a11y: keyboard-operable cards + accordion state ───────────────────────────
+// Role/size/biz/workflow cards are clickable <div>s. Make them focusable buttons
+// and let Enter/Space activate them (delegated, so JS-generated wf-cards work too).
+function enhanceCardA11y() {
+  document.querySelectorAll(".size-card,.biz-card,.role-card,.wf-card,.wf-skip").forEach(c => {
+    if (c.getAttribute && !c.getAttribute("role")) c.setAttribute("role", "button");
+    if (c.hasAttribute && !c.hasAttribute("tabindex")) c.setAttribute("tabindex", "0");
+  });
+}
+document.addEventListener("keydown", function (e) {
+  if (e.key !== "Enter" && e.key !== " " && e.key !== "Spacebar") return;
+  const el = document.activeElement;
+  if (el && el.classList && (el.classList.contains("size-card") || el.classList.contains("biz-card") || el.classList.contains("role-card") || el.classList.contains("wf-card") || el.classList.contains("wf-skip"))) {
+    e.preventDefault();
+    if (el.click) el.click();
+  }
+});
+enhanceCardA11y(); // static cards present at load; wf-cards re-enhanced after render
+document.querySelectorAll(".faq-q").forEach(b => { if (b.setAttribute) b.setAttribute("aria-expanded", "false"); });
 
 // ── Cost engine ───────────────────────────────────────────────────────────────
 function toolSupportsAll(slug) {
@@ -3207,6 +3256,15 @@ function calcCost(tool, runs, steps, workflows, perWf) {
 // bonus). scoreParts is the single source of truth — computeMatchScore AND the "why this
 // rank" breakdown in the results UI both read from it (no drift).
 // SCORE_W je definováno v bloku DATA:SCORING výše (generováno z data/scoring-model.json).
+// Relative-price context for the "Any budget" case (maxBudget=0). Recomputed at the
+// top of every renderResults() from the available tools' costs, then read by
+// scoreParts so price still influences the ranking when there's no $ ceiling.
+let priceCtx = null;
+function computePriceCtx(priced) {
+  const costs = priced.map(r => r.costResult && r.costResult.cost).filter(c => typeof c === "number" && isFinite(c));
+  if (!costs.length) return null;
+  return { min: Math.min(...costs), max: Math.max(...costs) };
+}
 function scoreParts(tool, costResult) {
   const role = selectedRole || "other";
   const wf = WORKFLOWS.find(w => w.id === selectedWorkflow);
@@ -3230,6 +3288,12 @@ function scoreParts(tool, costResult) {
   if (maxBudget > 0 && costResult !== null) {
     const ratio = costResult.cost / maxBudget;
     priceScore = ratio <= 1 ? 1 - ratio * 0.3 : Math.max(0, 1 - ratio * 0.6);
+  } else if (maxBudget === 0 && costResult !== null && priceCtx && priceCtx.max > priceCtx.min) {
+    // "Any" budget: no $ ceiling, so rank price RELATIVELY across the available
+    // tools — cheapest ≈ 1.0, priciest ≈ 0.5. Price still rewards "best value",
+    // but feature fit can outweigh it (so "Any" no longer ignores cost entirely).
+    const rel = (costResult.cost - priceCtx.min) / (priceCtx.max - priceCtx.min);
+    priceScore = 1 - rel * 0.5;
   }
   const maturity = (caps.maturity != null) ? caps.maturity : 0.5;
   return { featureScore, priceScore, maturity, wfBonus };
@@ -3272,10 +3336,11 @@ const PERSONAS = [
     sort:(a,b)=> personaControlScore(b.tool.slug) - personaControlScore(a.tool.slug) || b.score - a.score },
 ];
 
+function fmtUsd(n) { return Number(n).toLocaleString("en-US"); }
 function fmtCost(cr) {
   if (!cr || cr.cost == null) return "—";
   if (cr.cost === 0) return "Free";
-  return (cr.estimated ? "~$" : "$") + cr.cost + "/mo";
+  return (cr.estimated ? "~$" : "$") + fmtUsd(cr.cost) + "/mo";
 }
 
 // Crossover / sensitivity: at the user's volume one tool is cheapest; as volume grows it
@@ -3413,11 +3478,12 @@ function renderResults() {
     aiPref === "yes" ? `<div class="profile-chip">AI nodes: <span>Required</span></div>` : "",
   ].join("");
 
-  const items = TOOLS.map(tool => {
-    const costResult = calcCost(tool, effRuns, steps, workflows, perWf);
-    const score = computeMatchScore(tool, costResult);
-    return { tool, costResult, score };
-  }).filter(r => r.costResult !== null);
+  // Two-pass: price every tool first, derive the relative-price context, THEN
+  // score (computeMatchScore → scoreParts reads priceCtx for the "Any budget" case).
+  const priced = TOOLS.map(tool => ({ tool, costResult: calcCost(tool, effRuns, steps, workflows, perWf) }))
+                      .filter(r => r.costResult !== null);
+  priceCtx = computePriceCtx(priced);
+  const items = priced.map(r => Object.assign(r, { score: computeMatchScore(r.tool, r.costResult) }));
 
   items.sort((a, b) => b.score - a.score);
 
@@ -3448,6 +3514,28 @@ function renderResults() {
       savings.hidden = false;
     } else {
       savings.hidden = true;
+    }
+  }
+
+  // ROI vs the user's CURRENT spend (optional input). Honest both ways: shows the
+  // projected saving when the top pick is cheaper, or reassurance when it isn't.
+  const roi = document.getElementById("roi-banner");
+  if (roi) {
+    if (currentSpend > 0 && items.length) {
+      const top = items[0];
+      const monthly = currentSpend - top.costResult.cost;
+      const trend = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>`;
+      if (monthly >= 1) {
+        const approx = top.costResult.estimated;
+        roi.innerHTML = trend +
+          `<div>Switching to <b>${top.tool.name}</b> could save you <b>${approx ? "~" : ""}$${fmtUsd(Math.round(monthly))}/mo</b> (<b>${approx ? "~" : ""}$${fmtUsd(Math.round(monthly * 12))}/yr</b>) vs your current <b>$${fmtUsd(currentSpend)}/mo</b>.</div>`;
+      } else {
+        roi.innerHTML = trend +
+          `<div>Your current <b>$${fmtUsd(currentSpend)}/mo</b> is already competitive — the best match here is <b>${fmtCost(top.costResult)}</b>, so you're not overpaying. Fit, not price, is the reason to switch.</div>`;
+      }
+      roi.hidden = false;
+    } else {
+      roi.hidden = true;
     }
   }
 
@@ -3505,7 +3593,7 @@ function renderResults() {
           </button>
         </div>
         <div class="result-cost-col">
-          <div class="result-cost ${costClass(cost)}">${cost === 0 ? "Free" : (costResult.estimated ? "~$" : "$") + cost + "/mo"}${(billing === "annual" && !costResult.estimated && annualDiscountPct(costResult.plan) > 0) ? `<span class="disc-badge">−${annualDiscountPct(costResult.plan)}%</span>` : ""}</div>
+          <div class="result-cost ${costClass(cost)}">${cost === 0 ? "Free" : (costResult.estimated ? "~$" : "$") + fmtUsd(cost) + "/mo"}${(billing === "annual" && !costResult.estimated && annualDiscountPct(costResult.plan) > 0) ? `<span class="disc-badge">−${annualDiscountPct(costResult.plan)}%</span>` : ""}</div>
           <div class="result-cost-note">${costResult.hwOnly ? "server hardware · not a tool fee" : costResult.plan.name + (costResult.estimated ? " · estimate" : "") + (billing === "annual" ? (annualDiscountPct(costResult.plan) > 0 ? " · billed annually" : (!costResult.hwOnly && !costResult.estimated ? " · no annual discount" : "")) : "")}</div>
         </div>
         <div class="result-cta-col">
@@ -3540,7 +3628,7 @@ function renderResults() {
   // Persist a lightweight profile so compare.html "Best for me" can use it.
   try {
     localStorage.setItem("ac_profile", JSON.stringify({
-      ops: getCalcRuns(), steps: getCalcSteps(), workflows: getCalcWf(), budget: maxBudget,
+      ops: getCalcRuns(), steps: getCalcSteps(), workflows: getCalcWf(), budget: maxBudget, currentSpend: currentSpend,
       hostPref: hostPref, aiPref: aiPref, billing: billing, role: selectedRole, companySize: selectedCompanySize,
       companyType: selectedBizModel,
       workflowsSel: selectedWorkflows.slice(),
@@ -3579,6 +3667,7 @@ function buildShareQuery() {
   p.set("st", document.getElementById("steps").value);
   p.set("f", document.getElementById("workflows").value);
   p.set("b", String(maxBudget));
+  if (currentSpend > 0) p.set("sp", String(currentSpend));
   if (billing === "annual") p.set("bi", "a");
   if (hostPref !== "any") p.set("h", hostPref);
   if (aiPref === "yes") p.set("ai", "y");
@@ -3626,6 +3715,7 @@ function profileFromParams(qs) {
     wfs: p.get("w") ? p.get("w").split(".") : [],
     wfRuns: p.get("wr") ? Object.fromEntries(p.get("wr").split(".").map(s => { const x = s.split("~"); return [x[0], parseInt(x[1], 10) || 0]; })) : null,
     opsIdx: num(p.get("o"), 4), stepsIdx: num(p.get("st"), 2), wfIdx: num(p.get("f"), 2), budget: num(p.get("b"), 50),
+    spend: num(p.get("sp"), 0),
     billing: p.get("bi") === "a" ? "annual" : "monthly",
     host: p.get("h") || "any",
     ai: p.get("ai") === "y" ? "yes" : "any",
@@ -3646,6 +3736,7 @@ function profileFromStored() {
       stepsIdx: findClosestIdx(CALC_STEP_COUNTS, p.steps || 3),
       wfIdx: findClosestIdx(CALC_WF_STEPS, p.workflows || 5),
       budget: typeof p.budget === "number" ? p.budget : 50,
+      spend: typeof p.currentSpend === "number" ? p.currentSpend : 0,
       billing: p.billing === "annual" ? "annual" : "monthly",
       host: p.hostPref || "any", ai: p.aiPref || "any",
       integ: [],
@@ -3665,6 +3756,7 @@ function restoreProfile(prof) {
   if (prof.ai === "yes") aiPref = "yes";
   if (prof.billing === "annual") billing = "annual";
   maxBudget = Math.max(0, Math.min(1500, prof.budget));
+  currentSpend = Math.max(0, Math.min(1500, prof.spend || 0));
   selectedIntegrations = (prof.integ || []).filter(n => INTEGRATIONS.some(a => a.name === n));
 
   // Sliders get the restored values directly; matching lastEstimateSig stops
@@ -3679,6 +3771,8 @@ function restoreProfile(prof) {
   updateWfDisplay();
   document.getElementById("budget").value = String(maxBudget);
   updateBudget(maxBudget);
+  const _sp = document.getElementById("spend"); if (_sp) _sp.value = String(currentSpend);
+  updateSpend(currentSpend);
   lastEstimateSig = selectedCompanySize + "|" + selectedBizModel + "|" + selectedRole + "|" + selectedWorkflows.slice().sort().join(",");
   lastWfDefaultsSig = selectedCompanySize + "|" + (selectedRole || "other"); // don't overwrite restored workflow selection
 
@@ -3702,9 +3796,9 @@ function restoreProfile(prof) {
     if (bc) bc.classList.add("selected");
     const rc = document.querySelector('.role-card[data-role="' + prof.role + '"]');
     if (rc) rc.classList.add("selected");
-    document.querySelectorAll("[data-billing]").forEach(b => b.classList.toggle("active", b.dataset.billing === billing));
-    document.querySelectorAll("[data-host]").forEach(b => b.classList.toggle("active", b.dataset.host === hostPref));
-    document.querySelectorAll("[data-ai]").forEach(b => b.classList.toggle("active", b.dataset.ai === aiPref));
+    document.querySelectorAll("[data-billing]").forEach(b => { const on = b.dataset.billing === billing; b.classList.toggle("active", on); if (b.setAttribute) b.setAttribute("aria-pressed", on ? "true" : "false"); });
+    document.querySelectorAll("[data-host]").forEach(b => { const on = b.dataset.host === hostPref; b.classList.toggle("active", on); if (b.setAttribute) b.setAttribute("aria-pressed", on ? "true" : "false"); });
+    document.querySelectorAll("[data-ai]").forEach(b => { const on = b.dataset.ai === aiPref; b.classList.toggle("active", on); if (b.setAttribute) b.setAttribute("aria-pressed", on ? "true" : "false"); });
     document.getElementById("btn-next-0").disabled = false;
     document.getElementById("btn-next-1").disabled = false;
     renderIntegSelected();
