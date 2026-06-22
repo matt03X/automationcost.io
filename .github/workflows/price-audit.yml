@@ -62,7 +62,16 @@ jobs:
             DATE=$(date -u +%Y-%m-%d)
             CHANGES=$(D="$DATE" node -e "try{console.log(require('./automation/data/audit/changes-'+process.env.D+'.json').changeCount)}catch{console.log(0)}")
             git commit -m "audit: cenové snapshoty ${DATE} (${CHANGES} změn)"
-            git push
+            # Resilientní push: souběžné audit crony pushují na master ve stejném okně
+            # (append-only snapshoty v oddělených složkách → rebase je bez konfliktů).
+            pushed=0
+            for i in 1 2 3 4 5; do
+              if git push; then pushed=1; break; fi
+              echo "push odmítnut (souběžný push na master) — rebase + retry ${i}/5"
+              git pull --rebase --autostash origin master || true
+              sleep $(( (RANDOM % 4) + 1 ))
+            done
+            [ "$pushed" = 1 ] || { echo "::error::push snapshotu selhal i po 5 pokusech"; exit 1; }
           fi
       - name: Rebuild generovaných stránek (drží n8n EUR→USD i stránky v sync s fx.json)
         # fx.json se refreshuje denně z audit kroku; bez rebuildu by calculator/compare/
@@ -80,7 +89,15 @@ jobs:
           else
             DATE=$(date -u +%Y-%m-%d)
             git commit -m "build: rebuild generovaných stránek — FX/data sync ${DATE}"
-            git push
+            # Resilientní push: souběžné audit crony pushují na master ve stejném okně.
+            pushed=0
+            for i in 1 2 3 4 5; do
+              if git push; then pushed=1; break; fi
+              echo "push odmítnut (souběžný push na master) — rebase + retry ${i}/5"
+              git pull --rebase --autostash origin master || true
+              sleep $(( (RANDOM % 4) + 1 ))
+            done
+            [ "$pushed" = 1 ] || { echo "::error::push rebuildu selhal i po 5 pokusech"; exit 1; }
           fi
       - name: Auto-návrh cenového PATCHe → Pull Request ke schválení (1-tap merge)
         if: always()
