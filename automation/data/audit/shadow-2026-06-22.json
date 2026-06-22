@@ -1,0 +1,637 @@
+{
+  "date": "2026-06-22",
+  "generatedAt": "2026-06-22T12:34:17.953Z",
+  "mode": "SHADOW",
+  "decisions": [
+    {
+      "key": "make|Core|10000",
+      "desc": "make Core @10000: $9→$12",
+      "deltaPct": 33.3,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|10000",
+      "desc": "make Pro @10000: $16→$21",
+      "deltaPct": 31.3,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|10000",
+      "desc": "make Teams @10000: $29→$38",
+      "deltaPct": 31,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Core|20000",
+      "desc": "make Core @20000: $16→$21",
+      "deltaPct": 31.3,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|20000",
+      "desc": "make Pro @20000: $29→$38",
+      "deltaPct": 31,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|20000",
+      "desc": "make Teams @20000: $53→$69",
+      "deltaPct": 30.2,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Core|40000",
+      "desc": "make Core @40000: $29→$38",
+      "deltaPct": 31,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|40000",
+      "desc": "make Pro @40000: $53→$69",
+      "deltaPct": 30.2,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|40000",
+      "desc": "make Teams @40000: $99→$129",
+      "deltaPct": 30.3,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Core|80000",
+      "desc": "make Core @80000: $55→$72",
+      "deltaPct": 30.9,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|80000",
+      "desc": "make Pro @80000: $91→$118",
+      "deltaPct": 29.7,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|80000",
+      "desc": "make Teams @80000: $172→$225",
+      "deltaPct": 30.8,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Core|150000",
+      "desc": "make Core @150000: $99→$129",
+      "deltaPct": 30.3,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|150000",
+      "desc": "make Pro @150000: $153.45→$199",
+      "deltaPct": 29.7,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|150000",
+      "desc": "make Teams @150000: $291.56→$379",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Core|300000",
+      "desc": "make Core @300000: $182.16→$237",
+      "deltaPct": 30.1,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|300000",
+      "desc": "make Pro @300000: $268.54→$349",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|300000",
+      "desc": "make Teams @300000: $510.22→$663",
+      "deltaPct": 29.9,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|500000",
+      "desc": "make Pro @500000: $410.27→$533",
+      "deltaPct": 29.9,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|500000",
+      "desc": "make Teams @500000: $779→$1013",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|750000",
+      "desc": "make Pro @750000: $576.94→$750",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|750000",
+      "desc": "make Teams @750000: $1096.18→$1425",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|1000000",
+      "desc": "make Pro @1000000: $748.73→$973",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|1000000",
+      "desc": "make Teams @1000000: $1400.67→$1821",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|1500000",
+      "desc": "make Pro @1500000: $1078.18→$1402",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|1500000",
+      "desc": "make Teams @1500000: $1969→$2561",
+      "deltaPct": 30.1,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|2000000",
+      "desc": "make Pro @2000000: $1377.67→$1791",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|2000000",
+      "desc": "make Teams @2000000: $2451.18→$3187",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|2500000",
+      "desc": "make Pro @2500000: $1701.13→$2211",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|2500000",
+      "desc": "make Teams @2500000: $3009.26→$3912",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|3000000",
+      "desc": "make Pro @3000000: $1983.85→$2579",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|3000000",
+      "desc": "make Teams @3000000: $3446.97→$4481",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|4000000",
+      "desc": "make Pro @4000000: $2574.59→$3347",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|4000000",
+      "desc": "make Teams @4000000: $4404.46→$5726",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|5000000",
+      "desc": "make Pro @5000000: $3153.88→$4100",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|5000000",
+      "desc": "make Teams @5000000: $5333.52→$6934",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|6000000",
+      "desc": "make Pro @6000000: $3707.41→$4820",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|6000000",
+      "desc": "make Teams @6000000: $6342.42→$8245",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|7000000",
+      "desc": "make Pro @7000000: $4274.13→$5556",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|7000000",
+      "desc": "make Teams @7000000: $7227.99→$9396",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Pro|8000000",
+      "desc": "make Pro @8000000: $4811→$6255",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    },
+    {
+      "key": "make|Teams|8000000",
+      "desc": "make Teams @8000000: $8231.05→$10700",
+      "deltaPct": 30,
+      "checks": {
+        "scalar": true,
+        "sanity": true,
+        "notMass": true,
+        "confirmed": true
+      },
+      "verdict": "AUTO",
+      "reasons": [
+        "✅ potvrzeno (stabilní 1d) → BY SE aplikovalo na web + odeslalo odběratelům"
+      ]
+    }
+  ]
+}
