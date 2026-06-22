@@ -1,0 +1,17 @@
+{
+  "date": "2026-06-22",
+  "vendor": "automatisch",
+  "url": "https://automatisch.io/",
+  "integrations": null,
+  "openSourceSignal": true,
+  "evidence": null,
+  "repo": "automatisch/automatisch",
+  "selfHostConfirmed": true,
+  "license": {
+    "spdx": "NOASSERTION",
+    "name": "Other"
+  },
+  "warnings": [
+    "počet integrací nenalezen (změna layoutu / bot wall)"
+  ]
+}
