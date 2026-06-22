@@ -1,0 +1,85 @@
+# Týdenní AUDIT katalogu INTEGRACÍ + ALARM (sesterský k price-audit.yml).
+# Stáhne KOMPLETNÍ seznam integrací (apps/connectors/nodes) všech 7 nástrojů z jejich
+# strojově čitelných zdrojů (veřejná JSON API / GitHub git-tree / oficiální katalog),
+# uloží snapshot do automation/data/integrations/<vendor>/latest.json, zdiffuje proti
+# poslednímu commitnutému snapshotu → which apps PŘIBYLY / ZMIZELY → changes-<datum>.json
+# + integrations-history.jsonl.
+# Mail ownerovi (job fail) přijde JEN když nějaká integrace přibyla/zmizela
+# (changeCount > 0). Bot-wall / podezřelý propad počtu = WARN (drží starý snapshot,
+# žádný alarm, žádná ztráta dat) — stejná tolerance jako cenový audit.
+name: integrations-audit
+on:
+  schedule:
+    - cron: "30 5 * * 1"   # každé pondělí 05:30 UTC (offset od price-audit 06:30 denně)
+  workflow_dispatch:
+permissions:
+  contents: write          # commit snapshotů zpět do repa
+concurrency:
+  group: integrations-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40       # Zapier ~970 stránek je dlouhý pól (~9 min), rezerva na retry
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0      # plná historie — diff se dělá proti commitnutému latest.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright (mimo repo checkout)
+        run: |
+          mkdir -p /tmp/pw
+          cd /tmp/pw
+          npm init -y > /dev/null
+          npm install playwright@1 > /dev/null
+          ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Self-test diff/normalize logiky (bez sítě — rychlá pojistka)
+        run: node scripts/integrations-audit.js --selftest
+      - name: Spustit audit integrací (exit 1 jen při tvrdé chybě; bot-wall = WARN)
+        run: NODE_PATH=/tmp/pw/node_modules node scripts/integrations-audit.js
+      - name: Commit snapshotů a změn (vždy — ať se evidence uloží)
+        if: always()
+        run: |
+          git config user.name  "integrations-audit-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add automation/data/integrations
+          if git diff --cached --quiet; then
+            echo "Žádné nové integrační soubory — nic k commitu."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            CHANGES=$(D="$DATE" node -e "try{console.log(require('./automation/data/integrations/changes-'+process.env.D+'.json').changeCount)}catch{console.log(0)}")
+            git commit -m "audit: integrace ${DATE} (${CHANGES} změn)"
+            # Resilientní push: souběžné audit crony pushují na master ve stejném okně
+            # (append-only snapshoty → rebase je bez konfliktů).
+            pushed=0
+            for i in 1 2 3 4 5; do
+              if git push; then pushed=1; break; fi
+              echo "push odmítnut (souběžný push na master) — rebase + retry ${i}/5"
+              git pull --rebase --autostash origin master || true
+              sleep $(( (RANDOM % 4) + 1 ))
+            done
+            [ "$pushed" = 1 ] || { echo "::error::push snapshotu selhal i po 5 pokusech"; exit 1; }
+          fi
+      - name: ALARM — fail (= mail ownerovi) jen když integrace přibyla/zmizela
+        if: always()
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          F="automation/data/integrations/changes-${DATE}.json"
+          CHANGES=$(node -e "try{console.log(require('./'+process.argv[1]).changeCount)}catch{console.log(0)}" "$F" 2>/dev/null || echo 0)
+          ADDED=$(node -e "try{console.log(require('./'+process.argv[1]).addedCount)}catch{console.log(0)}" "$F" 2>/dev/null || echo 0)
+          REMOVED=$(node -e "try{console.log(require('./'+process.argv[1]).removedCount)}catch{console.log(0)}" "$F" 2>/dev/null || echo 0)
+          echo "Detekováno změn integrací: ${CHANGES} (${ADDED} přibylo, ${REMOVED} zmizelo)"
+          # WARNINGS (bot-wall / podezřelý propad) — vypíšeme do summary, ale NEalarmují
+          node -e "try{(require('./'+process.argv[1]).warnings||[]).forEach(w=>console.log('::warning::'+w))}catch{}" "$F" 2>/dev/null || true
+          if [ "$CHANGES" -gt 0 ]; then
+            echo "## 🔌 Změna v integracích — ${ADDED} přibylo, ${REMOVED} zmizelo" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "**Co přesně se mění:**" >> "$GITHUB_STEP_SUMMARY"
+            node -e "try{require('./'+process.argv[1]).changes.forEach(c=>console.log('- '+c.desc))}catch{}" "$F" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "Snapshoty: automation/data/integrations/<vendor>/latest.json · historie: integrations-history.jsonl" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "Katalog integrací beze změny — žádný alarm."

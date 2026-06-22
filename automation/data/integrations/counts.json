@@ -1,0 +1,14 @@
+{
+  "_note": "Počet integrací per nástroj z týdenního auditu. Evidence, ne zdroj pravdy.",
+  "date": "2026-06-22",
+  "generatedAt": "2026-06-22T23:03:12.058Z",
+  "counts": {
+    "zapier": 9725,
+    "make": 2594,
+    "n8n": 572,
+    "pipedream": 3391,
+    "activepieces": 754,
+    "automatisch": 92,
+    "node-red": 6092
+  }
+}
