@@ -1,0 +1,27 @@
+{
+  "date": "2026-06-22",
+  "id": "n8n-vs-make",
+  "source": "n8n",
+  "url": "https://n8n.io/vs/make/",
+  "subjects": [
+    "n8n",
+    "make"
+  ],
+  "counts": [
+    {
+      "num": 1000,
+      "noun": "integrations",
+      "evidence": "1,000 integrations"
+    },
+    {
+      "num": 500,
+      "noun": "integrations",
+      "evidence": "500+ integrations"
+    }
+  ],
+  "prices": [],
+  "attributed": {
+    "n8n": 500
+  },
+  "llm": null
+}

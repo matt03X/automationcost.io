@@ -1,0 +1,30 @@
+{
+  "date": "2026-06-22",
+  "id": "zapier-vs-make",
+  "source": "zapier",
+  "url": "https://zapier.com/l/make-vs-zapier",
+  "subjects": [
+    "zapier",
+    "make"
+  ],
+  "counts": [
+    {
+      "num": 7000,
+      "noun": "integrations",
+      "evidence": "7,000 integrations"
+    },
+    {
+      "num": 2000,
+      "noun": "integrations",
+      "evidence": "2,000 integrations"
+    }
+  ],
+  "prices": [
+    19.99
+  ],
+  "attributed": {
+    "zapier": 2000,
+    "make": 7000
+  },
+  "llm": null
+}

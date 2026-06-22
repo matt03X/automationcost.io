@@ -1,0 +1,29 @@
+{
+  "date": "2026-06-22",
+  "id": "n8n-vs-zapier",
+  "source": "n8n",
+  "url": "https://n8n.io/vs/zapier/",
+  "subjects": [
+    "n8n",
+    "zapier"
+  ],
+  "counts": [
+    {
+      "num": 1000,
+      "noun": "integrations",
+      "evidence": "1000+ integrations"
+    },
+    {
+      "num": 8000,
+      "noun": "integrations",
+      "evidence": "8,000+ integrations"
+    }
+  ],
+  "prices": [
+    19.99
+  ],
+  "attributed": {
+    "n8n": 1000
+  },
+  "llm": null
+}
