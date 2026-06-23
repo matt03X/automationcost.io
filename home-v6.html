@@ -45,15 +45,72 @@ nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-con
 @media(max-width:720px){.nav-links a:not(.nav-cta){display:none}}
 
 /* ── hero ── */
-.hero{text-align:center;padding:54px 22px 30px;position:relative}
-.hero-glow{position:absolute;top:-40px;left:50%;transform:translateX(-50%);width:680px;max-width:90vw;height:300px;
-  background:radial-gradient(ellipse at center,rgba(167,139,250,.18),transparent 70%);pointer-events:none;z-index:-1}
+.hero{padding:62px 22px 40px;position:relative}
+.hero-glow{position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:900px;max-width:96vw;height:460px;
+  background:radial-gradient(ellipse at center,rgba(167,139,250,.16),transparent 68%);pointer-events:none;z-index:0}
+.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:54px;align-items:center;max-width:1240px;margin:0 auto}
+@media(max-width:940px){.hero-grid{grid-template-columns:1fr;gap:40px}}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.7rem;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--tx3);border:1px solid var(--b2);border-radius:999px;padding:5px 13px;margin-bottom:18px}
+  text-transform:uppercase;color:var(--tx3);border:1px solid var(--b2);border-radius:999px;padding:6px 13px;margin-bottom:22px}
 .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--auto);box-shadow:0 0 8px var(--auto)}
-.hero h1{font-size:clamp(2rem,5.5vw,3.3rem);font-weight:800;letter-spacing:-.02em;line-height:1.05}
-.hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--pp),var(--llm));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{max-width:600px;margin:16px auto 0;color:var(--tx2);font-size:1.04rem}
+@media(prefers-reduced-motion:no-preference){.eyebrow i{animation:epulse 2.4s ease-in-out infinite}}
+@keyframes epulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{font-size:clamp(2.1rem,5vw,3.45rem);font-weight:800;letter-spacing:-.025em;line-height:1.04;margin-bottom:18px;text-wrap:balance}
+.hero h1 em{font-style:normal;background:linear-gradient(115deg,var(--pp),var(--llm));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{max-width:520px;color:var(--tx2);font-size:1.05rem;line-height:1.6}
+.hero-cta{display:flex;flex-wrap:wrap;gap:13px;margin:30px 0 22px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 22px;border-radius:11px;font-weight:700;font-size:.98rem;
+  cursor:pointer;transition:.16s;border:1px solid transparent;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--auto),#0fb87a);color:#0b0a12;
+  box-shadow:0 10px 30px -12px var(--auto)}
+@media(prefers-reduced-motion:no-preference){.btn-primary:hover{filter:brightness(1.06);transform:translateY(-1px)}}
+.btn-ghost{background:transparent;border-color:var(--b2);color:var(--tx)}
+@media(prefers-reduced-motion:no-preference){.btn-ghost:hover{border-color:var(--tx3);background:var(--panel)}}
+.hero-trust{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;color:var(--tx3)}
+.hero-trust b{color:var(--tx2);font-weight:500}
+.hero-trust .tdot{width:3px;height:3px;border-radius:50%;background:var(--b2)}
+
+/* ── verdict widget (hero right col) ── */
+.verdict{background:linear-gradient(165deg,var(--panel2),var(--panel));border:1px solid var(--b);border-radius:20px;
+  padding:20px;position:relative;overflow:hidden;box-shadow:0 30px 70px -40px rgba(0,0,0,.9)}
+.verdict::before{content:"";position:absolute;top:-50px;right:-50px;width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,var(--vac,var(--pp)),transparent 70%);opacity:.13;transition:background .3s}
+.v-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:1}
+.v-title{font-family:var(--mono);font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;color:var(--tx3)}
+.v-tabs{display:flex;gap:5px;background:var(--bg);border:1px solid var(--b2);border-radius:10px;padding:4px}
+.v-tab{font-family:var(--body);font-size:.78rem;font-weight:600;color:var(--tx2);padding:6px 13px;border-radius:7px;
+  cursor:pointer;transition:.14s;border:none;background:transparent}
+.v-tab.on[data-cat="automation"]{background:var(--auto);color:#04130d}
+.v-tab.on[data-cat="llm"]{background:var(--llm);color:#1a0a1f}
+.v-tab:not(.on):hover{color:var(--tx)}
+.v-presets{display:flex;gap:6px;margin-bottom:18px;position:relative;z-index:1}
+.v-preset{flex:1;font-family:var(--body);font-size:.8rem;font-weight:600;color:var(--tx2);background:var(--bg);
+  border:1px solid var(--b2);border-radius:9px;padding:9px 4px;cursor:pointer;transition:.14s;text-align:center}
+.v-preset:hover{color:var(--tx);border-color:var(--tx3)}
+.v-preset.on{color:var(--tx);border-color:var(--vac,var(--pp));box-shadow:0 0 0 1px var(--vac,var(--pp)),0 8px 22px -12px var(--vac,var(--pp))}
+.v-preset small{display:block;font-family:var(--mono);font-size:.6rem;color:var(--tx3);margin-top:3px;font-weight:400}
+.winner-line{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px;position:relative;z-index:1}
+.winner-tag{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--auto);font-weight:600}
+.winner-name{font-family:var(--display);font-size:1.7rem;font-weight:800;line-height:1.1;margin:2px 0 0}
+.winner-price{font-family:var(--mono);font-size:1.05rem;color:var(--tx);font-weight:600;white-space:nowrap}
+.winner-price span{color:var(--tx3);font-size:.78rem}
+.v-why{color:var(--tx2);font-size:.86rem;line-height:1.5;margin:6px 0 18px;min-height:2.6em;position:relative;z-index:1}
+.v-bars{display:flex;flex-direction:column;gap:11px;position:relative;z-index:1}
+.vbar-row{display:grid;grid-template-columns:108px 1fr auto;align-items:center;gap:11px}
+.vbar-name{font-size:.84rem;color:var(--tx2);font-weight:500;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.vbar-name i{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.vbar-track{height:9px;background:var(--bg);border-radius:6px;overflow:hidden}
+.vbar-fill{height:100%;border-radius:6px;width:0;transition:width .55s cubic-bezier(.16,.84,.44,1)}
+.vbar-val{font-family:var(--mono);font-size:.82rem;color:var(--tx2);font-weight:600;text-align:right;white-space:nowrap}
+.vbar-row.vwin .vbar-name{color:var(--tx);font-weight:700}
+.vbar-row.vwin .vbar-val{color:var(--auto)}
+.v-foot{display:flex;align-items:center;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--b);
+  font-family:var(--mono);font-size:.66rem;color:var(--tx3);position:relative;z-index:1}
+.v-foot svg{width:13px;height:13px;flex-shrink:0;opacity:.7}
+.dash-sep{max-width:1240px;margin:0 auto 8px;padding:0 22px}
+.dash-sep-inner{border-top:1px solid var(--b);padding-top:28px;display:flex;align-items:center;gap:14px}
+.dash-sep-inner span{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);white-space:nowrap}
+.dash-sep-inner::before,.dash-sep-inner::after{content:"";flex:1;height:1px;background:var(--b)}
 
 /* ── category tabs ── */
 .cats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:30px 0 8px}
@@ -283,10 +340,62 @@ footer{border-top:1px solid var(--b);padding:34px 22px;margin-top:30px}
 
 <header class="hero">
   <div class="hero-glow"></div>
-  <div class="eyebrow"><i></i>FREE · NO SIGNUP · PRICES VERIFIED BY HAND</div>
-  <h1>Software pricing is a maze.<br><em>We do the math.</em></h1>
-  <p>Pick a category, set your real usage, and see the cheapest pick — with the catch — before you click anything.</p>
+  <div class="hero-grid">
+
+    <!-- LEFT: message -->
+    <div>
+      <div class="eyebrow"><i></i> Live pricing · 28 LLM models · 7 automation tools</div>
+      <h1>The cheapest <em>automation</em> stack is rarely the obvious one.</h1>
+      <p class="hero-sub">WizardCost runs <b style="color:var(--tx)">your real volume</b> through every tool's live pricing and names the winner — no sales fluff, no signup, just the number.</p>
+      <div class="hero-cta">
+        <a href="/automation/calculator.html" class="btn btn-primary">Calculate my cost
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#dash-automation" class="btn btn-ghost">Explore the dashboard</a>
+      </div>
+      <div class="hero-trust">
+        <span><b>Free</b> forever</span><span class="tdot"></span>
+        <span><b>No signup</b></span><span class="tdot"></span>
+        <span>Prices verified <b>weekly</b></span>
+      </div>
+    </div>
+
+    <!-- RIGHT: illustrative verdict widget -->
+    <div class="verdict" id="verdict" role="img" aria-label="Interactive example: cheapest tool changes by volume — see full data in the dashboard below">
+      <div class="v-head">
+        <div class="v-title">Quick verdict example</div>
+        <div class="v-tabs" role="group" aria-label="Category">
+          <button class="v-tab on" data-cat="automation" aria-pressed="true">Automation</button>
+          <button class="v-tab" data-cat="llm" aria-pressed="false">LLM</button>
+        </div>
+      </div>
+      <div class="v-presets" id="v-presets" role="group" aria-label="Volume preset"></div>
+
+      <div class="winner-line">
+        <div>
+          <div class="winner-tag">★ Cheapest for you</div>
+          <div class="winner-name" id="v-winName" aria-live="polite">—</div>
+        </div>
+        <div class="winner-price" id="v-winPrice">—</div>
+      </div>
+      <div class="v-why" id="v-why" aria-live="polite"></div>
+
+      <div class="v-bars" id="v-bars"></div>
+
+      <div class="v-foot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
+        Illustrative example — your real numbers are computed in the dashboard below.
+      </div>
+    </div>
+
+  </div>
 </header>
+
+<div class="dash-sep">
+  <div class="dash-sep-inner">
+    <span>Full decision dashboard — set your real usage</span>
+  </div>
+</div>
 
 <div class="wrap">
   <div class="cats" role="tablist" aria-label="Category">
@@ -1526,6 +1635,111 @@ buildLlmRail();
 wireLlmSliders();
 aRender();
 lRender();
+
+/* ════════════════════════════════════════════════════════════════════════
+   VERDICT WIDGET — hero right column. ILLUSTRATIVE DATA ONLY.
+   All numbers here are hand-curated example scenarios, NOT live pricing.
+   Live pricing is computed in the full dashboard below.
+   ════════════════════════════════════════════════════════════════════════ */
+(function(){
+  /* illustrative datasets — clearly labelled example scenarios */
+  var VD = {
+    automation: {
+      unit:"$", suffix:"/mo", accent:"var(--auto)",
+      presets:[
+        {id:"light", label:"Light", vol:"~2k tasks",
+          tools:[{n:"Make",c:9,col:"--make"},{n:"Pipedream",c:19,col:"--pipedream"},{n:"n8n Cloud",c:20,col:"--n8n"},{n:"Zapier",c:30,col:"--zapier"}],
+          why:"Make’s per-operation tiers undercut everyone at low volume — Zapier costs <b>3×</b> more for the same work."},
+        {id:"growing", label:"Growing", vol:"~15k tasks",
+          tools:[{n:"Pipedream",c:19,col:"--pipedream"},{n:"Make",c:29,col:"--make"},{n:"n8n Cloud",c:50,col:"--n8n"},{n:"Zapier",c:74,col:"--zapier"}],
+          why:"The winner <b>flips</b>: Pipedream’s credit model beats Make once volume climbs."},
+        {id:"heavy", label:"Heavy", vol:"~100k tasks",
+          tools:[{n:"Make",c:99,col:"--make"},{n:"n8n Cloud",c:120,col:"--n8n"},{n:"Pipedream",c:250,col:"--pipedream"},{n:"Zapier",c:599,col:"--zapier"}],
+          why:"At scale Make pulls ahead again — Zapier balloons to <b>6×</b> the cheapest option."}
+      ]
+    },
+    llm: {
+      unit:"$", suffix:"/1M tok", accent:"var(--llm)",
+      presets:[
+        {id:"chat", label:"Chat", vol:"simple Q&A",
+          tools:[{n:"DeepSeek",c:0.5,col:"--deepseek"},{n:"Gemini Flash",c:0.6,col:"--google"},{n:"GPT-4o mini",c:0.7,col:"--openai"},{n:"Claude Haiku",c:1.2,col:"--anthropic"}],
+          why:"For plain chat, the budget tiers are within cents — pick on latency, not price."},
+        {id:"coding", label:"Coding", vol:"agent / tools",
+          tools:[{n:"DeepSeek",c:1.1,col:"--deepseek"},{n:"Gemini Flash",c:1.4,col:"--google"},{n:"GPT-4o",c:5.0,col:"--openai"},{n:"Claude Sonnet",c:6.0,col:"--anthropic"}],
+          why:"Frontier coding models cost <b>4–5×</b> the budget tier — worth it only if quality moves the needle."},
+        {id:"frontier", label:"Frontier", vol:"top quality",
+          tools:[{n:"Gemini Pro",c:3.5,col:"--google"},{n:"GPT-4o",c:5.0,col:"--openai"},{n:"Claude Sonnet",c:6.0,col:"--anthropic"},{n:"GPT-4.1",c:8.0,col:"--openai"}],
+          why:"Among top-tier models, Gemini Pro is the value pick — same league, lower blended cost."}
+      ]
+    }
+  };
+
+  var vCat="automation", vIdx=0;
+  var cs=window.getComputedStyle(document.documentElement);
+  function vColor(tok){ return cs.getPropertyValue(tok).trim()||"#888"; }
+  function vFmt(n){ return n%1===0?String(n):n.toFixed(n<1?2:1); }
+
+  function vRender(){
+    var d=VD[vCat], p=d.presets[vIdx];
+    var vEl=document.getElementById("verdict");
+    vEl.style.setProperty("--vac", d.accent);
+
+    /* winner tag color matches category */
+    var wTag=document.querySelector(".winner-tag");
+    if(wTag) wTag.style.color=(vCat==="llm"?"var(--llm)":"var(--auto)");
+
+    /* presets */
+    document.getElementById("v-presets").innerHTML=d.presets.map(function(pr,i){
+      return '<button class="v-preset'+(i===vIdx?" on":"")+'" data-vi="'+i+'">'+pr.label+'<small>'+pr.vol+'</small></button>';
+    }).join("");
+
+    /* winner */
+    var sorted=p.tools.slice().sort(function(a,b){return a.c-b.c;});
+    var win=sorted[0], maxC=sorted[sorted.length-1].c;
+    document.getElementById("v-winName").textContent=win.n;
+    document.getElementById("v-winPrice").innerHTML=d.unit+vFmt(win.c)+'<span> '+d.suffix+'</span>';
+    document.getElementById("v-why").innerHTML=p.why;
+
+    /* bars */
+    document.getElementById("v-bars").innerHTML=sorted.map(function(t,i){
+      var w=Math.max(6,Math.round(t.c/maxC*100));
+      var isWin=i===0;
+      var fillCol=isWin?(vCat==="llm"?"var(--llm)":"var(--auto)"):"var("+t.col+")";
+      return '<div class="vbar-row'+(isWin?" vwin":"")+'">'
+        +'<div class="vbar-name"><i style="background:var('+t.col+')"></i>'+t.n+'</div>'
+        +'<div class="vbar-track"><div class="vbar-fill" data-vw="'+w+'" style="background:'+fillCol+'"></div></div>'
+        +'<div class="vbar-val">'+d.unit+vFmt(t.c)+'</div>'
+        +'</div>';
+    }).join("");
+    /* animate widths */
+    requestAnimationFrame(function(){
+      document.querySelectorAll(".vbar-fill").forEach(function(f){f.style.width=f.dataset.vw+"%";});
+    });
+    /* vwin bar-val color override for llm */
+    if(vCat==="llm"){
+      var vv=document.querySelector(".vbar-row.vwin .vbar-val");
+      if(vv) vv.style.color="var(--llm)";
+    } else {
+      var vv=document.querySelector(".vbar-row.vwin .vbar-val");
+      if(vv) vv.style.color="var(--auto)";
+    }
+  }
+
+  /* category tabs */
+  document.querySelectorAll(".v-tab").forEach(function(t){
+    t.addEventListener("click",function(){
+      document.querySelectorAll(".v-tab").forEach(function(x){x.classList.remove("on");x.setAttribute("aria-pressed","false");});
+      t.classList.add("on"); t.setAttribute("aria-pressed","true");
+      vCat=t.dataset.cat; vIdx=0; vRender();
+    });
+  });
+  /* preset clicks (delegated — presets re-render on category change) */
+  document.getElementById("v-presets").addEventListener("click",function(e){
+    var b=e.target.closest(".v-preset"); if(!b) return;
+    vIdx=+b.dataset.vi; vRender();
+  });
+  vRender();
+})();
 </script>
 </body>
 </html>
