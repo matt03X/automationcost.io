@@ -1,0 +1,20 @@
+{"d":"2026-06-23","source":"epoch","model":"DeepSeek V4 Pro","metric":"swe_bench_verified","value":77.6}
+{"d":"2026-06-23","source":"epoch","model":"Grok 4.3","metric":"gpqa_diamond","value":88.8}
+{"d":"2026-06-23","source":"epoch","model":"DeepSeek V4 Pro","metric":"gpqa_diamond","value":89.6}
+{"d":"2026-06-23","source":"epoch","model":"Claude Opus 4.8","metric":"gpqa_diamond","value":91}
+{"d":"2026-06-23","source":"epoch","model":"Gemini 3.5 Flash","metric":"swe_bench_verified","value":79.3}
+{"d":"2026-06-23","source":"epoch","model":"Gemini 3.5 Flash","metric":"gpqa_diamond","value":92.8}
+{"d":"2026-06-23","source":"epoch","model":"GPT-5.5","metric":"gpqa_diamond","value":94}
+{"d":"2026-06-23","source":"epoch","model":"GPT-5.5 Pro","metric":"gpqa_diamond","value":93.9}
+{"d":"2026-06-23","source":"epoch","model":"GPT-5.5","metric":"swe_bench_verified","value":80.6}
+{"d":"2026-06-23","source":"epoch","model":"GPT-5.4 mini","metric":"gpqa_diamond","value":83.6}
+{"d":"2026-06-23","source":"epoch","model":"GPT-5.4 nano","metric":"gpqa_diamond","value":78.5}
+{"d":"2026-06-23","source":"epoch","model":"GPT-5.4","metric":"swe_bench_verified","value":76.9}
+{"d":"2026-06-23","source":"epoch","model":"GPT-5.4","metric":"gpqa_diamond","value":93.3}
+{"d":"2026-06-23","source":"epoch","model":"Gemini 3.1 Pro Preview","metric":"swe_bench_verified","value":75.6}
+{"d":"2026-06-23","source":"epoch","model":"Claude Sonnet 4.6","metric":"swe_bench_verified","value":75.2}
+{"d":"2026-06-23","source":"epoch","model":"Claude Sonnet 4.6","metric":"gpqa_diamond","value":87.4}
+{"d":"2026-06-23","source":"epoch","model":"Gemini 3.1 Pro Preview","metric":"gpqa_diamond","value":94.1}
+{"d":"2026-06-23","source":"epoch","model":"Gemini 3 Flash Preview","metric":"swe_bench_verified","value":75.4}
+{"d":"2026-06-23","source":"epoch","model":"Gemini 3 Flash Preview","metric":"gpqa_diamond","value":83.2}
+{"d":"2026-06-23","source":"epoch","model":"Claude Haiku 4.5","metric":"gpqa_diamond","value":71.2}

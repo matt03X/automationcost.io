@@ -111,9 +111,9 @@
       "pricingUrl": "https://ai.google.dev/gemini-api/docs/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "gemini-3.1-pro-preview", "name": "Gemini 3.1 Pro Preview", "tier": "frontier", "inputPerM": 2.00, "cachedInputPerM": 0.20, "outputPerM": 12.00, "batchDiscount": 0.5, "contextWindow": 1000000, "longContextNote": "prompty >200k tokenu: $4 in / $18 out", "longContext": { "threshold": 200000, "inputPerM": 4.00, "outputPerM": 18.00, "cachedInputPerM": null } },
+        { "id": "gemini-3.1-pro-preview", "name": "Gemini 3.1 Pro Preview", "tier": "frontier", "inputPerM": 2.00, "cachedInputPerM": 0.20, "outputPerM": 12.00, "batchDiscount": 0.5, "contextWindow": 1000000, "longContextNote": "prompty >200k tokenu: $4 in / $18 out", "longContext": { "threshold": 200000, "inputPerM": 4.00, "outputPerM": 18.00, "cachedInputPerM": null }, "benchmarkAliases": { "epoch": "Gemini 3.1 Pro" } },
         { "id": "gemini-3.5-flash", "name": "Gemini 3.5 Flash", "tier": "mid", "inputPerM": 1.50, "cachedInputPerM": 0.15, "outputPerM": 9.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
-        { "id": "gemini-3-flash-preview", "name": "Gemini 3 Flash Preview", "tier": "mid", "inputPerM": 0.50, "cachedInputPerM": 0.05, "outputPerM": 3.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
+        { "id": "gemini-3-flash-preview", "name": "Gemini 3 Flash Preview", "tier": "mid", "inputPerM": 0.50, "cachedInputPerM": 0.05, "outputPerM": 3.00, "batchDiscount": 0.5, "contextWindow": 1000000, "benchmarkAliases": { "epoch": "Gemini 3 Flash" } },
         { "id": "gemini-3.1-flash-lite", "name": "Gemini 3.1 Flash-Lite", "tier": "budget", "inputPerM": 0.25, "cachedInputPerM": 0.025, "outputPerM": 1.50, "batchDiscount": 0.5, "contextWindow": 1000000 }
       ]
     },
@@ -124,7 +124,7 @@
       "pricingUrl": "https://api-docs.deepseek.com/quick_start/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "deepseek-v4-pro", "name": "DeepSeek V4 Pro", "tier": "mid", "inputPerM": 0.435, "cachedInputPerM": 0.003625, "outputPerM": 0.87, "batchDiscount": null, "contextWindow": 1000000 },
+        { "id": "deepseek-v4-pro", "name": "DeepSeek V4 Pro", "tier": "mid", "inputPerM": 0.435, "cachedInputPerM": 0.003625, "outputPerM": 0.87, "batchDiscount": null, "contextWindow": 1000000, "benchmarkAliases": { "epoch": "DeepSeek-V4-Pro" } },
         { "id": "deepseek-v4-flash", "name": "DeepSeek V4 Flash", "tier": "budget", "inputPerM": 0.14, "cachedInputPerM": 0.0028, "outputPerM": 0.28, "batchDiscount": null, "contextWindow": 1000000 }
       ]
     },
@@ -135,7 +135,7 @@
       "pricingUrl": "https://docs.x.ai/docs/models",
       "hasAffiliate": false,
       "models": [
-        { "id": "grok-4.3", "name": "Grok 4.3", "tier": "frontier", "inputPerM": 1.25, "cachedInputPerM": 0.20, "outputPerM": 2.50, "batchDiscount": null, "contextWindow": 1000000 },
+        { "id": "grok-4.3", "name": "Grok 4.3", "tier": "frontier", "inputPerM": 1.25, "cachedInputPerM": 0.20, "outputPerM": 2.50, "batchDiscount": null, "contextWindow": 1000000, "benchmarkAliases": { "epoch": "Grok 4.3 Beta" } },
         { "id": "grok-build-0.1", "name": "Grok Build 0.1", "tier": "mid", "inputPerM": 1.00, "cachedInputPerM": 0.20, "outputPerM": 2.00, "batchDiscount": null, "contextWindow": 256000 }
       ]
     },
