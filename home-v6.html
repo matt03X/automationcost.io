@@ -364,6 +364,9 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
 .chart-tip .tr2 .nm i{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 .chart-tip .tr2 .vv{font-family:var(--mono);font-weight:600;color:var(--tx)}
 .chart-tip .tr2.best .nm,.chart-tip .tr2.best .vv{color:var(--pp)}
+/* neutralize accidental .best card styling (border/padding/glow) leaking onto tooltip rows */
+.chart-tip .tr2.best{background:none;border:0;border-radius:0;padding:2px 0;box-shadow:none;overflow:visible}
+.chart-tip .tr2.best::before{content:none;display:none}
 /* scatter bubble tooltip — centered names, padded so long names stay inside the border */
 #l-scatter-tip{text-align:center;min-width:176px;max-width:240px;padding:13px 18px}
 #l-scatter-tip .tt{text-align:center;margin-bottom:5px}
