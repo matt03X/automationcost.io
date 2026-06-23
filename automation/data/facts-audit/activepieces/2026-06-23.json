@@ -1,0 +1,14 @@
+{
+  "date": "2026-06-23",
+  "vendor": "activepieces",
+  "url": "https://www.activepieces.com/pieces",
+  "integrations": 754,
+  "openSourceSignal": true,
+  "evidence": "754+ INTEGRATIONS",
+  "repo": "activepieces/activepieces",
+  "selfHostConfirmed": true,
+  "license": {
+    "spdx": "NOASSERTION",
+    "name": "Other"
+  }
+}
