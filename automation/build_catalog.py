@@ -265,7 +265,7 @@ def _head(title: str, desc: str, canonical: str, css: str, ld_json: str | None,
   <link rel="canonical" href="{canonical}">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="AutomationCost.io">
-  <meta property="og:title" content="{_html_escape(title)}">
+  <meta property="og:title" content="{_html_escape(title.replace('&amp;', '&'))}">
   <meta property="og:description" content="{_html_escape(desc)}">
   <meta property="og:url" content="{canonical}">
   <meta property="og:image" content="{prefix}/og-image.png">
