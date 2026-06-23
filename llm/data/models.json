@@ -60,7 +60,7 @@
         "mcp_bench":    { "name": "MCP-Bench",                 "license": "overit pri ingestu", "url": null, "access": "project GitHub leaderboard JSON" },
         "vendor":       { "name": "Vendor self-reported",      "license": "skore=fakt (Feist)", "url": null, "warn": "self-reported -> capability x0.85 + UI (i); independent zdroj prebiji" }
       },
-      "perModelShape": "{ <metricKey>: { value:<num>, source:<dataSourceKey>, asof:'YYYY-MM-DD' } } — plni scraper, NIKDY rucne/z pameti.",
+      "storage": "Hodnoty NEZIJI zde — jsou v llm/data/benchmarks.json: byModel[<model id>][<metricKey>] = { value, source, asof }. models.json zustava cisty cenovy moat. Plni scraper -> propose-benchmark-updates.js, NIKDY rucne/z pameti.",
       "blend": "frontier = 0.7*capabilityScore + 0.3*tierScore (kdyz >=2 metriky), jinak tierScore. capabilityScore = min-max norm (dle metrics.range) vazeny benchmarkWeights (scoring-model.json). Viz scoring-model.json frontier_v2_plan. ZATIM NEZAPOJENO (Phase 4)."
     },
     "availability": {
