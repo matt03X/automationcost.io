@@ -364,6 +364,11 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
 .chart-tip .tr2 .nm i{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 .chart-tip .tr2 .vv{font-family:var(--mono);font-weight:600;color:var(--tx)}
 .chart-tip .tr2.best .nm,.chart-tip .tr2.best .vv{color:var(--pp)}
+/* scatter bubble tooltip — centered names, padded so long names stay inside the border */
+#l-scatter-tip{text-align:center;min-width:176px;max-width:240px;padding:13px 18px}
+#l-scatter-tip .tt{text-align:center;margin-bottom:5px}
+#l-scatter-tip .tr2.best{justify-content:center;margin:0 0 9px}
+#l-scatter-tip .tr2.best .nm{justify-content:center;white-space:normal;line-height:1.25;font-weight:700;font-size:.92rem;color:var(--llm)}
 
 /* scroll-reveal */
 .rv{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.16,.84,.44,1),transform .7s cubic-bezier(.16,.84,.44,1)}
