@@ -1106,7 +1106,7 @@ function aRender(){
     const pct=Math.max(3,(r.cr.cost/maxCost)*100);
     const toolCol=aToolColor(r.tool.slug);
     const light=toolCol.startsWith("#")?colorMix(toolCol,.42):toolCol;
-    const fillStyle=win?("background:linear-gradient(90deg,"+toolCol+","+light+")"):"background:var(--tx3)";
+    const fillStyle="background:linear-gradient(90deg,"+toolCol+","+light+")";
     const glowStyle=win?"--bar-glow:"+toolCol:"";
     const delta=cheapest&&!win?'<small>+'+fmtMoney(r.cr.cost-cheapest.cr.cost)+'</small>':(win?'<small>cheapest</small>':'');
     bh+='<div class="bar-row '+(win?"win":"dim")+'" style="'+glowStyle+'">'+
