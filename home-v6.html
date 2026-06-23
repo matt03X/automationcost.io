@@ -44,29 +44,40 @@ nav{position:sticky;top:0;z-index:60;display:flex;align-items:center;justify-con
 .nav-cta:hover{filter:brightness(1.08)}
 @media(max-width:720px){.nav-links a:not(.nav-cta){display:none}}
 
-/* ── hero ── */
-.hero{text-align:center;padding:56px 22px 30px;position:relative}
+/* ── hero (full-screen, matched to live wizardcost.com) ── */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:84px 22px 84px;overflow:hidden}
+.hero>*{position:relative;z-index:1}
+.hero-glow{position:absolute;inset:-18% 0 auto;height:520px;background:radial-gradient(ellipse 60% 70% at 50% 22%,rgba(124,77,255,.15),transparent 64%);pointer-events:none;z-index:0}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.7rem;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--tx3);border:1px solid var(--b2);border-radius:999px;padding:5px 13px;margin-bottom:20px}
+  text-transform:uppercase;color:var(--tx3);border:1px solid var(--b2);border-radius:999px;padding:5px 13px;margin-bottom:22px}
 .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--auto)}
-.hero h1{font-size:clamp(2rem,5.5vw,3.35rem);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.hero h1{font-family:var(--display);font-size:clamp(2.3rem,5.8vw,4.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.01;max-width:900px}
 .hero h1 em{font-style:normal;color:var(--pp)}
-.hero p{max-width:600px;margin:16px auto 0;color:var(--tx2);font-size:1.04rem}
-.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
-.hbtn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:11px;font-weight:700;font-size:.95rem;
-  transition:transform .15s,filter .15s,border-color .15s,background .15s}
-.hbtn-primary{background:linear-gradient(135deg,#8b5cff,#6d3dff);color:#fff;box-shadow:0 10px 28px -12px #6d3dff}
-.hbtn-primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.hbtn-ghost{border:1px solid var(--b2);color:var(--tx)}
-.hbtn-ghost:hover{border-color:var(--tx3);background:var(--panel)}
-.hero-stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
-.hstat{background:linear-gradient(165deg,var(--panel2),var(--panel));border:1px solid var(--b);border-radius:14px;padding:14px 22px;min-width:124px}
-.hstat .hv{font-family:var(--display);font-weight:800;font-size:1.95rem;line-height:1;letter-spacing:-.01em}
-.hstat .hl{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);margin-top:7px}
-.hstat.s1 .hv{color:var(--auto)}
-.hstat.s2 .hv{color:var(--llm)}
-.hstat.s3 .hv{color:var(--pp)}
-@media(max-width:520px){.hstat{padding:12px 16px;min-width:0;flex:1}}
+.hero p{max-width:560px;margin:18px auto 0;color:var(--tx2);font-size:1.05rem;line-height:1.6}
+/* hero toggle-chart card */
+.herochart{margin-top:36px;width:100%;max-width:560px;background:linear-gradient(168deg,var(--panel2),var(--panel));border:1px solid var(--b);border-radius:18px;padding:18px 20px 20px;box-shadow:0 30px 70px -42px #000}
+.hc-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.hc-cap{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tx3);text-align:left}
+.hc-cap b{display:block;color:var(--tx2);font-weight:500;margin-top:4px;text-transform:none;letter-spacing:0;font-size:.74rem}
+.hc-tabs{display:flex;gap:5px;background:var(--bg);border:1px solid var(--b2);border-radius:10px;padding:4px;flex-shrink:0}
+.hc-tab{font-family:var(--body);font-size:.76rem;font-weight:600;color:var(--tx2);padding:6px 12px;border-radius:7px;cursor:pointer;border:none;background:transparent;transition:.14s}
+.hc-tab.on[data-c="automation"]{background:var(--auto);color:#04130d}
+.hc-tab.on[data-c="llm"]{background:var(--llm);color:#1f0a28}
+.hc-tab:not(.on):hover{color:var(--tx)}
+.hc-bars{display:flex;flex-direction:column;gap:10px}
+.hc-row{display:grid;grid-template-columns:108px 1fr auto;align-items:center;gap:11px}
+.hc-nm{font-size:.83rem;font-weight:600;color:var(--tx2);display:flex;align-items:center;gap:7px;min-width:0;text-align:left}
+.hc-nm i{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.hc-nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hc-track{height:18px;background:rgba(255,255,255,.04);border-radius:7px;overflow:hidden}
+.hc-fill{height:100%;width:0;border-radius:7px;transition:width .7s cubic-bezier(.22,1,.36,1)}
+.hc-val{font-family:var(--mono);font-size:.8rem;font-weight:600;color:var(--tx2);white-space:nowrap}
+.hc-row.win .hc-nm span,.hc-row.win .hc-val{color:var(--tx);font-weight:700}
+.scrollcue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;color:var(--tx3);font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;animation:cuebob 2.2s ease-in-out infinite;pointer-events:none;z-index:1}
+.scrollcue svg{width:18px;height:18px;stroke:var(--tx3)}
+@keyframes cuebob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
+@media(prefers-reduced-motion:reduce){.scrollcue{animation:none}}
+@media(max-width:520px){.herochart{margin-top:28px}.hc-row{grid-template-columns:84px 1fr auto;gap:8px}}
 
 /* ── category tabs ── */
 .cats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:30px 0 8px}
@@ -266,8 +277,10 @@ tbody tr.gated{opacity:.42}
 @media(max-width:520px){.iobar{grid-template-columns:100px 1fr 72px;gap:7px}}
 .iobar .nm{font-size:.82rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .io-track{height:22px;border-radius:6px;display:flex;overflow:hidden;background:var(--panel2)}
-.io-in{background:var(--pp);height:100%}
-.io-out{background:var(--llm);height:100%}
+.io-in{background:linear-gradient(90deg,var(--pp),color-mix(in srgb,var(--pp) 50%,#fff));height:100%}
+.io-out{background:linear-gradient(90deg,var(--llm),color-mix(in srgb,var(--llm) 50%,#fff));height:100%}
+.io-in,.io-out{transition:width .6s cubic-bezier(.22,1,.36,1)}
+#l-scatter circle{filter:drop-shadow(0 1.5px 5px rgba(0,0,0,.5))}
 .io-amt{font-family:var(--mono);font-size:.8rem;text-align:right;font-weight:600}
 
 /* footer */
@@ -338,18 +351,21 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
 </nav>
 
 <header class="hero">
+  <div class="hero-glow"></div>
   <div class="eyebrow"><i></i>FREE · NO SIGNUP · PRICES VERIFIED BY HAND</div>
   <h1>Software pricing is a maze.<br><em>We do the math.</em></h1>
   <p>Pick a category, set your real usage, and see the cheapest pick — with the catch — before you click anything.</p>
-  <div class="hero-cta">
-    <a class="hbtn hbtn-primary" href="#dash-automation">See your cheapest pick</a>
-    <a class="hbtn hbtn-ghost" href="automation/calculator.html">Open full calculator</a>
+  <div class="herochart" id="herochart">
+    <div class="hc-head">
+      <div class="hc-cap">Cheapest right now<b id="hc-sub">automation · 10k tasks/mo</b></div>
+      <div class="hc-tabs">
+        <button class="hc-tab on" data-c="automation">Automation</button>
+        <button class="hc-tab" data-c="llm">LLM APIs</button>
+      </div>
+    </div>
+    <div class="hc-bars" id="hc-bars"></div>
   </div>
-  <div class="hero-stats" id="hero-stats">
-    <div class="hstat s1"><div class="hv" data-to="7">7</div><div class="hl">automation tools</div></div>
-    <div class="hstat s2"><div class="hv" data-to="28">28</div><div class="hl">LLM models compared</div></div>
-    <div class="hstat s3"><div class="hv" data-to="100" data-suf="%">100%</div><div class="hl">free · no signup</div></div>
-  </div>
+  <div class="scrollcue"><span>Scroll</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
 </header>
 
 <div class="wrap">
@@ -1511,11 +1527,13 @@ function lRender(){
     rows.slice(0,6).forEach((r,i)=>{
       const win=i===0&&r.fit;
       const pct=Math.max(3,(r.c.total/max)*100);
-      const col=win?provColor(r.m.pslug):"var(--tx3)";
-      inner+='<div class="bar-row '+(r.fit?(win?"win":"dim"):"gated")+'" style="--ac:var(--llm)">'+
+      const pc=provColor(r.m.pslug);
+      const pcl=pc.startsWith("#")?colorMix(pc,.42):pc;
+      const fillBg=r.fit?('linear-gradient(90deg,'+pc+','+pcl+')'):'var(--b2)';
+      inner+='<div class="bar-row '+(r.fit?(win?"win":"dim"):"gated")+'" style="--ac:var(--llm);--bar-glow:'+pc+'">'+
         '<div class="frow"><span class="nm" style="'+(win?"color:var(--llm)":"")+'">'+esc(r.m.n)+'</span>'+
         '<span class="ct" style="'+(win?"color:var(--llm)":"")+'">'+(r.fit?fmtMoney(r.c.total):"won’t fit")+'</span></div>'+
-        '<div class="bar-track"><div class="bar-fill" style="width:'+(r.fit?pct:0)+'%;background:'+col+'"></div></div></div>';
+        '<div class="bar-track"><div class="bar-fill" style="width:'+(r.fit?pct:0)+'%;background:'+fillBg+'"></div></div></div>';
     });
     fh+='<div class="facet"><h4>'+tier.label+'</h4>'+inner+'</div>';
   });
@@ -1597,9 +1615,11 @@ function lRenderWaterfall(m){
   let h="";
   steps.forEach(s=>{
     const pct=Math.max(2,(s.amt/maxA)*100);
-    const col=s.kind==="final"?"var(--llm)":s.kind==="cut"?"var(--auto)":"var(--tx3)";
+    const col=s.kind==="final"?"linear-gradient(90deg,var(--llm),color-mix(in srgb,var(--llm) 52%,#fff))"
+      :s.kind==="cut"?"linear-gradient(90deg,var(--auto),color-mix(in srgb,var(--auto) 52%,#fff))"
+      :"linear-gradient(90deg,#3a3550,#4a4566)";
     h+='<div class="wf-row '+s.kind+'"><div class="lab">'+s.lab+'<small>'+s.sub+'</small></div>'+
-      '<div class="wf-bar" style="background:var(--panel2)"><div style="height:100%;width:'+pct+'%;border-radius:6px;background:'+col+'"></div></div>'+
+      '<div class="wf-bar" style="background:rgba(255,255,255,.04)"><div style="height:100%;width:'+pct+'%;border-radius:6px;background:'+col+';transition:width .6s cubic-bezier(.22,1,.36,1)"></div></div>'+
       '<div class="wf-amt">'+(s.delta?'<span style="color:var(--auto)">−'+fmtMoney(Math.abs(s.delta))+'</span>':fmtMoney(s.amt))+'</div></div>';
   });
   el.innerHTML=h;
@@ -1776,13 +1796,45 @@ lRender();
   }
 })();
 
-/* hero stat count-up (prefers-reduced-motion gated) */
+/* hero toggle-chart — top cheapest from the live engine (automation: calcCost @ default; LLM: monthly mo) */
 (function(){
-  function cu(el){var to=+el.dataset.to,suf=el.dataset.suf||"",t0=performance.now(),dur=1100;
-    (function s(n){var p=Math.min(1,(n-t0)/dur),e=1-Math.pow(1-p,3);el.textContent=Math.round(to*e)+suf;if(p<1)requestAnimationFrame(s);})(t0);}
-  var stats=document.querySelectorAll("#hero-stats .hv");
-  if(matchMedia("(prefers-reduced-motion:reduce)").matches){ stats.forEach(function(el){ el.textContent=el.dataset.to+(el.dataset.suf||""); }); }
-  else { stats.forEach(cu); }
+  var bars=document.getElementById("hc-bars"), sub=document.getElementById("hc-sub");
+  if(!bars) return;
+  var motionOk=!matchMedia("(prefers-reduced-motion:reduce)").matches;
+  function provColor(slug){ return getComputedStyle(document.documentElement).getPropertyValue("--"+slug).trim()||"#888"; }
+  function lighten(h){ return "color-mix(in srgb, "+h+" 52%, #ffffff)"; }
+  function money(v){ return "$"+(v>=1000?Math.round(v).toLocaleString():(Math.round(v*100)/100)); }
+  function rows(cat){
+    if(cat==="automation"){
+      var l=TOOLS.map(function(t){ var c=calcCost(t,10000,1,3,null); return (c&&typeof c.cost==="number")?{name:t.name,col:aToolColor(t.slug),v:c.cost}:null; }).filter(Boolean);
+      l.sort(function(a,b){return a.v-b.v;});
+      return {items:l.slice(0,5), sub:"automation · 10k tasks/mo"};
+    }
+    var m=MODELS.filter(function(x){return typeof x.mo==="number";}).map(function(x){return {name:x.n,col:provColor(x.pslug),v:x.mo};});
+    m.sort(function(a,b){return a.v-b.v;});
+    return {items:m.slice(0,5), sub:"LLM · typical usage / mo"};
+  }
+  function render(cat){
+    var d=rows(cat); sub.textContent=d.sub;
+    var max=Math.max.apply(null,d.items.map(function(x){return x.v;}))||1;
+    bars.innerHTML=d.items.map(function(it,i){
+      var w=Math.max(6,Math.round(it.v/max*100)), win=i===0;
+      return '<div class="hc-row'+(win?" win":"")+'">'
+        +'<div class="hc-nm"><i style="background:'+it.col+'"></i><span>'+it.name+'</span></div>'
+        +'<div class="hc-track"><div class="hc-fill" data-w="'+w+'" style="background:linear-gradient(90deg,'+it.col+','+lighten(it.col)+')"></div></div>'
+        +'<div class="hc-val">'+money(it.v)+'</div></div>';
+    }).join("");
+    var fills=bars.querySelectorAll(".hc-fill");
+    if(motionOk){ requestAnimationFrame(function(){ fills.forEach(function(f,i){ setTimeout(function(){ f.style.width=f.dataset.w+"%"; }, i*70); }); }); }
+    else { fills.forEach(function(f){ f.style.width=f.dataset.w+"%"; }); }
+  }
+  document.querySelectorAll("#herochart .hc-tab").forEach(function(t){
+    t.addEventListener("click",function(){
+      document.querySelectorAll("#herochart .hc-tab").forEach(function(x){x.classList.remove("on");});
+      t.classList.add("on"); render(t.dataset.c);
+    });
+  });
+  render("automation");
 })();
 </script>
 </body>
