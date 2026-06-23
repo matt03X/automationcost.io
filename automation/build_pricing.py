@@ -499,8 +499,11 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
     desc = tr(f"meta.{slug}-pricing.description",
               "{name} pricing 2026: {prices}. Real plans, self-host options and how {name} compares on cost per run."
               ).format(name=name, prices=", ".join(desc_parts))
-    title = tr(f"meta.{slug}-pricing.title",
-               "{name} Pricing 2026 — Plans &amp; Real Cost | WizardCost").format(name=name)
+    # editorial seo_title override (pricing-editorial.json) → per-tool title without touching template default
+    _ed_seo_title = ed.get("seo_title")
+    title = (_ed_seo_title if _ed_seo_title else
+             tr(f"meta.{slug}-pricing.title",
+                "{name} Pricing 2026 — Plans &amp; Real Cost | WizardCost").format(name=name))
     og_title = title.split(" | ")[0].replace("&amp;", "&")
 
     # ── Citation-ready key facts (GEO playbook A10 #2): one dated, standalone,
@@ -563,7 +566,8 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
     alt_links = (f'<a href="{slug}-alternatives.html">'
                  + tr("pp.see_alts", "See all {name} alternatives →").format(name=name) + "</a> · "
                  '<a href="cheapest-automation-tool.html">' + tr("pp.cheapest", "Cheapest automation tool →") + "</a> · "
-                 '<a href="compare.html">' + tr("pp.full_compare", "Full interactive comparison →") + "</a>")
+                 '<a href="compare.html">' + tr("pp.full_compare", "Full interactive comparison →") + "</a> · "
+                 '<a href="limits.html">' + tr("pp.limits_link", "Plan limits &amp; run caps →") + "</a>")
     h2_worth = tr("pp.h2_worth", "When {name} is worth it").format(name=name)
     th_usecase = tr("pp.th_usecase", "Use case")
     th_verdict = tr("pp.th_verdict", "Verdict")

@@ -127,6 +127,7 @@
       ]
     },
     "automatisch": {
+      "seo_title": "Automatisch Pricing 2026 — VPS &amp; Own-Server Cost | WizardCost",
       "h1": "Automatisch Pricing 2026 — Self-Hosted Cost",
       "intro": "Automatisch is a simple, EU-friendly open-source automation tool. There's no general cloud plan any more — you run it on a VPS or your own hardware. Here's the real infrastructure cost of each path.",
       "warn": "Automatisch's managed cloud was discontinued; the realistic options are self-host on a VPS or on your own server. The figures below are <em>infrastructure</em> cost (server / electricity), not a licence fee — it's AGPL-3.0 open-source software.",

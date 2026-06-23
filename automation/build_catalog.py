@@ -800,9 +800,10 @@ def _render_limits_html(tools: list[dict], variants: list[dict], site: dict,
         f'      <div class="faq-a">{a}</div>\n    </div>' for q, a in faqs)
 
     css = _LIMITS_CSS + "\n" + _EMAILCAP_CSS
-    title = "Automation Tool Limits 2026 — Runs & Timeouts | WizardCost"
-    desc = ("Plan limits for every automation tool — included runs, workflow caps, max steps, "
-            "execution timeout and log history for n8n, Make, Zapier and more.")
+    title = "Automation Tool Plan Limits 2026 — Runs &amp; Steps | WizardCost"
+    desc = ("Plan limits for n8n, Make, Zapier, Pipedream, Activepieces, Automatisch and Node-RED "
+            "— included runs, workflow caps, max steps, execution timeouts and log history. "
+            "Self-hosted tools have no run or step limits.")
 
     note = ("All values from real vendor plans. Included runs = the run allowance on paid cloud "
             "plans (range across tiers); free runs = the run allowance on the free / entry plan. "
