@@ -9,7 +9,9 @@
       "tier": "EDITORIAL trida pro ranking (frontier | mid | budget) - kalkulator nesrovnava napric tiery cenou; zarazeni je nase redakce, ne benchmark",
       "longContextNote": "volitelne - lidsky citelna prirazka za dlouhy kontext (provider-specific)",
       "longContext": "volitelne - STRUKTUROVANY long-context tier { threshold, inputPerM, outputPerM, cachedInputPerM }. Kalkulator nad threshold (velikost promptu = input tokeny) uctuje tyto sazby misto zakladnich (rates() v index.html, js_lc/canonical_monthly v build.py). cachedInputPerM=null => cache se nad prahem neaplikuje. Plnit JEN s overenym prahem i sazbami.",
-      "verified": "kazda cena overena proti oficialnimu ceniku - dump v calc-test/llm-pricing-dumps/<provider>.txt s datem"
+      "verified": "kazda cena overena proti oficialnimu ceniku - dump v calc-test/llm-pricing-dumps/<provider>.txt s datem",
+      "benchmarks": "volitelne per-model { <metric>: { value, source(FK->_meta.benchmarks.dataSources), asof YYYY-MM-DD, note? } }; chybi/null = neovereno; ukladame JEN skore/Elo/%, NIKDY text otazek (licencni hranice GPQA/MATH/AIME + AA ToU)",
+      "benchmarkAliases": "volitelne { <sourceKey>: <ext. jmeno modelu u zdroje> } pro matching pri pullu; default = model.name"
     },
     "sources": {
       "openai": "https://platform.openai.com/docs/pricing",
@@ -18,6 +20,22 @@
       "deepseek": "https://api-docs.deepseek.com/quick_start/pricing",
       "xai": "https://docs.x.ai/docs/models",
       "mistral": "https://mistral.ai/pricing (FAQ - jen Large verejne)"
+    },
+    "benchmarks": {
+      "_note": "Per-model benchmark skore pro capability scoring (krmi `frontier` dimenzi v scoring-model.json). ZDROJ = jen otevrene/citovatelne datasety + vendor self-reported jako fakt. Pull skript (scripts/llm-benchmark-pull.md) zapise per-model `benchmarks` bloky; build.py je ZATIM NECTE (wiring follow-up). GOLDEN RULE: ukladame jen value+source+asof, NIKDY text otazek.",
+      "metrics": {
+        "mmlu_pro":           { "label": "MMLU-Pro",           "unit": "pct", "range": [0, 100],     "higherBetter": true, "measures": "broad knowledge + reasoning" },
+        "gpqa_diamond":       { "label": "GPQA Diamond",       "unit": "pct", "range": [0, 100],     "higherBetter": true, "measures": "graduate-level science reasoning" },
+        "swe_bench_verified": { "label": "SWE-bench Verified", "unit": "pct", "range": [0, 100],     "higherBetter": true, "measures": "agentic / repo-level coding" },
+        "arena_elo":          { "label": "LMArena Elo",        "unit": "elo", "range": [1000, 1500], "higherBetter": true, "measures": "human preference (overall)" }
+      },
+      "dataSources": {
+        "epoch":    { "name": "Epoch AI Benchmarking Hub", "license": "CC-BY",               "url": "https://epoch.ai/data/ai-benchmarking-dashboard", "access": "CSV export / `pip install epochai` (overit presny endpoint pri ingestu)", "attribution": "Source: Epoch AI Benchmarking Hub (CC-BY)" },
+        "helm":     { "name": "Stanford HELM",             "license": "Apache-2.0",          "url": "https://crfm.stanford.edu/helm/",                 "access": "gs://crfm-helm-public (per-run JSON)",                                      "attribution": "Source: Stanford HELM (Liang et al., TMLR 2023)" },
+        "lmarena":  { "name": "LMArena / Chatbot Arena",   "license": "CC-BY-4.0",           "url": "https://lmarena.ai/leaderboard",                  "access": "HF dataset lmarena-ai/leaderboard-dataset",                                 "attribution": "Source: LMArena / Chatbot Arena (CC-BY-4.0)", "warn": "ber z HF datasetu, NESCRAPOVAT web; conversation dataset je CC-BY-NC -> NEPOUZIVAT" },
+        "swebench": { "name": "SWE-bench",                 "license": "skore=fakt (kod MIT)", "url": "https://www.swebench.com/",                       "access": "swe-bench.github.io/data/leaderboards.json",                                "attribution": "Source: SWE-bench Verified (Jimenez et al., ICLR 2024)" },
+        "vendor":   { "name": "Vendor self-reported",      "license": "fakt (Feist v. Rural)", "url": null,                                            "access": "model card / tech report",                                                 "attribution": "Source: <vendor> model card", "warn": "self-reported / cherry-picked -> UI flag (i) + x0.85 confidence discount; nezavisly zdroj prebiji vendor" }
+      }
     },
     "v1_exclusions": {
       "cohere": "verejny per-token cenik jen pro legacy modely (Command R/R+ 2024); aktualni lineup = enterprise Model Vault (hodinove instance) - nelze overit, vyrazeno z v1",
