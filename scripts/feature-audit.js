@@ -120,6 +120,50 @@ function extractInPage(arg) {
   return res;
 }
 
+// ── Make: plná "Compare features" matice (table) — běží v page kontextu ──────
+// ✓/✗ jsou nerozlišitelné SVG; rozlišuju tvarem path (kolečko-check má křivku 'C',
+// dash/✗ je rovná čára). Název featury je v <strong> (label má nalepený tooltip).
+function extractMakeMatrix() {
+  const tc = (el) => (el.textContent || "").replace(/\s+/g, " ").trim();
+  const t = document.querySelector("table");
+  if (!t) return null;
+  const trs = [...t.querySelectorAll("tr")];
+  if (!trs.length) return null;
+  const head = [...trs[0].children].map(tc);
+  const cols = head.slice(1).filter(Boolean);
+  if (cols.length < 3) return null;
+  function val(c) {
+    const txt = tc(c);
+    if (txt) return txt;
+    const svg = c.querySelector("svg");
+    if (!svg) return null;
+    const d = [...svg.querySelectorAll("path")].map((pp) => pp.getAttribute("d") || "").join("");
+    return /C/i.test(d) ? true : false; // ✓ = kolečko (křivka C); ✗ = rovná čára
+  }
+  // tabulka má duplicitní řádky (responsive: label-only + plná verze). Feature názvy
+  // jsou v <strong>, section headery (např. "Make + AI") ne. Dedup: feature beru jen
+  // verzi s hodnotami; section header jen když se titulek liší od aktuálního.
+  const groups = []; let cur = null;
+  for (const r of trs.slice(1)) {
+    const cells = [...r.children];
+    if (!cells.length) continue;
+    const strong = cells[0].querySelector("strong");
+    const vc = cells.slice(1);
+    const hasVals = vc.some((c) => tc(c) || c.querySelector("svg"));
+    if (strong) {
+      if (!hasVals) continue; // label-only duplikát → přeskoč
+      if (!cur) { cur = { title: "Features", rows: [] }; groups.push(cur); }
+      const tiers = {}; cols.forEach((cn, i) => tiers[cn] = val(vc[i]));
+      cur.rows.push({ feature: tc(strong), tiers });
+    } else {
+      const title = tc(cells[0]);
+      if (!title) continue; // tagline/prázdné
+      if (!cur || cur.title !== title) { cur = { title, rows: [] }; groups.push(cur); }
+    }
+  }
+  return { columns: cols, groups: groups.filter((g) => g.rows.length) };
+}
+
 // ── diff předchozího snapshotu ──────────────────────────────────────────────
 function previousSnapshot(dir) {
   if (!fs.existsSync(dir)) return null;
@@ -175,6 +219,14 @@ function diffPlans(oldSnap, newSnap) {
       const got = Object.values(plansObj).filter(Boolean).length;
       const partial = got < cfg.plans.length;
       const snap = { vendor: v, url: cfg.url, asof: TODAY, fetchedBy: UA, partial, plans: plansObj };
+
+      // plná feature matice (zatím jen Make — čistá tabulka; n8n/AP se plní offline)
+      if (v === "make") {
+        try {
+          const mx = await page.evaluate(extractMakeMatrix);
+          if (mx && mx.groups && mx.groups.length) snap.matrix = { source: cfg.url, asof: TODAY, columns: mx.columns, groups: mx.groups };
+        } catch { /* matrix best-effort — nesmí shodit card audit */ }
+      }
 
       const dir = path.join(OUT_DIR, v);
       fs.mkdirSync(dir, { recursive: true });
