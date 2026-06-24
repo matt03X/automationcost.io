@@ -54,6 +54,13 @@ SCORING_START = "/* DATA:SCORING:START */"
 SCORING_END = "/* DATA:SCORING:END */"
 SCORING_WARN = "/* generováno build.py z data/scoring-model.json — needituj ručně, edituj JSON */"
 
+# per-plán features/includes (z data/features/<vendor>/<date>.json — scraper feature-audit.js
+# pro n8n/make/activepieces; manuální pro pipedream/zapier). Render do compare.html.
+FEAT = ROOT / "data" / "features"
+FEAT_START = "/* DATA:FEATURES:START */"
+FEAT_END = "/* DATA:FEATURES:END */"
+FEAT_WARN = "/* generováno build.py z data/features/ — needituj ručně */"
+
 AN_START = "<!-- ANALYTICS (build.py) -->"
 AN_END = "<!-- /ANALYTICS -->"
 
@@ -192,6 +199,32 @@ def render_calculator(tools: list[dict]) -> str:
 # ---------------------------------------------------------------------------
 # Projektor: compare.html  (objekt; všechny plány; bez note; bohatší pole)
 # ---------------------------------------------------------------------------
+
+def render_features() -> str:
+    """const PLAN_FEATURES z data/features/<vendor>/<latest>.json — per-plán includes pro compare.html.
+    Každý vendor: nejnovější snapshot. via='manual' (pipedream/zapier) | 'live audit' (scraper).
+    Zdroj+asof se renderuje u každé karty (atribuce; nic z hlavy)."""
+    out: dict = {}
+    if FEAT.exists():
+        for vdir in sorted(p for p in FEAT.iterdir() if p.is_dir()):
+            snaps = sorted(vdir.glob("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].json"))
+            if not snaps:
+                continue
+            try:
+                d = json.loads(snaps[-1].read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            plans = {k: v for k, v in (d.get("plans") or {}).items() if v}
+            if not plans:
+                continue
+            out[vdir.name] = {
+                "asof": d.get("asof"),
+                "source": d.get("url"),
+                "via": "manual" if "manual" in (d.get("fetchedBy") or "") else "live audit",
+                "plans": plans,
+            }
+    return "const PLAN_FEATURES = " + json.dumps(out, ensure_ascii=False, indent=2) + ";"
+
 
 def render_compare(tools: list[dict]) -> str:
     # expanze hosting variant (Cloud / VPS / vlastní server) — compare ukazuje
@@ -1715,6 +1748,11 @@ def main() -> int:
         if calc_page.exists() and SCORING_START in calc_page.read_text(encoding="utf-8"):
             jobs.append((calc_page, render_scoring(model),
                          SCORING_START, SCORING_END, SCORING_WARN))
+
+    # per-plán features injection (compare.html only) — nezávislé na tools.json, zdroj = data/features/
+    comp_page = ROOT / "compare.html"
+    if comp_page.exists() and FEAT_START in comp_page.read_text(encoding="utf-8"):
+        jobs.append((comp_page, render_features(), FEAT_START, FEAT_END, FEAT_WARN))
 
     if args.check:
         dirty = []

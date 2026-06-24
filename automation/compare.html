@@ -1114,6 +1114,194 @@ const TOOLS = {
   },
 };
 /* DATA:TOOLS:END */
+/* DATA:FEATURES:START */ /* generováno build.py z data/features/ — needituj ručně */
+const PLAN_FEATURES = {
+  "activepieces": {
+    "asof": "2026-06-24",
+    "source": "https://www.activepieces.com/pricing",
+    "via": "live audit",
+    "plans": {
+      "Standard": [
+        "10 free active flows",
+        "Unlimited runs",
+        "AI agents",
+        "Unlimited MCP servers",
+        "Unlimited tables",
+        "Community support"
+      ],
+      "Ultimate": [
+        "Team & Personal Projects",
+        "Piece Access Controls",
+        "Global Connections",
+        "Custom RBAC",
+        "SSO",
+        "Audit Logs"
+      ]
+    }
+  },
+  "make": {
+    "asof": "2026-06-24",
+    "source": "https://www.make.com/en/pricing",
+    "via": "live audit",
+    "plans": {
+      "Free": [
+        "1,000 credits/month",
+        "No-code visual workflow builder",
+        "3000+ apps",
+        "Routers & filters",
+        "Customer support",
+        "15-minute minimum interval between runs"
+      ],
+      "Core": [
+        "Unlimited active scenarios",
+        "More control with scheduled scenarios, down to the minute",
+        "Increased data transfer limits",
+        "Access to the Make API"
+      ],
+      "Pro": [
+        "Priority scenario execution",
+        "Custom variables",
+        "Full-text execution log search"
+      ],
+      "Teams": [
+        "Teams and team roles",
+        "Create and share scenario templates"
+      ],
+      "Enterprise": [
+        "Custom functions support",
+        "Enterprise app integrations",
+        "24/7 Enterprise support",
+        "Access to Value Engineering team",
+        "Overage protection",
+        "Advanced security features"
+      ]
+    }
+  },
+  "n8n": {
+    "asof": "2026-06-24",
+    "source": "https://n8n.io/pricing/",
+    "via": "live audit",
+    "plans": {
+      "Starter": [
+        "1 shared project",
+        "5 concurrent executions",
+        "Unlimited users",
+        "50 AI Workflow Builder credits",
+        "Forum support"
+      ],
+      "Pro": [
+        "3 shared projects",
+        "20 concurrent executions",
+        "7 days of insights",
+        "150 AI Workflow Builder credits",
+        "Admin roles",
+        "Global variables",
+        "Workflow history",
+        "Execution search"
+      ],
+      "Business": [
+        "6 shared projects",
+        "SSO, SAML and LDAP",
+        "30 days of insights",
+        "AI Workflow Builder coming soon",
+        "Different environments",
+        "Scaling options",
+        "Version control using Git",
+        "Forum support"
+      ],
+      "Enterprise": [
+        "Unlimited shared projects",
+        "200+ concurrent executions",
+        "365 days of insights",
+        "1000 AI Workflow Builder credits (only available on n8n cloud)",
+        "External secret store integration",
+        "Log streaming",
+        "Extended data retention",
+        "Dedicated support with SLA",
+        "Invoice billing"
+      ]
+    }
+  },
+  "pipedream": {
+    "asof": "2026-06-13",
+    "source": "https://pipedream.com/pricing",
+    "via": "manual",
+    "plans": {
+      "Basic": [
+        "20M AI tokens",
+        "No usage limit (2k credits included)",
+        "10 active workflows",
+        "5 connected accounts",
+        "Pipedream Connect in development"
+      ],
+      "Advanced": [
+        "50M AI tokens",
+        "Control flow operators",
+        "Unlimited workflows",
+        "Unlimited connected accounts",
+        "Premium apps",
+        "GitHub Sync"
+      ],
+      "Connect": [
+        "Pipedream Connect in production",
+        "Auth for 100 external users",
+        "$2 per additional user"
+      ],
+      "Business": [
+        "Volume pricing",
+        "Custom invoicing",
+        "Priority integration development",
+        "Dedicated support in Slack",
+        "Support for HIPAA workloads",
+        "Uptime and availability SLAs"
+      ]
+    }
+  },
+  "zapier": {
+    "asof": "2026-06-13",
+    "source": "https://zapier.com/pricing",
+    "via": "manual",
+    "plans": {
+      "Free": [
+        "100 tasks/mo",
+        "Zaps, Tables and Forms included",
+        "1 user"
+      ],
+      "Professional": [
+        "Visual no-code editor",
+        "Tables for data storage and Forms",
+        "Unlimited app integrations",
+        "All built-in data and AI workflow tools",
+        "Multi-step Zaps",
+        "Premium apps",
+        "Zap version control",
+        "Custom error notifications",
+        "Advanced Zap settings",
+        "1 user"
+      ],
+      "Team": [
+        "Everything in Professional, plus:",
+        "Shared workspace",
+        "Shared app connections",
+        "Premier Support",
+        "Up to 25 users"
+      ],
+      "Enterprise": [
+        "Everything in Team, plus:",
+        "Unlimited users",
+        "Advanced admin permissions",
+        "SSO / SAML",
+        "Custom data retention",
+        "Advanced security & governance",
+        "Technical Account Manager",
+        "Customer Success Manager",
+        "Custom onboarding",
+        "Invoice / wire payment"
+      ]
+    }
+  }
+};
+/* DATA:FEATURES:END */
 
 const ALL_SLUGS = Object.keys(TOOLS);
 const MAX_SLOTS = 4;
@@ -1512,15 +1700,52 @@ function renderResults() {
   });
   prosConsHtml += `</div>`;
 
+  // ── What's included per plan (from data/features/, with source + asof attribution)
+  const featuresHtml = renderTierFeatures(tools);
+
   // ── FAQ (dynamic based on selected tools)
   const faqHtml = renderFaq(tools);
 
-  container.innerHTML = bannerHtml + tableHtml + verdictHtml + prosConsHtml + faqHtml;
+  container.innerHTML = bannerHtml + tableHtml + verdictHtml + prosConsHtml + featuresHtml + faqHtml;
 
   // Attach FAQ toggles
   container.querySelectorAll(".faq-q").forEach(q => {
     q.onclick = () => q.parentElement.classList.toggle("open");
   });
+}
+
+// What's included per named tier — from PLAN_FEATURES (data/features/), deduped by vendor.
+// Každá karta nese zdroj (pricing URL) + asof + jak vznikla (manual vs live audit) = atribuce.
+function renderTierFeatures(tools) {
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const seen = new Set(); const cards = [];
+  tools.forEach(t => {
+    const vendor = t.variantOf || t.slug;
+    if (seen.has(vendor)) return; seen.add(vendor);
+    const f = PLAN_FEATURES[vendor];
+    if (!f || !f.plans) return;
+    const entries = Object.entries(f.plans).filter(([, x]) => x && x.length);
+    if (!entries.length) return;
+    const inner = entries.map(([plan, feats]) =>
+      `<div style="margin-bottom:14px"><div style="font-weight:700;font-size:13px;margin-bottom:6px">${esc(plan)}</div>` +
+      feats.map(x => `<div style="font-size:12.5px;color:var(--muted);margin-bottom:4px;padding-left:15px;position:relative"><span style="position:absolute;left:0;color:var(--green)">✓</span>${esc(x)}</div>`).join("") +
+      `</div>`).join("");
+    const via = f.via === "manual"
+      ? `<span title="features entered by hand from the public page — vendor ToS prohibits bots" style="font-size:10px;color:var(--muted);border:1px solid var(--border);border-radius:4px;padding:1px 6px">manual</span>`
+      : `<span title="auto-scraped from the pricing page" style="font-size:10px;color:var(--green);border:1px solid var(--border);border-radius:4px;padding:1px 6px">live audit</span>`;
+    cards.push(
+      `<div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+          <img src="${pcLogo(t)}" style="width:22px;height:22px;border-radius:4px;object-fit:contain;background:#fff;padding:1px;" onerror="this.style.display='none'">
+          <span style="font-weight:800;font-size:15px">${esc(t.name)}</span>${via}
+        </div>
+        ${inner}
+        <div style="font-size:11px;color:var(--muted);margin-top:10px;border-top:1px solid var(--border);padding-top:8px">Source: <a href="${f.source}" target="_blank" rel="noopener" style="color:var(--muted)">${esc((f.source || "").replace(/^https?:\/\//, "").replace(/\/$/, ""))}</a> · as of ${esc(f.asof || "—")}</div>
+      </div>`);
+  });
+  if (!cards.length) return "";
+  return `<div class="section-heading"><h2>What&rsquo;s included per plan</h2><p>Headline features per named tier, straight from each vendor&rsquo;s pricing page.</p></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-bottom:48px">${cards.join("")}</div>`;
 }
 
 function renderPrice(costObj, tool) {
