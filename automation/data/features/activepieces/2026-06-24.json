@@ -139,6 +139,80 @@
               "Ultimate": true,
               "Embed": null
             }
+          },
+          {
+            "feature": "Centralized AI Billing",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Management APIs",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          }
+        ]
+      },
+      {
+        "title": "Delivery & Reliability",
+        "rows": [
+          {
+            "feature": "Git Sync",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Release Management",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Private Pieces",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          }
+        ]
+      },
+      {
+        "title": "Enterprise Deployment & Success",
+        "rows": [
+          {
+            "feature": "Cloud or On-Prem",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Dedicated Support",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Training & Adoption Programs",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
           }
         ]
       },
@@ -211,8 +285,7 @@
           }
         ]
       }
-    ],
-    "partial": true
+    ]
   },
-  "note": " | Full matrix offline from saved HTML (2-col Standard/Ultimate; 'Show all' Ultimate extras not expanded → partial). | + Embed plan (separate $30k/yr embedded product). Ultimate 'Show all' extras still not in save (partial)."
+  "note": "Activepieces Cloud has just Standard ($5/active flow) + Ultimate (custom). Full Ultimate feature set from owner-expanded page; Embed = separate embedded product (from $30k/yr). manual (human-saved/copied, parsed offline)."
 }
