@@ -169,16 +169,26 @@ def render_models(data: dict) -> str:
     return "\n".join(lines)
 
 
-def _model_dims(data: dict) -> dict:
+def _model_dims(data: dict, sm: dict | None = None) -> dict:
     """Per-model skóre dimenzí DOPOČÍTANÉ z models.json dle scoring-model.json
     dimension_definitions (jeden zdroj pravdy, pokrývá celý lineup). Klíč = name
-    (shoda s MODELS blokem). lowPrice řeší priceScore v JS z cost() na profilu."""
+    (shoda s MODELS blokem). lowPrice řeší priceScore v JS z cost() na profilu.
+
+    frontier (capability) = blend EDITORIAL capabilityBandu (scoring-model.json
+    frontier_v2) a tieru, s coverage guardem — opravuje Mistral dominance (jinak
+    všech 11 frontier modelů == 1.0 a rozhodne jen cena). Bez bandu => čistý tier."""
     import math
     models = [m for p in data["providers"] for m in p["models"]]
     outs = [m["outputPerM"] for m in models]
     lo_o, hi_o = math.log10(min(outs)), math.log10(max(outs))
     lo_c, hi_c = math.log10(128000), math.log10(1000000)
     tierf = {"frontier": 1.0, "mid": 0.6, "budget": 0.3}
+    fv2 = (sm or {}).get("frontier_v2") or {}
+    bands = fv2.get("bands") or {}
+    blend = fv2.get("blend") or {}
+    w_cap = blend.get("capability", 0.0)
+    w_tier = blend.get("tier", 1.0)
+    cap_band = {k: v for k, v in ((sm or {}).get("capabilityBand") or {}).items() if k != "_note"}
     dims = {}
     for m in models:
         ctx = m.get("contextWindow")
@@ -186,9 +196,15 @@ def _model_dims(data: dict) -> dict:
         caching = (1 - m["cachedInputPerM"] / m["inputPerM"]) if m.get("cachedInputPerM") is not None else 0.0
         cheap = 0.5 if hi_o == lo_o else min(1.0, max(0.0, 1 - (math.log10(m["outputPerM"]) - lo_o) / (hi_o - lo_o)))
         batch = (1 - m["batchDiscount"]) if m.get("batchDiscount") is not None else 0.0
+        tscore = tierf[m["tier"]]
+        band = cap_band.get(m["id"])
+        if band and band in bands and w_cap > 0:
+            frontier = round(w_cap * bands[band] + w_tier * tscore, 3)  # capability blend
+        else:
+            frontier = tscore  # coverage guard: no editorial band → fall back to tier
         dims[m["name"]] = {"context": round(context, 3), "caching": round(caching, 3),
                            "cheapOutput": round(cheap, 3), "batch": round(batch, 3),
-                           "frontier": tierf[m["tier"]]}
+                           "frontier": frontier}
     return dims
 
 
@@ -200,7 +216,7 @@ def render_scoring(data: dict) -> str:
         "const SCORE_W = " + json.dumps(sm["scoreWeights"], ensure_ascii=False) + ";",
         "const ROLE_WEIGHTS = " + json.dumps(sm["roleWeights"], ensure_ascii=False) + ";",
         "const UC_ROLE = " + json.dumps(UC_ROLE, ensure_ascii=False) + ";",
-        "const MODEL_SCORES = " + json.dumps(_model_dims(data), ensure_ascii=False) + ";",
+        "const MODEL_SCORES = " + json.dumps(_model_dims(data, sm), ensure_ascii=False) + ";",
     ])
 
 

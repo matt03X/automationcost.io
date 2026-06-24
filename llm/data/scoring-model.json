@@ -46,6 +46,25 @@
     "budget":   { "frontier": 0.30 }
   },
 
+  "frontier_v2": {
+    "_note": "Oprava Mistral dominance: 'frontier' dimenze uz NENI ploche tier skore (vsech 11 frontier modelu == 1.0), ale blend EDITORIAL capability bandu (capabilityBand nize) a tieru, s coverage guardem (model bez bandu => spadne na ciste tier). capabilityBand je REDAKCNI odhad relativni schopnosti (stejna kategorie jako 'tier', NE benchmark, NE zobrazene cislo na strance) — DRAFT k owner review; cilove ho nahradi SCRAPED benchmarky {value,source,asof} (viz plan benchmark layer). Implementovano v llm/build.py _model_dims.",
+    "blend": { "capability": 0.65, "tier": 0.35 },
+    "bands": { "flagship": 1.00, "strong": 0.80, "specialist": 0.72, "workhorse": 0.60, "efficient": 0.45, "lite": 0.30 },
+    "price_role_aware": "recommend() skaluje globalni price clen vahou role lowPrice (priceW = roleWeights[role].lowPrice / 0.17): capability-heavy role (reasoning/agents/coding) vazi cenu min, chatbot/classification vic — aktivace REZERVOVANEHO lowPrice. Implementovano v recommend() (home-v6.html + llm/calculator.html, parita)."
+  },
+
+  "capabilityBand": {
+    "_note": "EDITORIAL DRAFT (owner-review). Klic = model id z data/models.json. NE benchmark, NE zobrazene cislo — jen vstup do interniho frontier skore (frontier_v2). Nahradi scraped benchmarky.",
+    "gpt-5.5-pro": "flagship", "gpt-5.5": "flagship", "gpt-5.4": "strong", "gpt-5.4-mini": "workhorse", "gpt-5.4-nano": "efficient",
+    "claude-fable-5": "flagship", "claude-opus-4-8": "flagship", "claude-sonnet-4-6": "strong", "claude-haiku-4-5": "efficient",
+    "gemini-3.1-pro-preview": "flagship", "gemini-3.5-flash": "workhorse", "gemini-3-flash-preview": "efficient", "gemini-3.1-flash-lite": "lite",
+    "deepseek-v4-pro": "strong", "deepseek-v4-flash": "efficient",
+    "grok-4.3": "strong", "grok-build-0.1": "workhorse",
+    "mistral-large": "strong", "mistral-medium-3-5": "workhorse", "magistral-medium": "specialist", "devstral-2": "specialist",
+    "mistral-small-4": "efficient", "magistral-small": "efficient", "codestral": "efficient",
+    "devstral-small-2": "lite", "ministral-3-3b": "lite", "ministral-3-8b": "lite", "ministral-3-14b": "lite"
+  },
+
   "modelScores": {
     "_note": "Per-model skore odvozena z data/models.json (verified 2026-06-20). VSE pocitatelne ze ctyr overenych poli (contextWindow, cachedInputPerM/inputPerM, outputPerM, batchDiscount) + tier. Hodnoty zde jsou PREDPOCITANY DRAFT pro review; v cilovem wiringu by je build.py mohl dopocitat z models.json (jeden zdroj pravdy), aby se neduplikovaly. context: log-norm vuci 1M. caching: 1 - cached/input. cheapOutput: 1 - norm(log outputPerM) vuci lineupu (0.28..180). batch: 1 - batchDiscount (null=>0). frontier: z tieru.",
 
