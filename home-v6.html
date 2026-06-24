@@ -380,9 +380,9 @@ thead th{background:linear-gradient(180deg,var(--panel2),#13111e)!important}
 tbody tr{opacity:0;transform:translateY(7px);transition:opacity .45s,transform .45s,background .15s}
 tbody tr.tr-in{opacity:1;transform:none}
 tbody tr:hover{background:rgba(167,139,250,.05)}
-#a-tbody tr[data-href]{cursor:pointer}
+#a-tbody tr[data-href],#l-tbody tr[data-href]{cursor:pointer}
 .cell-nm .cell-go{margin-left:auto;color:var(--tx3);font-size:.78rem;opacity:0;transition:opacity .12s}
-#a-tbody tr:hover .cell-go{opacity:.85}
+#a-tbody tr:hover .cell-go,#l-tbody tr:hover .cell-go{opacity:.85}
 .mini-bar{display:inline-block;vertical-align:middle;width:64px;height:6px;border-radius:4px;
   background:rgba(255,255,255,.05);overflow:hidden;margin-right:8px;flex-shrink:0}
 .mini-bar i{display:block;height:100%;width:0;border-radius:4px;
@@ -1738,6 +1738,18 @@ const MODEL_FLAW={
   mid:"a sensible default, but check it clears your quality bar before scaling.",
   budget:"cheapest, but expect more retries / weaker reasoning on hard prompts.",
 };
+/* provider slug → our on-site pricing page slug + favicon domain (LLM = no affiliate, links stay on-site) */
+const LLM_PAGE={openai:"openai",anthropic:"anthropic",google:"gemini",deepseek:"deepseek",xai:"grok",mistral:"mistral"};
+const PROV_DOMAIN={openai:"openai.com",anthropic:"anthropic.com",google:"gemini.google.com",deepseek:"deepseek.com",xai:"x.ai",mistral:"mistral.ai"};
+function lModelHref(m){ return "/llm/"+(LLM_PAGE[m.pslug]||m.pslug)+"-pricing.html"; }
+/* the rate "plan" actually billed for this model at the current settings (long-context vs standard, + batch) */
+function lRateLabel(m){
+  var r=rates(m), lr=function(x){ return "$"+(+(+x).toFixed(x<1?3:2)); };
+  var s=(longCtx(m)?"long-ctx ":"")+lr(r.i)+" in / "+lr(r.o)+" out";
+  if(lState.batch&&m.batch!==null) s+=" · batch −"+Math.round((1-m.batch)*100)+"%";
+  else if(CACHE_RELEVANT[lState.uc]&&lState.cache>0&&r.cached!==null) s+=" · cached "+lr(r.cached);
+  return s;
+}
 
 function lRender(){
   document.getElementById("l-req-v").textContent=fmtVol(lState.req);
@@ -1794,10 +1806,14 @@ function lRender(){
   if(lpicks.length){
     best.style.setProperty("--ac",provColor(lpicks[0].m.pslug));
     best.innerHTML='<div class="star">★ Best 3 · '+esc(ucName)+'</div>'+
-      lpicks.map(function(p,i){ var m=p.m, c=cost(m); return '<div class="best-pick'+(i===0?" top":"")+'" style="--pc:'+provColor(m.pslug)+'">'+
-        '<span class="bp-rank">'+(i+1)+'</span>'+
-        '<span class="bp-main"><span class="bp-nm">'+esc(m.n)+'</span><span class="bp-match">'+esc(m.p)+' · '+esc(m.t)+'</span></span>'+
-        '<span class="bp-pr">'+fmtMoney(c.total)+'<small>/mo</small></span></div>'; }).join("")+
+      '<div class="bp-vol">live at '+fmtVol(lState.req)+' req/mo · '+fmtInt(lState.inTok)+' in / '+fmtInt(lState.outTok)+' out tok'+(lState.batch?' · batch':'')+'</div>'+
+      lpicks.map(function(p,i){ var m=p.m, c=cost(m);
+        return '<a class="best-pick'+(i===0?" top":"")+'" href="'+esc(lModelHref(m))+'" title="Open '+esc(PROV_NAME[m.pslug]||m.p)+' pricing" style="--pc:'+provColor(m.pslug)+'">'+
+        '<div class="bp-head"><span class="bp-rank">'+(i+1)+'</span>'+
+        '<span class="bp-main"><span class="bp-nm">'+esc(m.n)+'</span><span class="bp-match"><b>'+esc(lRateLabel(m))+'</b> · '+esc(m.t)+'</span></span>'+
+        '<span class="bp-pr">'+fmtMoney(c.total)+'<small>/mo</small></span></div>'+
+        '<span class="bp-cta">'+esc(PROV_NAME[m.pslug]||m.p)+' pricing &amp; models →</span>'+
+        '</a>'; }).join("")+
       '<div class="why">Best balance of capability and price for '+esc(ucName)+' at your volume.</div>'+
       '<a class="bcta" href="/llm/calculator.html">Open the full calculator →</a>';
   } else best.innerHTML='<div class="star">★ Best pick</div><div class="why">No model fits this prompt size.</div>';
@@ -1949,8 +1965,8 @@ function lRenderTable(fitRows){
     const miniHtml=fit?('<span class="mini-bar"><i data-mw="'+miniPct+'" style="background:linear-gradient(90deg,'+pCol+','+mlight+')"></i></span>'):'<span class="mini-bar"></span>';
     return { m, bill:fit?c.total:Infinity, name:m.n, prov:m.p, ctx:m.ctx||0, cache:m.cached!==null?1:0, batch:m.batch!==null?1:0,
       tier:m.t==="frontier"?0:m.t==="mid"?1:2, ow:ow?1:0, fit,
-      html:'<tr class="'+(isWin?"win":(fit?"":"gated"))+'" style="--ac:var(--llm)">'+
-        '<td><div class="cell-nm">'+esc(m.n)+(isWin?'<span class="tag-win" style="color:var(--llm)">&#9733;</span>':'')+'</div></td>'+
+      html:'<tr class="'+(isWin?"win":(fit?"":"gated"))+'" style="--ac:var(--llm)" data-href="'+esc(lModelHref(m))+'" title="Open '+esc(PROV_NAME[m.pslug]||m.p)+' pricing">'+
+        '<td><div class="cell-nm">'+esc(m.n)+(isWin?'<span class="tag-win" style="color:var(--llm)">&#9733;</span>':'')+'<span class="cell-go">&#8599;</span></div></td>'+
         '<td class="cell-pr">'+(fit?fmtMoney(c.total):'<span class="no">won\'t fit</span>')+'</td>'+
         '<td>'+miniHtml+'</td>'+
         '<td>'+esc(PROV_NAME[m.pslug]||m.p)+'</td>'+
@@ -1969,7 +1985,12 @@ function lRenderTable(fitRows){
 
 function lRenderProviders(){
   const provs=[...new Set(MODELS.map(m=>m.pslug))];
-  document.getElementById("l-vrow").innerHTML=provs.map(ps=>'<a class="vlink" href="'+(PROV_HOME[ps]||"#")+'" target="_blank" rel="noopener">See '+(PROV_NAME[ps]||ps)+' pricing →</a>').join("");
+  document.getElementById("l-vrow").innerHTML=provs.map(function(ps){
+    var dom=PROV_DOMAIN[ps]||ps, href="/llm/"+(LLM_PAGE[ps]||ps)+"-pricing.html";
+    return '<a class="vtile" href="'+href+'" title="Open '+esc(PROV_NAME[ps]||ps)+' pricing" aria-label="'+esc(PROV_NAME[ps]||ps)+'">'+
+      '<span class="vt-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt="" loading="lazy"></span>'+
+      '<span class="vt-nm">'+esc(PROV_NAME[ps]||ps)+'</span></a>';
+  }).join("");
 }
 
 /* ════════════════════════════════════════════════════════════════════════
@@ -2064,6 +2085,7 @@ function wireLlmSliders(){
   outT.addEventListener("input",()=>{ lState.outTok=lOutFromSlider(+outT.value); setFill(outT); lRender(); });
   cache.addEventListener("input",()=>{ lState.cache=+cache.value; setFill(cache); lRender(); });
   document.querySelectorAll("#l-table th").forEach(th=>th.addEventListener("click",()=>{ const k=th.dataset.sort; if(k===lSortKey) lSortDir*=-1; else { lSortKey=k; lSortDir=1; } lRender(); }));
+  (function(){ var tb=document.getElementById("l-tbody"); if(!tb) return; tb.addEventListener("click",function(e){ if(e.target.closest("a")) return; var tr=e.target.closest("tr[data-href]"); if(!tr) return; location.href=tr.getAttribute("data-href"); }); })();
 }
 
 /* category tab switching */
