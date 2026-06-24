@@ -27,7 +27,8 @@
     "asof": "2026-06-24",
     "columns": [
       "Standard",
-      "Ultimate"
+      "Ultimate",
+      "Embed"
     ],
     "groups": [
       {
@@ -37,42 +38,48 @@
             "feature": "10 free active flows",
             "tiers": {
               "Standard": true,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           },
           {
             "feature": "Unlimited runs",
             "tiers": {
               "Standard": true,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           },
           {
             "feature": "AI agents",
             "tiers": {
               "Standard": true,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           },
           {
             "feature": "Unlimited MCP servers",
             "tiers": {
               "Standard": true,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           },
           {
             "feature": "Unlimited tables",
             "tiers": {
               "Standard": true,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           },
           {
             "feature": "Community support",
             "tiers": {
               "Standard": true,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           }
         ]
@@ -84,35 +91,40 @@
             "feature": "Team & Personal Projects",
             "tiers": {
               "Standard": false,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           },
           {
             "feature": "Piece Access Controls",
             "tiers": {
               "Standard": false,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           },
           {
             "feature": "Global Connections",
             "tiers": {
               "Standard": false,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           },
           {
             "feature": "Custom RBAC",
             "tiers": {
               "Standard": false,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           },
           {
             "feature": "SSO",
             "tiers": {
               "Standard": false,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
             }
           }
         ]
@@ -124,7 +136,77 @@
             "feature": "Audit Logs",
             "tiers": {
               "Standard": false,
-              "Ultimate": true
+              "Ultimate": true,
+              "Embed": null
+            }
+          }
+        ]
+      },
+      {
+        "title": "Activepieces Embed — embedded product (from $30k/year)",
+        "rows": [
+          {
+            "feature": "Embedded Automation Builder",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Embedded AI Agents",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "JavaScript SDK",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Custom Templates & Branding",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Piece Management",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Private Pieces",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Cloud or Self-Hosted",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Dedicated Support",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
             }
           }
         ]
@@ -132,5 +214,5 @@
     ],
     "partial": true
   },
-  "note": " | Full matrix offline from saved HTML (2-col Standard/Ultimate; 'Show all' Ultimate extras not expanded → partial)."
+  "note": " | Full matrix offline from saved HTML (2-col Standard/Ultimate; 'Show all' Ultimate extras not expanded → partial). | + Embed plan (separate $30k/yr embedded product). Ultimate 'Show all' extras still not in save (partial)."
 }
