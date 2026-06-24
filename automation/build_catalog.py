@@ -302,6 +302,7 @@ def _nav(active: str, month_year: str) -> str:
   <div class="ac-links">
     <a href="compare.html"{cls('compare')}>Compare</a>
     <a href="limits.html"{cls('limits')}>Pricing</a>
+    <a href="integrations.html"{cls('integrations')}>Integrations</a>
     <div class="ac-dd">
       <button class="ac-dd-btn" aria-expanded="false" aria-haspopup="true">More
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>

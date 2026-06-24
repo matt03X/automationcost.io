@@ -28,6 +28,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
       - name: Install Playwright (mimo repo checkout)
         run: |
           mkdir -p /tmp/pw
@@ -61,6 +64,29 @@ jobs:
               sleep $(( (RANDOM % 4) + 1 ))
             done
             [ "$pushed" = 1 ] || { echo "::error::push snapshotu selhal i po 5 pokusech"; exit 1; }
+          fi
+      - name: Rebuild integration finderu (index.json + integrations.html z nových katalogů)
+        # Po změně katalogů přegeneruj matici + stránku, ať finder není zastaralý.
+        # Commitni JEN když to reálně změní výstup (no-change týdny tichý).
+        if: always()
+        run: |
+          git config user.name  "integrations-audit-bot"
+          git config user.email "actions@users.noreply.github.com"
+          python automation/build.py || true
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Finder beze změny (katalogy bez dopadu) — nic k commitu."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            git commit -m "build: rebuild integration finderu ${DATE}"
+            pushed=0
+            for i in 1 2 3 4 5; do
+              if git push; then pushed=1; break; fi
+              echo "push odmítnut (souběžný push na master) — rebase + retry ${i}/5"
+              git pull --rebase --autostash origin master || true
+              sleep $(( (RANDOM % 4) + 1 ))
+            done
+            [ "$pushed" = 1 ] || { echo "::error::push rebuildu selhal i po 5 pokusech"; exit 1; }
           fi
       - name: ALARM — fail (= mail ownerovi) jen když integrace přibyla/zmizela
         if: always()
