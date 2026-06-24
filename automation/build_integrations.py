@@ -574,6 +574,8 @@ _AF_DOMAIN = {"zapier": "zapier.com", "make": "make.com", "n8n": "n8n.io", "pipe
               "activepieces": "activepieces.com", "automatisch": "automatisch.io", "node-red": "nodered.org"}
 
 _AF_CSS = _BASE_HEAD_CSS + """
+    .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+    @media (max-width: 600px) { .container { padding: 0 18px; } }
     .af-search { position: relative; margin: 22px 0 8px; }
     .af-search input { width: 100%; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 16px 18px; font-family: var(--font); font-size: 17px; color: var(--text); }
     .af-search input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
