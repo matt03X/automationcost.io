@@ -1358,9 +1358,10 @@ function aRenderVendors(){
   document.getElementById("a-vrow").innerHTML=h;
 }
 
-/* cost-vs-scale chart (log-log) - smooth bezier + gradient stroke + area + hover */
+/* cost-vs-scale chart (log-log) - plan-aware STEP path (no smooth) + gradient stroke + area + hover.
+   Cena je skoková funkce: plochá/šikmá uvnitr plánu, svislý skok na hranici tieru → kreslíme to tak. */
 const A_GRID=[1000,2500,5000,10000,25000,50000,100000,250000,500000,1000000];
-const A_SAMP=36;
+const A_SAMP=100;
 const A_VSAMP=(function(){var arr=[];for(var i=0;i<A_SAMP;i++){arr.push(Math.round(Math.pow(10,Math.log10(A_GRID[0])+(Math.log10(A_GRID[A_GRID.length-1])-Math.log10(A_GRID[0]))*i/(A_SAMP-1))));}return arr;})();
 
 var _aScaleKey=null;
@@ -1370,7 +1371,7 @@ function aRenderScale(cheapest){
   var plotW=W-padL-padR,plotH=H-padT-padB;
 
   var series=TOOLS.map(function(t){
-    var pts=A_VSAMP.map(function(v){ var c=calcCost(t,v,aState.steps,aState.wf,null); return c&&typeof c.cost==="number"?{v:v,cost:Math.max(c.cost,0.5)}:null; }).filter(Boolean);
+    var pts=A_VSAMP.map(function(v){ var c=calcCost(t,v,aState.steps,aState.wf,null); return c&&typeof c.cost==="number"?{v:v,cost:Math.max(c.cost,0.5),plan:(c.plan?c.plan.name:"")}:null; }).filter(Boolean);
     return {slug:t.slug,name:t.name,pts:pts};
   }).filter(function(s){ return s.pts.length>2; });
 
@@ -1398,11 +1399,16 @@ function aRenderScale(cheapest){
     gg+='<text x="'+yx.toFixed(1)+'" y="'+(padT-5)+'" fill="#a78bfa" font-size="10" font-family="JetBrains Mono" text-anchor="middle">you &middot; '+fmtVol(aState.runs)+'</text>';
     return gg;
   }
-  var envPts=A_VSAMP.map(function(v){ var best=null;
-    TOOLS.forEach(function(t){ var c=calcCost(t,v,aState.steps,aState.wf,null); if(c&&typeof c.cost==="number"){ var cc=Math.max(c.cost,0.5); if(best===null||cc<best) best=cc; } });
-    return best!==null?{x:lx(v),y:ly(best)}:null; }).filter(Boolean);
-  var envD=envPts.length>2?(smoothPath(envPts)+" L "+lx(A_GRID[A_GRID.length-1]).toFixed(1)+" "+(padT+plotH).toFixed(1)+" L "+lx(A_GRID[0]).toFixed(1)+" "+(padT+plotH).toFixed(1)+" Z"):"";
-  function pathD(s){ return smoothPath(s.pts.map(function(p){ return {x:lx(p.v),y:ly(p.cost)}; })); }
+  /* step path: rovně uvnitr plánu (plochá nebo overage šikmá), svislý skok při změně plánu —
+     mezi tiery není plynulý přechod, cena je skoková funkce. */
+  function stepPath(p){ if(!p.length) return ""; var d="M "+p[0].x.toFixed(1)+" "+p[0].y.toFixed(1);
+    for(var i=1;i<p.length;i++){ if(p[i].plan===p[i-1].plan){ d+=" L "+p[i].x.toFixed(1)+" "+p[i].y.toFixed(1); }
+      else { d+=" L "+p[i].x.toFixed(1)+" "+p[i-1].y.toFixed(1)+" L "+p[i].x.toFixed(1)+" "+p[i].y.toFixed(1); } } return d; }
+  var envPts=A_VSAMP.map(function(v){ var best=null,bk="";
+    TOOLS.forEach(function(t){ var c=calcCost(t,v,aState.steps,aState.wf,null); if(c&&typeof c.cost==="number"){ var cc=Math.max(c.cost,0.5); if(best===null||cc<best){ best=cc; bk=t.slug+"|"+(c.plan?c.plan.name:""); } } });
+    return best!==null?{x:lx(v),y:ly(best),plan:bk}:null; }).filter(Boolean);
+  var envD=envPts.length>2?(stepPath(envPts)+" L "+lx(A_GRID[A_GRID.length-1]).toFixed(1)+" "+(padT+plotH).toFixed(1)+" L "+lx(A_GRID[0]).toFixed(1)+" "+(padT+plotH).toFixed(1)+" Z"):"";
+  function pathD(s){ return stepPath(s.pts.map(function(p){ return {x:lx(p.v),y:ly(p.cost),plan:p.plan}; })); }
 
   var key=series.map(function(s){return s.slug;}).join(",");
   var rebuild=_aScaleKey!==key || svgEl.querySelectorAll(".a-series").length!==series.length;
