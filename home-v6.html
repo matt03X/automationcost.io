@@ -387,6 +387,14 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
 /* neutralize accidental .best card styling (border/padding/glow) leaking onto tooltip rows */
 .chart-tip .tr2.best{background:none;border:0;border-radius:0;padding:2px 0;box-shadow:none;overflow:visible}
 .chart-tip .tr2.best::before{content:none;display:none}
+/* cost-scale tooltip: plan / self-host tier label under each tool */
+#a-scale-tip{max-width:252px}
+#a-scale-tip .tr2{align-items:flex-start}
+#a-scale-tip .tr2.best .nm{font-family:var(--body);font-size:.78rem;font-weight:700;margin:0}
+#a-scale-tip .tr2 .nm .nmw{display:flex;flex-direction:column;line-height:1.2}
+#a-scale-tip .tr2 .pl{font-family:var(--mono);font-size:.61rem;color:var(--tx3);font-weight:400;letter-spacing:.01em;margin-top:2px}
+#a-scale-tip .tr2.best .pl{color:var(--pp);opacity:.82}
+#a-scale-tip .tr2 .vv{white-space:nowrap;padding-top:1px}
 /* scatter bubble tooltip — centered names, padded so long names stay inside the border */
 #l-scatter-tip{text-align:center;min-width:176px;max-width:240px;padding:13px 18px}
 #l-scatter-tip .tt{text-align:center;margin-bottom:5px}
@@ -1535,10 +1543,19 @@ function aAttachLineHover(svgEl,series,lxFn,lyFn,W,padL,padT,padR,plotW,plotH){
       var lo=0,hi=a.length-1; while(hi-lo>1){ var m=(lo+hi)>>1; if(a[m].x<x) lo=m; else hi=m; } var p=a[lo],q=a[hi]; return p.y+(q.y-p.y)*((x-p.x)/((q.x-p.x)||1)); }
     function costAt(s){ var pts=s.pts; if(!pts.length) return null; for(var i=0;i<pts.length-1;i++){ if(v>=pts[i].v&&v<=pts[i+1].v){ var t2=(v-pts[i].v)/(pts[i+1].v-pts[i].v); return pts[i].cost+(pts[i+1].cost-pts[i].cost)*t2; } } if(v<=pts[0].v) return pts[0].cost; return pts[pts.length-1].cost; }
     st.series.forEach(function(s){ var dot=st.dots[s.slug]; if(!dot) return; var y=yAt(s.slug); if(y==null){ dot.style.opacity="0"; return; } dot.setAttribute("cx",x.toFixed(1)); dot.setAttribute("cy",y.toFixed(1)); dot.style.opacity="1"; });
-    var rows2=st.series.map(function(s){ return {s:s,c:costAt(s)}; }).filter(function(rw){ return rw.c!==null; }).sort(function(a,b){ return a.c-b.c; });
-    st.tip.innerHTML='<div class="tt">at '+fmtVol(Math.round(v/1000)*1000)+' runs/mo</div>'+
-      rows2.map(function(rw,i){ return '<div class="tr2'+(i===0?" best":"")+'"><span class="nm"><i style="background:'+aToolColor(rw.s.slug)+'"></i>'+esc(rw.s.name)+'</span><span class="vv">'+fmtMoney(rw.c)+'</span></div>'; }).join("");
-    var wr=st.wrap.getBoundingClientRect(); var tx=(x/st.W)*wr.width+16; if(tx>wr.width-175) tx-=194; st.tip.style.left=tx+"px"; st.tip.style.top="14px"; st.tip.classList.add("tip-on"); }
+    var vR=Math.round(v/1000)*1000;
+    var rows2=st.series.map(function(s){
+      var tool=TOOLS.find(function(t){return t.slug===s.slug;});
+      var cc=tool?calcCost(tool,vR,aState.steps,aState.wf,null):null;
+      if(!cc||typeof cc.cost!=="number"){ var ci=costAt(s); return ci===null?null:{s:s,c:ci,lab:"",est:false}; }
+      var lab;
+      if(cc.hwOnly){ lab="self-host"+(cc.spec?" · "+String(cc.spec).split(" + ")[0].split(" (")[0]:" server")+(cc.home?" · +"+fmtMoney(cc.home)+" power":""); }
+      else { lab=cc.plan?cc.plan.name:""; if(cc.estimated) lab+=" · custom (est.)"; }
+      return {s:s,c:cc.cost,lab:lab,est:!!cc.estimated};
+    }).filter(Boolean).sort(function(a,b){ return a.c-b.c; });
+    st.tip.innerHTML='<div class="tt">at '+fmtVol(vR)+' runs/mo</div>'+
+      rows2.map(function(rw,i){ return '<div class="tr2'+(i===0?" best":"")+'"><span class="nm"><i style="background:'+aToolColor(rw.s.slug)+'"></i><span class="nmw">'+esc(rw.s.name)+(rw.lab?'<small class="pl">'+esc(rw.lab)+'</small>':'')+'</span></span><span class="vv">'+(rw.est?"~":"")+fmtMoney(rw.c)+'</span></div>'; }).join("");
+    var wr=st.wrap.getBoundingClientRect(); var tx=(x/st.W)*wr.width+16; if(tx>wr.width-205) tx-=245; st.tip.style.left=tx+"px"; st.tip.style.top="14px"; st.tip.classList.add("tip-on"); }
   function move(ev){ var st=_aHoverState; if(!st) return; var r=st.svgEl.getBoundingClientRect(); var px=(ev.clientX-r.left)/r.width*st.W;
     if(px<st.padL||px>st.W-st.padR){ leave(); return; } lastX=px; if(raf) return; raf=requestAnimationFrame(function(){ raf=null; doMove(); }); }
   function leave(){ var st=_aHoverState; if(raf){ cancelAnimationFrame(raf); raf=null; } if(!st) return; st.cross.style.opacity="0"; Object.keys(st.dots).forEach(function(k){ st.dots[k].style.opacity="0"; }); st.tip.classList.remove("tip-on"); }
