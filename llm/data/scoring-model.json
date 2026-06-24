@@ -14,9 +14,10 @@
       "caching": "Ekonomika promtp cachingu = jak levne je cached input vuci plnemu inputu (1 - cachedInputPerM/inputPerM). Vyssi = vyhodnejsi pro opakovany kontext. Model bez cache ceny (cached=null) = 0. Overitelne z models.json.",
       "cheapOutput": "Levny output token. Skore = inverzni norm. outputPerM v ramci celeho lineupu (levnejsi output = vyssi skore). Pro role s velkym outputem (agents, reasoning). Overitelne z models.json.",
       "batch": "Dostupnost batch API slevy. Skore = batchDiscount slevove procento (1 - batchDiscount); batch=null => 0. Pro async/bulk role. Overitelne z models.json.",
-      "frontier": "Schopnostni trida (tier). frontier=1.0, mid=0.6, budget=0.3. EDITORIAL tier z models.json (NE benchmark) — proto je to per-tier, ne vymysleny per-model skill skore.",
+      "frontier": "Schopnostni trida. v1: cisty tier (frontier=1.0, mid=0.6, budget=0.3, EDITORIAL z models.json). v2 PLAN: blend s benchmarky — viz _meta.frontier_v2_plan + benchmarkWeights nize.",
       "lowPrice": "REZERVOVANE. Cenu resi priceScore pocitany z enginu na profilu uzivatele (mo / cost(m)). Drzime vahu pro citelnost, nepouziva se ve featureScore."
-    }
+    },
+    "frontier_v2_plan": "PLAN (zatim NEZAPOJENO do build.py): `frontier` dimenze prejde z ciste tier (tierf 1.0/0.6/0.3 v llm/build.py _model_dims) na BLEND: frontier = 0.7*capabilityScore + 0.3*tierScore kdyz model ma benchmarky, jinak tierScore (fallback). capabilityScore = vazeny prumer min-max normalizovanych metrik (dle metrics.range v models.json) podle benchmarkWeights nize. Vendor self-reported metriky x0.85 (confidence discount), nezavisly zdroj prebiji vendor. Coverage guard: <2 pritomne metriky => renormalizovat vahy + vic se oprit o tier. Cisla bere z data/models.json (_meta.benchmarks + per-model `benchmarks` bloky), plni je pull skript (scripts/llm-benchmark-pull.md). Wiring = uprava _model_dims v llm/build.py + render benchmark radku."
   },
 
   "scoreWeights": { "feature": 0.50, "price": 0.32, "frontier": 0.18 },
@@ -44,6 +45,11 @@
     "frontier": { "frontier": 1.00 },
     "mid":      { "frontier": 0.60 },
     "budget":   { "frontier": 0.30 }
+  },
+
+  "benchmarkWeights": {
+    "_note": "EDITORIAL vahy pro capabilityScore 0..1 = vazeny prumer normalizovanych benchmark metrik (min-max pres aktualni lineup dle metrics.range v models.json _meta.benchmarks). Krmi `frontier` dimenzi pres blend (viz _meta.frontier_v2_plan). Live-tunable: edit + python build.py. ZATIM NEZAPOJENO do build.py (wiring follow-up). Soucet = 1.00.",
+    "mmlu_pro": 0.20, "gpqa_diamond": 0.25, "swe_bench_verified": 0.25, "arena_elo": 0.30
   },
 
   "modelScores": {
