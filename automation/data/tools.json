@@ -9,7 +9,8 @@
       "overage (per-plan)": "optional key on a plan: overrides the tool-level overage; null = this plan has NO pay-as-you-go (engines skip it when ops exceed opsIncluded). Absent key = inherit tool-level.",
       "currency": "tool 'currency':'EUR' (n8n) → build apply_fx převede cloud monthlyUsd/annualUsd na USD kurzem z data/fx.json (denně z auditu). monthlyUsd i annualUsd jsou reálné scrapnuté ceny; annualUsd = billed-annually přepočtené na $/mo (zapier scrape /rok ÷12, make/n8n už /mo).",
       "maxUsers": "per-plan seat cap; absent = inherit tool-level defaultMaxUsers (else unlimited); null = unlimited (override a tool default). seatsIncluded/perSeatUsd = add-on seat model (cost += perSeatUsd*(users-seatsIncluded)). sharedProjects/concurrency = informational (null = unlimited). All live-sourced.",
-      "mcpSupport": "nativní podpora Model Context Protocol serveru/klienta: 'Native' (first-party), 'Community' (jen komunitní balíčky), 'No' (žádná). Live-ověřeno z vendor docs 2026-06-24."
+      "mcpSupport": "nativní podpora Model Context Protocol serveru/klienta: 'Native' (first-party), 'Community' (jen komunitní balíčky), 'No' (žádná). Live-ověřeno z vendor docs 2026-06-24.",
+      "track": "n8n hosting track: 'cloud' (Pro/Starter — n8n hostuje, strop 50k pak custom) vs 'selfhost' (Business license + community edition). Engine filtruje dle hostPref; absence = odvozeno ze selfHostOnly. Live-ověřeno 2026-06-24."
     },
     "todo": [
       "pipedream: additional-credit (overage) rate removed from public pricing page (verified 2026-06-13 against saved pricing snapshot) — overage now Contact Sales only, tool-level overage=null; Business=custom tier carries the over-volume estimate. Free 100cr/3wf still exists in-app but is 'discontinued' for new signups.",
@@ -52,7 +53,8 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted — server + DB only, light workflows (your ops time not included)"
+          "note": "Self-hosted — server + DB only, light workflows (your ops time not included)",
+          "track": "selfhost"
         },
         {
           "name": "Cloud Starter",
@@ -63,7 +65,8 @@
           "note": "Cloud Starter (€24/mo monthly, 2.5k executions)",
           "annualUsd": 20,
           "sharedProjects": 1,
-          "concurrency": 5
+          "concurrency": 5,
+          "track": "cloud"
         },
         {
           "name": "Cloud Pro 10k",
@@ -74,7 +77,8 @@
           "note": "Cloud Pro — 10k executions (€60/mo monthly)",
           "annualUsd": 50,
           "sharedProjects": 3,
-          "concurrency": 20
+          "concurrency": 20,
+          "track": "cloud"
         },
         {
           "name": "Cloud Pro 50k",
@@ -85,7 +89,8 @@
           "note": "Cloud Pro — 50k executions (€144/mo monthly)",
           "annualUsd": 120,
           "sharedProjects": 3,
-          "concurrency": 20
+          "concurrency": 20,
+          "track": "cloud"
         },
         {
           "name": "Business 40k",
@@ -95,7 +100,8 @@
           "overage": null,
           "note": "Business — 40k executions (€800/mo monthly)",
           "annualUsd": 667,
-          "sharedProjects": 6
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 50k",
@@ -105,7 +111,8 @@
           "overage": null,
           "note": "Business — 50k executions (€985/mo monthly)",
           "annualUsd": 821,
-          "sharedProjects": 6
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 75k",
@@ -115,7 +122,8 @@
           "overage": null,
           "note": "Business — 75k executions (€1456/mo monthly)",
           "annualUsd": 1213,
-          "sharedProjects": 6
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 100k",
@@ -125,7 +133,8 @@
           "overage": null,
           "note": "Business — 100k executions (€1726/mo monthly)",
           "annualUsd": 1438,
-          "sharedProjects": 6
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 150k",
@@ -135,7 +144,8 @@
           "overage": null,
           "note": "Business — 150k executions (€2189/mo monthly)",
           "annualUsd": 1824,
-          "sharedProjects": 6
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 200k",
@@ -145,7 +155,8 @@
           "overage": null,
           "note": "Business — 200k executions (€2639/mo monthly)",
           "annualUsd": 2199,
-          "sharedProjects": 6
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 300k",
@@ -155,7 +166,8 @@
           "overage": null,
           "note": "Business — 300k executions (€3512/mo monthly)",
           "annualUsd": 2927,
-          "sharedProjects": 6
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 400k",
@@ -165,7 +177,8 @@
           "overage": null,
           "note": "Business — 400k executions (€4381/mo monthly)",
           "annualUsd": 3651,
-          "sharedProjects": 6
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 500k",
@@ -175,7 +188,8 @@
           "overage": null,
           "note": "Business — 500k executions (€5245/mo monthly)",
           "annualUsd": 4371,
-          "sharedProjects": 6
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Cloud Enterprise",

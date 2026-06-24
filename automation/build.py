@@ -144,6 +144,8 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
         parts.append(f'freeFlows: {plan["freeFlows"]}')
     if plan.get("selfHostOnly"):
         parts.append("selfHostOnly: true")
+    if plan.get("track"):
+        parts.append(f'track: {js_str(plan["track"])}')
     if "overage" in plan:
         # per-plan override tool-level overage; null = plán nemá pay-as-you-go
         parts.append(f'overage: {js_overage(plan["overage"])}')
