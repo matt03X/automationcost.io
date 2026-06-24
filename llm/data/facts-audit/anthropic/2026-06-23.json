@@ -1,0 +1,59 @@
+{
+  "provider": "anthropic",
+  "scrapedAt": "2026-06-23T10:50:16.930Z",
+  "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+  "httpStatus": 200,
+  "pageCaching": true,
+  "pageBatch": true,
+  "modelCount": 4,
+  "models": [
+    {
+      "name": "Claude Fable 5",
+      "matchedId": "claude-fable-5",
+      "contextWindow": null,
+      "maxOutput": null,
+      "caching": null,
+      "batch": null,
+      "raw": "Introducing Claude Fable 5 and Claude Mythos 5"
+    },
+    {
+      "name": "Claude Opus 4.8",
+      "matchedId": "claude-opus-4-8",
+      "contextWindow": null,
+      "maxOutput": 15000,
+      "caching": null,
+      "batch": null,
+      "raw": "What's new in Claude Opus 4.8"
+    },
+    {
+      "name": "Claude Sonnet 4.6",
+      "matchedId": "claude-sonnet-4-6",
+      "contextWindow": null,
+      "maxOutput": null,
+      "caching": null,
+      "batch": null,
+      "raw": "Claude Sonnet 4.6 $3 / MTok $3.75 / MTok $6 / MTok $0.30 / MTok $15 / MTok"
+    },
+    {
+      "name": "Claude Haiku 4.5",
+      "matchedId": "claude-haiku-4-5",
+      "contextWindow": null,
+      "maxOutput": null,
+      "caching": null,
+      "batch": null,
+      "raw": "Claude Haiku 4.5 $1 / MTok $1.25 / MTok $2 / MTok $0.10 / MTok $5 / MTok"
+    }
+  ],
+  "deprecations": [
+    "Claude Opus 4 (retired, except on Vertex AI) $15 / MTok $18.75 / MTok $30 / MTok $1.50 / MTok $75 / MTok",
+    "Claude Sonnet 4 (retired, except on Bedrock and Vertex AI) $3 / MTok $3.75 / MTok $6 / MTok $0.30 / MTok $15 / MTok",
+    "Claude Haiku 3.5 (retired, except on Bedrock and Vertex AI) $0.80 / MTok $1 / MTok $1.60 / MTok $0.08 / MTok $4 / MTok",
+    "Amazon Bedrock global vs regional endpoints for Opus 4.7, Haiku 4.5, and later models, or the legacy integration for all other models on Bedrock",
+    "Claude Opus 4 (retired, except on Vertex AI) $7.50 / MTok $37.50 / MTok",
+    "Claude Sonnet 4 (retired, except on Bedrock and Vertex AI) $1.50 / MTok $7.50 / MTok",
+    "Claude Haiku 3.5 (retired, except on Bedrock and Vertex AI) $0.40 / MTok $2 / MTok",
+    "Claude Opus 4 (retired, except on Vertex AI) auto, none",
+    "Claude Sonnet 4 (retired, except on Bedrock and Vertex AI) auto, none",
+    "Claude Haiku 3.5 (retired, except on Bedrock and Vertex AI) auto, none"
+  ]
+}

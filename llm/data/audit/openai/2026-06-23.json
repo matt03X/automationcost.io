@@ -1,0 +1,122 @@
+{
+  "provider": "openai",
+  "scrapedAt": "2026-06-23T10:24:10.837Z",
+  "url": "https://platform.openai.com/docs/pricing",
+  "httpStatus": 200,
+  "modelCount": 16,
+  "models": [
+    {
+      "name": "gpt-realtime-2 Audio",
+      "input": 32,
+      "output": 64,
+      "cached": null,
+      "raw": "gpt-realtime-2 Audio $32.00 $0.40 $64.00"
+    },
+    {
+      "name": "gpt-realtime-translate Audio - -",
+      "input": 0.034,
+      "output": null,
+      "cached": null,
+      "raw": "gpt-realtime-translate Audio - - $0.034 / minute"
+    },
+    {
+      "name": "gpt-realtime-whisper Audio - -",
+      "input": 0.017,
+      "output": null,
+      "cached": null,
+      "raw": "gpt-realtime-whisper Audio - - $0.017 / minute"
+    },
+    {
+      "name": "gpt-image-2 Image",
+      "input": 8,
+      "output": 30,
+      "cached": null,
+      "raw": "gpt-image-2 Image $8.00 $2.00 $30.00"
+    },
+    {
+      "name": "gpt-image-1.5 Image",
+      "input": 8,
+      "output": 32,
+      "cached": null,
+      "raw": "gpt-image-1.5 Image $8.00 $2.00 $32.00"
+    },
+    {
+      "name": "gpt-image-1-mini Image",
+      "input": 2.5,
+      "output": 8,
+      "cached": null,
+      "raw": "gpt-image-1-mini Image $2.50 $0.25 $8.00"
+    },
+    {
+      "name": "sora-2 720p 720x1280 1280x720",
+      "input": 0.1,
+      "output": null,
+      "cached": null,
+      "raw": "sora-2 720p 720x1280 1280x720 $0.10"
+    },
+    {
+      "name": "sora-2-pro 720p 720x1280 1280x720",
+      "input": 0.3,
+      "output": null,
+      "cached": null,
+      "raw": "sora-2-pro 720p 720x1280 1280x720 $0.30"
+    },
+    {
+      "name": "1024p 1024x1792 1792x1024",
+      "input": 0.5,
+      "output": null,
+      "cached": null,
+      "raw": "1024p 1024x1792 1792x1024 $0.50"
+    },
+    {
+      "name": "1080p 1080x1920 1920x1080",
+      "input": 0.7,
+      "output": null,
+      "cached": null,
+      "raw": "1080p 1080x1920 1920x1080 $0.70"
+    },
+    {
+      "name": "gpt-4o-transcribe Transcription",
+      "input": 2.5,
+      "output": 0.006,
+      "cached": null,
+      "raw": "gpt-4o-transcribe Transcription $2.50 $10.00 $0.006 / minute"
+    },
+    {
+      "name": "gpt-4o-mini-transcribe Transcription",
+      "input": 1.25,
+      "output": 0.003,
+      "cached": null,
+      "raw": "gpt-4o-mini-transcribe Transcription $1.25 $5.00 $0.003 / minute"
+    },
+    {
+      "name": "Web search preview (reasoning models, including gpt-5, o-ser",
+      "input": 10,
+      "output": null,
+      "cached": null,
+      "context": 1000,
+      "raw": "Web search preview (reasoning models, including gpt-5, o-series) $10.00 / 1k calls"
+    },
+    {
+      "name": "ChatGPT chat-latest",
+      "input": 5,
+      "output": 30,
+      "cached": null,
+      "raw": "ChatGPT chat-latest $5.00 $0.50 $30.00"
+    },
+    {
+      "name": "Codex gpt-5.3-codex",
+      "input": 1.75,
+      "output": 14,
+      "cached": null,
+      "raw": "Codex gpt-5.3-codex $1.75 $0.175 $14.00"
+    },
+    {
+      "name": "o4-mini-2025-04-16",
+      "input": 100,
+      "output": 16,
+      "cached": null,
+      "raw": "o4-mini-2025-04-16 $100.00 / hour $4.00 $1.00 $16.00"
+    }
+  ]
+}

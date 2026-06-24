@@ -609,15 +609,16 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
                 f'        <p>{blurb}</p>\n        {btn}\n      </div>')
     out_cards = [ta, tb]  # rovnocenné pořadí (žádná "winner" karta) — fair-competition neutralita
 
-    # cross-linky: pricing obou + compare + až 3 nejbližší publikované páry
+    # cross-linky: pricing obou + compare + limits + až 3 nejbližší publikované páry
     xlinks = [f'<a class="xlink" href="{ta["slug"]}-pricing.html">{a_name} pricing in detail</a>',
               f'<a class="xlink" href="{tb["slug"]}-pricing.html">{b_name} pricing in detail</a>',
               f'<a class="xlink" href="{ta["slug"]}-alternatives.html">{a_name} alternatives</a>',
               f'<a class="xlink" href="{tb["slug"]}-alternatives.html">{b_name} alternatives</a>',
-              '<a class="xlink" href="compare.html">Compare all 7 tools</a>']
+              '<a class="xlink" href="compare.html">Compare all 7 tools</a>',
+              '<a class="xlink" href="limits.html">Plan limits &amp; run caps</a>']
     for other in pairs_data["pairs"]:
         oslug = f'{other["a"]}-vs-{other["b"]}'
-        if oslug == slug or len(xlinks) >= 6:
+        if oslug == slug or len(xlinks) >= 8:
             continue
         if {other["a"], other["b"]} & {pair["a"], pair["b"]}:
             on_a, on_b = tools_by_slug[other["a"]]["name"], tools_by_slug[other["b"]]["name"]
@@ -643,7 +644,9 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
         f'      <div class="faq-item">\n        <button class="faq-q" onclick="toggleFaq(this)">{f["q"]}</button>\n'
         f'        <div class="faq-a">{f["a"]}</div>\n      </div>' for f in faq)
 
-    title = f"{a_name} vs {b_name}: Pricing &amp; Cost Comparison 2026 | WizardCost"
+    # seo_title override (set per-pair in pairs.json to tune without changing the template default)
+    title = (pair.get("seo_title")
+             or f"{a_name} vs {b_name}: Pricing &amp; Cost Comparison 2026 | WizardCost")
     desc = (f"{a_name} vs {b_name} priced at " + " / ".join(f"{v:,}" for v in volumes)
             + " runs per month — real plans, overage math, feature differences and how the "
               "pricing compares for your usage.")
