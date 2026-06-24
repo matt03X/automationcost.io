@@ -1,0 +1,53 @@
+{
+  "date": "2026-06-22",
+  "generatedAt": "2026-06-22T23:03:12.058Z",
+  "changeCount": 0,
+  "addedCount": 0,
+  "removedCount": 0,
+  "byVendor": {
+    "zapier": {
+      "count": 9725,
+      "prevCount": null,
+      "added": [],
+      "removed": []
+    },
+    "make": {
+      "count": 2594,
+      "prevCount": null,
+      "added": [],
+      "removed": []
+    },
+    "n8n": {
+      "count": 572,
+      "prevCount": null,
+      "added": [],
+      "removed": []
+    },
+    "pipedream": {
+      "count": 3391,
+      "prevCount": null,
+      "added": [],
+      "removed": []
+    },
+    "activepieces": {
+      "count": 754,
+      "prevCount": null,
+      "added": [],
+      "removed": []
+    },
+    "automatisch": {
+      "count": 92,
+      "prevCount": null,
+      "added": [],
+      "removed": []
+    },
+    "node-red": {
+      "count": 6092,
+      "prevCount": null,
+      "added": [],
+      "removed": []
+    }
+  },
+  "warnings": [],
+  "changes": []
+}
