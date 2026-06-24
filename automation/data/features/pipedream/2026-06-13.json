@@ -1,0 +1,38 @@
+{
+  "vendor": "pipedream",
+  "url": "https://pipedream.com/pricing",
+  "asof": "2026-06-13",
+  "fetchedBy": "manual (human-saved HTML 2026-06-13, parsed offline — Pipedream ToS prohibits automated bot access)",
+  "partial": true,
+  "note": "Cumulative 'everything in X, plus' style cards. Free tier není na uložené stránce jako feature karta (Free basics: 100 credits/3 workflows jsou v tools.json). Max queue size / concurrency NEJSOU na pricing stránce — jen v docs.",
+  "plans": {
+    "Basic": [
+      "20M AI tokens",
+      "No usage limit (2k credits included)",
+      "10 active workflows",
+      "5 connected accounts",
+      "Pipedream Connect in development"
+    ],
+    "Advanced": [
+      "50M AI tokens",
+      "Control flow operators",
+      "Unlimited workflows",
+      "Unlimited connected accounts",
+      "Premium apps",
+      "GitHub Sync"
+    ],
+    "Connect": [
+      "Pipedream Connect in production",
+      "Auth for 100 external users",
+      "$2 per additional user"
+    ],
+    "Business": [
+      "Volume pricing",
+      "Custom invoicing",
+      "Priority integration development",
+      "Dedicated support in Slack",
+      "Support for HIPAA workloads",
+      "Uptime and availability SLAs"
+    ]
+  }
+}

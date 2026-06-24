@@ -1,0 +1,46 @@
+{
+  "vendor": "zapier",
+  "url": "https://zapier.com/pricing",
+  "asof": "2026-06-13",
+  "fetchedBy": "manual (human-saved HTML 2026-06-13, parsed offline — Zapier ToS prohibits automated bot access)",
+  "partial": true,
+  "note": "Zapier neuvádí features jako per-plán bullety, ale jako sdílené 'all paid plans include' skupiny (vloženy do Professional) + per-plán rozdíly z FAQ stránky. Task tiery/ceny jsou v tools.json. Per-plán matice obsahuje víc granularity (nezachyceno).",
+  "plans": {
+    "Free": [
+      "100 tasks/mo",
+      "Zaps, Tables and Forms included",
+      "1 user"
+    ],
+    "Professional": [
+      "Visual no-code editor",
+      "Tables for data storage and Forms",
+      "Unlimited app integrations",
+      "All built-in data and AI workflow tools",
+      "Multi-step Zaps",
+      "Premium apps",
+      "Zap version control",
+      "Custom error notifications",
+      "Advanced Zap settings",
+      "1 user"
+    ],
+    "Team": [
+      "Everything in Professional, plus:",
+      "Shared workspace",
+      "Shared app connections",
+      "Premier Support",
+      "Up to 25 users"
+    ],
+    "Enterprise": [
+      "Everything in Team, plus:",
+      "Unlimited users",
+      "Advanced admin permissions",
+      "SSO / SAML",
+      "Custom data retention",
+      "Advanced security & governance",
+      "Technical Account Manager",
+      "Customer Success Manager",
+      "Custom onboarding",
+      "Invoice / wire payment"
+    ]
+  }
+}
