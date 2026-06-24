@@ -1,0 +1,40 @@
+{
+  "vendor": "make",
+  "url": "https://www.make.com/en/pricing",
+  "asof": "2026-06-24",
+  "fetchedBy": "WizardCostBot/1.0 (+https://wizardcost.com; polite feature audit, robots-respecting)",
+  "partial": false,
+  "plans": {
+    "Free": [
+      "1,000 credits/month",
+      "No-code visual workflow builder",
+      "3000+ apps",
+      "Routers & filters",
+      "Customer support",
+      "15-minute minimum interval between runs"
+    ],
+    "Core": [
+      "Unlimited active scenarios",
+      "More control with scheduled scenarios, down to the minute",
+      "Increased data transfer limits",
+      "Access to the Make API"
+    ],
+    "Pro": [
+      "Priority scenario execution",
+      "Custom variables",
+      "Full-text execution log search"
+    ],
+    "Teams": [
+      "Teams and team roles",
+      "Create and share scenario templates"
+    ],
+    "Enterprise": [
+      "Custom functions support",
+      "Enterprise app integrations",
+      "24/7 Enterprise support",
+      "Access to Value Engineering team",
+      "Overage protection",
+      "Advanced security features"
+    ]
+  }
+}

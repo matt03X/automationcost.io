@@ -1,0 +1,47 @@
+{
+  "vendor": "n8n",
+  "url": "https://n8n.io/pricing/",
+  "asof": "2026-06-24",
+  "fetchedBy": "WizardCostBot/1.0 (+https://wizardcost.com; polite feature audit, robots-respecting)",
+  "partial": false,
+  "plans": {
+    "Starter": [
+      "1 shared project",
+      "5 concurrent executions",
+      "Unlimited users",
+      "50 AI Workflow Builder credits",
+      "Forum support"
+    ],
+    "Pro": [
+      "3 shared projects",
+      "20 concurrent executions",
+      "7 days of insights",
+      "150 AI Workflow Builder credits",
+      "Admin roles",
+      "Global variables",
+      "Workflow history",
+      "Execution search"
+    ],
+    "Business": [
+      "6 shared projects",
+      "SSO, SAML and LDAP",
+      "30 days of insights",
+      "AI Workflow Builder coming soon",
+      "Different environments",
+      "Scaling options",
+      "Version control using Git",
+      "Forum support"
+    ],
+    "Enterprise": [
+      "Unlimited shared projects",
+      "200+ concurrent executions",
+      "365 days of insights",
+      "1000 AI Workflow Builder credits (only available on n8n cloud)",
+      "External secret store integration",
+      "Log streaming",
+      "Extended data retention",
+      "Dedicated support with SLA",
+      "Invoice billing"
+    ]
+  }
+}
