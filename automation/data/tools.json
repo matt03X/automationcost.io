@@ -8,7 +8,8 @@
       "note": "calculator-only display label for the plan; omit for custom-priced plans (calculator synthesizes '<name> — price estimated, contact sales')",
       "overage (per-plan)": "optional key on a plan: overrides the tool-level overage; null = this plan has NO pay-as-you-go (engines skip it when ops exceed opsIncluded). Absent key = inherit tool-level.",
       "currency": "tool 'currency':'EUR' (n8n) → build apply_fx převede cloud monthlyUsd/annualUsd na USD kurzem z data/fx.json (denně z auditu). monthlyUsd i annualUsd jsou reálné scrapnuté ceny; annualUsd = billed-annually přepočtené na $/mo (zapier scrape /rok ÷12, make/n8n už /mo).",
-      "maxUsers": "per-plan seat cap; absent = inherit tool-level defaultMaxUsers (else unlimited); null = unlimited (override a tool default). seatsIncluded/perSeatUsd = add-on seat model (cost += perSeatUsd*(users-seatsIncluded)). sharedProjects/concurrency = informational (null = unlimited). All live-sourced."
+      "maxUsers": "per-plan seat cap; absent = inherit tool-level defaultMaxUsers (else unlimited); null = unlimited (override a tool default). seatsIncluded/perSeatUsd = add-on seat model (cost += perSeatUsd*(users-seatsIncluded)). sharedProjects/concurrency = informational (null = unlimited). All live-sourced.",
+      "mcpSupport": "nativní podpora Model Context Protocol serveru/klienta: 'Native' (first-party), 'Community' (jen komunitní balíčky), 'No' (žádná). Live-ověřeno z vendor docs 2026-06-24."
     },
     "todo": [
       "pipedream: additional-credit (overage) rate removed from public pricing page (verified 2026-06-13 against saved pricing snapshot) — overage now Contact Sales only, tool-level overage=null; Business=custom tier carries the over-volume estimate. Free 100cr/3wf still exists in-app but is 'discontinued' for new signups.",
@@ -238,7 +239,8 @@
       "cons": [
         "Setup required for self-host",
         "Big jump from Pro to Business tier"
-      ]
+      ],
+      "mcpSupport": "Native"
     },
     {
       "slug": "make",
@@ -449,7 +451,8 @@
       "cons": [
         "No self-hosting",
         "No native code steps"
-      ]
+      ],
+      "mcpSupport": "Native"
     },
     {
       "slug": "pipedream",
@@ -727,7 +730,8 @@
         "Overage no longer public — quote only",
         "Very limited free tier",
         "No self-host"
-      ]
+      ],
+      "mcpSupport": "Native"
     },
     {
       "slug": "zapier",
@@ -1086,7 +1090,8 @@
         "Free tier severely limited",
         "No self-host"
       ],
-      "defaultMaxUsers": 1
+      "defaultMaxUsers": 1,
+      "mcpSupport": "Native"
     },
     {
       "slug": "activepieces",
@@ -1184,7 +1189,8 @@
         "Fewer integrations than Zapier (747+)",
         "Smaller community than n8n",
         "No code steps"
-      ]
+      ],
+      "mcpSupport": "Native"
     },
     {
       "slug": "automatisch",
@@ -1273,7 +1279,8 @@
         "Only ~50 integrations",
         "No AI nodes",
         "Smallest community"
-      ]
+      ],
+      "mcpSupport": "No"
     },
     {
       "slug": "node-red",
@@ -1362,7 +1369,8 @@
         "No cloud option",
         "Developer-only (no visual UI)",
         "Limited SaaS integrations"
-      ]
+      ],
+      "mcpSupport": "Community"
     }
   ]
 }

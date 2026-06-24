@@ -217,7 +217,8 @@ def render_compare(tools: list[dict]) -> str:
         )
         lines.append(
             f'    multiUser: {js_bool(t["multiUser"])}, apiAccess: {js_bool(t["apiAccess"])}, '
-            f'webhooks: {js_bool(t["webhooks"])}, codeSteps: {js_bool(t["codeSteps"])},'
+            f'webhooks: {js_bool(t["webhooks"])}, codeSteps: {js_bool(t["codeSteps"])}, '
+            f'mcpSupport: {js_str(t.get("mcpSupport", "No"))},'
         )
         lines.append(f'    homepage: {js_str(t["homepage"])},')
         lines.append(f'    affiliateUrl: {js_str(t["affiliateUrl"])},')
