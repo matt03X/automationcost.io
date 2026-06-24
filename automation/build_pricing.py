@@ -640,6 +640,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
       <div class="ac-dd-menu">
         <a href="index.html">{tr("nav.home", "AutomationCost home")}</a>
         <a href="tools.html">{tr("nav.tools", "Tools")}</a>
+        <a href="app-finder.html">{tr("nav.app_finder", "App finder")}</a>
         <a href="changelog.html">{tr("nav.changelog", "Changelog")}</a>
         <a href="price-history.html">{tr("nav.price_history", "Price history")}</a>
         <div class="ac-dd-sep">{tr("nav.sec_pricing_guides", "Pricing guides")}</div>
@@ -997,6 +998,7 @@ def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
       <div class="ac-dd-menu">
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
+        <a href="app-finder.html">App finder</a>
         <a href="changelog.html">Changelog</a>
         <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
@@ -1878,6 +1880,7 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
       <div class="ac-dd-menu">
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
+        <a href="app-finder.html">App finder</a>
         <a href="changelog.html">Changelog</a>
         <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
