@@ -21,5 +21,116 @@
       "SSO",
       "Audit Logs"
     ]
-  }
+  },
+  "matrix": {
+    "source": "https://www.activepieces.com/pricing",
+    "asof": "2026-06-24",
+    "columns": [
+      "Standard",
+      "Ultimate"
+    ],
+    "groups": [
+      {
+        "title": "Standard plan",
+        "rows": [
+          {
+            "feature": "10 free active flows",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true
+            }
+          },
+          {
+            "feature": "Unlimited runs",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true
+            }
+          },
+          {
+            "feature": "AI agents",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true
+            }
+          },
+          {
+            "feature": "Unlimited MCP servers",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true
+            }
+          },
+          {
+            "feature": "Unlimited tables",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true
+            }
+          },
+          {
+            "feature": "Community support",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Security & Governance",
+        "rows": [
+          {
+            "feature": "Team & Personal Projects",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true
+            }
+          },
+          {
+            "feature": "Piece Access Controls",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true
+            }
+          },
+          {
+            "feature": "Global Connections",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true
+            }
+          },
+          {
+            "feature": "Custom RBAC",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true
+            }
+          },
+          {
+            "feature": "SSO",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Control & Compliance",
+        "rows": [
+          {
+            "feature": "Audit Logs",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true
+            }
+          }
+        ]
+      }
+    ],
+    "partial": true
+  },
+  "note": " | Full matrix offline from saved HTML (2-col Standard/Ultimate; 'Show all' Ultimate extras not expanded → partial)."
 }
