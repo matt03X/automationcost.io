@@ -718,6 +718,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
       <div class="ac-dd-menu">
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
+        <a href="app-finder.html">App finder</a>
         <a href="changelog.html">Changelog</a>
         <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
@@ -1340,6 +1341,7 @@ def render_price_history(data: dict, site: dict) -> str:
       <div class="ac-dd-menu">
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
+        <a href="app-finder.html">App finder</a>
         <a href="changelog.html">Changelog</a>
         <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>

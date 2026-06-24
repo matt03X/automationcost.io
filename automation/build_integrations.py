@@ -568,6 +568,133 @@ def _render_html(matrix: dict, site: dict, tools_meta: dict) -> str:
 # Veřejné API
 # ---------------------------------------------------------------------------
 
+_AF_NAMES = {"zapier": "Zapier", "make": "Make", "n8n": "n8n", "pipedream": "Pipedream",
+            "activepieces": "Activepieces", "automatisch": "Automatisch", "node-red": "Node-RED"}
+_AF_DOMAIN = {"zapier": "zapier.com", "make": "make.com", "n8n": "n8n.io", "pipedream": "pipedream.com",
+              "activepieces": "activepieces.com", "automatisch": "automatisch.io", "node-red": "nodered.org"}
+
+_AF_CSS = _BASE_HEAD_CSS + """
+    .af-search { position: relative; margin: 22px 0 8px; }
+    .af-search input { width: 100%; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); padding: 16px 18px; font-family: var(--font); font-size: 17px; color: var(--text); }
+    .af-search input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .af-drop { position: absolute; left: 0; right: 0; top: calc(100% + 6px); background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius); max-height: 340px; overflow: auto; z-index: 30; display: none; box-shadow: 0 14px 44px rgba(0,0,0,.5); }
+    .af-drop.on { display: block; }
+    .af-opt { padding: 11px 16px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--border); }
+    .af-opt:last-child { border-bottom: none; }
+    .af-opt:hover, .af-opt.hl { background: var(--surface2); }
+    .af-opt .cnt { color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .af-opt mark { background: transparent; color: var(--accent); }
+    .af-hint { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+    .af-result { margin: 28px 0 6px; display: none; }
+    .af-result.on { display: block; }
+    .af-result h2 { margin: 0 0 2px; }
+    .af-result .rsub { color: var(--muted); font-size: 13px; margin: 0 0 16px; }
+    .af-grid { display: grid; gap: 10px; }
+    .af-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 13px 16px; }
+    .af-row .nm { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+    .af-row img { width: 22px; height: 22px; border-radius: 5px; background: #fff; padding: 1px; object-fit: contain; }
+    .af-yes { color: var(--green); font-weight: 700; font-size: 14px; }
+    .af-no { color: var(--muted); }
+    .af-comm { color: var(--yellow); font-size: 12px; border: 1px solid var(--border2); border-radius: 5px; padding: 2px 7px; }
+    .af-tally { color: var(--text2); font-size: 13px; margin-top: 14px; }
+"""
+
+_AF_JS = """
+(function(){
+  var q=document.getElementById('afq'), drop=document.getElementById('afdrop'), res=document.getElementById('afres');
+  if(!q) return;
+  var hl=-1, matches=[];
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function logo(d){return 'https://www.google.com/s2/favicons?domain='+d+'&sz=64';}
+  function mark(name,t){var i=name.toLowerCase().indexOf(t);if(i<0)return esc(name);return esc(name.slice(0,i))+'<mark>'+esc(name.slice(i,i+t.length))+'</mark>'+esc(name.slice(i+t.length));}
+  function search(term){
+    term=term.trim().toLowerCase(); if(!term){drop.classList.remove('on');return;}
+    var starts=[],contains=[];
+    for(var i=0;i<AF_APPS.length;i++){var l=AF_APPS[i][0].toLowerCase();
+      if(l.indexOf(term)===0)starts.push(i); else if(l.indexOf(term)>-1)contains.push(i);
+      if(starts.length>=12)break;}
+    matches=starts.concat(contains).slice(0,12); hl=-1;
+    if(!matches.length){drop.innerHTML='<div class="af-opt"><span class="af-no">No app matches \\u201c'+esc(term)+'\\u201d.</span></div>';drop.classList.add('on');return;}
+    drop.innerHTML=matches.map(function(idx){var a=AF_APPS[idx];var have=a[1].filter(function(x){return x===1||x===2;}).length;
+      return '<div class="af-opt" data-i="'+idx+'"><span><b>'+mark(a[0],term)+'</b></span><span class="cnt">'+have+'/'+AF_TOOLS.length+' tools</span></div>';}).join('');
+    drop.classList.add('on');
+  }
+  function pick(idx){var a=AF_APPS[idx];q.value=a[0];drop.classList.remove('on');render(a);}
+  function render(a){var t=a[1],have=0;
+    var rows=AF_TOOLS.map(function(tool,i){var v=t[i],cell;
+      if(v===1){have++;cell='<span class="af-yes">\\u2713 Yes</span>';}
+      else if(v===2){have++;cell='<span class="af-comm">community</span>';}
+      else cell='<span class="af-no">\\u2014</span>';
+      return '<div class="af-row"><span class="nm"><img src="'+logo(tool.domain)+'" onerror="this.style.visibility=&quot;hidden&quot;">'+esc(tool.name)+'</span>'+cell+'</div>';}).join('');
+    res.innerHTML='<h2>'+esc(a[0])+'</h2><p class="rsub">Integration availability across the '+AF_TOOLS.length+' tools</p><div class="af-grid">'+rows+'</div><div class="af-tally"><b>'+have+'</b> of '+AF_TOOLS.length+' tools integrate with '+esc(a[0])+'.</div>';
+    res.classList.add('on');
+  }
+  function paint(){var os=drop.querySelectorAll('.af-opt');for(var k=0;k<os.length;k++)os[k].classList.toggle('hl',k===hl);var el=drop.querySelector('.af-opt.hl');if(el)el.scrollIntoView({block:'nearest'});}
+  q.addEventListener('input',function(){search(q.value);res.classList.remove('on');});
+  q.addEventListener('keydown',function(e){
+    if(!drop.classList.contains('on'))return;
+    if(e.key==='ArrowDown'){hl=Math.min(hl+1,matches.length-1);paint();e.preventDefault();}
+    else if(e.key==='ArrowUp'){hl=Math.max(hl-1,0);paint();e.preventDefault();}
+    else if(e.key==='Enter'){if(hl>=0&&matches[hl]!=null)pick(matches[hl]);else if(matches.length)pick(matches[0]);e.preventDefault();}
+    else if(e.key==='Escape')drop.classList.remove('on');
+  });
+  drop.addEventListener('mousedown',function(e){var o=e.target.closest('.af-opt');if(o&&o.dataset.i!=null)pick(+o.dataset.i);});
+  document.addEventListener('click',function(e){if(!e.target.closest('.af-search'))drop.classList.remove('on');});
+})();
+"""
+
+
+def _app_finder_html(matrix: dict, site: dict, tools_meta: dict) -> str:
+    """Samostatná stránka app-finder.html — searchbar + dropdown → jeden app → kdo ho má.
+    Data inline (žádný fetch); stejné chrome (head/nav/footer) jako integrations.html."""
+    month_year = _month_year(tools_meta)
+    domain = site.get("domain", "wizardcost.com")
+    base_path = (site.get("base_path", "") or "").strip("/")
+    prefix = f"https://{domain}/{base_path}".rstrip("/") if base_path else f"https://{domain}"
+    canonical = f"{prefix}/app-finder.html"
+    counts = matrix["counts"]
+    apps = matrix["apps"]
+    total = len(apps)
+    counts_str = " &middot; ".join(f"{_AF_NAMES[v]} {counts.get(v, 0):,}" for v in TOOLS_ORDER)
+
+    af_apps = [[a["name"], [a["support"].get(v, 0) for v in TOOLS_ORDER]] for a in apps]
+    data_js = json.dumps(af_apps, ensure_ascii=False, separators=(",", ":"))
+    tools_js = json.dumps([{"name": _AF_NAMES[v], "domain": _AF_DOMAIN[v]} for v in TOOLS_ORDER], ensure_ascii=False)
+
+    title = f"App finder — which automation tool has an app? · {month_year}"
+    desc = (f"Type any app — Slack, HubSpot, Notion — and instantly see which of the {len(TOOLS_ORDER)} "
+            f"automation tools (Zapier, Make, n8n, Pipedream, Activepieces, Automatisch, Node-RED) integrate with it.")
+
+    body = f"""
+<div class="container">
+  <div class="hero">
+    <h1>Which tool has the app you need?</h1>
+    <p class="lead">Type an app — e.g. <strong>Slack</strong>, HubSpot, Notion — and see which of the {len(TOOLS_ORDER)} automation tools integrate with it. {total:,} apps, re-checked weekly.</p>
+  </div>
+  <div class="section">
+    <div class="af-search">
+      <input id="afq" type="text" placeholder="Search an app…" autocomplete="off" spellcheck="false" aria-label="Search an app">
+      <div class="af-drop" id="afdrop"></div>
+    </div>
+    <p class="af-hint">{total:,} apps across {len(TOOLS_ORDER)} tools. Start typing.</p>
+    <div class="af-result" id="afres"></div>
+    <p class="tbl-note">✓ native connector &middot; <span class="af-comm">community</span> Node-RED community module (npm) &middot; — not in the public catalogue &middot; counts: {counts_str}. <a href="integrations.html">Full integration matrix →</a></p>
+  </div>
+{_finder_cta("Found your app — now find the cheapest tool that has it.", "Answer 4 quick questions and get the cheapest tool that covers your apps at your real volume in 30 seconds.")}
+</div>
+"""
+    from build_pricing import _page_graph_ld, _iso_date
+    page_ld = _page_graph_ld(domain, canonical, title.replace("&amp;", "&"), desc, _iso_date(tools_meta))
+    head = _head(title, desc, canonical, _AF_CSS, None, prefix, page_ld=page_ld)
+    return (head
+            + _nav("integrations", month_year)
+            + body
+            + _footer(month_year)
+            + "\n<script>\nvar AF_TOOLS=" + tools_js + ";\nvar AF_APPS=" + data_js + ";\n"
+            + _AF_JS
+            + "\n</script>\n\n<script src=\"app.js\"></script>\n</body>\n</html>\n")
+
+
 def build_integrations_page(tools: list[dict], site: dict, tools_meta: dict,
                             *, check: bool = False) -> list[str]:
     """Vygeneruje automation/integrations.html + data/integrations/index.json.
@@ -584,6 +711,7 @@ def build_integrations_page(tools: list[dict], site: dict, tools_meta: dict,
     targets = {
         INT_DIR / "index.json": _index_json(matrix, tools_meta),
         ROOT / "integrations.html": _render_html(matrix, site, tools_meta),
+        ROOT / "app-finder.html": _app_finder_html(matrix, site, tools_meta),
     }
     for target, rendered in targets.items():
         existing = target.read_text(encoding="utf-8") if target.exists() else None

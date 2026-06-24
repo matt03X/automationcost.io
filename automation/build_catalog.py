@@ -310,6 +310,7 @@ def _nav(active: str, month_year: str) -> str:
       <div class="ac-dd-menu">
         <a href="index.html">AutomationCost home</a>
         <a href="tools.html">Tools</a>
+        <a href="app-finder.html">App finder</a>
         <a href="changelog.html">Changelog</a>
         <a href="price-history.html">Price history</a>
         <div class="ac-dd-sep">Pricing guides</div>
