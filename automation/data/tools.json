@@ -762,19 +762,6 @@
           "note": "Free tier"
         },
         {
-          "name": "Team",
-          "monthlyUsd": 103.5,
-          "annualUsd": 69,
-          "opsIncluded": 2000,
-          "workflowLimit": null,
-          "maxUsers": 25,
-          "overage": {
-            "usd": 0.0647,
-            "per": 1
-          },
-          "note": "Team — 2,000 tasks/mo, up to 25 users; overage 1.25× base rate (per Zapier pricing)"
-        },
-        {
           "name": "Professional 750",
           "monthlyUsd": 29.99,
           "opsIncluded": 750,
@@ -935,6 +922,150 @@
           "overage": null,
           "note": "Professional — 2,000,000 tasks/mo ($5099)",
           "annualUsd": 3389.0
+        },
+        {
+          "name": "Team 2k",
+          "monthlyUsd": 103.5,
+          "opsIncluded": 2000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 2,000 tasks/mo, up to 25 users ($103.5)",
+          "annualUsd": 69
+        },
+        {
+          "name": "Team 5k",
+          "monthlyUsd": 178.5,
+          "opsIncluded": 5000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 5,000 tasks/mo, up to 25 users ($178.5)",
+          "annualUsd": 119
+        },
+        {
+          "name": "Team 10k",
+          "monthlyUsd": 253.5,
+          "opsIncluded": 10000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 10,000 tasks/mo, up to 25 users ($253.5)",
+          "annualUsd": 169
+        },
+        {
+          "name": "Team 20k",
+          "monthlyUsd": 373.5,
+          "opsIncluded": 20000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 20,000 tasks/mo, up to 25 users ($373.5)",
+          "annualUsd": 249
+        },
+        {
+          "name": "Team 50k",
+          "monthlyUsd": 598.5,
+          "opsIncluded": 50000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 50,000 tasks/mo, up to 25 users ($598.5)",
+          "annualUsd": 399
+        },
+        {
+          "name": "Team 100k",
+          "monthlyUsd": 898.5,
+          "opsIncluded": 100000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 100,000 tasks/mo, up to 25 users ($898.5)",
+          "annualUsd": 599
+        },
+        {
+          "name": "Team 200k",
+          "monthlyUsd": 1499,
+          "opsIncluded": 200000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 200,000 tasks/mo, up to 25 users ($1499)",
+          "annualUsd": 999
+        },
+        {
+          "name": "Team 300k",
+          "monthlyUsd": 1799,
+          "opsIncluded": 300000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 300,000 tasks/mo, up to 25 users ($1799)",
+          "annualUsd": 1199
+        },
+        {
+          "name": "Team 400k",
+          "monthlyUsd": 2099,
+          "opsIncluded": 400000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 400,000 tasks/mo, up to 25 users ($2099)",
+          "annualUsd": 1399
+        },
+        {
+          "name": "Team 500k",
+          "monthlyUsd": 2699,
+          "opsIncluded": 500000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 500,000 tasks/mo, up to 25 users ($2699)",
+          "annualUsd": 1799
+        },
+        {
+          "name": "Team 750k",
+          "monthlyUsd": 3299,
+          "opsIncluded": 750000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 750,000 tasks/mo, up to 25 users ($3299)",
+          "annualUsd": 2199
+        },
+        {
+          "name": "Team 1M",
+          "monthlyUsd": 3749,
+          "opsIncluded": 1000000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 1,000,000 tasks/mo, up to 25 users ($3749)",
+          "annualUsd": 2499
+        },
+        {
+          "name": "Team 1.25M",
+          "monthlyUsd": 4499,
+          "opsIncluded": 1250000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 1,250,000 tasks/mo, up to 25 users ($4499)",
+          "annualUsd": 2999
+        },
+        {
+          "name": "Team 1.5M",
+          "monthlyUsd": 5099,
+          "opsIncluded": 1500000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 1,500,000 tasks/mo, up to 25 users ($5099)",
+          "annualUsd": 3399
+        },
+        {
+          "name": "Team 1.75M",
+          "monthlyUsd": 5699,
+          "opsIncluded": 1750000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 1,750,000 tasks/mo, up to 25 users ($5699)",
+          "annualUsd": 3799
+        },
+        {
+          "name": "Team 2M",
+          "monthlyUsd": 5999,
+          "opsIncluded": 2000000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 2,000,000 tasks/mo, up to 25 users ($5999)",
+          "annualUsd": 3999
         },
         {
           "name": "Enterprise",
