@@ -178,17 +178,25 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
   padding:10px;border-radius:10px;font-size:.88rem;transition:.13s}
 .best .bcta:hover{filter:brightness(1.08)}
 /* best 3 picks (top-left) */
-.best-pick{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--b)}
+.best-pick{padding:10px 0;border-bottom:1px solid var(--b)}
+.best-pick .bp-head{display:flex;align-items:center;gap:10px}
 .best-pick:last-of-type{border-bottom:none}
 .best-pick .bp-rank{font-family:var(--mono);font-size:.74rem;font-weight:700;color:var(--tx3);width:13px;flex-shrink:0;text-align:center}
 .best-pick.top .bp-rank{color:var(--pc,var(--ac))}
 .best-pick .bp-main{flex:1;min-width:0}
 .best-pick .bp-nm{display:block;font-family:var(--display);font-weight:700;font-size:.96rem;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .best-pick.top .bp-nm{color:var(--tx)}
-.best-pick .bp-match{display:block;font-family:var(--mono);font-size:.6rem;color:var(--tx3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.best-pick .bp-match{display:block;font-family:var(--mono);font-size:.6rem;color:var(--tx3);margin-top:3px;line-height:1.4;white-space:normal}
+.best-pick .bp-match b{color:var(--tx2);font-weight:700}
 .best-pick .bp-pr{font-family:var(--mono);font-size:.84rem;font-weight:600;color:var(--tx2);white-space:nowrap}
 .best-pick .bp-pr small{color:var(--tx3);font-size:.6rem}
 .best-pick.top .bp-pr{color:var(--pc,var(--ac))}
+.best-pick .bp-link{display:inline-block;margin:8px 0 0 23px;font-size:.74rem;color:var(--link);font-weight:500}
+.best-pick .bp-link:hover{color:#9fbcff}
+.best-pick .bp-link.aff{color:var(--pc);font-weight:700;background:rgba(255,255,255,.05);border:1px solid var(--b2);border-radius:8px;padding:5px 10px;margin-top:9px}
+.best-pick .bp-link.aff:hover{filter:brightness(1.12);background:rgba(255,255,255,.08)}
+.bp-link .afftag{font-family:var(--mono);font-size:.52rem;text-transform:uppercase;letter-spacing:.05em;color:var(--tx3);border:1px solid var(--b2);border-radius:4px;padding:1px 4px;margin-left:7px;vertical-align:middle}
+.best .bp-vol{font-family:var(--mono);font-size:.62rem;color:var(--tx3);letter-spacing:.03em;margin:4px 0 9px}
 /* capabilities at a glance */
 .caps{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:15px}
 .cap-tool{background:var(--panel2);border:1px solid var(--b);border-radius:12px;padding:14px}
@@ -1222,6 +1230,17 @@ const PROVIDER_HOME_AFF={ /* automation vendor links resolved from TOOLS data at
 function aToolColor(slug){ return getComputedStyle(document.documentElement).getPropertyValue("--"+slug).trim()||"#888"; }
 function aFreeOps(tool){ const f=tool.plans.find(p=>p.monthlyUsd===0&&!p.selfHostOnly); if(!f) return null; return f.opsIncluded; }
 
+/* current plan name (cloud) or self-host server tier for a calcCost result */
+function aPlanLabel(cr){
+  if(!cr) return "";
+  if(cr.hwOnly) return "self-host · "+(cr.spec?String(cr.spec).split(" + ")[0].split(" (")[0]:"server");
+  return cr.plan?cr.plan.name:"";
+}
+/* outbound link for a tool: affiliate (sponsored, new tab) where we have one, else our on-site pricing page */
+function aToolLinkHtml(tool,cls){
+  if(tool.hasAffiliate) return '<a class="'+cls+' aff" href="'+esc(tool.affiliateUrl)+'" target="_blank" rel="noopener sponsored">Try '+esc(tool.name)+' free →<span class="afftag">affiliate</span></a>';
+  return '<a class="'+cls+'" href="/automation/'+esc(tool.slug)+'-pricing.html">'+esc(tool.name)+' pricing &amp; plans →</a>';
+}
 /* true if a tool integrates with EVERY app the user has selected (or no apps selected) */
 function aAppOK(slug){
   if(!aState.apps.length) return true;
@@ -1323,10 +1342,12 @@ function aRender(){
     const picks=pickRows.slice(0,3);
     best.style.setProperty("--ac",aToolColor(pick.tool.slug));
     best.innerHTML='<div class="star">★ Best 3 · '+A_PRIORITY.find(p=>p.id===aState.priority).lab+'</div>'+
-      picks.map(function(p,i){ return '<div class="best-pick'+(i===0?" top":"")+'" style="--pc:'+aToolColor(p.tool.slug)+'">'+
-        '<span class="bp-rank">'+(i+1)+'</span>'+
-        '<span class="bp-main"><span class="bp-nm">'+esc(p.tool.name)+'</span><span class="bp-match">'+p.score+'% · '+A_ROLE_LABEL[aState.role]+'</span></span>'+
-        '<span class="bp-pr">'+(p.cr.estimated?"~":"")+fmtMoney(p.cr.cost)+'<small>/mo</small></span></div>'; }).join("")+
+      '<div class="bp-vol">live at '+fmtInt(aState.runs)+' runs/mo · '+aState.steps+' step'+(aState.steps>1?'s':'')+' · '+aState.users+' user'+(aState.users>1?'s':'')+(aState.apps.length?' · '+aState.apps.length+' app'+(aState.apps.length>1?'s':''):'')+'</div>'+
+      picks.map(function(p,i){ var plan=aPlanLabel(p.cr); return '<div class="best-pick'+(i===0?" top":"")+'" style="--pc:'+aToolColor(p.tool.slug)+'">'+
+        '<div class="bp-head"><span class="bp-rank">'+(i+1)+'</span>'+
+        '<span class="bp-main"><span class="bp-nm">'+esc(p.tool.name)+'</span><span class="bp-match">'+(plan?'<b>'+esc(plan)+'</b> · ':'')+p.score+'% '+esc(A_ROLE_LABEL[aState.role])+'</span></span>'+
+        '<span class="bp-pr">'+(p.cr.estimated?"~":"")+fmtMoney(p.cr.cost)+'<small>/mo</small></span></div>'+
+        aToolLinkHtml(p.tool,"bp-link")+'</div>'; }).join("")+
       '<div class="why">'+aWhy(pick.tool.slug,aState.role)+'</div>'+
       '<a class="bcta" href="/automation/calculator.html">Run the full wizard →</a>';
   }
