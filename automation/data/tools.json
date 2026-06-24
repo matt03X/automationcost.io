@@ -498,8 +498,7 @@
           "opsIncluded": 100,
           "workflowLimit": 3,
           "overage": null,
-          "note": "Free tier",
-          "maxUsers": 1
+          "note": "Free tier"
         },
         {
           "name": "Basic",
@@ -573,9 +572,7 @@
               0.0003
             ]
           ],
-          "annualUsd": 29,
-          "seatsIncluded": 1,
-          "perSeatUsd": 2
+          "annualUsd": 29
         },
         {
           "name": "Advanced",
@@ -649,9 +646,7 @@
               0.0004
             ]
           ],
-          "annualUsd": 49,
-          "seatsIncluded": 1,
-          "perSeatUsd": 2
+          "annualUsd": 49
         },
         {
           "name": "Connect",
