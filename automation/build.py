@@ -142,6 +142,18 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
         parts.append(f'overage: {js_overage(plan["overage"])}')
     if plan.get("creditBands"):
         parts.append(f'creditBands: {js_creditbands(plan["creditBands"])}')
+    # seat / team model (live-sourced): maxUsers null = unlimited; absent = inherit tool defaultMaxUsers.
+    # seatsIncluded/perSeatUsd = add-on seats. sharedProjects/concurrency = informational (null = unlimited).
+    if "maxUsers" in plan:
+        parts.append(f'maxUsers: {js_limit(plan["maxUsers"])}')
+    if plan.get("seatsIncluded") is not None:
+        parts.append(f'seatsIncluded: {plan["seatsIncluded"]}')
+    if plan.get("perSeatUsd") is not None:
+        parts.append(f'perSeatUsd: {plan["perSeatUsd"]}')
+    if "sharedProjects" in plan:
+        parts.append(f'sharedProjects: {js_limit(plan["sharedProjects"])}')
+    if "concurrency" in plan:
+        parts.append(f'concurrency: {js_limit(plan["concurrency"])}')
     if include_note and plan.get("note"):
         parts.append(f'note: {js_str(plan["note"])}')
     return "{ " + ", ".join(parts) + " }"
@@ -170,7 +182,8 @@ def render_calculator(tools: list[dict]) -> str:
         lines.append("    plans: [")
         for p in priced:
             lines.append("      " + render_plan(p, include_note=True) + ",")
-        lines.append(f"    ], overage: {js_overage(t.get('overage'))}, "
+        dmu = f"defaultMaxUsers: {t['defaultMaxUsers']}, " if t.get("defaultMaxUsers") is not None else ""
+        lines.append(f"    ], {dmu}overage: {js_overage(t.get('overage'))}, "
                      f"selfHostHw: {js_selfhosthw(t.get('selfHostHw'))} }},")
     lines.append("];")
     return "\n".join(lines)
