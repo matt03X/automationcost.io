@@ -7,7 +7,10 @@
       "monthlyUsd": "null = custom / contact sales (calculator estimates the price at runtime from the largest priced plan, compare renders 'Custom')",
       "note": "calculator-only display label for the plan; omit for custom-priced plans (calculator synthesizes '<name> — price estimated, contact sales')",
       "overage (per-plan)": "optional key on a plan: overrides the tool-level overage; null = this plan has NO pay-as-you-go (engines skip it when ops exceed opsIncluded). Absent key = inherit tool-level.",
-      "currency": "tool 'currency':'EUR' (n8n) → build apply_fx převede cloud monthlyUsd/annualUsd na USD kurzem z data/fx.json (denně z auditu). monthlyUsd i annualUsd jsou reálné scrapnuté ceny; annualUsd = billed-annually přepočtené na $/mo (zapier scrape /rok ÷12, make/n8n už /mo)."
+      "currency": "tool 'currency':'EUR' (n8n) → build apply_fx převede cloud monthlyUsd/annualUsd na USD kurzem z data/fx.json (denně z auditu). monthlyUsd i annualUsd jsou reálné scrapnuté ceny; annualUsd = billed-annually přepočtené na $/mo (zapier scrape /rok ÷12, make/n8n už /mo).",
+      "maxUsers": "per-plan seat cap; absent = inherit tool-level defaultMaxUsers (else unlimited); null = unlimited (override a tool default). seatsIncluded/perSeatUsd = add-on seat model (cost += perSeatUsd*(users-seatsIncluded)). sharedProjects/concurrency = informational (null = unlimited). All live-sourced.",
+      "mcpSupport": "nativní podpora Model Context Protocol serveru/klienta: 'Native' (first-party), 'Community' (jen komunitní balíčky), 'No' (žádná). Live-ověřeno z vendor docs 2026-06-24.",
+      "track": "n8n hosting track: 'cloud' (Pro/Starter — n8n hostuje, strop 50k pak custom) vs 'selfhost' (Business license + community edition). Engine filtruje dle hostPref; absence = odvozeno ze selfHostOnly. Live-ověřeno 2026-06-24."
     },
     "todo": [
       "pipedream: additional-credit (overage) rate removed from public pricing page (verified 2026-06-13 against saved pricing snapshot) — overage now Contact Sales only, tool-level overage=null; Business=custom tier carries the over-volume estimate. Free 100cr/3wf still exists in-app but is 'discontinued' for new signups.",
@@ -50,7 +53,8 @@
           "opsIncluded": null,
           "workflowLimit": null,
           "selfHostOnly": true,
-          "note": "Self-hosted — server + DB only, light workflows (your ops time not included)"
+          "note": "Self-hosted — server + DB only, light workflows (your ops time not included)",
+          "track": "selfhost"
         },
         {
           "name": "Cloud Starter",
@@ -59,7 +63,10 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Cloud Starter (€24/mo monthly, 2.5k executions)",
-          "annualUsd": 20
+          "annualUsd": 20,
+          "sharedProjects": 1,
+          "concurrency": 5,
+          "track": "cloud"
         },
         {
           "name": "Cloud Pro 10k",
@@ -68,7 +75,10 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Cloud Pro — 10k executions (€60/mo monthly)",
-          "annualUsd": 50
+          "annualUsd": 50,
+          "sharedProjects": 3,
+          "concurrency": 20,
+          "track": "cloud"
         },
         {
           "name": "Cloud Pro 50k",
@@ -77,7 +87,10 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Cloud Pro — 50k executions (€144/mo monthly)",
-          "annualUsd": 120
+          "annualUsd": 120,
+          "sharedProjects": 3,
+          "concurrency": 20,
+          "track": "cloud"
         },
         {
           "name": "Business 40k",
@@ -86,7 +99,9 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Business — 40k executions (€800/mo monthly)",
-          "annualUsd": 667
+          "annualUsd": 667,
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 50k",
@@ -95,7 +110,9 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Business — 50k executions (€985/mo monthly)",
-          "annualUsd": 821
+          "annualUsd": 821,
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 75k",
@@ -104,7 +121,9 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Business — 75k executions (€1456/mo monthly)",
-          "annualUsd": 1213
+          "annualUsd": 1213,
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 100k",
@@ -113,7 +132,9 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Business — 100k executions (€1726/mo monthly)",
-          "annualUsd": 1438
+          "annualUsd": 1438,
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 150k",
@@ -122,7 +143,9 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Business — 150k executions (€2189/mo monthly)",
-          "annualUsd": 1824
+          "annualUsd": 1824,
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 200k",
@@ -131,7 +154,9 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Business — 200k executions (€2639/mo monthly)",
-          "annualUsd": 2199
+          "annualUsd": 2199,
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 300k",
@@ -140,7 +165,9 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Business — 300k executions (€3512/mo monthly)",
-          "annualUsd": 2927
+          "annualUsd": 2927,
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 400k",
@@ -149,7 +176,9 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Business — 400k executions (€4381/mo monthly)",
-          "annualUsd": 3651
+          "annualUsd": 3651,
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Business 500k",
@@ -158,13 +187,17 @@
           "workflowLimit": null,
           "overage": null,
           "note": "Business — 500k executions (€5245/mo monthly)",
-          "annualUsd": 4371
+          "annualUsd": 4371,
+          "sharedProjects": 6,
+          "track": "selfhost"
         },
         {
           "name": "Cloud Enterprise",
           "monthlyUsd": null,
           "opsIncluded": null,
-          "workflowLimit": null
+          "workflowLimit": null,
+          "sharedProjects": null,
+          "concurrency": 200
         }
       ],
       "overage": null,
@@ -220,7 +253,8 @@
       "cons": [
         "Setup required for self-host",
         "Big jump from Pro to Business tier"
-      ]
+      ],
+      "mcpSupport": "Native"
     },
     {
       "slug": "make",
@@ -431,7 +465,8 @@
       "cons": [
         "No self-hosting",
         "No native code steps"
-      ]
+      ],
+      "mcpSupport": "Native"
     },
     {
       "slug": "pipedream",
@@ -704,7 +739,8 @@
         "Overage no longer public — quote only",
         "Very limited free tier",
         "No self-host"
-      ]
+      ],
+      "mcpSupport": "Native"
     },
     {
       "slug": "zapier",
@@ -901,10 +937,155 @@
           "annualUsd": 3389.0
         },
         {
+          "name": "Team 2k",
+          "monthlyUsd": 103.5,
+          "opsIncluded": 2000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 2,000 tasks/mo, up to 25 users ($103.5)",
+          "annualUsd": 69
+        },
+        {
+          "name": "Team 5k",
+          "monthlyUsd": 178.5,
+          "opsIncluded": 5000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 5,000 tasks/mo, up to 25 users ($178.5)",
+          "annualUsd": 119
+        },
+        {
+          "name": "Team 10k",
+          "monthlyUsd": 253.5,
+          "opsIncluded": 10000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 10,000 tasks/mo, up to 25 users ($253.5)",
+          "annualUsd": 169
+        },
+        {
+          "name": "Team 20k",
+          "monthlyUsd": 373.5,
+          "opsIncluded": 20000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 20,000 tasks/mo, up to 25 users ($373.5)",
+          "annualUsd": 249
+        },
+        {
+          "name": "Team 50k",
+          "monthlyUsd": 598.5,
+          "opsIncluded": 50000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 50,000 tasks/mo, up to 25 users ($598.5)",
+          "annualUsd": 399
+        },
+        {
+          "name": "Team 100k",
+          "monthlyUsd": 898.5,
+          "opsIncluded": 100000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 100,000 tasks/mo, up to 25 users ($898.5)",
+          "annualUsd": 599
+        },
+        {
+          "name": "Team 200k",
+          "monthlyUsd": 1499,
+          "opsIncluded": 200000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 200,000 tasks/mo, up to 25 users ($1499)",
+          "annualUsd": 999
+        },
+        {
+          "name": "Team 300k",
+          "monthlyUsd": 1799,
+          "opsIncluded": 300000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 300,000 tasks/mo, up to 25 users ($1799)",
+          "annualUsd": 1199
+        },
+        {
+          "name": "Team 400k",
+          "monthlyUsd": 2099,
+          "opsIncluded": 400000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 400,000 tasks/mo, up to 25 users ($2099)",
+          "annualUsd": 1399
+        },
+        {
+          "name": "Team 500k",
+          "monthlyUsd": 2699,
+          "opsIncluded": 500000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 500,000 tasks/mo, up to 25 users ($2699)",
+          "annualUsd": 1799
+        },
+        {
+          "name": "Team 750k",
+          "monthlyUsd": 3299,
+          "opsIncluded": 750000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 750,000 tasks/mo, up to 25 users ($3299)",
+          "annualUsd": 2199
+        },
+        {
+          "name": "Team 1M",
+          "monthlyUsd": 3749,
+          "opsIncluded": 1000000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 1,000,000 tasks/mo, up to 25 users ($3749)",
+          "annualUsd": 2499
+        },
+        {
+          "name": "Team 1.25M",
+          "monthlyUsd": 4499,
+          "opsIncluded": 1250000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 1,250,000 tasks/mo, up to 25 users ($4499)",
+          "annualUsd": 2999
+        },
+        {
+          "name": "Team 1.5M",
+          "monthlyUsd": 5099,
+          "opsIncluded": 1500000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 1,500,000 tasks/mo, up to 25 users ($5099)",
+          "annualUsd": 3399
+        },
+        {
+          "name": "Team 1.75M",
+          "monthlyUsd": 5699,
+          "opsIncluded": 1750000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 1,750,000 tasks/mo, up to 25 users ($5699)",
+          "annualUsd": 3799
+        },
+        {
+          "name": "Team 2M",
+          "monthlyUsd": 5999,
+          "opsIncluded": 2000000,
+          "workflowLimit": null,
+          "maxUsers": 25,
+          "note": "Team — 2,000,000 tasks/mo, up to 25 users ($5999)",
+          "annualUsd": 3999
+        },
+        {
           "name": "Enterprise",
           "monthlyUsd": null,
           "opsIncluded": null,
-          "workflowLimit": null
+          "workflowLimit": null,
+          "maxUsers": null
         }
       ],
       "overage": null,
@@ -917,7 +1098,9 @@
         "Most expensive per op",
         "Free tier severely limited",
         "No self-host"
-      ]
+      ],
+      "defaultMaxUsers": 1,
+      "mcpSupport": "Native"
     },
     {
       "slug": "activepieces",
@@ -1015,7 +1198,8 @@
         "Fewer integrations than Zapier (747+)",
         "Smaller community than n8n",
         "No code steps"
-      ]
+      ],
+      "mcpSupport": "Native"
     },
     {
       "slug": "automatisch",
@@ -1104,7 +1288,8 @@
         "Only ~50 integrations",
         "No AI nodes",
         "Smallest community"
-      ]
+      ],
+      "mcpSupport": "No"
     },
     {
       "slug": "node-red",
@@ -1193,7 +1378,8 @@
         "No cloud option",
         "Developer-only (no visual UI)",
         "Limited SaaS integrations"
-      ]
+      ],
+      "mcpSupport": "Community"
     }
   ]
 }

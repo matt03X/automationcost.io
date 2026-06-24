@@ -403,6 +403,61 @@ def _currency_switcher() -> str:
     )
 
 
+def _load_feature_matrix(slug: str):
+    """Plná 'Compare all features' matice z data/features/<slug>/<latest>.json (pole 'matrix').
+    Jen vendoři, kde ji máme (zapier/pipedream = ručně z owner-saved HTML). Jinak None."""
+    import os
+    d = os.path.join(os.path.dirname(__file__), "data", "features", slug)
+    if not os.path.isdir(d):
+        return None
+    files = sorted(f for f in os.listdir(d) if len(f) >= 10 and f[:4].isdigit() and f.endswith(".json"))
+    if not files:
+        return None
+    try:
+        snap = json.loads(open(os.path.join(d, files[-1]), encoding="utf-8").read())
+    except Exception:
+        return None
+    return snap.get("matrix")
+
+
+def _matrix_section(slug: str, tr) -> str:
+    """Sbalitelná (<details>) plná feature matice per tier — collapsed by default. "" když není."""
+    m = _load_feature_matrix(slug)
+    if not m or not m.get("groups"):
+        return ""
+    cols = m["columns"]
+    n_rows = sum(len(g["rows"]) for g in m["groups"])
+
+    def cell(v):
+        if v is True:
+            return '<td class="tag-yes">✓</td>'
+        if v is False or v is None:
+            return '<td class="tag-no" style="color:var(--muted)">—</td>'
+        return f"<td>{_html_escape(str(v))}</td>"
+
+    body = []
+    for g in m["groups"]:
+        body.append(f'        <tr><td colspan="{len(cols) + 1}" style="font-weight:800;background:var(--surface2);font-size:13px">{_html_escape(g["title"])}</td></tr>')
+        for r in g["rows"]:
+            tds = "".join(cell(r["tiers"].get(c)) for c in cols)
+            body.append(f'        <tr><td>{_html_escape(r["feature"])}</td>{tds}</tr>')
+    head = "".join(f"<th>{_html_escape(c)}</th>" for c in cols)
+    src = m.get("source", ""); asof = m.get("asof", "")
+    src_label = src.replace("https://", "").replace("http://", "").rstrip("/")
+    return (
+        '\n  <div class="section">\n'
+        '    <details class="feature-matrix">\n'
+        f'      <summary style="cursor:pointer;font-size:1.2rem;font-weight:800;list-style:revert">{tr("pp.matrix_h", "Full feature matrix")} <span style="font-weight:400;color:var(--muted);font-size:0.9rem">({n_rows} {tr("pp.matrix_rows", "rows, every plan tier")})</span></summary>\n'
+        '      <table class="comparison-table" style="margin-top:16px">\n'
+        f'        <thead><tr><th>{tr("pp.matrix_feat", "Feature")}</th>{head}</tr></thead>\n'
+        "        <tbody>\n" + "\n".join(body) + "\n        </tbody>\n"
+        "      </table>\n"
+        f'      <p style="font-size:12px;color:var(--muted);margin-top:10px">Source: <a href="{src}" target="_blank" rel="noopener">{_html_escape(src_label)}</a> · as of {asof} · captured by hand from the public page (vendor ToS).</p>\n'
+        "    </details>\n"
+        "  </div>\n"
+    )
+
+
 def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
                         editorial: dict, site: dict, tools_meta: dict, engine,
                         *, lang: str = "en", langs: list[str] | None = None,
@@ -444,6 +499,9 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
         f'        <tr><td>{_html_escape(w["case"])}</td>'
         f'<td class="{_WORTH_CLS.get(w["tier"], "tag-no")}">{_html_escape(w["verdict"])}</td></tr>'
         for w in ed.get("whenWorthIt", []))
+
+    # ── plná feature matice (collapsible) — jen vendoři s daty (zapier/pipedream) ──
+    matrix_html = _matrix_section(slug, tr)
 
     # ── FAQ (editorial + generované ceny) ──
     faq = _faq_with_prices(engine, tool, ed.get("faq", []), by_slug, tr)
@@ -709,7 +767,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
       </tbody>
     </table>
   </div>
-
+{matrix_html}
   <!-- EMAILCAP:HTML:START — price-drop alerts (pricing copy variant, generováno).
        Disclosure text schválen ownerem 2026-06-11 — NEMĚNIT bez jeho OK. -->
   <!-- price-drop alerts e-mail form disabled 2026-06-16 — compliance: no e-mail collection while the project stays faceless (no MailerLite signup, no consent banner needed). Previous markup is in git history; re-enable by restoring the price-alerts section + EMAILCAP_ACTION. -->

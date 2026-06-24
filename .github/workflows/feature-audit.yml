@@ -1,0 +1,69 @@
+# Týdenní FEATURE / INCLUDES audit (doplněk price-audit.yml, který bere jen ceny).
+# Scrapuje per-plán features z pricing stránek JEN ToS-mlčících vendorů (n8n, Make,
+# Activepieces) — Pipedream/Zapier jsou ve scriptu VYLOUČENÉ (jejich ToS zakazuje boty).
+# Ukládá snapshot do automation/data/features/<vendor>/<datum>.json JEN při změně,
+# zdiffuje proti poslednímu → changes-<datum>.json. Změna featur = WARN do summary
+# (ne hard-fail — features nejsou cena, mění se zřídka; owner gate na update tools.json).
+name: feature-audit
+on:
+  schedule:
+    - cron: "15 7 * * 1"   # týdně, pondělí 07:15 UTC (offset od price-audit 06:30)
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: feature-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright (mimo repo checkout)
+        run: |
+          mkdir -p /tmp/pw
+          cd /tmp/pw
+          npm init -y > /dev/null
+          npm install playwright@1 > /dev/null
+          ./node_modules/.bin/playwright install --with-deps chromium
+      - name: Spustit feature audit (exit 1 jen při tvrdé chybě scrape)
+        run: NODE_PATH=/tmp/pw/node_modules node scripts/feature-audit.js
+      - name: Surface feature changes do summary (WARN-only)
+        if: always()
+        continue-on-error: true
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          echo "### 🧩 Feature/includes audit (n8n · Make · Activepieces)" >> "$GITHUB_STEP_SUMMARY"
+          FOUND=0
+          for f in automation/data/features/*/changes-${DATE}.json; do
+            [ -f "$f" ] || continue
+            FOUND=1
+            node -e "const d=require('./'+process.argv[1]); console.log('**'+d.vendor+'** — '+d.changeCount+' změn vs '+d.from); d.changes.forEach(c=>console.log('- ['+c.change+'] '+c.plan+': '+c.feature))" "$f" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+          done
+          [ "$FOUND" = 1 ] && echo "::warning::feature-audit — features se u některého vendora změnily; zvaž update tools.json (owner gate)" || echo "(žádná změna featur tento týden)" >> "$GITHUB_STEP_SUMMARY"
+      - name: Commit feature snapshotů (jen když přibyly/změnily se)
+        if: always()
+        run: |
+          git config user.name  "feature-audit-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add automation/data/features
+          if git diff --cached --quiet; then
+            echo "Žádné nové feature snapshoty — nic k commitu."
+          else
+            DATE=$(date -u +%Y-%m-%d)
+            git commit -m "audit(features): per-plán features snapshot ${DATE} (n8n/make/activepieces)"
+            pushed=0
+            for i in 1 2 3 4 5; do
+              if git push; then pushed=1; break; fi
+              echo "push odmítnut (souběžný push) — rebase + retry ${i}/5"
+              git pull --rebase --autostash origin master || true
+              sleep $(( (RANDOM % 4) + 1 ))
+            done
+            [ "$pushed" = 1 ] || { echo "::error::push feature snapshotu selhal i po 5 pokusech"; exit 1; }
+          fi

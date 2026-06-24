@@ -54,6 +54,13 @@ SCORING_START = "/* DATA:SCORING:START */"
 SCORING_END = "/* DATA:SCORING:END */"
 SCORING_WARN = "/* generováno build.py z data/scoring-model.json — needituj ručně, edituj JSON */"
 
+# per-plán features/includes (z data/features/<vendor>/<date>.json — scraper feature-audit.js
+# pro n8n/make/activepieces; manuální pro pipedream/zapier). Render do compare.html.
+FEAT = ROOT / "data" / "features"
+FEAT_START = "/* DATA:FEATURES:START */"
+FEAT_END = "/* DATA:FEATURES:END */"
+FEAT_WARN = "/* generováno build.py z data/features/ — needituj ručně */"
+
 AN_START = "<!-- ANALYTICS (build.py) -->"
 AN_END = "<!-- /ANALYTICS -->"
 
@@ -137,11 +144,25 @@ def render_plan(plan: dict, *, include_note: bool) -> str:
         parts.append(f'freeFlows: {plan["freeFlows"]}')
     if plan.get("selfHostOnly"):
         parts.append("selfHostOnly: true")
+    if plan.get("track"):
+        parts.append(f'track: {js_str(plan["track"])}')
     if "overage" in plan:
         # per-plan override tool-level overage; null = plán nemá pay-as-you-go
         parts.append(f'overage: {js_overage(plan["overage"])}')
     if plan.get("creditBands"):
         parts.append(f'creditBands: {js_creditbands(plan["creditBands"])}')
+    # seat / team model (live-sourced): maxUsers null = unlimited; absent = inherit tool defaultMaxUsers.
+    # seatsIncluded/perSeatUsd = add-on seats. sharedProjects/concurrency = informational (null = unlimited).
+    if "maxUsers" in plan:
+        parts.append(f'maxUsers: {js_limit(plan["maxUsers"])}')
+    if plan.get("seatsIncluded") is not None:
+        parts.append(f'seatsIncluded: {plan["seatsIncluded"]}')
+    if plan.get("perSeatUsd") is not None:
+        parts.append(f'perSeatUsd: {plan["perSeatUsd"]}')
+    if "sharedProjects" in plan:
+        parts.append(f'sharedProjects: {js_limit(plan["sharedProjects"])}')
+    if "concurrency" in plan:
+        parts.append(f'concurrency: {js_limit(plan["concurrency"])}')
     if include_note and plan.get("note"):
         parts.append(f'note: {js_str(plan["note"])}')
     return "{ " + ", ".join(parts) + " }"
@@ -170,7 +191,8 @@ def render_calculator(tools: list[dict]) -> str:
         lines.append("    plans: [")
         for p in priced:
             lines.append("      " + render_plan(p, include_note=True) + ",")
-        lines.append(f"    ], overage: {js_overage(t.get('overage'))}, "
+        dmu = f"defaultMaxUsers: {t['defaultMaxUsers']}, " if t.get("defaultMaxUsers") is not None else ""
+        lines.append(f"    ], {dmu}overage: {js_overage(t.get('overage'))}, "
                      f"selfHostHw: {js_selfhosthw(t.get('selfHostHw'))} }},")
     lines.append("];")
     return "\n".join(lines)
@@ -179,6 +201,32 @@ def render_calculator(tools: list[dict]) -> str:
 # ---------------------------------------------------------------------------
 # Projektor: compare.html  (objekt; všechny plány; bez note; bohatší pole)
 # ---------------------------------------------------------------------------
+
+def render_features() -> str:
+    """const PLAN_FEATURES z data/features/<vendor>/<latest>.json — per-plán includes pro compare.html.
+    Každý vendor: nejnovější snapshot. via='manual' (pipedream/zapier) | 'live audit' (scraper).
+    Zdroj+asof se renderuje u každé karty (atribuce; nic z hlavy)."""
+    out: dict = {}
+    if FEAT.exists():
+        for vdir in sorted(p for p in FEAT.iterdir() if p.is_dir()):
+            snaps = sorted(vdir.glob("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].json"))
+            if not snaps:
+                continue
+            try:
+                d = json.loads(snaps[-1].read_text(encoding="utf-8"))
+            except Exception:
+                continue
+            plans = {k: v for k, v in (d.get("plans") or {}).items() if v}
+            if not plans:
+                continue
+            out[vdir.name] = {
+                "asof": d.get("asof"),
+                "source": d.get("url"),
+                "via": "manual" if "manual" in (d.get("fetchedBy") or "") else "live audit",
+                "plans": plans,
+            }
+    return "const PLAN_FEATURES = " + json.dumps(out, ensure_ascii=False, indent=2) + ";"
+
 
 def render_compare(tools: list[dict]) -> str:
     # expanze hosting variant (Cloud / VPS / vlastní server) — compare ukazuje
@@ -204,7 +252,8 @@ def render_compare(tools: list[dict]) -> str:
         )
         lines.append(
             f'    multiUser: {js_bool(t["multiUser"])}, apiAccess: {js_bool(t["apiAccess"])}, '
-            f'webhooks: {js_bool(t["webhooks"])}, codeSteps: {js_bool(t["codeSteps"])},'
+            f'webhooks: {js_bool(t["webhooks"])}, codeSteps: {js_bool(t["codeSteps"])}, '
+            f'mcpSupport: {js_str(t.get("mcpSupport", "No"))},'
         )
         lines.append(f'    homepage: {js_str(t["homepage"])},')
         lines.append(f'    affiliateUrl: {js_str(t["affiliateUrl"])},')
@@ -1701,6 +1750,11 @@ def main() -> int:
         if calc_page.exists() and SCORING_START in calc_page.read_text(encoding="utf-8"):
             jobs.append((calc_page, render_scoring(model),
                          SCORING_START, SCORING_END, SCORING_WARN))
+
+    # per-plán features injection (compare.html only) — nezávislé na tools.json, zdroj = data/features/
+    comp_page = ROOT / "compare.html"
+    if comp_page.exists() and FEAT_START in comp_page.read_text(encoding="utf-8"):
+        jobs.append((comp_page, render_features(), FEAT_START, FEAT_END, FEAT_WARN))
 
     if args.check:
         dirty = []

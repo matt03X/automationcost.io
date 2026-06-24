@@ -1,0 +1,828 @@
+{
+  "vendor": "zapier",
+  "url": "https://zapier.com/pricing",
+  "asof": "2026-06-13",
+  "fetchedBy": "manual (human-saved HTML 2026-06-13, parsed offline — Zapier ToS prohibits automated bot access)",
+  "partial": true,
+  "note": "Zapier neuvádí features jako per-plán bullety, ale jako sdílené 'all paid plans include' skupiny (vloženy do Professional) + per-plán rozdíly z FAQ stránky. Task tiery/ceny jsou v tools.json. Per-plán matice obsahuje víc granularity (nezachyceno). | Full 'Compare all features' matrix added (parsed offline from saved HTML).",
+  "plans": {
+    "Free": [
+      "100 tasks/mo",
+      "Zaps, Tables and Forms included",
+      "1 user"
+    ],
+    "Professional": [
+      "Visual no-code editor",
+      "Tables for data storage and Forms",
+      "Unlimited app integrations",
+      "All built-in data and AI workflow tools",
+      "Multi-step Zaps",
+      "Premium apps",
+      "Zap version control",
+      "Custom error notifications",
+      "Advanced Zap settings",
+      "1 user"
+    ],
+    "Team": [
+      "Everything in Professional, plus:",
+      "Shared workspace",
+      "Shared app connections",
+      "Premier Support",
+      "Up to 25 users"
+    ],
+    "Enterprise": [
+      "Everything in Team, plus:",
+      "Unlimited users",
+      "Advanced admin permissions",
+      "SSO / SAML",
+      "Custom data retention",
+      "Advanced security & governance",
+      "Technical Account Manager",
+      "Customer Success Manager",
+      "Custom onboarding",
+      "Invoice / wire payment"
+    ]
+  },
+  "matrix": {
+    "source": "https://zapier.com/pricing",
+    "asof": "2026-06-13",
+    "columns": [
+      "Free",
+      "Professional",
+      "Team",
+      "Enterprise"
+    ],
+    "groups": [
+      {
+        "title": "Admin controls",
+        "rows": [
+          {
+            "feature": "Two-factor authentication",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Pay-per-task billing",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Static IP",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Audit log",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Owner access",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "SAML single sign-on (SSO)",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "User provisioning (SCIM)",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Domain capture",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Super Admin",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Advanced admin permissions",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "App restrictions",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Action restrictions",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Custom data retention",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Observability API",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Analytics",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Annual task limits",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Collaboration tools",
+        "rows": [
+          {
+            "feature": "Seats",
+            "tiers": {
+              "Free": "1",
+              "Professional": "1",
+              "Team": "25",
+              "Enterprise": "Unlimited"
+            }
+          },
+          {
+            "feature": "Shared app connections",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Shared Zaps",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Folder permissions",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Approval requests",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Support",
+        "rows": [
+          {
+            "feature": "Email support",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Live chat*",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Premier Support",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Technical Account Manager**",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "AI products",
+        "rows": [
+          {
+            "feature": "Zapier Agents",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true,
+              "undefined": true
+            }
+          },
+          {
+            "feature": "Zapier Chatbots",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true,
+              "undefined": true
+            }
+          },
+          {
+            "feature": "Zapier Canvas",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true,
+              "undefined": true
+            }
+          },
+          {
+            "feature": "Zapier MCP",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true,
+              "undefined": true
+            }
+          },
+          {
+            "feature": "AI by Zapier",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true,
+              "undefined": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Zaps",
+        "rows": [
+          {
+            "feature": "Unlimited Zaps",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Steps",
+            "tiers": {
+              "Free": "Two-step",
+              "Professional": "Multi-step",
+              "Team": "Multi-step",
+              "Enterprise": "Multi-step"
+            }
+          },
+          {
+            "feature": "Polling time",
+            "tiers": {
+              "Free": "15 min",
+              "Professional": "2 min",
+              "Team": "1 min",
+              "Enterprise": "1 min"
+            }
+          },
+          {
+            "feature": "Visual editor",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Custom test records",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Filters & Paths",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Formatter",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Global variables",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "AI tools in the editor",
+        "rows": [
+          {
+            "feature": "Copilot",
+            "tiers": {
+              "Free": "Daily message limit",
+              "Professional": "Unlimited",
+              "Team": "Unlimited",
+              "Enterprise": "Unlimited"
+            }
+          },
+          {
+            "feature": "AI code steps",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true,
+              "undefined": true
+            }
+          },
+          {
+            "feature": "AI troubleshooting",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true,
+              "undefined": true
+            }
+          },
+          {
+            "feature": "AI Custom Actions",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true,
+              "undefined": true
+            }
+          },
+          {
+            "feature": "Formatter with AI",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true,
+              "undefined": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Zap Management",
+        "rows": [
+          {
+            "feature": "Drafts",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Autoreplay",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Customized error settings",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Customized polling time",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Flood protection settings",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Versions ",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Compare Versions",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Alerts",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Integrations",
+        "rows": [
+          {
+            "feature": "Unlimited premium apps",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Connections via webhooks",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Tables",
+        "rows": [
+          {
+            "feature": "Free tasks in Zapier",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "# of Tables",
+            "tiers": {
+              "Free": "Unlimited",
+              "Professional": "Unlimited",
+              "Team": "Unlimited",
+              "Enterprise": "Unlimited"
+            }
+          },
+          {
+            "feature": "Fields",
+            "tiers": {
+              "Free": "100 per table",
+              "Professional": "100 per table",
+              "Team": "100 per table",
+              "Enterprise": "100 per table"
+            }
+          },
+          {
+            "feature": "Records",
+            "tiers": {
+              "Free": "2,500 per account",
+              "Professional": "100,000 per account",
+              "Team": "500,000 per account",
+              "Enterprise": "Contact Sales"
+            }
+          },
+          {
+            "feature": "Views",
+            "tiers": {
+              "Free": "3 views per table",
+              "Professional": "50 views per table",
+              "Team": "50 views per table",
+              "Enterprise": "50+ views per table"
+            }
+          },
+          {
+            "feature": "Formulas",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Linked Record fields",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "AI fields",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "AI enrichment",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Advanced roles and permissions",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": false,
+              "Enterprise": "Coming soon"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Forms",
+        "rows": [
+          {
+            "feature": "Free tasks in Zapier",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Forms Project limit",
+            "tiers": {
+              "Free": "Unlimited",
+              "Professional": "Unlimited",
+              "Team": "Unlimited",
+              "Enterprise": "Unlimited"
+            }
+          },
+          {
+            "feature": "Number of pages",
+            "tiers": {
+              "Free": "10 per account",
+              "Professional": "50 per account",
+              "Team": "150 per account",
+              "Enterprise": "Contact Sales"
+            }
+          },
+          {
+            "feature": "Editors",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Managed access",
+            "tiers": {
+              "Free": false,
+              "Professional": "100 users",
+              "Team": "500 users",
+              "Enterprise": "Contact Sales"
+            }
+          },
+          {
+            "feature": "Basic components ",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Navigation",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Web embedding",
+            "tiers": {
+              "Free": true,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "File uploads",
+            "tiers": {
+              "Free": "5 MB at 3 files max",
+              "Professional": "10 MB at 100 files max",
+              "Team": "25 MB at 100 files max",
+              "Enterprise": "25 MB+"
+            }
+          },
+          {
+            "feature": "Dynamic filtering",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Conditional form logic",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Branding",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Custom colors",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Password protect",
+            "tiers": {
+              "Free": false,
+              "Professional": true,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Custom domain",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Remove Zapier logo",
+            "tiers": {
+              "Free": false,
+              "Professional": false,
+              "Team": true,
+              "Enterprise": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

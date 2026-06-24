@@ -50,6 +50,18 @@ jobs:
             echo "### 🕶 Shadow autopilot (jen log — nic se nemění ani neposílá)" >> "$GITHUB_STEP_SUMMARY"
             node -e "try{require('./'+process.argv[1]).decisions.forEach(d=>console.log('- ['+d.verdict+'] '+d.desc+' — '+d.reasons.join('; ')))}catch{}" "$F" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
           fi
+      - name: Seat-drift check — curated seat data má pořád oporu v živém scrapu (WARN-only)
+        if: always()
+        continue-on-error: true   # bonus navíc — NIKDY nesmí shodit audit/alarm
+        run: |
+          echo "### 👥 Seat-drift (curated seat data vs latest billingLines)" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          if node scripts/seat-drift-check.js >> "$GITHUB_STEP_SUMMARY" 2>&1; then
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::seat-drift — některá curated seat data (Pipedream \$/user, Zapier seats, n8n shared projects) už nemají oporu v živém scrapu; re-verify + update tools.json (owner gate)"
+          fi
       - name: Commit snapshotů a změn (vždy — ať se důkazy uloží i při změně)
         if: always()
         run: |
