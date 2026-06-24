@@ -1,14 +1,14 @@
 {
   "_note": "EUR→USD FX (free API). Aktualizuje denní audit. Build převádí n8n (EUR)→USD.",
-  "eur_usd": 1.1436,
-  "date": "Tue, 23 Jun 2026 00:02:31 +0000",
+  "eur_usd": 1.139,
+  "date": "Wed, 24 Jun 2026 00:02:32 +0000",
   "source": "open.er-api.com",
-  "fetchedAt": "2026-06-23T10:08:59.204Z",
+  "fetchedAt": "2026-06-24T10:00:54.283Z",
   "display_rates": {
     "_note": "USD→X pro měnový přepínač. Konverze = orientační, ne fakturovaná částka.",
     "usd": 1,
-    "eur": 0.8744,
-    "czk": 21.1563,
-    "date": "Tue, 23 Jun 2026 00:02:31 +0000"
+    "eur": 0.878,
+    "czk": 21.2566,
+    "date": "Wed, 24 Jun 2026 00:02:32 +0000"
   }
 }
