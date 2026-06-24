@@ -37,6 +37,7 @@ SC_START = "/* DATA:SCORING:START */"
 SC_END = "/* DATA:SCORING:END */"
 SC_WARN = "/* generováno build.py z data/scoring-model.json + models.json — needituj ručně */"
 SCORING = ROOT / "data" / "scoring-model.json"
+BENCH = ROOT / "data" / "benchmarks.json"
 # engine USE_CASE (index.html USE_CASES) -> scoring role (scoring-model.json roleWeights)
 UC_ROLE = {"chatbot": "chatbot", "rag": "rag", "summarization": "rag",
            "agents": "agents", "extraction": "classification"}
@@ -170,15 +171,47 @@ def render_models(data: dict) -> str:
 
 
 def _model_dims(data: dict) -> dict:
-    """Per-model skóre dimenzí DOPOČÍTANÉ z models.json dle scoring-model.json
-    dimension_definitions (jeden zdroj pravdy, pokrývá celý lineup). Klíč = name
-    (shoda s MODELS blokem). lowPrice řeší priceScore v JS z cost() na profilu."""
+    """Per-model skóre dimenzí. Cenové/strukturní dimenze (context/caching/cheapOutput/
+    batch) z models.json. CAPABILITY dimenze (frontier/coding/tooluse/longctxQuality)
+    z LIVE benchmarks.json — váhy scoring-model.json benchmarkWeights, norm dle
+    metrics.range, vendor ×0.85. frontier = 0.7*capability + 0.3*tier KDYŽ jsou data,
+    jinak tier×0.6 ("claimed but unverified" — model bez benchmark evidence NENÍ top
+    capability; tím padá ručně nastavená frontier dominance). coding/tooluse/longctx =
+    0 když chybí data. Klíč = name (shoda s MODELS blokem)."""
     import math
     models = [m for p in data["providers"] for m in p["models"]]
     outs = [m["outputPerM"] for m in models]
     lo_o, hi_o = math.log10(min(outs)), math.log10(max(outs))
     lo_c, hi_c = math.log10(128000), math.log10(1000000)
     tierf = {"frontier": 1.0, "mid": 0.6, "budget": 0.3}
+
+    sm = json.loads(SCORING.read_text(encoding="utf-8"))
+    bw = sm.get("benchmarkWeights", {})
+    mmeta = (data["_meta"].get("benchmarks") or {}).get("metrics", {})
+    bench = {}
+    if BENCH.exists():
+        bench = (json.loads(BENCH.read_text(encoding="utf-8")) or {}).get("byModel", {})
+
+    def _norm(metric, value):
+        rng = (mmeta.get(metric) or {}).get("range") or [0, 100]
+        lo, hi = rng[0], rng[1]
+        return 0.5 if hi == lo else max(0.0, min(1.0, (value - lo) / (hi - lo)))
+
+    def _cap(model_id, dim):
+        """vážený průměr normalizovaných PŘÍTOMNÝCH metrik (renorm. přes přítomné váhy),
+        vendor ×0.85. None když žádná metrika není."""
+        num = den = 0.0
+        for metric, w in (bw.get(dim) or {}).items():
+            cell = (bench.get(model_id) or {}).get(metric)
+            if not cell or cell.get("value") is None:
+                continue
+            v = _norm(metric, cell["value"])
+            if cell.get("source") == "vendor":
+                v *= 0.85
+            num += w * v
+            den += w
+        return (num / den) if den else None
+
     dims = {}
     for m in models:
         ctx = m.get("contextWindow")
@@ -186,9 +219,17 @@ def _model_dims(data: dict) -> dict:
         caching = (1 - m["cachedInputPerM"] / m["inputPerM"]) if m.get("cachedInputPerM") is not None else 0.0
         cheap = 0.5 if hi_o == lo_o else min(1.0, max(0.0, 1 - (math.log10(m["outputPerM"]) - lo_o) / (hi_o - lo_o)))
         batch = (1 - m["batchDiscount"]) if m.get("batchDiscount") is not None else 0.0
+        tscore = tierf[m["tier"]]
+        mid = m["id"]
+        cap_f = _cap(mid, "frontier")
+        frontier = round(0.7 * cap_f + 0.3 * tscore, 3) if cap_f is not None else round(tscore * 0.6, 3)
+        cc, ct, cl = _cap(mid, "coding"), _cap(mid, "tooluse"), _cap(mid, "longctxQuality")
         dims[m["name"]] = {"context": round(context, 3), "caching": round(caching, 3),
                            "cheapOutput": round(cheap, 3), "batch": round(batch, 3),
-                           "frontier": tierf[m["tier"]]}
+                           "frontier": frontier,
+                           "coding": round(cc, 3) if cc is not None else 0.0,
+                           "tooluse": round(ct, 3) if ct is not None else 0.0,
+                           "longctxQuality": round(cl, 3) if cl is not None else 0.0}
     return dims
 
 

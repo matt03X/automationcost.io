@@ -1,0 +1,1134 @@
+{
+  "source": "epoch",
+  "scrapedAt": "2026-06-23T23:45:15.434Z",
+  "url": "https://epoch.ai/data/benchmarks.csv",
+  "license": "CC-BY",
+  "rowCount": 167,
+  "matchedCount": 20,
+  "unmatchedCount": 124,
+  "rows": [
+    {
+      "extName": "Qwen3.7-Max",
+      "metric": "swe_bench_verified",
+      "value": 77.3
+    },
+    {
+      "extName": "DeepSeek-V4-Pro",
+      "metric": "swe_bench_verified",
+      "value": 77.6
+    },
+    {
+      "extName": "Grok 4.3 Beta",
+      "metric": "gpqa_diamond",
+      "value": 88.8
+    },
+    {
+      "extName": "DeepSeek-V4-Pro",
+      "metric": "gpqa_diamond",
+      "value": 89.6
+    },
+    {
+      "extName": "Qwen3.7-Max",
+      "metric": "gpqa_diamond",
+      "value": 91.6
+    },
+    {
+      "extName": "Kimi K2.7 Code",
+      "metric": "gpqa_diamond",
+      "value": 89.5
+    },
+    {
+      "extName": "Claude Opus 4.8",
+      "metric": "gpqa_diamond",
+      "value": 91
+    },
+    {
+      "extName": "Gemini 3.5 Flash",
+      "metric": "swe_bench_verified",
+      "value": 79.3
+    },
+    {
+      "extName": "Qwen 3.6 Max (Preview)",
+      "metric": "swe_bench_verified",
+      "value": 76.7
+    },
+    {
+      "extName": "Gemini 3.5 Flash",
+      "metric": "gpqa_diamond",
+      "value": 92.8
+    },
+    {
+      "extName": "Qwen 3.6 Max (Preview)",
+      "metric": "gpqa_diamond",
+      "value": 89.1
+    },
+    {
+      "extName": "GLM-5.1",
+      "metric": "swe_bench_verified",
+      "value": 74.2
+    },
+    {
+      "extName": "Qwen 3.6 Plus",
+      "metric": "swe_bench_verified",
+      "value": 57.9
+    },
+    {
+      "extName": "Qwen 3.5 Plus (hosted 397B-A17B)",
+      "metric": "gpqa_diamond",
+      "value": 84.2
+    },
+    {
+      "extName": "Qwen 3.6 Plus",
+      "metric": "gpqa_diamond",
+      "value": 87.4
+    },
+    {
+      "extName": "Qwen 3.6 Flash",
+      "metric": "gpqa_diamond",
+      "value": 84.4
+    },
+    {
+      "extName": "Qwen 3.5 Flash (hosted 35B-A3B)",
+      "metric": "gpqa_diamond",
+      "value": 83.8
+    },
+    {
+      "extName": "Kimi K2.6",
+      "metric": "swe_bench_verified",
+      "value": 76.7
+    },
+    {
+      "extName": "GLM-5.1",
+      "metric": "gpqa_diamond",
+      "value": 85.5
+    },
+    {
+      "extName": "GPT-5.5",
+      "metric": "gpqa_diamond",
+      "value": 94
+    },
+    {
+      "extName": "Kimi K2.6",
+      "metric": "gpqa_diamond",
+      "value": 90.8
+    },
+    {
+      "extName": "GPT-5.5 Pro",
+      "metric": "gpqa_diamond",
+      "value": 93.9
+    },
+    {
+      "extName": "GPT-5.5",
+      "metric": "swe_bench_verified",
+      "value": 80.6
+    },
+    {
+      "extName": "Claude Opus 4.7",
+      "metric": "swe_bench_verified",
+      "value": 83.5
+    },
+    {
+      "extName": "Claude Opus 4.7",
+      "metric": "gpqa_diamond",
+      "value": 90.2
+    },
+    {
+      "extName": "GPT-5.4 Mini",
+      "metric": "gpqa_diamond",
+      "value": 83.6
+    },
+    {
+      "extName": "GPT-5.4 Nano",
+      "metric": "gpqa_diamond",
+      "value": 78.5
+    },
+    {
+      "extName": "Muse Spark",
+      "metric": "gpqa_diamond",
+      "value": 89.8
+    },
+    {
+      "extName": "GPT-5.4 Pro",
+      "metric": "gpqa_diamond",
+      "value": 94.6
+    },
+    {
+      "extName": "GPT-5.4",
+      "metric": "swe_bench_verified",
+      "value": 76.9
+    },
+    {
+      "extName": "GPT-5.4",
+      "metric": "gpqa_diamond",
+      "value": 93.3
+    },
+    {
+      "extName": "GPT-5.3 Codex",
+      "metric": "swe_bench_verified",
+      "value": 74.8
+    },
+    {
+      "extName": "Gemini 3.1 Pro",
+      "metric": "swe_bench_verified",
+      "value": 75.6
+    },
+    {
+      "extName": "Claude Sonnet 4.6",
+      "metric": "swe_bench_verified",
+      "value": 75.2
+    },
+    {
+      "extName": "Claude Sonnet 4.6",
+      "metric": "gpqa_diamond",
+      "value": 87.4
+    },
+    {
+      "extName": "Gemini 3.1 Pro",
+      "metric": "gpqa_diamond",
+      "value": 94.1
+    },
+    {
+      "extName": "Gemini 3 Flash",
+      "metric": "swe_bench_verified",
+      "value": 75.4
+    },
+    {
+      "extName": "Claude Opus 4.6",
+      "metric": "swe_bench_verified",
+      "value": 78.7
+    },
+    {
+      "extName": "GPT-5.1",
+      "metric": "swe_bench_verified",
+      "value": 68
+    },
+    {
+      "extName": "Kimi K2.5",
+      "metric": "swe_bench_verified",
+      "value": 73.8
+    },
+    {
+      "extName": "GLM-5",
+      "metric": "swe_bench_verified",
+      "value": 72.1
+    },
+    {
+      "extName": "Gemini 2.5 Pro (Jun 2025)",
+      "metric": "swe_bench_verified",
+      "value": 57.6
+    },
+    {
+      "extName": "Gemini 3 Pro",
+      "metric": "swe_bench_verified",
+      "value": 72.9
+    },
+    {
+      "extName": "GLM-5",
+      "metric": "gpqa_diamond",
+      "value": 87.8
+    },
+    {
+      "extName": "GPT-5.2",
+      "metric": "swe_bench_verified",
+      "value": 73.8
+    },
+    {
+      "extName": "o3",
+      "metric": "swe_bench_verified",
+      "value": 62.3
+    },
+    {
+      "extName": "Claude Opus 4.1",
+      "metric": "swe_bench_verified",
+      "value": 73.3
+    },
+    {
+      "extName": "GPT-4o",
+      "metric": "swe_bench_verified",
+      "value": 31
+    },
+    {
+      "extName": "GPT-4.1",
+      "metric": "swe_bench_verified",
+      "value": 48.5
+    },
+    {
+      "extName": "GPT-5",
+      "metric": "swe_bench_verified",
+      "value": 73.6
+    },
+    {
+      "extName": "Claude Opus 4",
+      "metric": "swe_bench_verified",
+      "value": 70.7
+    },
+    {
+      "extName": "Claude Opus 4.6",
+      "metric": "gpqa_diamond",
+      "value": 90.5
+    },
+    {
+      "extName": "Claude Opus 4.5",
+      "metric": "swe_bench_verified",
+      "value": 76.7
+    },
+    {
+      "extName": "Claude Sonnet 4.5",
+      "metric": "swe_bench_verified",
+      "value": 71.3
+    },
+    {
+      "extName": "Claude 3.7 Sonnet",
+      "metric": "swe_bench_verified",
+      "value": 61
+    },
+    {
+      "extName": "Kimi K2.5",
+      "metric": "gpqa_diamond",
+      "value": 87.6
+    },
+    {
+      "extName": "GPT-5 mini",
+      "metric": "swe_bench_verified",
+      "value": 64.7
+    },
+    {
+      "extName": "GLM-4.7",
+      "metric": "gpqa_diamond",
+      "value": 83.3
+    },
+    {
+      "extName": "Gemini 3 Flash",
+      "metric": "gpqa_diamond",
+      "value": 83.2
+    },
+    {
+      "extName": "DeepSeek-V3.2",
+      "metric": "gpqa_diamond",
+      "value": 83.4
+    },
+    {
+      "extName": "GPT-5.2",
+      "metric": "gpqa_diamond",
+      "value": 91.4
+    },
+    {
+      "extName": "Qwen3-235B-A22B (Jul 2025)",
+      "metric": "gpqa_diamond",
+      "value": 80.1
+    },
+    {
+      "extName": "gpt-oss-120b",
+      "metric": "gpqa_diamond",
+      "value": 75.8
+    },
+    {
+      "extName": "Claude Opus 4.5",
+      "metric": "gpqa_diamond",
+      "value": 86
+    },
+    {
+      "extName": "Gemini 3 Pro",
+      "metric": "gpqa_diamond",
+      "value": 92.6
+    },
+    {
+      "extName": "GPT-5.1",
+      "metric": "gpqa_diamond",
+      "value": 87.6
+    },
+    {
+      "extName": "Gemini 2.5 Pro (Jun 2025)",
+      "metric": "gpqa_diamond",
+      "value": 85.3
+    },
+    {
+      "extName": "Kimi K2 Thinking",
+      "metric": "gpqa_diamond",
+      "value": 84.2
+    },
+    {
+      "extName": "GPT-5 nano",
+      "metric": "gpqa_diamond",
+      "value": 69.4
+    },
+    {
+      "extName": "GPT-5 mini",
+      "metric": "gpqa_diamond",
+      "value": 75
+    },
+    {
+      "extName": "GPT-5",
+      "metric": "gpqa_diamond",
+      "value": 86.2
+    },
+    {
+      "extName": "Claude Sonnet 4.5",
+      "metric": "gpqa_diamond",
+      "value": 82.3
+    },
+    {
+      "extName": "GPT-4 (Mar 2023)",
+      "metric": "gpqa_diamond",
+      "value": 35.7
+    },
+    {
+      "extName": "Claude Haiku 4.5",
+      "metric": "gpqa_diamond",
+      "value": 71.2
+    },
+    {
+      "extName": "Qwen3-Max",
+      "metric": "gpqa_diamond",
+      "value": 72.6
+    },
+    {
+      "extName": "Claude Opus 4.1",
+      "metric": "gpqa_diamond",
+      "value": 77.3
+    },
+    {
+      "extName": "Magistral Small 1.1",
+      "metric": "gpqa_diamond",
+      "value": 48.4
+    },
+    {
+      "extName": "Qwen3-235B-A22B",
+      "metric": "gpqa_diamond",
+      "value": 70.7
+    },
+    {
+      "extName": "Gemini 2.5 Pro (May 2025)",
+      "metric": "gpqa_diamond",
+      "value": 66.7
+    },
+    {
+      "extName": "DeepSeek-R1 (May 2025)",
+      "metric": "gpqa_diamond",
+      "value": 76.3
+    },
+    {
+      "extName": "Claude 3.7 Sonnet",
+      "metric": "gpqa_diamond",
+      "value": 79.7
+    },
+    {
+      "extName": "Grok-3 mini",
+      "metric": "gpqa_diamond",
+      "value": 76.3
+    },
+    {
+      "extName": "DeepSeek-R1",
+      "metric": "gpqa_diamond",
+      "value": 71.7
+    },
+    {
+      "extName": "Claude Sonnet 4",
+      "metric": "gpqa_diamond",
+      "value": 79.2
+    },
+    {
+      "extName": "Grok 3",
+      "metric": "gpqa_diamond",
+      "value": 75.8
+    },
+    {
+      "extName": "Claude Opus 4",
+      "metric": "gpqa_diamond",
+      "value": 76.3
+    },
+    {
+      "extName": "Mistral Medium 3",
+      "metric": "gpqa_diamond",
+      "value": 59.5
+    },
+    {
+      "extName": "o4-mini",
+      "metric": "gpqa_diamond",
+      "value": 79.6
+    },
+    {
+      "extName": "o3",
+      "metric": "gpqa_diamond",
+      "value": 81.8
+    },
+    {
+      "extName": "GPT-4.1 mini",
+      "metric": "gpqa_diamond",
+      "value": 65.8
+    },
+    {
+      "extName": "GPT-4.1 nano",
+      "metric": "gpqa_diamond",
+      "value": 48.9
+    },
+    {
+      "extName": "GPT-4.1",
+      "metric": "gpqa_diamond",
+      "value": 66.9
+    },
+    {
+      "extName": "QWQ-Plus",
+      "metric": "gpqa_diamond",
+      "value": 65.4
+    },
+    {
+      "extName": "Llama 4 Scout",
+      "metric": "gpqa_diamond",
+      "value": 51.8
+    },
+    {
+      "extName": "Llama 4 Maverick",
+      "metric": "gpqa_diamond",
+      "value": 67
+    },
+    {
+      "extName": "Qwen-Turbo",
+      "metric": "gpqa_diamond",
+      "value": 41.8
+    },
+    {
+      "extName": "Qwen Plus",
+      "metric": "gpqa_diamond",
+      "value": 48.1
+    },
+    {
+      "extName": "Qwen2.5-Max",
+      "metric": "gpqa_diamond",
+      "value": 56.1
+    },
+    {
+      "extName": "DeepSeek-V3 (Mar 2025)",
+      "metric": "gpqa_diamond",
+      "value": 67.6
+    },
+    {
+      "extName": "Gemini 2.5 Pro (Mar 2025)",
+      "metric": "gpqa_diamond",
+      "value": 83.8
+    },
+    {
+      "extName": "Mistral Small 3.1",
+      "metric": "gpqa_diamond",
+      "value": 47.5
+    },
+    {
+      "extName": "Gemma 3 27B",
+      "metric": "gpqa_diamond",
+      "value": 48.9
+    },
+    {
+      "extName": "Claude 3.5 Haiku",
+      "metric": "gpqa_diamond",
+      "value": 38.1
+    },
+    {
+      "extName": "Gemini 1.5 Flash 8B",
+      "metric": "gpqa_diamond",
+      "value": 33
+    },
+    {
+      "extName": "DeepSeek-R1-Distill-Qwen-14B",
+      "metric": "gpqa_diamond",
+      "value": 44.7
+    },
+    {
+      "extName": "DeepSeek-R1-Distill-Llama-70B",
+      "metric": "gpqa_diamond",
+      "value": 55.7
+    },
+    {
+      "extName": "GPT-4.5",
+      "metric": "gpqa_diamond",
+      "value": 68.7
+    },
+    {
+      "extName": "GPT-4 Turbo (Apr 2024)",
+      "metric": "gpqa_diamond",
+      "value": 46.6
+    },
+    {
+      "extName": "Mistral Large 2",
+      "metric": "gpqa_diamond",
+      "value": 51.3
+    },
+    {
+      "extName": "o1",
+      "metric": "gpqa_diamond",
+      "value": 76.8
+    },
+    {
+      "extName": "o1-mini",
+      "metric": "gpqa_diamond",
+      "value": 62.4
+    },
+    {
+      "extName": "o3-mini",
+      "metric": "gpqa_diamond",
+      "value": 77
+    },
+    {
+      "extName": "Gemini 2.0 Pro",
+      "metric": "gpqa_diamond",
+      "value": 65.7
+    },
+    {
+      "extName": "Gemini 2.0 Flash Thinking",
+      "metric": "gpqa_diamond",
+      "value": 57.1
+    },
+    {
+      "extName": "Gemini 2.0 Flash",
+      "metric": "gpqa_diamond",
+      "value": 64.1
+    },
+    {
+      "extName": "GPT-4o",
+      "metric": "gpqa_diamond",
+      "value": 49.2
+    },
+    {
+      "extName": "Phi-4",
+      "metric": "gpqa_diamond",
+      "value": 56.1
+    },
+    {
+      "extName": "phi-3-medium 14B",
+      "metric": "gpqa_diamond",
+      "value": 27.6
+    },
+    {
+      "extName": "Mistral Small 3",
+      "metric": "gpqa_diamond",
+      "value": 45.3
+    },
+    {
+      "extName": "Qwen2.5-32B",
+      "metric": "gpqa_diamond",
+      "value": 46.1
+    },
+    {
+      "extName": "Gemini 1.5 Flash",
+      "metric": "gpqa_diamond",
+      "value": 47.3
+    },
+    {
+      "extName": "Claude 2",
+      "metric": "gpqa_diamond",
+      "value": 34.7
+    },
+    {
+      "extName": "Claude 3 Opus",
+      "metric": "gpqa_diamond",
+      "value": 47.2
+    },
+    {
+      "extName": "o1-preview",
+      "metric": "gpqa_diamond",
+      "value": 50.3
+    },
+    {
+      "extName": "Claude 3 Sonnet",
+      "metric": "gpqa_diamond",
+      "value": 40.6
+    },
+    {
+      "extName": "Claude 3.5 Sonnet (October 2024)",
+      "metric": "gpqa_diamond",
+      "value": 55.3
+    },
+    {
+      "extName": "GPT-4 Turbo (Nov 2023)",
+      "metric": "gpqa_diamond",
+      "value": 42.4
+    },
+    {
+      "extName": "Claude 2.1",
+      "metric": "gpqa_diamond",
+      "value": 33
+    },
+    {
+      "extName": "Gemma 2 27B",
+      "metric": "gpqa_diamond",
+      "value": 36.5
+    },
+    {
+      "extName": "Claude 3 Haiku",
+      "metric": "gpqa_diamond",
+      "value": 36.3
+    },
+    {
+      "extName": "Claude 3.5 Sonnet",
+      "metric": "gpqa_diamond",
+      "value": 54
+    },
+    {
+      "extName": "GPT-4 (Jun 2023)",
+      "metric": "gpqa_diamond",
+      "value": 30.7
+    },
+    {
+      "extName": "Gemma 2 9B",
+      "metric": "gpqa_diamond",
+      "value": 27.5
+    },
+    {
+      "extName": "GPT-3.5 Turbo",
+      "metric": "gpqa_diamond",
+      "value": 28
+    },
+    {
+      "extName": "Gemini 1.5 Pro",
+      "metric": "gpqa_diamond",
+      "value": 57.2
+    },
+    {
+      "extName": "GPT-4o mini",
+      "metric": "gpqa_diamond",
+      "value": 37.7
+    },
+    {
+      "extName": "Llama 3.1-8B",
+      "metric": "gpqa_diamond",
+      "value": 25.9
+    },
+    {
+      "extName": "Llama 3.1-70B",
+      "metric": "gpqa_diamond",
+      "value": 44.2
+    },
+    {
+      "extName": "Llama 3.1-405B",
+      "metric": "gpqa_diamond",
+      "value": 50.9
+    },
+    {
+      "extName": "Yi-1.5-34B",
+      "metric": "gpqa_diamond",
+      "value": 32
+    },
+    {
+      "extName": "Yi-34B",
+      "metric": "gpqa_diamond",
+      "value": 14.7
+    },
+    {
+      "extName": "Grok-2",
+      "metric": "gpqa_diamond",
+      "value": 53.8
+    },
+    {
+      "extName": "Qwen2-72B",
+      "metric": "gpqa_diamond",
+      "value": 40.8
+    },
+    {
+      "extName": "Qwen1.5-72B",
+      "metric": "gpqa_diamond",
+      "value": 28.8
+    },
+    {
+      "extName": "Qwen1.5-32B",
+      "metric": "gpqa_diamond",
+      "value": 30.7
+    },
+    {
+      "extName": "Hermes 2 Theta Llama-3 70B",
+      "metric": "gpqa_diamond",
+      "value": 37.5
+    },
+    {
+      "extName": "Llama 2-70B",
+      "metric": "gpqa_diamond",
+      "value": 26.3
+    },
+    {
+      "extName": "Llama 3-70B",
+      "metric": "gpqa_diamond",
+      "value": 40.6
+    },
+    {
+      "extName": "Llama 3-8B",
+      "metric": "gpqa_diamond",
+      "value": 26.1
+    },
+    {
+      "extName": "Mistral 7B",
+      "metric": "gpqa_diamond",
+      "value": 15.2
+    },
+    {
+      "extName": "DeepSeek LLM 67B",
+      "metric": "gpqa_diamond",
+      "value": 24.6
+    },
+    {
+      "extName": "Mixtral 8x7B",
+      "metric": "gpqa_diamond",
+      "value": 30.6
+    },
+    {
+      "extName": "Qwen2.5-72B",
+      "metric": "gpqa_diamond",
+      "value": 49.1
+    },
+    {
+      "extName": "WizardLM-2 8x22B",
+      "metric": "gpqa_diamond",
+      "value": 43.4
+    },
+    {
+      "extName": "DBRX",
+      "metric": "gpqa_diamond",
+      "value": 32.9
+    },
+    {
+      "extName": "Gemini 1.0 Pro",
+      "metric": "gpqa_diamond",
+      "value": 34
+    },
+    {
+      "extName": "Ministral 3B",
+      "metric": "gpqa_diamond",
+      "value": 25.3
+    },
+    {
+      "extName": "Mistral Large",
+      "metric": "gpqa_diamond",
+      "value": 38.8
+    },
+    {
+      "extName": "Mixtral 8x22B",
+      "metric": "gpqa_diamond",
+      "value": 34.1
+    },
+    {
+      "extName": "Ministral 8B",
+      "metric": "gpqa_diamond",
+      "value": 27.1
+    },
+    {
+      "extName": "Mistral NeMo",
+      "metric": "gpqa_diamond",
+      "value": 29.9
+    },
+    {
+      "extName": "Llama 3.2 90B",
+      "metric": "gpqa_diamond",
+      "value": 41
+    },
+    {
+      "extName": "Tulu 3 (Tülu 3) 70B",
+      "metric": "gpqa_diamond",
+      "value": 46.3
+    },
+    {
+      "extName": "Eurus-2-7B-PRIME",
+      "metric": "gpqa_diamond",
+      "value": 33.9
+    },
+    {
+      "extName": "Llama 3.3 70B",
+      "metric": "gpqa_diamond",
+      "value": 47.4
+    },
+    {
+      "extName": "DeepSeek-V3",
+      "metric": "gpqa_diamond",
+      "value": 56.5
+    },
+    {
+      "extName": "Grok 4",
+      "metric": "gpqa_diamond",
+      "value": 87
+    }
+  ],
+  "matched": [
+    {
+      "model": "DeepSeek V4 Pro",
+      "id": "deepseek-v4-pro",
+      "metric": "swe_bench_verified",
+      "value": 77.6,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Grok 4.3",
+      "id": "grok-4.3",
+      "metric": "gpqa_diamond",
+      "value": 88.8,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "DeepSeek V4 Pro",
+      "id": "deepseek-v4-pro",
+      "metric": "gpqa_diamond",
+      "value": 89.6,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Claude Opus 4.8",
+      "id": "claude-opus-4-8",
+      "metric": "gpqa_diamond",
+      "value": 91,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Gemini 3.5 Flash",
+      "id": "gemini-3.5-flash",
+      "metric": "swe_bench_verified",
+      "value": 79.3,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Gemini 3.5 Flash",
+      "id": "gemini-3.5-flash",
+      "metric": "gpqa_diamond",
+      "value": 92.8,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "GPT-5.5",
+      "id": "gpt-5.5",
+      "metric": "gpqa_diamond",
+      "value": 94,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "GPT-5.5 Pro",
+      "id": "gpt-5.5-pro",
+      "metric": "gpqa_diamond",
+      "value": 93.9,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "GPT-5.5",
+      "id": "gpt-5.5",
+      "metric": "swe_bench_verified",
+      "value": 80.6,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "GPT-5.4 mini",
+      "id": "gpt-5.4-mini",
+      "metric": "gpqa_diamond",
+      "value": 83.6,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "GPT-5.4 nano",
+      "id": "gpt-5.4-nano",
+      "metric": "gpqa_diamond",
+      "value": 78.5,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "GPT-5.4",
+      "id": "gpt-5.4",
+      "metric": "swe_bench_verified",
+      "value": 76.9,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "GPT-5.4",
+      "id": "gpt-5.4",
+      "metric": "gpqa_diamond",
+      "value": 93.3,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Gemini 3.1 Pro Preview",
+      "id": "gemini-3.1-pro-preview",
+      "metric": "swe_bench_verified",
+      "value": 75.6,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "id": "claude-sonnet-4-6",
+      "metric": "swe_bench_verified",
+      "value": 75.2,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Claude Sonnet 4.6",
+      "id": "claude-sonnet-4-6",
+      "metric": "gpqa_diamond",
+      "value": 87.4,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Gemini 3.1 Pro Preview",
+      "id": "gemini-3.1-pro-preview",
+      "metric": "gpqa_diamond",
+      "value": 94.1,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Gemini 3 Flash Preview",
+      "id": "gemini-3-flash-preview",
+      "metric": "swe_bench_verified",
+      "value": 75.4,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Gemini 3 Flash Preview",
+      "id": "gemini-3-flash-preview",
+      "metric": "gpqa_diamond",
+      "value": 83.2,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    },
+    {
+      "model": "Claude Haiku 4.5",
+      "id": "claude-haiku-4-5",
+      "metric": "gpqa_diamond",
+      "value": 71.2,
+      "source": "epoch",
+      "asof": "2026-06-23"
+    }
+  ],
+  "unmatched": [
+    "Claude 2",
+    "Claude 2.1",
+    "Claude 3 Haiku",
+    "Claude 3 Opus",
+    "Claude 3 Sonnet",
+    "Claude 3.5 Haiku",
+    "Claude 3.5 Sonnet",
+    "Claude 3.5 Sonnet (October 2024)",
+    "Claude 3.7 Sonnet",
+    "Claude Opus 4",
+    "Claude Opus 4.1",
+    "Claude Opus 4.5",
+    "Claude Opus 4.6",
+    "Claude Opus 4.7",
+    "Claude Sonnet 4",
+    "Claude Sonnet 4.5",
+    "DBRX",
+    "DeepSeek LLM 67B",
+    "DeepSeek-R1",
+    "DeepSeek-R1 (May 2025)",
+    "DeepSeek-R1-Distill-Llama-70B",
+    "DeepSeek-R1-Distill-Qwen-14B",
+    "DeepSeek-V3",
+    "DeepSeek-V3 (Mar 2025)",
+    "DeepSeek-V3.2",
+    "Eurus-2-7B-PRIME",
+    "GLM-4.7",
+    "GLM-5",
+    "GLM-5.1",
+    "GPT-3.5 Turbo",
+    "GPT-4 (Jun 2023)",
+    "GPT-4 (Mar 2023)",
+    "GPT-4 Turbo (Apr 2024)",
+    "GPT-4 Turbo (Nov 2023)",
+    "GPT-4.1",
+    "GPT-4.1 mini",
+    "GPT-4.1 nano",
+    "GPT-4.5",
+    "GPT-4o",
+    "GPT-4o mini",
+    "GPT-5",
+    "GPT-5 mini",
+    "GPT-5 nano",
+    "GPT-5.1",
+    "GPT-5.2",
+    "GPT-5.3 Codex",
+    "GPT-5.4 Pro",
+    "Gemini 1.0 Pro",
+    "Gemini 1.5 Flash",
+    "Gemini 1.5 Flash 8B",
+    "Gemini 1.5 Pro",
+    "Gemini 2.0 Flash",
+    "Gemini 2.0 Flash Thinking",
+    "Gemini 2.0 Pro",
+    "Gemini 2.5 Pro (Jun 2025)",
+    "Gemini 2.5 Pro (Mar 2025)",
+    "Gemini 2.5 Pro (May 2025)",
+    "Gemini 3 Pro",
+    "Gemma 2 27B",
+    "Gemma 2 9B",
+    "Gemma 3 27B",
+    "Grok 3",
+    "Grok 4",
+    "Grok-2",
+    "Grok-3 mini",
+    "Hermes 2 Theta Llama-3 70B",
+    "Kimi K2 Thinking",
+    "Kimi K2.5",
+    "Kimi K2.6",
+    "Kimi K2.7 Code",
+    "Llama 2-70B",
+    "Llama 3-70B",
+    "Llama 3-8B",
+    "Llama 3.1-405B",
+    "Llama 3.1-70B",
+    "Llama 3.1-8B",
+    "Llama 3.2 90B",
+    "Llama 3.3 70B",
+    "Llama 4 Maverick",
+    "Llama 4 Scout",
+    "Magistral Small 1.1",
+    "Ministral 3B",
+    "Ministral 8B",
+    "Mistral 7B",
+    "Mistral Large",
+    "Mistral Large 2",
+    "Mistral Medium 3",
+    "Mistral NeMo",
+    "Mistral Small 3",
+    "Mistral Small 3.1",
+    "Mixtral 8x22B",
+    "Mixtral 8x7B",
+    "Muse Spark",
+    "Phi-4",
+    "QWQ-Plus",
+    "Qwen 3.5 Flash (hosted 35B-A3B)",
+    "Qwen 3.5 Plus (hosted 397B-A17B)",
+    "Qwen 3.6 Flash",
+    "Qwen 3.6 Max (Preview)",
+    "Qwen 3.6 Plus",
+    "Qwen Plus",
+    "Qwen-Turbo",
+    "Qwen1.5-32B",
+    "Qwen1.5-72B",
+    "Qwen2-72B",
+    "Qwen2.5-32B",
+    "Qwen2.5-72B",
+    "Qwen2.5-Max",
+    "Qwen3-235B-A22B",
+    "Qwen3-235B-A22B (Jul 2025)",
+    "Qwen3-Max",
+    "Qwen3.7-Max",
+    "Tulu 3 (Tülu 3) 70B",
+    "WizardLM-2 8x22B",
+    "Yi-1.5-34B",
+    "Yi-34B",
+    "gpt-oss-120b",
+    "o1",
+    "o1-mini",
+    "o1-preview",
+    "o3",
+    "o3-mini",
+    "o4-mini",
+    "phi-3-medium 14B"
+  ]
+}

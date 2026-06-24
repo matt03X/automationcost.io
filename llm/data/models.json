@@ -34,7 +34,47 @@
       "2026-06-21-longcontext": "Gemini 3.1 Pro Preview dostal STRUKTUROVANY longContext tier { threshold 200000, in 4.00, out 18.00, cached null } - sazby uz drive overene v longContextNote, ted zapojene do enginu (kalkulator nad 200k inputu uctuje $4/$18 misto $2/$12). cached=null: Google nepublikuje long-context cache cenu -> nad prahem se cache neaplikuje. OpenAI (gpt-5.5/5.4/5.5-pro) maji overene long-context SAZBY ale neovereny PRAH -> longContext blok zatim NEpridan (viz todo_v1_1), kalkulator je nad prahem stale podstreluje jako pred touto zmenou (zadna regrese). Engine (rates/js_lc/canonical_monthly) je generic.",
       "2026-06-20-mistral-lineup": "Mistral lineup expanze 1 -> 11 modelu: pridano Medium 3.5, Magistral Medium/Small, Devstral 2/Small 2, Small 4, Codestral, Ministral 3 (3B/8B/14B). input/output/contextWindow/batch HIGH confidence (oficialni model cards docs.mistral.ai, 2026-06-20). cachedInputPerM=null: Mistral cached ceny nejsou per-model tabulkovane (jen dokumentovane pravidlo 10% input; per-model caching support neoveren) - drzime null krome overeneho Large 3. Korekce: Codestral=128k, Magistral M/S=128k (ne 256k). WATCH: Magistral Small mela na model card deprecation 2026-04-30 ale je stale na live ceniku -> hlida llm-facts-audit."
     },
-    "last_reviewed": "2026-06-20"
+    "last_reviewed": "2026-06-20",
+    "benchmarks": {
+      "_note": "Capability scoring zdroj. PLNI scraper (scripts/llm-benchmark-pull.md -> .js) do per-model `benchmarks` bloku jako {value,source,asof}. JEN skore, NIKDY text otazek (skore=fakt/Feist). Independent zdroj prebiji vendor; vendor x0.85 + UI (i). Artificial Analysis ZAKAZANO. Per-model matching pres `benchmarkAliases` (default = model.name). Cisla NIKDY z treninku — vyhradne live pull, dated.",
+      "metrics": {
+        "mmlu_pro":           { "label": "MMLU-Pro",           "unit": "pct", "range": [0, 100],     "higherBetter": true, "cluster": "general",  "measures": "broad knowledge + reasoning" },
+        "gpqa_diamond":       { "label": "GPQA Diamond",       "unit": "pct", "range": [0, 100],     "higherBetter": true, "cluster": "general",  "measures": "graduate-level science reasoning" },
+        "arena_elo":          { "label": "LMArena Elo",        "unit": "elo", "range": [1000, 1500], "higherBetter": true, "cluster": "general",  "measures": "human preference (overall)" },
+        "swe_bench_verified": { "label": "SWE-bench Verified", "unit": "pct", "range": [0, 100],     "higherBetter": true, "cluster": "coding",   "measures": "agentic / repo-level coding" },
+        "terminal_bench":     { "label": "Terminal-Bench",     "unit": "pct", "range": [0, 100],     "higherBetter": true, "cluster": "coding",   "measures": "CLI / terminal agent tasks (skoruje par agent+model -> brat kanonicky harness)" },
+        "bfcl":               { "label": "BFCL",               "unit": "pct", "range": [0, 100],     "higherBetter": true, "cluster": "tooluse",  "measures": "function-calling / agentic tool use" },
+        "tau_bench":          { "label": "tau-bench",          "unit": "pct", "range": [0, 100],     "higherBetter": true, "cluster": "tooluse",  "measures": "multi-turn realistic tool use" },
+        "mcp_bench":          { "label": "MCP-Bench",          "unit": "pct", "range": [0, 100],     "higherBetter": true, "cluster": "tooluse",  "optional": true, "measures": "MCP server / tool orchestration" },
+        "helm_ruler":         { "label": "HELM Long Context",  "unit": "pct", "range": [0, 100],     "higherBetter": true, "cluster": "longctx",  "measures": "long-context QUALITY (RULER/InfiniteBench/MRCR mean)" },
+        "ifeval":             { "label": "IFEval",             "unit": "pct", "range": [0, 100],     "higherBetter": true, "cluster": "general",  "optional": true, "measures": "instruction following" }
+      },
+      "dataSources": {
+        "epoch":        { "name": "Epoch AI Benchmarking Hub", "license": "CC-BY",      "url": "https://epoch.ai/data/ai-benchmarking-dashboard", "access": "CSV export / epochai pkg (overit endpoint pri ingestu)", "attribution": "Epoch AI, CC-BY" },
+        "helm":         { "name": "Stanford HELM",             "license": "Apache-2.0", "url": "https://crfm.stanford.edu/helm/", "access": "gs://crfm-helm-public per-run JSON", "attribution": "Stanford CRFM HELM" },
+        "lmarena":      { "name": "LMArena (Chatbot Arena)",   "license": "CC-BY-4.0",  "url": "https://lmarena.ai/leaderboard", "access": "HF dataset lmarena-ai/leaderboard-dataset", "warn": "ber z HF datasetu, NESCRAPOVAT web; conversation dataset je CC-BY-NC -> nepouzivat" },
+        "swebench":     { "name": "SWE-bench",                 "license": "skore=fakt (kod MIT)", "url": "https://www.swebench.com/", "access": "swe-bench.github.io/data/leaderboards.json", "attribution": "SWE-bench" },
+        "tbench":       { "name": "Terminal-Bench",            "license": "skore=fakt", "url": "https://www.tbench.ai/leaderboard", "access": "tbench.ai + GitHub laude-institute/terminal-bench results", "warn": "NEPOUZIVAT Artificial Analysis 'Terminal-Bench Hard' — ber z tbench.ai/GitHub" },
+        "gorilla_bfcl": { "name": "Berkeley Function-Calling Leaderboard (Gorilla)", "license": "Apache-2.0", "url": "https://gorilla.cs.berkeley.edu/leaderboard.html", "access": "GitHub ShishirPatil/gorilla leaderboard data" },
+        "tau_bench":    { "name": "tau-bench (Sierra)",        "license": "MIT",        "url": "https://github.com/sierra-research/tau-bench", "access": "GitHub repo results" },
+        "mcp_bench":    { "name": "MCP-Bench",                 "license": "overit pri ingestu", "url": null, "access": "project GitHub leaderboard JSON" },
+        "vendor":       { "name": "Vendor self-reported",      "license": "skore=fakt (Feist)", "url": null, "warn": "self-reported -> capability x0.85 + UI (i); independent zdroj prebiji" }
+      },
+      "storage": "Hodnoty NEZIJI zde — jsou v llm/data/benchmarks.json: byModel[<model id>][<metricKey>] = { value, source, asof }. models.json zustava cisty cenovy moat. Plni scraper -> propose-benchmark-updates.js, NIKDY rucne/z pameti.",
+      "blend": "frontier = 0.7*capabilityScore + 0.3*tierScore (kdyz >=2 metriky), jinak tierScore. capabilityScore = min-max norm (dle metrics.range) vazeny benchmarkWeights (scoring-model.json). Viz scoring-model.json frontier_v2_plan. ZATIM NEZAPOJENO (Phase 4)."
+    },
+    "availability": {
+      "_note": "FAKTA (ne skore) o dostupnosti/ekosystemu. Per-model `availability` blok plni availability scraper jako {value,source,asof}. Mimo capability scoring (renderuje se jako badges).",
+      "fields": {
+        "hosting":   "kde model bezi: { native, bedrock, vertex, azure, openrouter } bool",
+        "mcp":       "podpora Model Context Protocol (bool)",
+        "codingCli": "podporovano v coding CLI: [claude-code | codex | aider | cursor]"
+      },
+      "sources": {
+        "openrouter":  { "name": "OpenRouter models API", "url": "https://openrouter.ai/api/v1/models", "access": "JSON API" },
+        "vendor_docs": { "name": "Vendor docs / model cards", "license": "fakt" }
+      }
+    }
   },
   "providers": [
     {
@@ -71,9 +111,9 @@
       "pricingUrl": "https://ai.google.dev/gemini-api/docs/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "gemini-3.1-pro-preview", "name": "Gemini 3.1 Pro Preview", "tier": "frontier", "inputPerM": 2.00, "cachedInputPerM": 0.20, "outputPerM": 12.00, "batchDiscount": 0.5, "contextWindow": 1000000, "longContextNote": "prompty >200k tokenu: $4 in / $18 out", "longContext": { "threshold": 200000, "inputPerM": 4.00, "outputPerM": 18.00, "cachedInputPerM": null } },
+        { "id": "gemini-3.1-pro-preview", "name": "Gemini 3.1 Pro Preview", "tier": "frontier", "inputPerM": 2.00, "cachedInputPerM": 0.20, "outputPerM": 12.00, "batchDiscount": 0.5, "contextWindow": 1000000, "longContextNote": "prompty >200k tokenu: $4 in / $18 out", "longContext": { "threshold": 200000, "inputPerM": 4.00, "outputPerM": 18.00, "cachedInputPerM": null }, "benchmarkAliases": { "epoch": "Gemini 3.1 Pro" } },
         { "id": "gemini-3.5-flash", "name": "Gemini 3.5 Flash", "tier": "mid", "inputPerM": 1.50, "cachedInputPerM": 0.15, "outputPerM": 9.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
-        { "id": "gemini-3-flash-preview", "name": "Gemini 3 Flash Preview", "tier": "mid", "inputPerM": 0.50, "cachedInputPerM": 0.05, "outputPerM": 3.00, "batchDiscount": 0.5, "contextWindow": 1000000 },
+        { "id": "gemini-3-flash-preview", "name": "Gemini 3 Flash Preview", "tier": "mid", "inputPerM": 0.50, "cachedInputPerM": 0.05, "outputPerM": 3.00, "batchDiscount": 0.5, "contextWindow": 1000000, "benchmarkAliases": { "epoch": "Gemini 3 Flash" } },
         { "id": "gemini-3.1-flash-lite", "name": "Gemini 3.1 Flash-Lite", "tier": "budget", "inputPerM": 0.25, "cachedInputPerM": 0.025, "outputPerM": 1.50, "batchDiscount": 0.5, "contextWindow": 1000000 }
       ]
     },
@@ -84,7 +124,7 @@
       "pricingUrl": "https://api-docs.deepseek.com/quick_start/pricing",
       "hasAffiliate": false,
       "models": [
-        { "id": "deepseek-v4-pro", "name": "DeepSeek V4 Pro", "tier": "mid", "inputPerM": 0.435, "cachedInputPerM": 0.003625, "outputPerM": 0.87, "batchDiscount": null, "contextWindow": 1000000 },
+        { "id": "deepseek-v4-pro", "name": "DeepSeek V4 Pro", "tier": "mid", "inputPerM": 0.435, "cachedInputPerM": 0.003625, "outputPerM": 0.87, "batchDiscount": null, "contextWindow": 1000000, "benchmarkAliases": { "epoch": "DeepSeek-V4-Pro" } },
         { "id": "deepseek-v4-flash", "name": "DeepSeek V4 Flash", "tier": "budget", "inputPerM": 0.14, "cachedInputPerM": 0.0028, "outputPerM": 0.28, "batchDiscount": null, "contextWindow": 1000000 }
       ]
     },
@@ -95,7 +135,7 @@
       "pricingUrl": "https://docs.x.ai/docs/models",
       "hasAffiliate": false,
       "models": [
-        { "id": "grok-4.3", "name": "Grok 4.3", "tier": "frontier", "inputPerM": 1.25, "cachedInputPerM": 0.20, "outputPerM": 2.50, "batchDiscount": null, "contextWindow": 1000000 },
+        { "id": "grok-4.3", "name": "Grok 4.3", "tier": "frontier", "inputPerM": 1.25, "cachedInputPerM": 0.20, "outputPerM": 2.50, "batchDiscount": null, "contextWindow": 1000000, "benchmarkAliases": { "epoch": "Grok 4.3 Beta" } },
         { "id": "grok-build-0.1", "name": "Grok Build 0.1", "tier": "mid", "inputPerM": 1.00, "cachedInputPerM": 0.20, "outputPerM": 2.00, "batchDiscount": null, "contextWindow": 256000 }
       ]
     },

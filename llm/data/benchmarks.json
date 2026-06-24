@@ -1,0 +1,137 @@
+{
+  "byModel": {
+    "deepseek-v4-pro": {
+      "swe_bench_verified": {
+        "value": 77.6,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      },
+      "gpqa_diamond": {
+        "value": 89.6,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "grok-4.3": {
+      "gpqa_diamond": {
+        "value": 88.8,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "claude-opus-4-8": {
+      "gpqa_diamond": {
+        "value": 91,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "gemini-3.5-flash": {
+      "swe_bench_verified": {
+        "value": 79.3,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      },
+      "gpqa_diamond": {
+        "value": 92.8,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "gpt-5.5": {
+      "gpqa_diamond": {
+        "value": 94,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      },
+      "swe_bench_verified": {
+        "value": 80.6,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "gpt-5.5-pro": {
+      "gpqa_diamond": {
+        "value": 93.9,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "gpt-5.4-mini": {
+      "gpqa_diamond": {
+        "value": 83.6,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "gpt-5.4-nano": {
+      "gpqa_diamond": {
+        "value": 78.5,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "gpt-5.4": {
+      "swe_bench_verified": {
+        "value": 76.9,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      },
+      "gpqa_diamond": {
+        "value": 93.3,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "gemini-3.1-pro-preview": {
+      "swe_bench_verified": {
+        "value": 75.6,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      },
+      "gpqa_diamond": {
+        "value": 94.1,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "claude-sonnet-4-6": {
+      "swe_bench_verified": {
+        "value": 75.2,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      },
+      "gpqa_diamond": {
+        "value": 87.4,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "gemini-3-flash-preview": {
+      "swe_bench_verified": {
+        "value": 75.4,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      },
+      "gpqa_diamond": {
+        "value": 83.2,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    },
+    "claude-haiku-4-5": {
+      "gpqa_diamond": {
+        "value": 71.2,
+        "source": "epoch",
+        "asof": "2026-06-23"
+      }
+    }
+  },
+  "_meta": {
+    "note": "Capability/benchmark skóre LLM modelů. Plní scraper (llm-benchmark-pull.js) + propose-benchmark-updates.js. {value,source,asof}, vše z LIVE zdroje, NIKDY z tréninku. Klíč = model id z models.json. models.json = cenový moat (oddělené).",
+    "lastPull": "2026-06-23",
+    "sources": [
+      "epoch"
+    ]
+  }
+}

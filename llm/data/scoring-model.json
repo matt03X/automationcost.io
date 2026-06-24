@@ -8,18 +8,38 @@
     "models_source": "data/models.json (verified 2026-06-20)",
     "note": "Navrh skorovaciho modelu LLM recommendation enginu (ekvivalent automation/data/scoring-model.json). Doporuceni = pro vybrany use-case (role) najdi nejlepe sedici model. matchScore(model) = featureScore*scoreWeights.feature + priceScore*scoreWeights.price + frontierScore*scoreWeights.frontier. featureScore = roleWeights[role] . modelScore[dimensions] (skalarni soucin pres dimenze, BEZ price — cenu resi samostatny priceScore z enginu, stejne jako automation lowPrice). priceScore se POCITA ZA BEHU z enginu (canonical_monthly 'mo' / cost(m) na aktualnim profilu uzivatele), NENI v tomto souboru — soubor drzi jen VAHY a OVERITELNA per-tier/per-model skore. ZDROJ PRAVDY pro vahy je tento soubor; index.html by ho cetl pres marker /* DATA:SCORING:START|END */ generovany llm/build.py (zatim NEEXISTUJE marker ani render_scoring v llm/build.py — soucast wiringu).",
     "scale": "Vsechny vahy a skore 0..1. roleWeights[role] davaji soucet ~1 pres skorovaci dimenze. lowPrice je REZERVOVANY (cenu resi priceScore z enginu, nepouziva se ve featureScore) — drzime ho jako vahu pro citelnost role profilu, presne jako automation.",
-    "dimensions": ["context", "caching", "cheapOutput", "batch", "frontier", "lowPrice"],
+    "dimensions": ["context", "caching", "cheapOutput", "batch", "frontier", "coding", "tooluse", "longctxQuality", "lowPrice"],
     "dimension_definitions": {
       "context": "Velikost context okna. Skore odvozeno z contextWindow (norm. log skalou: 200k~0.6, 256k~0.65, 400k~0.8, 1M~1.0). Overitelne z models.json.",
       "caching": "Ekonomika promtp cachingu = jak levne je cached input vuci plnemu inputu (1 - cachedInputPerM/inputPerM). Vyssi = vyhodnejsi pro opakovany kontext. Model bez cache ceny (cached=null) = 0. Overitelne z models.json.",
       "cheapOutput": "Levny output token. Skore = inverzni norm. outputPerM v ramci celeho lineupu (levnejsi output = vyssi skore). Pro role s velkym outputem (agents, reasoning). Overitelne z models.json.",
       "batch": "Dostupnost batch API slevy. Skore = batchDiscount slevove procento (1 - batchDiscount); batch=null => 0. Pro async/bulk role. Overitelne z models.json.",
-      "frontier": "Schopnostni trida (tier). frontier=1.0, mid=0.6, budget=0.3. EDITORIAL tier z models.json (NE benchmark) — proto je to per-tier, ne vymysleny per-model skill skore.",
+      "frontier": "Obecna schopnost. v1 = tier (frontier=1.0/mid=0.6/budget=0.3, EDITORIAL z models.json). Phase 4 -> benchmark-blend (general cluster: mmlu_pro/gpqa_diamond/arena_elo) dle frontier_v2_plan.",
+      "coding": "Kodovaci schopnost (benchmark-odvozene, Phase 4): swe_bench_verified + terminal_bench. 0 kdyz chybi benchmarky.",
+      "tooluse": "Tool-use / agentic (benchmark, Phase 4): bfcl + tau_bench (+mcp_bench). 0 kdyz chybi.",
+      "longctxQuality": "Kvalita na dlouhem kontextu (!= context = velikost okna; Phase 4): helm_ruler. 0 kdyz chybi.",
       "lowPrice": "REZERVOVANE. Cenu resi priceScore pocitany z enginu na profilu uzivatele (mo / cost(m)). Drzime vahu pro citelnost, nepouziva se ve featureScore."
-    }
+    },
+    "frontier_v2_plan": "PLAN (zapoji Phase 4 do llm/build.py _model_dims): benchmark-odvozene dimenze coding/tooluse/longctxQuality + frontier=0.7*capabilityScore+0.3*tierScore (kdyz >=2 metriky z clusteru), jinak tierScore. capabilityScore = vazeny prumer min-max norm metrik (metrics.range v models.json _meta.benchmarks) dle benchmarkWeights[dim]. Vendor metriky x0.85. Coverage guard <2 metriky -> renormalizovat + oprit o tier. Cisla z LIVE scraperu (models.json benchmarks bloky), NIKDY z treninku."
   },
 
   "scoreWeights": { "feature": 0.50, "price": 0.32, "frontier": 0.18 },
+
+  "benchmarkWeights": {
+    "_note": "Vahy pro capabilityScore kazde benchmark-odvozene dimenze (min-max norm dle metrics.range). EDITORIAL, live-tunable. Coverage guard u frontier: <2 metriky -> renormalizovat + oprit o tier. ZATIM NEZAPOJENO (Phase 4).",
+    "frontier":       { "mmlu_pro": 0.30, "gpqa_diamond": 0.35, "arena_elo": 0.35 },
+    "coding":         { "swe_bench_verified": 0.60, "terminal_bench": 0.40 },
+    "tooluse":        { "bfcl": 0.50, "tau_bench": 0.40, "mcp_bench": 0.10 },
+    "longctxQuality": { "helm_ruler": 1.00 }
+  },
+
+  "metric_map": {
+    "_note": "Ktera metrika krmi kterou dimenzi (Phase 4 _model_dims).",
+    "frontier": ["mmlu_pro", "gpqa_diamond", "arena_elo"],
+    "coding": ["swe_bench_verified", "terminal_bench"],
+    "tooluse": ["bfcl", "tau_bench", "mcp_bench"],
+    "longctxQuality": ["helm_ruler"]
+  },
 
   "roleWeights": {
     "chatbot":        { "context": 0.15, "caching": 0.35, "cheapOutput": 0.10, "batch": 0.00, "frontier": 0.15, "lowPrice": 0.25 },
