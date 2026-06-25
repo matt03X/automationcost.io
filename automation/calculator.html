@@ -3294,8 +3294,9 @@ function calcCost(tool, runs, steps, workflows, perWf) {
   let best = null, selfHostAlt = null;
   for (const plan of tool.plans) {
     if (plan.custom) continue; // "contact sales" tier — estimated below
-    if (hostPref === "cloud" && plan.selfHostOnly) continue;
-    if (hostPref === "selfhost" && !plan.selfHostOnly) continue;
+    const planHost = plan.track || (plan.selfHostOnly ? "selfhost" : "cloud");
+    if (hostPref === "cloud" && planHost === "selfhost") continue;
+    if (hostPref === "selfhost" && planHost === "cloud") continue;
     if (plan.workflowLimit !== Infinity && plan.workflowLimit < workflows) continue;
     // Pure open-source self-host plan ($8 placeholder): real cost is the VPS,
     // which scales with volume. Paid self-host licenses (e.g. n8n Business $667)
@@ -3324,7 +3325,7 @@ function calcCost(tool, runs, steps, workflows, perWf) {
     // se sleduje zvlášť jako bonus ("můžeš srazit na ~$X když si to hostuješ sám").
     // Self-host přebíjel cheapest-pick → n8n vypadal "skoro zdarma" (apples-vs-oranges).
     const spec = shbd ? shbd.spec : null, home = shbd ? shbd.elec : null;
-    if (hostPref === "any" && plan.selfHostOnly) {
+    if (hostPref === "any" && planHost === "selfhost") {
       if (selfHostAlt === null || cost < selfHostAlt.cost) selfHostAlt = { cost, plan, hwOnly: !!hwPlan, spec, home, shbd: shbd };
     } else {
       if (best === null || cost < best.cost) best = { cost, plan, hwOnly: !!hwPlan, spec, home, shbd: shbd };
@@ -3338,7 +3339,13 @@ function calcCost(tool, runs, steps, workflows, perWf) {
   // 100k tasks ≈ $733/mo vs $49/2k anchor → 49×50^0.7 ≈ $760).
   const customPlan = tool.plans.find(p => p.custom);
   if (customPlan && hostPref !== "selfhost") {
-    const anchors = tool.plans.filter(p => !p.custom && !p.selfHostOnly && p.monthlyUsd > 0 && isFinite(p.opsIncluded));
+    const anchors = tool.plans.filter(p => {
+      if (p.custom || p.selfHostOnly || !(p.monthlyUsd > 0) || !isFinite(p.opsIncluded)) return false;
+      const ph = p.track || "cloud";
+      if ((hostPref === "cloud" || hostPref === "any") && ph === "selfhost") return false;
+      if (hostPref === "selfhost" && ph === "cloud") return false;
+      return true;
+    });
     const maxInc = anchors.length ? Math.max(...anchors.map(p => p.opsIncluded)) : 0;
     const anchor = anchors.filter(p => p.opsIncluded === maxInc).sort((a, b) => a.monthlyUsd - b.monthlyUsd)[0];
     const wfOk = customPlan.workflowLimit === Infinity || customPlan.workflowLimit >= workflows;
