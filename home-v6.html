@@ -21,7 +21,7 @@
   --openai:#19c37d; --anthropic:#d97757; --google:#4285f4; --deepseek:#5b6ef5; --xai:#9aa0a6; --mistral:#fa520f;
   /* tool colors */
   --zapier:#FF4F00; --make:#B02DE9; --n8n:#EA4B71; --pipedream:#3b82f6;
-  --activepieces:#6E56CF; --automatisch:#0EA5E9; --node-red:#8F0000; --n8n-biz:#E0A800;
+  --activepieces:#6E56CF; --automatisch:#0EA5E9; --node-red:#8F0000; --n8n-biz:#E0A800; --sh-vps:#10b981; --sh-own:#22d3ee;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -190,7 +190,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .tf-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
 .tf-lab{font-family:var(--display);font-weight:800;font-size:1rem}
 .tf-hint{font-size:.74rem;color:var(--tx3)}.tf-hint b{color:var(--pp)}
-.tf-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:9px}
+.tf-tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}
+.tf-tiles .tf-tile{flex:0 1 96px;max-width:120px}
 .tf-tile{display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--panel2);border:1px solid var(--b);border-radius:12px;padding:11px 6px 9px;cursor:pointer;transition:.13s;opacity:.4}
 .tf-tile.on{opacity:1;border-color:var(--pc)}
 .tf-tile:hover{opacity:.85;border-color:var(--tx3)}.tf-tile.on:hover{opacity:1}
@@ -200,6 +201,11 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .vs-compare{display:none}
 .panels.vs > section.panel{display:none}
 .panels.vs > #a-vs{display:block}
+/* 3-4 tools (cloud/any): show ONLY ranked-cost-bars (section 1) + cost-scale (section 2). Order-dependent on the six section.panel children. */
+.panels.compact > #a-vs,.panels.compact > #a-selfhost{display:none}
+.panels.compact > section.panel{display:none}
+.panels.compact > section.panel:nth-of-type(1){display:block}
+.panels.compact > section.panel:nth-of-type(2){display:block}
 .vs-scroll{overflow-x:auto;overflow-y:hidden}
 .vs-th .vs-price.vs-cheap{color:#10b981}
 .vs-cheap-tag{display:inline-block;margin-top:2px;color:#10b981;font-weight:700;font-size:.55rem;text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono)}
@@ -232,6 +238,30 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .vs-table tr.vs-note td{color:var(--tx3);font-size:.7rem;line-height:1.5;border-top:none;padding-top:6px;padding-bottom:12px}
 .selfhost-panel{display:none;background:var(--panel);border:1px solid var(--b);border-radius:16px;padding:20px;margin-bottom:18px}
 .selfhost-panel .panel-sub{margin:4px 0 14px}
+.sh-bar2{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sh-searchbar{position:relative;flex:1 1 220px;min-width:170px}
+.sh-searchbar input{width:100%;background:var(--panel2);border:1px solid var(--b);border-radius:9px;padding:9px 12px;color:var(--tx);font-family:var(--mono);font-size:.82rem}
+.sh-searchbar input:focus{outline:none;border-color:var(--pp)}
+.sh-count{font-family:var(--mono);font-size:.7rem;color:var(--tx3);white-space:nowrap}
+.sh-apps td,.sh-apps th{text-align:center}
+.sh-apps td.vs-lab,.sh-apps th:first-child{text-align:left}
+.sh-pager{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
+.sh-pager button{background:var(--panel2);border:1px solid var(--b);border-radius:8px;color:var(--tx2);padding:6px 13px;cursor:pointer;font-size:.8rem;font-family:var(--mono)}
+.sh-pager button:hover:not([disabled]){border-color:var(--pp);color:var(--tx)}
+.sh-pager button[disabled]{opacity:.35;cursor:default}
+.sh-pager .sh-pg{font-family:var(--mono);font-size:.74rem;color:var(--tx3)}
+.sh-explain{background:var(--panel2);border:1px solid var(--b);border-radius:11px;padding:13px 15px;margin-top:14px;font-size:.82rem;color:var(--tx2);line-height:1.5}
+.sh-explain b{color:var(--tx)}
+.sh-tco{margin-top:16px}
+.sh-tco .lead{font-size:.86rem;color:var(--tx2);line-height:1.55;margin-bottom:12px}
+.sh-tco .lead b{color:var(--auto,#10b981)}
+.sh-tco .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:8px}
+.sh-tco .item{background:var(--panel2);border:1px solid var(--b);border-radius:10px;padding:10px 12px;cursor:help}
+.sh-tco .item .l{font-size:.73rem;color:var(--tx3);display:block;margin-bottom:3px}
+.sh-tco .item .v{font-family:var(--mono);font-size:.84rem;color:var(--tx);font-weight:600}
+.sh-tco .item.dom{border-color:var(--auto,#10b981)}
+.sh-tco .item.dom .v{color:var(--auto,#10b981)}
+.sh-tco .src{font-size:.68rem;color:var(--tx3);margin-top:10px;line-height:1.5}
 .persona-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 .persona-grid button{padding:7px 5px;font-size:.76rem}
 .toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;user-select:none}
@@ -637,6 +667,7 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
         <div class="panel-h"><h2>Ranked monthly cost at your volume</h2><span class="tag">cheapest → priciest</span></div>
         <p class="panel-sub">Every tool priced at your exact runs × steps × workflows through the same engine as the full wizard. Tools your filters rule out are dimmed.</p>
         <div class="bars" id="a-bars"></div>
+        <div class="sh-explain" id="a-sh-explain" style="display:none"></div>
         <div class="feat-ent" id="a-feat-ent" style="display:none"></div>
       </section>
 
@@ -648,6 +679,7 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
         <div class="legend" id="a-scale-legend"></div>
         <div class="cx-note" id="a-cross"></div>
         <div class="ap-note" id="a-ap-note" style="display:none"></div>
+        <div class="sh-tco" id="a-sh-tco" style="display:none"></div>
       </section>
 
       <!-- 2b. capabilities at a glance -->
@@ -1391,31 +1423,67 @@ function aSelfHostSlugs(){ return TOOLS.filter(function(t){return t.selfHostable
 function aSelfHostAppMask(){ var m=0; aSelfHostSlugs().forEach(function(sg){ var i=A_APP_ORDER.indexOf(sg); if(i>=0) m|=(1<<i); }); return m; }
 function aAppSelfHostOK(mask){ return (mask & aSelfHostAppMask())!==0; }
 function aFeatSelfHostOK(name){ var rq=A_FEAT_REQ[name]||{}; return aSelfHostSlugs().some(function(sg){ return sg in rq; }); }
-/* #3: self-host comparison — same server cost, so compare on connectors + capabilities */
+/* R2: which tools are offered in the current deployment mode (tile filter follows hostPref) */
+function aToolVisible(t){
+  if(hostPref==="cloud") return t.plans.some(function(p){return !p.selfHostOnly;});
+  if(hostPref==="selfhost") return !!t.selfHostable;
+  return true;
+}
+function aVisibleSlugs(){ return TOOLS.filter(aToolVisible).map(function(t){return t.slug;}); }
+/* R3: self-host apps comparison state + cached app→tool matrix (built ONCE from A_APPS bitmask) */
+var _shQuery="", _shPage=0, _shPageSize=30, _shTimer=null, _shAppRows=null;
+function aSelfHostAppRows(){
+  if(_shAppRows) return _shAppRows;
+  var bn=A_APP_ORDER.indexOf("n8n"), ba=A_APP_ORDER.indexOf("activepieces"), bu=A_APP_ORDER.indexOf("automatisch"), br=A_APP_ORDER.indexOf("node-red");
+  _shAppRows=[];
+  for(var i=0;i<A_APPS.length;i++){ var m=A_APPS[i][1];
+    var r={name:A_APPS[i][0],_lc:String(A_APPS[i][0]).toLowerCase(),
+      "n8n":!!((m>>bn)&1),"activepieces":!!((m>>ba)&1),"automatisch":!!((m>>bu)&1),"node-red":!!((m>>br)&1)};
+    if(r["n8n"]||r["activepieces"]||r["automatisch"]||r["node-red"]) _shAppRows.push(r);
+  }
+  return _shAppRows;
+}
+/* R6: self-host total cost of ownership — hard numbers sourced, soft costs flagged (est.). Owner-approved 2026-06-25. */
+var SH_TCO=[
+  {l:"Server (VPS / HW)",v:"$5–40/mo",tip:"VPS sized to runs×steps (Hetzner CX22 €4.49/mo, DigitalOcean $24/mo), or a mini-PC / server you own."},
+  {l:"Electricity",v:"$3–15/mo",tip:"Own-hardware only: ~24/7 draw at your kWh price (EU avg €0.29/kWh, US $0.176/kWh)."},
+  {l:"Depreciation",v:"3yr +12%/yr",tip:"Owned hardware amortised over 36 months +12%/yr maintenance — already inside the own-hardware figure (standard useful life 3–5 yrs)."},
+  {l:"Your DevOps time",v:"2–8 h/mo (est.)",dom:1,tip:"The real cost: setup, upgrades, debugging, on-call — roughly 2–8 h/mo (est.) × your hourly rate. Usually dwarfs the server bill."},
+  {l:"Backups",v:"$1–10/mo (est.)",tip:"Off-site database + workflow backups (est.)."},
+  {l:"Monitoring",v:"$0–20/mo (est.)",tip:"Uptime checks, log retention, alerting (est.)."},
+  {l:"Security / patching",v:"your time (est.)",tip:"OS + container CVE patching, secret rotation — your time (est.)."},
+  {l:"Downtime risk",v:"no SLA",tip:"You own recovery — no vendor SLA. A managed-cloud outage is their problem; a self-host outage is yours (est. ~$1k–5k/hr of lost automation, varies widely)."},
+  {l:"Scaling stack",v:"$10–60/mo (est.)",tip:"At volume: Redis queue, external Postgres, extra workers (est.)."},
+  {l:"TLS / domain",v:"$1–2/mo",tip:"Domain + auto-renewing TLS cert; reverse-proxy upkeep."},
+  {l:"n8n Business licence",v:"~$800/mo",tip:"ONLY if you need enterprise features (SSO / RBAC / log streaming) on n8n self-host — the supported Business track (n8n.io/pricing), not the free community build."}
+];
+/* R3: self-host comparison — same server cost, so compare on APP COVERAGE (searchable + paginated). */
 function aRenderSelfHost(){
   var el=document.getElementById("a-selfhost"); if(!el) return;
-  var tools=TOOLS.filter(function(t){return t.selfHostable&&aToolSel(t.slug);});
-  if(hostPref!=="selfhost"||(aState.tools.length>=2&&aState.tools.length<=4)||tools.length<2){ el.style.display="none"; el.innerHTML=""; return; }
+  if(hostPref!=="selfhost"){ el.style.display="none"; el.innerHTML=""; return; }
   el.style.display="block";
-  function th(t){ var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,""); return '<th style="--pc:'+aToolColor(t.slug)+'"><div class="vs-th"><span class="vs-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="vs-nm">'+esc(t.name)+'</span></div></th>'; }
-  var maxInt=Math.max.apply(null,tools.map(function(t){return t.integrations;}));
-  var intRow='<tr><td class="vs-lab">App connectors</td>'+tools.map(function(t){ return '<td'+(t.integrations===maxInt?' class="vs-best"':'')+'>'+fmtInt(t.integrations)+'</td>'; }).join("")+'</tr>';
-  var crs=tools.map(function(t){ return selfHostCalc(t,aState.runs,aState.steps,aState.wf); });
-  var hv=crs.map(function(c){return c?c.headline:null;}).filter(function(v){return v!=null;}); var hmin=hv.length?Math.min.apply(null,hv):null;
-  var costRows='<tr><td class="vs-lab">Cheapest / mo</td>'+crs.map(function(c){return '<td'+(c&&c.headline===hmin?' class="vs-best"':'')+'>'+(c?fmtMoney(c.headline):"\u2014")+'</td>';}).join("")+'</tr>'+
-    '<tr class="vs-sub"><td class="vs-lab">VPS rent</td>'+crs.map(function(c){return '<td>'+(c?fmtMoney(c.vps):"\u2014")+'</td>';}).join("")+'</tr>'+
-    '<tr class="vs-sub"><td class="vs-lab">own HW (electricity + amort.)</td>'+crs.map(function(c){return '<td>'+(c?fmtMoney(c.own)+' <span style="color:var(--tx3)">('+fmtMoney(c.elec)+' + '+fmtMoney(c.hwAmort)+')</span>':"\u2014")+'</td>';}).join("")+'</tr>'+
-    '<tr class="vs-note"><td colspan="'+(tools.length+1)+'">Cheaper of VPS rent vs your own hardware (electricity + hardware amortized over 36 months + 12%/yr maintenance). Tier scales with steps x workflows. Estimate \u2014 your ops time isn\u2019t counted; hardware lasts 3\u20135 yrs (not replaced every 6 months).</td></tr>';
-  var CAP=[["noCode","No-code builder"],["codeAccess","Code access"],["aiNodes","AI nodes"],["selfHost","Self-host control"],["maturity","Maturity"]];
-  var capRows=CAP.map(function(d){ var vals=tools.map(function(t){return Math.round(((TOOL_SCORES[t.slug]||{})[d[0]]||0)*100);}); var mx=Math.max.apply(null,vals);
-    return '<tr><td class="vs-lab">'+d[1]+'</td>'+tools.map(function(t,i){ var v=vals[i]; return '<td'+(v===mx&&mx>0?' class="vs-best"':'')+'><span class="vs-bar"><i style="width:'+v+'%;background:'+aToolColor(t.slug)+'"></i></span>'+v+'</td>'; }).join("")+'</tr>'; }).join("");
-  el.innerHTML='<div class="panel-h"><h2>Self-host &mdash; same server cost, different power</h2><span class="tag">compare on connectors &amp; capabilities</span></div>'.replace("&mdash;","\u2014")+
-    '<p class="panel-sub">Every self-host tool runs on a server you own, so the bill is roughly the same. What actually differs is app reach and capability &mdash; that&rsquo;s what to compare here.</p>'.replace("&mdash;","\u2014")+
-    '<div class="vs-scroll"><table class="vs-table" style="min-width:'+(160+tools.length*150)+'px"><thead><tr><th></th>'+tools.map(th).join("")+'</tr></thead><tbody>'+
-    '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">Monthly cost \u00b7 self-host (VPS or own hardware)</td></tr>'+costRows+
-    '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">App reach</td></tr>'+intRow+
-    '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">Capabilities (0\u2013100)</td></tr>'+capRows+
-    '</tbody></table></div>';
+  var ORDER=["n8n","activepieces","automatisch","node-red"];
+  var tools=ORDER.map(function(sg){return TOOLS.find(function(t){return t.slug===sg&&t.selfHostable;});})
+    .filter(Boolean).filter(function(t){return aToolSel(t.slug);});
+  if(tools.length<1){ el.innerHTML='<div class="panel-h"><h2>Self-host — compare on app coverage</h2></div><p class="panel-sub">Select at least one self-host tool above.</p>'; return; }
+  var slugs=tools.map(function(t){return t.slug;});
+  var all=aSelfHostAppRows();
+  var q=_shQuery.trim().toLowerCase();
+  var filtered=all.filter(function(r){ if(q&&r._lc.indexOf(q)<0) return false; return slugs.some(function(sg){return r[sg];}); });
+  var pages=Math.max(1,Math.ceil(filtered.length/_shPageSize));
+  if(_shPage>=pages) _shPage=pages-1; if(_shPage<0) _shPage=0;
+  var slice=filtered.slice(_shPage*_shPageSize,(_shPage+1)*_shPageSize);
+  function th(t){ var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,"");
+    return '<th style="--pc:'+aToolColor(t.slug)+'"><div class="vs-th"><span class="vs-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="vs-nm">'+esc(t.name)+'</span><span class="vs-plan">'+fmtInt(t.integrations)+' apps</span></div></th>'; }
+  var yes='<span class="vs-yes">✓</span>', no='<span class="vs-no">—</span>';
+  var body=slice.map(function(r){ return '<tr><td class="vs-lab">'+esc(r.name)+'</td>'+tools.map(function(t){return '<td>'+(r[t.slug]?yes:no)+'</td>';}).join("")+'</tr>'; }).join("");
+  if(!body) body='<tr><td colspan="'+(tools.length+1)+'" style="color:var(--tx3);text-align:center;padding:18px">No matching apps.</td></tr>';
+  el.innerHTML='<div class="panel-h"><h2>Self-host — compare on app coverage</h2><span class="tag">same server cost · what differs is reach</span></div>'+
+    '<p class="panel-sub">Every self-host tool runs on a server you own, so the monthly bill is roughly the same. What actually differs is which apps each one connects to — search the full catalogue below.</p>'+
+    '<div class="sh-bar2"><div class="sh-searchbar"><input id="sh-q" type="search" placeholder="Search '+fmtInt(all.length)+' apps…" value="'+esc(_shQuery)+'" autocomplete="off"></div>'+
+    '<span class="sh-count">'+fmtInt(filtered.length)+' app'+(filtered.length===1?'':'s')+' · page '+(_shPage+1)+'/'+pages+'</span></div>'+
+    '<div class="vs-scroll"><table class="vs-table sh-apps" style="min-width:'+(180+tools.length*120)+'px"><thead><tr><th>App</th>'+tools.map(th).join("")+'</tr></thead><tbody>'+body+'</tbody></table></div>'+
+    '<div class="sh-pager"><button data-shpage="prev"'+(_shPage<=0?" disabled":"")+'>‹ Prev</button><span class="sh-pg">'+(_shPage+1)+' / '+pages+'</span><button data-shpage="next"'+(_shPage>=pages-1?" disabled":"")+'>Next ›</button></div>';
 }
 /* true if a tool integrates with EVERY app the user has selected (or no apps selected) */
 function aAppOK(slug){
@@ -1513,6 +1581,14 @@ function aRender(){
     var eb=document.getElementById("a-feat-ent"); if(!eb) return;
     if(et.length){ eb.innerHTML='<b>Enterprise · Contact Sales</b> — '+esc(et.join(", "))+' '+(et.length>1?'offer':'offers')+' your selected feature'+(aState.features.length>1?'s':'')+' only on a custom Enterprise plan (no public price).'; eb.style.display=''; }
     else eb.style.display='none'; })();
+  /* R5: self-host mode — collapse ranked bars to one "Self-host" bar (same server for all) + HW/VPS explainer */
+  (function(){ var shExp=document.getElementById("a-sh-explain");
+    if(hostPref!=="selfhost"){ if(shExp){ shExp.style.display="none"; shExp.innerHTML=""; } return; }
+    var shc=aBeCheapestSelf(aState.runs), st0=aBeSelfTools()[0], bd=st0?selfHostCalc(st0,aState.runs,aState.steps,aState.wf):null;
+    var fe=document.getElementById("a-feat-ent"); if(fe) fe.style.display="none";
+    document.getElementById("a-bars").innerHTML='<div class="bar-row win" style="--bar-glow:var(--auto)"><div class="bar-name"><span class="sw" style="background:var(--auto)"></span><span>Self-host</span></div><div class="bar-track"><div class="bar-fill" data-bw="100" style="width:0%;background:linear-gradient(90deg,var(--auto),'+colorMix("#10b981",.42)+')"></div></div><div class="bar-cost">'+((shc&&shc.est)?"~":"")+fmtMoney(shc?shc.cost:0)+'<small>cheapest server</small></div></div>';
+    if(shExp){ shExp.style.display=""; shExp.innerHTML=bd?('<b>Same bill for every self-host tool</b> \u2014 it\u2019s the server, not the software. At '+fmtInt(aState.runs)+' runs/mo you need roughly <b>'+esc(bd.spec||"a small VPS")+'</b>: rent a VPS for <b>'+fmtMoney(bd.vps)+'/mo</b>, or run your own hardware for <b>'+fmtMoney(bd.own)+'/mo</b> (electricity + amortised hardware). The bar shows the cheaper of the two \u2014 but it ignores your time; full breakdown under the scaling chart.'):'Self-host runs on a server you own \u2014 see the cost breakdown under the scaling chart.'; }
+  })();
   animOnView("a-bars",function(inst){ staggerBars("a-bars",inst); });
 
   /* ── best pick card ── */
@@ -1543,9 +1619,9 @@ function aRender(){
   (function(){ var yr=document.getElementById("a-you"); if(!yr) return;
     var _hp=hostPref;
     function rowsFor(mode,onlySH){ hostPref=mode; var rs=TOOLS.filter(function(t){return aToolSel(t.slug)&&(!onlySH||t.selfHostable);}).map(function(t){return {tool:t,cr:calcCost(t,aState.runs,aState.steps,aState.wf,null)};}).filter(function(r){return r.cr&&typeof r.cr.cost==="number";}).sort(function(a,b){return a.cr.cost-b.cr.cost;}); return rs; }
-    var cloud=rowsFor("cloud",false), self=rowsFor("selfhost",true); hostPref=_hp;
+    var cloud=rowsFor("cloud",false); hostPref=_hp; var _shc=aBeCheapestSelf(aState.runs); var selfRow=_shc?('<div class="yr-h">Self-host \u00b7 '+fmtInt(aState.runs)+' runs/mo</div><div class="yr-row win"><span class="yr-nm"><i style="background:var(--auto)"></i>Self-host</span><span class="yr-pl">VPS or own hardware</span><span class="yr-pr">'+(_shc.est?"~":"")+fmtMoney(_shc.cost)+'</span></div>'):"";
     function tbl(title,rows){ if(!rows.length) return ""; return '<div class="yr-h">'+title+'</div>'+rows.map(function(r,i){ return '<div class="yr-row'+(i===0?" win":"")+'"><span class="yr-nm"><i style="background:'+aToolColor(r.tool.slug)+'"></i>'+esc(r.tool.name)+'</span><span class="yr-pl">'+esc(aPlanLabel(r.cr)||"")+'</span><span class="yr-pr">'+(r.cr.estimated?"~":"")+fmtMoney(r.cr.cost)+'</span></div>'; }).join(""); }
-    yr.innerHTML=(cloud.length||self.length)?(tbl("Cloud · "+fmtInt(aState.runs)+" runs/mo",cloud)+(cloud.length&&self.length?'<div class="yr-sep"></div>':"")+tbl("Self-host · "+fmtInt(aState.runs)+" runs/mo",self)):"";
+    yr.innerHTML=(cloud.length||selfRow)?(tbl("Cloud · "+fmtInt(aState.runs)+" runs/mo",cloud)+(cloud.length&&selfRow?'<div class="yr-sep"></div>':"")+selfRow):"";
   })();
   /* ── role rec cards: top / runner-up / budget ── */
   const byScore=[...priced].sort((a,b)=>b.score-a.score);
@@ -1566,8 +1642,10 @@ function aRender(){
   /* ── limits table ── */
   aRenderToolFilter();
   aRenderSelfHost();
-  if(aState.tools.length>=2&&aState.tools.length<=4){ document.querySelector("#dash-automation .panels").classList.add("vs"); aRenderVS(aState.tools); return; }
-  document.querySelector("#dash-automation .panels").classList.remove("vs");
+  var _panels=document.querySelector("#dash-automation .panels"), _nsel=aState.tools.length;
+  if(hostPref!=="selfhost"&&_nsel===2){ _panels.classList.add("vs"); _panels.classList.remove("compact"); aRenderVS(aState.tools); return; }
+  _panels.classList.remove("vs");
+  _panels.classList.toggle("compact", hostPref!=="selfhost"&&_nsel>=3&&_nsel<=4);
   aRenderTable(rows,priceCtx,cheapest);
 
   /* ── affiliate note + vendor row ── */
@@ -1638,9 +1716,15 @@ function aRenderTable(rows,priceCtx,cheapest){
 }
 
 function aRenderToolFilter(){
-  var el=document.getElementById("a-tool-filter"); if(!el) return; var n=aState.tools.length;
-  el.innerHTML='<div class="tf-h"><span class="tf-lab">Compare tools</span><span class="tf-hint">'+(n>=2&&n<=4?'<b>Comparing '+n+' tools</b> \u2014 side by side':n+' selected \u00b7 pick 2\u20134 tools to compare side-by-side')+'</span></div>'+
-    '<div class="tf-tiles">'+TOOLS.map(function(t){ var on=aToolSel(t.slug);
+  var el=document.getElementById("a-tool-filter"); if(!el) return;
+  var vis=TOOLS.filter(aToolVisible);
+  var visSlugs=vis.map(function(t){return t.slug;});
+  var n=aState.tools.filter(function(sg){return visSlugs.indexOf(sg)>=0;}).length;
+  var hint=hostPref==="selfhost"
+    ? 'self-host tools \u00b7 compare app coverage below'
+    : (n===2?'<b>Comparing 2 tools</b> \u2014 side by side':(n>=3&&n<=4?'<b>'+n+' tools</b> \u2014 charts below':n+' selected \u00b7 pick 2 to compare, 3\u20134 for charts'));
+  el.innerHTML='<div class="tf-h"><span class="tf-lab">Compare tools</span><span class="tf-hint">'+hint+'</span></div>'+
+    '<div class="tf-tiles">'+vis.map(function(t){ var on=aToolSel(t.slug);
       var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,"");
       return '<button type="button" class="tf-tile'+(on?" on":"")+'" data-s="'+esc(t.slug)+'" style="--pc:'+aToolColor(t.slug)+'" aria-pressed="'+on+'"><span class="vt-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt="" loading="lazy"></span><span class="tf-nm">'+esc(t.name)+'</span></button>';
     }).join("")+'</div>';
@@ -1744,6 +1828,16 @@ function aBizSeries(){
   });
   return {slug:"n8n-biz",name:"n8n Business (self-host)",pts:pts};
 }
+/* R6: self-host TCO explainer (self-host mode only; hides otherwise). Numbers from SH_TCO (owner-approved). */
+function aRenderShTco(){
+  var el=document.getElementById("a-sh-tco"); if(!el) return;
+  if(hostPref!=="selfhost"){ el.style.display="none"; el.innerHTML=""; return; }
+  el.style.display="";
+  var items=SH_TCO.map(function(x){ return '<div class="item'+(x.dom?' dom':'')+'" title="'+esc(x.tip)+'"><span class="l">'+esc(x.l)+'</span><span class="v">'+esc(x.v)+'</span></div>'; }).join("");
+  el.innerHTML='<div class="lead">The server is the cheap part. At <b>$5–40/mo</b> self-host looks almost free — but the real bill is <b>your own time</b> (setup, patching, on-call) plus backups, monitoring and no-SLA downtime risk. Budget all of it before you switch off managed cloud.</div>'+
+    '<div class="grid">'+items+'</div>'+
+    '<div class="src">Sources: Hetzner / DigitalOcean pricing, Eurostat &amp; EIA electricity (2025–26), n8n.io/pricing. Items marked (est.) are planning estimates, not quotes — they vary with your team, volume and hourly rate.</div>';
+}
 function aRenderScale(cheapest){
   var svgEl=document.getElementById("a-scale");
   var W=760,H=380,padL=58,padR=18,padT=22,padB=44;
@@ -1754,7 +1848,15 @@ function aRenderScale(cheapest){
     var pts=A_VSAMP.map(function(v){ var c=calcCost(t,v,aState.steps,aState.wf,null); return c&&typeof c.cost==="number"?{v:v,cost:Math.max(c.cost,0.5),plan:(c.plan?c.plan.name:""),est:!!(c&&(c.estimated||c.shEst))}:null; }).filter(Boolean);
     return {slug:t.slug,name:t.name,pts:pts};
   }).filter(function(s){ return s.pts.length>2; });
-  if(hostPref!=="cloud"){ var _bz=aBizSeries(); if(_bz&&_bz.pts.length>2) series.push(_bz); } /* R2: n8n Business visible only in self-host + any */
+  if(hostPref==="selfhost"){ /* R5: self-host = 3 lines (VPS rent / own hardware / n8n Business), not per-tool */
+    var _sht=aBeSelfTools();
+    var _shAt=function(v,field){ var best=null; _sht.forEach(function(t){ var bd=selfHostCalc(t,v,aState.steps,aState.wf); if(bd&&bd[field]!=null&&(best===null||bd[field]<best.c)) best={c:bd[field],est:!!bd.est}; }); return best; };
+    var _shS=function(field,name,slug){ var pts=A_VSAMP.map(function(v){ var b=_shAt(v,field); return b?{v:v,cost:Math.max(b.c,0.5),plan:slug,est:b.est}:null; }).filter(Boolean); return {slug:slug,name:name,pts:pts}; };
+    series=[_shS("vps","Self-host \u00b7 VPS rent","sh-vps"),_shS("own","Self-host \u00b7 own hardware","sh-own")];
+    var _bz=aBizSeries(); if(_bz&&_bz.pts.length>2) series.push(_bz);
+    series=series.filter(function(s){ return s.pts.length>2; });
+  } else if(hostPref!=="cloud"){ var _bz=aBizSeries(); if(_bz&&_bz.pts.length>2) series.push(_bz); } /* R2: n8n Business visible only in self-host + any */
+  aRenderShTco();
 
   var seriesS=elig.map(function(t){
     var pts=A_GRID.map(function(v){ var c=calcCost(t,v,aState.steps,aState.wf,null); return c&&typeof c.cost==="number"?{v:v,cost:Math.max(c.cost,0.5)}:null; }).filter(Boolean);
@@ -1901,7 +2003,7 @@ function aAttachLineHover(svgEl,series,lxFn,lyFn,W,padL,padT,padR,plotW,plotH){
 function aCheapestAt(v){ let best=null; for(const t of TOOLS){ if(!aAppOK(t.slug)||!aToolSel(t.slug)) continue; const c=calcCost(t,v,aState.steps,aState.wf,null); if(c&&(best===null||c.cost<best.cost)) best={slug:t.slug,name:t.name,cost:c.cost}; } return best; }
 function aRenderCross(series,cheapest){
   const note=document.getElementById("a-cross");
-  if(!cheapest){ note.innerHTML=""; note.style.display="none"; return; }
+  if(hostPref==="selfhost"||!cheapest){ note.innerHTML=""; note.style.display="none"; return; }
   /* find first material switch above current volume */
   const now=cheapest.tool?{slug:cheapest.tool.slug,name:cheapest.tool.name,cost:cheapest.cr.cost}:aCheapestAt(aState.runs);
   let msg=null;
@@ -2379,7 +2481,7 @@ function buildAutomationRail(){
     var opts=[["any","Any"],["cloud","Cloud"],["selfhost","Self-host"]];
     function paint(){ el.innerHTML=opts.map(function(o){ return '<button data-h="'+o[0]+'" class="'+(hostPref===o[0]?"on":"")+'">'+o[1]+'</button>'; }).join(""); }
     paint();
-    el.addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; hostPref=b.dataset.h;
+    el.addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; hostPref=b.dataset.h; aState.tools=aVisibleSlugs(); /* show all tools of the chosen deployment mode */
       if(hostPref==="selfhost"){ /* keep only requirements a self-host tool can satisfy → never empty graphs */
         aState.apps=aState.apps.filter(function(a){return aAppSelfHostOK(a.mask);});
         aState.features=aState.features.filter(aFeatSelfHostOK);
@@ -2499,6 +2601,10 @@ document.querySelectorAll(".cat:not(.disabled)").forEach(c=>{
 buildAutomationRail();
 aState.tools=TOOLS.map(function(t){return t.slug;});
 (function(){ var tf=document.getElementById("a-tool-filter"); if(tf) tf.addEventListener("click",function(e){ var b=e.target.closest(".tf-tile"); if(!b) return; var x=b.dataset.s, i=aState.tools.indexOf(x); if(i>=0){ if(aState.tools.length>1) aState.tools.splice(i,1); } else aState.tools.push(x); aRender(); }); })();
+(function(){ var host=document.getElementById("a-selfhost"); if(!host) return;
+  host.addEventListener("click",function(e){ var pg=e.target.closest("[data-shpage]"); if(!pg) return; _shPage+=(pg.dataset.shpage==="next"?1:-1); if(_shPage<0)_shPage=0; aRenderSelfHost(); });
+  host.addEventListener("input",function(e){ if(!e.target.closest("#sh-q")) return; var v=e.target.value; clearTimeout(_shTimer); _shTimer=setTimeout(function(){ _shQuery=v; _shPage=0; aRenderSelfHost(); var nn=document.getElementById("sh-q"); if(nn){ nn.focus(); try{nn.setSelectionRange(nn.value.length,nn.value.length);}catch(_){} } },140); });
+})();
 wireAutomationSliders();
 buildLlmRail();
 wireLlmSliders();
