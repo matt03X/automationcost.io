@@ -119,25 +119,26 @@ CANONICAL = [
 
 
 # Manually-curated AI gating — the scraped plan×feature matrices have no AI rows yet,
-# and basic AI nodes sit on the cheapest tier of most tools (so a generic "AI" row would
-# gate nothing). This captures the ONE genuinely plan-relevant AI fact: the cheapest plan
-# on which each tool ships built-in AI AGENTS. Owner-verified, revisit when an AI/feature
-# scraper covers this. Sources (asof 2026-06):
-#   n8n  — AI Agent + LangChain nodes ship in Community/self-host & all cloud tiers
-#          (docs.n8n.io … n8n-nodes-langchain.agent)  -> Community
-#   make — Make AI Agents are on PAID plans only, not Free
-#          (help.make.com/make-ai-agents-the-next-step-in-automation)  -> Core
-#   zapier — "AI by Zapier" steps require Professional+
-#          (help.zapier.com … AI-by-Zapier-model-tier-pricing)  -> Professional
-#   activepieces — AI pieces/agents on free cloud + self-host  -> Standard
-#   pipedream — native AI usable from the entry (Basic) plan  -> Basic
+# and built-in AI STEPS sit on the cheapest/free tier of every tool EXCEPT Zapier, so the
+# only genuine plan gate is Zapier. Owner-verified on official vendor pages, asof 2026-06
+# (revisit when an AI/feature scraper covers this):
+#   n8n  — AI Agent + LangChain nodes ship in Community/self-host & all cloud tiers, no AI
+#          tier gate (docs.n8n.io/advanced-ai)                              -> Community
+#   make — AI steps/agents run on ALL plans via Make's own AI provider (Free incl., credit-
+#          metered); only the custom/own-LLM-key connection is paid-only
+#          (help.make.com/introduction-to-make-ai-agents-new)               -> Free
+#   zapier — "AI by Zapier" steps require Professional+ (NOT Free/Starter)
+#          (help.zapier.com … AI-by-Zapier-model-tier-pricing)             -> Professional
+#   activepieces — AI steps on free cloud + self-host (agents need Plus, but STEPS are free)
+#          (activepieces.com/pricing)                                       -> Standard
+#   pipedream — native AI usable from the entry (Basic) plan                -> Basic
 # Tier strings MUST be members of TIER_ORDER[slug]. tools NOT listed are treated as
-# "no built-in AI" (ruled out when the feature is required) — matches aiFeatures=false
-# for Automatisch / Node-RED.
+# "no built-in AI" (ruled out when required) — matches aiFeatures=false for Automatisch /
+# Node-RED. Per-tool AI billing/own-key facts live in A_AI_META (home-v6.html).
 CANONICAL_MANUAL = [
     ("AI & automation intelligence", [
-        ("Built-in AI agents", {
-            "n8n": "Community", "make": "Core", "zapier": "Professional",
+        ("Built-in AI steps", {
+            "n8n": "Community", "make": "Free", "zapier": "Professional",
             "activepieces": "Standard", "pipedream": "Basic"}),
     ]),
 ]
