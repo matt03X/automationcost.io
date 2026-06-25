@@ -2696,7 +2696,7 @@ function selfHostCalc(tool, runs, steps, workflows) {
   var vps = ex("usd"), hwOneOff = ex("hwOneOff"), elec = ex("home");
   var hwAmort = Math.round(hwOneOff / SH_AMORT * (1 + SH_MAINT)), own = elec + hwAmort;
   var tail = selfHostHwTier(tool, ops);
-  return { vps: vps, own: own, elec: elec, hwAmort: hwAmort, hwOneOff: hwOneOff, headline: Math.min(vps, own), mode: (vps <= own ? "vps" : "own"), spec: (tail && tail.spec) || top.spec || null };
+  return { vps: vps, own: own, elec: elec, hwAmort: hwAmort, hwOneOff: hwOneOff, headline: Math.min(vps, own), mode: (vps <= own ? "vps" : "own"), spec: (tail && tail.spec) || top.spec || null, est: true };
 }
 
 // Pipedream-style credit pricing: $/credit klesá po pevných pásmech (creditBands

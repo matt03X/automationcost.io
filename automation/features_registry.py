@@ -118,6 +118,31 @@ CANONICAL = [
 ]
 
 
+# Manually-curated AI gating — the scraped plan×feature matrices have no AI rows yet,
+# and basic AI nodes sit on the cheapest tier of most tools (so a generic "AI" row would
+# gate nothing). This captures the ONE genuinely plan-relevant AI fact: the cheapest plan
+# on which each tool ships built-in AI AGENTS. Owner-verified, revisit when an AI/feature
+# scraper covers this. Sources (asof 2026-06):
+#   n8n  — AI Agent + LangChain nodes ship in Community/self-host & all cloud tiers
+#          (docs.n8n.io … n8n-nodes-langchain.agent)  -> Community
+#   make — Make AI Agents are on PAID plans only, not Free
+#          (help.make.com/make-ai-agents-the-next-step-in-automation)  -> Core
+#   zapier — "AI by Zapier" steps require Professional+
+#          (help.zapier.com … AI-by-Zapier-model-tier-pricing)  -> Professional
+#   activepieces — AI pieces/agents on free cloud + self-host  -> Standard
+#   pipedream — native AI usable from the entry (Basic) plan  -> Basic
+# Tier strings MUST be members of TIER_ORDER[slug]. tools NOT listed are treated as
+# "no built-in AI" (ruled out when the feature is required) — matches aiFeatures=false
+# for Automatisch / Node-RED.
+CANONICAL_MANUAL = [
+    ("AI & automation intelligence", [
+        ("Built-in AI agents", {
+            "n8n": "Community", "make": "Core", "zapier": "Professional",
+            "activepieces": "Standard", "pipedream": "Basic"}),
+    ]),
+]
+
+
 def _load_matrices():
     mats = {}
     for slug in TIER_ORDER:
@@ -188,6 +213,25 @@ def build_features_data():
                 order = TIER_ORDER[slug]
                 min_ord = min(order.index(c) for c in tiers if c in order)
                 req[slug] = min_ord
+                have_tools.append(slug)
+            if req:
+                A_FEAT_REQ[canon] = req
+                gi.append({"name": canon, "tools": have_tools})
+        if gi:
+            groups_out.append({"group": group, "items": gi})
+
+    # manual AI gating (explicit tier per tool, no matrix row needed)
+    for group, items in CANONICAL_MANUAL:
+        gi = []
+        for canon, tier_map in items:
+            req, have_tools = {}, []
+            for slug, tier in tier_map.items():
+                if slug not in mats:
+                    continue
+                order = TIER_ORDER.get(slug, [])
+                if tier not in order:
+                    continue
+                req[slug] = order.index(tier)
                 have_tools.append(slug)
             if req:
                 A_FEAT_REQ[canon] = req
