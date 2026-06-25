@@ -21,7 +21,7 @@
   --openai:#19c37d; --anthropic:#d97757; --google:#4285f4; --deepseek:#5b6ef5; --xai:#9aa0a6; --mistral:#fa520f;
   /* tool colors */
   --zapier:#FF4F00; --make:#B02DE9; --n8n:#EA4B71; --pipedream:#3b82f6;
-  --activepieces:#6E56CF; --automatisch:#0EA5E9; --node-red:#8F0000;
+  --activepieces:#6E56CF; --automatisch:#0EA5E9; --node-red:#8F0000; --n8n-biz:#E0A800;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -1653,6 +1653,25 @@ const A_SAMP=100;
 const A_VSAMP=(function(){var arr=[];for(var i=0;i<A_SAMP;i++){arr.push(Math.round(Math.pow(10,Math.log10(A_GRID[0])+(Math.log10(A_GRID[A_GRID.length-1])-Math.log10(A_GRID[0]))*i/(A_SAMP-1))));}return arr;})();
 
 var _aScaleKey=null;
+/* R2: n8n Business is a paid self-host support track (track:selfhost, not the $8 community build).
+   Render it as its own line so self-host buyers see the supported option, not just bare community. */
+function aBizSeries(){
+  var tool=TOOLS.find(function(t){return t.slug==="n8n";});
+  if(!tool||!aAppOK("n8n")||!aToolSel("n8n")) return null;
+  var biz=tool.plans.filter(function(p){return p.track==="selfhost"&&!p.selfHostOnly&&!p.custom&&p.monthlyUsd>0&&p.opsIncluded;});
+  if(!biz.length) return null;
+  var sorted=biz.slice().sort(function(a,b){return a.opsIncluded-b.opsIncluded;});
+  var top=sorted[sorted.length-1], prev=sorted[sorted.length-2];
+  var marg=prev?(top.monthlyUsd-prev.monthlyUsd)/(top.opsIncluded-prev.opsIncluded):top.monthlyUsd/top.opsIncluded;
+  var pts=A_VSAMP.map(function(v){
+    var ops=vendorUnits(tool,v,aState.steps), cov=null;
+    for(var i=0;i<sorted.length;i++){ if(sorted[i].opsIncluded>=ops){ cov=sorted[i]; break; } }
+    if(cov) return {v:v,cost:Math.max(cov.monthlyUsd,0.5),plan:cov.name,est:false};
+    var est=Math.round((top.monthlyUsd+(ops-top.opsIncluded)*marg)/5)*5;
+    return {v:v,cost:Math.max(est,0.5),plan:"Business (custom)",est:true};
+  });
+  return {slug:"n8n-biz",name:"n8n Business (self-host)",pts:pts};
+}
 function aRenderScale(cheapest){
   var svgEl=document.getElementById("a-scale");
   var W=760,H=380,padL=58,padR=18,padT=22,padB=44;
@@ -1663,6 +1682,7 @@ function aRenderScale(cheapest){
     var pts=A_VSAMP.map(function(v){ var c=calcCost(t,v,aState.steps,aState.wf,null); return c&&typeof c.cost==="number"?{v:v,cost:Math.max(c.cost,0.5),plan:(c.plan?c.plan.name:""),est:!!(c&&c.estimated)}:null; }).filter(Boolean);
     return {slug:t.slug,name:t.name,pts:pts};
   }).filter(function(s){ return s.pts.length>2; });
+  if(hostPref!=="cloud"){ var _bz=aBizSeries(); if(_bz&&_bz.pts.length>2) series.push(_bz); } /* R2: n8n Business visible only in self-host + any */
 
   var seriesS=elig.map(function(t){
     var pts=A_GRID.map(function(v){ var c=calcCost(t,v,aState.steps,aState.wf,null); return c&&typeof c.cost==="number"?{v:v,cost:Math.max(c.cost,0.5)}:null; }).filter(Boolean);
@@ -1769,7 +1789,7 @@ function aAttachLineHover(svgEl,series,lxFn,lyFn,W,padL,padT,padR,plotW,plotH){
     var rows2=st.series.map(function(s){
       var tool=TOOLS.find(function(t){return t.slug===s.slug;});
       var cc=tool?calcCost(tool,vR,aState.steps,aState.wf,null):null;
-      if(!cc||typeof cc.cost!=="number"){ var ci=costAt(s); return ci===null?null:{s:s,c:ci,lab:"",est:false}; }
+      if(!cc||typeof cc.cost!=="number"){ var ci=costAt(s); if(ci===null) return null; var _mp=null; for(var _j=0;_j<s.pts.length;_j++){ if(s.pts[_j].v>=v){ _mp=s.pts[_j]; break; } } if(!_mp) _mp=s.pts[s.pts.length-1]; return {s:s,c:ci,lab:(_mp&&_mp.plan?(_mp.plan+(_mp.est?" · custom (est.)":"")):""),est:!!(_mp&&_mp.est)}; }
       var lab;
       if(cc.hwOnly){ var bd=cc.shbd; lab="self-host · "+(cc.spec?String(cc.spec).split(" + ")[0].split(" (")[0]:"server")+(bd?(" · VPS "+fmtMoney(bd.vps)+" · own-HW "+fmtMoney(bd.own)+"/mo"):""); }
       else { lab=cc.plan?cc.plan.name:""; if(cc.estimated) lab+=" · custom (est.)"; }
