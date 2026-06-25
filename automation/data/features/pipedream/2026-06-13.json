@@ -1,0 +1,1080 @@
+{
+  "vendor": "pipedream",
+  "url": "https://pipedream.com/pricing",
+  "asof": "2026-06-13",
+  "fetchedBy": "manual (human-saved HTML 2026-06-13, parsed offline — Pipedream ToS prohibits automated bot access)",
+  "partial": true,
+  "note": "Cumulative 'everything in X, plus' style cards. Free tier není na uložené stránce jako feature karta (Free basics: 100 credits/3 workflows jsou v tools.json). Max queue size / concurrency NEJSOU na pricing stránce — jen v docs. | Full 'Compare all features' matrix added (parsed offline from saved HTML).",
+  "plans": {
+    "Basic": [
+      "20M AI tokens",
+      "No usage limit (2k credits included)",
+      "10 active workflows",
+      "5 connected accounts",
+      "Pipedream Connect in development"
+    ],
+    "Advanced": [
+      "50M AI tokens",
+      "Control flow operators",
+      "Unlimited workflows",
+      "Unlimited connected accounts",
+      "Premium apps",
+      "GitHub Sync"
+    ],
+    "Connect": [
+      "Pipedream Connect in production",
+      "Auth for 100 external users",
+      "$2 per additional user"
+    ],
+    "Business": [
+      "Volume pricing",
+      "Custom invoicing",
+      "Priority integration development",
+      "Dedicated support in Slack",
+      "Support for HIPAA workloads",
+      "Uptime and availability SLAs"
+    ]
+  },
+  "matrix": {
+    "source": "https://pipedream.com/pricing",
+    "asof": "2026-06-13",
+    "columns": [
+      "Basic",
+      "Advanced",
+      "Connect",
+      "Business"
+    ],
+    "groups": [
+      {
+        "title": "Workflow Builder Usage",
+        "rows": [
+          {
+            "feature": "Included credits",
+            "tiers": {
+              "Basic": "2,000/mo",
+              "Advanced": "2,000/mo",
+              "Connect": "10,000/mo",
+              "Business": "Custom"
+            }
+          },
+          {
+            "feature": "Usage cap",
+            "tiers": {
+              "Basic": "Unlimited",
+              "Advanced": "Unlimited",
+              "Connect": "Unlimited",
+              "Business": "Unlimited"
+            }
+          },
+          {
+            "feature": "Included AI tokens",
+            "tiers": {
+              "Basic": "20M/mo",
+              "Advanced": "50M/mo",
+              "Connect": "50M/mo",
+              "Business": "Custom"
+            }
+          },
+          {
+            "feature": "Use additional AI tokens",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Active workflows",
+            "tiers": {
+              "Basic": "10",
+              "Advanced": "Unlimited",
+              "Connect": "Unlimited",
+              "Business": "Unlimited"
+            }
+          },
+          {
+            "feature": "Active connected accounts",
+            "tiers": {
+              "Basic": "5",
+              "Advanced": "Unlimited",
+              "Connect": "Unlimited",
+              "Business": "Unlimited"
+            }
+          },
+          {
+            "feature": "Workspace users",
+            "tiers": {
+              "Basic": "Unlimited",
+              "Advanced": "Unlimited",
+              "Connect": "Unlimited",
+              "Business": "Unlimited"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Integrations",
+        "rows": [
+          {
+            "feature": "Integrated apps",
+            "tiers": {
+              "Basic": "3,000+",
+              "Advanced": "3,000+",
+              "Connect": "3,000+",
+              "Business": "3,000+"
+            }
+          },
+          {
+            "feature": "Verified triggers",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Verified actions",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Publish custom triggers",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Publish custom actions",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Premium apps",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Use custom OAuth clients",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Prioritized support for new integrations",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Custom component development",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Connect",
+        "rows": [
+          {
+            "feature": "Managed authentication",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Custom OAuth clients",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Pipedream OAuth clients",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Run user workflows",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "10k pre-built tools",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "API Proxy",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Deploy MCP servers",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": true,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Workflow orchestration & control flow",
+        "rows": [
+          {
+            "feature": "Multiple triggers per workflow",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Multi-step workflows",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Delay",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Filters",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "If / Else Branching",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Switch Branching",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Parallel Branching",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Workflow execution environment",
+        "rows": [
+          {
+            "feature": "Environment variables and secrets",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Eliminate cold starts",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Memory (RAM)",
+            "tiers": {
+              "Basic": "Up to 10 GB",
+              "Advanced": "Up to 10 GB",
+              "Connect": "Up to 10 GB",
+              "Business": "Up to 10 GB"
+            }
+          },
+          {
+            "feature": "Duration (seconds)",
+            "tiers": {
+              "Basic": "Up to 750",
+              "Advanced": "Up to 750",
+              "Connect": "Up to 750",
+              "Business": "Up to 750"
+            }
+          },
+          {
+            "feature": "File system access",
+            "tiers": {
+              "Basic": "2 GB",
+              "Advanced": "2 GB",
+              "Connect": "2 GB",
+              "Business": "2 GB"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Data Stores for workflows",
+        "rows": [
+          {
+            "feature": "Total data stores",
+            "tiers": {
+              "Basic": "1",
+              "Advanced": "Unlimited",
+              "Connect": "Unlimited",
+              "Business": "Unlimited"
+            }
+          },
+          {
+            "feature": "Total keys",
+            "tiers": {
+              "Basic": "500",
+              "Advanced": "Unlimited",
+              "Connect": "Unlimited",
+              "Business": "Unlimited"
+            }
+          },
+          {
+            "feature": "Total storage",
+            "tiers": {
+              "Basic": "100KB",
+              "Advanced": "1MB",
+              "Connect": "1MB",
+              "Business": "Unlimited"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Git Sync for workflows",
+        "rows": [
+          {
+            "feature": "Bi-Directional GitHub Sync",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Develop in branches",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Merge from GitHub",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "View diffs",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Changelog",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Create Pull Requests",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Edit locally",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Require GitHub Sync",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "HTTP Request Builder",
+        "rows": [
+          {
+            "feature": "Build any HTTP / API request",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Authenticate requests for integrated apps",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Scaffold API operations for integrated apps",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Triggers",
+        "rows": [
+          {
+            "feature": "HTTP / webhook triggers",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Custom HTTP responses",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Schedule triggers",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Minimum schedule interval",
+            "tiers": {
+              "Basic": "1 minute",
+              "Advanced": "1 second",
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Email triggers",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "App event triggers",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Custom webhook domains",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "File Stores",
+        "rows": [
+          {
+            "feature": "Save and retrieve files from workflows",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Manual file upload",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Total storage",
+            "tiers": {
+              "Basic": false,
+              "Advanced": "Unlimited in Preview",
+              "Connect": "Unlimited in Preview",
+              "Business": "Unlimited in Preview"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Workflow error handling",
+        "rows": [
+          {
+            "feature": "Email notifications",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Slack notifications",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Auto-retry on error",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Workflow event queue & history",
+        "rows": [
+          {
+            "feature": "Real-time event inspector",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Event History",
+            "tiers": {
+              "Basic": "7 days",
+              "Advanced": "30 days",
+              "Connect": "30 days",
+              "Business": "Custom"
+            }
+          },
+          {
+            "feature": "Concurrency controls",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Execution rate controls",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Max queue size",
+            "tiers": {
+              "Basic": "100",
+              "Advanced": "10,000",
+              "Connect": "10,000",
+              "Business": "Custom"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Database connections",
+        "rows": [
+          {
+            "feature": "SQL editor to execute queries",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Schema explorer",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Prepared statements",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Shared static IP for secure database queries",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Workflow code execution",
+        "rows": [
+          {
+            "feature": "Write any Node.js code",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Use most npm packages",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Use integrated apps in code",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Write any Python code",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Use most PyPi packages",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Write any Go code",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Use most Go packages",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Run Bash scripts",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Security & Compliance",
+        "rows": [
+          {
+            "feature": "Access controls for connected accounts",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Access controls for projects",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Enable 2FA",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Require 2FA",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Admin/editor roles",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "SOC 2 Type II",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "GDPR",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "HIPAA",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "SLA",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Single Sign-On (SSO)",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Restrict Login Methods",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Virtual Private Clouds (VPCs)",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Unique egress IPs",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "VPC peering",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Custom security questionnaires",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "User provisioning (SCIM)",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Data retention controls",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Contracts & Billing",
+        "rows": [
+          {
+            "feature": "Pay by invoice",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Pay by bank transfer",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Custom invoicing",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Custom contract",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Support & Expertise",
+        "rows": [
+          {
+            "feature": "Community forums",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Public Slack",
+            "tiers": {
+              "Basic": true,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Email",
+            "tiers": {
+              "Basic": false,
+              "Advanced": true,
+              "Connect": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Dedicated Slack Connect channel",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Dedicated Success Engineer",
+            "tiers": {
+              "Basic": false,
+              "Advanced": false,
+              "Connect": false,
+              "Business": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

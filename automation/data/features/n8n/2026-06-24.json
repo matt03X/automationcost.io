@@ -1,0 +1,641 @@
+{
+  "vendor": "n8n",
+  "url": "https://n8n.io/pricing/",
+  "asof": "2026-06-24",
+  "fetchedBy": "WizardCostBot/1.0 (+https://wizardcost.com; polite feature audit, robots-respecting)",
+  "partial": false,
+  "plans": {
+    "Starter": [
+      "1 shared project",
+      "5 concurrent executions",
+      "Unlimited users",
+      "50 AI Workflow Builder credits",
+      "Forum support"
+    ],
+    "Pro": [
+      "3 shared projects",
+      "20 concurrent executions",
+      "7 days of insights",
+      "150 AI Workflow Builder credits",
+      "Admin roles",
+      "Global variables",
+      "Workflow history",
+      "Execution search"
+    ],
+    "Business": [
+      "6 shared projects",
+      "SSO, SAML and LDAP",
+      "30 days of insights",
+      "AI Workflow Builder coming soon",
+      "Different environments",
+      "Scaling options",
+      "Version control using Git",
+      "Forum support"
+    ],
+    "Enterprise": [
+      "Unlimited shared projects",
+      "200+ concurrent executions",
+      "365 days of insights",
+      "1000 AI Workflow Builder credits (only available on n8n cloud)",
+      "External secret store integration",
+      "Log streaming",
+      "Extended data retention",
+      "Dedicated support with SLA",
+      "Invoice billing"
+    ]
+  },
+  "matrix": {
+    "source": "https://n8n.io/pricing/",
+    "asof": "2026-06-24",
+    "columns": [
+      "Community",
+      "Starter",
+      "Pro",
+      "Business",
+      "Enterprise"
+    ],
+    "groups": [
+      {
+        "title": "Core features",
+        "rows": [
+          {
+            "feature": "Leading editor UI",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "All integrations (nodes)",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Data tables",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Streaming and bulk operations",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Easily merge data",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Workflow templates",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Workflow history - max days",
+            "tiers": {
+              "Starter": "1",
+              "Pro": "5",
+              "Enterprise": "365+",
+              "Community": "1",
+              "Business": "30"
+            }
+          },
+          {
+            "feature": "AI Workflow Builder credits",
+            "tiers": {
+              "Starter": "50",
+              "Pro": "150",
+              "Enterprise": "1000",
+              "Community": null,
+              "Business": null
+            }
+          }
+        ]
+      },
+      {
+        "title": "Developer tools",
+        "rows": [
+          {
+            "feature": "Code steps in workflows (JS/Python)",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Custom API requests (HTTP, GraphQL, etc.)",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Import cURL commands",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Trigger from webhooks, queues",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Control n8n via API",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Global Variables",
+            "tiers": {
+              "Starter": false,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Run bash scripts",
+            "tiers": {
+              "Starter": "Available in self-hosted",
+              "Pro": "Control n8n via CLI",
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Workflow execution",
+        "rows": [
+          {
+            "feature": "Max active workflows",
+            "tiers": {
+              "Starter": "Unlimited",
+              "Pro": "Unlimited",
+              "Enterprise": "Unlimited",
+              "Community": "Unlimited",
+              "Business": "Unlimited"
+            }
+          },
+          {
+            "feature": "Automatic retries",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Max saved executions",
+            "tiers": {
+              "Starter": "2.5k",
+              "Pro": "25k",
+              "Enterprise": "50k",
+              "Community": "Custom",
+              "Business": "Custom"
+            }
+          },
+          {
+            "feature": "Saved-execution storage",
+            "tiers": {
+              "Starter": "2.5 GB",
+              "Pro": "25 GB",
+              "Enterprise": "50 GB",
+              "Community": "Custom",
+              "Business": "Custom"
+            }
+          },
+          {
+            "feature": "Max execution log retention",
+            "tiers": {
+              "Starter": "7 days",
+              "Pro": "30 days",
+              "Enterprise": "Unlimited",
+              "Community": "Custom",
+              "Business": "Custom"
+            }
+          },
+          {
+            "feature": "Concurrent executions",
+            "tiers": {
+              "Starter": "5",
+              "Pro": "20",
+              "Enterprise": "200+",
+              "Community": "Unlimited",
+              "Business": "Unlimited"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Debugging",
+        "rows": [
+          {
+            "feature": "Execution logging",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Error workflows",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Debug in editor",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "AI Assistant",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": "Upon request",
+              "Community": false,
+              "Business": false
+            }
+          },
+          {
+            "feature": "Custom actions when workflow fails",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Search executions by the data they contain",
+            "tiers": {
+              "Starter": false,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Audit logging",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": false
+            }
+          },
+          {
+            "feature": "Stream logs to external services (e.g. Datadog)",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": false
+            }
+          }
+        ]
+      },
+      {
+        "title": "Enterprise Scaling",
+        "rows": [
+          {
+            "feature": "Queue mode (Multiple instances)",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Worker view",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": false
+            }
+          },
+          {
+            "feature": "External storage in S3",
+            "tiers": {
+              "Starter": "N/A",
+              "Pro": "N/A",
+              "Enterprise": "N/A",
+              "Community": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Multi-main",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": "Coming soon",
+              "Community": false,
+              "Business": false
+            }
+          }
+        ]
+      },
+      {
+        "title": "Security",
+        "rows": [
+          {
+            "feature": "Encrypted secrets store",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "SSO SAML and LDAP",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Enforce 2FA across the instance",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": false
+            }
+          },
+          {
+            "feature": "External secret store integration",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": false
+            }
+          }
+        ]
+      },
+      {
+        "title": "Collaboration",
+        "rows": [
+          {
+            "feature": "Users",
+            "tiers": {
+              "Starter": "Unlimited",
+              "Pro": "Unlimited",
+              "Enterprise": "Unlimited",
+              "Community": "Unlimited",
+              "Business": "Unlimited"
+            }
+          },
+          {
+            "feature": "Shared projects",
+            "tiers": {
+              "Starter": "1",
+              "Pro": "3",
+              "Enterprise": "Unlimited",
+              "Community": false,
+              "Business": "6"
+            }
+          },
+          {
+            "feature": "Project admins",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Project editors",
+            "tiers": {
+              "Starter": false,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Instance admins",
+            "tiers": {
+              "Starter": false,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Project viewers",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Insights",
+        "rows": [
+          {
+            "feature": "Overview banner",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Table with workflow metrics and sorting feature",
+            "tiers": {
+              "Starter": false,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Dashboard with evolution over time",
+            "tiers": {
+              "Starter": false,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": false,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Filtering: date range",
+            "tiers": {
+              "Starter": false,
+              "Pro": "7-14 days",
+              "Enterprise": "24h to 365 days",
+              "Community": false,
+              "Business": "7-30 days"
+            }
+          },
+          {
+            "feature": "Granularity",
+            "tiers": {
+              "Starter": false,
+              "Pro": "Days",
+              "Enterprise": "Hourly, Daily, Weekly",
+              "Community": false,
+              "Business": "Days"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Support",
+        "rows": [
+          {
+            "feature": "Access to our friendly forum",
+            "tiers": {
+              "Starter": true,
+              "Pro": true,
+              "Enterprise": true,
+              "Community": true,
+              "Business": true
+            }
+          },
+          {
+            "feature": "Email support",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": false
+            }
+          },
+          {
+            "feature": "Dedicated support with SLA",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": false
+            }
+          }
+        ]
+      },
+      {
+        "title": "Billing and contract",
+        "rows": [
+          {
+            "feature": "Pay by invoice",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": false
+            }
+          },
+          {
+            "feature": "Sales assisted procurement",
+            "tiers": {
+              "Starter": false,
+              "Pro": false,
+              "Enterprise": true,
+              "Community": false,
+              "Business": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "note": " | Full matrix (parsed offline from saved HTML, Cloud+Self-host views merged)."
+}

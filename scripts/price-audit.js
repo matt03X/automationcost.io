@@ -532,9 +532,15 @@ async function refreshFx() {
 }
 
 // ── runner ───────────────────────────────────────────────────────────────────
+// Pipedream a Zapier ToS ZAKAZUJÍ automatizovaný přístup (bots/scrapers) — viz feature-audit.js
+// a reference paměť. Aby se omezila stopa na public/portfolio repu, scrapují se jen MĚSÍČNĚ
+// (1. v měsíci), ne denně. Lze je vynutit explicitním argumentem (`node price-audit.js zapier`).
+const MONTHLY_ONLY = new Set(["pipedream", "zapier"]);
+
 async function main() {
   const args = process.argv.slice(2).filter((a) => !a.startsWith("--"));
   const targets = args.length ? args : Object.keys(VENDORS);
+  const firstOfMonth = new Date().getUTCDate() === 1;
   fs.mkdirSync(AUDIT_DIR, { recursive: true });
   await refreshFx();
   const allChanges = [];
@@ -543,6 +549,11 @@ async function main() {
 
   for (const v of targets) {
     if (!VENDORS[v]) { console.error(`✗ neznámý vendor: ${v}`); failures++; continue; }
+    // ToS: PD/Zapier jen 1. v měsíci (pokud nejsou explicitně vyžádané argem)
+    if (MONTHLY_ONLY.has(v) && !firstOfMonth && !args.includes(v)) {
+      console.log(`→ ${v} … přeskočeno (ToS: scrape jen 1. v měsíci)`);
+      continue;
+    }
     process.stdout.write(`→ ${v} … `);
     try {
       const prev = NO_DIFF ? null : previousSnapshot(v);

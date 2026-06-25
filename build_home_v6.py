@@ -86,6 +86,36 @@ def main():
     home = replace_block(home, "MODELS", models)
     home = replace_block(home, "SCORING_LLM", scoring_llm)
 
+    # 5) APPS — app-filter data from the integration catalogue (per-app tool support).
+    #    Compact: A_APP_ORDER = tool slugs; A_APPS = [name, bitmask] where bit i is set
+    #    when tool A_APP_ORDER[i] integrates with the app (native OR community). Inlined
+    #    (no fetch) so the homepage app filter works on any static host.
+    import json as _json
+    idx = _json.loads((ROOT / "automation" / "data" / "integrations" / "index.json").read_text(encoding="utf-8"))
+    app_order = idx["tools"]
+    app_rows = []
+    for a in idx["apps"]:
+        mask = 0
+        for i, v in enumerate(a.get("t", [])):
+            if v:
+                mask |= (1 << i)
+        if mask:
+            app_rows.append([a["n"], mask])
+    app_rows.sort(key=lambda r: r[0].lower())
+    apps_js = ("const A_APP_ORDER=" + _json.dumps(app_order, separators=(",", ":")) + ";\n"
+               + "const A_APPS=" + _json.dumps(app_rows, ensure_ascii=False, separators=(",", ":")) + ";")
+    home = replace_block(home, "APPS", apps_js)
+
+    # 6) FEATURES — canonical per-plan feature data for the feature-constraint filter.
+    sys.path.insert(0, str(ROOT / "automation"))
+    from features_registry import build_features_data  # noqa: E402
+    fd = build_features_data()
+    feat_js = "\n".join(
+        "const " + k + "=" + _json.dumps(fd[k], ensure_ascii=False, separators=(",", ":")) + ";"
+        for k in ["A_FEAT_GROUPS", "A_FEAT_REQ", "A_PLAN_TIER", "A_TIER_NAME", "A_ENT_ORD"])
+    home = replace_block(home, "FEATURES", feat_js)
+    n_feat = sum(len(g["items"]) for g in fd["A_FEAT_GROUPS"])
+
     HOME.write_text(home, encoding="utf-8")
 
     # sanity report
@@ -97,6 +127,8 @@ def main():
     print(f"  DATA:SCORING_AUTO -> {'SCORE_W' if 'SCORE_W' in scoring_auto else '??'}, ROLE_WEIGHTS, TOOL_SCORES")
     print(f"  DATA:MODELS       -> {n_models} models (reviewed {rev.group(1) if rev else '?'})")
     print(f"  DATA:SCORING_LLM  -> L_SCORE_W, L_ROLE_WEIGHTS, UC_ROLE, MODEL_SCORES")
+    print(f"  DATA:APPS         -> {len(app_rows)} apps × {len(app_order)} tools (support bitmask)")
+    print(f"  DATA:FEATURES     -> {n_feat} canonical features × {len(fd['A_PLAN_TIER'])} tools")
     if "const L_SCORE_W" not in scoring_llm or "const L_ROLE_WEIGHTS" not in scoring_llm:
         print("WARNING: LLM scoring rename did not apply as expected", file=sys.stderr)
 

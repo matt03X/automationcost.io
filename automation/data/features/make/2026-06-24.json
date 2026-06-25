@@ -1,0 +1,568 @@
+{
+  "vendor": "make",
+  "url": "https://www.make.com/en/pricing",
+  "asof": "2026-06-24",
+  "fetchedBy": "WizardCostBot/1.0 (+https://wizardcost.com; polite feature audit, robots-respecting)",
+  "partial": false,
+  "plans": {
+    "Free": [
+      "1,000 credits/month",
+      "No-code visual workflow builder",
+      "3000+ apps",
+      "Routers & filters",
+      "Customer support",
+      "15-minute minimum interval between runs"
+    ],
+    "Core": [
+      "Unlimited active scenarios",
+      "More control with scheduled scenarios, down to the minute",
+      "Increased data transfer limits",
+      "Access to the Make API"
+    ],
+    "Pro": [
+      "Priority scenario execution",
+      "Custom variables",
+      "Full-text execution log search"
+    ],
+    "Teams": [
+      "Teams and team roles",
+      "Create and share scenario templates"
+    ],
+    "Enterprise": [
+      "Custom functions support",
+      "Enterprise app integrations",
+      "24/7 Enterprise support",
+      "Access to Value Engineering team",
+      "Overage protection",
+      "Advanced security features"
+    ]
+  },
+  "matrix": {
+    "source": "https://www.make.com/en/pricing",
+    "asof": "2026-06-24",
+    "columns": [
+      "Free",
+      "Core",
+      "Pro",
+      "Teams",
+      "Enterprise"
+    ],
+    "groups": [
+      {
+        "title": "Make + AI",
+        "rows": [
+          {
+            "feature": "AI applications",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "MCP server",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "AI Content Extractor",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "AI Web Search (beta)",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Make AI Agents (beta)",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Make AI Toolkit",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Workflow essentials",
+        "rows": [
+          {
+            "feature": "Make Code App",
+            "tiers": {
+              "Free": false,
+              "Core": "2 credits per 1 sec of code execution time",
+              "Pro": "2 credits per 1 sec of code execution time",
+              "Teams": "2 credits per 1 sec of code execution time",
+              "Enterprise": "2 credits per 1 sec of code execution time. Extended resources"
+            }
+          },
+          {
+            "feature": "No-code workflow builder",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "System variables",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Custom variables",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Scenario inputs",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Scenario Outputs",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Custom scenario properties",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Custom functions",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Create and share scenario templates",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": true,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Integrations",
+        "rows": [
+          {
+            "feature": "3,000+ standard apps",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Custom apps",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Access to enterprise apps",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "On-prem agent",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Access to 300+ Make API endpoints (rate call limit/minute)",
+            "tiers": {
+              "Free": false,
+              "Core": "60",
+              "Pro": "120",
+              "Teams": "240",
+              "Enterprise": "1000"
+            }
+          }
+        ]
+      },
+      {
+        "title": "Workflow execution",
+        "rows": [
+          {
+            "feature": "Maximum number of active scenarios",
+            "tiers": {
+              "Free": "2",
+              "Core": "unlimited",
+              "Pro": "unlimited",
+              "Teams": "unlimited",
+              "Enterprise": "unlimited"
+            }
+          },
+          {
+            "feature": "Minimum interval between scheduled scenarios",
+            "tiers": {
+              "Free": "15",
+              "Core": "1",
+              "Pro": "1",
+              "Teams": "1",
+              "Enterprise": "1"
+            }
+          },
+          {
+            "feature": "Maximum scenario execution time (minutes)",
+            "tiers": {
+              "Free": "5",
+              "Core": "40",
+              "Pro": "40",
+              "Teams": "40",
+              "Enterprise": "40"
+            }
+          },
+          {
+            "feature": "Parallel scenario execution",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Priority scenario execution",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": "High",
+              "Teams": "Priority",
+              "Enterprise": "Priority"
+            }
+          },
+          {
+            "feature": "Maximum file size (MB)",
+            "tiers": {
+              "Free": "5",
+              "Core": "100",
+              "Pro": "250",
+              "Teams": "500",
+              "Enterprise": "1000"
+            }
+          },
+          {
+            "feature": "Subscenarios",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Data transfer",
+            "tiers": {
+              "Free": "512MB",
+              "Core": "5GB",
+              "Pro": "5GB",
+              "Teams": "5GB",
+              "Enterprise": "5GB"
+            }
+          },
+          {
+            "feature": "Relation trees",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Real-time execution monitoring",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Full-text execution log search",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Execution log storage (days)",
+            "tiers": {
+              "Free": "7",
+              "Core": "30",
+              "Pro": "30",
+              "Teams": "30",
+              "Enterprise": "60"
+            }
+          },
+          {
+            "feature": "Dynamic connections",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Governance and Observability",
+        "rows": [
+          {
+            "feature": "Unlimited users",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Make Grid",
+            "tiers": {
+              "Free": false,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Credits usage flexibility with yearly billing",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Teams and team roles",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Analytics Dashboard",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Audit logs",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Credits overage protection",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Support",
+        "rows": [
+          {
+            "feature": "Customer support",
+            "tiers": {
+              "Free": "90-day expert access to get started",
+              "Core": "Technical support from our expert team",
+              "Pro": "Technical support from our expert team",
+              "Teams": "High-priority guidance from dedicated consultants",
+              "Enterprise": "24/7 top-priority assistance from senior specialists"
+            }
+          },
+          {
+            "feature": "Access to the Value Engineering Team",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Information security compliance support",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          }
+        ]
+      },
+      {
+        "title": "Security",
+        "rows": [
+          {
+            "feature": "Two-factor authentication",
+            "tiers": {
+              "Free": true,
+              "Core": true,
+              "Pro": true,
+              "Teams": true,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Two-factor authentication enforcement",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Company single sign-on (SSO)",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Domain claim",
+            "tiers": {
+              "Free": false,
+              "Core": false,
+              "Pro": false,
+              "Teams": false,
+              "Enterprise": true
+            }
+          },
+          {
+            "feature": "Hosting",
+            "tiers": {
+              "Free": "AWS (EU/North America)",
+              "Core": "AWS (EU/North America)",
+              "Pro": "AWS (EU/North America)",
+              "Teams": "AWS (EU/North America)",
+              "Enterprise": "AWS (EU/North America)"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
