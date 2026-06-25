@@ -37,6 +37,7 @@ SC_START = "/* DATA:SCORING:START */"
 SC_END = "/* DATA:SCORING:END */"
 SC_WARN = "/* generováno build.py z data/scoring-model.json + models.json — needituj ručně */"
 SCORING = ROOT / "data" / "scoring-model.json"
+BENCHMARKS = ROOT / "data" / "benchmarks.json"
 # engine USE_CASE (index.html USE_CASES) -> scoring role (scoring-model.json roleWeights)
 UC_ROLE = {"chatbot": "chatbot", "rag": "rag", "summarization": "rag",
            "agents": "agents", "extraction": "classification"}
@@ -169,7 +170,7 @@ def render_models(data: dict) -> str:
     return "\n".join(lines)
 
 
-def _model_dims(data: dict, sm: dict | None = None) -> dict:
+def _model_dims(data: dict, sm: dict | None = None, bench: dict | None = None) -> dict:
     """Per-model skóre dimenzí DOPOČÍTANÉ z models.json dle scoring-model.json
     dimension_definitions (jeden zdroj pravdy, pokrývá celý lineup). Klíč = name
     (shoda s MODELS blokem). lowPrice řeší priceScore v JS z cost() na profilu.
@@ -185,10 +186,13 @@ def _model_dims(data: dict, sm: dict | None = None) -> dict:
     tierf = {"frontier": 1.0, "mid": 0.6, "budget": 0.3}
     fv2 = (sm or {}).get("frontier_v2") or {}
     bands = fv2.get("bands") or {}
-    blend = fv2.get("blend") or {}
-    w_cap = blend.get("capability", 0.0)
-    w_tier = blend.get("tier", 1.0)
+    er = fv2.get("eci_range") or [0.40, 1.00]
     cap_band = {k: v for k, v in ((sm or {}).get("capabilityBand") or {}).items() if k != "_note"}
+    # REAL Epoch ECI (CC-BY) per model id → primary capability signal; normalized across matched.
+    eci = {mid: mm["benchmarks"]["eci"]["value"]
+           for mid, mm in ((bench or {}).get("models") or {}).items()
+           if "eci" in (mm.get("benchmarks") or {})}
+    emin, emax = (min(eci.values()), max(eci.values())) if eci else (0.0, 1.0)
     dims = {}
     for m in models:
         ctx = m.get("contextWindow")
@@ -196,12 +200,13 @@ def _model_dims(data: dict, sm: dict | None = None) -> dict:
         caching = (1 - m["cachedInputPerM"] / m["inputPerM"]) if m.get("cachedInputPerM") is not None else 0.0
         cheap = 0.5 if hi_o == lo_o else min(1.0, max(0.0, 1 - (math.log10(m["outputPerM"]) - lo_o) / (hi_o - lo_o)))
         batch = (1 - m["batchDiscount"]) if m.get("batchDiscount") is not None else 0.0
-        tscore = tierf[m["tier"]]
         band = cap_band.get(m["id"])
-        if band and band in bands and w_cap > 0:
-            frontier = round(w_cap * bands[band] + w_tier * tscore, 3)  # capability blend
+        if m["id"] in eci and emax > emin:
+            frontier = round(er[0] + (er[1] - er[0]) * (eci[m["id"]] - emin) / (emax - emin), 3)  # REAL benchmark
+        elif band and band in bands:
+            frontier = bands[band]  # editorial capabilityBand (same scale, no Epoch match)
         else:
-            frontier = tscore  # coverage guard: no editorial band → fall back to tier
+            frontier = tierf[m["tier"]]  # coverage guard
         dims[m["name"]] = {"context": round(context, 3), "caching": round(caching, 3),
                            "cheapOutput": round(cheap, 3), "batch": round(batch, 3),
                            "frontier": frontier}
@@ -212,11 +217,12 @@ def render_scoring(data: dict) -> str:
     """const SCORE_W / ROLE_WEIGHTS / UC_ROLE / MODEL_SCORES pro recommendation
     engine v index.html. Váhy = editorial (scoring-model.json), dimenze = z dat."""
     sm = json.loads(SCORING.read_text(encoding="utf-8"))
+    bench = json.loads(BENCHMARKS.read_text(encoding="utf-8")) if BENCHMARKS.exists() else None
     return "\n".join([
         "const SCORE_W = " + json.dumps(sm["scoreWeights"], ensure_ascii=False) + ";",
         "const ROLE_WEIGHTS = " + json.dumps(sm["roleWeights"], ensure_ascii=False) + ";",
         "const UC_ROLE = " + json.dumps(UC_ROLE, ensure_ascii=False) + ";",
-        "const MODEL_SCORES = " + json.dumps(_model_dims(data, sm), ensure_ascii=False) + ";",
+        "const MODEL_SCORES = " + json.dumps(_model_dims(data, sm, bench), ensure_ascii=False) + ";",
     ])
 
 

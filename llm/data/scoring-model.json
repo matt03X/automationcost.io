@@ -47,9 +47,9 @@
   },
 
   "frontier_v2": {
-    "_note": "Oprava Mistral dominance: 'frontier' dimenze uz NENI ploche tier skore (vsech 11 frontier modelu == 1.0), ale blend EDITORIAL capability bandu (capabilityBand nize) a tieru, s coverage guardem (model bez bandu => spadne na ciste tier). capabilityBand je REDAKCNI odhad relativni schopnosti (stejna kategorie jako 'tier', NE benchmark, NE zobrazene cislo na strance) — DRAFT k owner review; cilove ho nahradi SCRAPED benchmarky {value,source,asof} (viz plan benchmark layer). Implementovano v llm/build.py _model_dims.",
-    "blend": { "capability": 0.65, "tier": 0.35 },
-    "bands": { "flagship": 1.00, "strong": 0.80, "specialist": 0.72, "workhorse": 0.60, "efficient": 0.45, "lite": 0.30 },
+    "_note": "Oprava Mistral dominance. 'frontier' (capability) = REALNY Epoch ECI (normalizovany do eci_range pres matchnute modely, z llm/data/benchmarks.json scrapnute scriptem scripts/llm-benchmark-pull.py, CC-BY) KDE JE; jinak EDITORIAL capabilityBand (stejna skala); jinak tier (coverage guard). ECI a bandy sdili jednu skalu (bandy ~ kam padaji srovnatelne realne modely: real 'strong' DeepSeek/Grok ~0.65). Band = REDAKCNI odhad (stejna kategorie jako tier, NE benchmark, NE zobrazene cislo); per-model ho PREBIJI ECI kdyz Epoch model ma. Implementovano v llm/build.py _model_dims.",
+    "eci_range": [0.40, 1.00],
+    "bands": { "flagship": 1.00, "strong": 0.70, "specialist": 0.62, "workhorse": 0.55, "efficient": 0.47, "lite": 0.40 },
     "price_role_aware": "recommend() skaluje globalni price clen vahou role lowPrice (priceW = roleWeights[role].lowPrice / 0.17): capability-heavy role (reasoning/agents/coding) vazi cenu min, chatbot/classification vic — aktivace REZERVOVANEHO lowPrice. Implementovano v recommend() (home-v6.html + llm/calculator.html, parita)."
   },
 

@@ -1,0 +1,274 @@
+{
+  "_meta": {
+    "source": "Epoch AI Benchmarking Hub",
+    "url": "https://epoch.ai/data/benchmark_data.zip",
+    "license": "CC-BY",
+    "attribution": "Epoch AI, 'AI Benchmarking Hub'. Published online at epoch.ai. Retrieved from 'https://epoch.ai/benchmarks/use-this-data'",
+    "pulled": "2026-06-25",
+    "note": "REAL benchmark scores (no fabrication). Models without an Epoch match are omitted -> engine falls back to editorial capabilityBand/tier. eci = Epoch Capabilities Index (composite). Variant = exact Epoch 'Model version' (best effort). Artificial Analysis NOT used.",
+    "metrics": {
+      "eci": "Epoch Capabilities Index (composite capability score; drives the 'frontier' dimension)",
+      "gpqa_diamond": "GPQA Diamond accuracy (hard science reasoning)",
+      "mmlu": "MMLU accuracy (broad knowledge)",
+      "swe_bench_verified": "SWE-bench Verified resolve rate (agentic coding)",
+      "terminal_bench": "Terminal-Bench score (CLI/agentic)"
+    }
+  },
+  "models": {
+    "gpt-5.5": {
+      "benchmarks": {
+        "eci": {
+          "value": 158.5897,
+          "source": "Epoch AI",
+          "asof": "2026-04-23",
+          "variant": "gpt-5.5_xhigh"
+        },
+        "gpqa_diamond": {
+          "value": 0.9066,
+          "source": "Epoch AI",
+          "asof": "2026-04-23",
+          "variant": "gpt-5.5_low"
+        }
+      },
+      "openWeights": false
+    },
+    "gpt-5.5-pro": {
+      "benchmarks": {
+        "eci": {
+          "value": 159.8734,
+          "source": "Epoch AI",
+          "asof": "2026-04-23",
+          "variant": "gpt-5.5-pro_xhigh"
+        }
+      },
+      "openWeights": false
+    },
+    "gpt-5.4": {
+      "benchmarks": {
+        "eci": {
+          "value": 156.1787,
+          "source": "Epoch AI",
+          "asof": "2026-03-05",
+          "variant": "gpt-5.4-2026-03-05_xhigh"
+        },
+        "gpqa_diamond": {
+          "value": 0.933,
+          "source": "Epoch AI",
+          "asof": "2026-03-05",
+          "variant": "gpt-5.4-2026-03-05_xhigh"
+        },
+        "swe_bench_verified": {
+          "value": 0.7686,
+          "source": "Epoch AI",
+          "asof": "2026-03-05",
+          "variant": "gpt-5.4-2026-03-05_high"
+        }
+      },
+      "openWeights": false
+    },
+    "gpt-5.4-mini": {
+      "benchmarks": {
+        "eci": {
+          "value": 148.9813,
+          "source": "Epoch AI",
+          "asof": "2026-03-17",
+          "variant": "gpt-5.4-mini-2026-03-17_xhigh"
+        },
+        "gpqa_diamond": {
+          "value": 0.8359,
+          "source": "Epoch AI",
+          "asof": "2026-03-17",
+          "variant": "gpt-5.4-mini-2026-03-17_high"
+        }
+      },
+      "openWeights": false
+    },
+    "gpt-5.4-nano": {
+      "benchmarks": {
+        "eci": {
+          "value": 146.7404,
+          "source": "Epoch AI",
+          "asof": "2026-03-17",
+          "variant": "gpt-5.4-nano-2026-03-17_high"
+        },
+        "gpqa_diamond": {
+          "value": 0.7847,
+          "source": "Epoch AI",
+          "asof": "2026-03-17",
+          "variant": "gpt-5.4-nano-2026-03-17_high"
+        }
+      },
+      "openWeights": false
+    },
+    "claude-fable-5": {
+      "benchmarks": {
+        "eci": {
+          "value": 160.7427,
+          "source": "Epoch AI",
+          "asof": "2026-06-09",
+          "variant": "claude-fable-5_max"
+        }
+      },
+      "openWeights": false
+    },
+    "claude-opus-4-8": {
+      "benchmarks": {
+        "eci": {
+          "value": 156.6313,
+          "source": "Epoch AI",
+          "asof": "2026-05-28",
+          "variant": "claude-opus-4-8_max"
+        },
+        "gpqa_diamond": {
+          "value": 0.9104,
+          "source": "Epoch AI",
+          "asof": "2026-05-28",
+          "variant": "claude-opus-4-8_max"
+        }
+      },
+      "openWeights": false
+    },
+    "claude-sonnet-4-6": {
+      "benchmarks": {
+        "eci": {
+          "value": 152.4847,
+          "source": "Epoch AI",
+          "asof": "2026-02-17",
+          "variant": "claude-sonnet-4-6_16K"
+        },
+        "gpqa_diamond": {
+          "value": 0.8737,
+          "source": "Epoch AI",
+          "asof": "2026-02-17",
+          "variant": "claude-sonnet-4-6_32K"
+        },
+        "swe_bench_verified": {
+          "value": 0.7521,
+          "source": "Epoch AI",
+          "asof": "2026-02-17",
+          "variant": "claude-sonnet-4-6"
+        }
+      },
+      "openWeights": false
+    },
+    "claude-haiku-4-5": {
+      "benchmarks": {
+        "eci": {
+          "value": 142.8631,
+          "source": "Epoch AI",
+          "asof": "2025-10-15",
+          "variant": "claude-haiku-4-5-20251001_32K"
+        },
+        "gpqa_diamond": {
+          "value": 0.7121,
+          "source": "Epoch AI",
+          "asof": "2025-10-15",
+          "variant": "claude-haiku-4-5-20251001_32K"
+        }
+      },
+      "openWeights": false
+    },
+    "gemini-3.1-pro-preview": {
+      "benchmarks": {
+        "eci": {
+          "value": 155.5153,
+          "source": "Epoch AI",
+          "asof": "2026-02-19",
+          "variant": "gemini-3.1-pro-preview"
+        },
+        "gpqa_diamond": {
+          "value": 0.941,
+          "source": "Epoch AI",
+          "asof": "2026-02-19",
+          "variant": "gemini-3.1-pro-preview"
+        }
+      },
+      "openWeights": false
+    },
+    "gemini-3.5-flash": {
+      "benchmarks": {
+        "eci": {
+          "value": 155.2605,
+          "source": "Epoch AI",
+          "asof": "2026-05-19",
+          "variant": "gemini-3.5-flash_high"
+        },
+        "gpqa_diamond": {
+          "value": 0.928,
+          "source": "Epoch AI",
+          "asof": "2026-05-19",
+          "variant": "gemini-3.5-flash_high"
+        },
+        "swe_bench_verified": {
+          "value": 0.7934,
+          "source": "Epoch AI",
+          "asof": "2026-05-19",
+          "variant": "gemini-3.5-flash_high"
+        }
+      }
+    },
+    "gemini-3-flash-preview": {
+      "benchmarks": {
+        "eci": {
+          "value": 150.688,
+          "source": "Epoch AI",
+          "asof": "2025-12-17",
+          "variant": "gemini-3-flash-preview"
+        },
+        "gpqa_diamond": {
+          "value": 0.8321,
+          "source": "Epoch AI",
+          "asof": "2025-12-17",
+          "variant": "gemini-3-flash-preview"
+        },
+        "swe_bench_verified": {
+          "value": 0.7541,
+          "source": "Epoch AI",
+          "asof": "2025-12-17",
+          "variant": "gemini-3-flash-preview"
+        }
+      },
+      "openWeights": false
+    },
+    "deepseek-v4-pro": {
+      "benchmarks": {
+        "eci": {
+          "value": 149.7371,
+          "source": "Epoch AI",
+          "asof": "2026-04-24",
+          "variant": "deepseek-v4-pro_max"
+        },
+        "gpqa_diamond": {
+          "value": 0.8965,
+          "source": "Epoch AI",
+          "asof": "2026-04-24",
+          "variant": "deepseek-v4-pro_max"
+        },
+        "swe_bench_verified": {
+          "value": 0.7764,
+          "source": "Epoch AI",
+          "asof": "2026-04-24",
+          "variant": "deepseek-v4-pro_max"
+        }
+      },
+      "openWeights": true
+    },
+    "grok-4.3": {
+      "benchmarks": {
+        "eci": {
+          "value": 148.9586,
+          "source": "Epoch AI",
+          "asof": "2026-04-17",
+          "variant": "grok-4.3_high"
+        },
+        "gpqa_diamond": {
+          "value": 0.8883,
+          "source": "Epoch AI",
+          "asof": "2026-04-17",
+          "variant": "grok-4.3_high"
+        }
+      },
+      "openWeights": false
+    }
+  }
+}
