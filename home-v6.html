@@ -243,8 +243,20 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .sh-searchbar input{width:100%;background:var(--panel2);border:1px solid var(--b);border-radius:9px;padding:9px 12px;color:var(--tx);font-family:var(--mono);font-size:.82rem}
 .sh-searchbar input:focus{outline:none;border-color:var(--pp)}
 .sh-count{font-family:var(--mono);font-size:.7rem;color:var(--tx3);white-space:nowrap}
-.sh-apps td,.sh-apps th{text-align:center}
-.sh-apps td.vs-lab,.sh-apps th:first-child{text-align:left}
+.sh-grid{display:block}
+.sh-hrow,.sh-row{display:grid;grid-template-columns:var(--shtpl,minmax(150px,1.4fr) repeat(4,1fr));align-items:center}
+.sh-hrow{border-bottom:1px solid var(--b);padding-bottom:12px;margin-bottom:2px}
+.sh-row{border-top:1px solid var(--b)}
+.sh-row:hover{background:rgba(255,255,255,.025)}
+.sh-hc{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;padding:0 4px;min-width:0}
+.sh-hc.sh-app{align-items:flex-start;justify-content:center;gap:0}
+.sh-hc .sh-logo{width:30px;height:30px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.sh-hc .sh-logo img{width:20px;height:20px;object-fit:contain}
+.sh-hc .sh-nm{font-family:var(--display);font-weight:800;font-size:.9rem;line-height:1.15}
+.sh-hc .sh-sub{font-family:var(--mono);font-size:.6rem;color:var(--tx3)}
+.sh-collab{font-family:var(--display);font-weight:800;font-size:.78rem;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em}
+.sh-c{display:flex;align-items:center;justify-content:center;padding:8px 4px;font-family:var(--mono);font-weight:600;font-size:.88rem;min-width:0}
+.sh-c.sh-app{justify-content:flex-start;color:var(--tx2);font-family:var(--body);font-weight:500;font-size:.85rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sh-pager{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
 .sh-pager button{background:var(--panel2);border:1px solid var(--b);border-radius:8px;color:var(--tx2);padding:6px 13px;cursor:pointer;font-size:.8rem;font-family:var(--mono)}
 .sh-pager button:hover:not([disabled]){border-color:var(--pp);color:var(--tx)}
@@ -1457,7 +1469,8 @@ var SH_TCO=[
   {l:"TLS / domain",v:"$1–2/mo",tip:"Domain + auto-renewing TLS cert; reverse-proxy upkeep."},
   {l:"n8n Business licence",v:"~$800/mo",tip:"ONLY if you need enterprise features (SSO / RBAC / log streaming) on n8n self-host — the supported Business track (n8n.io/pricing), not the free community build."}
 ];
-/* R3: self-host comparison — same server cost, so compare on APP COVERAGE (searchable + paginated). */
+/* R3: self-host comparison — same server cost, so compare on APP COVERAGE.
+   Built as a CSS grid of divs (not a <table>) — tables hit a cell-paint quirk in some renderers. */
 function aRenderSelfHost(){
   var el=document.getElementById("a-selfhost"); if(!el) return;
   if(hostPref!=="selfhost"){ el.style.display="none"; el.innerHTML=""; return; }
@@ -1473,16 +1486,18 @@ function aRenderSelfHost(){
   var pages=Math.max(1,Math.ceil(filtered.length/_shPageSize));
   if(_shPage>=pages) _shPage=pages-1; if(_shPage<0) _shPage=0;
   var slice=filtered.slice(_shPage*_shPageSize,(_shPage+1)*_shPageSize);
-  function th(t){ var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,"");
-    return '<th style="--pc:'+aToolColor(t.slug)+'"><div class="vs-th"><span class="vs-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="vs-nm">'+esc(t.name)+'</span><span class="vs-plan">'+fmtInt(t.integrations)+' apps</span></div></th>'; }
+  var tpl="minmax(150px,1.4fr) repeat("+tools.length+",minmax(74px,1fr))";
+  function hcell(t){ var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,"");
+    return '<div class="sh-hc"><span class="sh-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="sh-nm" style="color:'+aToolColor(t.slug)+'">'+esc(t.name)+'</span><span class="sh-sub">'+fmtInt(t.integrations)+' apps</span></div>'; }
+  var head='<div class="sh-hrow"><div class="sh-hc sh-app"><span class="sh-collab">App</span></div>'+tools.map(hcell).join("")+'</div>';
   var yes='<span class="vs-yes">✓</span>', no='<span class="vs-no">—</span>';
-  var body=slice.map(function(r){ return '<tr><td class="vs-lab">'+esc(r.name)+'</td>'+tools.map(function(t){return '<td>'+(r[t.slug]?yes:no)+'</td>';}).join("")+'</tr>'; }).join("");
-  if(!body) body='<tr><td colspan="'+(tools.length+1)+'" style="color:var(--tx3);text-align:center;padding:18px">No matching apps.</td></tr>';
+  var body=slice.map(function(r){ return '<div class="sh-row"><div class="sh-c sh-app">'+esc(r.name)+'</div>'+tools.map(function(t){return '<div class="sh-c">'+(r[t.slug]?yes:no)+'</div>';}).join("")+'</div>'; }).join("");
+  if(!body) body='<div class="sh-row" style="grid-template-columns:1fr"><div class="sh-c" style="justify-content:center;color:var(--tx3);padding:18px">No matching apps.</div></div>';
   el.innerHTML='<div class="panel-h"><h2>Self-host — compare on app coverage</h2><span class="tag">same server cost · what differs is reach</span></div>'+
     '<p class="panel-sub">Every self-host tool runs on a server you own, so the monthly bill is roughly the same. What actually differs is which apps each one connects to — search the full catalogue below.</p>'+
     '<div class="sh-bar2"><div class="sh-searchbar"><input id="sh-q" type="search" placeholder="Search '+fmtInt(all.length)+' apps…" value="'+esc(_shQuery)+'" autocomplete="off"></div>'+
     '<span class="sh-count">'+fmtInt(filtered.length)+' app'+(filtered.length===1?'':'s')+' · page '+(_shPage+1)+'/'+pages+'</span></div>'+
-    '<div class="vs-scroll"><table class="vs-table sh-apps" style="min-width:'+(180+tools.length*120)+'px"><thead><tr><th>App</th>'+tools.map(th).join("")+'</tr></thead><tbody>'+body+'</tbody></table></div>'+
+    '<div class="vs-scroll"><div class="sh-grid" style="--shtpl:'+tpl+';min-width:'+(150+tools.length*80)+'px">'+head+body+'</div></div>'+
     '<div class="sh-pager"><button data-shpage="prev"'+(_shPage<=0?" disabled":"")+'>‹ Prev</button><span class="sh-pg">'+(_shPage+1)+' / '+pages+'</span><button data-shpage="next"'+(_shPage>=pages-1?" disabled":"")+'>Next ›</button></div>';
 }
 /* true if a tool integrates with EVERY app the user has selected (or no apps selected) */
