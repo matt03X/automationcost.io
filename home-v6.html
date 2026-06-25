@@ -217,6 +217,9 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .vs-yes{color:#10b981;font-weight:700}.vs-no{color:var(--tx3)}
 .vs-bar{display:inline-block;width:54px;height:6px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;vertical-align:middle;margin-right:8px}
 .vs-bar i{display:block;height:100%;border-radius:4px}
+.vs-table td.vs-best{color:#10b981;font-weight:700}
+.selfhost-panel{display:none;background:var(--panel);border:1px solid var(--b);border-radius:16px;padding:20px;margin-bottom:18px}
+.selfhost-panel .panel-sub{margin:4px 0 14px}
 .persona-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 .persona-grid button{padding:7px 5px;font-size:.76rem}
 .toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;user-select:none}
@@ -608,6 +611,7 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
     <div class="panels">
       <div class="tool-filter" id="a-tool-filter"></div>
       <div class="vs-compare" id="a-vs"></div>
+      <div class="selfhost-panel" id="a-selfhost" style="display:none"></div>
       <!-- 1. ranked cost bars + BAN -->
       <section class="panel">
         <div class="ban" id="a-ban"></div>
@@ -1342,6 +1346,30 @@ function aToolHref(tool){
 }
 /* true if the tool is in the selected compare-set (tile filter); empty = all selected */
 function aToolSel(slug){ return !aState.tools.length || aState.tools.indexOf(slug)>=0; }
+/* self-host helpers (#3/#4): tools you can self-host + whether an app/feature is on any of them */
+function aSelfHostSlugs(){ return TOOLS.filter(function(t){return t.selfHostable;}).map(function(t){return t.slug;}); }
+function aSelfHostAppMask(){ var m=0; aSelfHostSlugs().forEach(function(sg){ var i=A_APP_ORDER.indexOf(sg); if(i>=0) m|=(1<<i); }); return m; }
+function aAppSelfHostOK(mask){ return (mask & aSelfHostAppMask())!==0; }
+function aFeatSelfHostOK(name){ var rq=A_FEAT_REQ[name]||{}; return aSelfHostSlugs().some(function(sg){ return sg in rq; }); }
+/* #3: self-host comparison — same server cost, so compare on connectors + capabilities */
+function aRenderSelfHost(){
+  var el=document.getElementById("a-selfhost"); if(!el) return;
+  var tools=TOOLS.filter(function(t){return t.selfHostable&&aToolSel(t.slug);});
+  if(hostPref!=="selfhost"||aState.tools.length===2||tools.length<2){ el.style.display="none"; el.innerHTML=""; return; }
+  el.style.display="block";
+  function th(t){ var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,""); return '<th style="--pc:'+aToolColor(t.slug)+'"><div class="vs-th"><span class="vs-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="vs-nm">'+esc(t.name)+'</span></div></th>'; }
+  var maxInt=Math.max.apply(null,tools.map(function(t){return t.integrations;}));
+  var intRow='<tr><td class="vs-lab">App connectors</td>'+tools.map(function(t){ return '<td'+(t.integrations===maxInt?' class="vs-best"':'')+'>'+fmtInt(t.integrations)+'</td>'; }).join("")+'</tr>';
+  var CAP=[["noCode","No-code builder"],["codeAccess","Code access"],["aiNodes","AI nodes"],["selfHost","Self-host control"],["maturity","Maturity"]];
+  var capRows=CAP.map(function(d){ var vals=tools.map(function(t){return Math.round(((TOOL_SCORES[t.slug]||{})[d[0]]||0)*100);}); var mx=Math.max.apply(null,vals);
+    return '<tr><td class="vs-lab">'+d[1]+'</td>'+tools.map(function(t,i){ var v=vals[i]; return '<td'+(v===mx&&mx>0?' class="vs-best"':'')+'><span class="vs-bar"><i style="width:'+v+'%;background:'+aToolColor(t.slug)+'"></i></span>'+v+'</td>'; }).join("")+'</tr>'; }).join("");
+  el.innerHTML='<div class="panel-h"><h2>Self-host &mdash; same server cost, different power</h2><span class="tag">compare on connectors &amp; capabilities</span></div>'.replace("&mdash;","\u2014")+
+    '<p class="panel-sub">Every self-host tool runs on a server you own, so the bill is roughly the same. What actually differs is app reach and capability &mdash; that&rsquo;s what to compare here.</p>'.replace("&mdash;","\u2014")+
+    '<table class="vs-table"><thead><tr><th></th>'+tools.map(th).join("")+'</tr></thead><tbody>'+
+    '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">App reach</td></tr>'+intRow+
+    '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">Capabilities (0\u2013100)</td></tr>'+capRows+
+    '</tbody></table>';
+}
 /* true if a tool integrates with EVERY app the user has selected (or no apps selected) */
 function aAppOK(slug){
   if(!aState.apps.length) return true;
@@ -1488,6 +1516,7 @@ function aRender(){
 
   /* ── limits table ── */
   aRenderToolFilter();
+  aRenderSelfHost();
   if(aState.tools.length===2){ document.querySelector("#dash-automation .panels").classList.add("vs"); aRenderVS(aState.tools); return; }
   document.querySelector("#dash-automation .panels").classList.remove("vs");
   aRenderTable(rows,priceCtx,cheapest);
@@ -2140,7 +2169,15 @@ function buildAutomationRail(){
     var opts=[["any","Any"],["cloud","Cloud"],["selfhost","Self-host"]];
     function paint(){ el.innerHTML=opts.map(function(o){ return '<button data-h="'+o[0]+'" class="'+(hostPref===o[0]?"on":"")+'">'+o[1]+'</button>'; }).join(""); }
     paint();
-    el.addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; hostPref=b.dataset.h; paint(); aRender(); }); })();
+    el.addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; hostPref=b.dataset.h;
+      if(hostPref==="selfhost"){ /* keep only requirements a self-host tool can satisfy → never empty graphs */
+        aState.apps=aState.apps.filter(function(a){return aAppSelfHostOK(a.mask);});
+        aState.features=aState.features.filter(aFeatSelfHostOK);
+        var ac=document.getElementById("a-app-chips"); if(ac) ac.innerHTML=aState.apps.map(function(a){return '<span class="af2-chip">'+esc(a.name)+'<button data-x="'+esc(a.name)+'" aria-label="Remove">\u00d7</button></span>';}).join("");
+        var fc=document.getElementById("a-feat-chips"); if(fc) fc.innerHTML=aState.features.map(function(f){return '<span class="af2-chip">'+esc(f)+'<button data-x="'+esc(f)+'" aria-label="Remove">\u00d7</button></span>';}).join("");
+        var fb=document.getElementById("a-feat-btn"); if(fb) fb.classList.toggle("on",aState.features.length>0);
+      }
+      paint(); aRender(); }); })();
   (function(){ var fc=document.getElementById("a-cap-filters"); if(fc) fc.addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; aCapSort=b.dataset.dim||null; aRenderCaps(); }); })();
 }
 function wireAutomationSliders(){
@@ -2165,6 +2202,7 @@ function wireAutomationSliders(){
       var starts=[],contains=[],sel=aState.apps.map(function(a){return a.name;});
       for(var i=0;i<A_APPS.length;i++){
         var n=A_APPS[i][0]; if(sel.indexOf(n)>=0) continue;
+        if(hostPref==="selfhost"&&!aAppSelfHostOK(A_APPS[i][1])) continue;
         var l=n.toLowerCase();
         if(l.indexOf(term)===0)starts.push(i); else if(l.indexOf(term)>=0)contains.push(i);
         if(starts.length>=10)break;
@@ -2229,7 +2267,7 @@ function wireLlmSliders(){
   function e2(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
   var NT=Object.keys(A_TIER_NAME).length;
   function chips(){ fchips.innerHTML=aState.features.map(function(f){ return '<span class="af2-chip">'+e2(f)+'<button data-x="'+e2(f)+'" aria-label="Remove">\u00d7</button></span>'; }).join(""); btn.classList.toggle("on",aState.features.length>0); }
-  function list(){ fbody.innerHTML=A_FEAT_GROUPS.map(function(g){ return '<div class="fm-group"><h4>'+e2(g.group)+'</h4>'+g.items.map(function(it){ var on=aState.features.indexOf(it.name)>=0; return '<button type="button" class="fm-item'+(on?" on":"")+'" data-f="'+e2(it.name)+'"><span class="fm-nm">'+e2(it.name)+'</span><span class="fm-ct">'+it.tools.length+'/'+NT+' tools</span></button>'; }).join("")+'</div>'; }).join(""); }
+  function list(){ fbody.innerHTML=A_FEAT_GROUPS.map(function(g){ var items=g.items.filter(function(it){ return hostPref!=="selfhost"||aFeatSelfHostOK(it.name); }); if(!items.length) return ""; return '<div class="fm-group"><h4>'+e2(g.group)+'</h4>'+items.map(function(it){ var on=aState.features.indexOf(it.name)>=0; return '<button type="button" class="fm-item'+(on?" on":"")+'" data-f="'+e2(it.name)+'"><span class="fm-nm">'+e2(it.name)+'</span><span class="fm-ct">'+it.tools.length+'/'+NT+' tools</span></button>'; }).join("")+'</div>'; }).join(""); }
   function toggle(n){ var i=aState.features.indexOf(n); if(i>=0)aState.features.splice(i,1); else aState.features.push(n); list(); chips(); aRender(); }
   btn.addEventListener("click",function(e){ if(e.target.closest("[data-x]"))return; list(); modal.classList.add("on"); document.body.style.overflow="hidden"; });
   fchips.addEventListener("click",function(e){ var b=e.target.closest("[data-x]"); if(b){ e.preventDefault(); toggle(b.getAttribute("data-x")); } });
