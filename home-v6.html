@@ -154,15 +154,15 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .feat-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-top:12px;background:var(--panel2);border:1px solid var(--b2);border-radius:10px;padding:9px 12px;color:var(--tx2);font-family:var(--body);font-size:.84rem;font-weight:600;cursor:pointer;transition:.13s}
 .feat-btn:hover{border-color:var(--pp);color:var(--tx)}
 .feat-btn.on{border-color:var(--pp);color:var(--tx);background:rgba(167,139,250,.08)}
-.feat-modal{position:fixed;inset:0;background:rgba(6,5,12,.72);backdrop-filter:blur(4px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:6vh 16px}
+.feat-modal{position:fixed;inset:0;background:rgba(6,5,12,.72);backdrop-filter:blur(4px);z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:6vh 16px}
 .feat-modal.on{display:flex}
 .fm-panel{background:var(--panel);border:1px solid var(--b2);border-radius:16px;max-width:560px;width:100%;max-height:84vh;display:flex;flex-direction:column;box-shadow:0 24px 70px -20px #000}
 .fm-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 0}
 .fm-head h3{font-family:var(--display);font-size:1.15rem;font-weight:800}
 .fm-close{background:none;border:none;color:var(--tx3);font-size:1.5rem;line-height:1;cursor:pointer;padding:0 4px}
 .fm-close:hover{color:var(--tx)}
-.fm-sub{padding:6px 20px 0;color:var(--tx3);font-size:.78rem;line-height:1.5}
-.fm-body{padding:14px 20px 20px;overflow:auto}
+.fm-sub{padding:8px 20px 16px;color:var(--tx3);font-size:.78rem;line-height:1.5}
+.fm-body{padding:14px 20px 20px;overflow:auto;min-height:0;flex:1 1 auto}
 .fm-group{margin-bottom:16px}
 .fm-group h4{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);margin-bottom:8px}
 .fm-item{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--b);border-radius:9px;padding:9px 12px;margin-bottom:6px;color:var(--tx2);font-family:var(--body);font-size:.86rem;cursor:pointer;transition:.12s}
@@ -2148,16 +2148,17 @@ function wireLlmSliders(){
   var btn=document.getElementById("a-feat-btn"), modal=document.getElementById("a-feat-modal"),
       fbody=document.getElementById("a-feat-body"), fchips=document.getElementById("a-feat-chips");
   if(!btn||!modal||typeof A_FEAT_GROUPS==="undefined") return;
+  document.body.appendChild(modal);
   function e2(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
   var NT=Object.keys(A_TIER_NAME).length;
   function chips(){ fchips.innerHTML=aState.features.map(function(f){ return '<span class="af2-chip">'+e2(f)+'<button data-x="'+e2(f)+'" aria-label="Remove">\u00d7</button></span>'; }).join(""); btn.classList.toggle("on",aState.features.length>0); }
   function list(){ fbody.innerHTML=A_FEAT_GROUPS.map(function(g){ return '<div class="fm-group"><h4>'+e2(g.group)+'</h4>'+g.items.map(function(it){ var on=aState.features.indexOf(it.name)>=0; return '<button type="button" class="fm-item'+(on?" on":"")+'" data-f="'+e2(it.name)+'"><span class="fm-nm">'+e2(it.name)+'</span><span class="fm-ct">'+it.tools.length+'/'+NT+' tools</span></button>'; }).join("")+'</div>'; }).join(""); }
   function toggle(n){ var i=aState.features.indexOf(n); if(i>=0)aState.features.splice(i,1); else aState.features.push(n); list(); chips(); aRender(); }
-  btn.addEventListener("click",function(e){ if(e.target.closest("[data-x]"))return; list(); modal.classList.add("on"); });
+  btn.addEventListener("click",function(e){ if(e.target.closest("[data-x]"))return; list(); modal.classList.add("on"); document.body.style.overflow="hidden"; });
   fchips.addEventListener("click",function(e){ var b=e.target.closest("[data-x]"); if(b){ e.preventDefault(); toggle(b.getAttribute("data-x")); } });
   fbody.addEventListener("click",function(e){ var b=e.target.closest(".fm-item"); if(b) toggle(b.getAttribute("data-f")); });
-  modal.addEventListener("click",function(e){ if(e.target===modal||e.target.closest(".fm-close")) modal.classList.remove("on"); });
-  document.addEventListener("keydown",function(e){ if(e.key==="Escape") modal.classList.remove("on"); });
+  modal.addEventListener("click",function(e){ if(e.target===modal||e.target.closest(".fm-close")){ modal.classList.remove("on"); document.body.style.overflow=""; } });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"){ modal.classList.remove("on"); document.body.style.overflow=""; } });
 })();
 /* category tab switching */
 document.querySelectorAll(".cat:not(.disabled)").forEach(c=>{
