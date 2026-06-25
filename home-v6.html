@@ -581,8 +581,8 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
           <input type="range" id="a-steps" min="1" max="15" value="1" aria-label="Steps per workflow">
         </div>
         <div class="field">
-          <div class="f-top"><span class="f-lab">Active workflows</span><span class="f-val" id="a-wf-v">3</span></div>
-          <input type="range" id="a-wf" min="1" max="50" value="3" aria-label="Active workflows">
+          <div class="f-top"><span class="f-lab">Active workflows</span><span class="f-val" id="a-wf-v">50</span></div>
+          <input type="range" id="a-wf" min="1" max="50" value="50" aria-label="Active workflows">
         </div>
         <div class="field">
           <div class="f-top"><span class="f-lab">Team size (users)</span><span class="f-val" id="a-users-v">1</span></div>
@@ -1323,7 +1323,7 @@ const A_PRIORITY=[{id:"value",lab:"Best value"},{id:"cheapest",lab:"Cheapest"},{
 /* runs slider: log scale 100 → 1,000,000, default 10,000 */
 function aRunsFromSlider(v){ return Math.round(Math.pow(10, 2 + v*5/100)); }
 function aSliderFromRuns(r){ return Math.max(0,Math.min(100,(Math.log10(r)-2)*100/5)); }
-var aState={runs:10000, steps:1, wf:3, users:Infinity, role:"operations", priority:"value", gdpr:false, apps:[], features:[], tools:[]};
+var aState={runs:10000, steps:1, wf:50 /* default: Active workflows at the point where Activepieces Cloud ($5/active flow over 10 free) just exceeds Zapier — keeps the $0-headline tool honest */, users:Infinity, role:"operations", priority:"value", gdpr:false, apps:[], features:[], tools:[]};
 /* feature gate: cheapest tier (ordinal) a tool needs for all selected features; lacks=feature it never has, ent=needs Enterprise */
 function aFeatGate(slug){ var need=0,lacks=null,ent=false;
   for(var i=0;i<aState.features.length;i++){ var f=aState.features[i], rq=A_FEAT_REQ[f]||{};
