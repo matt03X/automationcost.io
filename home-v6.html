@@ -184,6 +184,39 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .you-read .yr-pl{font-family:var(--mono);font-size:.58rem;color:var(--tx3);white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis}
 .you-read .yr-pr{font-family:var(--mono);font-weight:600;color:var(--tx);white-space:nowrap}
 .you-read .yr-row.win .yr-nm,.you-read .yr-row.win .yr-pr{color:#10b981;font-weight:700}
+.tool-filter{margin-bottom:20px}
+.tf-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
+.tf-lab{font-family:var(--display);font-weight:800;font-size:1rem}
+.tf-hint{font-size:.74rem;color:var(--tx3)}.tf-hint b{color:var(--pp)}
+.tf-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:9px}
+.tf-tile{display:flex;flex-direction:column;align-items:center;gap:7px;background:var(--panel2);border:1px solid var(--b);border-radius:12px;padding:11px 6px 9px;cursor:pointer;transition:.13s;opacity:.4}
+.tf-tile.on{opacity:1;border-color:var(--pc)}
+.tf-tile:hover{opacity:.85;border-color:var(--tx3)}.tf-tile.on:hover{opacity:1}
+.tf-tile .vt-logo{width:34px;height:34px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.tf-tile .vt-logo img{width:24px;height:24px;object-fit:contain}
+.tf-tile .tf-nm{font-size:.7rem;font-weight:600;color:var(--tx2);text-align:center;line-height:1.2}.tf-tile.on .tf-nm{color:var(--tx)}
+.vs-compare{display:none}
+.panels.vs > section.panel{display:none}
+.panels.vs > #a-vs{display:block}
+.vs-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:18px}
+.vs-h h2{font-family:var(--display);font-size:1.35rem;font-weight:800}
+.vs-table{width:100%;border-collapse:collapse}
+.vs-table th{padding:0 10px 16px;vertical-align:bottom;text-align:left;width:38%}
+.vs-table th:first-child{width:24%}
+.vs-th{display:flex;flex-direction:column;gap:2px}
+.vs-th .vs-logo{width:32px;height:32px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:5px}
+.vs-th .vs-logo img{width:22px;height:22px;object-fit:contain}
+.vs-th .vs-nm{font-family:var(--display);font-weight:800;font-size:1.05rem;color:var(--pc)}
+.vs-th .vs-price{font-family:var(--mono);font-weight:700;font-size:1rem;color:var(--tx)}
+.vs-th .vs-price small{color:var(--tx3);font-size:.7rem}
+.vs-th .vs-plan{font-family:var(--mono);font-size:.64rem;color:var(--tx3)}
+.vs-table td{padding:8px 10px;border-top:1px solid var(--b);font-size:.85rem;color:var(--tx2);vertical-align:middle;font-family:var(--mono);font-weight:600}
+.vs-table td.vs-lab{color:var(--tx3);font-size:.8rem;font-family:var(--body);font-weight:500}
+.vs-table tr.vs-sec td{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);border-top:none;padding:18px 10px 6px}
+.vs-table tr.vs-diff{background:rgba(167,139,250,.07)}
+.vs-yes{color:#10b981;font-weight:700}.vs-no{color:var(--tx3)}
+.vs-bar{display:inline-block;width:54px;height:6px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;vertical-align:middle;margin-right:8px}
+.vs-bar i{display:block;height:100%;border-radius:4px}
 .persona-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 .persona-grid button{padding:7px 5px;font-size:.76rem}
 .toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;user-select:none}
@@ -526,7 +559,8 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
       <div class="rail-card">
         <h3>Deployment</h3>
         <div class="seg c3" id="a-deploy"></div>
-        <div style="margin-top:14px" class="toggle" id="a-gdpr"><span class="tl">Must be GDPR / self-host friendly</span><span class="sw"></span></div>
+        <div style="margin-top:14px" class="toggle" id="a-gdpr"><span class="tl">Self-hostable &mdash; full data control</span><span class="sw"></span></div>
+        <div style="font-size:11px;color:#736e8e;margin-top:6px;line-height:1.45">Every cloud tool here is <b>GDPR-compliant</b> (DPA + SCCs) &mdash; this just prefers self-host / EU data control. EU data residency: Make, n8n &amp; Activepieces offer EU regions; Pipedream is US-only.</div>
       </div>
       <div class="rail-card">
         <h3>Your workload</h3>
@@ -572,6 +606,8 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
 
     <!-- panels -->
     <div class="panels">
+      <div class="tool-filter" id="a-tool-filter"></div>
+      <div class="vs-compare" id="a-vs"></div>
       <!-- 1. ranked cost bars + BAN -->
       <section class="panel">
         <div class="ban" id="a-ban"></div>
@@ -633,11 +669,6 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
         </div>
       </section>
 
-      <!-- 6. vendor row -->
-      <section class="panel">
-        <div class="panel-h"><h2>Skip the math — go to the tool</h2><span class="tag">affiliate-aware</span></div>
-        <div class="vrow" id="a-vrow"></div>
-      </section>
     </div>
     <aside class="rail rail-right">
       <div class="best" id="a-best"></div>
@@ -1277,7 +1308,7 @@ const A_PRIORITY=[{id:"value",lab:"Best value"},{id:"cheapest",lab:"Cheapest"},{
 /* runs slider: log scale 100 → 1,000,000, default 10,000 */
 function aRunsFromSlider(v){ return Math.round(Math.pow(10, 2 + v*4/100)); }
 function aSliderFromRuns(r){ return Math.max(0,Math.min(100,(Math.log10(r)-2)*100/4)); }
-var aState={runs:10000, steps:1, wf:3, users:Infinity, role:"operations", priority:"value", gdpr:false, apps:[], features:[]};
+var aState={runs:10000, steps:1, wf:3, users:Infinity, role:"operations", priority:"value", gdpr:false, apps:[], features:[], tools:[]};
 /* feature gate: cheapest tier (ordinal) a tool needs for all selected features; lacks=feature it never has, ent=needs Enterprise */
 function aFeatGate(slug){ var need=0,lacks=null,ent=false;
   for(var i=0;i<aState.features.length;i++){ var f=aState.features[i], rq=A_FEAT_REQ[f]||{};
@@ -1309,6 +1340,8 @@ function aToolHref(tool){
   if(tool.hasAffiliate) return {href:tool.affiliateUrl, attrs:' target="_blank" rel="noopener sponsored"', aff:true};
   return {href:"/automation/"+tool.slug+"-pricing.html", attrs:"", aff:false};
 }
+/* true if the tool is in the selected compare-set (tile filter); empty = all selected */
+function aToolSel(slug){ return !aState.tools.length || aState.tools.indexOf(slug)>=0; }
 /* true if a tool integrates with EVERY app the user has selected (or no apps selected) */
 function aAppOK(slug){
   if(!aState.apps.length) return true;
@@ -1324,7 +1357,7 @@ function aRender(){
   document.getElementById("a-role-tag").textContent=A_ROLE_LABEL[aState.role];
 
   /* compute costs for all tools */
-  const rows=TOOLS.map(t=>({tool:t, cr:calcCost(t,aState.runs,aState.steps,aState.wf,null)}));
+  const rows=TOOLS.filter(t=>aToolSel(t.slug)).map(t=>({tool:t, cr:calcCost(t,aState.runs,aState.steps,aState.wf,null)}));
   /* app filter: a tool must integrate with EVERY app the user needs, else it's ruled out */
   if(aState.apps.length){
     rows.forEach(r=>{
@@ -1454,6 +1487,9 @@ function aRender(){
     recCard(budget,"Budget pick",false);
 
   /* ── limits table ── */
+  aRenderToolFilter();
+  if(aState.tools.length===2){ document.querySelector("#dash-automation .panels").classList.add("vs"); aRenderVS(aState.tools); return; }
+  document.querySelector("#dash-automation .panels").classList.remove("vs");
   aRenderTable(rows,priceCtx,cheapest);
 
   /* ── affiliate note + vendor row ── */
@@ -1462,7 +1498,6 @@ function aRender(){
     ? 'Some links are affiliate links — WizardCost earns a commission if you sign up. Costs you nothing and never affects our ranking or pricing data.'
     : '';
   document.getElementById("a-aff-note").style.display=anyAff?"":"none";
-  aRenderVendors();
 
   /* ── charts ── */
   aRenderScale(cheapest);
@@ -1523,18 +1558,43 @@ function aRenderTable(rows,priceCtx,cheapest){
   animOnView("a-tbody",function(inst){ staggerRows("a-tbody",inst); });
 }
 
-function aRenderVendors(){
-  let h="";
-  TOOLS.forEach(t=>{
-    var lk=aToolHref(t);
-    var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,"");
-    h+='<a class="vtile'+(lk.aff?" aff":"")+'" href="'+esc(lk.href)+'"'+lk.attrs+' title="'+(lk.aff?('Try '+esc(t.name)+' — affiliate'):('Open '+esc(t.name)+' pricing'))+'" aria-label="'+esc(t.name)+'">'+
-      '<span class="vt-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt="" loading="lazy"></span>'+
-      '<span class="vt-nm">'+esc(t.name)+'</span>'+
-      (lk.aff?'<span class="vt-aff">affiliate</span>':'')+
-      '</a>';
-  });
-  document.getElementById("a-vrow").innerHTML=h;
+function aRenderToolFilter(){
+  var el=document.getElementById("a-tool-filter"); if(!el) return; var n=aState.tools.length;
+  el.innerHTML='<div class="tf-h"><span class="tf-lab">Compare tools</span><span class="tf-hint">'+(n===2?'<b>VS mode</b> \u2014 direct comparison of these two':n+' selected \u00b7 pick exactly 2 for a side-by-side')+'</span></div>'+
+    '<div class="tf-tiles">'+TOOLS.map(function(t){ var on=aToolSel(t.slug);
+      var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,"");
+      return '<button type="button" class="tf-tile'+(on?" on":"")+'" data-s="'+esc(t.slug)+'" style="--pc:'+aToolColor(t.slug)+'" aria-pressed="'+on+'"><span class="vt-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt="" loading="lazy"></span><span class="tf-nm">'+esc(t.name)+'</span></button>';
+    }).join("")+'</div>';
+}
+function aRenderVS(sel){
+  var vs=document.getElementById("a-vs"); if(!vs) return;
+  var tools=sel.map(function(x){return TOOLS.find(function(t){return t.slug===x;});}).filter(Boolean);
+  if(tools.length!==2){ vs.innerHTML=""; return; }
+  var crs=tools.map(function(t){return calcCost(t,aState.runs,aState.steps,aState.wf,null);});
+  function thHead(t,cr){ var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,"");
+    return '<th style="--pc:'+aToolColor(t.slug)+'"><div class="vs-th"><span class="vs-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="vs-nm">'+esc(t.name)+'</span><span class="vs-price">'+(cr&&typeof cr.cost==="number"?((cr.estimated?"~":"")+fmtMoney(cr.cost)+'<small>/mo</small>'):'<span class="vs-no">ruled out</span>')+'</span><span class="vs-plan">'+(cr?esc(aPlanLabel(cr)||(cr.plan?cr.plan.name:"")):"\u2014")+'</span></div></th>'; }
+  var CAP=[["noCode","No-code"],["codeAccess","Code access"],["aiNodes","AI nodes"],["selfHost","Self-host"],["integrations","Integrations"],["maturity","Maturity"]];
+  var sc0=TOOL_SCORES[tools[0].slug]||{};
+  var capRows=CAP.filter(function(d){return d[0] in sc0;}).map(function(d){
+    return '<tr><td class="vs-lab">'+d[1]+'</td>'+tools.map(function(t){ var v=Math.round(((TOOL_SCORES[t.slug]||{})[d[0]]||0)*100); return '<td><span class="vs-bar"><i style="width:'+v+'%;background:'+aToolColor(t.slug)+'"></i></span>'+v+'</td>'; }).join("")+'</tr>'; }).join("");
+  var featRows="";
+  A_FEAT_GROUPS.forEach(function(g){ g.items.forEach(function(it){ var rq=A_FEAT_REQ[it.name]||{}; var h=tools.map(function(t){return t.slug in rq;}); if(!h[0]&&!h[1]) return;
+    featRows+='<tr'+(h[0]!==h[1]?' class="vs-diff"':'')+'><td class="vs-lab">'+esc(it.name)+'</td>'+h.map(function(x){return '<td>'+(x?'<span class="vs-yes">\u2713</span>':'<span class="vs-no">\u2014</span>')+'</td>';}).join("")+'</tr>'; }); });
+  function lim(lab,vals){ return '<tr><td class="vs-lab">'+lab+'</td>'+vals.map(function(v){return '<td>'+v+'</td>';}).join("")+'</tr>'; }
+  var yn=function(b){return b?'<span class="vs-yes">\u2713</span>':'<span class="vs-no">\u2014</span>';};
+  var limRows=[
+    lim("Integrations",tools.map(function(t){return fmtInt(t.integrations);})),
+    lim("Self-hostable",tools.map(function(t){return yn(t.selfHostable);})),
+    lim("AI features",tools.map(function(t){return yn(t.aiFeatures);})),
+    lim("Free tier",tools.map(function(t){var f=t.plans.find(function(p){return p.monthlyUsd===0;});return f?(isFinite(f.opsIncluded)?fmtInt(f.opsIncluded)+' ops/mo':'unlimited'):'\u2014';})),
+    lim("Cheapest paid plan",tools.map(function(t){var p=t.plans.filter(function(p){return p.monthlyUsd>0&&!p.custom;}).sort(function(a,b){return a.monthlyUsd-b.monthlyUsd;})[0];return p?fmtMoney(p.monthlyUsd)+'/mo':'\u2014';})),
+  ].join("");
+  vs.innerHTML='<div class="vs-h"><h2>'+esc(tools[0].name)+' vs '+esc(tools[1].name)+'</h2><span class="tag">at your '+fmtInt(aState.runs)+' runs/mo</span></div>'+
+    '<table class="vs-table"><thead><tr><th></th>'+thHead(tools[0],crs[0])+thHead(tools[1],crs[1])+'</tr></thead><tbody>'+
+    '<tr class="vs-sec"><td colspan="3">Capabilities (0\u2013100)</td></tr>'+capRows+
+    '<tr class="vs-sec"><td colspan="3">Features</td></tr>'+(featRows||'<tr><td colspan="3" style="color:var(--tx3);font-size:.8rem">No differentiating features tracked for these two.</td></tr>')+
+    '<tr class="vs-sec"><td colspan="3">Limits &amp; reach</td></tr>'+limRows+
+    '</tbody></table>';
 }
 
 /* cost-vs-scale chart (log-log) - plan-aware STEP path (no smooth) + gradient stroke + area + hover.
@@ -1548,7 +1608,7 @@ function aRenderScale(cheapest){
   var svgEl=document.getElementById("a-scale");
   var W=760,H=380,padL=58,padR=18,padT=22,padB=44;
   var plotW=W-padL-padR,plotH=H-padT-padB;
-  var elig=TOOLS.filter(function(t){ return aAppOK(t.slug); });
+  var elig=TOOLS.filter(function(t){ return aAppOK(t.slug)&&aToolSel(t.slug); });
 
   var series=elig.map(function(t){
     var pts=A_VSAMP.map(function(v){ var c=calcCost(t,v,aState.steps,aState.wf,null); return c&&typeof c.cost==="number"?{v:v,cost:Math.max(c.cost,0.5),plan:(c.plan?c.plan.name:""),est:!!(c&&c.estimated)}:null; }).filter(Boolean);
@@ -1674,7 +1734,7 @@ function aAttachLineHover(svgEl,series,lxFn,lyFn,W,padL,padT,padR,plotW,plotH){
   function leave(){ var st=_aHoverState; if(raf){ cancelAnimationFrame(raf); raf=null; } if(!st) return; st.cross.style.opacity="0"; Object.keys(st.dots).forEach(function(k){ st.dots[k].style.opacity="0"; }); st.tip.classList.remove("tip-on"); }
   svgEl.addEventListener("mousemove",move); svgEl.addEventListener("mouseleave",leave);
 }
-function aCheapestAt(v){ let best=null; for(const t of TOOLS){ if(!aAppOK(t.slug)) continue; const c=calcCost(t,v,aState.steps,aState.wf,null); if(c&&(best===null||c.cost<best.cost)) best={slug:t.slug,name:t.name,cost:c.cost}; } return best; }
+function aCheapestAt(v){ let best=null; for(const t of TOOLS){ if(!aAppOK(t.slug)||!aToolSel(t.slug)) continue; const c=calcCost(t,v,aState.steps,aState.wf,null); if(c&&(best===null||c.cost<best.cost)) best={slug:t.slug,name:t.name,cost:c.cost}; } return best; }
 function aRenderCross(series,cheapest){
   const note=document.getElementById("a-cross");
   if(!cheapest){ note.innerHTML=""; note.style.display="none"; return; }
@@ -1702,7 +1762,7 @@ function aRenderCaps(){
   const dims=[["noCode","No-code"],["codeAccess","Code"],["aiNodes","AI nodes"],["selfHost","Self-host"],["maturity","Maturity"]];
   var fc=document.getElementById("a-cap-filters");
   if(fc) fc.innerHTML='<button data-dim="" class="'+(aCapSort?"":"on")+'">Overall</button>'+dims.map(function(d){return '<button data-dim="'+d[0]+'" class="'+(aCapSort===d[0]?"on":"")+'">'+d[1]+'</button>';}).join("");
-  const list=TOOLS.filter(function(t){ return aAppOK(t.slug); });
+  const list=TOOLS.filter(function(t){ return aAppOK(t.slug)&&aToolSel(t.slug); });
   if(aCapSort) list.sort(function(a,b){ return ((TOOL_SCORES[b.slug]||{})[aCapSort]||0)-((TOOL_SCORES[a.slug]||{})[aCapSort]||0); });
   else list.sort(function(a,b){ return aPower(b.slug)-aPower(a.slug); });
   el.innerHTML=list.map(function(t){
@@ -2189,6 +2249,8 @@ document.querySelectorAll(".cat:not(.disabled)").forEach(c=>{
 
 /* init */
 buildAutomationRail();
+aState.tools=TOOLS.map(function(t){return t.slug;});
+(function(){ var tf=document.getElementById("a-tool-filter"); if(tf) tf.addEventListener("click",function(e){ var b=e.target.closest(".tf-tile"); if(!b) return; var x=b.dataset.s, i=aState.tools.indexOf(x); if(i>=0){ if(aState.tools.length>1) aState.tools.splice(i,1); } else aState.tools.push(x); aRender(); }); })();
 wireAutomationSliders();
 buildLlmRail();
 wireLlmSliders();
