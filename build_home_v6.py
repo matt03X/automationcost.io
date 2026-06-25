@@ -106,6 +106,16 @@ def main():
                + "const A_APPS=" + _json.dumps(app_rows, ensure_ascii=False, separators=(",", ":")) + ";")
     home = replace_block(home, "APPS", apps_js)
 
+    # 6) FEATURES — canonical per-plan feature data for the feature-constraint filter.
+    sys.path.insert(0, str(ROOT / "automation"))
+    from features_registry import build_features_data  # noqa: E402
+    fd = build_features_data()
+    feat_js = "\n".join(
+        "const " + k + "=" + _json.dumps(fd[k], ensure_ascii=False, separators=(",", ":")) + ";"
+        for k in ["A_FEAT_GROUPS", "A_FEAT_REQ", "A_PLAN_TIER", "A_TIER_NAME", "A_ENT_ORD"])
+    home = replace_block(home, "FEATURES", feat_js)
+    n_feat = sum(len(g["items"]) for g in fd["A_FEAT_GROUPS"])
+
     HOME.write_text(home, encoding="utf-8")
 
     # sanity report
@@ -118,6 +128,7 @@ def main():
     print(f"  DATA:MODELS       -> {n_models} models (reviewed {rev.group(1) if rev else '?'})")
     print(f"  DATA:SCORING_LLM  -> L_SCORE_W, L_ROLE_WEIGHTS, UC_ROLE, MODEL_SCORES")
     print(f"  DATA:APPS         -> {len(app_rows)} apps × {len(app_order)} tools (support bitmask)")
+    print(f"  DATA:FEATURES     -> {n_feat} canonical features × {len(fd['A_PLAN_TIER'])} tools")
     if "const L_SCORE_W" not in scoring_llm or "const L_ROLE_WEIGHTS" not in scoring_llm:
         print("WARNING: LLM scoring rename did not apply as expected", file=sys.stderr)
 
