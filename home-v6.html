@@ -1444,16 +1444,21 @@ function aToolVisible(t){
 function aVisibleSlugs(){ return TOOLS.filter(aToolVisible).map(function(t){return t.slug;}); }
 /* R3: self-host apps comparison state + cached app→tool matrix (built ONCE from A_APPS bitmask) */
 var _shQuery="", _shPage=0, _shPageSize=30, _shTimer=null, _shAppRows=null;
+/* most-known / most-used first: curated fame rank, then # of tools that support it, then name */
+var A_FAME=(function(){ var L=["gmail","google sheets","slack","notion","openai","google drive","google calendar","discord","telegram","airtable","hubspot","salesforce","stripe","shopify","mailchimp","github","gitlab","trello","asana","clickup","monday.com","jira","zoom","microsoft teams","dropbox","twilio","calendly","typeform","google forms","google docs","wordpress","woocommerce","zendesk","intercom","pipedrive","activecampaign","twitter","facebook","linkedin","youtube","reddit","spotify","anthropic","google gemini","perplexity","webhook","http request","supabase","postgres","postgresql","mysql","mongodb","redis","bigquery","sendgrid","todoist","webflow","baserow","nocodb","cal.com","rss"]; var o={}; for(var i=0;i<L.length;i++) o[L[i]]=i; return o; })();
 function aSelfHostAppRows(){
   if(_shAppRows) return _shAppRows;
   var bn=A_APP_ORDER.indexOf("n8n"), ba=A_APP_ORDER.indexOf("activepieces"), bu=A_APP_ORDER.indexOf("automatisch"), br=A_APP_ORDER.indexOf("node-red");
-  _shAppRows=[];
+  function pc(m){ var c=0; while(m){ c+=m&1; m>>>=1; } return c; }
+  var rows=[];
   for(var i=0;i<A_APPS.length;i++){ var m=A_APPS[i][1];
     var r={name:A_APPS[i][0],_lc:String(A_APPS[i][0]).toLowerCase(),
-      "n8n":!!((m>>bn)&1),"activepieces":!!((m>>ba)&1),"automatisch":!!((m>>bu)&1),"node-red":!!((m>>br)&1)};
-    if(r["n8n"]||r["activepieces"]||r["automatisch"]||r["node-red"]) _shAppRows.push(r);
+      "n8n":!!((m>>bn)&1),"activepieces":!!((m>>ba)&1),"automatisch":!!((m>>bu)&1),"node-red":!!((m>>br)&1),_pop:pc(m)};
+    if(r["n8n"]||r["activepieces"]||r["automatisch"]||r["node-red"]) rows.push(r);
   }
-  return _shAppRows;
+  rows.sort(function(a,b){ var fa=A_FAME[a._lc],fb=A_FAME[b._lc]; fa=(fa==null?9999:fa); fb=(fb==null?9999:fb);
+    if(fa!==fb) return fa-fb; if(b._pop!==a._pop) return b._pop-a._pop; return a.name<b.name?-1:(a.name>b.name?1:0); });
+  _shAppRows=rows; return _shAppRows;
 }
 /* R6: self-host total cost of ownership — hard numbers sourced, soft costs flagged (est.). Owner-approved 2026-06-25. */
 var SH_TCO=[
