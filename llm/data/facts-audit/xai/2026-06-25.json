@@ -1,0 +1,33 @@
+{
+  "provider": "xai",
+  "scrapedAt": "2026-06-25T10:30:46.633Z",
+  "url": "https://docs.x.ai/docs/models",
+  "httpStatus": 200,
+  "pageCaching": true,
+  "pageBatch": true,
+  "modelCount": 2,
+  "models": [
+    {
+      "name": "Grok 4.3",
+      "matchedId": "grok-4.3",
+      "contextWindow": null,
+      "maxOutput": null,
+      "caching": null,
+      "batch": null,
+      "raw": "Grok 4.3"
+    },
+    {
+      "name": "Grok Build 0.1",
+      "matchedId": "grok-build-0.1",
+      "contextWindow": null,
+      "maxOutput": null,
+      "caching": null,
+      "batch": null,
+      "raw": "Grok Build 0.1"
+    }
+  ],
+  "deprecations": [
+    "Completions (Legacy)",
+    "Model Retirement on May 15"
+  ]
+}
