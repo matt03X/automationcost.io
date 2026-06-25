@@ -184,6 +184,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .you-read .yr-pl{font-family:var(--mono);font-size:.58rem;color:var(--tx3);white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis}
 .you-read .yr-pr{font-family:var(--mono);font-weight:600;color:var(--tx);white-space:nowrap}
 .you-read .yr-row.win .yr-nm,.you-read .yr-row.win .yr-pr{color:#10b981;font-weight:700}
+.you-read .yr-sep{height:1px;background:var(--b);margin:13px 0 11px}
+.you-read .yr-h{margin-bottom:9px}
 .tool-filter{margin-bottom:20px}
 .tf-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:10px}
 .tf-lab{font-family:var(--display);font-weight:800;font-size:1rem}
@@ -1262,7 +1264,7 @@ function calcCost(tool,runs,steps,workflows,perWf){
     /* add-on seats (e.g. Pipedream $2/user beyond seatsIncluded). Tools with unlimited users add nothing. */
     if(seatCount>1&&plan.perSeatUsd){ const inc=plan.seatsIncluded!=null?plan.seatsIncluded:1; cost=Math.round((cost+plan.perSeatUsd*Math.max(0,seatCount-inc))*100)/100; }
     const spec=shbd?shbd.spec:null, home=shbd?shbd.elec:null;
-    if(hostPref==="any"&&plan.selfHostOnly){ if(selfHostAlt===null||cost<selfHostAlt.cost) selfHostAlt={cost,plan,hwOnly:!!hwPlan,spec,home,shbd:shbd}; }
+    if(hostPref==="any"&&planHost==="selfhost"){ if(selfHostAlt===null||cost<selfHostAlt.cost) selfHostAlt={cost,plan,hwOnly:!!hwPlan,spec,home,shbd:shbd}; }
     else { if(best===null||cost<best.cost) best={cost,plan,hwOnly:!!hwPlan,spec,home,shbd:shbd}; }
   }
   const customPlan=tool.plans.find(p=>p.custom);
@@ -1270,7 +1272,7 @@ function calcCost(tool,runs,steps,workflows,perWf){
     const anchors=tool.plans.filter(p=>{
       if(p.custom||p.selfHostOnly||!(p.monthlyUsd>0)||!isFinite(p.opsIncluded)) return false;
       const ph=p.track||"cloud"; /* custom odhad se kotví per-track: cloud→strop Pro(50k), any→největší (Business 500k) */
-      if(hostPref==="cloud"&&ph==="selfhost") return false;
+      if((hostPref==="cloud"||hostPref==="any")&&ph==="selfhost") return false;
       if(hostPref==="selfhost"&&ph==="cloud") return false;
       return true;
     });
@@ -1507,11 +1509,13 @@ function aRender(){
       '<a class="bcta" href="/automation/calculator.html">Run the full wizard →</a>';
   } else { best.innerHTML='<div class="star">★ Best pick</div><div class="why">No tool matches your selected apps &amp; features — loosen a filter, or the ones that fit are Enterprise / contact-sales only.</div>'; }
 
-  /* live readout under BEST 3: each tool's cost + plan at your current volume (the "you" position) */
+  /* live readout under BEST 3: cloud and self-host split into two stacked tables at your volume */
   (function(){ var yr=document.getElementById("a-you"); if(!yr) return;
-    if(!byCost.length){ yr.innerHTML=""; return; }
-    yr.innerHTML='<div class="yr-h">At your '+fmtInt(aState.runs)+' runs/mo</div>'+
-      byCost.map(function(r,i){ return '<div class="yr-row'+(i===0?" win":"")+'"><span class="yr-nm"><i style="background:'+aToolColor(r.tool.slug)+'"></i>'+esc(r.tool.name)+'</span><span class="yr-pl">'+esc(aPlanLabel(r.cr)||"")+'</span><span class="yr-pr">'+(r.cr.estimated?"~":"")+fmtMoney(r.cr.cost)+'</span></div>'; }).join("");
+    var _hp=hostPref;
+    function rowsFor(mode,onlySH){ hostPref=mode; var rs=TOOLS.filter(function(t){return aToolSel(t.slug)&&(!onlySH||t.selfHostable);}).map(function(t){return {tool:t,cr:calcCost(t,aState.runs,aState.steps,aState.wf,null)};}).filter(function(r){return r.cr&&typeof r.cr.cost==="number";}).sort(function(a,b){return a.cr.cost-b.cr.cost;}); return rs; }
+    var cloud=rowsFor("cloud",false), self=rowsFor("selfhost",true); hostPref=_hp;
+    function tbl(title,rows){ if(!rows.length) return ""; return '<div class="yr-h">'+title+'</div>'+rows.map(function(r,i){ return '<div class="yr-row'+(i===0?" win":"")+'"><span class="yr-nm"><i style="background:'+aToolColor(r.tool.slug)+'"></i>'+esc(r.tool.name)+'</span><span class="yr-pl">'+esc(aPlanLabel(r.cr)||"")+'</span><span class="yr-pr">'+(r.cr.estimated?"~":"")+fmtMoney(r.cr.cost)+'</span></div>'; }).join(""); }
+    yr.innerHTML=(cloud.length||self.length)?(tbl("Cloud · "+fmtInt(aState.runs)+" runs/mo",cloud)+(cloud.length&&self.length?'<div class="yr-sep"></div>':"")+tbl("Self-host · "+fmtInt(aState.runs)+" runs/mo",self)):"";
   })();
   /* ── role rec cards: top / runner-up / budget ── */
   const byScore=[...priced].sort((a,b)=>b.score-a.score);
