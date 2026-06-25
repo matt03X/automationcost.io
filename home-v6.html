@@ -200,11 +200,14 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .vs-compare{display:none}
 .panels.vs > section.panel{display:none}
 .panels.vs > #a-vs{display:block}
+.vs-scroll{overflow-x:auto;overflow-y:hidden}
+.vs-th .vs-price.vs-cheap{color:#10b981}
+.vs-cheap-tag{display:inline-block;margin-top:2px;color:#10b981;font-weight:700;font-size:.55rem;text-transform:uppercase;letter-spacing:.06em;font-family:var(--mono)}
 .vs-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:18px}
 .vs-h h2{font-family:var(--display);font-size:1.35rem;font-weight:800}
-.vs-table{width:100%;border-collapse:collapse}
-.vs-table th{padding:0 10px 16px;vertical-align:bottom;text-align:left;width:38%}
-.vs-table th:first-child{width:24%}
+.vs-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.vs-table th{padding:0 10px 16px;vertical-align:bottom;text-align:left}
+.vs-table th:first-child,.vs-table td.vs-lab{width:148px}
 .vs-th{display:flex;flex-direction:column;gap:2px}
 .vs-th .vs-logo{width:32px;height:32px;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:5px}
 .vs-th .vs-logo img{width:22px;height:22px;object-fit:contain}
@@ -1388,7 +1391,7 @@ function aFeatSelfHostOK(name){ var rq=A_FEAT_REQ[name]||{}; return aSelfHostSlu
 function aRenderSelfHost(){
   var el=document.getElementById("a-selfhost"); if(!el) return;
   var tools=TOOLS.filter(function(t){return t.selfHostable&&aToolSel(t.slug);});
-  if(hostPref!=="selfhost"||aState.tools.length===2||tools.length<2){ el.style.display="none"; el.innerHTML=""; return; }
+  if(hostPref!=="selfhost"||(aState.tools.length>=2&&aState.tools.length<=4)||tools.length<2){ el.style.display="none"; el.innerHTML=""; return; }
   el.style.display="block";
   function th(t){ var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,""); return '<th style="--pc:'+aToolColor(t.slug)+'"><div class="vs-th"><span class="vs-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="vs-nm">'+esc(t.name)+'</span></div></th>'; }
   var maxInt=Math.max.apply(null,tools.map(function(t){return t.integrations;}));
@@ -1404,11 +1407,11 @@ function aRenderSelfHost(){
     return '<tr><td class="vs-lab">'+d[1]+'</td>'+tools.map(function(t,i){ var v=vals[i]; return '<td'+(v===mx&&mx>0?' class="vs-best"':'')+'><span class="vs-bar"><i style="width:'+v+'%;background:'+aToolColor(t.slug)+'"></i></span>'+v+'</td>'; }).join("")+'</tr>'; }).join("");
   el.innerHTML='<div class="panel-h"><h2>Self-host &mdash; same server cost, different power</h2><span class="tag">compare on connectors &amp; capabilities</span></div>'.replace("&mdash;","\u2014")+
     '<p class="panel-sub">Every self-host tool runs on a server you own, so the bill is roughly the same. What actually differs is app reach and capability &mdash; that&rsquo;s what to compare here.</p>'.replace("&mdash;","\u2014")+
-    '<table class="vs-table"><thead><tr><th></th>'+tools.map(th).join("")+'</tr></thead><tbody>'+
+    '<div class="vs-scroll"><table class="vs-table" style="min-width:'+(160+tools.length*150)+'px"><thead><tr><th></th>'+tools.map(th).join("")+'</tr></thead><tbody>'+
     '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">Monthly cost \u00b7 self-host (VPS or own hardware)</td></tr>'+costRows+
     '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">App reach</td></tr>'+intRow+
     '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">Capabilities (0\u2013100)</td></tr>'+capRows+
-    '</tbody></table>';
+    '</tbody></table></div>';
 }
 /* true if a tool integrates with EVERY app the user has selected (or no apps selected) */
 function aAppOK(slug){
@@ -1559,7 +1562,7 @@ function aRender(){
   /* ── limits table ── */
   aRenderToolFilter();
   aRenderSelfHost();
-  if(aState.tools.length===2){ document.querySelector("#dash-automation .panels").classList.add("vs"); aRenderVS(aState.tools); return; }
+  if(aState.tools.length>=2&&aState.tools.length<=4){ document.querySelector("#dash-automation .panels").classList.add("vs"); aRenderVS(aState.tools); return; }
   document.querySelector("#dash-automation .panels").classList.remove("vs");
   aRenderTable(rows,priceCtx,cheapest);
 
@@ -1632,7 +1635,7 @@ function aRenderTable(rows,priceCtx,cheapest){
 
 function aRenderToolFilter(){
   var el=document.getElementById("a-tool-filter"); if(!el) return; var n=aState.tools.length;
-  el.innerHTML='<div class="tf-h"><span class="tf-lab">Compare tools</span><span class="tf-hint">'+(n===2?'<b>VS mode</b> \u2014 direct comparison of these two':n+' selected \u00b7 pick exactly 2 for a side-by-side')+'</span></div>'+
+  el.innerHTML='<div class="tf-h"><span class="tf-lab">Compare tools</span><span class="tf-hint">'+(n>=2&&n<=4?'<b>Comparing '+n+' tools</b> \u2014 side by side':n+' selected \u00b7 pick 2\u20134 tools to compare side-by-side')+'</span></div>'+
     '<div class="tf-tiles">'+TOOLS.map(function(t){ var on=aToolSel(t.slug);
       var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,"");
       return '<button type="button" class="tf-tile'+(on?" on":"")+'" data-s="'+esc(t.slug)+'" style="--pc:'+aToolColor(t.slug)+'" aria-pressed="'+on+'"><span class="vt-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt="" loading="lazy"></span><span class="tf-nm">'+esc(t.name)+'</span></button>';
@@ -1641,34 +1644,39 @@ function aRenderToolFilter(){
 function aRenderVS(sel){
   var vs=document.getElementById("a-vs"); if(!vs) return;
   var tools=sel.map(function(x){return TOOLS.find(function(t){return t.slug===x;});}).filter(Boolean);
-  if(tools.length!==2){ vs.innerHTML=""; return; }
+  if(tools.length<2||tools.length>4){ vs.innerHTML=""; return; }
   var crs=tools.map(function(t){return calcCost(t,aState.runs,aState.steps,aState.wf,null);});
+  var _cv=crs.map(function(c){return c&&typeof c.cost==="number"?c.cost:null;}).filter(function(v){return v!=null;});
+  var cMin=_cv.length?Math.min.apply(null,_cv):null, ncol=tools.length+1;
   function thHead(t,cr){ var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,"");
-    return '<th style="--pc:'+aToolColor(t.slug)+'"><div class="vs-th"><span class="vs-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="vs-nm">'+esc(t.name)+'</span><span class="vs-price">'+(cr&&typeof cr.cost==="number"?((cr.estimated?"~":"")+fmtMoney(cr.cost)+'<small>/mo</small>'):'<span class="vs-no">ruled out</span>')+'</span><span class="vs-plan">'+(cr?esc(aPlanLabel(cr)||(cr.plan?cr.plan.name:"")):"\u2014")+'</span></div></th>'; }
+    var best=cr&&typeof cr.cost==="number"&&cr.cost===cMin&&tools.length>1;
+    return '<th style="--pc:'+aToolColor(t.slug)+'"><div class="vs-th"><span class="vs-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="vs-nm">'+esc(t.name)+'</span><span class="vs-price'+(best?' vs-cheap':'')+'">'+(cr&&typeof cr.cost==="number"?((cr.estimated?"~":"")+fmtMoney(cr.cost)+'<small>/mo</small>'):'<span class="vs-no">ruled out</span>')+'</span><span class="vs-plan">'+(cr?esc(aPlanLabel(cr)||(cr.plan&&cr.plan.name)||"—"):"—")+(best?' <span class="vs-cheap-tag">cheapest</span>':'')+'</span></div></th>'; }
   var CAP=[["noCode","No-code"],["codeAccess","Code access"],["aiNodes","AI nodes"],["selfHost","Self-host"],["integrations","Integrations"],["maturity","Maturity"]];
   var sc0=TOOL_SCORES[tools[0].slug]||{};
   var capRows=CAP.filter(function(d){return d[0] in sc0;}).map(function(d){
-    return '<tr><td class="vs-lab">'+d[1]+'</td>'+tools.map(function(t){ var v=Math.round(((TOOL_SCORES[t.slug]||{})[d[0]]||0)*100); return '<td><span class="vs-bar"><i style="width:'+v+'%;background:'+aToolColor(t.slug)+'"></i></span>'+v+'</td>'; }).join("")+'</tr>'; }).join("");
+    var vals=tools.map(function(t){return Math.round(((TOOL_SCORES[t.slug]||{})[d[0]]||0)*100);}); var mx=Math.max.apply(null,vals);
+    return '<tr><td class="vs-lab">'+d[1]+'</td>'+tools.map(function(t,i){ var v=vals[i]; return '<td'+(v===mx&&mx>0&&tools.length>1?' class="vs-best"':'')+'><span class="vs-bar"><i style="width:'+v+'%;background:'+aToolColor(t.slug)+'"></i></span>'+v+'</td>'; }).join("")+'</tr>'; }).join("");
   var featRows="";
-  A_FEAT_GROUPS.forEach(function(g){ g.items.forEach(function(it){ var rq=A_FEAT_REQ[it.name]||{}; var h=tools.map(function(t){return t.slug in rq;}); if(!h[0]&&!h[1]) return;
-    featRows+='<tr'+(h[0]!==h[1]?' class="vs-diff"':'')+'><td class="vs-lab">'+esc(it.name)+'</td>'+h.map(function(x){return '<td>'+(x?'<span class="vs-yes">\u2713</span>':'<span class="vs-no">\u2014</span>')+'</td>';}).join("")+'</tr>'; }); });
+  A_FEAT_GROUPS.forEach(function(g){ g.items.forEach(function(it){ var rq=A_FEAT_REQ[it.name]||{}; var h=tools.map(function(t){return t.slug in rq;}); if(!h.some(Boolean)) return; var df=h.some(function(x){return x!==h[0];});
+    featRows+='<tr'+(df?' class="vs-diff"':'')+'><td class="vs-lab">'+esc(it.name)+'</td>'+h.map(function(x){return '<td>'+(x?'<span class="vs-yes">✓</span>':'<span class="vs-no">—</span>')+'</td>';}).join("")+'</tr>'; }); });
   function lim(lab,vals){ return '<tr><td class="vs-lab">'+lab+'</td>'+vals.map(function(v){return '<td>'+v+'</td>';}).join("")+'</tr>'; }
-  var yn=function(b){return b?'<span class="vs-yes">\u2713</span>':'<span class="vs-no">\u2014</span>';};
+  var yn=function(b){return b?'<span class="vs-yes">✓</span>':'<span class="vs-no">—</span>';};
   var limRows=[
     lim("Integrations",tools.map(function(t){return fmtInt(t.integrations);})),
     lim("Self-hostable",tools.map(function(t){return yn(t.selfHostable);})),
     lim("AI features",tools.map(function(t){return yn(t.aiFeatures);})),
-    lim("AI billing",tools.map(function(t){var m=A_AI_META[t.slug];return m?'<span style="cursor:help" title="'+esc(m.meter+" \u2014 "+m.src+" ("+m.asof+")")+'">'+esc(m.meterShort)+'</span>':"\u2014";})),
-    lim("Own LLM key",tools.map(function(t){var m=A_AI_META[t.slug];return m?'<span style="cursor:help" title="'+esc(m.byo+" \u2014 "+m.src+" ("+m.asof+")")+'">'+esc(m.byoShort)+'</span>':"\u2014";})),
-    lim("Free tier",tools.map(function(t){var f=t.plans.find(function(p){return p.monthlyUsd===0;});return f?(isFinite(f.opsIncluded)?fmtInt(f.opsIncluded)+' ops/mo':'unlimited'):'\u2014';})),
-    lim("Cheapest paid plan",tools.map(function(t){var p=t.plans.filter(function(p){return p.monthlyUsd>0&&!p.custom;}).sort(function(a,b){return a.monthlyUsd-b.monthlyUsd;})[0];return p?fmtMoney(p.monthlyUsd)+'/mo':'\u2014';})),
+    lim("AI billing",tools.map(function(t){var m=A_AI_META[t.slug];return m?'<span style="cursor:help" title="'+esc(m.meter+" — "+m.src+" ("+m.asof+")")+'">'+esc(m.meterShort)+'</span>':(t.aiFeatures?"—":"none");})),
+    lim("Own LLM key",tools.map(function(t){var m=A_AI_META[t.slug];return m?'<span style="cursor:help" title="'+esc(m.byo+" — "+m.src+" ("+m.asof+")")+'">'+esc(m.byoShort)+'</span>':(t.aiFeatures?"—":"none");})),
+    lim("Free tier",tools.map(function(t){var f=t.plans.find(function(p){return p.monthlyUsd===0;});return f?(isFinite(f.opsIncluded)?fmtInt(f.opsIncluded)+' ops/mo':'unlimited'):'—';})),
+    lim("Cheapest paid plan",tools.map(function(t){var p=t.plans.filter(function(p){return p.monthlyUsd>0&&!p.custom;}).sort(function(a,b){return a.monthlyUsd-b.monthlyUsd;})[0];return p?fmtMoney(p.monthlyUsd)+'/mo':'—';})),
   ].join("");
-  vs.innerHTML='<div class="vs-h"><h2>'+esc(tools[0].name)+' vs '+esc(tools[1].name)+'</h2><span class="tag">at your '+fmtInt(aState.runs)+' runs/mo</span></div>'+
-    '<table class="vs-table"><thead><tr><th></th>'+thHead(tools[0],crs[0])+thHead(tools[1],crs[1])+'</tr></thead><tbody>'+
-    '<tr class="vs-sec"><td colspan="3">Capabilities (0\u2013100)</td></tr>'+capRows+
-    '<tr class="vs-sec"><td colspan="3">Features</td></tr>'+(featRows||'<tr><td colspan="3" style="color:var(--tx3);font-size:.8rem">No differentiating features tracked for these two.</td></tr>')+
-    '<tr class="vs-sec"><td colspan="3">Limits &amp; reach</td></tr>'+limRows+
-    '</tbody></table>';
+  var title=tools.map(function(t){return esc(t.name);}).join(" vs ");
+  vs.innerHTML='<div class="vs-h"><h2>'+title+'</h2><span class="tag">at your '+fmtInt(aState.runs)+' runs/mo · '+tools.length+' tools</span></div>'+
+    '<div class="vs-scroll"><table class="vs-table" style="min-width:'+(160+tools.length*150)+'px"><thead><tr><th></th>'+tools.map(function(t,i){return thHead(t,crs[i]);}).join("")+'</tr></thead><tbody>'+
+    '<tr class="vs-sec"><td colspan="'+ncol+'">Capabilities (0–100)</td></tr>'+capRows+
+    '<tr class="vs-sec"><td colspan="'+ncol+'">Features</td></tr>'+(featRows||'<tr><td colspan="'+ncol+'" style="color:var(--tx3);font-size:.8rem">No differentiating features tracked.</td></tr>')+
+    '<tr class="vs-sec"><td colspan="'+ncol+'">Limits &amp; reach</td></tr>'+limRows+
+    '</tbody></table></div>';
 }
 
 /* cost-vs-scale chart (log-log) - plan-aware STEP path (no smooth) + gradient stroke + area + hover.
