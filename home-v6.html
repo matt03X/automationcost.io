@@ -219,6 +219,10 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .vs-table td.vs-lab{color:var(--tx3);font-size:.8rem;font-family:var(--body);font-weight:500}
 .vs-table tr.vs-sec td{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);border-top:none;padding:18px 10px 6px}
 .vs-table tr.vs-diff{background:rgba(167,139,250,.07)}
+.vs-tier{font-family:var(--mono);font-size:.72rem;color:var(--tx2)}
+.vs-tier.vs-ent{color:#f59e0b}
+.vs-table tr.vs-verdict td{border-top:2px solid var(--b);padding-top:13px;color:var(--tx2);font-size:.82rem;font-style:italic;font-family:var(--body);font-weight:500;line-height:1.4;vertical-align:top}
+.vs-table tr.vs-verdict td.vs-lab{font-style:normal;font-weight:700;color:var(--tx)}
 .vs-yes{color:#10b981;font-weight:700}.vs-no{color:var(--tx3)}
 .vs-bar{display:inline-block;width:54px;height:6px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;vertical-align:middle;margin-right:8px}
 .vs-bar i{display:block;height:100%;border-radius:4px}
@@ -596,7 +600,7 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
         </div>
         <div class="field">
           <div class="f-top"><span class="f-lab">Team size (users)</span><span class="f-val" id="a-users-v">1</span></div>
-          <input type="range" id="a-users" min="1" max="26" value="26" aria-label="Team size (users)">
+          <input type="range" id="a-users" min="1" max="26" value="1" aria-label="Team size (users)">
           <div style="font-size:11px;color:#736e8e;margin-top:6px;line-height:1.45">Team size only changes <b>Zapier</b> (Free/Pro = 1 user &rarr; Team for 2+, &le;25; Enterprise = unlimited). n8n, Make, Pipedream &amp; self-host include unlimited users.</div>
         </div>
       </div>
@@ -1228,7 +1232,7 @@ document.getElementById("trust-strip").innerHTML =
    AUTOMATION ENGINE — parity port of automation/calculator.html
    ════════════════════════════════════════════════════════════════════════ */
 /* dashboard global defaults (spec): no host/AI filter, no integration filter, monthly billing */
-var hostPref="any", aiPref="any", billing="monthly", seatCount=Infinity;
+var hostPref="any", aiPref="any", billing="monthly", seatCount=1;
 var selectedIntegrations=[];
 function toolSupportsAll(){ return true; } // no integrations selected in dashboard
 
@@ -1333,7 +1337,7 @@ const A_PRIORITY=[{id:"value",lab:"Best value"},{id:"cheapest",lab:"Cheapest"},{
 /* runs slider: log scale 100 → 1,000,000, default 10,000 */
 function aRunsFromSlider(v){ return Math.round(Math.pow(10, 2 + v*5/100)); }
 function aSliderFromRuns(r){ return Math.max(0,Math.min(100,(Math.log10(r)-2)*100/5)); }
-var aState={runs:10000, steps:1, wf:50 /* default: Active workflows at the point where Activepieces Cloud ($5/active flow over 10 free) just exceeds Zapier — keeps the $0-headline tool honest */, users:Infinity, role:"operations", priority:"value", apps:[], features:[], tools:[]};
+var aState={runs:10000, steps:1, wf:50 /* default: Active workflows at the point where Activepieces Cloud ($5/active flow over 10 free) just exceeds Zapier — keeps the $0-headline tool honest */, users:1, role:"operations", priority:"value", apps:[], features:[], tools:[]};
 /* feature gate: cheapest tier (ordinal) a tool needs for all selected features; lacks=feature it never has, ent=needs Enterprise */
 function aFeatGate(slug){ var need=0,lacks=null,ent=false;
   for(var i=0;i<aState.features.length;i++){ var f=aState.features[i], rq=A_FEAT_REQ[f]||{};
@@ -1641,42 +1645,77 @@ function aRenderToolFilter(){
       return '<button type="button" class="tf-tile'+(on?" on":"")+'" data-s="'+esc(t.slug)+'" style="--pc:'+aToolColor(t.slug)+'" aria-pressed="'+on+'"><span class="vt-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt="" loading="lazy"></span><span class="tf-nm">'+esc(t.name)+'</span></button>';
     }).join("")+'</div>';
 }
+/* Compare-table support data (home-v6 display layer, outside DATA markers). */
+const A_BILLING={n8n:"per execution (run)",make:"per operation (step × run)",zapier:"per task (action)",pipedream:"per credit (compute)",activepieces:"per active flow (cloud)","automatisch":"self-host (your server)","node-red":"self-host (your server)"};
+const A_RESIDENCY={make:"EU + US regions",n8n:"EU + US · self-host anywhere",activepieces:"EU + US · self-host anywhere",pipedream:"US only",zapier:"US",automatisch:"Self-host (any region)","node-red":"Self-host (any region)"};
+const A_VERDICT={n8n:"Devs wanting code + full self-host control",make:"Visual builders; often cheapest mid-volume",zapier:"Widest app coverage; non-technical teams",pipedream:"Developers who live in code",activepieces:"Open-source self-host with a polished UI",automatisch:"Minimal open-source self-host option","node-red":"Event / IoT flows on your own hardware"};
+/* seat model derived from plan data so it matches the cost engine (explains Zapier's cap) */
+function aSeatModel(t){
+  var perseat=t.plans.find(function(p){return p.perSeatUsd;});
+  if(perseat) return "$"+perseat.perSeatUsd+" / extra seat";
+  var caps=t.plans.map(function(p){return p.maxUsers!==undefined?p.maxUsers:(t.defaultMaxUsers!==undefined?t.defaultMaxUsers:Infinity);});
+  var fin=caps.filter(function(c){return isFinite(c);});
+  if(!fin.length) return "Unlimited users";
+  var mx=Math.max.apply(null,fin), hasInf=caps.some(function(c){return c===Infinity;});
+  return "Up to "+mx+" seats"+(hasInf?" (∞ on Enterprise)":"");
+}
+function aFeatTierCell(t,fname){ var rq=A_FEAT_REQ[fname]||{}; var o=rq[t.slug];
+  if(o==null) return '<span class="vs-no">—</span>';
+  var nm=A_TIER_NAME[t.slug]?A_TIER_NAME[t.slug][o]:null;
+  if(!nm) return '<span class="vs-yes">✓</span>';
+  var ent=o>=(A_ENT_ORD[t.slug]||99);
+  return '<span class="vs-tier'+(ent?' vs-ent':'')+'">'+esc(nm)+'</span>'; }
+
 function aRenderVS(sel){
   var vs=document.getElementById("a-vs"); if(!vs) return;
   var tools=sel.map(function(x){return TOOLS.find(function(t){return t.slug===x;});}).filter(Boolean);
   if(tools.length<2||tools.length>4){ vs.innerHTML=""; return; }
   var crs=tools.map(function(t){return calcCost(t,aState.runs,aState.steps,aState.wf,null);});
-  var _cv=crs.map(function(c){return c&&typeof c.cost==="number"?c.cost:null;}).filter(function(v){return v!=null;});
-  var cMin=_cv.length?Math.min.apply(null,_cv):null, ncol=tools.length+1;
+  var crs10=tools.map(function(t){return calcCost(t,aState.runs*10,aState.steps,aState.wf,null);});
+  function minOf(arr){ var v=arr.map(function(c){return c&&typeof c.cost==="number"?c.cost:null;}).filter(function(x){return x!=null;}); return v.length?Math.min.apply(null,v):null; }
+  var cMin=minOf(crs), cMin10=minOf(crs10), ncol=tools.length+1;
+  function money(c,mn){ if(!c||typeof c.cost!=="number") return '<span class="vs-no">ruled out</span>'; var best=c.cost===mn&&tools.length>1; return '<span'+(best?' class="vs-best"':'')+'>'+(c.estimated?"~":"")+fmtMoney(c.cost)+'</span>'; }
   function thHead(t,cr){ var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,"");
     var best=cr&&typeof cr.cost==="number"&&cr.cost===cMin&&tools.length>1;
     return '<th style="--pc:'+aToolColor(t.slug)+'"><div class="vs-th"><span class="vs-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="vs-nm">'+esc(t.name)+'</span><span class="vs-price'+(best?' vs-cheap':'')+'">'+(cr&&typeof cr.cost==="number"?((cr.estimated?"~":"")+fmtMoney(cr.cost)+'<small>/mo</small>'):'<span class="vs-no">ruled out</span>')+'</span><span class="vs-plan">'+(cr?esc(aPlanLabel(cr)||(cr.plan&&cr.plan.name)||"—"):"—")+(best?' <span class="vs-cheap-tag">cheapest</span>':'')+'</span></div></th>'; }
-  var CAP=[["noCode","No-code"],["codeAccess","Code access"],["aiNodes","AI nodes"],["selfHost","Self-host"],["integrations","Integrations"],["maturity","Maturity"]];
+  function lim(lab,vals){ return '<tr><td class="vs-lab">'+lab+'</td>'+vals.map(function(v){return '<td>'+v+'</td>';}).join("")+'</tr>'; }
+  function sec(lab){ return '<tr class="vs-sec"><td colspan="'+ncol+'">'+lab+'</td></tr>'; }
+  var yn=function(b){return b?'<span class="vs-yes">✓</span>':'<span class="vs-no">—</span>';};
+  /* capabilities (best highlighted) */
+  var CAP=[["noCode","No-code"],["codeAccess","Code access"],["aiNodes","AI nodes"],["selfHost","Self-host"],["maturity","Maturity"]];
   var sc0=TOOL_SCORES[tools[0].slug]||{};
   var capRows=CAP.filter(function(d){return d[0] in sc0;}).map(function(d){
     var vals=tools.map(function(t){return Math.round(((TOOL_SCORES[t.slug]||{})[d[0]]||0)*100);}); var mx=Math.max.apply(null,vals);
     return '<tr><td class="vs-lab">'+d[1]+'</td>'+tools.map(function(t,i){ var v=vals[i]; return '<td'+(v===mx&&mx>0&&tools.length>1?' class="vs-best"':'')+'><span class="vs-bar"><i style="width:'+v+'%;background:'+aToolColor(t.slug)+'"></i></span>'+v+'</td>'; }).join("")+'</tr>'; }).join("");
-  var featRows="";
-  A_FEAT_GROUPS.forEach(function(g){ g.items.forEach(function(it){ var rq=A_FEAT_REQ[it.name]||{}; var h=tools.map(function(t){return t.slug in rq;}); if(!h.some(Boolean)) return; var df=h.some(function(x){return x!==h[0];});
-    featRows+='<tr'+(df?' class="vs-diff"':'')+'><td class="vs-lab">'+esc(it.name)+'</td>'+h.map(function(x){return '<td>'+(x?'<span class="vs-yes">✓</span>':'<span class="vs-no">—</span>')+'</td>';}).join("")+'</tr>'; }); });
-  function lim(lab,vals){ return '<tr><td class="vs-lab">'+lab+'</td>'+vals.map(function(v){return '<td>'+v+'</td>';}).join("")+'</tr>'; }
-  var yn=function(b){return b?'<span class="vs-yes">✓</span>':'<span class="vs-no">—</span>';};
-  var limRows=[
-    lim("Integrations",tools.map(function(t){return fmtInt(t.integrations);})),
-    lim("Self-hostable",tools.map(function(t){return yn(t.selfHostable);})),
-    lim("AI features",tools.map(function(t){return yn(t.aiFeatures);})),
-    lim("AI billing",tools.map(function(t){var m=A_AI_META[t.slug];return m?'<span style="cursor:help" title="'+esc(m.meter+" — "+m.src+" ("+m.asof+")")+'">'+esc(m.meterShort)+'</span>':(t.aiFeatures?"—":"none");})),
-    lim("Own LLM key",tools.map(function(t){var m=A_AI_META[t.slug];return m?'<span style="cursor:help" title="'+esc(m.byo+" — "+m.src+" ("+m.asof+")")+'">'+esc(m.byoShort)+'</span>':(t.aiFeatures?"—":"none");})),
-    lim("Free tier",tools.map(function(t){var f=t.plans.find(function(p){return p.monthlyUsd===0;});return f?(isFinite(f.opsIncluded)?fmtInt(f.opsIncluded)+' ops/mo':'unlimited'):'—';})),
-    lim("Cheapest paid plan",tools.map(function(t){var p=t.plans.filter(function(p){return p.monthlyUsd>0&&!p.custom;}).sort(function(a,b){return a.monthlyUsd-b.monthlyUsd;})[0];return p?fmtMoney(p.monthlyUsd)+'/mo':'—';})),
-  ].join("");
-  var title=tools.map(function(t){return esc(t.name);}).join(" vs ");
-  vs.innerHTML='<div class="vs-h"><h2>'+title+'</h2><span class="tag">at your '+fmtInt(aState.runs)+' runs/mo · '+tools.length+' tools</span></div>'+
-    '<div class="vs-scroll"><table class="vs-table" style="min-width:'+(160+tools.length*150)+'px"><thead><tr><th></th>'+tools.map(function(t,i){return thHead(t,crs[i]);}).join("")+'</tr></thead><tbody>'+
-    '<tr class="vs-sec"><td colspan="'+ncol+'">Capabilities (0–100)</td></tr>'+capRows+
-    '<tr class="vs-sec"><td colspan="'+ncol+'">Features</td></tr>'+(featRows||'<tr><td colspan="'+ncol+'" style="color:var(--tx3);font-size:.8rem">No differentiating features tracked.</td></tr>')+
-    '<tr class="vs-sec"><td colspan="'+ncol+'">Limits &amp; reach</td></tr>'+limRows+
+  /* AI rows */
+  function aiCell(t,key,full){ var m=A_AI_META[t.slug]; if(!m) return t.aiFeatures?"—":"none"; return '<span style="cursor:help" title="'+esc(full(m)+" — "+m.src+" ("+m.asof+")")+'">'+esc(m[key])+'</span>'; }
+  /* enterprise + support as the tier that unlocks them */
+  var ENT=[["Single sign-on (SSO / SAML)","SSO / SAML"],["Audit log","Audit log"],["Role-based access control (RBAC)","RBAC"],["Enforce two-factor auth (2FA)","Enforce 2FA"]];
+  var SUP=[["SLA-backed support","SLA-backed support"],["Priority / premier support","Priority support"]];
+  function tierRows(list){ return list.map(function(d){ return '<tr><td class="vs-lab">'+esc(d[1])+'</td>'+tools.map(function(t){return '<td>'+aFeatTierCell(t,d[0])+'</td>';}).join("")+'</tr>'; }).join(""); }
+  var html='<div class="vs-h"><h2>'+tools.map(function(t){return esc(t.name);}).join(" vs ")+'</h2><span class="tag">at your '+fmtInt(aState.runs)+' runs/mo · '+tools.length+' tools</span></div>'+
+    '<div class="vs-scroll"><table class="vs-table" style="min-width:'+(170+tools.length*156)+'px"><thead><tr><th></th>'+tools.map(function(t,i){return thHead(t,crs[i]);}).join("")+'</tr></thead><tbody>'+
+    sec("Cost &amp; billing")+
+    lim("At 10× volume ("+fmtVol(aState.runs*10)+")",crs10.map(function(c){return money(c,cMin10);}))+
+    lim("Billing model",tools.map(function(t){return A_BILLING[t.slug]||"—";}))+
+    lim("Seat model",tools.map(function(t){return aSeatModel(t);}))+
+    lim("Free tier",tools.map(function(t){var f=t.plans.find(function(p){return p.monthlyUsd===0;});return f?(isFinite(f.opsIncluded)?fmtInt(f.opsIncluded)+' ops/mo':'unlimited'):'—';}))+
+    lim("Cheapest paid plan",tools.map(function(t){var p=t.plans.filter(function(p){return p.monthlyUsd>0&&!p.custom;}).sort(function(a,b){return a.monthlyUsd-b.monthlyUsd;})[0];return p?fmtMoney(p.monthlyUsd)+'/mo':'—';}))+
+    sec("Capabilities (0–100)")+capRows+
+    sec("AI")+
+    lim("Built-in AI",tools.map(function(t){return yn(t.aiFeatures);}))+
+    lim("AI billing",tools.map(function(t){return aiCell(t,"meterShort",function(m){return m.meter;});}))+
+    lim("Own LLM key",tools.map(function(t){return aiCell(t,"byoShort",function(m){return m.byo;});}))+
+    sec("Reach &amp; deployment")+
+    lim("Integrations",tools.map(function(t){return fmtInt(t.integrations);}))+
+    lim("Self-hostable",tools.map(function(t){return yn(t.selfHostable);}))+
+    lim("Data residency",tools.map(function(t){return A_RESIDENCY[t.slug]||"—";}))+
+    sec("Enterprise features &mdash; plan that unlocks")+tierRows(ENT)+
+    sec("Support")+tierRows(SUP)+
+    sec("Verdict")+
+    '<tr class="vs-verdict"><td class="vs-lab">Best for</td>'+tools.map(function(t){return '<td>'+esc(A_VERDICT[t.slug]||"—")+'</td>';}).join("")+'</tr>'+
     '</tbody></table></div>';
+  vs.innerHTML=html;
 }
 
 /* cost-vs-scale chart (log-log) - plan-aware STEP path (no smooth) + gradient stroke + area + hover.
