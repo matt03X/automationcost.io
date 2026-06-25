@@ -341,6 +341,8 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .cx-note{font-size:.78rem;color:var(--tx2);background:var(--panel2);border:1px solid var(--b);border-radius:9px;
   padding:9px 12px;margin-top:12px;line-height:1.45}
 .cx-note b{color:var(--tx);font-weight:600}
+.ap-note{font-size:.78rem;color:var(--tx2);background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.28);border-left:3px solid #f59e0b;border-radius:9px;padding:9px 12px;margin-top:10px;line-height:1.5}
+.ap-note b{color:var(--tx);font-weight:600}
 .legend{display:flex;flex-wrap:wrap;gap:13px;margin-top:12px;font-size:.76rem;color:var(--tx2)}
 .legend span{display:flex;align-items:center;gap:6px}
 .legend i{width:11px;height:11px;border-radius:3px;flex-shrink:0}
@@ -628,11 +630,12 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
 
       <!-- 2. cost vs scale -->
       <section class="panel">
-        <div class="panel-h"><h2>How cost scales with volume</h2><span class="tag">log–log · 1k → 1M</span></div>
+        <div class="panel-h"><h2>How cost scales with volume</h2><span class="tag">log–log · 1k → 10M</span></div>
         <p class="panel-sub">The cheapest pick at one volume often loses at another. The dashed line is your current volume; the notes flag where the ranking flips.</p>
         <div class="chart-wrap"><svg class="chart" id="a-scale" viewBox="0 0 760 380"></svg></div>
         <div class="legend" id="a-scale-legend"></div>
         <div class="cx-note" id="a-cross"></div>
+        <div class="ap-note" id="a-ap-note" style="display:none"></div>
       </section>
 
       <!-- 2b. capabilities at a glance -->
@@ -1752,6 +1755,29 @@ function aRenderScale(cheapest){
   }
 
   document.getElementById("a-scale-legend").innerHTML=series.map(function(s){ return '<span><i style="background:'+aToolColor(s.slug)+'"></i>'+esc(s.name)+'</span>'; }).join("");
+  (function(){ var ne=document.getElementById("a-ap-note"); if(!ne) return;
+    var apSel=aToolSel("activepieces")&&aAppOK("activepieces");
+    if(!apSel||hostPref==="selfhost"){ ne.style.display="none"; ne.innerHTML=""; return; }
+    /* Activepieces Cloud bills $5/active flow (10 free), flat in runs -> on the runs axis it looks like the long-run winner.
+       Surface the workflow-axis crossover vs Zapier (the per-task benchmark) so that flatness isn't misread. */
+    var _hp=hostPref,_sc=seatCount; hostPref="cloud";
+    var zt=TOOLS.find(function(t){return t.slug==="zapier";});
+    var zc=(zt&&aAppOK("zapier"))?calcCost(zt,aState.runs,aState.steps,aState.wf,null):null, zCap=false;
+    if((!zc||typeof zc.cost!=="number")&&zt&&aAppOK("zapier")){ seatCount=1; zc=calcCost(zt,aState.runs,aState.steps,aState.wf,null); zCap=true; } /* Zapier caps at 25 seats -> ruled out at unlimited users; anchor on its cheapest 1-seat plan (matches the wf=50 default) */
+    hostPref=_hp; seatCount=_sc;
+    var ap=5*Math.max(0,aState.wf-10);
+    var head='<b>Activepieces Cloud bills $5 per active workflow</b> (10 free), not per run — so its line is flat across runs.';
+    var body;
+    if(zc&&typeof zc.cost==="number"){
+      var wfStar=Math.round(10+zc.cost/5);
+      var zRef=zCap?' (vs Zapier’s cheapest 1-seat plan — Zapier caps at 25 seats, so it’s ruled out at your unlimited team)':'';
+      if(ap<=zc.cost){ body=' At '+fmtInt(aState.runs)+' runs/mo it undercuts Zapier up to <b>~'+wfStar+' active workflows</b>; you’re at '+aState.wf+' ('+fmtMoney(ap)+'/mo vs Zapier '+fmtMoney(zc.cost)+'). Every added workflow is +$5/mo.'+zRef; }
+      else { body=' Your '+aState.wf+' workflows = '+fmtMoney(ap)+'/mo — already past Zapier’s '+fmtMoney(zc.cost)+' here. Zapier is cheaper above <b>~'+wfStar+' workflows</b> at '+fmtInt(aState.runs)+' runs/mo.'+zRef; }
+    } else {
+      body=' Every active workflow over 10 adds $5/mo, so it climbs with workflow count even though runs are unlimited.';
+    }
+    ne.innerHTML=head+body; ne.style.display="";
+  })();
   aRenderCross(seriesS,cheapest);
   aAttachLineHover(svgEl,series,lx,ly,W,padL,padT,padR,plotW,plotH);
 }
