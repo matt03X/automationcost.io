@@ -174,6 +174,16 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .fm-item .fm-ct{font-family:var(--mono);font-size:.62rem;color:var(--tx3);white-space:nowrap}
 .feat-ent{margin-top:14px;background:rgba(240,162,59,.1);border:1px solid rgba(240,162,59,.35);border-radius:10px;padding:11px 14px;font-size:.84rem;color:var(--tx);line-height:1.5}
 .feat-ent b{color:#f0a23b}
+.you-read{margin-top:14px;background:var(--panel2);border:1px solid var(--b);border-radius:13px;padding:13px 14px}
+.you-read:empty{display:none}
+.you-read .yr-h{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--tx3);margin-bottom:9px}
+.you-read .yr-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:.82rem;border-top:1px solid var(--b)}
+.you-read .yr-row:first-of-type{border-top:none}
+.you-read .yr-nm{display:flex;align-items:center;gap:7px;flex:1;min-width:0;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.you-read .yr-nm i{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.you-read .yr-pl{font-family:var(--mono);font-size:.58rem;color:var(--tx3);white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis}
+.you-read .yr-pr{font-family:var(--mono);font-weight:600;color:var(--tx);white-space:nowrap}
+.you-read .yr-row.win .yr-nm,.you-read .yr-row.win .yr-pr{color:#10b981;font-weight:700}
 .persona-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 .persona-grid button{padding:7px 5px;font-size:.76rem}
 .toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;user-select:none}
@@ -534,7 +544,7 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
         </div>
         <div class="field">
           <div class="f-top"><span class="f-lab">Team size (users)</span><span class="f-val" id="a-users-v">1</span></div>
-          <input type="range" id="a-users" min="1" max="25" value="1" aria-label="Team size (users)">
+          <input type="range" id="a-users" min="1" max="26" value="26" aria-label="Team size (users)">
           <div style="font-size:11px;color:#736e8e;margin-top:6px;line-height:1.45">Team size only changes <b>Zapier</b> (Free/Pro = 1 user &rarr; Team for 2+, &le;25; Enterprise = unlimited). n8n, Make, Pipedream &amp; self-host include unlimited users.</div>
         </div>
       </div>
@@ -631,6 +641,7 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
     </div>
     <aside class="rail rail-right">
       <div class="best" id="a-best"></div>
+      <div class="you-read" id="a-you"></div>
     </aside>
   </div>
 </div>
@@ -1164,7 +1175,7 @@ document.getElementById("trust-strip").innerHTML =
    AUTOMATION ENGINE — parity port of automation/calculator.html
    ════════════════════════════════════════════════════════════════════════ */
 /* dashboard global defaults (spec): no host/AI filter, no integration filter, monthly billing */
-var hostPref="any", aiPref="any", billing="monthly", seatCount=1;
+var hostPref="any", aiPref="any", billing="monthly", seatCount=Infinity;
 var selectedIntegrations=[];
 function toolSupportsAll(){ return true; } // no integrations selected in dashboard
 
@@ -1266,7 +1277,7 @@ const A_PRIORITY=[{id:"value",lab:"Best value"},{id:"cheapest",lab:"Cheapest"},{
 /* runs slider: log scale 100 → 1,000,000, default 10,000 */
 function aRunsFromSlider(v){ return Math.round(Math.pow(10, 2 + v*4/100)); }
 function aSliderFromRuns(r){ return Math.max(0,Math.min(100,(Math.log10(r)-2)*100/4)); }
-var aState={runs:10000, steps:1, wf:3, users:1, role:"operations", priority:"value", gdpr:false, apps:[], features:[]};
+var aState={runs:10000, steps:1, wf:3, users:Infinity, role:"operations", priority:"value", gdpr:false, apps:[], features:[]};
 /* feature gate: cheapest tier (ordinal) a tool needs for all selected features; lacks=feature it never has, ent=needs Enterprise */
 function aFeatGate(slug){ var need=0,lacks=null,ent=false;
   for(var i=0;i<aState.features.length;i++){ var f=aState.features[i], rq=A_FEAT_REQ[f]||{};
@@ -1309,7 +1320,7 @@ function aRender(){
   document.getElementById("a-runs-v").textContent=fmtInt(aState.runs);
   document.getElementById("a-steps-v").textContent=aState.steps;
   document.getElementById("a-wf-v").textContent=aState.wf;
-  document.getElementById("a-users-v").textContent=aState.users;
+  document.getElementById("a-users-v").textContent=(aState.users===Infinity?"\u221e":aState.users);
   document.getElementById("a-role-tag").textContent=A_ROLE_LABEL[aState.role];
 
   /* compute costs for all tools */
@@ -1408,7 +1419,7 @@ function aRender(){
     const picks=pickRows.slice(0,3);
     best.style.setProperty("--ac",aToolColor(pick.tool.slug));
     best.innerHTML='<div class="star">★ Best 3 · '+A_PRIORITY.find(p=>p.id===aState.priority).lab+'</div>'+
-      '<div class="bp-vol">live at '+fmtInt(aState.runs)+' runs/mo · '+aState.steps+' step'+(aState.steps>1?'s':'')+' · '+aState.users+' user'+(aState.users>1?'s':'')+(aState.apps.length?' · '+aState.apps.length+' app'+(aState.apps.length>1?'s':''):'')+'</div>'+
+      '<div class="bp-vol">live at '+fmtInt(aState.runs)+' runs/mo · '+aState.steps+' step'+(aState.steps>1?'s':'')+' · '+(aState.users===Infinity?'unlimited users':aState.users+' user'+(aState.users>1?'s':''))+(aState.apps.length?' · '+aState.apps.length+' app'+(aState.apps.length>1?'s':''):'')+'</div>'+
       picks.map(function(p,i){ var plan=aPlanLabel(p.cr); var lk=aToolHref(p.tool);
         return '<a class="best-pick'+(i===0?" top":"")+(lk.aff?" aff":"")+'" href="'+esc(lk.href)+'"'+lk.attrs+' title="'+(lk.aff?('Try '+esc(p.tool.name)+' — affiliate'):('Open '+esc(p.tool.name)+' pricing'))+'" style="--pc:'+aToolColor(p.tool.slug)+'">'+
         '<div class="bp-head"><span class="bp-rank">'+(i+1)+'</span>'+
@@ -1420,6 +1431,12 @@ function aRender(){
       '<a class="bcta" href="/automation/calculator.html">Run the full wizard →</a>';
   } else { best.innerHTML='<div class="star">★ Best pick</div><div class="why">No tool matches your selected apps &amp; features — loosen a filter, or the ones that fit are Enterprise / contact-sales only.</div>'; }
 
+  /* live readout under BEST 3: each tool's cost + plan at your current volume (the "you" position) */
+  (function(){ var yr=document.getElementById("a-you"); if(!yr) return;
+    if(!byCost.length){ yr.innerHTML=""; return; }
+    yr.innerHTML='<div class="yr-h">At your '+fmtInt(aState.runs)+' runs/mo</div>'+
+      byCost.map(function(r,i){ return '<div class="yr-row'+(i===0?" win":"")+'"><span class="yr-nm"><i style="background:'+aToolColor(r.tool.slug)+'"></i>'+esc(r.tool.name)+'</span><span class="yr-pl">'+esc(aPlanLabel(r.cr)||"")+'</span><span class="yr-pr">'+(r.cr.estimated?"~":"")+fmtMoney(r.cr.cost)+'</span></div>'; }).join("");
+  })();
   /* ── role rec cards: top / runner-up / budget ── */
   const byScore=[...priced].sort((a,b)=>b.score-a.score);
   const top=byScore[0], runner=byScore[1];
@@ -1548,7 +1565,7 @@ function aRenderScale(cheapest){
   minC=Math.max(minC,0.5);
 
   var lx=function(v){ return padL+(Math.log10(v)-Math.log10(A_GRID[0]))/(Math.log10(A_GRID[A_GRID.length-1])-Math.log10(A_GRID[0]))*plotW; };
-  var ly=function(c){ return padT+plotH-(Math.log10(c)-Math.log10(minC))/(Math.log10(maxC)-Math.log10(minC))*plotH; };
+  var ly=function(c){ return padT+(Math.log10(c)-Math.log10(minC))/(Math.log10(maxC)-Math.log10(minC))*plotH; }; /* flipped: cost grows downward (you pay = loss) */
 
   function gridHtml(){
     var gg="", yTicks=[];
@@ -2068,12 +2085,12 @@ function buildAutomationRail(){
 }
 function wireAutomationSliders(){
   const runs=document.getElementById("a-runs"), steps=document.getElementById("a-steps"), wf=document.getElementById("a-wf"), users=document.getElementById("a-users");
-  runs.value=aSliderFromRuns(aState.runs); steps.value=aState.steps; wf.value=aState.wf; users.value=aState.users; seatCount=aState.users;
+  runs.value=aSliderFromRuns(aState.runs); steps.value=aState.steps; wf.value=aState.wf; users.value=(aState.users===Infinity?26:aState.users); seatCount=aState.users;
   [runs,steps,wf,users].forEach(setFill);
   runs.addEventListener("input",()=>{ aState.runs=aRunsFromSlider(+runs.value); setFill(runs); aRender(); });
   steps.addEventListener("input",()=>{ aState.steps=+steps.value; setFill(steps); aRender(); });
   wf.addEventListener("input",()=>{ aState.wf=+wf.value; setFill(wf); aRender(); });
-  users.addEventListener("input",()=>{ aState.users=+users.value; seatCount=aState.users; setFill(users); aRender(); });
+  users.addEventListener("input",()=>{ aState.users=(+users.value>=26?Infinity:+users.value); seatCount=aState.users; setFill(users); aRender(); });
   /* app filter: search an app → pick it → tools without it are ruled out in aRender */
   (function(){
     var q=document.getElementById("a-app-q"), drop=document.getElementById("a-app-drop"), chips=document.getElementById("a-app-chips");
