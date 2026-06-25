@@ -19,7 +19,15 @@
       "make: vendor renamed operations -> credits (prices unchanged, 1 module action = 1 credit; code execution 2 credits/sec) — watch copy on pages",
       "selfHostHw: VPS hardware cost scales with volume (selfHostHw tiers) — derived from Elestio/Netcup list (NC-MEDIUM 2C/4G $18, NC-LARGE 4C/8G $33, NC-XLARGE 8C/16G $66). Re-check when those list prices move."
     ],
-    "last_reviewed": "2026-06-15"
+    "last_reviewed": "2026-06-15",
+    "selfHost": {
+      "note": "selfHostHw tier picked by selfHostLoad = runs × steps × concurrency(workflows), NOT raw billing ops. usd = monthly VPS rent (provider powers it). home = monthly electricity (own hardware). hwOneOff = one-off hardware. ownMonthly = home + hwOneOff/amortMonths × (1+maintPerYear). Headline self-host cost = min(VPS, ownMonthly).",
+      "amortMonths": 36,
+      "maintPerYear": 0.12,
+      "concurrency": "1 + clamp((workflows-3)/17, 0, 2) → ×1…×3",
+      "disclaimer": "Estimates. Hardware amortized over 3 years (mini-PC/office server lasts 3-5 yrs, NOT replaced every 6 months) + 12%/yr maintenance reserve. Your ops time not included.",
+      "_reviewed": "2026-06-25 editorial estimates; 1M-10M tiers to refine"
+    }
   },
   "tools": [
     {
@@ -238,11 +246,39 @@
           "hwOneOff": 900
         },
         {
-          "upTo": null,
+          "upTo": 1000000,
           "usd": 200,
           "home": 18,
-          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)",
+          "spec": "8 vCPU, 32GB, HA Postgres+Redis (workstation)",
           "hwOneOff": 1800
+        },
+        {
+          "upTo": 2500000,
+          "usd": 400,
+          "home": 30,
+          "spec": "16 vCPU, 64GB, 4-6 workers, cluster",
+          "hwOneOff": 3200
+        },
+        {
+          "upTo": 5000000,
+          "usd": 750,
+          "home": 52,
+          "spec": "2-3 node cluster, 96GB+, dedicated DB",
+          "hwOneOff": 6000
+        },
+        {
+          "upTo": 10000000,
+          "usd": 1400,
+          "home": 95,
+          "spec": "multi-node cluster, dedicated DB + Redis",
+          "hwOneOff": 11000
+        },
+        {
+          "upTo": null,
+          "usd": 2400,
+          "home": 160,
+          "spec": "large multi-node cluster (>10M load)",
+          "hwOneOff": 20000
         }
       ],
       "pros": [
@@ -1182,11 +1218,39 @@
           "hwOneOff": 900
         },
         {
-          "upTo": null,
+          "upTo": 1000000,
           "usd": 200,
           "home": 18,
-          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)",
+          "spec": "8 vCPU, 32GB, HA Postgres+Redis (workstation)",
           "hwOneOff": 1800
+        },
+        {
+          "upTo": 2500000,
+          "usd": 400,
+          "home": 30,
+          "spec": "16 vCPU, 64GB, 4-6 workers, cluster",
+          "hwOneOff": 3200
+        },
+        {
+          "upTo": 5000000,
+          "usd": 750,
+          "home": 52,
+          "spec": "2-3 node cluster, 96GB+, dedicated DB",
+          "hwOneOff": 6000
+        },
+        {
+          "upTo": 10000000,
+          "usd": 1400,
+          "home": 95,
+          "spec": "multi-node cluster, dedicated DB + Redis",
+          "hwOneOff": 11000
+        },
+        {
+          "upTo": null,
+          "usd": 2400,
+          "home": 160,
+          "spec": "large multi-node cluster (>10M load)",
+          "hwOneOff": 20000
         }
       ],
       "pros": [
@@ -1272,11 +1336,39 @@
           "hwOneOff": 900
         },
         {
-          "upTo": null,
+          "upTo": 1000000,
           "usd": 200,
           "home": 18,
-          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)",
+          "spec": "8 vCPU, 32GB, HA Postgres+Redis (workstation)",
           "hwOneOff": 1800
+        },
+        {
+          "upTo": 2500000,
+          "usd": 400,
+          "home": 30,
+          "spec": "16 vCPU, 64GB, 4-6 workers, cluster",
+          "hwOneOff": 3200
+        },
+        {
+          "upTo": 5000000,
+          "usd": 750,
+          "home": 52,
+          "spec": "2-3 node cluster, 96GB+, dedicated DB",
+          "hwOneOff": 6000
+        },
+        {
+          "upTo": 10000000,
+          "usd": 1400,
+          "home": 95,
+          "spec": "multi-node cluster, dedicated DB + Redis",
+          "hwOneOff": 11000
+        },
+        {
+          "upTo": null,
+          "usd": 2400,
+          "home": 160,
+          "spec": "large multi-node cluster (>10M load)",
+          "hwOneOff": 20000
         }
       ],
       "pros": [
@@ -1362,11 +1454,39 @@
           "hwOneOff": 900
         },
         {
-          "upTo": null,
+          "upTo": 1000000,
           "usd": 200,
           "home": 18,
-          "spec": "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)",
+          "spec": "8 vCPU, 32GB, HA Postgres+Redis (workstation)",
           "hwOneOff": 1800
+        },
+        {
+          "upTo": 2500000,
+          "usd": 400,
+          "home": 30,
+          "spec": "16 vCPU, 64GB, 4-6 workers, cluster",
+          "hwOneOff": 3200
+        },
+        {
+          "upTo": 5000000,
+          "usd": 750,
+          "home": 52,
+          "spec": "2-3 node cluster, 96GB+, dedicated DB",
+          "hwOneOff": 6000
+        },
+        {
+          "upTo": 10000000,
+          "usd": 1400,
+          "home": 95,
+          "spec": "multi-node cluster, dedicated DB + Redis",
+          "hwOneOff": 11000
+        },
+        {
+          "upTo": null,
+          "usd": 2400,
+          "home": 160,
+          "spec": "large multi-node cluster (>10M load)",
+          "hwOneOff": 20000
         }
       ],
       "pros": [

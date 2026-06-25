@@ -218,6 +218,9 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;bac
 .vs-bar{display:inline-block;width:54px;height:6px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;vertical-align:middle;margin-right:8px}
 .vs-bar i{display:block;height:100%;border-radius:4px}
 .vs-table td.vs-best{color:#10b981;font-weight:700}
+.vs-table tr.vs-sub td{color:var(--tx2);font-size:.78rem;border-top:none;padding-top:2px;padding-bottom:2px}
+.vs-table tr.vs-sub .vs-lab{padding-left:20px;color:var(--tx3)}
+.vs-table tr.vs-note td{color:var(--tx3);font-size:.7rem;line-height:1.5;border-top:none;padding-top:6px;padding-bottom:12px}
 .selfhost-panel{display:none;background:var(--panel);border:1px solid var(--b);border-radius:16px;padding:20px;margin-bottom:18px}
 .selfhost-panel .panel-sub{margin:4px 0 14px}
 .persona-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
@@ -826,7 +829,7 @@ const TOOLS = [
       { name: "Business 400k", monthlyUsd: 5024.13, opsIncluded: 400000, workflowLimit: Infinity, annualUsd: 4186.97, track: "selfhost", overage: null, sharedProjects: 6, note: "Business — 400k executions (€4381/mo monthly)" },
       { name: "Business 500k", monthlyUsd: 6014.97, opsIncluded: 500000, workflowLimit: Infinity, annualUsd: 5012.66, track: "selfhost", overage: null, sharedProjects: 6, note: "Business — 500k executions (€5245/mo monthly)" },
       { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity, sharedProjects: Infinity, concurrency: 200 },
-    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: 1000000, usd: 200, home: 18, hwOneOff: 1800, spec: "8 vCPU, 32GB, HA Postgres+Redis (workstation)" }, { upTo: 2500000, usd: 400, home: 30, hwOneOff: 3200, spec: "16 vCPU, 64GB, 4-6 workers, cluster" }, { upTo: 5000000, usd: 750, home: 52, hwOneOff: 6000, spec: "2-3 node cluster, 96GB+, dedicated DB" }, { upTo: 10000000, usd: 1400, home: 95, hwOneOff: 11000, spec: "multi-node cluster, dedicated DB + Redis" }, { upTo: Infinity, usd: 2400, home: 160, hwOneOff: 20000, spec: "large multi-node cluster (>10M load)" }] },
   {
     slug: "make", name: "Make", unitModel: "modules", annualFactor: 0.85, selfHostable: false, aiFeatures: true, integrations: 3000,
     homepage: "https://www.make.com", affiliateUrl: "https://www.make.com/en/register?pc=wizardcost", hasAffiliate: true,
@@ -909,19 +912,19 @@ const TOOLS = [
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
       { name: "Cloud", monthlyUsd: 0, opsIncluded: Infinity, workflowLimit: Infinity, pricePerFlowUsd: 5, freeFlows: 10, note: "10 active flows free, then $5/active flow/mo · unlimited runs (cloud bills per active flow, not per task/run)" },
-    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: 1000000, usd: 200, home: 18, hwOneOff: 1800, spec: "8 vCPU, 32GB, HA Postgres+Redis (workstation)" }, { upTo: 2500000, usd: 400, home: 30, hwOneOff: 3200, spec: "16 vCPU, 64GB, 4-6 workers, cluster" }, { upTo: 5000000, usd: 750, home: 52, hwOneOff: 6000, spec: "2-3 node cluster, 96GB+, dedicated DB" }, { upTo: 10000000, usd: 1400, home: 95, hwOneOff: 11000, spec: "multi-node cluster, dedicated DB + Redis" }, { upTo: Infinity, usd: 2400, home: 160, hwOneOff: 20000, spec: "large multi-node cluster (>10M load)" }] },
   {
     slug: "automatisch", name: "Automatisch", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: false, integrations: 50,
     homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
-    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: 1000000, usd: 200, home: 18, hwOneOff: 1800, spec: "8 vCPU, 32GB, HA Postgres+Redis (workstation)" }, { upTo: 2500000, usd: 400, home: 30, hwOneOff: 3200, spec: "16 vCPU, 64GB, 4-6 workers, cluster" }, { upTo: 5000000, usd: 750, home: 52, hwOneOff: 6000, spec: "2-3 node cluster, 96GB+, dedicated DB" }, { upTo: 10000000, usd: 1400, home: 95, hwOneOff: 11000, spec: "multi-node cluster, dedicated DB + Redis" }, { upTo: Infinity, usd: 2400, home: 160, hwOneOff: 20000, spec: "large multi-node cluster (>10M load)" }] },
   {
     slug: "node-red", name: "Node-RED", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: false, integrations: 5000,
     homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
-    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: 1000000, usd: 200, home: 18, hwOneOff: 1800, spec: "8 vCPU, 32GB, HA Postgres+Redis (workstation)" }, { upTo: 2500000, usd: 400, home: 30, hwOneOff: 3200, spec: "16 vCPU, 64GB, 4-6 workers, cluster" }, { upTo: 5000000, usd: 750, home: 52, hwOneOff: 6000, spec: "2-3 node cluster, 96GB+, dedicated DB" }, { upTo: 10000000, usd: 1400, home: 95, hwOneOff: 11000, spec: "multi-node cluster, dedicated DB + Redis" }, { upTo: Infinity, usd: 2400, home: 160, hwOneOff: 20000, spec: "large multi-node cluster (>10M load)" }] },
 ];
 /* DATA:TOOLS:END */
 /* DATA:APPS:START */
@@ -1218,6 +1221,11 @@ const ANNUAL_DISCOUNT=0.8;
 function annualFactor(t){ return (t && typeof t.annualFactor==="number")?t.annualFactor:ANNUAL_DISCOUNT; }
 function selfHostHwTier(tool,ops){ if(!tool.selfHostHw) return null; for(const t of tool.selfHostHw){ if(t.upTo===Infinity||ops<=t.upTo) return t; } return tool.selfHostHw[tool.selfHostHw.length-1]; }
 function selfHostHwCost(tool,ops){ const t=selfHostHwTier(tool,ops); return t?t.usd:null; }
+/* self-host sizing/cost (#3): tier picked by load = runs×steps×concurrency(workflows); cost = min(VPS rent, own-hardware: electricity + hardware amortized over 36mo + 12%/yr maintenance) */
+var SH_AMORT=36, SH_MAINT=0.12;
+function selfHostLoad(runs,steps,workflows){ var conc=1+Math.min(2,Math.max(0,((workflows||1)-3)/17)); return Math.round(runs*Math.max(1,steps)*conc); }
+function selfHostBreakdown(tier){ if(!tier) return null; var vps=tier.usd; var hwAmort=Math.round((tier.hwOneOff||0)/SH_AMORT*(1+SH_MAINT)); var elec=tier.home||0; var own=elec+hwAmort; return {vps:vps,own:own,elec:elec,hwAmort:hwAmort,hwOneOff:tier.hwOneOff||0,headline:Math.min(vps,own),mode:(vps<=own?"vps":"own"),spec:tier.spec||null}; }
+function selfHostCalc(tool,runs,steps,workflows){ return tool.selfHostHw?selfHostBreakdown(selfHostHwTier(tool,selfHostLoad(runs,steps,workflows))):null; }
 function creditBandRate(bands,credits){ for(const [upTo,pc] of bands){ if(upTo===null||credits<=upTo) return pc; } return bands[bands.length-1][1]; }
 function vendorUnits(tool,runs,steps){ const s=Math.max(1,steps); switch(tool.unitModel){ case "modules": return runs*s; case "actions": return Math.round(runs*Math.max(1,s-1)*0.8); case "runs": default: return runs; } }
 
@@ -1243,7 +1251,8 @@ function calcCost(tool,runs,steps,workflows,perWf){
     const planMaxU=plan.maxUsers!==undefined?plan.maxUsers:(tool.defaultMaxUsers!==undefined?tool.defaultMaxUsers:Infinity);
     if(seatCount>planMaxU) continue;
     const hwPlan=plan.selfHostOnly&&plan.monthlyUsd<=8&&tool.selfHostHw;
-    let cost=hwPlan?selfHostHwCost(tool,ops):plan.monthlyUsd;
+    var shbd=hwPlan?selfHostCalc(tool,runs,steps,workflows):null;
+    let cost=hwPlan?(shbd?shbd.headline:plan.monthlyUsd):plan.monthlyUsd;
     if(billing==="annual"&&!plan.selfHostOnly&&typeof plan.annualUsd==="number") cost=plan.annualUsd;
     if(plan.pricePerFlowUsd) cost+=Math.max(0,workflows-(plan.freeFlows||0))*plan.pricePerFlowUsd;
     if(!plan.selfHostOnly&&ops>plan.opsIncluded){
@@ -1252,10 +1261,9 @@ function calcCost(tool,runs,steps,workflows,perWf){
     }
     /* add-on seats (e.g. Pipedream $2/user beyond seatsIncluded). Tools with unlimited users add nothing. */
     if(seatCount>1&&plan.perSeatUsd){ const inc=plan.seatsIncluded!=null?plan.seatsIncluded:1; cost=Math.round((cost+plan.perSeatUsd*Math.max(0,seatCount-inc))*100)/100; }
-    const tier=hwPlan?(selfHostHwTier(tool,ops)||{}):{};
-    const spec=tier.spec||null, home=tier.home!=null?tier.home:null;
-    if(hostPref==="any"&&plan.selfHostOnly){ if(selfHostAlt===null||cost<selfHostAlt.cost) selfHostAlt={cost,plan,hwOnly:!!hwPlan,spec,home}; }
-    else { if(best===null||cost<best.cost) best={cost,plan,hwOnly:!!hwPlan,spec,home}; }
+    const spec=shbd?shbd.spec:null, home=shbd?shbd.elec:null;
+    if(hostPref==="any"&&plan.selfHostOnly){ if(selfHostAlt===null||cost<selfHostAlt.cost) selfHostAlt={cost,plan,hwOnly:!!hwPlan,spec,home,shbd:shbd}; }
+    else { if(best===null||cost<best.cost) best={cost,plan,hwOnly:!!hwPlan,spec,home,shbd:shbd}; }
   }
   const customPlan=tool.plans.find(p=>p.custom);
   if(customPlan&&hostPref!=="selfhost"){
@@ -1360,12 +1368,19 @@ function aRenderSelfHost(){
   function th(t){ var dom=String(t.homepage).replace(/^https?:\/\/(www\.)?/,"").replace(/\/.*$/,""); return '<th style="--pc:'+aToolColor(t.slug)+'"><div class="vs-th"><span class="vs-logo"><img src="https://www.google.com/s2/favicons?domain='+esc(dom)+'&sz=64" alt=""></span><span class="vs-nm">'+esc(t.name)+'</span></div></th>'; }
   var maxInt=Math.max.apply(null,tools.map(function(t){return t.integrations;}));
   var intRow='<tr><td class="vs-lab">App connectors</td>'+tools.map(function(t){ return '<td'+(t.integrations===maxInt?' class="vs-best"':'')+'>'+fmtInt(t.integrations)+'</td>'; }).join("")+'</tr>';
+  var crs=tools.map(function(t){ return selfHostCalc(t,aState.runs,aState.steps,aState.wf); });
+  var hv=crs.map(function(c){return c?c.headline:null;}).filter(function(v){return v!=null;}); var hmin=hv.length?Math.min.apply(null,hv):null;
+  var costRows='<tr><td class="vs-lab">Cheapest / mo</td>'+crs.map(function(c){return '<td'+(c&&c.headline===hmin?' class="vs-best"':'')+'>'+(c?fmtMoney(c.headline):"\u2014")+'</td>';}).join("")+'</tr>'+
+    '<tr class="vs-sub"><td class="vs-lab">VPS rent</td>'+crs.map(function(c){return '<td>'+(c?fmtMoney(c.vps):"\u2014")+'</td>';}).join("")+'</tr>'+
+    '<tr class="vs-sub"><td class="vs-lab">own HW (electricity + amort.)</td>'+crs.map(function(c){return '<td>'+(c?fmtMoney(c.own)+' <span style="color:var(--tx3)">('+fmtMoney(c.elec)+' + '+fmtMoney(c.hwAmort)+')</span>':"\u2014")+'</td>';}).join("")+'</tr>'+
+    '<tr class="vs-note"><td colspan="'+(tools.length+1)+'">Cheaper of VPS rent vs your own hardware (electricity + hardware amortized over 36 months + 12%/yr maintenance). Tier scales with steps x workflows. Estimate \u2014 your ops time isn\u2019t counted; hardware lasts 3\u20135 yrs (not replaced every 6 months).</td></tr>';
   var CAP=[["noCode","No-code builder"],["codeAccess","Code access"],["aiNodes","AI nodes"],["selfHost","Self-host control"],["maturity","Maturity"]];
   var capRows=CAP.map(function(d){ var vals=tools.map(function(t){return Math.round(((TOOL_SCORES[t.slug]||{})[d[0]]||0)*100);}); var mx=Math.max.apply(null,vals);
     return '<tr><td class="vs-lab">'+d[1]+'</td>'+tools.map(function(t,i){ var v=vals[i]; return '<td'+(v===mx&&mx>0?' class="vs-best"':'')+'><span class="vs-bar"><i style="width:'+v+'%;background:'+aToolColor(t.slug)+'"></i></span>'+v+'</td>'; }).join("")+'</tr>'; }).join("");
   el.innerHTML='<div class="panel-h"><h2>Self-host &mdash; same server cost, different power</h2><span class="tag">compare on connectors &amp; capabilities</span></div>'.replace("&mdash;","\u2014")+
     '<p class="panel-sub">Every self-host tool runs on a server you own, so the bill is roughly the same. What actually differs is app reach and capability &mdash; that&rsquo;s what to compare here.</p>'.replace("&mdash;","\u2014")+
     '<table class="vs-table"><thead><tr><th></th>'+tools.map(th).join("")+'</tr></thead><tbody>'+
+    '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">Monthly cost \u00b7 self-host (VPS or own hardware)</td></tr>'+costRows+
     '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">App reach</td></tr>'+intRow+
     '<tr class="vs-sec"><td colspan="'+(tools.length+1)+'">Capabilities (0\u2013100)</td></tr>'+capRows+
     '</tbody></table>';
@@ -1751,7 +1766,7 @@ function aAttachLineHover(svgEl,series,lxFn,lyFn,W,padL,padT,padR,plotW,plotH){
       var cc=tool?calcCost(tool,vR,aState.steps,aState.wf,null):null;
       if(!cc||typeof cc.cost!=="number"){ var ci=costAt(s); return ci===null?null:{s:s,c:ci,lab:"",est:false}; }
       var lab;
-      if(cc.hwOnly){ lab="self-host"+(cc.spec?" · "+String(cc.spec).split(" + ")[0].split(" (")[0]:" server")+(cc.home?" · +"+fmtMoney(cc.home)+" power":""); }
+      if(cc.hwOnly){ var bd=cc.shbd; lab="self-host · "+(cc.spec?String(cc.spec).split(" + ")[0].split(" (")[0]:"server")+(bd?(" · VPS "+fmtMoney(bd.vps)+" · own-HW "+fmtMoney(bd.own)+"/mo"):""); }
       else { lab=cc.plan?cc.plan.name:""; if(cc.estimated) lab+=" · custom (est.)"; }
       return {s:s,c:cc.cost,lab:lab,est:!!cc.estimated};
     }).filter(Boolean).sort(function(a,b){ return a.c-b.c; });
@@ -1812,7 +1827,7 @@ function aRenderBreakeven(){
      cheapest pay-per-volume managed plan. */
   const selfTools=TOOLS.filter(t=>t.selfHostable&&t.selfHostHw&&aAppOK(t.slug));
   function cheapestCloud(v){ let best=null; for(const t of TOOLS){ if(!aAppOK(t.slug)) continue; if(!t.plans.some(p=>!p.selfHostOnly&&!p.custom)) continue; let bc=null; const ops=vendorUnits(t,v,aState.steps); for(const plan of t.plans){ if(plan.selfHostOnly||plan.custom) continue; if(plan.pricePerFlowUsd) continue; /* skip per-flow free plans */ if(plan.workflowLimit!==Infinity&&plan.workflowLimit<aState.wf) continue; let cost=plan.monthlyUsd; if(ops>plan.opsIncluded){ if(plan.creditBands){ const r=creditBandRate(plan.creditBands,ops); cost=cost+(ops-plan.opsIncluded)*r; } else { const ov=plan.overage!==undefined?plan.overage:t.overage; if(ov) cost=cost+Math.ceil((ops-plan.opsIncluded)/ov.per)*ov.usd; else continue; } } if(bc===null||cost<bc) bc=cost; } if(bc!=null&&(best===null||bc<best.cost)) best={name:t.name,cost:bc}; } return best; }
-  function cheapestSelf(v){ let best=null; for(const t of selfTools){ const hw=selfHostHwCost(t,vendorUnits(t,v,aState.steps)); if(hw!=null&&(best===null||hw<best.cost)) best={name:t.name,cost:hw}; } return best; }
+  function cheapestSelf(v){ let best=null; for(const t of selfTools){ var _bd=selfHostCalc(t,v,aState.steps,aState.wf); var hw=_bd?_bd.headline:null; if(hw!=null&&(best===null||hw<best.cost)) best={name:t.name,cost:hw}; } return best; }
   let crossover=null;
   for(const v of A_GRID){ const cl=cheapestCloud(v), sh=cheapestSelf(v); if(cl&&sh&&sh.cost<cl.cost){ crossover={v,cl,sh}; break; } }
   const here_cl=cheapestCloud(aState.runs), here_sh=cheapestSelf(aState.runs);
