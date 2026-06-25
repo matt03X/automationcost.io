@@ -3360,7 +3360,8 @@ function calcCost(tool, runs, steps, workflows, perWf) {
       // curve monotonic — no cliff at the switch-over volume.
       const beyondPublic = ops > anchor.opsIncluded * 2;
       if (best === null || (beyondPublic && est < best.cost)) {
-        best = { cost: est, plan: Object.assign({}, customPlan, { note: customPlan.name + " — price estimated, contact sales" }), estimated: true };
+        const _en = anchor.name.replace(/[\s,]*\d[\d.,]*[kKmM]?\s*$/, "").trim() + " (custom)";
+        best = { cost: est, plan: Object.assign({}, customPlan, { name: _en, note: _en + " — volume above the public tier, price estimated; contact sales" }), estimated: true };
       }
     }
   }

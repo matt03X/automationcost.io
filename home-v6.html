@@ -1284,7 +1284,8 @@ function calcCost(tool,runs,steps,workflows,perWf){
       let est=anchorBase*Math.max(1.3,Math.pow(ops/anchor.opsIncluded,0.7));
       est=Math.max(5,Math.round(est/5)*5);
       const beyondPublic=ops>anchor.opsIncluded*2;
-      if(best===null||(beyondPublic&&est<best.cost)) best={cost:est,plan:Object.assign({},customPlan,{note:customPlan.name+" — price estimated, contact sales"}),estimated:true};
+      var _en=anchor.name.replace(/[\s,]*\d[\d.,]*[kKmM]?\s*$/,"").trim()+" (custom)";
+      if(best===null||(beyondPublic&&est<best.cost)) best={cost:est,plan:Object.assign({},customPlan,{name:_en,note:_en+" — volume above the public tier, price estimated; contact sales"}),estimated:true};
     }
   }
   if(hostPref==="any"&&selfHostAlt){ if(best===null) best=selfHostAlt; else if(selfHostAlt.cost<best.cost) best.selfHostAlt=selfHostAlt; }
