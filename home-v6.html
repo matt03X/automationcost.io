@@ -353,6 +353,7 @@ svg.chart{width:100%;height:auto;display:block;overflow:visible}
 .callout .ic{font-size:1.4rem;line-height:1}
 .callout .big{font-family:var(--display);font-size:1.3rem;font-weight:800;color:var(--auto)}
 .callout .tx{font-size:.84rem;color:var(--tx2);margin-top:3px}
+.be-wrap{margin-top:16px}
 
 /* role rec cards */
 .recs{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
@@ -651,6 +652,8 @@ tbody tr:hover{background:rgba(167,139,250,.05)}
         <div class="panel-h"><h2>Self-host vs cloud break-even</h2><span class="tag">VPS sized to volume</span></div>
         <p class="panel-sub">Open-source tools (n8n, Activepieces, Node-RED…) cost only a server you run yourself. Below shows where that server bill drops under the cheapest pay-per-volume managed cloud plan — the trade is your time for their ops.</p>
         <div class="callout" id="a-breakeven"></div>
+        <div class="chart-wrap be-wrap"><svg class="chart" id="a-be" viewBox="0 0 760 300"></svg></div>
+        <div class="legend" id="a-be-legend"></div>
       </section>
 
       <!-- 4. role rec cards -->
@@ -1554,6 +1557,7 @@ function aRender(){
   /* ── charts ── */
   aRenderScale(cheapest);
   aRenderBreakeven();
+  aRenderBeChart();
   aRenderCaps();
 }
 
@@ -1869,6 +1873,12 @@ function aRenderCaps(){
   }).join("");
   requestAnimationFrame(function(){ el.querySelectorAll(".cap-fill").forEach(function(f){ f.style.width=f.dataset.cw+"%"; }); });
 }
+/* shared self-host vs cloud cost helpers (single source for the break-even banner + chart):
+   cheapest METERED paid cloud (excl. per-active-flow free plans = structurally zero, unlimited runs)
+   vs cheapest self-host VPS/own-HW headline, both sized to current steps x workflows. */
+function aBeSelfTools(){ return TOOLS.filter(function(t){ return t.selfHostable&&t.selfHostHw&&aAppOK(t.slug); }); }
+function aBeCheapestCloud(v){ let best=null; for(const t of TOOLS){ if(!aAppOK(t.slug)) continue; if(!t.plans.some(p=>!p.selfHostOnly&&!p.custom)) continue; let bc=null; const ops=vendorUnits(t,v,aState.steps); for(const plan of t.plans){ if(plan.selfHostOnly||plan.custom) continue; if(plan.pricePerFlowUsd) continue; if(plan.workflowLimit!==Infinity&&plan.workflowLimit<aState.wf) continue; let cost=plan.monthlyUsd; if(ops>plan.opsIncluded){ if(plan.creditBands){ const r=creditBandRate(plan.creditBands,ops); cost=cost+(ops-plan.opsIncluded)*r; } else { const ov=plan.overage!==undefined?plan.overage:t.overage; if(ov) cost=cost+Math.ceil((ops-plan.opsIncluded)/ov.per)*ov.usd; else continue; } } if(bc===null||cost<bc) bc=cost; } if(bc!=null&&(best===null||bc<best.cost)) best={name:t.name,cost:bc}; } return best; }
+function aBeCheapestSelf(v){ var selfTools=aBeSelfTools(); let best=null; for(const t of selfTools){ var _bd=selfHostCalc(t,v,aState.steps,aState.wf); var hw=_bd?_bd.headline:null; if(hw!=null&&(best===null||hw<best.cost)) best={name:t.name,cost:hw}; } return best; }
 function aRenderBreakeven(){
   const el=document.getElementById("a-breakeven");
   /* cheapest METERED paid cloud vs cheapest self-host across volume grid.
@@ -1876,9 +1886,7 @@ function aRenderBreakeven(){
      they're structurally free and would make every break-even read "cloud wins".
      The honest comparison for "should I run a server?" is self-host VPS vs the
      cheapest pay-per-volume managed plan. */
-  const selfTools=TOOLS.filter(t=>t.selfHostable&&t.selfHostHw&&aAppOK(t.slug));
-  function cheapestCloud(v){ let best=null; for(const t of TOOLS){ if(!aAppOK(t.slug)) continue; if(!t.plans.some(p=>!p.selfHostOnly&&!p.custom)) continue; let bc=null; const ops=vendorUnits(t,v,aState.steps); for(const plan of t.plans){ if(plan.selfHostOnly||plan.custom) continue; if(plan.pricePerFlowUsd) continue; /* skip per-flow free plans */ if(plan.workflowLimit!==Infinity&&plan.workflowLimit<aState.wf) continue; let cost=plan.monthlyUsd; if(ops>plan.opsIncluded){ if(plan.creditBands){ const r=creditBandRate(plan.creditBands,ops); cost=cost+(ops-plan.opsIncluded)*r; } else { const ov=plan.overage!==undefined?plan.overage:t.overage; if(ov) cost=cost+Math.ceil((ops-plan.opsIncluded)/ov.per)*ov.usd; else continue; } } if(bc===null||cost<bc) bc=cost; } if(bc!=null&&(best===null||bc<best.cost)) best={name:t.name,cost:bc}; } return best; }
-  function cheapestSelf(v){ let best=null; for(const t of selfTools){ var _bd=selfHostCalc(t,v,aState.steps,aState.wf); var hw=_bd?_bd.headline:null; if(hw!=null&&(best===null||hw<best.cost)) best={name:t.name,cost:hw}; } return best; }
+  var cheapestCloud=aBeCheapestCloud, cheapestSelf=aBeCheapestSelf;
   let crossover=null;
   for(const v of A_GRID){ const cl=cheapestCloud(v), sh=cheapestSelf(v); if(cl&&sh&&sh.cost<cl.cost){ crossover={v,cl,sh}; break; } }
   const here_cl=cheapestCloud(aState.runs), here_sh=cheapestSelf(aState.runs);
@@ -1893,6 +1901,70 @@ function aRenderBreakeven(){
       '<div class="tx">at '+fmtVol(aState.runs)+' runs/mo the cheapest managed plan ('+esc(here_cl.name)+', '+fmtMoney(here_cl.cost)+'/mo) beats the cheapest self-host VPS ('+esc(here_sh.name)+', '+fmtMoney(here_sh.cost)+'/mo). Self-host pays off only at much higher volume.</div></div>';
   } else el.innerHTML='<div class="ic">—</div><div><div class="tx">Not enough data to compute a break-even at these settings.</div></div>';
 }
+
+function aRenderBeChart(){
+  var svg=document.getElementById("a-be"); if(!svg) return;
+  var leg=document.getElementById("a-be-legend");
+  var W=760,H=300,padL=58,padR=18,padT=22,padB=34, plotW=W-padL-padR, plotH=H-padT-padB;
+  var V0=A_GRID[0], V1=A_GRID[A_GRID.length-1];
+  var cloud=[],self=[];
+  A_VSAMP.forEach(function(v){ var c=aBeCheapestCloud(v), s2=aBeCheapestSelf(v);
+    if(c&&typeof c.cost==="number") cloud.push({v:v,cost:Math.max(c.cost,0.5)});
+    if(s2&&typeof s2.cost==="number") self.push({v:v,cost:Math.max(s2.cost,0.5)}); });
+  if(cloud.length<2||self.length<2){ svg.innerHTML=""; if(leg) leg.innerHTML=""; return; }
+  var maxC=1,minC=1e9; cloud.concat(self).forEach(function(pt){ if(pt.cost>maxC)maxC=pt.cost; if(pt.cost<minC)minC=pt.cost; }); minC=Math.max(minC,0.5);
+  var lx=function(v){ return padL+(Math.log10(v)-Math.log10(V0))/(Math.log10(V1)-Math.log10(V0))*plotW; };
+  var ly=function(c){ return padT+(Math.log10(c)-Math.log10(minC))/(Math.log10(maxC)-Math.log10(minC))*plotH; }; /* flipped: cheaper = higher, matches the volume chart */
+  var cx=null; for(var i=0;i<A_GRID.length;i++){ var v=A_GRID[i]; var c=aBeCheapestCloud(v), s2=aBeCheapestSelf(v); if(c&&s2&&s2.cost<c.cost){ cx=v; break; } } /* same grid as the banner so the break-even value matches */
+  var cxX=cx!==null?lx(cx):null;
+  function ln(arr){ if(!arr.length) return ""; var d="M "+lx(arr[0].v).toFixed(1)+" "+ly(arr[0].cost).toFixed(1); for(var i=1;i<arr.length;i++) d+=" L "+lx(arr[i].v).toFixed(1)+" "+ly(arr[i].cost).toFixed(1); return d; }
+  var g='<defs>'+
+    '<linearGradient id="be-cl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86abff"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>'+
+    '<linearGradient id="be-sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#54f0c4"/><stop offset="1" stop-color="#16d18c"/></linearGradient>'+
+    '<filter id="beDs"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity=".3"/></filter></defs>';
+  if(cxX!==null){ g+='<rect x="'+padL+'" y="'+padT+'" width="'+Math.max(0,cxX-padL).toFixed(1)+'" height="'+plotH+'" fill="rgba(59,130,246,.06)"/>'+
+      '<rect x="'+cxX.toFixed(1)+'" y="'+padT+'" width="'+Math.max(0,W-padR-cxX).toFixed(1)+'" height="'+plotH+'" fill="rgba(22,209,140,.07)"/>'; }
+  else g+='<rect x="'+padL+'" y="'+padT+'" width="'+plotW+'" height="'+plotH+'" fill="rgba(59,130,246,.05)"/>';
+  for(var e=Math.floor(Math.log10(minC));e<=Math.ceil(Math.log10(maxC));e++){ var val=Math.pow(10,e); if(val<minC*0.9||val>maxC*1.1) continue; var yy=ly(val);
+    g+='<line x1="'+padL+'" y1="'+yy.toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yy.toFixed(1)+'" stroke="#1c1930" stroke-width="1"/>'+
+       '<text x="'+(padL-8)+'" y="'+(yy+4).toFixed(1)+'" fill="#736e8e" font-size="11" font-family="JetBrains Mono" text-anchor="end">'+fmtMoney(val)+'</text>'; }
+  [1000,10000,100000,1000000,10000000].forEach(function(v){ if(v<V0||v>V1) return; g+='<text x="'+lx(v).toFixed(1)+'" y="'+(H-padB+18)+'" fill="#736e8e" font-size="11" font-family="JetBrains Mono" text-anchor="middle">'+fmtVol(v)+'</text>'; });
+  if(cxX===null||cxX-padL>80) g+='<text x="'+((cxX!==null?(padL+cxX):(padL+(W-padR)))/2).toFixed(1)+'" y="'+(padT+16)+'" fill="#3b82f6" fill-opacity=".6" font-size="11.5" font-weight="700" text-anchor="middle">Cloud cheaper</text>';
+  if(cxX!==null&&(W-padR-cxX)>104) g+='<text x="'+((cxX+(W-padR))/2).toFixed(1)+'" y="'+(padT+16)+'" fill="#16d18c" fill-opacity=".72" font-size="11.5" font-weight="700" text-anchor="middle">Self-host cheaper</text>';
+  var youV=Math.min(Math.max(aState.runs,V0),V1), yx=lx(youV);
+  g+='<line x1="'+yx.toFixed(1)+'" y1="'+padT+'" x2="'+yx.toFixed(1)+'" y2="'+(padT+plotH)+'" stroke="#a78bfa" stroke-width="1.4" stroke-dasharray="5 4"/>'+
+     '<text x="'+yx.toFixed(1)+'" y="'+(padT-7)+'" fill="#a78bfa" font-size="10" font-family="JetBrains Mono" text-anchor="middle">you · '+fmtVol(aState.runs)+'</text>';
+  if(cxX!==null) g+='<line x1="'+cxX.toFixed(1)+'" y1="'+padT+'" x2="'+cxX.toFixed(1)+'" y2="'+(padT+plotH)+'" stroke="#16d18c" stroke-width="1.3" stroke-dasharray="3 3" opacity=".65"/>';
+  g+='<path d="'+ln(cloud)+'" fill="none" stroke="url(#be-cl)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" filter="url(#beDs)"/>'+
+     '<path d="'+ln(self)+'" fill="none" stroke="url(#be-sh)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" filter="url(#beDs)"/>';
+  g+='<line class="be-cross" x1="0" y1="'+padT+'" x2="0" y2="'+(padT+plotH)+'" stroke="#cbb6ff" stroke-width="1.1" stroke-dasharray="4 4" style="opacity:0;pointer-events:none"/>'+
+     '<circle class="be-dot-cl" r="4" fill="#0b0a12" stroke="#3b82f6" stroke-width="2.5" style="opacity:0;pointer-events:none"/>'+
+     '<circle class="be-dot-sh" r="4" fill="#0b0a12" stroke="#16d18c" stroke-width="2.5" style="opacity:0;pointer-events:none"/>';
+  svg.innerHTML=g;
+  if(leg) leg.innerHTML='<span><i style="background:#3b82f6"></i>Cheapest managed cloud</span><span><i style="background:#16d18c"></i>Cheapest self-host (VPS / own HW)</span>'+(cx!==null?'<span><i style="background:#16d18c;opacity:.55"></i>break-even ~'+fmtVol(cx)+' runs/mo</span>':'<span><i style="background:#3b82f6;opacity:.55"></i>cloud stays cheaper to 10M</span>');
+  function costAt(arr,v){ if(!arr.length) return null; if(v<=arr[0].v) return arr[0].cost; if(v>=arr[arr.length-1].v) return arr[arr.length-1].cost; for(var i=0;i<arr.length-1;i++){ if(v>=arr[i].v&&v<=arr[i+1].v){ var t=(Math.log10(v)-Math.log10(arr[i].v))/(Math.log10(arr[i+1].v)-Math.log10(arr[i].v)); return arr[i].cost+(arr[i+1].cost-arr[i].cost)*t; } } return arr[arr.length-1].cost; }
+  svg._be={cloud:cloud,self:self,ly:ly,padL:padL,padR:padR,padT:padT,plotW:plotW,plotH:plotH,W:W,V0:V0,V1:V1,costAt:costAt};
+  var wrap=svg.parentElement;
+  var tip=wrap.querySelector(".be-tip"); if(!tip){ tip=document.createElement("div"); tip.className="chart-tip be-tip"; wrap.appendChild(tip); }
+  if(!svg._beBound){ svg._beBound=true;
+    svg.addEventListener("mousemove",function(ev){ var d=svg._be; if(!d) return; var r=svg.getBoundingClientRect(); var px=(ev.clientX-r.left)/r.width*d.W;
+      if(px<d.padL||px>d.W-d.padR){ if(svg._beLeave)svg._beLeave(); return; }
+      var v=Math.pow(10,Math.log10(d.V0)+(Math.log10(d.V1)-Math.log10(d.V0))*((px-d.padL)/d.plotW));
+      var cc=d.costAt(d.cloud,v), sc=d.costAt(d.self,v);
+      var cr=svg.querySelector(".be-cross"); if(cr){ cr.setAttribute("x1",px.toFixed(1)); cr.setAttribute("x2",px.toFixed(1)); cr.style.opacity=".7"; }
+      var dc=svg.querySelector(".be-dot-cl"), ds=svg.querySelector(".be-dot-sh");
+      if(dc&&cc!=null){ dc.setAttribute("cx",px.toFixed(1)); dc.setAttribute("cy",d.ly(Math.max(cc,0.5)).toFixed(1)); dc.style.opacity="1"; }
+      if(ds&&sc!=null){ ds.setAttribute("cx",px.toFixed(1)); ds.setAttribute("cy",d.ly(Math.max(sc,0.5)).toFixed(1)); ds.style.opacity="1"; }
+      var win=(sc!=null&&cc!=null)?(sc<cc?"sh":"cl"):null;
+      var tp=wrap.querySelector(".be-tip"); if(tp){ tp.innerHTML='<div class="tt">at '+fmtVol(Math.round(v/1000)*1000)+' runs/mo</div>'+
+        '<div class="tr2'+(win==="cl"?" best":"")+'"><span class="nm"><i style="background:#3b82f6"></i><span class="nmw">Cloud</span></span><span class="vv">'+(cc!=null?fmtMoney(cc):"—")+'</span></div>'+
+        '<div class="tr2'+(win==="sh"?" best":"")+'"><span class="nm"><i style="background:#16d18c"></i><span class="nmw">Self-host</span></span><span class="vv">'+(sc!=null?fmtMoney(sc):"—")+'</span></div>';
+        var wr=wrap.getBoundingClientRect(); var tx=(px/d.W)*wr.width+16; if(tx>wr.width-170) tx-=190; tp.style.left=tx+"px"; tp.style.top="12px"; tp.classList.add("tip-on"); } });
+    svg._beLeave=function(){ var cr=svg.querySelector(".be-cross"); if(cr) cr.style.opacity="0"; var dc=svg.querySelector(".be-dot-cl"),ds=svg.querySelector(".be-dot-sh"); if(dc)dc.style.opacity="0"; if(ds)ds.style.opacity="0"; var tp=wrap.querySelector(".be-tip"); if(tp) tp.classList.remove("tip-on"); };
+    svg.addEventListener("mouseleave",svg._beLeave);
+  }
+}
+
 
 /* ════════════════════════════════════════════════════════════════════════
    LLM ENGINE — parity port of llm/calculator.html
