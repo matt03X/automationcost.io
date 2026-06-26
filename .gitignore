@@ -24,3 +24,6 @@ engine/.env
 
 # lokální výstup marketing konektorů (analytika — NIKDY na veřejný web)
 _marketing-out/
+
+.wrangler/
+node_modules/
