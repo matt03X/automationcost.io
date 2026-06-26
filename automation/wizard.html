@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Which Automation Tool Is Right for You? Free Guided Wizard | WizardCost</title>
+  <meta name="description" content="Answer 6 quick questions and get one honest recommendation — which automation tool fits your use case, at what price, vs what you'd pay with Zapier. Free, no signup.">
+  <link rel="canonical" href="https://wizardcost.com/automation/wizard.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WizardCost">
+  <meta property="og:title" content="Which Automation Tool Is Right for You? — Free Guided Wizard">
+  <meta property="og:description" content="6 questions. 1 honest recommendation. Real prices from our engine — no signup required.">
+  <meta property="og:url" content="https://wizardcost.com/automation/wizard.html">
+  <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://wizardcost.com/automation/og-image.png">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Automation Tool Wizard","url":"https://wizardcost.com/automation/wizard.html","applicationCategory":"BusinessApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"WizardCost","url":"https://wizardcost.com/"}}
+  </script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0e17; --surface: #111827; --surface2: #1a2236; --surface3: #1e2a3d;
+      --border: #1f2d45; --border2: #27375a;
+      --text: #e8edf5; --text2: #a8b4cc; --muted: #6b7a99;
+      --accent: #10b981; --accent-br: #16d18c; --accent-glow: rgba(16,185,129,.20);
+      --accent-dim: rgba(16,185,129,.09); --ink: #04130d;
+      --link: #6f9bff; --red: #ef4444; --yellow: #f59e0b;
+      --radius: 14px; --radius-sm: 9px;
+      --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --display: 'Hanken Grotesk', 'Plus Jakarta Sans', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15.5px; line-height: 1.7; min-height: 100vh; padding-top: 104px; -webkit-font-smoothing: antialiased; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: #9fbcff; }
+    h1,h2,h3 { letter-spacing: -.018em; text-wrap: balance; }
+    p { text-wrap: pretty; }
+
+    body::before { content:''; position:fixed; inset:0; background: radial-gradient(ellipse 80% 58% at 50% -12%, rgba(16,185,129,.14) 0%, transparent 62%), radial-gradient(ellipse 48% 38% at 88% 8%, rgba(22,209,140,.06) 0%, transparent 55%), radial-gradient(ellipse 50% 44% at 6% 92%, rgba(16,185,129,.05) 0%, transparent 58%); pointer-events:none; z-index:0; }
+    .wrap { position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:0 28px; }
+
+    /* ── Nav ── */
+    header { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(10,14,23,.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
+    .nav-top { padding:0 28px; height:58px; display:flex; align-items:center; justify-content:space-between; }
+    .nav-bottom { padding:0 28px; display:flex; overflow-x:auto; scrollbar-width:none; border-top:1px solid var(--border); }
+    .nav-bottom::-webkit-scrollbar { display:none; }
+    .nav-bottom a { padding:12px 16px; font-size:13.5px; font-weight:500; color:var(--muted); text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .15s,border-color .15s; }
+    .nav-bottom a:hover { color:var(--text2); }
+    .nav-bottom a.active { color:var(--text); font-weight:700; border-bottom-color:var(--accent); }
+    .logo { display:flex; align-items:center; gap:0; font-family:var(--display); font-weight:800; font-size:1.08rem; color:var(--text); letter-spacing:-.01em; text-decoration:none; }
+    .logo:hover { color:var(--text); }
+    .logo span { color:var(--accent); }
+    .logo .io { color:var(--muted); font-weight:600; }
+    .logo-icon { width:28px; height:28px; flex-shrink:0; margin-right:9px; }
+    .nav-badge { font-family:var(--mono); font-size:11px; font-weight:500; background:var(--surface2); border:1px solid var(--border2); border-radius:20px; padding:4px 12px; color:var(--muted); display:flex; align-items:center; gap:7px; letter-spacing:.01em; }
+    .nav-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 7px var(--accent); flex-shrink:0; }
+
+    /* ── Hero ── */
+    .wiz-hero { text-align:center; padding:52px 0 40px; }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; background:var(--surface2); border:1px solid var(--border2); border-radius:100px; font-family:var(--mono); font-size:11.5px; font-weight:500; color:var(--text2); padding:6px 15px; margin-bottom:26px; letter-spacing:.02em; }
+    .eyebrow .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent); flex-shrink:0; }
+    .wiz-hero h1 { font-family:var(--display); font-size:clamp(2.1rem,4.6vw,3.4rem); font-weight:900; line-height:1.1; max-width:18ch; margin:0 auto 18px; }
+    .wiz-hero h1 em { font-style:normal; background:linear-gradient(96deg,#16d18c 0%,#2ee6a6 48%,#10b981 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+    .wiz-hero p { color:var(--text2); font-size:1.08rem; max-width:520px; margin:0 auto 16px; }
+    .wiz-meta { display:inline-flex; align-items:center; gap:14px; font-size:13px; color:var(--muted); font-family:var(--mono); }
+    .wiz-meta span { display:flex; align-items:center; gap:5px; }
+
+    /* ── Wizard shell ── */
+    #wizard { max-width:680px; margin:0 auto 56px; }
+    .wiz-progress { display:flex; align-items:center; justify-content:center; gap:0; margin-bottom:36px; }
+    .wiz-step-dot { width:32px; height:32px; border-radius:50%; background:var(--surface2); border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:var(--muted); font-family:var(--mono); transition:background .2s,border-color .2s,color .2s; flex-shrink:0; }
+    .wiz-step-dot.done { background:var(--accent-dim); border-color:var(--accent); color:var(--accent); }
+    .wiz-step-dot.active { background:var(--accent); border-color:var(--accent); color:var(--ink); }
+    .wiz-step-line { flex:1; height:2px; background:var(--border); max-width:40px; transition:background .2s; }
+    .wiz-step-line.done { background:var(--accent); }
+    .wiz-step-label { text-align:center; font-size:12.5px; color:var(--muted); font-family:var(--mono); margin-bottom:28px; letter-spacing:.05em; text-transform:uppercase; }
+
+    /* ── Step panels ── */
+    .wiz-panel { display:none; }
+    .wiz-panel.active { display:block; }
+    .wiz-q { font-family:var(--display); font-size:1.42rem; font-weight:800; margin-bottom:8px; line-height:1.2; }
+    .wiz-hint { font-size:14px; color:var(--muted); margin-bottom:22px; }
+
+    /* Tile grid */
+    .tile-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:22px; }
+    .tile-grid.cols-2 { grid-template-columns:repeat(2,1fr); }
+    .tile-grid.cols-4 { grid-template-columns:repeat(2,1fr); }
+    @media(max-width:560px) { .tile-grid, .tile-grid.cols-4 { grid-template-columns:1fr 1fr; } }
+    @media(max-width:380px) { .tile-grid { grid-template-columns:1fr; } }
+    .tile { background:var(--surface); border:2px solid var(--border); border-radius:var(--radius); padding:18px 14px; cursor:pointer; transition:border-color .15s,background .15s,transform .12s; text-align:center; user-select:none; min-height:44px; display:flex; flex-direction:column; align-items:center; gap:8px; }
+    .tile:hover { border-color:var(--border2); background:var(--surface2); }
+    .tile.selected { border-color:var(--accent); background:var(--accent-dim); }
+    .tile-icon { font-size:1.7rem; line-height:1; }
+    .tile-label { font-size:14px; font-weight:700; color:var(--text); line-height:1.3; }
+    .tile-sub { font-size:12px; color:var(--muted); line-height:1.4; }
+    .tile.selected .tile-label { color:var(--accent-br); }
+
+    /* Feature checklist */
+    .feat-list { display:flex; flex-direction:column; gap:10px; margin-bottom:22px; }
+    .feat-item { display:flex; align-items:center; gap:14px; background:var(--surface); border:2px solid var(--border); border-radius:var(--radius-sm); padding:14px 16px; cursor:pointer; transition:border-color .15s,background .15s; min-height:44px; }
+    .feat-item:hover { border-color:var(--border2); background:var(--surface2); }
+    .feat-item.selected { border-color:var(--accent); background:var(--accent-dim); }
+    .feat-check { width:20px; height:20px; border-radius:5px; border:2px solid var(--border2); background:var(--bg); flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:background .12s,border-color .12s; }
+    .feat-item.selected .feat-check { background:var(--accent); border-color:var(--accent); }
+    .feat-item.selected .feat-check::after { content:""; display:block; width:10px; height:6px; border-left:2.5px solid var(--ink); border-bottom:2.5px solid var(--ink); transform:rotate(-45deg) translateY(-1px); }
+    .feat-text strong { display:block; font-size:14px; font-weight:700; color:var(--text); }
+    .feat-text span { font-size:12.5px; color:var(--muted); }
+
+    /* Integration picker */
+    .integ-picker { margin-bottom:22px; }
+    .integ-selected { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0; min-height:6px; }
+    .integ-tag { display:inline-flex; align-items:center; gap:6px; background:var(--accent-dim); border:1px solid var(--accent); border-radius:6px; padding:4px 8px 4px 10px; font-size:13px; color:var(--text); font-weight:600; }
+    .integ-tag button { background:none; border:none; color:var(--muted); cursor:pointer; font-size:15px; line-height:1; padding:0; font-family:inherit; }
+    .integ-tag button:hover { color:var(--red); }
+    .integ-search-wrap { position:relative; }
+    #integ-search { width:100%; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--radius-sm); color:var(--text); font-size:14px; padding:12px 14px; outline:none; font-family:inherit; transition:border-color .15s; }
+    #integ-search:focus { border-color:var(--accent); }
+    .integ-dropdown { position:absolute; top:calc(100% + 4px); left:0; right:0; z-index:20; background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius-sm); max-height:260px; overflow-y:auto; display:none; box-shadow:0 8px 24px rgba(0,0,0,.4); }
+    .integ-dropdown.open { display:block; }
+    .integ-opt { display:flex; align-items:center; gap:10px; padding:9px 14px; cursor:pointer; font-size:14px; border-bottom:1px solid var(--border); }
+    .integ-opt:last-child { border-bottom:none; }
+    .integ-opt:hover,.integ-opt.hl { background:var(--surface2); }
+    .integ-opt.sel { background:rgba(16,185,129,.08); }
+    .integ-opt.sel .integ-name { color:var(--accent); }
+    .integ-cb { width:16px; height:16px; border-radius:4px; border:1.5px solid var(--border); background:var(--bg); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+    .integ-opt.sel .integ-cb { background:var(--accent); border-color:var(--accent); }
+    .integ-opt.sel .integ-cb::after { content:""; display:block; width:9px; height:5px; border-left:2px solid #fff; border-bottom:2px solid #fff; transform:rotate(-45deg) translateY(-1px); }
+    .integ-cat { font-size:11px; color:var(--muted); margin-left:auto; }
+    .integ-cat-head { padding:5px 14px; font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); background:var(--surface2); position:sticky; top:0; font-weight:700; font-family:var(--mono); }
+    .integ-empty { padding:12px 14px; color:var(--muted); font-size:13px; text-align:center; }
+
+    /* Step skip link */
+    .skip-link { display:inline-block; font-size:13px; color:var(--muted); margin-top:4px; cursor:pointer; padding:4px 0; text-decoration:underline; text-underline-offset:3px; }
+    .skip-link:hover { color:var(--text2); }
+
+    /* Peek bar */
+    .peek-bar { background:var(--surface2); border:1px solid var(--border2); border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:20px; font-size:13.5px; color:var(--text2); display:none; }
+    .peek-bar.show { display:block; }
+    .peek-bar strong { color:var(--accent-br); }
+
+    /* CTA buttons */
+    .btn-primary { display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:var(--ink); font-weight:700; font-size:15px; padding:14px 28px; border-radius:var(--radius-sm); border:none; cursor:pointer; font-family:inherit; transition:filter .15s,transform .12s; text-decoration:none; min-height:44px; }
+    .btn-primary:hover { filter:brightness(1.08); transform:translateY(-2px); color:var(--ink); }
+    .btn-ghost { display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--text2); font-weight:600; font-size:14px; padding:12px 20px; border-radius:var(--radius-sm); border:1.5px solid var(--border2); cursor:pointer; font-family:inherit; transition:border-color .15s,color .15s; min-height:44px; }
+    .btn-ghost:hover { border-color:var(--text2); color:var(--text); }
+    .step-nav { display:flex; align-items:center; justify-content:space-between; margin-top:20px; gap:12px; }
+
+    /* ── Result section ── */
+    #wiz-result { display:none; }
+    .result-winner { background:linear-gradient(135deg,rgba(16,185,129,.12) 0%,rgba(16,185,129,.04) 60%); border:2px solid var(--accent); border-radius:18px; padding:28px 28px 24px; margin-bottom:20px; position:relative; overflow:hidden; }
+    .result-winner::before { content:''; position:absolute; top:-30px; right:-30px; width:200px; height:200px; border-radius:50%; background:radial-gradient(circle,rgba(16,185,129,.15) 0%,transparent 70%); pointer-events:none; }
+    .res-badge { display:inline-flex; align-items:center; gap:6px; background:var(--accent); color:var(--ink); font-family:var(--mono); font-size:11px; font-weight:700; padding:4px 12px; border-radius:100px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:14px; }
+    .res-headline { font-family:var(--display); font-size:clamp(1.7rem,3.8vw,2.6rem); font-weight:900; line-height:1.1; margin-bottom:10px; }
+    .res-headline .tool-name { color:var(--accent-br); }
+    .res-headline .price { color:var(--text); }
+    .res-savings { font-size:1.05rem; color:var(--text2); margin-bottom:18px; line-height:1.5; }
+    .res-savings strong { color:var(--accent-br); font-size:1.1em; }
+    .res-plan-note { font-size:13px; color:var(--muted); font-family:var(--mono); margin-bottom:20px; }
+    .res-cta-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+    .res-affiliate-note { font-size:12px; color:var(--muted); margin-top:8px; }
+
+    /* Runner-up */
+    .result-runnerup { background:var(--surface); border:1.5px solid var(--border); border-radius:var(--radius); padding:18px 20px; margin-bottom:20px; display:flex; align-items:flex-start; gap:14px; }
+    .ru-label { font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:4px; }
+    .ru-name { font-weight:800; font-size:1.05rem; color:var(--text); }
+    .ru-price { font-size:13.5px; color:var(--text2); }
+    .ru-why { font-size:13px; color:var(--muted); margin-top:4px; line-height:1.5; }
+    .ru-icon { font-size:2rem; flex-shrink:0; margin-top:2px; }
+
+    /* Cost comparison chart */
+    .chart-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:22px 20px; margin-bottom:20px; }
+    .chart-title { font-weight:700; font-size:14px; color:var(--text); margin-bottom:6px; }
+    .chart-sub { font-size:12.5px; color:var(--muted); margin-bottom:18px; font-family:var(--mono); }
+    #cost-chart { width:100%; }
+
+    /* Math breakdown */
+    .breakdown-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px 20px; margin-bottom:20px; }
+    .bd-title { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; font-family:var(--mono); color:var(--muted); margin-bottom:12px; }
+    .bd-row { display:flex; justify-content:space-between; align-items:baseline; font-size:13.5px; padding:6px 0; border-bottom:1px solid var(--border); gap:12px; }
+    .bd-row:last-child { border-bottom:none; }
+    .bd-key { color:var(--text2); flex-shrink:0; }
+    .bd-val { color:var(--text); font-weight:600; text-align:right; }
+    .bd-disclaimer { font-size:12px; color:var(--muted); margin-top:10px; line-height:1.5; }
+
+    /* Waitlist */
+    .waitlist-section { background:linear-gradient(135deg,rgba(124,77,255,.10) 0%,rgba(167,139,250,.04) 100%); border:1.5px solid rgba(167,139,250,.3); border-radius:var(--radius); padding:28px 24px; text-align:center; margin-bottom:20px; }
+    .wl-eyebrow { font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:#a78bfa; margin-bottom:10px; }
+    .wl-title { font-family:var(--display); font-size:1.3rem; font-weight:800; margin-bottom:8px; }
+    .wl-sub { font-size:14px; color:var(--text2); max-width:400px; margin:0 auto 20px; line-height:1.55; }
+    .wl-form { display:flex; gap:10px; max-width:400px; margin:0 auto; flex-wrap:wrap; justify-content:center; }
+    .wl-input { flex:1; min-width:200px; background:var(--bg); border:1.5px solid var(--border2); border-radius:var(--radius-sm); color:var(--text); font-size:14px; padding:12px 14px; outline:none; font-family:inherit; transition:border-color .15s; }
+    .wl-input:focus { border-color:#a78bfa; }
+    .btn-waitlist { background:rgba(124,77,255,.9); color:#fff; font-weight:700; font-size:14px; padding:12px 22px; border-radius:var(--radius-sm); border:none; cursor:pointer; font-family:inherit; transition:filter .15s; min-height:44px; white-space:nowrap; }
+    .btn-waitlist:hover { filter:brightness(1.1); }
+    .wl-success { display:none; font-size:14px; color:var(--accent-br); font-weight:700; margin-top:12px; }
+    .wl-legal { font-size:12px; color:var(--muted); margin-top:10px; }
+
+    /* Restart */
+    .result-actions { text-align:center; margin-bottom:28px; }
+    .btn-restart { background:none; border:none; color:var(--muted); font-size:13.5px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; padding:8px; text-decoration:underline; text-underline-offset:3px; }
+    .btn-restart:hover { color:var(--text2); }
+
+    /* Footer */
+    footer { border-top:1px solid var(--border); padding:28px 28px; text-align:center; font-size:13px; color:var(--muted); line-height:1.9; }
+    footer a { color:var(--muted); text-decoration:underline; }
+
+    /* Reduced motion */
+    @media(prefers-reduced-motion:reduce) { *, *::before, *::after { transition:none !important; animation:none !important; } }
+    /* Focus visible */
+    :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:3px; }
+  </style>
+<!-- ANALYTICS (build.py) -->
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
+  <!-- /ANALYTICS -->
+  </head>
+<body>
+
+<header>
+  <div class="nav-top">
+    <a class="logo" href="/automation/">
+      <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="36" height="36" rx="10" fill="#111827"/>
+        <path d="M10 26L17 10L24 26" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12.5 21H21.5" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="26.5" cy="12.5" r="2.5" fill="#16d18c"/>
+      </svg>
+      Wizard<span>Cost</span><span class="io">.com</span>
+    </a>
+    <div class="nav-badge">Prices verified Jun 2026</div>
+  </div>
+  <nav class="nav-bottom" aria-label="Automation section">
+    <a href="/automation/">Hub</a>
+    <a href="calculator.html">Calculator</a>
+    <a href="wizard.html" class="active">Wizard</a>
+    <a href="compare.html">Compare</a>
+    <a href="tools.html">All tools</a>
+    <a href="changelog.html">Changelog</a>
+  </nav>
+</header>
+
+<main>
+<div class="wrap">
+
+  <!-- Hero -->
+  <div class="wiz-hero">
+    <div class="eyebrow"><span class="dot"></span>Free · No signup · 6 questions</div>
+    <h1>Which automation tool<br>is right for <em>you?</em></h1>
+    <p>Answer 6 plain-language questions. Get one honest, engine-priced recommendation — plus what you'd save vs the obvious default.</p>
+    <div class="wiz-meta">
+      <span>Takes ~2 minutes</span>
+      <span>·</span>
+      <span>Powered by live prices</span>
+      <span>·</span>
+      <span>No bias toward any vendor</span>
+    </div>
+  </div>
+
+  <!-- Wizard -->
+  <div id="wizard">
+    <!-- Progress -->
+    <div class="wiz-progress" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="6" id="wiz-progress" aria-label="Wizard progress">
+      <div class="wiz-step-dot active" id="dot-1">1</div>
+      <div class="wiz-step-line" id="line-1"></div>
+      <div class="wiz-step-dot" id="dot-2">2</div>
+      <div class="wiz-step-line" id="line-2"></div>
+      <div class="wiz-step-dot" id="dot-3">3</div>
+      <div class="wiz-step-line" id="line-3"></div>
+      <div class="wiz-step-dot" id="dot-4">4</div>
+      <div class="wiz-step-line" id="line-4"></div>
+      <div class="wiz-step-dot" id="dot-5">5</div>
+      <div class="wiz-step-line" id="line-5"></div>
+      <div class="wiz-step-dot" id="dot-6">6</div>
+    </div>
+    <div class="wiz-step-label" id="wiz-step-label">Step 1 of 6</div>
+
+    <!-- Step 1: Use-case -->
+    <div class="wiz-panel active" id="wiz-step-1" role="group" aria-labelledby="q1-label">
+      <div class="wiz-q" id="q1-label">What do you want to automate?</div>
+      <div class="wiz-hint">Pick the closest match — it sets a sensible starting volume for you.</div>
+      <div class="tile-grid" id="usecase-grid">
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-uc="orders" onclick="selectUC(this,'orders')" onkeydown="keyTile(event,this,'orders',selectUC)">
+          <div class="tile-icon">🛒</div>
+          <div class="tile-label">Orders &rarr; Accounting</div>
+          <div class="tile-sub">Shopify, WooCommerce, Xero, QuickBooks</div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-uc="leads" onclick="selectUC(this,'leads')" onkeydown="keyTile(event,this,'leads',selectUC)">
+          <div class="tile-icon">🎯</div>
+          <div class="tile-label">Leads &rarr; CRM</div>
+          <div class="tile-sub">HubSpot, Salesforce, Pipedrive + email</div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-uc="notify" onclick="selectUC(this,'notify')" onkeydown="keyTile(event,this,'notify',selectUC)">
+          <div class="tile-icon">🔔</div>
+          <div class="tile-label">Internal alerts</div>
+          <div class="tile-sub">Slack, Teams, email notifications</div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-uc="social" onclick="selectUC(this,'social')" onkeydown="keyTile(event,this,'social',selectUC)">
+          <div class="tile-icon">📱</div>
+          <div class="tile-label">Content &amp; social</div>
+          <div class="tile-sub">Schedule posts, repurpose content</div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-uc="ops" onclick="selectUC(this,'ops')" onkeydown="keyTile(event,this,'ops',selectUC)">
+          <div class="tile-icon">⚙️</div>
+          <div class="tile-label">Ops &amp; data sync</div>
+          <div class="tile-sub">Spreadsheets, databases, reports</div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-uc="custom" onclick="selectUC(this,'custom')" onkeydown="keyTile(event,this,'custom',selectUC)">
+          <div class="tile-icon">✏️</div>
+          <div class="tile-label">Something else</div>
+          <div class="tile-sub">I'll describe my setup next</div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <div></div>
+        <button class="btn-primary" onclick="goStep(2)" id="q1-next" disabled aria-disabled="true">Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Step 2: Frequency -->
+    <div class="wiz-panel" id="wiz-step-2" role="group" aria-labelledby="q2-label">
+      <div class="wiz-q" id="q2-label">How often will your automation run?</div>
+      <div class="wiz-hint">This is the biggest driver of monthly cost — be honest, it only helps you.</div>
+      <div class="tile-grid cols-2" id="freq-grid">
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-freq="light" onclick="selectFreq(this,'light')" onkeydown="keyTile(event,this,'light',selectFreq)">
+          <div class="tile-icon">🌱</div>
+          <div class="tile-label">Just starting out</div>
+          <div class="tile-sub">~100–500 runs/mo</div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-freq="medium" onclick="selectFreq(this,'medium')" onkeydown="keyTile(event,this,'medium',selectFreq)">
+          <div class="tile-icon">📊</div>
+          <div class="tile-label">A few hundred/month</div>
+          <div class="tile-sub">~500–2,500 runs/mo</div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-freq="busy" onclick="selectFreq(this,'busy')" onkeydown="keyTile(event,this,'busy',selectFreq)">
+          <div class="tile-icon">🚀</div>
+          <div class="tile-label">Thousands/month</div>
+          <div class="tile-sub">~5,000–10,000 runs/mo</div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-freq="heavy" onclick="selectFreq(this,'heavy')" onkeydown="keyTile(event,this,'heavy',selectFreq)">
+          <div class="tile-icon">⚡</div>
+          <div class="tile-label">Very high volume</div>
+          <div class="tile-sub">25,000+ runs/mo</div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-ghost" onclick="goStep(1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
+        <button class="btn-primary" onclick="goStep(3)" id="q2-next" disabled aria-disabled="true">Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Step 3: Integrations -->
+    <div class="wiz-panel" id="wiz-step-3" role="group" aria-labelledby="q3-label">
+      <div class="wiz-q" id="q3-label">Which apps do you need to connect?</div>
+      <div class="wiz-hint">Optional — filters out tools that don't support your apps. Leave blank to keep all tools.</div>
+      <div class="peek-bar" id="peek-bar" aria-live="polite"></div>
+      <div class="integ-picker">
+        <div class="integ-selected" id="integ-selected" aria-label="Selected apps"></div>
+        <div class="integ-search-wrap">
+          <input type="text" id="integ-search" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="integ-dropdown" aria-label="Search apps — Slack, Shopify, HubSpot…" placeholder="Search apps — Slack, Shopify, HubSpot…">
+          <div class="integ-dropdown" id="integ-dropdown" role="listbox" aria-label="Available apps"></div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-ghost" onclick="goStep(2)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
+        <button class="btn-primary" onclick="goStep(4)">Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Step 4: Must-have features -->
+    <div class="wiz-panel" id="wiz-step-4" role="group" aria-labelledby="q4-label">
+      <div class="wiz-q" id="q4-label">Do you need any of these?</div>
+      <div class="wiz-hint">Only tick things that would actually stop you — each filter can remove some tools.</div>
+      <div class="feat-list" id="feat-list">
+        <div class="feat-item" role="checkbox" aria-checked="false" tabindex="0" data-feat="ai" onclick="toggleFeat(this,'ai')" onkeydown="keyCheck(event,this,'ai')">
+          <div class="feat-check" aria-hidden="true"></div>
+          <div class="feat-text">
+            <strong>Built-in AI steps</strong>
+            <span>Native AI / LLM nodes without extra coding. Filters out Automatisch &amp; Node-RED.</span>
+          </div>
+        </div>
+        <div class="feat-item" role="checkbox" aria-checked="false" tabindex="0" data-feat="audit" onclick="toggleFeat(this,'audit')" onkeydown="keyCheck(event,this,'audit')">
+          <div class="feat-check" aria-hidden="true"></div>
+          <div class="feat-text">
+            <strong>Audit log</strong>
+            <span>Track every action for compliance or debugging. Available on Zapier, Make (Pro+), n8n (Pro+).</span>
+          </div>
+        </div>
+        <div class="feat-item" role="checkbox" aria-checked="false" tabindex="0" data-feat="selfhost_feat" onclick="toggleFeat(this,'selfhost_feat')" onkeydown="keyCheck(event,this,'selfhost_feat')">
+          <div class="feat-check" aria-hidden="true"></div>
+          <div class="feat-text">
+            <strong>Self-hostable software</strong>
+            <span>Ability to run on your own servers. Keeps n8n, Activepieces, Automatisch, Node-RED.</span>
+          </div>
+        </div>
+        <div class="feat-item" role="checkbox" aria-checked="false" tabindex="0" data-feat="eu" onclick="toggleFeat(this,'eu')" onkeydown="keyCheck(event,this,'eu')">
+          <div class="feat-check" aria-hidden="true"></div>
+          <div class="feat-text">
+            <strong>EU-built &amp; GDPR-focused</strong>
+            <span>Prefer tools with EU roots (n8n: Berlin, Automatisch: Netherlands). Soft preference — won't exclude US tools.</span>
+          </div>
+        </div>
+      </div>
+      <span class="skip-link" role="button" tabindex="0" onclick="goStep(5)" onkeydown="if(event.key==='Enter'||event.key===' ')goStep(5)">None of these apply &rarr; skip</span>
+      <div class="step-nav">
+        <button class="btn-ghost" onclick="goStep(3)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
+        <button class="btn-primary" onclick="goStep(5)">Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Step 5: Team size -->
+    <div class="wiz-panel" id="wiz-step-5" role="group" aria-labelledby="q5-label">
+      <div class="wiz-q" id="q5-label">How many people will use this tool?</div>
+      <div class="wiz-hint">Seat pricing varies a lot — Pipedream and Zapier charge per user; n8n and Make don't.</div>
+      <div class="tile-grid cols-2" id="team-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-team="solo" onclick="selectTeam(this,'solo')" onkeydown="keyTile(event,this,'solo',selectTeam)">
+          <div class="tile-icon">🧑</div>
+          <div class="tile-label">Just me</div>
+          <div class="tile-sub">Solo founder</div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-team="small" onclick="selectTeam(this,'small')" onkeydown="keyTile(event,this,'small',selectTeam)">
+          <div class="tile-icon">👥</div>
+          <div class="tile-label">2–5 people</div>
+          <div class="tile-sub">Small team</div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-team="team" onclick="selectTeam(this,'team')" onkeydown="keyTile(event,this,'team',selectTeam)">
+          <div class="tile-icon">🏢</div>
+          <div class="tile-label">6+ people</div>
+          <div class="tile-sub">Growing team</div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-ghost" onclick="goStep(4)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
+        <button class="btn-primary" onclick="goStep(6)" id="q5-next" disabled aria-disabled="true">Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Step 6: Self-host comfort -->
+    <div class="wiz-panel" id="wiz-step-6" role="group" aria-labelledby="q6-label">
+      <div class="wiz-q" id="q6-label">Could you manage your own server?</div>
+      <div class="wiz-hint">Self-hosting can slash costs dramatically. Be honest — it takes some technical upkeep.</div>
+      <div class="tile-grid" id="sh-grid" style="grid-template-columns:1fr">
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-sh="no" onclick="selectSH(this,'no')" onkeydown="keyTile(event,this,'no',selectSH)" style="flex-direction:row;text-align:left;gap:14px;justify-content:flex-start">
+          <div class="tile-icon" style="font-size:1.4rem">☁️</div>
+          <div>
+            <div class="tile-label">No thanks — I want a managed cloud service</div>
+            <div class="tile-sub">I'll pay a monthly fee and not think about servers</div>
+          </div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-sh="maybe" onclick="selectSH(this,'maybe')" onkeydown="keyTile(event,this,'maybe',selectSH)" style="flex-direction:row;text-align:left;gap:14px;justify-content:flex-start">
+          <div class="tile-icon" style="font-size:1.4rem">🤔</div>
+          <div>
+            <div class="tile-label">I'd consider it if the savings are significant</div>
+            <div class="tile-sub">Show me both options and I'll decide</div>
+          </div>
+        </div>
+        <div class="tile" role="button" tabindex="0" aria-pressed="false" data-sh="yes" onclick="selectSH(this,'yes')" onkeydown="keyTile(event,this,'yes',selectSH)" style="flex-direction:row;text-align:left;gap:14px;justify-content:flex-start">
+          <div class="tile-icon" style="font-size:1.4rem">🖥️</div>
+          <div>
+            <div class="tile-label">Yes — I can manage a Linux VPS or Docker</div>
+            <div class="tile-sub">Include self-hosted options — I want the cheapest total cost</div>
+          </div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-ghost" onclick="goStep(5)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
+        <button class="btn-primary" onclick="showResults()" id="q6-next" disabled aria-disabled="true">See my recommendation <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div id="wiz-result" aria-live="polite" aria-label="Your recommendation">
+      <!-- Dynamically rendered by JS -->
+    </div>
+
+  </div><!-- /wizard -->
+
+</div><!-- /wrap -->
+</main>
+
+<footer>
+  <div>&copy; 2026 WizardCost. All rights reserved.</div>
+  <div>Prices verified by hand June 2026 · Estimates may differ from final vendor invoice.</div>
+  <div>Some outbound links are affiliate links — we may earn a commission at no extra cost to you. Affiliate status never affects recommendations.</div>
+  <div style="margin-top:6px"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a> · <a href="methodology.html">Methodology</a></div>
+</footer>
+
+<script>
+/* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
+const TOOLS = [
+  {
+    slug: "n8n", name: "n8n", unitModel: "runs", annualFactor: 0.8333, selfHostable: true, aiFeatures: true, integrations: 572, integrationType: "official nodes",
+    homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: false,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
+      { name: "Cloud Starter", monthlyUsd: 27.27, opsIncluded: 2500, workflowLimit: Infinity, annualUsd: 22.72, overage: null, note: "Cloud Starter (€24/mo monthly, 2.5k executions)" },
+      { name: "Cloud Pro 10k", monthlyUsd: 68.17, opsIncluded: 10000, workflowLimit: Infinity, annualUsd: 56.81, overage: null, note: "Cloud Pro — 10k executions (€60/mo monthly)" },
+      { name: "Cloud Pro 50k", monthlyUsd: 163.61, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 136.34, overage: null, note: "Cloud Pro — 50k executions (€144/mo monthly)" },
+      { name: "Business 40k", monthlyUsd: 908.96, opsIncluded: 40000, workflowLimit: Infinity, annualUsd: 757.85, overage: null, note: "Business — 40k executions (€800/mo monthly)" },
+      { name: "Business 50k", monthlyUsd: 1119.16, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 932.82, overage: null, note: "Business — 50k executions (€985/mo monthly)" },
+      { name: "Business 75k", monthlyUsd: 1654.31, opsIncluded: 75000, workflowLimit: Infinity, annualUsd: 1378.21, overage: null, note: "Business — 75k executions (€1456/mo monthly)" },
+      { name: "Business 100k", monthlyUsd: 1961.08, opsIncluded: 100000, workflowLimit: Infinity, annualUsd: 1633.86, overage: null, note: "Business — 100k executions (€1726/mo monthly)" },
+      { name: "Business 150k", monthlyUsd: 2487.14, opsIncluded: 150000, workflowLimit: Infinity, annualUsd: 2072.43, overage: null, note: "Business — 150k executions (€2189/mo monthly)" },
+      { name: "Business 200k", monthlyUsd: 2998.43, opsIncluded: 200000, workflowLimit: Infinity, annualUsd: 2498.5, overage: null, note: "Business — 200k executions (€2639/mo monthly)" },
+      { name: "Business 300k", monthlyUsd: 3990.33, opsIncluded: 300000, workflowLimit: Infinity, annualUsd: 3325.66, overage: null, note: "Business — 300k executions (€3512/mo monthly)" },
+      { name: "Business 400k", monthlyUsd: 4977.69, opsIncluded: 400000, workflowLimit: Infinity, annualUsd: 4148.27, overage: null, note: "Business — 400k executions (€4381/mo monthly)" },
+      { name: "Business 500k", monthlyUsd: 5959.37, opsIncluded: 500000, workflowLimit: Infinity, annualUsd: 4966.33, overage: null, note: "Business — 500k executions (€5245/mo monthly)" },
+      { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
+  {
+    slug: "make", name: "Make", unitModel: "modules", annualFactor: 0.85, selfHostable: false, aiFeatures: true, integrations: 2594, integrationType: "app connectors",
+    homepage: "https://www.make.com", affiliateUrl: "https://www.make.com/en/register?pc=wizardcost", hasAffiliate: true,
+    plans: [
+      { name: "Free", monthlyUsd: 0, opsIncluded: 1000, workflowLimit: Infinity, note: "Free tier" },
+      { name: "Core 10k", monthlyUsd: 10.59, opsIncluded: 10000, workflowLimit: Infinity, annualUsd: 9, overage: null, note: "Core — 10,000 credits/mo ($10.59)" },
+      { name: "Core 20k", monthlyUsd: 18.82, opsIncluded: 20000, workflowLimit: Infinity, annualUsd: 16, overage: null, note: "Core — 20,000 credits/mo ($18.82)" },
+      { name: "Core 40k", monthlyUsd: 34.12, opsIncluded: 40000, workflowLimit: Infinity, annualUsd: 29, overage: null, note: "Core — 40,000 credits/mo ($34.12)" },
+      { name: "Core 80k", monthlyUsd: 64.71, opsIncluded: 80000, workflowLimit: Infinity, annualUsd: 55, overage: null, note: "Core — 80,000 credits/mo ($64.71)" },
+      { name: "Core 150k", monthlyUsd: 116.47, opsIncluded: 150000, workflowLimit: Infinity, annualUsd: 99, overage: null, note: "Core — 150,000 credits/mo ($116.47)" },
+      { name: "Core 300k", monthlyUsd: 214.31, opsIncluded: 300000, workflowLimit: Infinity, annualUsd: 182.16, overage: null, note: "Core — 300,000 credits/mo ($214.31)" },
+      { name: "Pro 500k", monthlyUsd: 482.67, opsIncluded: 500000, workflowLimit: Infinity, annualUsd: 410.27, overage: null, note: "Pro — 500,000 credits/mo ($482.67)" },
+      { name: "Pro 750k", monthlyUsd: 678.75, opsIncluded: 750000, workflowLimit: Infinity, annualUsd: 576.94, overage: null, note: "Pro — 750,000 credits/mo ($678.75)" },
+      { name: "Pro 1M", monthlyUsd: 880.86, opsIncluded: 1000000, workflowLimit: Infinity, annualUsd: 748.73, overage: null, note: "Pro — 1,000,000 credits/mo ($880.86)" },
+      { name: "Pro 1.5M", monthlyUsd: 1268.44, opsIncluded: 1500000, workflowLimit: Infinity, annualUsd: 1078.18, overage: null, note: "Pro — 1,500,000 credits/mo ($1268.44)" },
+      { name: "Pro 2M", monthlyUsd: 1620.79, opsIncluded: 2000000, workflowLimit: Infinity, annualUsd: 1377.67, overage: null, note: "Pro — 2,000,000 credits/mo ($1620.79)" },
+      { name: "Pro 2.5M", monthlyUsd: 2001.32, opsIncluded: 2500000, workflowLimit: Infinity, annualUsd: 1701.13, overage: null, note: "Pro — 2,500,000 credits/mo ($2001.32)" },
+      { name: "Pro 3M", monthlyUsd: 2333.94, opsIncluded: 3000000, workflowLimit: Infinity, annualUsd: 1983.85, overage: null, note: "Pro — 3,000,000 credits/mo ($2333.94)" },
+      { name: "Pro 4M", monthlyUsd: 3028.93, opsIncluded: 4000000, workflowLimit: Infinity, annualUsd: 2574.59, overage: null, note: "Pro — 4,000,000 credits/mo ($3028.93)" },
+      { name: "Pro 5M", monthlyUsd: 3710.44, opsIncluded: 5000000, workflowLimit: Infinity, annualUsd: 3153.88, overage: null, note: "Pro — 5,000,000 credits/mo ($3710.44)" },
+      { name: "Pro 6M", monthlyUsd: 4361.66, opsIncluded: 6000000, workflowLimit: Infinity, annualUsd: 3707.41, overage: null, note: "Pro — 6,000,000 credits/mo ($4361.66)" },
+      { name: "Pro 7M", monthlyUsd: 5028.39, opsIncluded: 7000000, workflowLimit: Infinity, annualUsd: 4274.13, overage: null, note: "Pro — 7,000,000 credits/mo ($5028.39)" },
+      { name: "Pro 8M", monthlyUsd: 5660.47, opsIncluded: 8000000, workflowLimit: Infinity, annualUsd: 4811, overage: null, note: "Pro — 8,000,000 credits/mo ($5660.47)" },
+      { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
+    ], overage: null, selfHostHw: null },
+  {
+    slug: "pipedream", name: "Pipedream", unitModel: "runs", annualFactor: 1, selfHostable: false, aiFeatures: true, integrations: 3391, integrationType: "app connectors",
+    homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: false,
+    plans: [
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, overage: null, note: "Free tier" },
+      { name: "Basic", monthlyUsd: 45, opsIncluded: 2000, workflowLimit: 10, annualUsd: 29, creditBands: [[10000, 0.01], [25000, 0.006], [50000, 0.0042], [99000, 0.0034], [199000, 0.0027], [299000, 0.0022], [399000, 0.0019], [499000, 0.0017], [599000, 0.0016], [748000, 0.0014], [997000, 0.0012], [1990000, 0.001], [2990000, 0.0006], [3990000, 0.0005], [9950000, 0.0004], [Infinity, 0.0003]], note: "Basic — 2k credits + 20M AI tokens/mo, 10 workflows" },
+      { name: "Advanced", monthlyUsd: 74, opsIncluded: 2000, workflowLimit: Infinity, annualUsd: 49, creditBands: [[10000, 0.015], [25000, 0.009], [50000, 0.0063], [99000, 0.005], [199000, 0.004], [299000, 0.0032], [399000, 0.0029], [499000, 0.0026], [599000, 0.0024], [748000, 0.0021], [997000, 0.0018], [1990000, 0.00153], [2990000, 0.0009], [3990000, 0.0007], [9950000, 0.0006], [Infinity, 0.0004]], note: "Advanced — 2k credits + 50M AI tokens/mo, unlimited workflows" },
+      { name: "Connect", monthlyUsd: 150, opsIncluded: 10000, workflowLimit: Infinity, annualUsd: 99, creditBands: [[25000, 0.012], [50000, 0.0084], [99000, 0.0067], [199000, 0.0054], [299000, 0.0043], [399000, 0.0039], [499000, 0.0035], [599000, 0.0031], [748000, 0.0028], [997000, 0.0024], [1990000, 0.002], [2990000, 0.0012], [3990000, 0.001], [4990000, 0.0008], [9950000, 0.0007], [Infinity, 0.0006]], note: "Connect — 10k credits (developer plan)" },
+      { custom: true, name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
+    ], overage: null, selfHostHw: null },
+  {
+    slug: "zapier", name: "Zapier", unitModel: "actions", annualFactor: 0.6667, selfHostable: false, aiFeatures: true, integrations: 9725, integrationType: "app connectors",
+    homepage: "https://zapier.com", affiliateUrl: "https://zapier.com", hasAffiliate: false,
+    plans: [
+      { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity, overage: null, note: "Free tier" },
+      { name: "Professional 750", monthlyUsd: 29.99, opsIncluded: 750, workflowLimit: Infinity, annualUsd: 19.99, overage: null, note: "Professional — 750 tasks/mo ($29.99)" },
+      { name: "Professional 1k", monthlyUsd: 58.5, opsIncluded: 1500, workflowLimit: Infinity, annualUsd: 39.0, overage: null, note: "Professional — 1,500 tasks/mo ($58.5)" },
+      { name: "Professional 2k", monthlyUsd: 73.5, opsIncluded: 2000, workflowLimit: Infinity, annualUsd: 49.0, overage: null, note: "Professional — 2,000 tasks/mo ($73.5)" },
+      { name: "Professional 5k", monthlyUsd: 133.5, opsIncluded: 5000, workflowLimit: Infinity, annualUsd: 89.0, overage: null, note: "Professional — 5,000 tasks/mo ($133.5)" },
+      { name: "Professional 10k", monthlyUsd: 193.5, opsIncluded: 10000, workflowLimit: Infinity, annualUsd: 129.0, overage: null, note: "Professional — 10,000 tasks/mo ($193.5)" },
+      { name: "Professional 20k", monthlyUsd: 283.5, opsIncluded: 20000, workflowLimit: Infinity, annualUsd: 189.0, overage: null, note: "Professional — 20,000 tasks/mo ($283.5)" },
+      { name: "Professional 50k", monthlyUsd: 433.5, opsIncluded: 50000, workflowLimit: Infinity, annualUsd: 289.0, overage: null, note: "Professional — 50,000 tasks/mo ($433.5)" },
+      { name: "Professional 100k", monthlyUsd: 733.5, opsIncluded: 100000, workflowLimit: Infinity, annualUsd: 489.0, overage: null, note: "Professional — 100,000 tasks/mo ($733.5)" },
+      { name: "Professional 200k", monthlyUsd: 1149, opsIncluded: 200000, workflowLimit: Infinity, annualUsd: 769.0, overage: null, note: "Professional — 200,000 tasks/mo ($1149)" },
+      { name: "Professional 300k", monthlyUsd: 1599, opsIncluded: 300000, workflowLimit: Infinity, annualUsd: 1069.0, overage: null, note: "Professional — 300,000 tasks/mo ($1599)" },
+      { name: "Professional 400k", monthlyUsd: 1899, opsIncluded: 400000, workflowLimit: Infinity, annualUsd: 1269.0, overage: null, note: "Professional — 400,000 tasks/mo ($1899)" },
+      { name: "Professional 500k", monthlyUsd: 2199, opsIncluded: 500000, workflowLimit: Infinity, annualUsd: 1499.0, overage: null, note: "Professional — 500,000 tasks/mo ($2199)" },
+      { name: "Professional 750k", monthlyUsd: 2999, opsIncluded: 750000, workflowLimit: Infinity, annualUsd: 1999.0, overage: null, note: "Professional — 750,000 tasks/mo ($2999)" },
+      { name: "Professional 1M", monthlyUsd: 3299, opsIncluded: 1000000, workflowLimit: Infinity, annualUsd: 2199.0, overage: null, note: "Professional — 1,000,000 tasks/mo ($3299)" },
+      { name: "Professional 1.2M", monthlyUsd: 3899, opsIncluded: 1250000, workflowLimit: Infinity, annualUsd: 2599.0, overage: null, note: "Professional — 1,250,000 tasks/mo ($3899)" },
+      { name: "Professional 1.5M", monthlyUsd: 4499, opsIncluded: 1500000, workflowLimit: Infinity, annualUsd: 2999.0, overage: null, note: "Professional — 1,500,000 tasks/mo ($4499)" },
+      { name: "Professional 1.8M", monthlyUsd: 4799, opsIncluded: 1750000, workflowLimit: Infinity, annualUsd: 3199.0, overage: null, note: "Professional — 1,750,000 tasks/mo ($4799)" },
+      { name: "Professional 2M", monthlyUsd: 5099, opsIncluded: 2000000, workflowLimit: Infinity, annualUsd: 3389.0, overage: null, note: "Professional — 2,000,000 tasks/mo ($5099)" },
+      { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
+    ], overage: null, selfHostHw: null },
+  {
+    slug: "activepieces", name: "Activepieces", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: true, integrations: 754, integrationType: "pieces",
+    homepage: "https://www.activepieces.com", affiliateUrl: "https://www.activepieces.com", hasAffiliate: false,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
+      { name: "Cloud", monthlyUsd: 0, opsIncluded: Infinity, workflowLimit: Infinity, pricePerFlowUsd: 5, freeFlows: 10, note: "10 active flows free, then $5/active flow/mo · unlimited runs (cloud bills per active flow, not per task/run)" },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
+  {
+    slug: "automatisch", name: "Automatisch", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: false, integrations: 92, integrationType: "connectors",
+    homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
+  {
+    slug: "node-red", name: "Node-RED", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: false, integrations: 6092, integrationType: "community modules",
+    homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
+    plans: [
+      { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
+    ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
+];
+/* DATA:TOOLS:END */
+
+const INTEGRATIONS = [
+  { name: "Slack",            cat: "Communication", s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Discord",          cat: "Communication", s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Telegram",         cat: "Communication", s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":1 } },
+  { name: "Microsoft Teams",  cat: "Communication", s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "Gmail",            cat: "Email",         s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Outlook",          cat: "Email",         s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "Mailchimp",        cat: "Email",         s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "SMTP (any email)", cat: "Email",         s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":1 } },
+  { name: "Google Sheets",    cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Google Drive",     cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Google Calendar",  cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Notion",           cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Airtable",         cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Dropbox",          cat: "Productivity",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Trello",           cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Asana",            cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "ClickUp",          cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Monday.com",       cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Jira",             cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "Linear",           cat: "Project Mgmt",  s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "HubSpot",          cat: "CRM & Sales",   s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Salesforce",       cat: "CRM & Sales",   s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Pipedrive",        cat: "CRM & Sales",   s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Stripe",           cat: "Payments",      s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "PayPal",           cat: "Payments",      s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "Xero",             cat: "Payments",      s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Shopify",          cat: "E-commerce",    s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "WooCommerce",      cat: "E-commerce",    s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:0, "node-red":0 } },
+  { name: "WordPress",        cat: "E-commerce",    s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "GitHub",           cat: "Developer",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "PostgreSQL",       cat: "Developer",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":1 } },
+  { name: "Webhook / HTTP",   cat: "Developer",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":1 } },
+  { name: "OpenAI",           cat: "AI",            s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Anthropic Claude", cat: "AI",            s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "YouTube",          cat: "Marketing",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Twitter / X",      cat: "Marketing",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+  { name: "Twilio (SMS)",     cat: "Marketing",     s: { n8n:1, make:1, pipedream:1, zapier:1, activepieces:1, automatisch:1, "node-red":0 } },
+];
+
+// ── Use-case map ──────────────────────────────────────────────────────────────
+// runs = base estimate for this category; steps = workflow depth
+const USE_CASES = {
+  orders:  { runs: 500,  steps: 4 },
+  leads:   { runs: 1000, steps: 3 },
+  notify:  { runs: 2000, steps: 2 },
+  social:  { runs: 300,  steps: 2 },
+  ops:     { runs: 1500, steps: 3 },
+  custom:  { runs: 1000, steps: 3 },
+};
+// Frequency bands override runs from use-case
+const FREQ_BANDS = {
+  light:  300,
+  medium: 1500,
+  busy:   7500,
+  heavy:  25000,
+};
+// Team size → workflows
+const TEAM_DEFS = {
+  solo:  { workflows: 3 },
+  small: { workflows: 5 },
+  team:  { workflows: 10 },
+};
+// Feature → which tool slugs support it (hard filter)
+const FEAT_FILTERS = {
+  ai:           t => t.aiFeatures,
+  audit:        t => ["zapier","make","n8n"].includes(t.slug),
+  selfhost_feat:t => t.selfHostable,
+  eu:           () => true,  // soft — no filter, adds note in result
+};
+
+// ── Engine globals (mirrored from calculator.html — calcCost reads these) ────
+let hostPref = "cloud";
+let aiPref   = "any";
+let billing  = "monthly";
+let selectedIntegrations = [];
+
+// ── Engine helpers (verbatim from calculator.html) ────────────────────────────
+function selfHostHwCost(tool, ops) {
+  const t = selfHostHwTier(tool, ops);
+  return t ? t.usd : null;
+}
+function selfHostHwTier(tool, ops) {
+  if (!tool.selfHostHw) return null;
+  for (const t of tool.selfHostHw) {
+    if (t.upTo === Infinity || ops <= t.upTo) return t;
+  }
+  return tool.selfHostHw[tool.selfHostHw.length - 1];
+}
+function creditBandRate(bands, credits) {
+  for (const [upTo, pc] of bands) { if (upTo === null || credits <= upTo) return pc; }
+  return bands[bands.length - 1][1];
+}
+function vendorUnits(tool, runs, steps) {
+  const s = Math.max(1, steps);
+  switch (tool.unitModel) {
+    case "modules": return runs * s;
+    case "actions": return Math.round(runs * Math.max(1, s - 1) * 0.8);
+    case "runs":
+    default:        return runs;
+  }
+}
+function toolSupportsAll(slug) {
+  return selectedIntegrations.every(name => {
+    const app = INTEGRATIONS.find(a => a.name === name);
+    return app && app.s[slug] === 1;
+  });
+}
+function calcCost(tool, runs, steps, workflows, perWf) {
+  const ops = vendorUnits(tool, runs, steps);
+  if (hostPref === "cloud" && tool.selfHostable && !tool.plans.some(p => !p.selfHostOnly)) return null;
+  if (hostPref === "selfhost" && !tool.selfHostable) return null;
+  if (aiPref === "yes" && !tool.aiFeatures) return null;
+  if (selectedIntegrations.length && !toolSupportsAll(tool.slug)) return null;
+  let best = null, selfHostAlt = null;
+  for (const plan of tool.plans) {
+    if (plan.custom) continue;
+    if (hostPref === "cloud" && plan.selfHostOnly) continue;
+    if (hostPref === "selfhost" && !plan.selfHostOnly) continue;
+    if (plan.workflowLimit !== Infinity && plan.workflowLimit < workflows) continue;
+    const hwPlan = plan.selfHostOnly && plan.monthlyUsd <= 8 && tool.selfHostHw;
+    let cost = hwPlan ? selfHostHwCost(tool, ops) : plan.monthlyUsd;
+    if (billing === "annual" && !plan.selfHostOnly && typeof plan.annualUsd === "number") cost = plan.annualUsd;
+    if (plan.pricePerFlowUsd) cost += Math.max(0, workflows - (plan.freeFlows || 0)) * plan.pricePerFlowUsd;
+    if (!plan.selfHostOnly && ops > plan.opsIncluded) {
+      if (plan.creditBands) {
+        const rate = creditBandRate(plan.creditBands, ops);
+        cost = Math.round((cost + (ops - plan.opsIncluded) * rate) * 100) / 100;
+      } else {
+        const ov = plan.overage !== undefined ? plan.overage : tool.overage;
+        if (ov) cost = Math.round((cost + Math.ceil((ops - plan.opsIncluded) / ov.per) * ov.usd) * 100) / 100;
+        else continue;
+      }
+    }
+    const hwTier = hwPlan ? (selfHostHwTier(tool, ops) || {}) : {};
+    const spec = hwTier.spec || null;
+    if (hostPref === "any" && plan.selfHostOnly) {
+      if (selfHostAlt === null || cost < selfHostAlt.cost) selfHostAlt = { cost, plan, hwOnly: !!hwPlan, spec };
+    } else {
+      if (best === null || cost < best.cost) best = { cost, plan, hwOnly: !!hwPlan, spec };
+    }
+  }
+  const customPlan = tool.plans.find(p => p.custom);
+  if (customPlan && hostPref !== "selfhost") {
+    const anchors = tool.plans.filter(p => !p.custom && !p.selfHostOnly && p.monthlyUsd > 0 && isFinite(p.opsIncluded));
+    const maxInc = anchors.length ? Math.max(...anchors.map(p => p.opsIncluded)) : 0;
+    const anchor = anchors.filter(p => p.opsIncluded === maxInc).sort((a, b) => a.monthlyUsd - b.monthlyUsd)[0];
+    if (anchor && ops > anchor.opsIncluded) {
+      const anchorBase = (billing === "annual" && typeof anchor.annualUsd === "number") ? anchor.annualUsd : anchor.monthlyUsd;
+      let est = anchorBase * Math.max(1.3, Math.pow(ops / anchor.opsIncluded, 0.7));
+      est = Math.max(5, Math.round(est / 5) * 5);
+      const beyondPublic = ops > anchor.opsIncluded * 2;
+      if (best === null || (beyondPublic && est < best.cost)) {
+        best = { cost: est, plan: Object.assign({}, customPlan, { note: customPlan.name + " — estimated" }), estimated: true };
+      }
+    }
+  }
+  if (hostPref === "any" && selfHostAlt) {
+    if (best === null) best = selfHostAlt;
+    else if (selfHostAlt.cost < best.cost) best.selfHostAlt = selfHostAlt;
+  }
+  if (best) { best.units = ops; best.unitModel = tool.unitModel; }
+  return best;
+}
+
+// ── Wizard state ──────────────────────────────────────────────────────────────
+const wiz = { uc: null, freq: null, apps: [], feats: [], team: null, sh: null };
+let currentStep = 1;
+
+// ── Step navigation ───────────────────────────────────────────────────────────
+function goStep(n) {
+  document.getElementById('wiz-step-' + currentStep).classList.remove('active');
+  document.getElementById('wiz-result').style.display = 'none';
+  currentStep = n;
+  const panel = document.getElementById('wiz-step-' + n);
+  if (panel) {
+    panel.classList.add('active');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  updateProgress(n);
+  if (n === 3) renderPeekBar();
+}
+function updateProgress(step) {
+  for (let i = 1; i <= 6; i++) {
+    const dot = document.getElementById('dot-' + i);
+    dot.classList.remove('active', 'done');
+    if (i < step) dot.classList.add('done');
+    else if (i === step) dot.classList.add('active');
+    if (i < 6) {
+      const line = document.getElementById('line-' + i);
+      line.classList.toggle('done', i < step);
+    }
+  }
+  document.getElementById('wiz-step-label').textContent = 'Step ' + step + ' of 6';
+  const prog = document.getElementById('wiz-progress');
+  if (prog) prog.setAttribute('aria-valuenow', step);
+}
+
+// ── Q1 Use-case selection ─────────────────────────────────────────────────────
+function selectUC(el, id) {
+  document.querySelectorAll('[data-uc]').forEach(t => { t.classList.remove('selected'); t.setAttribute('aria-pressed','false'); });
+  el.classList.add('selected'); el.setAttribute('aria-pressed','true');
+  wiz.uc = id;
+  const btn = document.getElementById('q1-next');
+  btn.disabled = false; btn.removeAttribute('aria-disabled');
+}
+
+// ── Q2 Frequency selection ────────────────────────────────────────────────────
+function selectFreq(el, id) {
+  document.querySelectorAll('[data-freq]').forEach(t => { t.classList.remove('selected'); t.setAttribute('aria-pressed','false'); });
+  el.classList.add('selected'); el.setAttribute('aria-pressed','true');
+  wiz.freq = id;
+  const btn = document.getElementById('q2-next');
+  btn.disabled = false; btn.removeAttribute('aria-disabled');
+}
+
+// ── Q3 Integration picker ─────────────────────────────────────────────────────
+const integSearch   = document.getElementById('integ-search');
+const integDropdown = document.getElementById('integ-dropdown');
+const integSelEl    = document.getElementById('integ-selected');
+let   integHL       = -1;
+
+function renderIntegSel() {
+  wiz.apps = [...wiz.apps];
+  selectedIntegrations = wiz.apps;
+  integSelEl.innerHTML = wiz.apps.map(name =>
+    `<span class="integ-tag">${name}<button onclick="removeInteg('${name.replace(/'/g,"\\'")}')">×</button></span>`
+  ).join('');
+}
+function removeInteg(name) { wiz.apps = wiz.apps.filter(n => n !== name); selectedIntegrations = wiz.apps; renderIntegSel(); renderIntegDrop(); }
+function toggleInteg(name, ev) {
+  if (ev) ev.stopPropagation();
+  if (wiz.apps.includes(name)) wiz.apps = wiz.apps.filter(n => n !== name);
+  else { wiz.apps.push(name); integSearch.value = ''; }
+  selectedIntegrations = wiz.apps;
+  renderIntegSel(); renderIntegDrop();
+}
+function renderIntegDrop() {
+  const q = integSearch.value.trim().toLowerCase();
+  const matches = INTEGRATIONS.filter(a => a.name.toLowerCase().includes(q));
+  if (!matches.length) { integDropdown.innerHTML = '<div class="integ-empty">No app found.</div>'; return; }
+  const sel = matches.filter(a => wiz.apps.includes(a.name));
+  const unsel = matches.filter(a => !wiz.apps.includes(a.name));
+  const byCat = {};
+  unsel.forEach(a => { (byCat[a.cat] = byCat[a.cat] || []).push(a); });
+  let html = '';
+  if (sel.length) {
+    html += '<div class="integ-cat-head">Selected</div>';
+    sel.forEach(a => { html += `<div class="integ-opt sel" role="option" aria-selected="true" onclick="toggleInteg('${a.name.replace(/'/g,"\\'")}',event)"><span class="integ-cb"></span><span class="integ-name">${a.name}</span><span class="integ-cat">${Object.values(a.s).filter(v=>v).length}/7 tools</span></div>`; });
+  }
+  for (const cat of Object.keys(byCat)) {
+    html += `<div class="integ-cat-head">${cat}</div>`;
+    byCat[cat].forEach(a => { html += `<div class="integ-opt" role="option" aria-selected="false" onclick="toggleInteg('${a.name.replace(/'/g,"\\'")}',event)"><span class="integ-cb"></span><span class="integ-name">${a.name}</span><span class="integ-cat">${Object.values(a.s).filter(v=>v).length}/7 tools</span></div>`; });
+  }
+  integDropdown.innerHTML = html; integHL = -1;
+}
+integSearch.addEventListener('focus', () => { renderIntegDrop(); integDropdown.classList.add('open'); integSearch.setAttribute('aria-expanded','true'); });
+integSearch.addEventListener('input', () => { renderIntegDrop(); integDropdown.classList.add('open'); integSearch.setAttribute('aria-expanded','true'); });
+integSearch.addEventListener('keydown', e => {
+  const opts = Array.from(integDropdown.querySelectorAll('.integ-opt'));
+  if (e.key === 'ArrowDown') { e.preventDefault(); integHL = Math.min(integHL+1, opts.length-1); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); integHL = Math.max(integHL-1, 0); }
+  else if (e.key === 'Enter' && integHL >= 0 && opts[integHL]) { e.preventDefault(); opts[integHL].click(); return; }
+  else if (e.key === 'Escape') { integDropdown.classList.remove('open'); integSearch.setAttribute('aria-expanded','false'); return; }
+  opts.forEach((o,i) => o.classList.toggle('hl', i === integHL));
+  if (opts[integHL]) opts[integHL].scrollIntoView({ block:'nearest' });
+});
+document.addEventListener('click', e => { if (!e.target.closest('.integ-search-wrap')) { integDropdown.classList.remove('open'); integSearch.setAttribute('aria-expanded','false'); } });
+
+// ── Q4 Feature toggles ────────────────────────────────────────────────────────
+function toggleFeat(el, id) {
+  const on = el.classList.toggle('selected');
+  el.setAttribute('aria-checked', on ? 'true' : 'false');
+  if (on && !wiz.feats.includes(id)) wiz.feats.push(id);
+  else wiz.feats = wiz.feats.filter(f => f !== id);
+}
+
+// ── Q5 Team size ──────────────────────────────────────────────────────────────
+function selectTeam(el, id) {
+  document.querySelectorAll('[data-team]').forEach(t => { t.classList.remove('selected'); t.setAttribute('aria-pressed','false'); });
+  el.classList.add('selected'); el.setAttribute('aria-pressed','true');
+  wiz.team = id;
+  const btn = document.getElementById('q5-next');
+  btn.disabled = false; btn.removeAttribute('aria-disabled');
+}
+
+// ── Q6 Self-host ──────────────────────────────────────────────────────────────
+function selectSH(el, id) {
+  document.querySelectorAll('[data-sh]').forEach(t => { t.classList.remove('selected'); t.setAttribute('aria-pressed','false'); });
+  el.classList.add('selected'); el.setAttribute('aria-pressed','true');
+  wiz.sh = id;
+  const btn = document.getElementById('q6-next');
+  btn.disabled = false; btn.removeAttribute('aria-disabled');
+}
+
+// ── Keyboard tile handler ─────────────────────────────────────────────────────
+function keyTile(e, el, id, fn) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(el, id); }
+}
+function keyCheck(e, el, id) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFeat(el, id); }
+}
+
+// ── Peek bar (shows quick price context after Q2 on step 3) ──────────────────
+function renderPeekBar() {
+  const pb = document.getElementById('peek-bar');
+  if (!wiz.freq) { pb.classList.remove('show'); return; }
+  const runs    = FREQ_BANDS[wiz.freq] || 1000;
+  const steps   = USE_CASES[wiz.uc] ? USE_CASES[wiz.uc].steps : 3;
+  const wflows  = 3;
+  const savedHP = hostPref; const savedSI = selectedIntegrations;
+  hostPref = 'cloud'; selectedIntegrations = [];
+  const snap = TOOLS.filter(t => !t.selfHostable || t.plans.some(p => !p.selfHostOnly))
+    .map(t => ({ t, c: calcCost(t, runs, steps, wflows, null) }))
+    .filter(r => r.c).sort((a,b) => a.c.cost - b.c.cost).slice(0,3);
+  hostPref = savedHP; selectedIntegrations = savedSI;
+  if (!snap.length) { pb.classList.remove('show'); return; }
+  const parts = snap.map(r => `<strong>${r.t.name}</strong> ~$${Math.round(r.c.cost)}/mo`).join(' &nbsp;·&nbsp; ');
+  pb.innerHTML = 'Quick look at your volume: ' + parts + ' &nbsp;<span style="color:var(--muted);font-size:12px">(cloud, before filters)</span>';
+  pb.classList.add('show');
+}
+
+// ── Compute & render results ──────────────────────────────────────────────────
+function computeResults() {
+  // Set engine globals from wizard answers
+  const shPref = wiz.sh === 'yes' || wiz.sh === 'maybe' ? 'any' : 'cloud';
+  hostPref = shPref;
+  aiPref   = wiz.feats.includes('ai') ? 'yes' : 'any';
+  billing  = 'monthly';
+  selectedIntegrations = wiz.apps;
+
+  const runs    = FREQ_BANDS[wiz.freq] || (USE_CASES[wiz.uc] ? USE_CASES[wiz.uc].runs : 1000);
+  const steps   = USE_CASES[wiz.uc] ? USE_CASES[wiz.uc].steps : 3;
+  const wflows  = TEAM_DEFS[wiz.team] ? TEAM_DEFS[wiz.team].workflows : 3;
+
+  const results = TOOLS
+    .filter(t => {
+      for (const feat of wiz.feats) {
+        if (FEAT_FILTERS[feat] && !FEAT_FILTERS[feat](t)) return false;
+      }
+      return true;
+    })
+    .map(t => {
+      const cr = calcCost(t, runs, steps, wflows, null);
+      return cr ? { tool: t, cr, runs, steps, wflows } : null;
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.cr.cost - b.cr.cost);
+
+  return { results, runs, steps, wflows };
+}
+
+function fmtUsd(n) {
+  if (n === 0) return 'Free';
+  return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+
+function renderChart(results) {
+  if (!results.length) return '';
+  // Horizontal bar chart — green winner, muted others
+  // Bars always from 0; width proportional to cost (or max if winner is free)
+  const costs = results.map(r => r.cr.cost);
+  const maxCost = Math.max(...costs, 1);
+  const BAR_MAX = 220;
+  const ROW_H   = 46;
+  const LBL_W   = 118;
+  const SVG_W   = LBL_W + BAR_MAX + 90;
+  const SVG_H   = results.length * ROW_H + 10;
+
+  const rows = results.map((r, i) => {
+    const barW = r.cr.cost === 0 ? 6 : Math.max(6, Math.round(r.cr.cost / maxCost * BAR_MAX));
+    const isW  = i === 0;
+    const y    = i * ROW_H + 5;
+    const cy   = y + ROW_H / 2;
+    const barColor  = isW ? '#10b981' : '#1f2d45';
+    const textColor = isW ? '#16d18c' : '#a8b4cc';
+    const fw = isW ? '700' : '400';
+    const priceStr = r.cr.estimated ? '~' + fmtUsd(r.cr.cost) : fmtUsd(r.cr.cost);
+    const planStr  = r.cr.plan ? r.cr.plan.name : '';
+    return `<text x="${LBL_W - 8}" y="${cy + 5}" text-anchor="end" fill="${textColor}" font-size="13" font-weight="${fw}" font-family="Plus Jakarta Sans,sans-serif">${r.tool.name}</text>` +
+      `<rect x="${LBL_W}" y="${y + 10}" width="${barW}" height="26" rx="5" fill="${barColor}" opacity="${isW ? '1' : '0.55'}"/>` +
+      `<text x="${LBL_W + barW + 8}" y="${cy + 5}" text-anchor="start" fill="${textColor}" font-size="13" font-weight="${fw}" font-family="Plus Jakarta Sans,sans-serif">${priceStr}/mo</text>`;
+  }).join('\n');
+
+  const ariaLabel = 'Cost comparison: ' + results.map(r => r.tool.name + ' ' + fmtUsd(r.cr.cost) + '/mo').join(', ');
+  return `<svg role="img" aria-label="${ariaLabel}" viewBox="0 0 ${SVG_W} ${SVG_H}" width="${SVG_W}" height="${SVG_H}" style="max-width:100%;overflow:visible">${rows}</svg>`;
+}
+
+function runnerUpWhy(tool) {
+  const whys = {
+    n8n:           'Open-source and self-hostable — unlimited executions once you manage a VPS.',
+    make:          'Generous free tier and visual scenario builder; great if you like drag-and-drop.',
+    zapier:        'Largest app library (9,700+ integrations) — widest coverage if you use niche tools.',
+    pipedream:     'Code-first with built-in serverless functions; ideal if you write JavaScript.',
+    activepieces:  'MIT-licensed open-source with a solid free cloud tier — good for startups.',
+    automatisch:   'Fully EU-hosted self-host option; dead simple if you only need ~90 connectors.',
+    'node-red':    'Powerful IoT and data-pipeline flows if you are comfortable with Node.js.',
+  };
+  return whys[tool.slug] || 'Strong alternative worth comparing at your volume.';
+}
+
+function showResults() {
+  // Validate answers
+  if (!wiz.uc || !wiz.freq || !wiz.team || !wiz.sh) {
+    alert('Please answer all steps before getting your recommendation.');
+    return;
+  }
+
+  document.getElementById('wiz-step-6').classList.remove('active');
+  document.getElementById('wiz-result').style.display = 'block';
+  document.getElementById('wiz-result').innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Computing…</div>';
+  updateProgress(7); // show all done
+
+  const { results, runs, steps, wflows } = computeResults();
+  const el = document.getElementById('wiz-result');
+
+  if (!results.length) {
+    el.innerHTML = `<div class="result-winner" style="text-align:center">
+      <div class="res-badge">No exact match</div>
+      <p style="margin:16px 0;color:var(--text2)">No tool matches all your requirements. Try relaxing a filter — for example, the "audit log" filter keeps only Zapier, Make, and n8n.</p>
+      <button class="btn-ghost" onclick="restart()">Start over</button>
+    </div>`;
+    return;
+  }
+
+  const winner = results[0];
+  const runnerUp = results[1] || null;
+
+  // Zapier baseline for savings (cloud, no filters)
+  const savedHP = hostPref; const savedSI = selectedIntegrations; const savedAI = aiPref;
+  hostPref = 'cloud'; selectedIntegrations = []; aiPref = 'any';
+  const zapier = TOOLS.find(t => t.slug === 'zapier');
+  const zapCR   = calcCost(zapier, runs, steps, wflows, null);
+  hostPref = savedHP; selectedIntegrations = savedSI; aiPref = savedAI;
+
+  const winnerCost = winner.cr.cost;
+  const zapCost    = zapCR ? zapCR.cost : null;
+  const savingsMo  = (zapCost !== null && winner.tool.slug !== 'zapier') ? Math.max(0, zapCost - winnerCost) : null;
+  const savingsYr  = savingsMo !== null ? Math.round(savingsMo * 12) : null;
+
+  // Build savings text
+  let savingsHtml = '';
+  if (savingsMo !== null && savingsYr > 0) {
+    savingsHtml = `vs Zapier (~${fmtUsd(Math.round(zapCost))}/mo at this volume) you save <strong>~${fmtUsd(savingsYr)}/yr</strong>.`;
+  } else if (winner.tool.slug === 'zapier') {
+    savingsHtml = 'Zapier is the best fit at your volume — good choice already.';
+  } else if (savingsMo !== null && savingsMo === 0) {
+    savingsHtml = `Similar price to Zapier at this volume (~${fmtUsd(Math.round(zapCost))}/mo).`;
+  } else {
+    savingsHtml = `Zapier baseline unavailable at this volume for comparison.`;
+  }
+
+  // Self-host bonus text
+  let shBonusHtml = '';
+  if (winner.cr.selfHostAlt) {
+    shBonusHtml = `<p class="res-plan-note">Self-host option: ~${fmtUsd(winner.cr.selfHostAlt.cost)}/mo (${winner.cr.selfHostAlt.spec || 'VPS'}) — same software, you manage the server.</p>`;
+  }
+
+  // EU note
+  let euNoteHtml = '';
+  if (wiz.feats.includes('eu') && !['n8n','automatisch','activepieces'].includes(winner.tool.slug)) {
+    euNoteHtml = `<p class="res-plan-note" style="color:var(--yellow)">Note: you flagged EU focus — ${winner.tool.name} is US-headquartered. n8n (Berlin) and Automatisch (NL) are EU alternatives below.</p>`;
+  }
+
+  // Affiliate link
+  let ctaHtml = '';
+  if (winner.tool.hasAffiliate) {
+    ctaHtml = `<a href="${winner.tool.affiliateUrl}" rel="noopener sponsored" class="btn-primary" target="_blank">Try ${winner.tool.name} &rarr;</a>`;
+    ctaHtml += `<p class="res-affiliate-note">Affiliate link — we may earn a commission at no extra cost to you. It doesn't affect this recommendation.</p>`;
+  } else {
+    ctaHtml = `<a href="${winner.tool.homepage}" rel="noopener" class="btn-primary" target="_blank">Visit ${winner.tool.name} &rarr;</a>`;
+  }
+
+  // Plan note
+  const planNote = winner.cr.plan ? winner.cr.plan.name : '';
+  const estNote  = winner.cr.estimated ? ' (estimated — volume exceeds public pricing tiers)' : '';
+
+  // Chart
+  const chartSvg = renderChart(results);
+
+  // Runner-up
+  let ruHtml = '';
+  if (runnerUp) {
+    const ruCost = fmtUsd(Math.round(runnerUp.cr.cost));
+    ruHtml = `<div class="result-runnerup">
+      <div class="ru-icon">2</div>
+      <div>
+        <div class="ru-label">Runner-up</div>
+        <div class="ru-name">${runnerUp.tool.name} <span style="font-weight:400;color:var(--text2);font-size:.9em">· ~${ruCost}/mo (${runnerUp.cr.plan ? runnerUp.cr.plan.name : ''})</span></div>
+        <div class="ru-why">${runnerUpWhy(runnerUp.tool)}</div>
+      </div>
+    </div>`;
+  }
+
+  // Feature note for audit log
+  let auditNote = '';
+  if (wiz.feats.includes('audit') && ['make','n8n'].includes(winner.tool.slug)) {
+    auditNote = `<p class="bd-disclaimer" style="color:var(--yellow)">Audit log requires a higher plan tier on ${winner.tool.name} — actual cost may be above the estimate shown. Prices reflect cheapest available plan for your volume.</p>`;
+  }
+
+  el.innerHTML = `
+    <div class="result-winner">
+      <div class="res-badge">Your best match</div>
+      <div class="res-headline">
+        <span class="tool-name">${winner.tool.name}</span>
+        <span class="price"> on ${planNote}</span>
+      </div>
+      <div class="res-headline" style="font-size:clamp(1.3rem,3vw,1.9rem);color:var(--accent-br);margin-top:4px">~${fmtUsd(Math.round(winnerCost))}/mo${estNote}</div>
+      <div class="res-savings">${savingsHtml}</div>
+      ${shBonusHtml}
+      ${euNoteHtml}
+      <div class="res-cta-row">${ctaHtml}</div>
+    </div>
+
+    ${ruHtml}
+
+    <div class="chart-section">
+      <div class="chart-title">Cost comparison at your volume</div>
+      <div class="chart-sub">${runs.toLocaleString()} runs/mo · ${steps} steps/workflow · ${wflows} workflows${wiz.feats.length ? ' · ' + wiz.feats.length + ' filter(s) applied' : ''}</div>
+      <div id="cost-chart">${chartSvg}</div>
+    </div>
+
+    <div class="breakdown-section">
+      <div class="bd-title">How this was calculated</div>
+      <div class="bd-row"><span class="bd-key">Estimated volume</span><span class="bd-val">${runs.toLocaleString()} runs/mo</span></div>
+      <div class="bd-row"><span class="bd-key">Steps per workflow</span><span class="bd-val">${steps}</span></div>
+      <div class="bd-row"><span class="bd-key">Active workflows</span><span class="bd-val">${wflows}</span></div>
+      <div class="bd-row"><span class="bd-key">Billing unit for ${winner.tool.name}</span><span class="bd-val">${winner.cr.units != null ? winner.cr.units.toLocaleString() : '—'} ${winner.tool.unitModel}</span></div>
+      <div class="bd-row"><span class="bd-key">Cheapest plan</span><span class="bd-val">${planNote}${winner.cr.estimated ? ' ~est.' : ''}</span></div>
+      <div class="bd-row"><span class="bd-key">Hosting preference</span><span class="bd-val">${wiz.sh === 'no' ? 'Cloud only' : 'Cloud + self-host compared'}</span></div>
+      <div class="bd-disclaimer">Prices verified by hand June 2026. Estimates from the WizardCost engine — your real cost depends on workflow shape. Not affiliated with any vendor (some links are affiliate links, disclosed above).</div>
+      ${auditNote}
+    </div>
+
+    <div class="waitlist-section">
+      <div class="wl-eyebrow">Coming soon — Deep Wizard</div>
+      <div class="wl-title">Want a personalised analysis of your exact setup?</div>
+      <div class="wl-sub">The free wizard gives you the right tool. The deep version gives you the right plan, migration path, and a cost guarantee — coming soon.</div>
+      <!-- OWNER DECISION: wire up waitlist endpoint. Options: MailerLite form, simple Cloudflare Worker, or third-party form embed. Email collection requires consent banner if EU traffic is significant. Compliance note: email capture was disabled on calculator.html for faceless/no-consent reasons (see git history EMAILCAP comment). Reenable only after owner confirms consent/legal setup. -->
+      <div class="wl-form" id="wl-form">
+        <input class="wl-input" type="email" id="wl-email" placeholder="your@email.com" aria-label="Email address for waitlist">
+        <button class="btn-waitlist" onclick="joinWaitlist()" type="button">Join waitlist</button>
+      </div>
+      <div class="wl-success" id="wl-success">You're on the list — we'll reach out when it's ready.</div>
+      <div class="wl-legal">No spam. Unsubscribe anytime. See <a href="privacy.html">Privacy Policy</a>.</div>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn-restart" onclick="restart()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        Start over — try different answers
+      </button>
+      <div style="margin-top:14px;font-size:13.5px;color:var(--muted)">
+        Want the full picture? <a href="calculator.html">Open the detailed calculator &rarr;</a>
+      </div>
+    </div>
+  `;
+
+  // Scroll to result
+  document.getElementById('wiz-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function joinWaitlist() {
+  const email = document.getElementById('wl-email').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('wl-email').focus();
+    return;
+  }
+  // OWNER DECISION: replace this stub with real endpoint (MailerLite / Cloudflare Worker).
+  document.getElementById('wl-form').style.display = 'none';
+  document.getElementById('wl-success').style.display = 'block';
+}
+
+function restart() {
+  wiz.uc = null; wiz.freq = null; wiz.apps = []; wiz.feats = []; wiz.team = null; wiz.sh = null;
+  selectedIntegrations = [];
+  // Reset UI
+  document.querySelectorAll('.tile').forEach(t => { t.classList.remove('selected'); t.setAttribute('aria-pressed','false'); });
+  document.querySelectorAll('.feat-item').forEach(t => { t.classList.remove('selected'); t.setAttribute('aria-checked','false'); });
+  document.getElementById('integ-selected').innerHTML = '';
+  integSearch.value = '';
+  const q1b = document.getElementById('q1-next'); q1b.disabled = true; q1b.setAttribute('aria-disabled','true');
+  const q2b = document.getElementById('q2-next'); q2b.disabled = true; q2b.setAttribute('aria-disabled','true');
+  const q5b = document.getElementById('q5-next'); q5b.disabled = true; q5b.setAttribute('aria-disabled','true');
+  const q6b = document.getElementById('q6-next'); q6b.disabled = true; q6b.setAttribute('aria-disabled','true');
+  document.getElementById('wiz-result').style.display = 'none';
+  goStep(1);
+}
+
+// Init a11y on load
+document.querySelectorAll('.tile').forEach(t => {
+  if (!t.getAttribute('role')) t.setAttribute('role','button');
+  if (!t.hasAttribute('tabindex')) t.setAttribute('tabindex','0');
+});
+</script>
+</body>
+</html>
