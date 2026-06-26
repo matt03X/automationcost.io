@@ -1,0 +1,169 @@
+/* ============================================================================
+   WizardCost / AutomationCost — Caret "fialová" design system overlay
+   Sjednocuje /automation podstránky s fialovou home-v6 bází (#0b0a12).
+
+   Linkuj LAST v <head> (po app.css): pozdější :root s identickou specificitou
+   přebije modrý :root z inline <style> stránek + modré tokeny z app.css.
+
+   PRAVIDLO: NEMĚŇ žádná data ani logiku — čistě vizuální vrstva.
+   ============================================================================ */
+
+/* ── Fialová base :root — přebíjí modrou bázi (#0a0e17) inline stylů ──────── */
+:root {
+  /* Surfaces (fialová) */
+  --bg:      #0b0a12;
+  --panel:   #0e0d17;
+  --panel2:  #12111c;
+  --b:       #221f33;
+  --b2:      #2e2a44;
+
+  /* Text */
+  --tx:  #f2f0fa;
+  --tx2: #b3aeca;
+  --tx3: #736e8e;
+
+  /* Akcenty */
+  --auto: #16d18c;   /* zelená = automation / vítěz / primární CTA na podstránkách */
+  --llm:  #d97bfb;   /* magenta = LLM */
+  --pp:   #a78bfa;   /* fialová = brand (focus, logo.c, homepage CTA) */
+
+  /* Tier barvy */
+  --bud: #34d399;   /* budget */
+  --mid: #a78bfa;   /* mid */
+  --fro: #fb7185;   /* frontier */
+
+  /* Vendor barvy — kanonické, nezměnit */
+  --zapier:       #FF4F00;
+  --make:         #B02DE9;
+  --n8n:          #EA4B71;
+  --pipedream:    #3b82f6;
+  --activepieces: #6E56CF;
+  --automatisch:  #0EA5E9;
+  --node-red:     #8F0000;
+  --n8n-biz:      #E0A800;
+  --sh-vps:       #10b981;
+  --sh-own:       #22d3ee;
+
+  /* LLM provider barvy */
+  --openai:    #19c37d;
+  --anthropic: #d97757;
+  --google:    #4285f4;
+  --deepseek:  #5b6ef5;
+  --xai:       #9aa0a6;
+  --mistral:   #fa520f;
+
+  /* Fonty */
+  --display: 'Hanken Grotesk', system-ui, sans-serif;
+  --body:    'Plus Jakarta Sans', system-ui, sans-serif;
+  --mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* ── Aliasy pro kompatibilitu s app.css + inline styly stránek ─────────── */
+  /* app.css a inline :root používají --surface/--text/--accent/--font atd.;
+     tyto aliasy mapují fialové tokeny na stará jména beze změny app.css logiky */
+  --surface:     #0e0d17;   /* = --panel */
+  --surface2:    #12111c;   /* = --panel2 */
+  --border:      #221f33;   /* = --b */
+  --border2:     #2e2a44;   /* = --b2 */
+  --text:        #f2f0fa;   /* = --tx */
+  --text2:       #b3aeca;   /* = --tx2 */
+  --muted:       #736e8e;   /* = --tx3 */
+  --font:        'Plus Jakarta Sans', system-ui, sans-serif;  /* = --body */
+
+  /* Accent = zelená pro automation CTA (podstránky); viz Brána A + DS pravidlo */
+  --accent:      #16d18c;
+  --accent-br:   #34d399;   /* světlejší zelená hover */
+  --accent-dim:  rgba(22, 209, 140, 0.10);
+  --accent-glow: rgba(22, 209, 140, 0.20);
+  --green:       #16d18c;
+  --yellow:      #f59e0b;
+  --red:         #ef4444;
+  --orange:      #f59e0b;
+  --ink:         #04130d;   /* tmavý text na zelené/fialové ploše */
+  --link:        #c4b0ff;   /* fialově tónovaný inline link (místo modrého #6f9bff) */
+  --radius:      14px;
+  --radius-sm:   9px;
+
+  /* Nav background CSS proměnné — přebíjejí hardkódované rgba v app.css */
+  --nav-bg:         rgba(11, 10, 18, 0.82);
+  --nav-bg-scrolled:rgba(11, 10, 18, 0.94);
+  --nav-border:     rgba(34, 31, 51, 0.70);
+}
+
+/* ── Body: fialová pozadí + violet hero glow (místo zeleného z inline stylů) ─ */
+body {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% -8%,  rgba(124, 77, 255, 0.16), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 0%,  rgba(167, 139, 250, 0.08), transparent 50%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* ── Link tóny: fialová místo modré (muted, nezasahuje do akcentů) ─────────── */
+a:hover { color: #ddd6fe; }   /* světlejší fialová při hoveru */
+
+/* ── Nav (ac-nav): fialová backdrop — přebíjí hardkódované rgba v app.css ──── */
+.ac-nav {
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+}
+.ac-nav.scrolled {
+  background: var(--nav-bg-scrolled);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* ── Header (mrtvý selektor ve vs/catalog stylech — pro konzistenci) ────────── */
+header {
+  background: rgba(11, 10, 18, 0.86);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Dropdown: fialové povrchy (app.css already uses var(--surface)) ────────── */
+.ac-dd-menu {
+  background: var(--surface);
+  border-color: var(--border2);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+/* ── Active nav link podtržení: fialová místo zelené (brand úroveň) ─────────── */
+.ac-nav .ac-links > a.active::after {
+  background: var(--pp);
+}
+
+/* ── CTA tlačítko: glow pulz ve fialové bázi (green zůstává barva bg tlačítka) */
+#ac-progress {
+  background: linear-gradient(90deg, var(--accent), var(--accent-br));
+  box-shadow: 0 0 12px rgba(22, 209, 140, 0.55);
+}
+
+/* ── Segmenty / chipy: aktivní = pp fialová → tmavý ink text ─────────────────── */
+.seg button.on,
+.chips button.on,
+.persona-grid button.on {
+  background: var(--pp);
+  border-color: var(--pp);
+  color: var(--ink);
+}
+
+/* ── Verdict/winner barevný highlight: zelená (auto) místo accent ────────────── */
+.diff-win,
+.vs-yes { color: var(--auto); }
+
+/* ── Fialová glow u best-pick karty (na podstránkách s .verdict) ─────────────── */
+.verdict {
+  background: linear-gradient(160deg, rgba(167, 139, 250, 0.08), var(--surface) 65%);
+  border-color: rgba(167, 139, 250, 0.30);
+}
+
+/* ── Výběr ikony kalkulačky — fialová ikona pokud je aktivní ─────────────────── */
+.ac-nav .ac-links > a.active { color: var(--text); }
+
+/* ── Tabulky: winner buňka zelená (zachovat sémantiku vítěze) ────────────────── */
+td.cheap { background: rgba(22, 209, 140, 0.07); }
+td.cheap .price { color: var(--accent-br); }
+
+/* ── Vendor color glow (caret-style, pro konzistenci s dashboardem) ──────────── */
+.hc-row.win .hc-nm span,
+.hc-row.win .hc-val { color: var(--auto); font-weight: 700; }
+
+/* ── Scroll-reveal zachována (rv systém z app.css — žádná změna potřeba) ─────── */
