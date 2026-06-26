@@ -25,6 +25,7 @@ from build_hosting import expand_hosting_variants, hw_tier_for
 from i18n_util import lang_prefix, hreflang_links, lang_switcher, site_langs
 import integration_counts as ic  # jediný zdroj počtů integrací + typové labely
 from _partials import dashboard_header as _dashboard_header  # sdílený nav HTML
+from build_cost_panels import svg_pricing_bars, svg_alt_bars  # statické SVG cost panely
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "tools.json"
@@ -583,6 +584,10 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
     foot_affiliate = tr("nav.affiliate_disclosure", "Affiliate Disclosure")
     fab_label = tr("pp.fab", "Find my best tool")
 
+    # C3: statický SVG cost panel — pricing bar progression
+    _vol_costs_for_panel = [(vol, engine.cheapest_monthly(tool, vol, STEPS)) for vol in VOLUMES]
+    pricing_panel = svg_pricing_bars(name, slug, _vol_costs_for_panel, month_year)
+
     return f"""<!DOCTYPE html>
 <html lang="{lang}">
 <head>
@@ -650,6 +655,10 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
     </div>
     <p class="cur-note" hidden>{cur_note}</p>
 {plan_sections}
+  </div>
+
+  <div class="section" style="margin-top:24px;padding-top:0;">
+    <div class="cost-panel-wrap">{pricing_panel}</div>
   </div>
 
   <div class="section">
@@ -1023,10 +1032,14 @@ def render_alternatives_page(slug: str, by_slug: dict, site: dict, tools_meta: d
              f"but the closest fit depends on whether you want no-code, code-first or self-hosted.{oss_sentence} "
              "Full ranked prices and head-to-head links below.")
 
+    # C3: statický SVG cost panel — horizontal ranking bars
+    alt_panel = svg_alt_bars(name, priced, by_slug, ALT_VOL, month_year)
+
     body = f"""  <div class="section">
     <h2>{_html_escape(name)} alternatives, ranked by cost</h2>
     <p class="section-sub">Every alternative priced at {ALT_VOL:,} runs / month (cheapest qualifying plan, 3-step workflows) — generated live from our data. Self-hosted tools show the server bill, not a tool fee.</p>
-    <table class="comparison-table">
+    <div class="cost-panel-wrap">{alt_panel}</div>
+    <table class="comparison-table" style="margin-top:20px;">
       <thead><tr><th>Tool</th><th>Price at {ALT_VOL:,} runs/mo</th><th>Integrations</th><th>Self-host</th><th>Head-to-head</th></tr></thead>
       <tbody>
 {table}

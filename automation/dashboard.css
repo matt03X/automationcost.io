@@ -167,3 +167,35 @@ td.cheap .price { color: var(--accent-br); }
 .hc-row.win .hc-val { color: var(--auto); font-weight: 700; }
 
 /* ── Scroll-reveal zachována (rv systém z app.css — žádná změna potřeba) ─────── */
+
+/* ── C3: statické SVG cost panely (build_cost_panels.py) ─────────────────────── */
+.cost-panel-wrap {
+  margin-top: 24px;
+}
+
+.cost-panel {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  /* Vizuální kontrast: panel leží na --surface, ne na --bg.
+     SVG má vlastní --panel2 pozadí, takže wrapper jen přidá padding pro dýchání. */
+}
+
+.cost-panel svg {
+  display: block;
+  border-radius: 12px;
+  /* Jemný drop-shadow ladící s Caret DS — hloubka bez ztěžknutí */
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.35));
+}
+
+/* Skrytá tabulka (a11y fallback) — viditelná jen pro screen-readery */
+.cost-panel table {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  white-space: nowrap;
+}

@@ -32,6 +32,7 @@ from build_integrations import build_integrations_page  # noqa: E402
 import _partials  # noqa: E402  — sdílený nav HTML (dashboard_header)
 import integration_counts as ic  # noqa: E402  — jediný zdroj počtů integrací + typové labely
 import build_i18n  # noqa: E402  — language layer (/de/ … mirror, hreflang, switcher)
+from build_cost_panels import svg_vs_bars  # noqa: E402  — statické SVG cost panely
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "tools.json"
@@ -668,6 +669,9 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
 
     css = _VS_CSS  # sdílená šablona stylů (port z _vs-example.html)
 
+    # C3: statický SVG cost panel — grouped bar chart (A vs B × volumes)
+    cost_panel = svg_vs_bars(a_name, b_name, ta["slug"], tb["slug"], costs, volumes, month_year)
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -738,6 +742,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
       </table>
     </div>
     <p class="tbl-note">{tbl_note}</p>
+    <div class="cost-panel-wrap">{cost_panel}</div>
   </div>
 
   <!-- 3 ── Calculator CTA -->
