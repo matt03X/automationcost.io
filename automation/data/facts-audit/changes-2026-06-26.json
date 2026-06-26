@@ -1,8 +1,25 @@
 {
   "date": "2026-06-26",
-  "generatedAt": "2026-06-26T00:19:26.970Z",
-  "changeCount": 0,
-  "changes": [],
+  "generatedAt": "2026-06-26T19:21:25.275Z",
+  "changeCount": 2,
+  "changes": [
+    {
+      "vendor": "make",
+      "field": "integrations",
+      "claimed": 2594,
+      "scraped": 3000,
+      "deltaPct": 16,
+      "desc": "make: tools.json uvádí 2594 integrací, oficiální stránka 3000 (16 % rozdíl) — revidovat"
+    },
+    {
+      "vendor": "n8n",
+      "field": "integrations",
+      "claimed": 572,
+      "scraped": 1905,
+      "deltaPct": 233,
+      "desc": "n8n: tools.json uvádí 572 integrací, oficiální stránka 1905 (233 % rozdíl) — revidovat"
+    }
+  ],
   "noteCount": 2,
   "notes": [
     {

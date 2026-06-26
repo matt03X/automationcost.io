@@ -1,6 +1,6 @@
 {
   "provider": "anthropic",
-  "scrapedAt": "2026-06-26T00:19:42.353Z",
+  "scrapedAt": "2026-06-26T19:21:41.127Z",
   "url": "https://platform.claude.com/docs/en/about-claude/pricing",
   "httpStatus": 200,
   "modelCount": 30,
