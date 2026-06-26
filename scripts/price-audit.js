@@ -421,6 +421,38 @@ function priceAtVolume(rows, plan, vol) {
   return pts[pts.length - 1][1];
 }
 
+// Sdílený klasifikátor cenových bodů → robustní change-záznamy (slider i dropdown):
+//  1) drobný jitter (epsilon) zahodit
+//  2) extrémní ratio (≥3× / ≤0.33×) = scrape misread (špatný element) → suspect-outlier
+//  3) zbytek: pokud se většina hnula STEJNÝM poměrem ≠1 → uniform-shift (toggle/state
+//     misread) = 1 poznámka místo N falešných delt; jinak itemizuj reálné změny
+// pts: [{plan?|label?, units?, o, n}]; cur: "$" | "€"
+function classifyPriceChanges(vendor, interval, pts, cur) {
+  const out = [];
+  const sig = (pts || []).filter((c) => c.o > 0 && c.n > 0 && Math.abs(c.n - c.o) > Math.max(0.5, 0.02 * c.o));
+  if (!sig.length) return out;
+  const isExtreme = (c) => c.n / c.o >= 3 || c.n / c.o <= 0.33;
+  const lbl = (c) => `${c.plan || c.label || ""}${c.units ? ` @${Number(c.units).toLocaleString()}${cur === "€" ? " exec" : ""}` : ""}`.trim();
+  for (const c of sig.filter(isExtreme)) {
+    out.push({ vendor, interval, kind: "suspect-outlier", plan: c.plan || c.label, units: c.units, old: _r2(c.o), neu: _r2(c.n),
+      desc: `${vendor} ${lbl(c)} (${interval}): ${cur}${_r2(c.o)} → ${cur}${_r2(c.n)} — ${(c.n / c.o).toFixed(1)}× = skoro jistě scrape misread (špatný element/dropdown), OVĚŘ` });
+  }
+  const rest = sig.filter((c) => !isExtreme(c));
+  if (rest.length) {
+    const ratios = rest.map((c) => c.n / c.o).sort((a, b) => a - b);
+    const med = ratios[Math.floor(ratios.length / 2)];
+    const uniform = rest.length >= 3 && ratios.every((r) => Math.abs(r - med) < 0.05 * med) && Math.abs(med - 1) > 0.05;
+    if (uniform) {
+      out.push({ vendor, interval, kind: "uniform-shift", ratio: _r2(med),
+        desc: `${vendor} (${interval}): ${rest.length} cenových bodů se posunulo uniformně ~${med.toFixed(2)}× — OVĚŘ: skoro jistě chybné čtení billing toggle / stavu stránky; reálné uniformní zdražení je vzácné. Neitemizováno.` });
+    } else {
+      for (const c of rest) out.push({ vendor, interval, units: c.units, plan: c.plan || c.label, old: _r2(c.o), neu: _r2(c.n),
+        desc: `${vendor} ${lbl(c)} (${interval}): ${cur}${_r2(c.o)} → ${cur}${_r2(c.n)}` });
+    }
+  }
+  return out;
+}
+
 // ── diff dvou cenových snapshotů ────────────────────────────────────────────
 function diffPrices(vendor, oldP, newP) {
   const changes = [];
@@ -447,20 +479,27 @@ function diffPrices(vendor, oldP, newP) {
     return changes;
   }
   if (model === "dropdown-volume") {
-    // n8n: porovnej cenu (EUR) per (billing, dropdown, units).
+    // n8n (EUR): dvě třídy šumu, oboje řešíme robustně v diffu:
+    //  1) dropdowny se mezi scrapy PŘEHAZUJÍ → matchovat po LABELU, ne po indexu
+    //     (jinak „@50000" porovná Pro-dropdown vs Business-dropdown → falešný flap 144↔821).
+    //  2) Starter/option se občas MISREADNE jako cizí hodnota (Starter €24→€667) →
+    //     extrémní ratio (≥3× / ≤0.33×) = skoro jistě scrape misread, označ suspect-outlier
+    //     (ne reálná změna). undefined→value (init) + drobný jitter (epsilon) se nehlásí.
     for (const billing of ["monthly", "annually"]) {
-      const oB = (oldP[billing] || {}), nB = (newP[billing] || {});
-      if (oB.starter !== nB.starter) changes.push({ vendor, billing, plan: "Starter", old: oB.starter, neu: nB.starter, desc: `n8n Starter (${billing}): €${oB.starter} → €${nB.starter}` });
-      for (let di = 0; di < (nB.dropdowns || []).length; di++) {
-        const nd = nB.dropdowns[di], od = (oB.dropdowns || [])[di];
-        if (!od) continue;
-        const oMap = Object.fromEntries(od.options.map((o) => [o.units, o.eur]));
-        for (const o of nd.options) {
-          if (oMap[o.units] !== undefined && oMap[o.units] !== o.eur) {
-            changes.push({ vendor, billing, dropdown: nd.label, units: o.units, old: oMap[o.units], neu: o.eur, desc: `n8n ${nd.label} @${o.units} exec (${billing}): €${oMap[o.units]} → €${o.eur}` });
-          }
-        }
+      const oB = oldP[billing] || {}, nB = newP[billing] || {};
+      const pts = []; // {label, units, o, n}
+      if (oB.starter != null && nB.starter != null && oB.starter !== nB.starter)
+        pts.push({ label: "Starter", units: null, o: oB.starter, n: nB.starter });
+      const oByLabel = Object.fromEntries((oB.dropdowns || []).map((d) =>
+        [d.label, Object.fromEntries((d.options || []).map((o) => [o.units, o.eur]))]));
+      for (const nd of nB.dropdowns || []) {
+        const om = oByLabel[nd.label];
+        if (!om) continue; // dropdown bez protějšku po labelu (relabel/přeházení) → nehlásit
+        for (const o of nd.options)
+          if (om[o.units] != null && om[o.units] !== o.eur)
+            pts.push({ label: nd.label, units: o.units, o: om[o.units], n: o.eur });
       }
+      changes.push(...classifyPriceChanges(vendor, billing, pts, "€"));
     }
     return changes;
   }
@@ -501,30 +540,12 @@ function diffPrices(vendor, oldP, newP) {
     const oldRows = oldP[interval] || [], newRows = newP[interval] || [];
     if (!oldRows.length || !newRows.length) continue;
     const plans = [...new Set(newRows.flatMap((r) => Object.keys(r.plans || {})))];
-    const pts = []; // {plan, vol, o, n, ratio} — body, co se reálně hnuly nad epsilon
-    for (const plan of plans) {
-      for (const vol of probes) {
-        const o = priceAtVolume(oldRows, plan, vol), n = priceAtVolume(newRows, plan, vol);
-        if (o == null || n == null || o <= 0 || n <= 0) continue;
-        if (Math.abs(o - n) > Math.max(0.5, 0.02 * o)) pts.push({ plan, vol, o, n, ratio: n / o });
-      }
+    const pts = [];
+    for (const plan of plans) for (const vol of probes) {
+      const o = priceAtVolume(oldRows, plan, vol), n = priceAtVolume(newRows, plan, vol);
+      if (o != null && n != null) pts.push({ plan, units: vol, o, n });
     }
-    if (!pts.length) continue;
-    // uniform-shift: většina probe bodů se hnula STEJNÝM poměrem ≠ 1 → billing-toggle/
-    // state misread, ne reálná cenová změna. Collapse do JEDNÉ poznámky (neitemizuj).
-    const ratios = pts.map((p) => p.ratio).sort((a, b) => a - b);
-    const med = ratios[Math.floor(ratios.length / 2)];
-    const uniform = pts.length >= Math.min(3, probes.length) &&
-      ratios.every((r) => Math.abs(r - med) < 0.05 * med) && Math.abs(med - 1) > 0.05;
-    if (uniform) {
-      changes.push({ vendor, interval, kind: "uniform-shift", ratio: _r2(med),
-        desc: `${vendor} (${interval}): celá cenová matice se posunula ~${med.toFixed(2)}× (uniformně) — OVĚŘ: skoro jistě chybné čtení billing toggle / stavu stránky; reálné uniformní zdražení je vzácné. Neitemizováno (1 ověření místo ${pts.length} falešných delt).` });
-    } else {
-      for (const c of pts) {
-        changes.push({ vendor, interval, units: c.vol, plan: c.plan, old: _r2(c.o), neu: _r2(c.n),
-          desc: `${vendor} ${c.plan} @${c.vol.toLocaleString()} (${interval}): $${_r2(c.o)} → $${_r2(c.n)}` });
-      }
-    }
+    changes.push(...classifyPriceChanges(vendor, interval, pts, "$"));
   }
   return changes;
 }
