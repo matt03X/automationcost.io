@@ -529,24 +529,39 @@ def svg_alt_bars(
                 f' fill="rgba(255,255,255,0.02)" rx="0"/>'
             )
 
-        # Bar
-        p.append(
-            f'<rect x="{PAD_L}" y="{bar_top}" width="{bw}" height="{bar_h}"'
-            f' fill="{col}" opacity="0.85" rx="3"/>'
-        )
-
         # Tool name (left)
         p.append(
             f'<text x="{PAD_L - 7}" y="{bar_top + bar_h - 3}" font-family="Plus Jakarta Sans,sans-serif"'
             f' font-size="11" fill="{_TX if i == 0 else _TX2}" text-anchor="end">{tool_name}</text>'
         )
 
-        # Price label (right of bar)
-        cost_lbl = _fmt_c(cost, est)
-        p.append(
-            f'<text x="{PAD_L + bw + 6}" y="{bar_top + bar_h - 3}" font-family="JetBrains Mono,monospace"'
-            f' font-size="9.5" fill="{_GREEN if i == 0 else _TX2}">{cost_lbl}/mo</text>'
-        )
+        if cost == 0:
+            # free tier: jasná zelená "FREE" pilulka místo neviditelného 4px slivru
+            pill_w = 48
+            p.append(
+                f'<rect x="{PAD_L}" y="{bar_top}" width="{pill_w}" height="{bar_h}"'
+                f' fill="{_GREEN}" opacity="0.95" rx="8"/>'
+            )
+            p.append(
+                f'<text x="{PAD_L + pill_w // 2}" y="{bar_top + bar_h - 4}" font-family="Plus Jakarta Sans,sans-serif"'
+                f' font-size="9" font-weight="700" fill="#04130d" text-anchor="middle">FREE</text>'
+            )
+            p.append(
+                f'<text x="{PAD_L + pill_w + 6}" y="{bar_top + bar_h - 3}" font-family="JetBrains Mono,monospace"'
+                f' font-size="9.5" fill="{_GREEN}">$0/mo · free tier</text>'
+            )
+        else:
+            # Bar (green pro nejlevnější, vendor barva jinak)
+            p.append(
+                f'<rect x="{PAD_L}" y="{bar_top}" width="{bw}" height="{bar_h}"'
+                f' fill="{col}" opacity="0.85" rx="3"/>'
+            )
+            # Price label (right of bar)
+            cost_lbl = _fmt_c(cost, est)
+            p.append(
+                f'<text x="{PAD_L + bw + 6}" y="{bar_top + bar_h - 3}" font-family="JetBrains Mono,monospace"'
+                f' font-size="9.5" fill="{_GREEN if i == 0 else _TX2}">{cost_lbl}/mo</text>'
+            )
 
         # Ratio vs cheapest (right margin), skip for cheapest itself
         if i > 0 and cheapest_r["cost"] > 0:
