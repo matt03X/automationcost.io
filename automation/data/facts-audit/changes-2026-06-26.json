@@ -1,0 +1,23 @@
+{
+  "date": "2026-06-26",
+  "generatedAt": "2026-06-26T00:19:26.970Z",
+  "changeCount": 0,
+  "changes": [],
+  "noteCount": 2,
+  "notes": [
+    {
+      "vendor": "activepieces",
+      "field": "license",
+      "claimed": "MIT",
+      "scraped": "NOASSERTION",
+      "desc": "activepieces: GitHub nepotvrdil licenci \"MIT\" (hlásí Other) — ověřit LICENSE ručně (možná dual/commercial)"
+    },
+    {
+      "vendor": "automatisch",
+      "field": "license",
+      "claimed": "AGPL-3.0",
+      "scraped": "NOASSERTION",
+      "desc": "automatisch: GitHub nepotvrdil licenci \"AGPL-3.0\" (hlásí Other) — ověřit LICENSE ručně (možná dual/commercial)"
+    }
+  ]
+}

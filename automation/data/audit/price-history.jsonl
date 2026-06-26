@@ -89,3 +89,93 @@
 {"d":"2026-06-21","vendor":"make","interval":"annually","units":7000000,"plan":"Teams","old":7227.99,"neu":9396,"desc":"make Teams @7,000,000 (annually): $7227.99 → $9396"}
 {"d":"2026-06-21","vendor":"make","interval":"annually","units":8000000,"plan":"Pro","old":4811,"neu":6255,"desc":"make Pro @8,000,000 (annually): $4811 → $6255"}
 {"d":"2026-06-21","vendor":"make","interval":"annually","units":8000000,"plan":"Teams","old":8231.05,"neu":10700,"desc":"make Teams @8,000,000 (annually): $8231.05 → $10700"}
+{"d":"2026-06-26","vendor":"make","kind":"billing","change":"removed","line":"8,000,000+ credits/mo","desc":"make: billing řádek ZMIZEL → \"8,000,000+ credits/mo\""}
+{"d":"2026-06-26","vendor":"make","kind":"billing","change":"added","line":"8 000 000+ credits/mo","desc":"make: billing řádek PŘIBYL → \"8 000 000+ credits/mo\""}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":10000,"plan":"Core","old":16,"neu":10.59,"desc":"make Core @10 000 (monthly): $16 → $10.59"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":10000,"plan":"Pro","old":28,"neu":18.82,"desc":"make Pro @10 000 (monthly): $28 → $18.82"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":10000,"plan":"Teams","old":51,"neu":34.12,"desc":"make Teams @10 000 (monthly): $51 → $34.12"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":20000,"plan":"Core","old":28,"neu":18.82,"desc":"make Core @20 000 (monthly): $28 → $18.82"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":20000,"plan":"Pro","old":51,"neu":34.12,"desc":"make Pro @20 000 (monthly): $51 → $34.12"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":20000,"plan":"Teams","old":94,"neu":62.35,"desc":"make Teams @20 000 (monthly): $94 → $62.35"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":40000,"plan":"Core","old":51,"neu":34.12,"desc":"make Core @40 000 (monthly): $51 → $34.12"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":40000,"plan":"Pro","old":94,"neu":62.35,"desc":"make Pro @40 000 (monthly): $94 → $62.35"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":40000,"plan":"Teams","old":175,"neu":116.47,"desc":"make Teams @40 000 (monthly): $175 → $116.47"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":80000,"plan":"Core","old":97,"neu":64.71,"desc":"make Core @80 000 (monthly): $97 → $64.71"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":80000,"plan":"Pro","old":161,"neu":107.06,"desc":"make Pro @80 000 (monthly): $161 → $107.06"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":80000,"plan":"Teams","old":305,"neu":203.41,"desc":"make Teams @80 000 (monthly): $305 → $203.41"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":150000,"plan":"Core","old":175,"neu":116.47,"desc":"make Core @150 000 (monthly): $175 → $116.47"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":150000,"plan":"Pro","old":271,"neu":180.53,"desc":"make Pro @150 000 (monthly): $271 → $180.53"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":150000,"plan":"Teams","old":515,"neu":343.01,"desc":"make Teams @150 000 (monthly): $515 → $343.01"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":300000,"plan":"Core","old":321,"neu":214.31,"desc":"make Core @300 000 (monthly): $321 → $214.31"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":300000,"plan":"Pro","old":474,"neu":315.93,"desc":"make Pro @300 000 (monthly): $474 → $315.93"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":300000,"plan":"Teams","old":900,"neu":600.26,"desc":"make Teams @300 000 (monthly): $900 → $600.26"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":500000,"plan":"Pro","old":724,"neu":482.67,"desc":"make Pro @500 000 (monthly): $724 → $482.67"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":500000,"plan":"Teams","old":1376,"neu":917.06,"desc":"make Teams @500 000 (monthly): $1376 → $917.06"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":750000,"plan":"Pro","old":1018,"neu":678.75,"desc":"make Pro @750 000 (monthly): $1018 → $678.75"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":750000,"plan":"Teams","old":1934,"neu":1289.62,"desc":"make Teams @750 000 (monthly): $1934 → $1289.62"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":1000000,"plan":"Pro","old":1321,"neu":880.86,"desc":"make Pro @1 000 000 (monthly): $1321 → $880.86"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":1000000,"plan":"Teams","old":2472,"neu":1647.85,"desc":"make Teams @1 000 000 (monthly): $2472 → $1647.85"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":1500000,"plan":"Pro","old":1903,"neu":1268.44,"desc":"make Pro @1 500 000 (monthly): $1903 → $1268.44"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":1500000,"plan":"Teams","old":3476,"neu":2317.29,"desc":"make Teams @1 500 000 (monthly): $3476 → $2317.29"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":2000000,"plan":"Pro","old":2431,"neu":1620.79,"desc":"make Pro @2 000 000 (monthly): $2431 → $1620.79"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":2000000,"plan":"Teams","old":4326,"neu":2883.74,"desc":"make Teams @2 000 000 (monthly): $4326 → $2883.74"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":2500000,"plan":"Pro","old":3002,"neu":2001.32,"desc":"make Pro @2 500 000 (monthly): $3002 → $2001.32"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":2500000,"plan":"Teams","old":5310,"neu":3540,"desc":"make Teams @2 500 000 (monthly): $5310 → $3540"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":3000000,"plan":"Pro","old":3501,"neu":2333.94,"desc":"make Pro @3 000 000 (monthly): $3501 → $2333.94"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":3000000,"plan":"Teams","old":6083,"neu":4055.26,"desc":"make Teams @3 000 000 (monthly): $6083 → $4055.26"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":4000000,"plan":"Pro","old":4543,"neu":3028.93,"desc":"make Pro @4 000 000 (monthly): $4543 → $3028.93"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":4000000,"plan":"Teams","old":7773,"neu":5181.72,"desc":"make Teams @4 000 000 (monthly): $7773 → $5181.72"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":5000000,"plan":"Pro","old":5566,"neu":3710.44,"desc":"make Pro @5 000 000 (monthly): $5566 → $3710.44"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":5000000,"plan":"Teams","old":9412,"neu":6274.73,"desc":"make Teams @5 000 000 (monthly): $9412 → $6274.73"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":6000000,"plan":"Pro","old":6542,"neu":4361.66,"desc":"make Pro @6 000 000 (monthly): $6542 → $4361.66"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":6000000,"plan":"Teams","old":11193,"neu":7461.67,"desc":"make Teams @6 000 000 (monthly): $11193 → $7461.67"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":7000000,"plan":"Pro","old":7543,"neu":5028.39,"desc":"make Pro @7 000 000 (monthly): $7543 → $5028.39"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":7000000,"plan":"Teams","old":12755,"neu":8503.52,"desc":"make Teams @7 000 000 (monthly): $12755 → $8503.52"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":8000000,"plan":"Pro","old":8491,"neu":5660.47,"desc":"make Pro @8 000 000 (monthly): $8491 → $5660.47"}
+{"d":"2026-06-26","vendor":"make","interval":"monthly","units":8000000,"plan":"Teams","old":14525,"neu":9683.59,"desc":"make Teams @8 000 000 (monthly): $14525 → $9683.59"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":10000,"plan":"Core","old":12,"neu":9,"desc":"make Core @10 000 (annually): $12 → $9"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":10000,"plan":"Pro","old":21,"neu":16,"desc":"make Pro @10 000 (annually): $21 → $16"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":10000,"plan":"Teams","old":38,"neu":29,"desc":"make Teams @10 000 (annually): $38 → $29"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":20000,"plan":"Core","old":21,"neu":16,"desc":"make Core @20 000 (annually): $21 → $16"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":20000,"plan":"Pro","old":38,"neu":29,"desc":"make Pro @20 000 (annually): $38 → $29"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":20000,"plan":"Teams","old":69,"neu":53,"desc":"make Teams @20 000 (annually): $69 → $53"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":40000,"plan":"Core","old":38,"neu":29,"desc":"make Core @40 000 (annually): $38 → $29"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":40000,"plan":"Pro","old":69,"neu":53,"desc":"make Pro @40 000 (annually): $69 → $53"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":40000,"plan":"Teams","old":129,"neu":99,"desc":"make Teams @40 000 (annually): $129 → $99"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":80000,"plan":"Core","old":72,"neu":55,"desc":"make Core @80 000 (annually): $72 → $55"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":80000,"plan":"Pro","old":118,"neu":91,"desc":"make Pro @80 000 (annually): $118 → $91"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":80000,"plan":"Teams","old":225,"neu":172,"desc":"make Teams @80 000 (annually): $225 → $172"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":150000,"plan":"Core","old":129,"neu":99,"desc":"make Core @150 000 (annually): $129 → $99"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":150000,"plan":"Pro","old":199,"neu":153.45,"desc":"make Pro @150 000 (annually): $199 → $153.45"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":150000,"plan":"Teams","old":379,"neu":291.56,"desc":"make Teams @150 000 (annually): $379 → $291.56"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":300000,"plan":"Core","old":237,"neu":182.16,"desc":"make Core @300 000 (annually): $237 → $182.16"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":300000,"plan":"Pro","old":349,"neu":268.54,"desc":"make Pro @300 000 (annually): $349 → $268.54"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":300000,"plan":"Teams","old":663,"neu":510.22,"desc":"make Teams @300 000 (annually): $663 → $510.22"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":500000,"plan":"Pro","old":533,"neu":410.27,"desc":"make Pro @500 000 (annually): $533 → $410.27"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":500000,"plan":"Teams","old":1013,"neu":779,"desc":"make Teams @500 000 (annually): $1013 → $779"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":750000,"plan":"Pro","old":750,"neu":576.94,"desc":"make Pro @750 000 (annually): $750 → $576.94"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":750000,"plan":"Teams","old":1425,"neu":1096.18,"desc":"make Teams @750 000 (annually): $1425 → $1096.18"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":1000000,"plan":"Pro","old":973,"neu":748.73,"desc":"make Pro @1 000 000 (annually): $973 → $748.73"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":1000000,"plan":"Teams","old":1821,"neu":1400.67,"desc":"make Teams @1 000 000 (annually): $1821 → $1400.67"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":1500000,"plan":"Pro","old":1402,"neu":1078.18,"desc":"make Pro @1 500 000 (annually): $1402 → $1078.18"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":1500000,"plan":"Teams","old":2561,"neu":1969,"desc":"make Teams @1 500 000 (annually): $2561 → $1969"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":2000000,"plan":"Pro","old":1791,"neu":1377.67,"desc":"make Pro @2 000 000 (annually): $1791 → $1377.67"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":2000000,"plan":"Teams","old":3187,"neu":2451.18,"desc":"make Teams @2 000 000 (annually): $3187 → $2451.18"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":2500000,"plan":"Pro","old":2211,"neu":1701.13,"desc":"make Pro @2 500 000 (annually): $2211 → $1701.13"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":2500000,"plan":"Teams","old":3912,"neu":3009.26,"desc":"make Teams @2 500 000 (annually): $3912 → $3009.26"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":3000000,"plan":"Pro","old":2579,"neu":1983.85,"desc":"make Pro @3 000 000 (annually): $2579 → $1983.85"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":3000000,"plan":"Teams","old":4481,"neu":3446.97,"desc":"make Teams @3 000 000 (annually): $4481 → $3446.97"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":4000000,"plan":"Pro","old":3347,"neu":2574.59,"desc":"make Pro @4 000 000 (annually): $3347 → $2574.59"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":4000000,"plan":"Teams","old":5726,"neu":4404.46,"desc":"make Teams @4 000 000 (annually): $5726 → $4404.46"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":5000000,"plan":"Pro","old":4100,"neu":3153.88,"desc":"make Pro @5 000 000 (annually): $4100 → $3153.88"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":5000000,"plan":"Teams","old":6934,"neu":5333.52,"desc":"make Teams @5 000 000 (annually): $6934 → $5333.52"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":6000000,"plan":"Pro","old":4820,"neu":3707.41,"desc":"make Pro @6 000 000 (annually): $4820 → $3707.41"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":6000000,"plan":"Teams","old":8245,"neu":6342.42,"desc":"make Teams @6 000 000 (annually): $8245 → $6342.42"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":7000000,"plan":"Pro","old":5556,"neu":4274.13,"desc":"make Pro @7 000 000 (annually): $5556 → $4274.13"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":7000000,"plan":"Teams","old":9396,"neu":7227.99,"desc":"make Teams @7 000 000 (annually): $9396 → $7227.99"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":8000000,"plan":"Pro","old":6255,"neu":4811,"desc":"make Pro @8 000 000 (annually): $6255 → $4811"}
+{"d":"2026-06-26","vendor":"make","interval":"annually","units":8000000,"plan":"Teams","old":10700,"neu":8231.05,"desc":"make Teams @8 000 000 (annually): $10700 → $8231.05"}
+{"d":"2026-06-26","vendor":"n8n","billing":"monthly","plan":"Starter","old":667,"neu":24,"desc":"n8n Starter (monthly): €667 → €24"}
+{"d":"2026-06-26","vendor":"n8n","billing":"monthly","dropdown":"10k workflow executions with u","units":50000,"old":821,"neu":144,"desc":"n8n 10k workflow executions with u @50000 exec (monthly): €821 → €144"}
+{"d":"2026-06-26","vendor":"n8n","billing":"annually","plan":"Starter","old":667,"neu":20,"desc":"n8n Starter (annually): €667 → €20"}
+{"d":"2026-06-26","vendor":"n8n","billing":"annually","dropdown":"10k workflow executions with u","units":50000,"old":821,"neu":120,"desc":"n8n 10k workflow executions with u @50000 exec (annually): €821 → €120"}

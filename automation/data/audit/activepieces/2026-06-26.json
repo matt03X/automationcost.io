@@ -1,0 +1,19 @@
+{
+  "vendor": "activepieces",
+  "scrapedAt": "2026-06-26T00:18:36.310Z",
+  "url": "https://www.activepieces.com/pricing",
+  "unit": "flows",
+  "model": "fixed",
+  "listedPrices": [
+    5
+  ],
+  "billingLines": [
+    "10 free active flows",
+    "then $5 per active flow per month",
+    "unlimited mcp servers",
+    "unlimited runs",
+    "unlimited runs. empower every team with ai.",
+    "unlimited tables",
+    "© 2026 activepieces. all rights reserved"
+  ]
+}

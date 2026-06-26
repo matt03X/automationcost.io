@@ -1,0 +1,23 @@
+{
+  "date": "2026-06-26",
+  "vendor": "pipedream",
+  "url": "https://pipedream.com/apps",
+  "integrations": null,
+  "openSourceSignal": true,
+  "evidence": null,
+  "freeTier": {
+    "snippets": [
+      "100 credits",
+      "2,000 credits",
+      "10,000 credits"
+    ],
+    "numbers": [
+      100,
+      2000,
+      10000
+    ]
+  },
+  "warnings": [
+    "počet integrací nenalezen (změna layoutu / bot wall)"
+  ]
+}

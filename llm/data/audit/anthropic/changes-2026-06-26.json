@@ -1,0 +1,44 @@
+{
+  "provider": "anthropic",
+  "date": "2026-06-26",
+  "generatedAt": "2026-06-26T00:19:42.380Z",
+  "changeCount": 6,
+  "changes": [
+    {
+      "provider": "anthropic",
+      "model": "Claude Opus 4 (retired, except on Google Cloud)",
+      "kind": "model-added",
+      "desc": "anthropic: NOVÝ model v ceníku → \"Claude Opus 4 (retired, except on Google Cloud)\" (in $7.5 / out $37.5)"
+    },
+    {
+      "provider": "anthropic",
+      "model": "Claude Sonnet 4 (retired, except on Bedrock and Google Cloud",
+      "kind": "model-added",
+      "desc": "anthropic: NOVÝ model v ceníku → \"Claude Sonnet 4 (retired, except on Bedrock and Google Cloud\" (in $1.5 / out $7.5)"
+    },
+    {
+      "provider": "anthropic",
+      "model": "Claude Haiku 3.5 (retired, except on Bedrock and Google Clou",
+      "kind": "model-added",
+      "desc": "anthropic: NOVÝ model v ceníku → \"Claude Haiku 3.5 (retired, except on Bedrock and Google Clou\" (in $0.4 / out $2)"
+    },
+    {
+      "provider": "anthropic",
+      "model": "Claude Opus 4 (retired, except on Vertex AI)",
+      "kind": "model-removed",
+      "desc": "anthropic: model ZMIZEL z ceníku → \"Claude Opus 4 (retired, except on Vertex AI)\""
+    },
+    {
+      "provider": "anthropic",
+      "model": "Claude Sonnet 4 (retired, except on Bedrock and Vertex AI)",
+      "kind": "model-removed",
+      "desc": "anthropic: model ZMIZEL z ceníku → \"Claude Sonnet 4 (retired, except on Bedrock and Vertex AI)\""
+    },
+    {
+      "provider": "anthropic",
+      "model": "Claude Haiku 3.5 (retired, except on Bedrock and Vertex AI)",
+      "kind": "model-removed",
+      "desc": "anthropic: model ZMIZEL z ceníku → \"Claude Haiku 3.5 (retired, except on Bedrock and Vertex AI)\""
+    }
+  ]
+}

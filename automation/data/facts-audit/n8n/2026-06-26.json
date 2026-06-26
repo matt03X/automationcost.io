@@ -1,0 +1,14 @@
+{
+  "date": "2026-06-26",
+  "vendor": "n8n",
+  "url": "https://n8n.io/integrations/",
+  "integrations": 1903,
+  "openSourceSignal": true,
+  "evidence": "1903 integrations",
+  "repo": "n8n-io/n8n",
+  "selfHostConfirmed": true,
+  "license": {
+    "spdx": "NOASSERTION",
+    "name": "Other"
+  }
+}

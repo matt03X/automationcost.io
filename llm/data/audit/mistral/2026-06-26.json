@@ -1,0 +1,16 @@
+{
+  "provider": "mistral",
+  "scrapedAt": "2026-06-26T00:20:58.112Z",
+  "url": "https://mistral.ai/pricing",
+  "httpStatus": 200,
+  "modelCount": 1,
+  "models": [
+    {
+      "name": "Verified students can get Mistral Pro for",
+      "input": 5.99,
+      "output": 14.99,
+      "cached": null,
+      "raw": "Verified students can get Mistral Pro for $5.99 / month (normally $14.99)."
+    }
+  ]
+}
