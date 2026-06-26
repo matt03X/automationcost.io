@@ -23,6 +23,7 @@ from pathlib import Path
 
 from build_hosting import expand_hosting_variants, hw_tier_for
 from i18n_util import lang_prefix, hreflang_links, lang_switcher, site_langs
+import integration_counts as ic  # jediný zdroj počtů integrací + typové labely
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "tools.json"
@@ -306,7 +307,7 @@ def _comparison_table(engine, by_slug: dict, focus_slug: str, vol: int, tr=None)
             f"        <tr><td>{name}</td>"
             f'<td class="price-cell"><span class="price-num" data-month="{price_m}" '
             f'data-annual="{price_a}">{price_m}</span></td>'
-            f'<td>{t["integrations"]:,}+</td>'
+            f'<td>{ic.label(s)}</td>'
             f"<td>{sh}</td></tr>")
     return "\n".join(rows)
 
@@ -1092,7 +1093,7 @@ def render_alternatives_page(slug: str, by_slug: dict, site: dict, tools_meta: d
             f"        <tr><td><a href=\"{s}-pricing.html\"><strong>{_html_escape(t['name'])}</strong></a><br>"
             f"<span style=\"color:var(--muted);font-size:13px\">{_html_escape(t['tagline'])}</span></td>"
             f"<td class=\"price-cell\">{_fmt_usd(r['cost'], r['est'])}</td>"
-            f"<td>{t['integrations']:,}+</td><td>{sh}</td>"
+            f"<td>{ic.label(s)}</td><td>{sh}</td>"
             f"<td><a href=\"{_vs_slug(slug, s)}.html\">{_html_escape(name)} vs {_html_escape(t['name'])} →</a></td></tr>")
     table = "\n".join(rows)
 

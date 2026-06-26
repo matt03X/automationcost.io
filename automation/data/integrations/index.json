@@ -19,6 +19,15 @@
     "automatisch": 92,
     "node-red": 6092
   },
+  "count_types": {
+    "zapier": "app connectors",
+    "make": "app connectors",
+    "n8n": "official nodes",
+    "pipedream": "app connectors",
+    "activepieces": "pieces",
+    "automatisch": "connectors",
+    "node-red": "community modules"
+  },
   "apps": [
     {"n":"Anthropic","c":"ai-models","t":[1,1,1,1,1,1,2]},
     {"n":"Asana","c":"project-management","t":[1,1,1,1,1,1,0]},

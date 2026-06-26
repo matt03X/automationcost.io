@@ -29,6 +29,7 @@ from build_hosting import expand_hosting_variants, apply_fx  # noqa: E402
 from build_pricing import build_pricing_pages, build_seo_pages, _page_graph_ld, _iso_date, _clamp_title, _clamp_desc, _seo_breadcrumb_ld  # noqa: E402
 from build_catalog import build_catalog_pages  # noqa: E402
 from build_integrations import build_integrations_page  # noqa: E402
+import integration_counts as ic  # noqa: E402  — jediný zdroj počtů integrací + typové labely
 import build_i18n  # noqa: E402  — language layer (/de/ … mirror, hreflang, switcher)
 
 ROOT = Path(__file__).resolve().parent
@@ -162,7 +163,7 @@ def render_calculator(tools: list[dict]) -> str:
             f'    slug: {js_str(t["slug"])}, name: {js_str(t["name"])}, '
             f'unitModel: {js_str(t.get("unitModel", "runs"))}, annualFactor: {t.get("annualFactor", 1)}, '
             f'selfHostable: {js_bool(t["selfHostable"])}, aiFeatures: {js_bool(t["aiFeatures"])}, '
-            f'integrations: {t["integrations"]},'
+            f'integrations: {t["integrations"]}, integrationType: {js_str(ic.count_type(t["slug"]))},'
         )
         lines.append(
             f'    homepage: {js_str(t["homepage"])}, affiliateUrl: {js_str(t["affiliateUrl"])}, '
@@ -192,7 +193,8 @@ def render_compare(tools: list[dict]) -> str:
         lines.append(f'    tagline: {js_str(t["tagline"])},')
         lines.append(
             f'    selfHostable: {js_bool(t["selfHostable"])}, '
-            f'aiFeatures: {js_bool(t["aiFeatures"])}, integrations: {t["integrations"]},'
+            f'aiFeatures: {js_bool(t["aiFeatures"])}, integrations: {t["integrations"]}, '
+            f'integrationType: {js_str(ic.count_type(t.get("variantOf", t["slug"])))},'
         )
         lines.append(f'    license: {js_str(t["license"])},')
         lines.append(
@@ -291,8 +293,9 @@ def diff_tools(old: dict, new: dict, date: str) -> list[dict]:
             continue
         add = lambda item, a, b, d: entries.append(
             {"d": date, "tool": t["slug"], "name": t["name"], "item": item, "old": a, "neu": b, "dir": d})
-        if o.get("integrations") != t.get("integrations"):
-            add("Integrations", f"{o.get('integrations'):,}", f"{t.get('integrations'):,}", "info")
+        # Počty integrací NEhlásíme do (cenového) changelogu: jsou audit/matrix-sourced
+        # evidence (integrations/index.json), ne cenový event. Auto-entry typu
+        # „n8n 1,868 → 572" by navíc bez metodického kontextu vypadal jako propad.
         if o.get("overage") != t.get("overage"):
             add("Overage", _fmt_overage(o.get("overage")), _fmt_overage(t.get("overage")), "info")
         old_plans = {p["name"]: p for p in o.get("plans", [])}
@@ -438,9 +441,13 @@ def _vs_features():
         return lambda ta, tb: ("a" if ta[key] else "b") if ta[key] != tb[key] else None
 
     return [
-        ("Integrations", lambda t: f"{t['integrations']:,}+",
-         lambda ta, tb: None if ta["integrations"] == tb["integrations"]
-         else ("a" if ta["integrations"] > tb["integrations"] else "b")),
+        # Počet integrací s typovým labelem (různá metodika per nástroj). Vítěz se NEvyhlašuje,
+        # když mají nástroje jinou bázi (n8n „official nodes" vs Node-RED „community modules" =
+        # jablka/hrušky → žádné zavádějící „X > Y").
+        ("Integrations", lambda t: ic.label(t["slug"]),
+         lambda ta, tb: None if not ic.same_basis(ta["slug"], tb["slug"])
+         else (None if ic.count(ta["slug"]) == ic.count(tb["slug"])
+               else ("a" if ic.count(ta["slug"]) > ic.count(tb["slug"]) else "b"))),
         ("Free tier", lambda t: f"{t['freeOps']} · {t['freeWorkflows']}", lambda ta, tb: None),
         ("Overage model", fmt_overage, win_overage),
         ("Steps per workflow", lambda t: t["maxSteps"],
@@ -1656,6 +1663,22 @@ def render_scoring(model: dict) -> str:
     )
 
 
+def assert_counts_parity(tools: list[dict]) -> None:
+    """Tvrdá pojistka: tools.json `integrations` MUSÍ == integrations/index.json `counts`
+    (jediný zdroj pravdy pro počty). Při rozjetí build i --check selže s exit≠0 a per-tool diffem."""
+    idx_counts = json.loads(
+        (ROOT / "data" / "integrations" / "index.json").read_text(encoding="utf-8")
+    )["counts"]
+    bad = [(t["slug"], t.get("integrations"), idx_counts.get(t["slug"]))
+           for t in tools if t.get("integrations") != idx_counts.get(t["slug"])]
+    if bad:
+        raise SystemExit(
+            "CHYBA: tools.json integrations != integrations/index.json counts:\n"
+            + "\n".join(f"  {s}: tools.json={a} index.json={b}" for s, a, b in bad)
+            + "\nSrovnej tools.json s integrations/index.json (jediný zdroj) a spusť znovu."
+        )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Inject data/tools.json into static pages.")
     parser.add_argument("--check", action="store_true",
@@ -1674,6 +1697,7 @@ def main() -> int:
     if DATA.exists():
         data = json.loads(DATA.read_text(encoding="utf-8"))
         tools = data["tools"]
+        assert_counts_parity(tools)  # tools.json ↔ integrations/index.json counts (jediný zdroj)
         apply_fx(tools)  # n8n (EUR) → USD kurzem z fx.json, než cokoli rendruje/počítá
         candidates = {
             ROOT / "calculator.html": render_calculator,

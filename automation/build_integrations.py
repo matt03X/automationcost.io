@@ -41,6 +41,7 @@ from build_catalog import (
     _footer, _head, _html_escape, _load_site, _logo, _month_year, _nav,
     _strip_injected,
 )
+from integration_counts import COUNT_TYPE
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "tools.json"
@@ -180,11 +181,14 @@ def _index_json(matrix: dict, tools_meta: dict) -> str:
         "date": _month_year(tools_meta),
         "tools": TOOLS_ORDER,
         "counts": matrix["counts"],
+        # typ počtu per nástroj (různá metodika — official nodes / community modules /
+        # app connectors / pieces). Zdroj = COUNT_TYPE konstanta v integration_counts.py.
+        "count_types": {v: COUNT_TYPE.get(v, "integrations") for v in TOOLS_ORDER},
         "apps": apps,
     }
     # 1 app/řádek → čitelné git diffy
     lines = [json.dumps(a, ensure_ascii=False, separators=(",", ":")) for a in apps]
-    head = json.dumps({k: out[k] for k in ("_note", "date", "tools", "counts")}, ensure_ascii=False, indent=2)[:-2]
+    head = json.dumps({k: out[k] for k in ("_note", "date", "tools", "counts", "count_types")}, ensure_ascii=False, indent=2)[:-2]
     return head + ',\n  "apps": [\n    ' + ",\n    ".join(lines) + "\n  ]\n}\n"
 
 

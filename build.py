@@ -644,6 +644,25 @@ def apply_ga4(measurement_id: str, pages: list[Path]) -> list[str]:
     return changed
 
 
+def assert_counts_parity_root() -> None:
+    """automation/data/tools.json `integrations` ↔ integrations/index.json `counts`
+    (jediný zdroj pravdy). Selže build i --check při rozjetí. Tichý no-op u umbrella buildů
+    bez automation dat."""
+    idx = AUTOMATION_DATA.parent / "integrations" / "index.json"
+    if not (AUTOMATION_DATA.exists() and idx.exists()):
+        return
+    idx_counts = json.loads(idx.read_text(encoding="utf-8"))["counts"]
+    tools = json.loads(AUTOMATION_DATA.read_text(encoding="utf-8"))["tools"]
+    bad = [(t["slug"], t.get("integrations"), idx_counts.get(t["slug"]))
+           for t in tools if t.get("integrations") != idx_counts.get(t["slug"])]
+    if bad:
+        raise SystemExit(
+            "CHYBA: automation/data/tools.json integrations != integrations/index.json counts:\n"
+            + "\n".join(f"  {s}: tools.json={a} index.json={b}" for s, a, b in bad)
+            + "\nSrovnej tools.json s integrations/index.json (jediný zdroj) a spusť znovu."
+        )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Inject data/tools.json into static pages.")
     parser.add_argument("--check", action="store_true",
@@ -651,6 +670,7 @@ def main() -> int:
     args = parser.parse_args()
 
     site = load_site()
+    assert_counts_parity_root()  # počty integrací: jediný zdroj = integrations/index.json
 
     # jobs: (path, generated, start, end, warn)
     jobs: list[tuple[Path, str, str, str, str]] = []

@@ -45,8 +45,8 @@
       "a": "zapier",
       "b": "make",
       "winner": "make",
-      "verdict": "Across the volumes we track, Make is the lower-cost option, while Zapier carries the larger app catalog (9,000+ vs 3,000+) and a simpler point-and-click editor. Make trades a steeper learning curve for more visual, field-level control. See the price table below for exact figures — which one fits comes down to whether you need a Zapier-only integration or prefer Make's lower cost and flexibility.",
-      "whyLoser": "When breadth or simplicity matters most. With 9,000+ apps versus Make's 3,000+, Zapier is often the only tool that connects a niche CRM or legacy system, and its point-and-click editor plus large template library get non-technical users running fastest.",
+      "verdict": "Across the volumes we track, Make is the lower-cost option, while Zapier carries the larger app catalog (9,725 app connectors vs 2,594) and a simpler point-and-click editor. Make trades a steeper learning curve for more visual, field-level control. See the price table below for exact figures — which one fits comes down to whether you need a Zapier-only integration or prefer Make's lower cost and flexibility.",
+      "whyLoser": "When breadth or simplicity matters most. With 9,725 app connectors versus Make's 2,594, Zapier is often the only tool that connects a niche CRM or legacy system, and its point-and-click editor plus large template library get non-technical users running fastest.",
       "faq": [
         {
           "q": "How do Make and Zapier compare on price?",
@@ -62,7 +62,7 @@
         },
         {
           "q": "When is Zapier the better fit?",
-          "a": "When breadth or simplicity matters most: 9,000+ apps (often the only tool that connects a niche CRM or legacy system), a point-and-click editor, and the largest template library get non-technical users running fastest."
+          "a": "When breadth or simplicity matters most: 9,725 app connectors (often the only tool that connects a niche CRM or legacy system), a point-and-click editor, and the largest template library get non-technical users running fastest."
         },
         {
           "q": "How accurate are these prices?",
@@ -74,8 +74,8 @@
       "a": "zapier",
       "b": "n8n",
       "winner": "n8n",
-      "verdict": "n8n self-hosted is the lower-cost option across these volumes — but only if you run the server yourself: n8n's Community Edition software is free and you pay for hosting (~$8/mo on a small VPS up to ~$66/mo at high volume — infrastructure, not a tool fee). Zapier is the fully-managed, no-code path with the larger catalog (9,000+ apps) and nothing to host. If nobody on the team wants to run a server, n8n Cloud is the managed comparison. See the table for figures — the real choice is self-host vs managed.",
-      "whyLoser": "When you'd rather not run infrastructure. Zapier is fully managed with a no-code editor and 9,000+ integrations, so a non-technical person can build and own automations without engineering — that convenience is what the price covers."
+      "verdict": "n8n self-hosted is the lower-cost option across these volumes — but only if you run the server yourself: n8n's Community Edition software is free and you pay for hosting (~$8/mo on a small VPS up to ~$66/mo at high volume — infrastructure, not a tool fee). Zapier is the fully-managed, no-code path with the larger catalog (9,725 app connectors) and nothing to host. If nobody on the team wants to run a server, n8n Cloud is the managed comparison. See the table for figures — the real choice is self-host vs managed.",
+      "whyLoser": "When you'd rather not run infrastructure. Zapier is fully managed with a no-code editor and 9,725 app connectors, so a non-technical person can build and own automations without engineering — that convenience is what the price covers."
     },
     {
       "a": "make",
@@ -88,8 +88,8 @@
       "a": "zapier",
       "b": "pipedream",
       "winner": "pipedream",
-      "verdict": "Pipedream is the lower-cost option here, but the two lead with different defaults: Pipedream is code-first (every step can be Node/Python with full npm/PyPI access), while Zapier leads with a no-code point-and-click editor and 9,000+ integrations — it also has Code by Zapier (Python/JS) when you need a script. If your team writes code throughout, Pipedream offers more control for less; if you prefer building visually with code as the exception, Zapier's approach is what the price covers. See the price table for figures.",
-      "whyLoser": "When the people building automations don't code. Zapier's no-code editor, 9,000+ integrations and large template library let a marketer or ops person ship an automation alone — no engineering required."
+      "verdict": "Pipedream is the lower-cost option here, but the two lead with different defaults: Pipedream is code-first (every step can be Node/Python with full npm/PyPI access), while Zapier leads with a no-code point-and-click editor and 9,725 app connectors — it also has Code by Zapier (Python/JS) when you need a script. If your team writes code throughout, Pipedream offers more control for less; if you prefer building visually with code as the exception, Zapier's approach is what the price covers. See the price table for figures.",
+      "whyLoser": "When the people building automations don't code. Zapier's no-code editor, 9,725 app connectors and large template library let a marketer or ops person ship an automation alone — no engineering required."
     },
     {
       "a": "n8n",
@@ -102,8 +102,8 @@
       "a": "zapier",
       "b": "activepieces",
       "winner": "activepieces",
-      "verdict": "Activepieces runs this at $0 (free up to 10 active flows, then $5 per flow, unlimited runs); Zapier's strength is its catalog — 9,000+ integrations vs about 750. If your apps are covered by Activepieces' smaller, open-source catalog, it's the lower-cost option by a wide margin; if you need a niche integration only Zapier has, no discount replaces it. See the price table for figures.",
-      "whyLoser": "When you need breadth or polish. About 750 integrations cover the popular apps, but Zapier's 9,000+ catalog is the deepest here — often the only one with a niche or regional tool — plus the largest template library and a no-code editor tuned for non-technical users."
+      "verdict": "Activepieces runs this at $0 (free up to 10 active flows, then $5 per flow, unlimited runs); Zapier's strength is its catalog — 9,725 app connectors vs Activepieces' 754 pieces. If your apps are covered by Activepieces' smaller, open-source catalog, it's the lower-cost option by a wide margin; if you need a niche integration only Zapier has, no discount replaces it. See the price table for figures.",
+      "whyLoser": "When you need breadth or polish. Activepieces' 754 pieces cover the popular apps, but Zapier's 9,725-connector catalog is the deepest here — often the only one with a niche or regional tool — plus the largest template library and a no-code editor tuned for non-technical users."
     },
     {
       "a": "make",
@@ -117,8 +117,8 @@
       "a": "make",
       "b": "activepieces",
       "winner": "activepieces",
-      "verdict": "Activepieces runs this at $0 (free up to 10 active flows with unlimited runs), while Make starts low and rises modestly with volume. The trade-off: Activepieces is open-source and self-hostable but free only up to 10 active flows; Make has the larger catalog (3,000+ vs about 750) and a more mature cloud. Pick by catalog coverage first — at these prices, cost is the tiebreaker, not the decider. See the price table for figures.",
-      "whyLoser": "When you want a bigger catalog and a polished, managed platform. Make has more integrations (3,000+ vs about 750), a more refined scenario builder, and a larger template and community pool, with modest, predictable costs."
+      "verdict": "Activepieces runs this at $0 (free up to 10 active flows with unlimited runs), while Make starts low and rises modestly with volume. The trade-off: Activepieces is open-source and self-hostable but free only up to 10 active flows; Make has the larger catalog (2,594 app connectors vs Activepieces' 754 pieces) and a more mature cloud. Pick by catalog coverage first — at these prices, cost is the tiebreaker, not the decider. See the price table for figures.",
+      "whyLoser": "When you want a bigger catalog and a polished, managed platform. Make has more integrations (2,594 app connectors vs 754 pieces), a more refined scenario builder, and a larger template and community pool, with modest, predictable costs."
     },
     {
       "a": "n8n",
@@ -132,41 +132,41 @@
       "a": "zapier",
       "b": "automatisch",
       "winner": "automatisch",
-      "verdict": "These two sit at opposite ends of the market. Automatisch is open-source and self-hosted, so across the volumes we track its cost is just the server it runs on, while Zapier is a fully managed cloud service priced per task with by far the larger catalog (9,000+ apps vs about 50). Automatisch trades breadth and convenience for data control and a flat running cost; Zapier trades higher pricing for reach and a no-code editor anyone can use. See the price table below for figures.",
-      "whyLoser": "When breadth and zero setup matter most. Zapier connects 9,000+ apps — often the only tool that supports a niche or legacy system — and its point-and-click editor and template library let a non-technical person ship automations without running any infrastructure."
+      "verdict": "These two sit at opposite ends of the market. Automatisch is open-source and self-hosted, so across the volumes we track its cost is just the server it runs on, while Zapier is a fully managed cloud service priced per task with by far the larger catalog (9,725 app connectors vs Automatisch's 92). Automatisch trades breadth and convenience for data control and a flat running cost; Zapier trades higher pricing for reach and a no-code editor anyone can use. See the price table below for figures.",
+      "whyLoser": "When breadth and zero setup matter most. Zapier connects 9,725 apps — often the only tool that supports a niche or legacy system — and its point-and-click editor and template library let a non-technical person ship automations without running any infrastructure."
     },
     {
       "a": "zapier",
       "b": "node-red",
       "winner": "node-red",
-      "verdict": "A managed SaaS service versus self-hosted software, for different audiences. Node-RED is open-source (Apache 2.0) and runs on your own hardware, so its cost is just that server; Zapier is hosted and priced per task, with a 9,000+ app catalog and a no-code editor. Node-RED suits developers and IoT/hardware flows wired together in its visual editor; Zapier suits non-technical users connecting SaaS apps with nothing to host. See the price table below for figures.",
-      "whyLoser": "When you're connecting SaaS apps without writing code or running servers. Zapier's 9,000+ integrations and point-and-click builder get non-technical users live fastest, with nothing to host or maintain."
+      "verdict": "A managed SaaS service versus self-hosted software, for different audiences. Node-RED is open-source (Apache 2.0) and runs on your own hardware, so its cost is just that server; Zapier is hosted and priced per task, with a 9,725-app catalog and a no-code editor. Node-RED suits developers and IoT/hardware flows wired together in its visual editor; Zapier suits non-technical users connecting SaaS apps with nothing to host. See the price table below for figures.",
+      "whyLoser": "When you're connecting SaaS apps without writing code or running servers. Zapier's 9,725 app connectors and point-and-click builder get non-technical users live fastest, with nothing to host or maintain."
     },
     {
       "a": "make",
       "b": "automatisch",
       "winner": "automatisch",
-      "verdict": "Both lean visual, but the hosting model differs. Automatisch is open-source and self-hosted, so its cost is your server bill at any volume, while Make is a managed cloud builder priced per operation with a far larger app catalog (3,000+ vs about 50) and a polished drag-and-drop canvas. Automatisch trades integrations and convenience for data control and a flat cost; Make trades self-hosting for breadth and a richer editor. See the price table below for figures.",
-      "whyLoser": "When you want breadth and a polished builder without running servers. Make connects 3,000+ apps with a visual, field-level editor and keeps a managed cloud running for you — a non-technical team can build complex scenarios without touching infrastructure."
+      "verdict": "Both lean visual, but the hosting model differs. Automatisch is open-source and self-hosted, so its cost is your server bill at any volume, while Make is a managed cloud builder priced per operation with a far larger app catalog (2,594 app connectors vs Automatisch's 92) and a polished drag-and-drop canvas. Automatisch trades integrations and convenience for data control and a flat cost; Make trades self-hosting for breadth and a richer editor. See the price table below for figures.",
+      "whyLoser": "When you want breadth and a polished builder without running servers. Make connects 2,594 apps with a visual, field-level editor and keeps a managed cloud running for you — a non-technical team can build complex scenarios without touching infrastructure."
     },
     {
       "a": "make",
       "b": "node-red",
       "winner": "node-red",
-      "verdict": "Two visual tools with different roots. Node-RED is open-source (Apache 2.0), self-hosted and built for event-driven and IoT/hardware flows, so its cost is just your server; Make is a managed cloud platform priced per operation with 3,000+ SaaS integrations and a drag-and-drop canvas. Node-RED fits developers wiring devices and APIs; Make fits teams automating SaaS apps without hosting anything. See the price table below for figures.",
-      "whyLoser": "When you're automating SaaS apps and would rather not host or code. Make's 3,000+ integrations, visual builder and managed infrastructure suit non-technical teams, where Node-RED's strengths are hardware, events and self-hosting."
+      "verdict": "Two visual tools with different roots. Node-RED is open-source (Apache 2.0), self-hosted and built for event-driven and IoT/hardware flows, so its cost is just your server; Make is a managed cloud platform priced per operation with 2,594 SaaS app connectors and a drag-and-drop canvas. Node-RED fits developers wiring devices and APIs; Make fits teams automating SaaS apps without hosting anything. See the price table below for figures.",
+      "whyLoser": "When you're automating SaaS apps and would rather not host or code. Make's 2,594 app connectors, visual builder and managed infrastructure suit non-technical teams, where Node-RED's strengths are hardware, events and self-hosting."
     },
     {
       "a": "n8n",
       "b": "automatisch",
-      "verdict": "Both are self-hosted, so on our figures they cost the same — the server they run on (see the table). The difference is scope: n8n carries a much larger node ecosystem (1,868 integrations), native AI/LLM nodes and code steps, while Automatisch is deliberately minimal (about 50 integrations, no AI), AGPL-licensed and quick to stand up. Pick n8n for depth, Automatisch for simplicity and a lean footprint. See the price table below for figures.",
+      "verdict": "Both are self-hosted, so on our figures they cost the same — the server they run on (see the table). The difference is scope: n8n carries a much larger node ecosystem (572 official nodes), native AI/LLM nodes and code steps, while Automatisch is deliberately minimal (92 connectors, no AI), AGPL-licensed and quick to stand up. Pick n8n for depth, Automatisch for simplicity and a lean footprint. See the price table below for figures.",
       "whyLoser": "When your automations get complex or numerous. n8n has the larger node library, native AI/LLM steps, code nodes and more mature branching and error handling — depth that pays off once usage grows beyond simple flows."
     },
     {
       "a": "n8n",
       "b": "node-red",
-      "verdict": "Both are self-hosted and free to run, so our figures put them at the same cost — your server (see the table). They serve different builders: n8n is a general-purpose automation tool with 1,868 app integrations, AI/LLM nodes and a visual editor aimed at business workflows, while Node-RED (Apache 2.0) is event-driven and excels at IoT/hardware, wired in a flow editor with Node.js function nodes. Pick n8n for SaaS automation, Node-RED for devices and events. See the price table below for figures.",
-      "whyLoser": "When you're automating SaaS apps and APIs rather than hardware. n8n's 1,868 integrations, native AI nodes and business-oriented editor cover that ground, where Node-RED leans toward IoT, events and low-level wiring."
+      "verdict": "Both are self-hosted and free to run, so our figures put them at the same cost — your server (see the table). They serve different builders: n8n is a general-purpose automation tool with 572 maintained official nodes, AI/LLM nodes and a visual editor aimed at business workflows, while Node-RED (Apache 2.0) is event-driven and excels at IoT/hardware, wired in a flow editor with Node.js function nodes and extended by 6,000+ community-published npm modules. The two count integrations on different bases — n8n's curated first-party nodes versus Node-RED's community modules — so the numbers aren't a like-for-like comparison. Pick n8n for SaaS automation, Node-RED for devices and events. See the price table below for figures.",
+      "whyLoser": "When you're automating SaaS apps and APIs rather than hardware. n8n's 572 official nodes, native AI nodes and business-oriented editor cover that ground, where Node-RED leans toward IoT, events and low-level wiring."
     },
     {
       "a": "pipedream",
@@ -179,7 +179,7 @@
       "a": "pipedream",
       "b": "automatisch",
       "winner": "automatisch",
-      "verdict": "A code-first cloud platform versus a minimal self-hosted one. Automatisch is open-source and self-hosted, so its cost is your server bill, while Pipedream is managed and priced in credits, built for developers who write Node.js/Python in their workflows. Automatisch keeps things simple and EU-friendly with about 50 integrations and no metering; Pipedream trades self-hosting for programmability and a larger catalog. See the price table below for figures.",
+      "verdict": "A code-first cloud platform versus a minimal self-hosted one. Automatisch is open-source and self-hosted, so its cost is your server bill, while Pipedream is managed and priced in credits, built for developers who write Node.js/Python in their workflows. Automatisch keeps things simple and EU-friendly with 92 connectors and no metering; Pipedream trades self-hosting for programmability and a larger catalog. See the price table below for figures.",
       "whyLoser": "When you want managed, code-first automation. Pipedream lets developers run Node.js/Python with npm/PyPI, inspect event data and build API-first — without hosting or maintaining a server."
     },
     {
@@ -193,20 +193,20 @@
       "a": "activepieces",
       "b": "automatisch",
       "winner": "activepieces",
-      "verdict": "Two open-source, self-hostable tools with different reach. Activepieces pairs an MIT license with a Zapier-like no-code UI and about 747 integrations, and is free on its cloud free tier; Automatisch is AGPL-licensed, deliberately minimal (about 50 integrations, no AI) and simple to self-host. On our figures Activepieces runs at no cost on its free tier while Automatisch's cost is your server bill — see the table. Choose Activepieces for breadth and UI, Automatisch for a lean, EU-friendly footprint. See the price table below for figures.",
+      "verdict": "Two open-source, self-hostable tools with different reach. Activepieces pairs an MIT license with a Zapier-like no-code UI and 754 pieces, and is free on its cloud free tier; Automatisch is AGPL-licensed, deliberately minimal (92 connectors, no AI) and simple to self-host. On our figures Activepieces runs at no cost on its free tier while Automatisch's cost is your server bill — see the table. Choose Activepieces for breadth and UI, Automatisch for a lean, EU-friendly footprint. See the price table below for figures.",
       "whyLoser": "When you want the simplest possible self-hosted setup with full data control. Automatisch is quick to stand up, AGPL-licensed and unmetered — a lean fit when you only need a handful of integrations and want everything on your own server."
     },
     {
       "a": "activepieces",
       "b": "node-red",
       "winner": "activepieces",
-      "verdict": "Both are open-source and self-hostable, aimed at different builders. Activepieces offers a Zapier-like no-code UI, about 747 SaaS integrations and an MIT license, and is free on its cloud free tier; Node-RED (Apache 2.0) is a developer/IoT tool wired in a flow editor with Node.js function nodes. On our figures Activepieces runs at no cost on its free tier and Node-RED's cost is your server — see the table. Pick Activepieces for no-code SaaS automation, Node-RED for hardware and events. See the price table below for figures.",
+      "verdict": "Both are open-source and self-hostable, aimed at different builders. Activepieces offers a Zapier-like no-code UI, 754 pieces and an MIT license, and is free on its cloud free tier; Node-RED (Apache 2.0) is a developer/IoT tool wired in a flow editor with Node.js function nodes. On our figures Activepieces runs at no cost on its free tier and Node-RED's cost is your server — see the table. Pick Activepieces for no-code SaaS automation, Node-RED for hardware and events. See the price table below for figures.",
       "whyLoser": "When you're working with IoT, hardware or event-driven flows. Node-RED's flow editor, Node.js function nodes and Apache 2.0 license make it the natural fit for device and on-prem automation, where Activepieces focuses on SaaS apps and a no-code UI."
     },
     {
       "a": "automatisch",
       "b": "node-red",
-      "verdict": "Both are free, open-source and self-hosted, so our figures put them at the same cost — your server (see the table). They aim at different users: Automatisch is a simple, EU-friendly tool for basic SaaS automation (about 50 integrations, AGPL), while Node-RED (Apache 2.0) is a developer/IoT tool with a flow editor and Node.js function nodes. Pick Automatisch for simple flows you host yourself, Node-RED for hardware, events and code. See the price table below for figures.",
+      "verdict": "Both are free, open-source and self-hosted, so our figures put them at the same cost — your server (see the table). They aim at different users: Automatisch is a simple, EU-friendly tool for basic SaaS automation (92 connectors, AGPL), while Node-RED (Apache 2.0) is a developer/IoT tool with a flow editor and Node.js function nodes. Pick Automatisch for simple flows you host yourself, Node-RED for hardware, events and code. See the price table below for figures.",
       "whyLoser": "When you want the simplest self-hosted setup for a few SaaS integrations. Automatisch is fast to stand up, EU-friendly and unmetered — a lean choice when you don't need code or hardware support and value data control."
     }
   ]

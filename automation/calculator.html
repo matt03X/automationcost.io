@@ -2456,7 +2456,7 @@ const INTEGRATIONS = [
 /* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
 const TOOLS = [
   {
-    slug: "n8n", name: "n8n", unitModel: "runs", annualFactor: 0.8333, selfHostable: true, aiFeatures: true, integrations: 1868,
+    slug: "n8n", name: "n8n", unitModel: "runs", annualFactor: 0.8333, selfHostable: true, aiFeatures: true, integrations: 572, integrationType: "official nodes",
     homepage: "https://n8n.io", affiliateUrl: "https://n8n.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
@@ -2475,7 +2475,7 @@ const TOOLS = [
       { custom: true, name: "Cloud Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
   {
-    slug: "make", name: "Make", unitModel: "modules", annualFactor: 0.85, selfHostable: false, aiFeatures: true, integrations: 3000,
+    slug: "make", name: "Make", unitModel: "modules", annualFactor: 0.85, selfHostable: false, aiFeatures: true, integrations: 2594, integrationType: "app connectors",
     homepage: "https://www.make.com", affiliateUrl: "https://www.make.com/en/register?pc=wizardcost", hasAffiliate: true,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 1000, workflowLimit: Infinity, note: "Free tier" },
@@ -2500,7 +2500,7 @@ const TOOLS = [
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "pipedream", name: "Pipedream", unitModel: "runs", annualFactor: 1, selfHostable: false, aiFeatures: true, integrations: 3000,
+    slug: "pipedream", name: "Pipedream", unitModel: "runs", annualFactor: 1, selfHostable: false, aiFeatures: true, integrations: 3391, integrationType: "app connectors",
     homepage: "https://pipedream.com", affiliateUrl: "https://pipedream.com", hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: 3, overage: null, note: "Free tier" },
@@ -2510,7 +2510,7 @@ const TOOLS = [
       { custom: true, name: "Business", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "zapier", name: "Zapier", unitModel: "actions", annualFactor: 0.6667, selfHostable: false, aiFeatures: true, integrations: 9000,
+    slug: "zapier", name: "Zapier", unitModel: "actions", annualFactor: 0.6667, selfHostable: false, aiFeatures: true, integrations: 9725, integrationType: "app connectors",
     homepage: "https://zapier.com", affiliateUrl: "https://zapier.com", hasAffiliate: false,
     plans: [
       { name: "Free", monthlyUsd: 0, opsIncluded: 100, workflowLimit: Infinity, overage: null, note: "Free tier" },
@@ -2535,20 +2535,20 @@ const TOOLS = [
       { custom: true, name: "Enterprise", monthlyUsd: null, opsIncluded: Infinity, workflowLimit: Infinity },
     ], overage: null, selfHostHw: null },
   {
-    slug: "activepieces", name: "Activepieces", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: true, integrations: 747,
+    slug: "activepieces", name: "Activepieces", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: true, integrations: 754, integrationType: "pieces",
     homepage: "https://www.activepieces.com", affiliateUrl: "https://www.activepieces.com", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
       { name: "Cloud", monthlyUsd: 0, opsIncluded: Infinity, workflowLimit: Infinity, pricePerFlowUsd: 5, freeFlows: 10, note: "10 active flows free, then $5/active flow/mo · unlimited runs (cloud bills per active flow, not per task/run)" },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
   {
-    slug: "automatisch", name: "Automatisch", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: false, integrations: 50,
+    slug: "automatisch", name: "Automatisch", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: false, integrations: 92, integrationType: "connectors",
     homepage: "https://automatisch.io", affiliateUrl: "https://automatisch.io", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },
     ], overage: null, selfHostHw: [{ upTo: 10000, usd: 8, home: 3, hwOneOff: 90, spec: "1-2 vCPU, 2GB (Raspberry Pi 4 / mini PC), SQLite" }, { upTo: 50000, usd: 25, home: 3, hwOneOff: 200, spec: "2 vCPU, 4GB + Postgres (mini PC)" }, { upTo: 100000, usd: 45, home: 5, hwOneOff: 350, spec: "2-4 vCPU, 8GB + Postgres + Redis (queue mode)" }, { upTo: 250000, usd: 70, home: 7, hwOneOff: 550, spec: "4 vCPU, 16GB, queue + 1 worker" }, { upTo: 500000, usd: 120, home: 11, hwOneOff: 900, spec: "4-8 vCPU, 16GB, 2-3 workers, managed DB" }, { upTo: Infinity, usd: 200, home: 18, hwOneOff: 1800, spec: "8+ vCPU, 32GB, HA Postgres+Redis (workstation/cluster)" }] },
   {
-    slug: "node-red", name: "Node-RED", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: false, integrations: 5000,
+    slug: "node-red", name: "Node-RED", unitModel: "runs", annualFactor: 1, selfHostable: true, aiFeatures: false, integrations: 6092, integrationType: "community modules",
     homepage: "https://nodered.org", affiliateUrl: "https://nodered.org", hasAffiliate: false,
     plans: [
       { name: "Self-hosted", monthlyUsd: 8, opsIncluded: Infinity, workflowLimit: Infinity, selfHostOnly: true, note: "Self-hosted — server + DB only, light workflows (your ops time not included)" },

@@ -1,0 +1,291 @@
+{
+  "vendor": "activepieces",
+  "url": "https://www.activepieces.com/pricing",
+  "asof": "2026-06-24",
+  "fetchedBy": "WizardCostBot/1.0 (+https://wizardcost.com; polite feature audit, robots-respecting)",
+  "partial": false,
+  "plans": {
+    "Standard": [
+      "10 free active flows",
+      "Unlimited runs",
+      "AI agents",
+      "Unlimited MCP servers",
+      "Unlimited tables",
+      "Community support"
+    ],
+    "Ultimate": [
+      "Team & Personal Projects",
+      "Piece Access Controls",
+      "Global Connections",
+      "Custom RBAC",
+      "SSO",
+      "Audit Logs"
+    ]
+  },
+  "matrix": {
+    "source": "https://www.activepieces.com/pricing",
+    "asof": "2026-06-24",
+    "columns": [
+      "Standard",
+      "Ultimate",
+      "Embed"
+    ],
+    "groups": [
+      {
+        "title": "Standard plan",
+        "rows": [
+          {
+            "feature": "10 free active flows",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Unlimited runs",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "AI agents",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Unlimited MCP servers",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Unlimited tables",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Community support",
+            "tiers": {
+              "Standard": true,
+              "Ultimate": true,
+              "Embed": null
+            }
+          }
+        ]
+      },
+      {
+        "title": "Security & Governance",
+        "rows": [
+          {
+            "feature": "Team & Personal Projects",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Piece Access Controls",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Global Connections",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Custom RBAC",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "SSO",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          }
+        ]
+      },
+      {
+        "title": "Control & Compliance",
+        "rows": [
+          {
+            "feature": "Audit Logs",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Centralized AI Billing",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Management APIs",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          }
+        ]
+      },
+      {
+        "title": "Delivery & Reliability",
+        "rows": [
+          {
+            "feature": "Git Sync",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Release Management",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Private Pieces",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          }
+        ]
+      },
+      {
+        "title": "Enterprise Deployment & Success",
+        "rows": [
+          {
+            "feature": "Cloud or On-Prem",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Dedicated Support",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          },
+          {
+            "feature": "Training & Adoption Programs",
+            "tiers": {
+              "Standard": false,
+              "Ultimate": true,
+              "Embed": null
+            }
+          }
+        ]
+      },
+      {
+        "title": "Activepieces Embed — embedded product (from $30k/year)",
+        "rows": [
+          {
+            "feature": "Embedded Automation Builder",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Embedded AI Agents",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "JavaScript SDK",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Custom Templates & Branding",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Piece Management",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Private Pieces",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Cloud or Self-Hosted",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          },
+          {
+            "feature": "Dedicated Support",
+            "tiers": {
+              "Standard": null,
+              "Ultimate": null,
+              "Embed": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "note": "Activepieces Cloud has just Standard ($5/active flow) + Ultimate (custom). Full Ultimate feature set from owner-expanded page; Embed = separate embedded product (from $30k/yr). manual (human-saved/copied, parsed offline)."
+}
