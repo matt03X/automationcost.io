@@ -697,7 +697,7 @@
       "overage": null,
       "pros": [
         "Run Node.js/Python in workflows",
-        "3,000+ integrations",
+        "3,391 app connectors",
         "Best for devs"
       ],
       "cons": [
@@ -909,7 +909,7 @@
       ],
       "overage": null,
       "pros": [
-        "9,000+ integrations — most of any tool",
+        "9,725 app connectors — most of any tool",
         "Easiest for non-technical users",
         "Huge ecosystem"
       ],
@@ -1012,7 +1012,7 @@
         "Self-hostable"
       ],
       "cons": [
-        "Fewer integrations than Zapier (747+)",
+        "Fewer integrations than Zapier (754 pieces vs 9,725)",
         "Smaller community than n8n",
         "No code steps"
       ]
