@@ -1631,6 +1631,7 @@ def main() -> int:
         candidates = {
             ROOT / "calculator.html": render_calculator,
             ROOT / "compare.html": render_compare,
+            ROOT / "wizard.html": render_calculator,  # wizard uses same TOOLS array format
         }
         jobs += [(p, fn(tools), START, END, WARN) for p, fn in candidates.items() if p.exists()]
 
