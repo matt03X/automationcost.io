@@ -394,6 +394,33 @@ async function scrapeVendor(v) {
   return scrapeFixed(v);
 }
 
+// Probe objemy pro slider vendory (v jejich NATIVNÍ jednotce) — diff počítáme na
+// FIXNÍCH bodech (jako Pipedream per-credit-bands), ne na raw slider řádcích, které
+// jitterují (pozice) a flapují (chybné čtení billing toggle → uniformní ×posun).
+const SLIDER_PROBES = {
+  zapier: [750, 2000, 10000, 50000],        // tasks
+  make:   [10000, 40000, 150000, 500000],   // credits
+};
+const _r2 = (x) => Math.round(x * 100) / 100;
+
+// lineární interpolace ceny plánu na daném objemu z [{units, plans:{plan:price}}]
+function priceAtVolume(rows, plan, vol) {
+  const pts = (rows || [])
+    .filter((r) => r.plans && r.plans[plan] != null)
+    .map((r) => [Number(r.units), Number(r.plans[plan])])
+    .sort((a, b) => a[0] - b[0]);
+  if (!pts.length) return null;
+  if (vol <= pts[0][0]) return pts[0][1];
+  if (vol >= pts[pts.length - 1][0]) return pts[pts.length - 1][1];
+  for (let i = 1; i < pts.length; i++) {
+    if (vol <= pts[i][0]) {
+      const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
+      return x1 === x0 ? y0 : y0 + (y1 - y0) * (vol - x0) / (x1 - x0);
+    }
+  }
+  return pts[pts.length - 1][1];
+}
+
 // ── diff dvou cenových snapshotů ────────────────────────────────────────────
 function diffPrices(vendor, oldP, newP) {
   const changes = [];
@@ -465,16 +492,37 @@ function diffPrices(vendor, oldP, newP) {
     }
     return changes;
   }
-  // slider: porovnej cenu per (interval, units, plan)
+  // slider (make, zapier): diff na FIXNÍCH probe objemech (interpolace) + detekce
+  // uniform-shiftu. Raw řádky jitterují (slider pozice) a flapují (chybné čtení
+  // billing toggle → CELÁ matice se posune ~konstantou). Probe body + uniform-shift
+  // collapse → konec ~90% šumu (ověřeno: make 25→26 z 84 změn na 1).
+  const probes = SLIDER_PROBES[vendor] || [1000, 5000, 20000, 100000];
   for (const interval of ["monthly", "annually"]) {
-    const oldRows = Object.fromEntries((oldP[interval] || []).map((r) => [r.units, r.plans]));
-    for (const row of newP[interval] || []) {
-      const prev = oldRows[row.units];
-      if (!prev) continue;
-      for (const plan of Object.keys(row.plans)) {
-        if (prev[plan] !== undefined && prev[plan] !== row.plans[plan]) {
-          changes.push({ vendor, interval, units: row.units, plan, old: prev[plan], neu: row.plans[plan], desc: `${vendor} ${plan} @${Number(row.units).toLocaleString()} (${interval}): $${prev[plan]} → $${row.plans[plan]}` });
-        }
+    const oldRows = oldP[interval] || [], newRows = newP[interval] || [];
+    if (!oldRows.length || !newRows.length) continue;
+    const plans = [...new Set(newRows.flatMap((r) => Object.keys(r.plans || {})))];
+    const pts = []; // {plan, vol, o, n, ratio} — body, co se reálně hnuly nad epsilon
+    for (const plan of plans) {
+      for (const vol of probes) {
+        const o = priceAtVolume(oldRows, plan, vol), n = priceAtVolume(newRows, plan, vol);
+        if (o == null || n == null || o <= 0 || n <= 0) continue;
+        if (Math.abs(o - n) > Math.max(0.5, 0.02 * o)) pts.push({ plan, vol, o, n, ratio: n / o });
+      }
+    }
+    if (!pts.length) continue;
+    // uniform-shift: většina probe bodů se hnula STEJNÝM poměrem ≠ 1 → billing-toggle/
+    // state misread, ne reálná cenová změna. Collapse do JEDNÉ poznámky (neitemizuj).
+    const ratios = pts.map((p) => p.ratio).sort((a, b) => a - b);
+    const med = ratios[Math.floor(ratios.length / 2)];
+    const uniform = pts.length >= Math.min(3, probes.length) &&
+      ratios.every((r) => Math.abs(r - med) < 0.05 * med) && Math.abs(med - 1) > 0.05;
+    if (uniform) {
+      changes.push({ vendor, interval, kind: "uniform-shift", ratio: _r2(med),
+        desc: `${vendor} (${interval}): celá cenová matice se posunula ~${med.toFixed(2)}× (uniformně) — OVĚŘ: skoro jistě chybné čtení billing toggle / stavu stránky; reálné uniformní zdražení je vzácné. Neitemizováno (1 ověření místo ${pts.length} falešných delt).` });
+    } else {
+      for (const c of pts) {
+        changes.push({ vendor, interval, units: c.vol, plan: c.plan, old: _r2(c.o), neu: _r2(c.n),
+          desc: `${vendor} ${c.plan} @${c.vol.toLocaleString()} (${interval}): $${_r2(c.o)} → $${_r2(c.n)}` });
       }
     }
   }
