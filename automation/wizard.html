@@ -1190,9 +1190,21 @@ function reserveFoundingSpot(e) {
   e.preventDefault();
   const email = document.getElementById('fo-email').value.trim();
   if (!email || !email.includes('@')) { document.getElementById('fo-email').focus(); return; }
-  // OWNER DECISION: replace stub with real endpoint (MailerLite / Cloudflare Worker).
-  // This is a fake-door / pre-registration stub — NO payment is taken.
-  // The click + email = willingness-to-pay signal for persona B at FOUNDING_PRICE.
+  // Fake-door / pre-registration — NO payment is taken, NO personal data is stored.
+  // We send an ANONYMOUS willingness-to-pay signal (recommended tool + price only — the typed
+  // email is NOT transmitted), so the validation probe is measurable GDPR-safely.
+  // To capture emails as real leads later: add a consent checkbox + enable storage in the
+  // /api/founding-interest function (owner + legal gated).
+  var recTool = 'unknown';
+  try { recTool = results[0].tool.slug; } catch (_) {}
+  try {
+    fetch('/api/founding-interest', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ tool: recTool, price: FOUNDING_PRICE, ts: Date.now() }),
+      keepalive: true
+    }).catch(function () {});
+  } catch (_) {}
   document.getElementById('fo-form').style.display = 'none';
   document.getElementById('fo-success').style.display = 'block';
 }
