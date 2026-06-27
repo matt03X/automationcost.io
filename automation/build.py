@@ -26,7 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_hosting import expand_hosting_variants, apply_fx  # noqa: E402
-from build_pricing import build_pricing_pages, build_seo_pages, _page_graph_ld, _iso_date, _clamp_title, _clamp_desc, _seo_breadcrumb_ld  # noqa: E402
+from build_pricing import build_pricing_pages, build_seo_pages, _page_graph_ld, _iso_date, _clamp_title, _clamp_desc, _seo_breadcrumb_ld, _footer_family  # noqa: E402
 from build_catalog import build_catalog_pages  # noqa: E402
 from build_integrations import build_integrations_page  # noqa: E402
 import _partials  # noqa: E402  — sdílený nav HTML (dashboard_header)
@@ -816,9 +816,7 @@ def render_vs_page(pair: dict, tools_by_slug: dict, pairs_data: dict, site: dict
 </div>
 
 <!-- 9 ── Footer -->
-<footer>
-  AutomationCost · part of WizardCost · Prices verified {month_year} · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a>
-</footer>
+{_footer_family("Prices verified " + month_year, include_aff=True)}
 
 <script>
 function toggleFaq(el) {{ el.parentElement.classList.toggle("open"); }}
@@ -1355,9 +1353,7 @@ def render_price_history(data: dict, site: dict) -> str:
 
 </div>
 
-<footer>
-  AutomationCost · part of WizardCost · Pricing history from the Web Archive · updated {updated} · <a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a>
-</footer>
+{_footer_family("Pricing history from the Web Archive · updated " + updated, include_aff=False)}
 
 <script src="app.js"></script>
 </body>

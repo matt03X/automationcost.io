@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 28" height="28" role="img" aria-label="EmailCost">
+  <title>EmailCost — coming soon</title>
+  <!--
+    EmailCost — sub-brand of WizardCost (coming soon)
+    Accent: #f59e0b (amber, --yellow)
+    Dark-background optimised: name in #b3aeca, Cost in accent.
+  -->
+  <g transform="translate(0,3) scale(0.46)" fill="none">
+    <path d="M29 11 L15 24 L29 37" stroke="#f59e0b" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="34.5" cy="24" r="3.4" fill="#f59e0b"/>
+  </g>
+  <text x="19" y="19" font-family="'Hanken Grotesk',system-ui,sans-serif" font-weight="700" font-size="14" letter-spacing="-0.3" fill="#b3aeca">Email<tspan fill="#f59e0b">Cost</tspan></text>
+</svg>

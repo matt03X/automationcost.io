@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 148 28" height="28" role="img" aria-label="AutomationCost">
+  <title>AutomationCost</title>
+  <!--
+    AutomationCost — sub-brand of WizardCost
+    Accent: #16d18c (green, --auto)
+    Dark-background optimised: name in #b3aeca, Cost in accent.
+    Inline-safe: no external deps beyond already-loaded Hanken Grotesk.
+  -->
+  <!-- mark: caret + dot, scaled to 22px visual height, vertically centred in 28px -->
+  <g transform="translate(0,3) scale(0.46)" fill="none">
+    <path d="M29 11 L15 24 L29 37" stroke="#16d18c" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="34.5" cy="24" r="3.4" fill="#16d18c"/>
+  </g>
+  <!-- wordmark: x=19 leaves ~3px gap after mark -->
+  <text x="19" y="19" font-family="'Hanken Grotesk',system-ui,sans-serif" font-weight="700" font-size="14" letter-spacing="-0.3" fill="#b3aeca">Automation<tspan fill="#16d18c">Cost</tspan></text>
+</svg>

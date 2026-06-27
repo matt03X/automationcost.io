@@ -197,3 +197,48 @@ body.ac .hero p { max-width: 600px; }
   .ac-nav { padding-left: 13px; padding-right: 13px; }
   .ac-cta svg { display: none; }
 }
+
+/* ── footer: WizardCost brand family row ──────────────────────────────────── */
+footer .foot-fam-row {
+  display: flex; flex-wrap: wrap; gap: 22px;
+  justify-content: center; align-items: center;
+  margin-bottom: 12px; list-style: none;
+}
+.foot-fam-item {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--display, 'Hanken Grotesk', system-ui, sans-serif);
+  font-size: 13px; font-weight: 700; letter-spacing: -0.01em;
+  color: var(--text2, #a8b4cc); text-decoration: none;
+  transition: opacity 0.15s;
+}
+a.foot-fam-item:hover { opacity: 0.8; }
+.foot-fam-active { opacity: 1; }
+.foot-fam-soon { opacity: 0.42; cursor: default; }
+.foot-fam-mark { flex-shrink: 0; display: block; }
+.foot-fam-nm em { font-style: normal; }
+.foot-fam-soon-badge {
+  font-family: var(--mono, 'JetBrains Mono', ui-monospace, monospace);
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  background: var(--surface2, #1a2236); border: 1px solid var(--border, #1f2d45);
+  border-radius: 99px; padding: 1px 6px;
+  color: var(--muted, #6b7a99); margin-left: 2px;
+  vertical-align: middle;
+}
+footer .foot-fam-meta {
+  font-size: 12.5px; color: var(--muted, #6b7a99); line-height: 1.85; margin-bottom: 5px;
+}
+footer .foot-fam-meta a { color: var(--muted, #6b7a99); transition: color 0.15s; text-decoration: none; }
+footer .foot-fam-meta a:hover { color: var(--text2, #a8b4cc); }
+footer .foot-fam-aff {
+  font-size: 11.5px; color: var(--muted, #6b7a99);
+  max-width: 680px; margin: 0 auto; line-height: 1.65;
+}
+footer .foot-fam-note {
+  font-size: 11.5px; color: var(--muted, #6b7a99);
+  max-width: 680px; margin: 8px auto 0; line-height: 1.65;
+}
+@media (max-width: 600px) {
+  footer .foot-fam-row { gap: 14px; }
+  .foot-fam-item { font-size: 12px; }
+  .foot-fam-mark { height: 16px !important; }
+}

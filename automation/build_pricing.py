@@ -176,6 +176,63 @@ def _strip_injected(text: str) -> str:
     return text
 
 
+# ── mark SVG constant (inline, 18px rendered, shared across all footer logos) ──
+# Same caret+dot motif as assets/brand/mark.svg, each coloured per sub-brand.
+def _mark(color: str) -> str:
+    return (
+        f'<svg class="foot-fam-mark" height="18" viewBox="0 0 48 48" fill="none" aria-hidden="true">'
+        f'<path d="M29 11 L15 24 L29 37" stroke="{color}" stroke-width="6.2" stroke-linecap="round" stroke-linejoin="round"/>'
+        f'<circle cx="34.5" cy="24" r="3.4" fill="{color}"/></svg>'
+    )
+
+
+def _footer_family(desc: str, *, include_aff: bool = True, extra_note: str = "") -> str:
+    """Return the WizardCost brand family footer HTML block.
+
+    Args:
+        desc: Text for the meta row before legal links.
+              e.g. "Prices verified June 2026"
+              or   "Pricing history from the Web Archive · updated 2026-06-20"
+        include_aff: Whether to include the affiliate disclosure line.
+        extra_note: Optional additional small-print paragraph (ROI disclaimer etc.).
+    """
+    aff_html = (
+        '\n  <div class="foot-fam-aff">Some links are affiliate links — we may earn a commission'
+        ' at no extra cost to you. This never affects our rankings or recommendations.</div>'
+        if include_aff else ""
+    )
+    note_html = f'\n  <div class="foot-fam-note">{extra_note}</div>' if extra_note else ""
+    return (
+        '<footer>\n'
+        '  <div class="foot-fam-row" role="list" aria-label="WizardCost product family">\n'
+        '    <a href="." class="foot-fam-item foot-fam-active" role="listitem"'
+        ' aria-label="AutomationCost — you are here">'
+        + _mark("#16d18c") +
+        '<span class="foot-fam-nm">Automation<em style="color:#16d18c">Cost</em></span></a>\n'
+        '    <a href="/llm/" class="foot-fam-item" role="listitem" aria-label="LLMCost">'
+        + _mark("#d97bfb") +
+        '<span class="foot-fam-nm">LLM<em style="color:#d97bfb">Cost</em></span></a>\n'
+        '    <span class="foot-fam-item foot-fam-soon" role="listitem"'
+        ' aria-label="EmailCost — coming soon">'
+        + _mark("#f59e0b") +
+        '<span class="foot-fam-nm">Email<em style="color:#f59e0b">Cost</em></span>'
+        '<span class="foot-fam-soon-badge" aria-label="coming soon">soon</span></span>\n'
+        '    <span class="foot-fam-item foot-fam-soon" role="listitem"'
+        ' aria-label="CRMCost — coming soon">'
+        + _mark("#6f9bff") +
+        '<span class="foot-fam-nm">CRM<em style="color:#6f9bff">Cost</em></span>'
+        '<span class="foot-fam-soon-badge" aria-label="coming soon">soon</span></span>\n'
+        '  </div>\n'
+        f'  <div class="foot-fam-meta">{desc}'
+        ' · <a href="methodology.html">Methodology</a>'
+        ' · <a href="privacy.html">Privacy</a>'
+        ' · <a href="terms.html">Terms</a>'
+        ' · <a href="affiliate.html">Affiliate Disclosure</a></div>'
+        f'{aff_html}{note_html}\n'
+        '</footer>'
+    )
+
+
 # ── helpery generátoru ──────────────────────────────────────────────────────
 _KIND_LABEL = {
     "saas": "Cloud",
@@ -704,12 +761,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
 
 </div>
 
-<footer>
-  <div style="margin-bottom:6px;color:#6b7a99">{footer_part}</div>
-  <div>{footer_tagline}</div>
-  <div style="margin-top:6px">{footer_affiliate}</div>
-  <div style="margin-top:6px"><a href="privacy.html">{foot_privacy}</a> · <a href="terms.html">{foot_terms}</a> · <a href="affiliate.html">{foot_affiliate}</a></div>
-</footer>
+{_footer_family(f"Prices verified {month_year}")}
 
 <script>
 function toggleFaq(el) {{ el.closest(".faq-item").classList.toggle("open"); }}
@@ -971,12 +1023,7 @@ def _seo_shell(*, title, desc, canonical, prefix, month_year, h1, intro_html,
 
 </div>
 
-<footer>
-  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
-  <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified {month_year}</div>
-  <div style="margin-top:6px">Some links are affiliate links — we may earn a commission at no extra cost to you. This never affects our rankings or recommendations.</div>
-  <div style="margin-top:6px"><a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
-</footer>
+{_footer_family(f"Prices verified {month_year}")}
 
 <script>
 function toggleFaq(el) {{ el.closest(".faq-item").classList.toggle("open"); }}
@@ -1817,12 +1864,7 @@ def render_roi_page(by_slug: dict, site: dict, tools_meta: dict, engine) -> str:
 
 </div>
 
-<footer>
-  <div style="margin-bottom:6px;color:#6b7a99">&copy; 2026 AutomationCost.io · part of WizardCost</div>
-  <div>AutomationCost.io · Independent, data-driven comparisons · Prices verified {month_year}</div>
-  <div style="margin-top:6px">Tool costs on this page come from each vendor's official public pricing page via our cost engine — the same data powering the calculator. ROI calculations are illustrative: they use your inputs and do not account for setup time, maintenance, or tasks that cannot be fully automated. We do not claim any specific time savings — that is your measurement to make from your own process.</div>
-  <div style="margin-top:6px"><a href="methodology.html">Methodology</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="affiliate.html">Affiliate Disclosure</a></div>
-</footer>
+{_footer_family(f"Prices verified {month_year}", extra_note="Tool costs come from each vendor’s official public pricing page via our cost engine — the same data powering the calculator. ROI calculations are illustrative: they use your inputs and do not account for setup time, maintenance, or tasks that cannot be fully automated. We do not claim any specific time savings — that is your measurement to make from your own process.")}
 
 <script>
 function toggleFaq(el) {{ el.closest(".faq-item").classList.toggle("open"); }}
