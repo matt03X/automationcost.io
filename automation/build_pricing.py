@@ -212,16 +212,6 @@ def _footer_family(desc: str, *, include_aff: bool = True, extra_note: str = "")
         '    <a href="/llm/" class="foot-fam-item" role="listitem" aria-label="LLMCost">'
         + _mark("#d97bfb") +
         '<span class="foot-fam-nm">LLM<em style="color:#d97bfb">Cost</em></span></a>\n'
-        '    <span class="foot-fam-item foot-fam-soon" role="listitem"'
-        ' aria-label="EmailCost — coming soon">'
-        + _mark("#f59e0b") +
-        '<span class="foot-fam-nm">Email<em style="color:#f59e0b">Cost</em></span>'
-        '<span class="foot-fam-soon-badge" aria-label="coming soon">soon</span></span>\n'
-        '    <span class="foot-fam-item foot-fam-soon" role="listitem"'
-        ' aria-label="CRMCost — coming soon">'
-        + _mark("#6f9bff") +
-        '<span class="foot-fam-nm">CRM<em style="color:#6f9bff">Cost</em></span>'
-        '<span class="foot-fam-soon-badge" aria-label="coming soon">soon</span></span>\n'
         '  </div>\n'
         f'  <div class="foot-fam-meta">{desc}'
         ' · <a href="methodology.html">Methodology</a>'

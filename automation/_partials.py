@@ -43,8 +43,6 @@ _DD_MENU = """      <div class="ac-dd-menu">
         <a href="node-red-pricing.html"><img src="https://www.google.com/s2/favicons?domain=nodered.org&sz=32" alt="">Node-RED Pricing</a>
         <div class="ac-dd-sep">Other wizards</div>
         <a href="/llm/">LLMCost <span class="ac-dd-tag">Live</span></a>
-        <span class="ac-dd-soon">EmailCost <span class="ac-dd-tag soon">Soon</span></span>
-        <span class="ac-dd-soon">CRMCost <span class="ac-dd-tag soon">Soon</span></span>
       </div>"""
 
 _CTA_SVG = (
