@@ -201,6 +201,27 @@
     .wl-success { display:none; font-size:14px; color:var(--accent-br); font-weight:700; margin-top:12px; }
     .wl-legal { font-size:12px; color:var(--muted); margin-top:10px; }
 
+    /* Founding offer fake-door card */
+    .founding-offer { background:linear-gradient(135deg,rgba(16,185,129,.13) 0%,rgba(16,185,129,.04) 65%); border:2px solid rgba(16,185,129,.55); border-radius:18px; padding:30px 26px 26px; margin-bottom:20px; text-align:center; position:relative; overflow:hidden; }
+    .founding-offer::before { content:''; position:absolute; top:-36px; right:-36px; width:220px; height:220px; border-radius:50%; background:radial-gradient(circle,rgba(16,185,129,.13) 0%,transparent 70%); pointer-events:none; }
+    .fo-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(16,185,129,.14); border:1px solid rgba(16,185,129,.44); border-radius:100px; font-family:var(--mono); font-size:11px; font-weight:700; color:var(--accent-br); padding:5px 14px; letter-spacing:.09em; text-transform:uppercase; margin-bottom:14px; }
+    .fo-badge .fo-dot { width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 8px var(--accent); flex-shrink:0; }
+    .fo-title { font-family:var(--display); font-size:clamp(1.15rem,2.6vw,1.5rem); font-weight:800; margin-bottom:8px; line-height:1.22; }
+    .fo-sub { font-size:14px; color:var(--text2); max-width:430px; margin:0 auto 10px; line-height:1.55; }
+    .fo-launch-note { font-size:13px; color:var(--muted); margin-bottom:18px; font-style:italic; }
+    .fo-price-row { display:flex; align-items:center; justify-content:center; gap:14px; margin-bottom:20px; flex-wrap:wrap; }
+    .fo-price { font-family:var(--display); font-size:2.8rem; font-weight:900; color:var(--accent-br); line-height:1; }
+    .fo-price-meta { text-align:left; }
+    .fo-price-label { font-size:11.5px; color:var(--muted); font-family:var(--mono); text-transform:uppercase; letter-spacing:.08em; line-height:1.4; }
+    .fo-guarantee { font-size:12.5px; color:var(--accent); font-weight:700; margin-top:3px; }
+    .fo-form { display:flex; gap:10px; max-width:440px; margin:0 auto 10px; flex-wrap:wrap; justify-content:center; }
+    .fo-input { flex:1; min-width:200px; background:var(--bg); border:1.5px solid var(--border2); border-radius:var(--radius-sm); color:var(--text); font-size:14px; padding:12px 14px; outline:none; font-family:inherit; transition:border-color .15s; }
+    .fo-input:focus { border-color:var(--accent); }
+    .btn-founding { background:var(--accent); color:var(--ink); font-weight:700; font-size:14.5px; padding:12px 24px; border-radius:var(--radius-sm); border:none; cursor:pointer; font-family:inherit; transition:filter .15s,transform .12s; min-height:44px; white-space:nowrap; }
+    .btn-founding:hover { filter:brightness(1.08); transform:translateY(-2px); }
+    .fo-success { display:none; font-size:14.5px; color:var(--accent-br); font-weight:700; margin:10px auto 0; max-width:380px; }
+    .fo-legal { font-size:12px; color:var(--muted); margin-top:10px; line-height:1.5; }
+
     /* Restart */
     .result-actions { text-align:center; margin-bottom:28px; }
     .btn-restart { background:none; border:none; color:var(--muted); font-size:13.5px; cursor:pointer; font-family:inherit; display:inline-flex; align-items:center; gap:6px; padding:8px; text-decoration:underline; text-underline-offset:3px; }
@@ -490,6 +511,8 @@
 </footer>
 
 <script>
+// ── Founding offer price — change this ONE number to update all price displays ──
+const FOUNDING_PRICE = 14; // USD, one-time, founding rate
 /* DATA:TOOLS:START */ /* generováno build.py z data/tools.json — needituj ručně */
 const TOOLS = [
   {
@@ -1127,17 +1150,25 @@ function showResults() {
       ${auditNote}
     </div>
 
-    <div class="waitlist-section">
-      <div class="wl-eyebrow">Coming soon — Deep Wizard</div>
-      <div class="wl-title">Want a personalised analysis of your exact setup?</div>
-      <div class="wl-sub">The free wizard gives you the right tool. The deep version gives you the right plan, migration path, and a cost guarantee — coming soon.</div>
-      <!-- OWNER DECISION: wire up waitlist endpoint. Options: MailerLite form, simple Cloudflare Worker, or third-party form embed. Email collection requires consent banner if EU traffic is significant. Compliance note: email capture was disabled on calculator.html for faceless/no-consent reasons (see git history EMAILCAP comment). Reenable only after owner confirms consent/legal setup. -->
-      <div class="wl-form" id="wl-form">
-        <input class="wl-input" type="email" id="wl-email" placeholder="your@email.com" aria-label="Email address for waitlist">
-        <button class="btn-waitlist" onclick="joinWaitlist()" type="button">Join waitlist</button>
+    <div class="founding-offer" id="fo-section">
+      <div class="fo-badge"><span class="fo-dot"></span>Founding offer</div>
+      <div class="fo-title">Get a deep analysis of your exact setup</div>
+      <div class="fo-sub">The free wizard picks your tool. The deep version maps your specific workflows, pinpoints the cheapest plan for your exact volume, and gives you a step-by-step migration checklist — with a money-back guarantee.</div>
+      <div class="fo-launch-note">Launching soon — reserve your spot. Nothing is charged now.</div>
+      <div class="fo-price-row">
+        <div class="fo-price" aria-label="Founding price: $${FOUNDING_PRICE}">$${FOUNDING_PRICE}</div>
+        <div class="fo-price-meta">
+          <div class="fo-price-label">One-time &middot; Founding price</div>
+          <div class="fo-guarantee">Full money-back guarantee</div>
+        </div>
       </div>
-      <div class="wl-success" id="wl-success">You're on the list — we'll reach out when it's ready.</div>
-      <div class="wl-legal">No spam. Unsubscribe anytime. See <a href="privacy.html">Privacy Policy</a>.</div>
+      <!-- OWNER DECISION: wire up reserveFoundingSpot() to a real endpoint (MailerLite / Cloudflare Worker / Stripe PaymentIntent for full WTP capture). This is a fake-door / pre-registration — NO payment is taken. Email collection requires consent banner if EU traffic is significant. -->
+      <form class="fo-form" id="fo-form" onsubmit="reserveFoundingSpot(event)" novalidate>
+        <input class="fo-input" type="email" id="fo-email" placeholder="your@email.com" aria-label="Email address to reserve your founding spot" autocomplete="email" required>
+        <button class="btn-founding" type="submit">Reserve my founding spot &mdash; $${FOUNDING_PRICE}</button>
+      </form>
+      <div class="fo-success" id="fo-success" role="status" aria-live="polite">You&apos;re on the founding list &mdash; we&apos;ll reach out before launch. Nothing is charged.</div>
+      <div class="fo-legal">Pre-registration only. Nothing is charged now. Unsubscribe any time. See <a href="privacy.html">Privacy Policy</a>.</div>
     </div>
 
     <div class="result-actions">
@@ -1155,15 +1186,15 @@ function showResults() {
   document.getElementById('wiz-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function joinWaitlist() {
-  const email = document.getElementById('wl-email').value.trim();
-  if (!email || !email.includes('@')) {
-    document.getElementById('wl-email').focus();
-    return;
-  }
-  // OWNER DECISION: replace this stub with real endpoint (MailerLite / Cloudflare Worker).
-  document.getElementById('wl-form').style.display = 'none';
-  document.getElementById('wl-success').style.display = 'block';
+function reserveFoundingSpot(e) {
+  e.preventDefault();
+  const email = document.getElementById('fo-email').value.trim();
+  if (!email || !email.includes('@')) { document.getElementById('fo-email').focus(); return; }
+  // OWNER DECISION: replace stub with real endpoint (MailerLite / Cloudflare Worker).
+  // This is a fake-door / pre-registration stub — NO payment is taken.
+  // The click + email = willingness-to-pay signal for persona B at FOUNDING_PRICE.
+  document.getElementById('fo-form').style.display = 'none';
+  document.getElementById('fo-success').style.display = 'block';
 }
 
 function restart() {
