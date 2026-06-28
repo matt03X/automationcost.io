@@ -188,6 +188,30 @@
     .bd-val { color:var(--text); font-weight:600; text-align:right; }
     .bd-disclaimer { font-size:12px; color:var(--muted); margin-top:10px; line-height:1.5; }
 
+    /* Billing viz — why prices differ */
+    .billing-viz { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:20px; overflow:hidden; }
+    .bv-summary { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 18px; cursor:pointer; list-style:none; user-select:none; }
+    .bv-summary::-webkit-details-marker { display:none; }
+    .bv-summary-label { font-size:13.5px; font-weight:600; color:var(--text2); }
+    .bv-summary-label strong { color:var(--text); }
+    .bv-chevron { font-size:16px; color:var(--muted); transition:transform .2s ease; flex-shrink:0; }
+    details[open].billing-viz .bv-chevron { transform:rotate(180deg); }
+    .bv-body { padding:4px 18px 16px; }
+    .bv-header { display:flex; align-items:center; gap:12px; padding:10px 0 12px; border-bottom:1px solid var(--border); margin-bottom:6px; flex-wrap:wrap; }
+    .bv-header-label { font-size:11px; font-family:var(--mono); text-transform:uppercase; letter-spacing:.1em; color:var(--muted); white-space:nowrap; }
+    .bv-row { display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+    .bv-row:last-of-type { border-bottom:none; }
+    .bv-tool { font-size:13px; font-weight:700; min-width:88px; flex-shrink:0; }
+    .bv-bubbles { flex-shrink:0; line-height:0; }
+    .bv-unit { font-size:12.5px; font-family:var(--mono); font-weight:600; color:var(--text); white-space:nowrap; min-width:108px; }
+    .bv-how { font-size:12px; color:var(--muted); flex:1; line-height:1.4; }
+    .bv-footer { font-size:12px; color:var(--muted); margin-top:12px; padding-top:10px; border-top:1px solid var(--border); line-height:1.5; font-style:italic; }
+    @media(max-width:600px) {
+      .bv-row { display:grid; grid-template-columns:88px 1fr; grid-template-rows:auto auto; }
+      .bv-bubbles { grid-column:1 / -1; }
+      .bv-how { grid-column:1 / -1; }
+    }
+
     /* Waitlist */
     .waitlist-section { background:linear-gradient(135deg,rgba(124,77,255,.10) 0%,rgba(167,139,250,.04) 100%); border:1.5px solid rgba(167,139,250,.3); border-radius:var(--radius); padding:28px 24px; text-align:center; margin-bottom:20px; }
     .wl-eyebrow { font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:#a78bfa; margin-bottom:10px; }
@@ -1122,6 +1146,47 @@ function renderAllRankedSection(results){
 }
 function toggleAllRanked(){const l=document.getElementById('all-ranked-inner'),c=document.getElementById('ar-chevron'),b=document.getElementById('ar-toggle');if(!l)return;const o=l.classList.toggle('open');if(c)c.classList.toggle('open',o);if(b)b.setAttribute('aria-expanded',o?'true':'false');}
 
+// ── Billing viz: why prices differ across tools ───────────────────────────────
+const BILLING_META={
+  make:        {color:'#B02DE9',how:'every step = 1 operation'},
+  zapier:      {color:'#FF4F00',how:'trigger free · rest ×0.8 tasks'},
+  n8n:         {color:'#EA4B71',how:'steps free — pay per execution'},
+  pipedream:   {color:'#3b82f6',how:'1 credit per run (≤30s)'},
+  activepieces:{color:'#6E56CF',how:'unlimited runs — flat rate per active flow'},
+};
+const BILLING_UNIT={make:'ops/run',zapier:'tasks/run',n8n:'exec/run',pipedream:'credit/run',activepieces:'per active flow'};
+function renderBillingVizInner(steps){
+  const s=Math.max(1,steps),N=Math.min(s,10);
+  let chain='';
+  for(let i=0;i<N;i++){
+    chain+=`<circle cx="${i*22+10}" cy="10" r="7" fill="var(--surface3)" stroke="var(--border2)" stroke-width="1.5"/>`;
+    if(i<N-1)chain+=`<line x1="${i*22+17}" y1="10" x2="${i*22+25}" y2="10" stroke="var(--border2)" stroke-width="1.5"/>`;
+  }
+  const chainSvg=`<svg width="${N*22}" height="20" role="img" aria-label="${s} workflow steps">${chain}</svg>`;
+  const slugs=['make','zapier','n8n','pipedream','activepieces'];
+  const tools5=slugs.map(sl=>TOOLS.find(t=>t.slug===sl)).filter(Boolean);
+  let rows='';
+  for(const tool of tools5){
+    const m=BILLING_META[tool.slug];
+    const units=vendorUnits(tool,1,s);
+    const isFlat=tool.slug==='activepieces',isRun=tool.slug==='n8n'||tool.slug==='pipedream';
+    const unitTxt=isFlat?'per active flow':units+' '+BILLING_UNIT[tool.slug];
+    let bubs='';
+    for(let i=0;i<N;i++){
+      const counted=!isFlat&&!isRun&&!(tool.slug==='zapier'&&i===0);
+      bubs+=`<circle cx="${i*16+7}" cy="7" r="5" fill="${counted?m.color:'var(--surface3)'}" stroke="${counted?m.color:'var(--border2)'}" stroke-width="1"/>`;
+    }
+    const badge=(isFlat||isRun)?`<rect x="${N*16+4}" y="1" width="24" height="12" rx="4" fill="${m.color}22" stroke="${m.color}" stroke-width="1"/><text x="${N*16+16}" y="7" font-size="7" fill="${m.color}" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-weight="700">1×</text>`:'';
+    const bW=N*16+(badge?32:0);
+    rows+=`<div class="bv-row"><div class="bv-tool" style="color:${m.color}">${tool.name}</div><div class="bv-bubbles"><svg width="${bW}" height="14" aria-hidden="true">${bubs}${badge}</svg></div><div class="bv-unit">${unitTxt}</div><div class="bv-how">${m.how}</div></div>`;
+  }
+  return `<div class="bv-header"><span class="bv-header-label">Your ${s} step${s===1?'':'s'}:</span>${chainSvg}</div>${rows}<div class="bv-footer">Same workflow — different billing logic. Step count is the #1 reason tool cost varies.</div>`;
+}
+function renderBillingViz(steps){
+  const s=Math.max(1,steps);
+  return `<details class="billing-viz"><summary class="bv-summary"><span class="bv-summary-label">Why do prices differ? — how each tool counts your <strong>${s} step${s===1?'':'s'}</strong></span><span class="bv-chevron" aria-hidden="true">▾</span></summary><div class="bv-body" id="billing-viz-inner">${renderBillingVizInner(s)}</div></details>`;
+}
+
 // ── Live re-render (sliders/steppers update result in-place) ──────────────────
 function rerenderResult(){
   const sHP=hostPref,sSI=selectedIntegrations,sAI=aiPref;
@@ -1138,6 +1203,7 @@ function rerenderResult(){
   const cs=document.getElementById('chart-sub-live');if(cs)cs.textContent=liveRuns.toLocaleString()+' runs/mo · '+liveSteps+' steps · '+liveWflows+' workflows';
   const vc=document.getElementById('vol-chart-inner');if(vc)vc.innerHTML=renderVolChartSvg(res.slice(0,4),liveSteps,liveWflows);
   const ai=document.getElementById('all-ranked-inner');if(ai&&ai.classList.contains('open'))ai.innerHTML=renderAllRankedRows(res);
+  const bvi=document.getElementById('billing-viz-inner');if(bvi)bvi.innerHTML=renderBillingVizInner(liveSteps);
   // savings — compute vs zapier (cloud, no filters)
   hostPref='cloud';selectedIntegrations=[];aiPref='any';
   const zap=TOOLS.find(t=>t.slug==='zapier'),zCR=zap?calcCost(zap,liveRuns,liveSteps,liveWflows,null):null;
@@ -1282,6 +1348,8 @@ function showResults() {
       <div class="bd-disclaimer">Prices verified by hand June 2026. Estimates from the WizardCost engine — your real cost depends on workflow shape. Not affiliated with any vendor (some links are affiliate links, disclosed above).</div>
       ${auditNote}
     </div>
+
+    ${renderBillingViz(steps)}
 
     ${renderLiveEditHtml(runs, steps, wflows)}
 
