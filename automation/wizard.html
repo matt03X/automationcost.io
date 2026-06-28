@@ -235,6 +235,44 @@
     @media(prefers-reduced-motion:reduce) { *, *::before, *::after { transition:none !important; animation:none !important; } }
     /* Focus visible */
     :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:3px; }
+
+    /* ── Live-edit controls ── */
+    .live-edit-section { background:var(--surface); border:1px solid var(--border2); border-radius:var(--radius); padding:18px 20px 20px; margin-bottom:20px; }
+    .le-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.09em; font-family:var(--mono); color:var(--muted); margin-bottom:14px; }
+    .le-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+    .le-row:last-child { margin-bottom:0; }
+    .le-label { font-size:13px; color:var(--text2); min-width:140px; }
+    .le-val { font-family:var(--mono); font-size:13px; font-weight:700; color:var(--accent-br); min-width:68px; }
+    .le-slider { flex:1; min-width:100px; accent-color:var(--accent); cursor:pointer; height:4px; }
+    .le-stepper { display:flex; align-items:center; gap:8px; }
+    .le-step-btn { width:36px; height:36px; border-radius:var(--radius-sm); background:var(--surface2); border:1px solid var(--border2); color:var(--text2); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .12s,color .12s; font-family:inherit; line-height:1; min-height:44px; min-width:44px; }
+    .le-step-btn:hover { background:var(--surface3); color:var(--text); }
+    .le-step-val { font-family:var(--mono); font-size:14px; font-weight:700; color:var(--accent-br); min-width:24px; text-align:center; }
+
+    /* ── Cost-vs-volume chart ── */
+    .volchart-section { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:22px 20px 18px; margin-bottom:20px; }
+    .volchart-title { font-weight:700; font-size:14px; color:var(--text); margin-bottom:4px; }
+    .volchart-sub { font-size:12px; color:var(--muted); margin-bottom:12px; font-family:var(--mono); }
+    .volchart-legend { display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:10px; }
+    .vc-legend-item { display:flex; align-items:center; gap:6px; font-size:12.5px; color:var(--text2); }
+    .vc-legend-dot { width:10px; height:3px; border-radius:2px; flex-shrink:0; }
+
+    /* ── All ranked expandable ── */
+    .all-ranked { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:20px; overflow:hidden; }
+    .all-ranked-toggle { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; cursor:pointer; font-size:14px; font-weight:600; color:var(--text2); background:none; border:none; width:100%; font-family:inherit; text-align:left; transition:background .12s; min-height:44px; }
+    .all-ranked-toggle:hover { background:var(--surface2); color:var(--text); }
+    .ar-chevron { transition:transform .18s; flex-shrink:0; }
+    .ar-chevron.open { transform:rotate(180deg); }
+    .all-ranked-list { display:none; padding:0 18px 14px; }
+    .all-ranked-list.open { display:block; }
+    .ar-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13.5px; }
+    .ar-row:last-child { border-bottom:none; }
+    .ar-rank { font-family:var(--mono); font-size:11px; color:var(--muted); min-width:18px; }
+    .ar-name { flex:1; font-weight:600; color:var(--text); }
+    .ar-name.winner { color:var(--accent-br); }
+    .ar-plan { font-size:12px; color:var(--muted); }
+    .ar-price { font-family:var(--mono); font-size:13px; color:var(--text2); }
+    .ar-price.winner { color:var(--accent-br); font-weight:700; }
   </style>
 <!-- ANALYTICS (build.py) -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
@@ -693,6 +731,9 @@ let aiPref   = "any";
 let billing  = "monthly";
 let selectedIntegrations = [];
 
+// ── Live-edit state ───────────────────────────────────────────────────────────
+let liveRuns = 1000, liveSteps = 3, liveWflows = 5;
+
 // ── Engine helpers (verbatim from calculator.html) ────────────────────────────
 function selfHostHwCost(tool, ops) {
   const t = selfHostHwTier(tool, ops);
@@ -1017,6 +1058,93 @@ function runnerUpWhy(tool) {
   return whys[tool.slug] || 'Strong alternative worth comparing at your volume.';
 }
 
+// ── Vol chart (SVG step-chart: cost vs runs/month for top tools) ─────────────
+function renderVolChartSvg(tools, steps, wflows) {
+  const V=[100,300,500,1000,2000,5000,10000,25000,50000,100000];
+  const W=390,H=130,ML=60,MT=10,MB=30,MR=14,TW=W+ML+MR,TH=H+MT+MB;
+  const TC={make:'#B02DE9',n8n:'#EA4B71',zapier:'#FF4F00',pipedream:'#3b82f6',activepieces:'#6E56CF',automatisch:'#0EA5E9','node-red':'#8F0000'};
+  // compute series
+  const ser=tools.map(r=>({tool:r.tool,pts:V.map(v=>{const c=calcCost(r.tool,v,steps,wflows,null);return c?c.cost:null;})}));
+  const allC=ser.flatMap(s=>s.pts.filter(p=>p!==null));
+  if(!allC.length)return '';
+  const mx=Math.max(...allC,1);
+  const xS=v=>ML+Math.log10(v/100)/3*W;
+  const yS=c=>MT+H-(c/mx*H);
+  let svg=`<svg role="img" aria-label="Cost vs volume chart: ${tools.map(r=>r.tool.name).join(', ')}" viewBox="0 0 ${TW} ${TH}" width="${TW}" height="${TH}" style="max-width:100%;display:block;overflow:visible">`;
+  // y grid
+  [0.25,0.5,0.75,1].forEach(f=>{const gy=MT+H-f*H;svg+=`<line x1="${ML}" y1="${gy}" x2="${ML+W}" y2="${gy}" stroke="#1f2d45" stroke-width="1"/><text x="${ML-5}" y="${gy+4}" text-anchor="end" font-size="10" fill="#6b7a99" font-family="JetBrains Mono,monospace">$${Math.round(mx*f)}</text>`;});
+  // x axis + labels
+  svg+=`<line x1="${ML}" y1="${MT+H}" x2="${ML+W}" y2="${MT+H}" stroke="#27375a" stroke-width="1"/>`;
+  [[100,'100'],[1000,'1K'],[10000,'10K'],[100000,'100K']].forEach(([v,l])=>{const gx=xS(v);svg+=`<line x1="${gx}" y1="${MT}" x2="${gx}" y2="${MT+H}" stroke="#1f2d45" stroke-width="1" stroke-dasharray="3,3"/><text x="${gx}" y="${MT+H+14}" text-anchor="middle" font-size="10" fill="#6b7a99" font-family="JetBrains Mono,monospace">${l}</text>`;});
+  // crossover markers (amber dashed where cheapest switches)
+  const cheapAt=i=>{let b=null,bc=Infinity;ser.forEach(s=>{if(s.pts[i]!==null&&s.pts[i]<bc){b=s;bc=s.pts[i];}});return b;};
+  for(let i=1;i<V.length;i++){const c0=cheapAt(i-1),c1=cheapAt(i);if(c0&&c1&&c0.tool.slug!==c1.tool.slug){const gx=xS(V[i]);svg+=`<line x1="${gx}" y1="${MT}" x2="${gx}" y2="${MT+H}" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3,2" opacity="0.6"/>`;}}
+  // step lines per tool
+  ser.forEach((s,si)=>{
+    const isW=si===0,col=TC[s.tool.slug]||'#a8b4cc';
+    const pts=V.map((v,i)=>s.pts[i]!==null?[xS(v),yS(s.pts[i])]:null).filter(Boolean);
+    if(pts.length<2)return;
+    let d=`M ${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;
+    for(let i=1;i<pts.length;i++)d+=` H ${pts[i][0].toFixed(1)} V ${pts[i][1].toFixed(1)}`;
+    svg+=`<path d="${d}" fill="none" stroke="${col}" stroke-width="${isW?2.5:1.5}" opacity="${isW?1:0.55}" stroke-linejoin="round"/>`;
+  });
+  // current volume marker (green dashed)
+  const clampedRuns=Math.max(100,Math.min(100000,liveRuns));
+  const cx0=xS(clampedRuns);
+  svg+=`<line x1="${cx0.toFixed(1)}" y1="${MT}" x2="${cx0.toFixed(1)}" y2="${MT+H}" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+  svg+='</svg>';return svg;
+}
+
+// ── All-tools-ranked helpers ──────────────────────────────────────────────────
+function renderAllRankedRows(results){
+  return results.map((r,i)=>{
+    const isW=i===0,p='~'+fmtUsd(Math.round(r.cr.cost))+'/mo',pl=r.cr.plan?r.cr.plan.name:'',est=r.cr.estimated?' est.':'';
+    return `<div class="ar-row"><span class="ar-rank">${i+1}</span><span class="ar-name${isW?' winner':''}">${r.tool.name}</span><span class="ar-plan">${pl}${est}</span><span class="ar-price${isW?' winner':''}">${p}</span></div>`;
+  }).join('');
+}
+function renderLiveEditHtml(runs,steps,wflows){
+  return `<div class="live-edit-section" id="live-edit-panel"><div class="le-title">Fine-tune — results update live</div>`+
+    `<div class="le-row"><span class="le-label">Runs / month</span><input class="le-slider" type="range" id="le-runs" min="100" max="100000" step="100" value="${runs}" oninput="onLeRuns(this)" aria-label="Runs per month"><span class="le-val" id="le-runs-val">${runs.toLocaleString()}</span></div>`+
+    `<div class="le-row"><span class="le-label">Steps / workflow</span><div class="le-stepper"><button class="le-step-btn" onclick="onLeSteps(-1)" aria-label="Fewer steps">&#8722;</button><span class="le-step-val" id="le-steps-val">${steps}</span><button class="le-step-btn" onclick="onLeSteps(1)" aria-label="More steps">+</button></div></div>`+
+    `<div class="le-row"><span class="le-label">Active workflows</span><div class="le-stepper"><button class="le-step-btn" onclick="onLeWflows(-1)" aria-label="Fewer workflows">&#8722;</button><span class="le-step-val" id="le-wflows-val">${wflows}</span><button class="le-step-btn" onclick="onLeWflows(1)" aria-label="More workflows">+</button></div></div></div>`;
+}
+function renderVolSection(results,steps,wflows){
+  const TC={make:'#B02DE9',n8n:'#EA4B71',zapier:'#FF4F00',pipedream:'#3b82f6',activepieces:'#6E56CF',automatisch:'#0EA5E9','node-red':'#8F0000'};
+  const leg=results.slice(0,4).map(r=>`<span class="vc-legend-item"><span class="vc-legend-dot" style="background:${TC[r.tool.slug]||'#a8b4cc'}"></span>${r.tool.name}</span>`).join('');
+  return `<div class="volchart-section"><div class="volchart-title">Cost vs. volume — where does cheapest switch?</div><div class="volchart-sub">Green dashed = your volume &middot; amber dashed = cheapest tool changes</div><div class="volchart-legend">${leg}</div><div id="vol-chart-inner">${renderVolChartSvg(results.slice(0,4),steps,wflows)}</div></div>`;
+}
+function renderAllRankedSection(results){
+  return `<div class="all-ranked"><button class="all-ranked-toggle" id="ar-toggle" onclick="toggleAllRanked()" aria-expanded="false"><span>See all ${results.length} tools ranked at your volume</span><svg class="ar-chevron" id="ar-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button><div class="all-ranked-list" id="all-ranked-inner">${renderAllRankedRows(results)}</div></div>`;
+}
+function toggleAllRanked(){const l=document.getElementById('all-ranked-inner'),c=document.getElementById('ar-chevron'),b=document.getElementById('ar-toggle');if(!l)return;const o=l.classList.toggle('open');if(c)c.classList.toggle('open',o);if(b)b.setAttribute('aria-expanded',o?'true':'false');}
+
+// ── Live re-render (sliders/steppers update result in-place) ──────────────────
+function rerenderResult(){
+  const sHP=hostPref,sSI=selectedIntegrations,sAI=aiPref;
+  hostPref=wiz.sh==='yes'||wiz.sh==='maybe'?'any':'cloud';
+  aiPref=wiz.feats.includes('ai')?'yes':'any';
+  selectedIntegrations=wiz.apps;
+  const res=TOOLS.filter(t=>{for(const f of wiz.feats){if(FEAT_FILTERS[f]&&!FEAT_FILTERS[f](t))return false;}return true;})
+    .map(t=>{const cr=calcCost(t,liveRuns,liveSteps,liveWflows,null);return cr?{tool:t,cr}:null;})
+    .filter(Boolean).sort((a,b)=>a.cr.cost-b.cr.cost);
+  if(!res.length){hostPref=sHP;selectedIntegrations=sSI;aiPref=sAI;return;}
+  const wc=res[0].cr.cost;
+  const pe=document.getElementById('live-winner-price');if(pe)pe.textContent='~'+fmtUsd(Math.round(wc))+'/mo';
+  document.getElementById('cost-chart').innerHTML=renderChart(res);
+  const cs=document.getElementById('chart-sub-live');if(cs)cs.textContent=liveRuns.toLocaleString()+' runs/mo · '+liveSteps+' steps · '+liveWflows+' workflows';
+  const vc=document.getElementById('vol-chart-inner');if(vc)vc.innerHTML=renderVolChartSvg(res.slice(0,4),liveSteps,liveWflows);
+  const ai=document.getElementById('all-ranked-inner');if(ai&&ai.classList.contains('open'))ai.innerHTML=renderAllRankedRows(res);
+  // savings — compute vs zapier (cloud, no filters)
+  hostPref='cloud';selectedIntegrations=[];aiPref='any';
+  const zap=TOOLS.find(t=>t.slug==='zapier'),zCR=zap?calcCost(zap,liveRuns,liveSteps,liveWflows,null):null;
+  hostPref=sHP;selectedIntegrations=sSI;aiPref=sAI;
+  const sl=document.getElementById('live-savings');
+  if(sl&&zCR&&res[0].tool.slug!=='zapier'){const sm=Math.max(0,zCR.cost-wc);sl.innerHTML=sm>0?'vs Zapier you save <strong>~'+fmtUsd(Math.round(sm*12))+'/yr<\/strong> at this volume':'Similar price to Zapier at this volume.';}
+}
+function onLeRuns(el){liveRuns=parseInt(el.value,10);const v=document.getElementById('le-runs-val');if(v)v.textContent=liveRuns.toLocaleString();rerenderResult();}
+function onLeSteps(d){liveSteps=Math.max(1,Math.min(10,liveSteps+d));const v=document.getElementById('le-steps-val');if(v)v.textContent=liveSteps;rerenderResult();}
+function onLeWflows(d){liveWflows=Math.max(1,Math.min(30,liveWflows+d));const v=document.getElementById('le-wflows-val');if(v)v.textContent=liveWflows;rerenderResult();}
+
 function showResults() {
   // Validate answers
   if (!wiz.uc || !wiz.freq || !wiz.team || !wiz.sh) {
@@ -1030,6 +1158,7 @@ function showResults() {
   updateProgress(7); // show all done
 
   const { results, runs, steps, wflows } = computeResults();
+  liveRuns = runs; liveSteps = steps; liveWflows = wflows;
   const el = document.getElementById('wiz-result');
 
   if (!results.length) {
@@ -1123,8 +1252,8 @@ function showResults() {
         <span class="tool-name">${winner.tool.name}</span>
         <span class="price"> on ${planNote}</span>
       </div>
-      <div class="res-headline" style="font-size:clamp(1.3rem,3vw,1.9rem);color:var(--accent-br);margin-top:4px">~${fmtUsd(Math.round(winnerCost))}/mo${estNote}</div>
-      <div class="res-savings">${savingsHtml}</div>
+      <div id="live-winner-price" class="res-headline" style="font-size:clamp(1.3rem,3vw,1.9rem);color:var(--accent-br);margin-top:4px">~${fmtUsd(Math.round(winnerCost))}/mo${estNote}</div>
+      <div id="live-savings" class="res-savings">${savingsHtml}</div>
       ${shBonusHtml}
       ${euNoteHtml}
       <div class="res-cta-row">${ctaHtml}</div>
@@ -1134,7 +1263,7 @@ function showResults() {
 
     <div class="chart-section">
       <div class="chart-title">Cost comparison at your volume</div>
-      <div class="chart-sub">${runs.toLocaleString()} runs/mo · ${steps} steps/workflow · ${wflows} workflows${wiz.feats.length ? ' · ' + wiz.feats.length + ' filter(s) applied' : ''}</div>
+      <div id="chart-sub-live" class="chart-sub">${runs.toLocaleString()} runs/mo · ${steps} steps/workflow · ${wflows} workflows${wiz.feats.length ? ' · ' + wiz.feats.length + ' filter(s) applied' : ''}</div>
       <div id="cost-chart">${chartSvg}</div>
     </div>
 
@@ -1149,6 +1278,12 @@ function showResults() {
       <div class="bd-disclaimer">Prices verified by hand June 2026. Estimates from the WizardCost engine — your real cost depends on workflow shape. Not affiliated with any vendor (some links are affiliate links, disclosed above).</div>
       ${auditNote}
     </div>
+
+    ${renderLiveEditHtml(runs, steps, wflows)}
+
+    ${renderVolSection(results, steps, wflows)}
+
+    ${renderAllRankedSection(results)}
 
     <div class="founding-offer" id="fo-section">
       <div class="fo-badge"><span class="fo-dot"></span>Founding offer</div>
@@ -1181,6 +1316,14 @@ function showResults() {
       </div>
     </div>
   `;
+
+  // Encode state into URL hash (shareable permalink)
+  try {
+    let h = '#uc='+(wiz.uc||'')+'&freq='+(wiz.freq||'')+'&team='+(wiz.team||'')+'&sh='+(wiz.sh||'');
+    if (wiz.feats.length) h += '&feats='+wiz.feats.join(',');
+    if (wiz.apps.length)  h += '&apps='+encodeURIComponent(wiz.apps.join(','));
+    history.replaceState(null,'',h);
+  } catch(_){}
 
   // Scroll to result
   document.getElementById('wiz-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1230,6 +1373,22 @@ document.querySelectorAll('.tile').forEach(t => {
   if (!t.getAttribute('role')) t.setAttribute('role','button');
   if (!t.hasAttribute('tabindex')) t.setAttribute('tabindex','0');
 });
+
+// ── Permalink: restore state from URL hash ────────────────────────────────────
+(function loadPermalink() {
+  const h = location.hash.slice(1);
+  if (!h) return;
+  try {
+    const p = Object.fromEntries(h.split('&').filter(Boolean).map(s => s.split('=')));
+    if (p.uc)   { wiz.uc=p.uc;   document.querySelectorAll('[data-uc="'+p.uc+'"]').forEach(el=>{el.classList.add('selected');el.setAttribute('aria-pressed','true');}); document.getElementById('q1-next').disabled=false; document.getElementById('q1-next').removeAttribute('aria-disabled'); }
+    if (p.freq) { wiz.freq=p.freq; document.querySelectorAll('[data-freq="'+p.freq+'"]').forEach(el=>{el.classList.add('selected');el.setAttribute('aria-pressed','true');}); document.getElementById('q2-next').disabled=false; document.getElementById('q2-next').removeAttribute('aria-disabled'); }
+    if (p.team) { wiz.team=p.team; document.querySelectorAll('[data-team="'+p.team+'"]').forEach(el=>{el.classList.add('selected');el.setAttribute('aria-pressed','true');}); document.getElementById('q5-next').disabled=false; document.getElementById('q5-next').removeAttribute('aria-disabled'); }
+    if (p.sh)   { wiz.sh=p.sh;   document.querySelectorAll('[data-sh="'+p.sh+'"]').forEach(el=>{el.classList.add('selected');el.setAttribute('aria-pressed','true');}); document.getElementById('q6-next').disabled=false; document.getElementById('q6-next').removeAttribute('aria-disabled'); }
+    if (p.feats) { wiz.feats=p.feats.split(',').filter(Boolean); wiz.feats.forEach(f=>document.querySelectorAll('[data-feat="'+f+'"]').forEach(el=>{el.classList.add('selected');el.setAttribute('aria-checked','true');})); }
+    if (p.apps)  { wiz.apps=decodeURIComponent(p.apps).split(',').filter(Boolean); selectedIntegrations=wiz.apps; renderIntegSel(); }
+    if (wiz.uc && wiz.freq && wiz.team && wiz.sh) showResults();
+  } catch(_) {}
+})();
 </script>
 </body>
 </html>
