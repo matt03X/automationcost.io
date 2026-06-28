@@ -695,14 +695,18 @@ const INTEGRATIONS = [
 ];
 
 // ── Use-case map ──────────────────────────────────────────────────────────────
-// runs = base estimate for this category; steps = workflow depth
+// runs = base estimate for this category; steps = realistic workflow depth.
+// "steps" = modules per run (trigger + lookups + filters + branches + transform
+// + write-back + notify). Real business automations are 6–12 steps, not 2–4 —
+// e.g. Orders→Accounting (get order, get/dedup customer, map line items, create
+// invoice, write back, notify) is ~10. Users fine-tune this live on the result.
 const USE_CASES = {
-  orders:  { runs: 500,  steps: 4 },
-  leads:   { runs: 1000, steps: 3 },
-  notify:  { runs: 2000, steps: 2 },
-  social:  { runs: 300,  steps: 2 },
-  ops:     { runs: 1500, steps: 3 },
-  custom:  { runs: 1000, steps: 3 },
+  orders:  { runs: 500,  steps: 10 },
+  leads:   { runs: 1000, steps: 7 },
+  notify:  { runs: 2000, steps: 3 },
+  social:  { runs: 300,  steps: 4 },
+  ops:     { runs: 1500, steps: 7 },
+  custom:  { runs: 1000, steps: 6 },
 };
 // Frequency bands override runs from use-case
 const FREQ_BANDS = {
