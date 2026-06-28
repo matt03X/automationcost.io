@@ -297,6 +297,27 @@
     .ar-plan { font-size:12px; color:var(--muted); }
     .ar-price { font-family:var(--mono); font-size:13px; color:var(--text2); }
     .ar-price.winner { color:var(--accent-br); font-weight:700; }
+
+    /* ── Diagnostic panel ── */
+    .diag-panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); margin-bottom:20px; overflow:hidden; }
+    .diag-toggle { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; cursor:pointer; font-size:14px; font-weight:600; color:var(--text2); background:none; border:none; width:100%; font-family:inherit; text-align:left; transition:background .12s; min-height:44px; gap:10px; }
+    .diag-toggle:hover { background:var(--surface2); color:var(--text); }
+    .diag-toggle-label { flex:1; }
+    .diag-chevron { transition:transform .18s; flex-shrink:0; }
+    .diag-chevron.open { transform:rotate(180deg); }
+    .diag-body { padding:16px 18px 20px; border-top:1px solid var(--border); }
+    .diag-intro { font-size:13px; color:var(--muted); margin:0 0 16px; line-height:1.5; }
+    .diag-q { margin-bottom:16px; }
+    .diag-qlabel { font-size:13.5px; color:var(--text2); font-weight:600; margin-bottom:8px; }
+    .diag-segs { display:flex; flex-wrap:wrap; gap:6px; }
+    .diag-seg { background:var(--surface2); border:1.5px solid var(--border2); border-radius:var(--radius-sm); color:var(--text2); font-size:13px; font-weight:500; padding:8px 14px; cursor:pointer; font-family:inherit; transition:background .12s,border-color .12s,color .12s; min-height:44px; }
+    .diag-seg:hover { background:var(--surface3); color:var(--text); }
+    .diag-seg.active { background:var(--accent); border-color:var(--accent); color:var(--ink); font-weight:700; }
+    .diag-result { background:var(--surface2); border:1.5px solid var(--border2); border-radius:var(--radius-sm); padding:14px 16px; margin-top:18px; display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
+    .diag-result-math { flex:1; font-size:14px; color:var(--text2); min-width:200px; line-height:1.6; }
+    .diag-result-math strong { color:var(--accent-br); font-family:var(--mono); }
+    .diag-cap-note { font-size:13px; color:var(--text2); width:100%; line-height:1.55; margin-top:2px; }
+    @media(max-width:480px) { .diag-seg { font-size:12px; padding:7px 10px; min-height:44px; } .diag-result { flex-direction:column; align-items:flex-start; } }
   </style>
 <!-- ANALYTICS (build.py) -->
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d92ac7950aa242fc9291b77df0ce406e"}'></script>
@@ -1146,6 +1167,25 @@ function renderAllRankedSection(results){
 }
 function toggleAllRanked(){const l=document.getElementById('all-ranked-inner'),c=document.getElementById('ar-chevron'),b=document.getElementById('ar-toggle');if(!l)return;const o=l.classList.toggle('open');if(c)c.classList.toggle('open',o);if(b)b.setAttribute('aria-expanded',o?'true':'false');}
 
+// ── Diagnostic panel — production complexity estimator ────────────────────────
+var diagState={},diagBaseSteps=3;
+function renderDiagPanel(steps){
+  diagState={};diagBaseSteps=steps;
+  const qs=[
+    {id:'q1',label:'1. Does the target system validate data, or do you?',opts:[['it','It validates'],['me','I handle it'],['ns','Not sure']]},
+    {id:'q2',label:'2. Where do inputs come from?',opts:[['api','Clean app / API'],['human','Human-submitted (email, forms)'],['files','Files &amp; scans (PDF, images)']]},
+    {id:'q3',label:'3. Cost of a mistake?',opts:[['low','Low'],['med','Medium'],['high','High (financial / compliance)']]},
+    {id:'q4',label:'4. Does it need human review / approval?',opts:[['no','No'],['sometimes','Sometimes'],['always','Always']]},
+    {id:'q5',label:'5. Connections: decent APIs or polling?',opts:[['api','Good APIs'],['mixed','Mixed'],['polling','Polling / scraping']]}
+  ];
+  const qHtml=qs.map(q=>`<div class="diag-q"><div class="diag-qlabel">${q.label}</div><div class="diag-segs" role="group" aria-label="${q.label}">${q.opts.map(([v,lbl])=>`<button class="diag-seg" data-q="${q.id}" data-v="${v}" onclick="diagSel(this)" type="button">${lbl}</button>`).join('')}</div></div>`).join('');
+  return `<div class="diag-panel"><button class="diag-toggle" id="diag-toggle" onclick="toggleDiag()" aria-expanded="false" aria-controls="diag-body" type="button"><span class="diag-toggle-label">Refine for your real setup &mdash; production complexity</span><svg class="diag-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button><div class="diag-body" id="diag-body" hidden><p class="diag-intro">5 quick questions to estimate real production step count &mdash; and flag which tool can actually handle it.</p>${qHtml}<div class="diag-result" id="diag-result" hidden><div class="diag-result-math">Happy-path: <strong id="diag-hp">${steps}</strong> steps &rarr; Production-grade: <strong id="diag-pg">?</strong> steps</div><button class="btn-primary" onclick="diagApply()" type="button" style="font-size:13.5px;padding:10px 18px;flex-shrink:0">Apply to estimate</button><div class="diag-cap-note" id="diag-cap-note"></div></div></div></div>`;
+}
+function toggleDiag(){const b=document.getElementById('diag-body'),t=document.getElementById('diag-toggle'),c=document.querySelector('.diag-chevron');if(!b)return;const o=b.hasAttribute('hidden');if(o){b.removeAttribute('hidden');if(t)t.setAttribute('aria-expanded','true');}else{b.setAttribute('hidden','');if(t)t.setAttribute('aria-expanded','false');}if(c)c.classList.toggle('open',o);}
+function diagSel(el){const q=el.dataset.q,v=el.dataset.v;diagState[q]=v;document.querySelectorAll('.diag-seg[data-q="'+q+'"]').forEach(b=>b.classList.toggle('active',b===el));diagCalc();}
+function diagCalc(){if(Object.keys(diagState).length<5)return;let p=0;if(diagState.q1==='me')p+=60;else if(diagState.q1==='ns')p+=30;if(diagState.q2==='human')p+=30;else if(diagState.q2==='files')p+=60;if(diagState.q3==='high')p+=40;else if(diagState.q3==='med')p+=15;if(diagState.q4==='always')p+=40;else if(diagState.q4==='sometimes')p+=20;if(diagState.q5==='polling')p+=25;else if(diagState.q5==='mixed')p+=10;p=Math.min(p,200);const prod=Math.max(diagBaseSteps,Math.round(diagBaseSteps*(1+p/100)));const hp=document.getElementById('diag-hp'),pg=document.getElementById('diag-pg');if(hp)hp.textContent=diagBaseSteps;if(pg)pg.textContent='~'+prod;let note='';if(diagState.q1==='me'&&diagState.q2==='files'&&diagState.q3==='high')note='This needs real error handling + custom code. Tools that realistically handle it: n8n, Pipedream. Make/Zapier get expensive & clunky here; Activepieces is too simple.';else if(diagState.q3==='high')note='Sensitive data → consider self-host (n8n, Activepieces) or EU hosting so data never leaves your infrastructure.';const cn=document.getElementById('diag-cap-note');if(cn)cn.textContent=note;const dr=document.getElementById('diag-result');if(dr)dr.removeAttribute('hidden');}
+function diagApply(){const pg=document.getElementById('diag-pg');if(!pg)return;const v=parseInt(pg.textContent.replace('~',''),10);if(!v||isNaN(v))return;liveSteps=v;const sv=document.getElementById('le-steps-val');if(sv)sv.textContent=v;rerenderResult();const lep=document.getElementById('live-edit-panel');if(lep)lep.scrollIntoView({behavior:'smooth',block:'nearest'});}
+
 // ── Billing viz: why prices differ across tools ───────────────────────────────
 const BILLING_META={
   make:        {color:'#B02DE9',how:'every step = 1 operation'},
@@ -1356,6 +1396,8 @@ function showResults() {
     ${renderVolSection(results, steps, wflows)}
 
     ${renderAllRankedSection(results)}
+
+    ${renderDiagPanel(steps)}
 
     <div class="founding-offer" id="fo-section">
       <div class="fo-badge"><span class="fo-dot"></span>Founding offer</div>
