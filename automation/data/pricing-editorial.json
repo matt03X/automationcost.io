@@ -7,7 +7,11 @@
       "warn": "optional amber warning box — HTML allowed, no hardcoded price (the module appends the real at-volume figure where useful)",
       "whenWorthIt": "list of {case, verdict, tier} rows; tier = good|warn|bad → coloured cell",
       "faq": "list of {q, a} — a is HTML, NO prices; price-bearing FAQ rows are appended by the module",
-      "relatedCompare": "list of {label, tools} → compare.html?tools=<tools> cards"
+      "relatedCompare": "list of {label, tools} → compare.html?tools=<tools> cards",
+      "seo_title": "optional <title> override (rendered HTML incl. '&amp;' + ' | WizardCost' suffix) — omit to use the shared template default",
+      "seo_description": "optional <meta description>/og:description template override — {name}/{prices} placeholders still frozen (prices always from the engine); omit to use the shared template default",
+      "meta_keywords": "optional <meta name=\"keywords\"> content — omitted entirely (no tag) when absent",
+      "seo_ld_name": "optional JSON-LD WebPage 'name' override — omit to use the shared default ('{name} Pricing 2026 — Plans, Run Limits & Real Cost')"
     }
   },
   "tools": {
@@ -81,8 +85,12 @@
       ]
     },
     "pipedream": {
-      "h1": "Pipedream Pricing 2026 — Credits & Real Cost per Run",
-      "intro": "Pipedream is the developer-first automation platform that prices on compute credits. Here's what each plan costs as your run volume climbs, and where it lands against the alternatives.",
+      "seo_title": "Pipedream Pricing Calculator 2026 | WizardCost",
+      "seo_description": "{name} pricing calculator: {prices}. Real plans and the cheapest alternative, compared.",
+      "meta_keywords": "pipedream pricing calculator, pipedream cost calculator, calculate pipedream pricing, pipedream pricing 2026, pipedream cost per run",
+      "seo_ld_name": "Pipedream Pricing Calculator 2026 — Plans, Run Limits & Real Cost",
+      "h1": "Pipedream Pricing Calculator — Credits & Real Cost per Run",
+      "intro": "Pipedream is the developer-first automation platform that prices on compute credits. Here's what each plan costs as your run volume climbs, and where it lands against the alternatives — plus a calculator below for your exact volume.",
       "warn": "Pipedream meters credits per workflow execution, and the public per-credit overage rate has been pulled from the pricing page — high-volume overage is now a sales conversation. The Business tier carries the over-volume estimate. Size your plan carefully.",
       "whenWorthIt": [
         { "case": "Developer who lives in code steps", "verdict": "Use Pipedream", "tier": "good" },
@@ -93,6 +101,8 @@
         { "case": "Need to eliminate the monthly bill", "verdict": "Self-host n8n", "tier": "warn" }
       ],
       "faq": [
+        { "q": "Is there a Pipedream pricing calculator?", "a": "Yes — the interactive calculator on this page: enter your runs per month and it shows Pipedream's price at that volume, the cheapest alternative we track, and the potential annual difference, computed live from the same pricing engine as the tables above." },
+        { "q": "How do I calculate my exact Pipedream cost?", "a": "Enter your expected runs per month in the calculator above — it looks up Pipedream's cheapest qualifying plan at that volume from our pricing engine (not an estimate) and shows the cheapest alternative for comparison. For a full ranked comparison across all 7 tools, use the <a href=\"calculator.html\">main calculator</a>." },
         { "q": "How does Pipedream's credit pricing work?", "a": "Each workflow execution consumes credits based on compute time; paid plans include a monthly credit pool. We normalise this to <strong>runs &times; steps</strong> so it lines up with the other tools in the table above." },
         { "q": "Is Pipedream good for non-developers?", "a": "It's developer-first — the real power is in code steps and APIs. If you want a drag-and-drop no-code builder, Make or Activepieces will feel friendlier." }
       ],
