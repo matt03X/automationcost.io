@@ -37,6 +37,13 @@ PRICING_SLUGS = ["zapier", "make", "n8n", "pipedream", "activepieces",
 VOLUMES = [1000, 5000, 20000, 100000]   # runs/mo — sjednoceno s pairs.json
 STEPS = 3                               # workflows steps — stejné assumptions jako homepage DEMO
 
+# On-page interactive cost-calculator widget (see _calc_widget_anchors/_calc_widget_block):
+# denser volume grid than VOLUMES, capped at the same 100k max — same grid already proven
+# on is-automation-worth-it.html's ROI widget (_widget_anchors there). The client only does
+# a step-lookup into this precomputed table; it never runs its own pricing formula.
+CALC_WIDGET_VOLUMES = [100, 250, 500, 1000, 2500, 5000, 10000, 20000, 50000, 100000]
+CALC_WIDGET_TOOLS = {"pipedream"}  # slugs that render the on-page calculator (scoped rollout)
+
 # MailerLite price-drop alerts endpoint — schválený owner 2026-06-11 (shodný s build.py).
 EMAILCAP_ACTION = "https://assets.mailerlite.com/jsonp/2426816/forms/190009354045359550/subscribe"
 
@@ -91,11 +98,14 @@ def _iso_date(tools_meta: dict) -> str:
 
 def _page_graph_ld(domain: str, canonical: str, name: str, desc: str, iso_date: str,
                    about_name: str | None = None, about_url: str | None = None,
-                   offers: dict | None = None) -> str:
+                   offers: dict | None = None,
+                   extra_graph_nodes: list[dict] | None = None) -> str:
     """WebPage + Organization + WebSite @graph pro GEO/AI-citace: dateModified (freshness),
     identita vydavatele (WizardCost) + isPartOf, volitelně entita softwaru přes `about`.
     `offers` (AggregateOffer, USD) se připne na SoftwareApplication — reálný cenový range
-    z enginu, stejná veřejná data jako v tabulkách, jen strojově čitelná (schváleno userem)."""
+    z enginu, stejná veřejná data jako v tabulkách, jen strojově čitelná (schváleno userem).
+    `extra_graph_nodes` — volitelné další @graph uzly (např. WebApplication pro on-page
+    kalkulačku); None/[] u všech stránek beze změny (zpětně kompatibilní)."""
     home_url = f"https://{domain}/"
     org_id = f"{home_url}#org"
     webpage = {
@@ -113,18 +123,19 @@ def _page_graph_ld(domain: str, canonical: str, name: str, desc: str, iso_date: 
         if offers:
             about["offers"] = offers
         webpage["about"] = about
-    return json.dumps({
-        "@context": "https://schema.org",
-        "@graph": [
-            {"@type": "Organization", "@id": org_id, "name": "WizardCost", "url": home_url,
-             "description": ("Independent, data-driven software pricing comparisons. Prices "
-                             "verified by hand from official vendor pricing pages and dated "
-                             "in a public changelog.")},
-            {"@type": "WebSite", "@id": f"{home_url}#website", "name": "WizardCost",
-             "url": home_url, "publisher": {"@id": org_id}},
-            webpage,
-        ],
-    }, ensure_ascii=False, indent=2)
+    graph = [
+        {"@type": "Organization", "@id": org_id, "name": "WizardCost", "url": home_url,
+         "description": ("Independent, data-driven software pricing comparisons. Prices "
+                         "verified by hand from official vendor pricing pages and dated "
+                         "in a public changelog.")},
+        {"@type": "WebSite", "@id": f"{home_url}#website", "name": "WizardCost",
+         "url": home_url, "publisher": {"@id": org_id}},
+        webpage,
+    ]
+    if extra_graph_nodes:
+        graph.extend(extra_graph_nodes)
+    return json.dumps({"@context": "https://schema.org", "@graph": graph},
+                      ensure_ascii=False, indent=2)
 
 
 def _site_prefix(domain: str, base_path: str) -> str:
@@ -314,6 +325,144 @@ def _comparison_table(engine, by_slug: dict, focus_slug: str, vol: int, tr=None)
     return "\n".join(rows)
 
 
+# ── On-page interactive cost calculator (owns the "<tool> pricing calculator" intent) ──
+# All numbers come from engine.cheapest_monthly — the SAME call _comparison_table/_plan_cards
+# already use. The client widget never computes a price: it only looks up a row in the
+# precomputed table below (see _calc_widget_js). This mirrors the proven pattern already
+# shipped on is-automation-worth-it.html (_widget_anchors there) — no new pricing logic.
+
+def _cheapest_alt_at(engine, by_slug: dict, focus_slug: str, vol: int):
+    """Cheapest OTHER tracked tool at `vol` runs (excludes focus_slug) — same engine call
+    as the 'cheaper than' FAQ (_faq_with_prices) and the vs-alternatives table above it."""
+    best_s, best_r = None, None
+    for s in PRICING_SLUGS:
+        if s == focus_slug:
+            continue
+        r = engine.cheapest_monthly(by_slug[s], vol, STEPS)
+        if r and (best_r is None or r["cost"] < best_r["cost"]):
+            best_s, best_r = s, r
+    return best_s, best_r
+
+
+def _calc_widget_anchors(engine, by_slug: dict, focus_slug: str, tr=None) -> list[dict]:
+    """[{runs, pd:{cost,est,label}, alt:{slug,name,cost,est}}, ...] across CALC_WIDGET_VOLUMES.
+    pd = focus tool's cheapest_monthly; alt = cheapest OTHER tracked tool at the same volume."""
+    out = []
+    for vol in CALC_WIDGET_VOLUMES:
+        r_focus = engine.cheapest_monthly(by_slug[focus_slug], vol, STEPS)
+        if not r_focus:
+            continue
+        alt_s, alt_r = _cheapest_alt_at(engine, by_slug, focus_slug, vol)
+        if not alt_r:
+            continue
+        out.append({
+            "runs": vol,
+            "pd": {"cost": round(r_focus["cost"], 2), "est": r_focus["est"],
+                   "label": _label_runs(r_focus["label"], tr)},
+            "alt": {"slug": alt_s, "name": by_slug[alt_s]["name"],
+                    "cost": round(alt_r["cost"], 2), "est": alt_r["est"]},
+        })
+    return out
+
+
+def _calc_widget_block(name: str, anchors: list[dict], month_year: str) -> tuple[str, str]:
+    """Returns (html_section, script_js) for the on-page "<name> cost calculator" widget.
+    HTML holds static placeholders (—); script_js fills them in on load + on input, from
+    the precomputed `anchors` table only (step-lookup, no client-side pricing formula)."""
+    if not anchors:
+        return "", ""
+    anchors_json = json.dumps(anchors, ensure_ascii=False)
+    default_runs = 20000 if any(a["runs"] == 20000 for a in anchors) else anchors[len(anchors) // 2]["runs"]
+    html = f"""  <div class="section" id="pd-calc">
+    <h2>{_html_escape(name)} cost calculator</h2>
+    <p class="section-sub">Enter your monthly run volume — {_html_escape(name)}'s price and the cheapest alternative we track update live from the same engine as the tables on this page.</p>
+    <div class="pdcalc-card">
+      <div class="pdcalc-inputs">
+        <div class="pdcalc-field">
+          <label class="pdcalc-label" for="pdcalc-runs">Runs / month</label>
+          <input type="number" id="pdcalc-runs" class="pdcalc-input" value="{default_runs}" min="1" max="1000000" step="100" aria-describedby="pdcalc-hint">
+          <div class="pdcalc-hint" id="pdcalc-hint">How many workflow executions per month</div>
+        </div>
+      </div>
+      <div class="pdcalc-results" id="pdcalc-results" aria-live="polite">
+        <div class="pdcalc-grid">
+          <div class="pdcalc-stat pdcalc-stat-focus">
+            <div class="pdcalc-stat-label">{_html_escape(name)}</div>
+            <div class="pdcalc-stat-value" id="pdcalc-pd-cost">—</div>
+            <div class="pdcalc-stat-sub" id="pdcalc-pd-plan">—</div>
+          </div>
+          <div class="pdcalc-stat">
+            <div class="pdcalc-stat-label">Cheapest alternative</div>
+            <div class="pdcalc-stat-value" id="pdcalc-alt-cost">—</div>
+            <div class="pdcalc-stat-sub" id="pdcalc-alt-name">—</div>
+          </div>
+          <div class="pdcalc-stat pdcalc-stat-accent">
+            <div class="pdcalc-stat-label" id="pdcalc-delta-label">Difference</div>
+            <div class="pdcalc-stat-value" id="pdcalc-delta-cost">—</div>
+            <div class="pdcalc-stat-sub" id="pdcalc-delta-sub">per year</div>
+          </div>
+        </div>
+        <div class="pdcalc-cta-row">
+          <a href="calculator.html" class="btn-primary">See all 7 tools ranked for my volume →</a>
+          <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
+        </div>
+        <p class="tbl-note" style="margin-top:12px;font-family:var(--mono);font-size:11.5px;color:var(--muted)">Prices generated live from official pricing via our engine (verified {month_year}). Values marked ~ are estimates for custom enterprise tiers.</p>
+      </div>
+    </div>
+  </div>"""
+    js = f"""
+/* ── {name} cost calculator widget — step-lookup only, no client-side pricing logic ── */
+(function () {{
+  var ANCHORS = {anchors_json};
+  if (!ANCHORS.length) return;
+  var runsInput = document.getElementById('pdcalc-runs');
+  if (!runsInput) return;
+
+  function findAnchor(runs) {{
+    var best = ANCHORS[0];
+    for (var i = 0; i < ANCHORS.length; i++) {{
+      if (ANCHORS[i].runs <= runs) best = ANCHORS[i]; else break;
+    }}
+    return best;
+  }}
+  function money(v, est) {{ return (est ? '~$' : '$') + Math.round(v).toLocaleString('en-US'); }}
+
+  function render() {{
+    var runs = parseFloat(runsInput.value) || 0;
+    if (runs <= 0) return;
+    var a = findAnchor(runs);
+    document.getElementById('pdcalc-pd-cost').textContent = money(a.pd.cost, a.pd.est) + '/mo';
+    document.getElementById('pdcalc-pd-plan').textContent = a.pd.label;
+    document.getElementById('pdcalc-alt-cost').textContent = money(a.alt.cost, a.alt.est) + '/mo';
+    document.getElementById('pdcalc-alt-name').textContent = a.alt.name;
+    var label = document.getElementById('pdcalc-delta-label');
+    var val   = document.getElementById('pdcalc-delta-cost');
+    var sub   = document.getElementById('pdcalc-delta-sub');
+    var yearly = Math.round(Math.abs(a.pd.cost - a.alt.cost) * 12);
+    if (a.pd.cost - a.alt.cost > 0.5) {{
+      label.textContent = 'You could save';
+      val.textContent = '$' + yearly.toLocaleString('en-US') + '/yr';
+      sub.textContent = 'switching to ' + a.alt.name;
+      val.className = 'pdcalc-stat-value accent';
+    }} else if (a.alt.cost - a.pd.cost > 0.5) {{
+      label.textContent = 'Pipedream is cheaper by';
+      val.textContent = '$' + yearly.toLocaleString('en-US') + '/yr';
+      sub.textContent = 'vs ' + a.alt.name;
+      val.className = 'pdcalc-stat-value accent';
+    }} else {{
+      label.textContent = 'Cost difference';
+      val.textContent = '$0/yr';
+      sub.textContent = 'about the same as ' + a.alt.name;
+      val.className = 'pdcalc-stat-value';
+    }}
+  }}
+  runsInput.addEventListener('input', render);
+  render();
+}})();
+"""
+    return html, js
+
+
 def _faq_with_prices(engine, tool: dict, ed_faq: list, by_slug: dict, tr=None) -> list[dict]:
     """Editorial FAQ (bez cen) + generované price-bearing otázky (z enginu).
 
@@ -499,15 +648,25 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
         r = engine.cheapest_monthly(tool, vol, STEPS)
         if r:
             desc_parts.append(f"{_fmt_usd(r['cost'], r['est'])} at {vol:,} runs")
-    desc = tr(f"meta.{slug}-pricing.description",
-              "{name} pricing 2026: {prices}. Real plans, self-host options and how {name} compares on cost per run."
-              ).format(name=name, prices=", ".join(desc_parts))
+    # editorial seo_description override (pricing-editorial.json, {name}/{prices} placeholders
+    # still frozen) → per-tool retargeting (e.g. "calculator" intent) without touching the
+    # shared default template used by every other tool.
+    _ed_seo_desc = ed.get("seo_description")
+    desc_template = (_ed_seo_desc if _ed_seo_desc else
+                     tr(f"meta.{slug}-pricing.description",
+                        "{name} pricing 2026: {prices}. Real plans, self-host options and how {name} compares on cost per run."))
+    desc = desc_template.format(name=name, prices=", ".join(desc_parts))
     # editorial seo_title override (pricing-editorial.json) → per-tool title without touching template default
     _ed_seo_title = ed.get("seo_title")
     title = (_ed_seo_title if _ed_seo_title else
              tr(f"meta.{slug}-pricing.title",
                 "{name} Pricing 2026 — Plans &amp; Real Cost | WizardCost").format(name=name))
     og_title = title.split(" | ")[0].replace("&amp;", "&")
+    # editorial meta_keywords override — omitted entirely when absent (every tool but the
+    # ones explicitly retargeted keeps today's behaviour: no <meta name="keywords"> at all).
+    _ed_keywords = ed.get("meta_keywords")
+    keywords_tag = (f'\n  <meta name="keywords" content="{_html_escape(_ed_keywords)}">'
+                    if _ed_keywords else "")
 
     # ── Citation-ready key facts (GEO playbook A10 #2): one dated, standalone,
     # quotable sentence with the headline numbers, in SSR HTML — the prime thing
@@ -538,14 +697,41 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
         if tool.get("plans"):
             offers["offerCount"] = len(tool["plans"])
 
+    # ── on-page interactive cost calculator (scoped rollout — CALC_WIDGET_TOOLS) ──
+    # Precomputed engine table + step-lookup JS; see _calc_widget_anchors/_calc_widget_block.
+    has_calc_widget = slug in CALC_WIDGET_TOOLS
+    calc_widget_html, calc_widget_js = "", ""
+    if has_calc_widget:
+        _calc_anchors = _calc_widget_anchors(engine, by_slug, slug, tr)
+        calc_widget_html, calc_widget_js = _calc_widget_block(name, _calc_anchors, month_year)
+    # wrapped only when non-empty — the other 6 pricing pages stay byte-identical (no stray blank line)
+    calc_widget_block = f"\n{calc_widget_html}\n" if calc_widget_html else ""
+
     # ── WebPage + Organization + WebSite graf (GEO/AI-citace: freshness + identita
-    #    vydavatele + entita nástroje + cenový range). dateModified = poslední ruční review. ──
+    #    vydavatele + entita nástroje + cenový range). dateModified = poslední ruční review.
+    #    seo_ld_name (editorial override) lets a retargeted page (e.g. pipedream → "calculator"
+    #    intent) carry that framing into schema too; every other tool keeps today's default. ──
+    _ed_ld_name = ed.get("seo_ld_name")
+    _extra_nodes = None
+    if has_calc_widget:
+        _extra_nodes = [{
+            "@type": "WebApplication",
+            "name": f"{name} Pricing Calculator",
+            "url": f"{canonical}#pd-calc",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript",
+            "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+            "isPartOf": {"@id": f"{canonical}#webpage"},
+        }]
     page_ld = _page_graph_ld(
         site.get("domain", "wizardcost.com"), canonical,
-        f"{name} Pricing 2026 — Plans, Run Limits & Real Cost", desc, _iso_date(tools_meta),
-        about_name=name, about_url=tool.get("homepage"), offers=offers)
+        _ed_ld_name or f"{name} Pricing 2026 — Plans, Run Limits & Real Cost",
+        desc, _iso_date(tools_meta),
+        about_name=name, about_url=tool.get("homepage"), offers=offers,
+        extra_graph_nodes=_extra_nodes)
 
-    css = _PRICING_CSS
+    css = _PRICING_CSS + (_CALC_WIDGET_CSS if has_calc_widget else "")
 
     # ── localized chrome strings (precomputed; {name}/{cmp_vol}/{month_year} frozen via placeholders) ──
     cta_calc = tr("pp.cta_calc", "Calculate my {name} cost").format(name=name)
@@ -595,7 +781,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno build_pricing.py z data/tools.json + data/pricing-editorial.json — needituj ručně -->
   <title>{_clamp_title(title)}</title>
-  <meta name="description" content="{_html_escape(_clamp_desc(desc))}">
+  <meta name="description" content="{_html_escape(_clamp_desc(desc))}">{keywords_tag}
   <link rel="canonical" href="{canonical}">
 {hreflang}
   <meta property="og:type" content="article">
@@ -660,7 +846,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
   <div class="section" style="margin-top:24px;padding-top:0;">
     <div class="cost-panel-wrap">{pricing_panel}</div>
   </div>
-
+{calc_widget_block}
   <div class="section">
     <h2>{h2_vs}</h2>
     <p class="section-sub">{vs_sub}</p>
@@ -713,7 +899,7 @@ def render_pricing_page(slug: str, tools: list[dict], variants_by_base: dict,
 
 <script>
 function toggleFaq(el) {{ el.closest(".faq-item").classList.toggle("open"); }}
-
+{calc_widget_js}
 /* ── billing (Monthly/Annual) + currency (USD/EUR/CZK display-only) ──
    USD is canonical (data-month/data-annual hold USD). The currency layer
    re-formats every .price-num from the USD base × FX — a display estimate
@@ -2310,4 +2496,32 @@ _PRICING_CSS = """    *, *::before, *::after { box-sizing: border-box; margin: 0
       .cta-row { flex-direction: column; align-items: stretch; }
       .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
       .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; }
+    }"""
+
+# ── Widget CSS: on-page cost calculator (pipedream-pricing.html; see _calc_widget_block).
+# Appended conditionally (only for CALC_WIDGET_TOOLS) so the other pages that share
+# _PRICING_CSS (alternatives, cheapest-tool, methodology, hidden-cost, …) stay byte-identical.
+_CALC_WIDGET_CSS = """
+    .pdcalc-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+    .pdcalc-inputs { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px; margin-bottom: 22px; }
+    .pdcalc-field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 220px; max-width: 320px; }
+    .pdcalc-label { font-size: 13px; font-weight: 700; color: var(--text); }
+    .pdcalc-input { background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; color: var(--text); font-family: var(--mono); font-size: 1rem; font-weight: 700; width: 100%; min-height: 44px; transition: border-color 0.15s, box-shadow 0.15s; }
+    .pdcalc-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
+    .pdcalc-hint { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .pdcalc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .pdcalc-stat { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
+    .pdcalc-stat-focus { border-color: rgba(16,185,129,0.35); background: rgba(16,185,129,0.06); }
+    .pdcalc-stat-accent { border-color: rgba(16,185,129,0.35); }
+    .pdcalc-stat-label { font-family: var(--mono); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; }
+    .pdcalc-stat-value { font-family: var(--mono); font-size: 1.35rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+    .pdcalc-stat-value.accent { color: var(--accent-br); }
+    .pdcalc-stat-sub { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+    .pdcalc-cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    @media (max-width: 520px) {
+      .pdcalc-card { padding: 18px; }
+      .pdcalc-field { max-width: none; }
+      .pdcalc-grid { grid-template-columns: 1fr; }
+      .pdcalc-cta-row { flex-direction: column; }
+      .pdcalc-cta-row > a { text-align: center; }
     }"""

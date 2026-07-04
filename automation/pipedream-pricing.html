@@ -4,14 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- generováno build_pricing.py z data/tools.json + data/pricing-editorial.json — needituj ručně -->
-  <title>Pipedream Pricing 2026 — Plans &amp; Real Cost | WizardCost</title>
-  <meta name="description" content="Pipedream pricing 2026: $45 at 1,000 runs, $153 at 20,000 runs, $309.6 at 100,000 runs. Real plans, self-host options and how Pipedream compares on cost per…">
+  <title>Pipedream Pricing Calculator 2026 | WizardCost</title>
+  <meta name="description" content="Pipedream pricing calculator: $45 at 1,000 runs, $153 at 20,000 runs, $309.6 at 100,000 runs. Real plans and the cheapest alternative, compared.">
+  <meta name="keywords" content="pipedream pricing calculator, pipedream cost calculator, calculate pipedream pricing, pipedream pricing 2026, pipedream cost per run">
   <link rel="canonical" href="https://wizardcost.com/automation/pipedream-pricing.html">
 
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AutomationCost.io">
-  <meta property="og:title" content="Pipedream Pricing 2026 — Plans &amp; Real Cost">
-  <meta property="og:description" content="Pipedream pricing 2026: $45 at 1,000 runs, $153 at 20,000 runs, $309.6 at 100,000 runs. Real plans, self-host options and how Pipedream compares on cost per run.">
+  <meta property="og:title" content="Pipedream Pricing Calculator 2026">
+  <meta property="og:description" content="Pipedream pricing calculator: $45 at 1,000 runs, $153 at 20,000 runs, $309.6 at 100,000 runs. Real plans and the cheapest alternative, compared.">
   <meta property="og:url" content="https://wizardcost.com/automation/pipedream-pricing.html">
   <meta property="og:image" content="https://wizardcost.com/automation/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -35,6 +36,22 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "At 20,000 runs/month the cheapest pick we track is <a href=\"activepieces-pricing.html\">Activepieces</a> at $0 vs Pipedream at $153. Use the calculator for your exact volume."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a Pipedream pricing calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — the interactive calculator on this page: enter your runs per month and it shows Pipedream's price at that volume, the cheapest alternative we track, and the potential annual difference, computed live from the same pricing engine as the tables above."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I calculate my exact Pipedream cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Enter your expected runs per month in the calculator above — it looks up Pipedream's cheapest qualifying plan at that volume from our pricing engine (not an estimate) and shows the cheapest alternative for comparison. For a full ranked comparison across all 7 tools, use the <a href=\"calculator.html\">main calculator</a>."
       }
     },
     {
@@ -114,8 +131,8 @@
       "@type": "WebPage",
       "@id": "https://wizardcost.com/automation/pipedream-pricing.html#webpage",
       "url": "https://wizardcost.com/automation/pipedream-pricing.html",
-      "name": "Pipedream Pricing 2026 — Plans, Run Limits & Real Cost",
-      "description": "Pipedream pricing 2026: $45 at 1,000 runs, $153 at 20,000 runs, $309.6 at 100,000 runs. Real plans, self-host options and how Pipedream compares on cost per run.",
+      "name": "Pipedream Pricing Calculator 2026 — Plans, Run Limits & Real Cost",
+      "description": "Pipedream pricing calculator: $45 at 1,000 runs, $153 at 20,000 runs, $309.6 at 100,000 runs. Real plans and the cheapest alternative, compared.",
       "inLanguage": "en",
       "isPartOf": {
         "@id": "https://wizardcost.com/#website"
@@ -137,6 +154,22 @@
           "highPrice": 309.6,
           "offerCount": 5
         }
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "name": "Pipedream Pricing Calculator",
+      "url": "https://wizardcost.com/automation/pipedream-pricing.html#pd-calc",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "isPartOf": {
+        "@id": "https://wizardcost.com/automation/pipedream-pricing.html#webpage"
       }
     }
   ]
@@ -254,6 +287,29 @@
       .cta-row > a, .cta-row > button { width: 100%; text-align: center; justify-content: center; }
       .funnel-fab { right: 12px; bottom: 12px; padding: 11px 16px; font-size: 13px; }
     }
+    .pdcalc-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+    .pdcalc-inputs { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px; margin-bottom: 22px; }
+    .pdcalc-field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 220px; max-width: 320px; }
+    .pdcalc-label { font-size: 13px; font-weight: 700; color: var(--text); }
+    .pdcalc-input { background: var(--bg); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 16px; color: var(--text); font-family: var(--mono); font-size: 1rem; font-weight: 700; width: 100%; min-height: 44px; transition: border-color 0.15s, box-shadow 0.15s; }
+    .pdcalc-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
+    .pdcalc-hint { font-size: 12px; color: var(--muted); line-height: 1.5; }
+    .pdcalc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .pdcalc-stat { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 18px; }
+    .pdcalc-stat-focus { border-color: rgba(16,185,129,0.35); background: rgba(16,185,129,0.06); }
+    .pdcalc-stat-accent { border-color: rgba(16,185,129,0.35); }
+    .pdcalc-stat-label { font-family: var(--mono); font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; }
+    .pdcalc-stat-value { font-family: var(--mono); font-size: 1.35rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+    .pdcalc-stat-value.accent { color: var(--accent-br); }
+    .pdcalc-stat-sub { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+    .pdcalc-cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    @media (max-width: 520px) {
+      .pdcalc-card { padding: 18px; }
+      .pdcalc-field { max-width: none; }
+      .pdcalc-grid { grid-template-columns: 1fr; }
+      .pdcalc-cta-row { flex-direction: column; }
+      .pdcalc-cta-row > a { text-align: center; }
+    }
   </style>
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="dashboard.css">
@@ -318,8 +374,8 @@
 
   <div class="page-hero">
     <div class="tool-badge"><img src="https://www.google.com/s2/favicons?domain=pipedream.com&sz=64" alt="Pipedream">Pipedream</div>
-    <h1>Pipedream Pricing 2026 — Credits & Real Cost per Run</h1>
-    <p>Pipedream is the developer-first automation platform that prices on compute credits. Here's what each plan costs as your run volume climbs, and where it lands against the alternatives.</p>
+    <h1>Pipedream Pricing Calculator — Credits & Real Cost per Run</h1>
+    <p>Pipedream is the developer-first automation platform that prices on compute credits. Here's what each plan costs as your run volume climbs, and where it lands against the alternatives — plus a calculator below for your exact volume.</p>
     <div class="cta-row">
       <a href="https://pipedream.com" target="_blank" rel="noopener" class="btn-primary">Visit Pipedream →</a>
       <a href="calculator.html" class="btn-secondary">Calculate my Pipedream cost</a>
@@ -428,6 +484,44 @@
 </figure></div>
   </div>
 
+  <div class="section" id="pd-calc">
+    <h2>Pipedream cost calculator</h2>
+    <p class="section-sub">Enter your monthly run volume — Pipedream's price and the cheapest alternative we track update live from the same engine as the tables on this page.</p>
+    <div class="pdcalc-card">
+      <div class="pdcalc-inputs">
+        <div class="pdcalc-field">
+          <label class="pdcalc-label" for="pdcalc-runs">Runs / month</label>
+          <input type="number" id="pdcalc-runs" class="pdcalc-input" value="20000" min="1" max="1000000" step="100" aria-describedby="pdcalc-hint">
+          <div class="pdcalc-hint" id="pdcalc-hint">How many workflow executions per month</div>
+        </div>
+      </div>
+      <div class="pdcalc-results" id="pdcalc-results" aria-live="polite">
+        <div class="pdcalc-grid">
+          <div class="pdcalc-stat pdcalc-stat-focus">
+            <div class="pdcalc-stat-label">Pipedream</div>
+            <div class="pdcalc-stat-value" id="pdcalc-pd-cost">—</div>
+            <div class="pdcalc-stat-sub" id="pdcalc-pd-plan">—</div>
+          </div>
+          <div class="pdcalc-stat">
+            <div class="pdcalc-stat-label">Cheapest alternative</div>
+            <div class="pdcalc-stat-value" id="pdcalc-alt-cost">—</div>
+            <div class="pdcalc-stat-sub" id="pdcalc-alt-name">—</div>
+          </div>
+          <div class="pdcalc-stat pdcalc-stat-accent">
+            <div class="pdcalc-stat-label" id="pdcalc-delta-label">Difference</div>
+            <div class="pdcalc-stat-value" id="pdcalc-delta-cost">—</div>
+            <div class="pdcalc-stat-sub" id="pdcalc-delta-sub">per year</div>
+          </div>
+        </div>
+        <div class="pdcalc-cta-row">
+          <a href="calculator.html" class="btn-primary">See all 7 tools ranked for my volume →</a>
+          <a href="compare.html" class="btn-secondary">Compare all 7 tools</a>
+        </div>
+        <p class="tbl-note" style="margin-top:12px;font-family:var(--mono);font-size:11.5px;color:var(--muted)">Prices generated live from official pricing via our engine (verified June 2026). Values marked ~ are estimates for custom enterprise tiers.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="section">
     <h2>Pipedream vs alternatives</h2>
     <p class="section-sub">Price for 20,000 runs / month across every tool we track. Use the Monthly / Annual toggle above to switch how the prices are billed.</p>
@@ -476,6 +570,14 @@
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">What is cheaper than Pipedream?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
         <div class="faq-a">At 20,000 runs/month the cheapest pick we track is <a href="activepieces-pricing.html">Activepieces</a> at $0 vs Pipedream at $153. Use the calculator for your exact volume.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">Is there a Pipedream pricing calculator?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Yes — the interactive calculator on this page: enter your runs per month and it shows Pipedream's price at that volume, the cheapest alternative we track, and the potential annual difference, computed live from the same pricing engine as the tables above.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">How do I calculate my exact Pipedream cost?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <div class="faq-a">Enter your expected runs per month in the calculator above — it looks up Pipedream's cheapest qualifying plan at that volume from our pricing engine (not an estimate) and shows the cheapest alternative for comparison. For a full ranked comparison across all 7 tools, use the <a href="calculator.html">main calculator</a>.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">How does Pipedream's credit pricing work?<svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
@@ -533,6 +635,55 @@
 
 <script>
 function toggleFaq(el) { el.closest(".faq-item").classList.toggle("open"); }
+
+/* ── Pipedream cost calculator widget — step-lookup only, no client-side pricing logic ── */
+(function () {
+  var ANCHORS = [{"runs": 100, "pd": {"cost": 0, "est": false, "label": "Free"}, "alt": {"slug": "make", "name": "Make", "cost": 0, "est": false}}, {"runs": 250, "pd": {"cost": 45, "est": false, "label": "Basic"}, "alt": {"slug": "make", "name": "Make", "cost": 0, "est": false}}, {"runs": 500, "pd": {"cost": 45, "est": false, "label": "Basic"}, "alt": {"slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}}, {"runs": 1000, "pd": {"cost": 45, "est": false, "label": "Basic"}, "alt": {"slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}}, {"runs": 2500, "pd": {"cost": 50.0, "est": false, "label": "Basic + overage"}, "alt": {"slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}}, {"runs": 5000, "pd": {"cost": 75.0, "est": false, "label": "Basic + overage"}, "alt": {"slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}}, {"runs": 10000, "pd": {"cost": 125.0, "est": false, "label": "Basic + overage"}, "alt": {"slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}}, {"runs": 20000, "pd": {"cost": 153.0, "est": false, "label": "Basic + overage"}, "alt": {"slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}}, {"runs": 50000, "pd": {"cost": 246.6, "est": false, "label": "Basic + overage"}, "alt": {"slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}}, {"runs": 100000, "pd": {"cost": 309.6, "est": false, "label": "Basic + overage"}, "alt": {"slug": "activepieces", "name": "Activepieces", "cost": 0, "est": false}}];
+  if (!ANCHORS.length) return;
+  var runsInput = document.getElementById('pdcalc-runs');
+  if (!runsInput) return;
+
+  function findAnchor(runs) {
+    var best = ANCHORS[0];
+    for (var i = 0; i < ANCHORS.length; i++) {
+      if (ANCHORS[i].runs <= runs) best = ANCHORS[i]; else break;
+    }
+    return best;
+  }
+  function money(v, est) { return (est ? '~$' : '$') + Math.round(v).toLocaleString('en-US'); }
+
+  function render() {
+    var runs = parseFloat(runsInput.value) || 0;
+    if (runs <= 0) return;
+    var a = findAnchor(runs);
+    document.getElementById('pdcalc-pd-cost').textContent = money(a.pd.cost, a.pd.est) + '/mo';
+    document.getElementById('pdcalc-pd-plan').textContent = a.pd.label;
+    document.getElementById('pdcalc-alt-cost').textContent = money(a.alt.cost, a.alt.est) + '/mo';
+    document.getElementById('pdcalc-alt-name').textContent = a.alt.name;
+    var label = document.getElementById('pdcalc-delta-label');
+    var val   = document.getElementById('pdcalc-delta-cost');
+    var sub   = document.getElementById('pdcalc-delta-sub');
+    var yearly = Math.round(Math.abs(a.pd.cost - a.alt.cost) * 12);
+    if (a.pd.cost - a.alt.cost > 0.5) {
+      label.textContent = 'You could save';
+      val.textContent = '$' + yearly.toLocaleString('en-US') + '/yr';
+      sub.textContent = 'switching to ' + a.alt.name;
+      val.className = 'pdcalc-stat-value accent';
+    } else if (a.alt.cost - a.pd.cost > 0.5) {
+      label.textContent = 'Pipedream is cheaper by';
+      val.textContent = '$' + yearly.toLocaleString('en-US') + '/yr';
+      sub.textContent = 'vs ' + a.alt.name;
+      val.className = 'pdcalc-stat-value accent';
+    } else {
+      label.textContent = 'Cost difference';
+      val.textContent = '$0/yr';
+      sub.textContent = 'about the same as ' + a.alt.name;
+      val.className = 'pdcalc-stat-value';
+    }
+  }
+  runsInput.addEventListener('input', render);
+  render();
+})();
 
 /* ── billing (Monthly/Annual) + currency (USD/EUR/CZK display-only) ──
    USD is canonical (data-month/data-annual hold USD). The currency layer
